@@ -1,0 +1,39 @@
+body {
+    background-color: lightgrey;
+}
+
+.main_wrapper {
+    width: 80vw;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.parrent, #header, #footer, #navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#navbar {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.parrent {
+    height: 50vh;
+}
+
+.parrent > div {
+    max-width: 50%;
+}
+
+.parrent > div p {
+    text-align: center;
+    font-size: 25px;
+}
+
+#leftcol, #content, #rightcol {
+    width: 33.33%;
+}
+
+
