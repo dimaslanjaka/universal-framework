@@ -1,0 +1,43 @@
+{
+    "name": "l3n4r0x/telkomsel",
+    "authors": [
+        {
+            "name": "Dimas Lanjaka",
+            "email": "dimaslanjaka@gmail.com"
+        }
+    ],
+    "require": {
+			"php": ">=5.3.7",
+
+			"ext-curl": "*",
+			"php-curl-class/php-curl-class": "^8.8",
+			"guzzlehttp/guzzle": "~6.0",
+        "google/apiclient": "^2.4"
+		},
+		"suggest": {
+			"paragonie/random_compat": "Provides better randomness in PHP 5.x"
+		},
+		"require-dev": {
+			"mikey179/vfsstream": "1.1.*",
+			"phpunit/phpunit": "^5"
+		},
+		"autoload": {
+			"psr-4": {
+				"Facebook\\": "src/Facebook/",
+				"Extender\\": "src/Extender/",
+				"User\\": "src/User/",
+				"DB\\": "src/DB/",
+				"Telkomsel\\": "src/Telkomsel/",
+				"Indosat\\": "src/Indosat/",
+				"Filemanager\\": "src/Filemanager/",
+				"Session\\": "src/Session/",
+				"Google\\": "src/Google/",
+				"IMEI\\": "src/IMEI/",
+				"Netscape\\": "src/Netscape/",
+				"MVC\\": "src/MVC/",
+				"JSON\\": "src/JSON/",
+				"HTML\\": "src/HTML/",
+				"Crypto\\": "src/Crypto/"
+			}
+		}
+}

@@ -1,0 +1,14 @@
+composer.phar
+/vendor/
+composer.lock
+/sessions/
+/java
+/otp
+hash_*
+trx_*
+/sql/
+src/Indosat
+src/Telkomsel
+*.rar
+*.zip
+/application/
