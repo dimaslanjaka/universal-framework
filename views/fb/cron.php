@@ -8,13 +8,12 @@ if (isob()) {
 }
 fb()->setUserAgent('Opera/9.80 (Series 60; Opera Mini/6.5.27309/34.1445; U; en) Presto/2.8.119 Version/11.10');
 
-
 echo '<pre>';
 $cookies = fb()->get_cookieList();
 foreach ($cookies as $cookie) {
   if (!is_numeric(basename($cookie))) {
-    print $cookie;
-    print fb()->getID($cookie);
+    echo $cookie;
+    echo fb()->getID($cookie);
     continue;
   }
   fb()->setEmail(basename($cookie));
@@ -25,14 +24,14 @@ foreach ($cookies as $cookie) {
   $config->ReactionType = fb()->getTextReaction($config->type);
   pre($config);
   if (fb()->check_cookie()->error) {
-    print fb()->errorMessage . ". <hr/>";
+    echo fb()->errorMessage . '. <hr/>';
     continue;
   }
   fb()->setOpt(CURLOPT_ENCODING, '');
   fb()->setOpt(CURLOPT_FOLLOWLOCATION, true);
   fb()->fbg('/?v=timeline');
   if (fb()->error) {
-    print fb()->getErrorMessage() . '<hr>';
+    echo fb()->getErrorMessage() . '<hr>';
     continue;
   }
   $html = str_get_html(fb()->response);
@@ -40,7 +39,7 @@ foreach ($cookies as $cookie) {
     if ($html->find('.storyStream')) {
       $story = $html->find('.storyStream', 0);
       $datas = [];
-      print 'data ' . count($story->find('[data-ft]')) . ' found <hr>';
+      echo 'data ' . count($story->find('[data-ft]')) . ' found <hr>';
       foreach ($story->find('[data-ft]') as $data) {
         $jdata = (string) $data->getAttribute('data-ft');
         $jdata = utf8_encode($jdata);
@@ -99,13 +98,13 @@ foreach ($cookies as $cookie) {
           }
           try {
             $run = false;
-            if ($config->friends && $jdata['type'] == 'friend') {
+            if ($config->friends && 'friend' == $jdata['type']) {
               $run = true;
             }
-            if ($config->groups && $jdata['type'] == 'group') {
+            if ($config->groups && 'group' == $jdata['type']) {
               $run = true;
             }
-            if ($config->pages && $jdata['type'] == 'page') {
+            if ($config->pages && 'page' == $jdata['type']) {
               $run = true;
             }
             fb()->getReaction($jdata['id'], $config->type, $run);
@@ -119,7 +118,7 @@ foreach ($cookies as $cookie) {
         //
         //
         //echo $jdata;
-        print '<hr>';
+        echo '<hr>';
       }
     } else {
       fb()->echo_response();

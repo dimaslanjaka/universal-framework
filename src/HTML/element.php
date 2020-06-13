@@ -4,6 +4,8 @@ namespace HTML;
 
 use DOMDocument;
 use DOMElement;
+use MVC\Exception;
+use MVC\helper;
 
 class element
 {
@@ -12,7 +14,7 @@ class element
   public $encoding;
   public static $static;
   /**
-   * DOMElement
+   * DOMElement.
    *
    * @var DOMElement
    */
@@ -49,6 +51,116 @@ class element
     echo '</pre>';
   }
 
+  public function script(array $source = [], $html = false, $print = false)
+  {
+    foreach ($source as $path) {
+      $src_ = $this->get_local_asset($path);
+      if ($html) {
+        if ($src_) {
+          $html = '<script src="' . $src_ . '"></script>';
+          if ($print) {
+            echo $html;
+          } else {
+            return $html;
+          }
+        } else {
+          echo "<!-- $path not found -->";
+        }
+      } else {
+        if ($src_) {
+          helper::include_asset($src_);
+        }
+      }
+    }
+  }
+
+  public function direct(string $element, string $content, array $attr = [])
+  {
+    $create = $this->dom->createElement($element, $content);
+    if (!empty($attributes)) {
+      $create = $this->fill_attributes($create, $attr);
+    }
+    var_dump($create);
+    $this->dom->appendChild($create);
+
+    return $this->dom->saveHTML();
+  }
+
+  public function css(array $source, array $attr = ['rel' => 'stylesheet'])
+  {
+    $result = '';
+    $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';
+    foreach ($source as $path) {
+      $path .= $config;
+      $result .= '<link rel="stylesheet" href="' . $path . '">';
+    }
+
+    return $result;
+  }
+
+  public function js(array $source)
+  {
+    $result = '';
+    $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';
+    foreach ($source as $path) {
+      $path .= $config;
+      $result .= '<script src="' . $path . '"></script>';
+    }
+
+    return $result;
+  }
+
+  /**
+   * Proxy CSS.
+   *
+   * @param array  $source
+   * @param bool   $html
+   * @param bool   $print
+   * @param string $rel
+   */
+  public function link(array $source = [], $html = false, $print = false, $rel = 'stylesheet')
+  {
+    foreach ($source as $path) {
+      $src_ = $this->get_local_asset($path);
+      if ($html) {
+        if ($src_) {
+          $html = '<link href="' . $src_ . '" rel="' . $rel . '" />';
+          if ($print) {
+            echo $html;
+          } else {
+            return $html;
+          }
+        } else {
+          echo "<!-- $path not found -->";
+        }
+      } else {
+        if ($src_) {
+          helper::include_asset($src_);
+        }
+      }
+    }
+  }
+
+  public function get_local_asset($path)
+  {
+    if (is_string($path) && filter_var($path, FILTER_VALIDATE_URL)) {
+      $src_ = $path;
+    } else {
+      if (is_string($path)) {
+        $src_ = helper::asset_find([$path]);
+      } elseif (is_array($path)) {
+        $src_ = helper::asset_find($path);
+      } else {
+        throw new Exception('path required string or array, instead of ' . gettype($path), 1);
+      }
+      if ($src_) {
+        $src_ = helper::webkit_asset($src_);
+      }
+    }
+
+    return $src_;
+  }
+
   /**
    * echo print_r in pretext.
    *
@@ -79,6 +191,7 @@ class element
       }
     }
     $this->dom->appendChild($select);
+
     return $this;
   }
 
@@ -128,6 +241,7 @@ class element
   {
     $save = $this->dom->saveHTML();
     $this->dom = new DOMDocument($this->version, $this->encoding);
+
     return $save;
   }
 

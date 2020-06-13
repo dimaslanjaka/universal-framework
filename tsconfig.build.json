@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "target": "ES6",
+    "module": "amd",
+    "declaration": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "./src/MVC/themes/assets/js",
+    //"out": "./src/MVC/themes/assets/js/app.js",
+    "outFile": "./src/MVC/themes/assets/js/app.js",
+    "sourceRoot": "./libs/js/",
+    "rootDir": "./libs/js/",
+    "sourceMap": true,
+    "watch": false,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "lib": [
+      "DOM",
+      "ESNext",
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "include": [
+    "./libs/js/**/*"
+  ],
+  "typeAcquisition": {
+    "include": [
+      "jQuery",
+      "toastr",
+      "sweetalert",
+      "CryptoJS"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "**/.vscode/**",
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/tmp/**",
+    "**/assets/**",
+    "**/views/**",
+    "**.min.js"
+  ]
+}

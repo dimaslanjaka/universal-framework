@@ -1,0 +1,24 @@
+[id^='ayat']::after {
+  content: '['attr(ayat)']';
+  vertical-align: super;
+  font-size: .75em;
+}
+
+#wrapAyat [id^='ayat'] {
+  margin-right: 3px;
+  font-size: medium;
+}
+
+#wrapAyat {
+  display: none;
+}
+
+#perAyat [class^="col"] * {
+  width: 100%;
+}
+
+div.page-content p {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}

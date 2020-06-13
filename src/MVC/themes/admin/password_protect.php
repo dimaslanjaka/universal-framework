@@ -1,22 +1,22 @@
 <?php
 
-###############################################################
-# Page Password Protect 2.13
-###############################################################
-# Visit http://www.zubrag.com/scripts/ for updates
-###############################################################
-#
-# Usage:
-# Set usernames / passwords below between SETTINGS START and SETTINGS END.
-# Open it in browser with "help" parameter to get the code
-# to add to all files being protected.
-#    Example: password_protect.php?help
-# Include protection string which it gave you into every file that needs to be protected
-#
-# Add following HTML code to your page where you want to have logout link
-# <a href="http://www.example.com/path/to/protected/page.php?logout=1">Logout</a>
-#
-###############################################################
+//##############################################################
+// Page Password Protect 2.13
+//##############################################################
+// Visit http://www.zubrag.com/scripts/ for updates
+//##############################################################
+//
+// Usage:
+// Set usernames / passwords below between SETTINGS START and SETTINGS END.
+// Open it in browser with "help" parameter to get the code
+// to add to all files being protected.
+//    Example: password_protect.php?help
+// Include protection string which it gave you into every file that needs to be protected
+//
+// Add following HTML code to your page where you want to have logout link
+// <a href="http://www.example.com/path/to/protected/page.php?logout=1">Logout</a>
+//
+//##############################################################
 
 /*
 -------------------------------------------------------------------
@@ -42,17 +42,17 @@ $LOGIN_INFORMATION = array(
 --------------------------------------------------------------------
 */
 
-##################################################################
-#  SETTINGS START
-##################################################################
+//#################################################################
+//  SETTINGS START
+//#################################################################
 
 // Add login/password pairs below, like described above
 // NOTE: all rows except last must have comma "," at the end of line
 $config = json_decode(file_get_contents(__DIR__ . '/../../config/theme-admin.json'), true);
 //exit(var_dump($config));
-$LOGIN_INFORMATION = array(
-  $config['user'] => $config['pass']
-);
+$LOGIN_INFORMATION = [
+  $config['user'] => $config['pass'],
+];
 
 // request login? true - show login and password boxes, false - password box only
 define('USE_USERNAME', true);
@@ -67,10 +67,9 @@ define('TIMEOUT_MINUTES', 0);
 // true - timeout time from last activity, false - timeout time from login
 define('TIMEOUT_CHECK_ACTIVITY', true);
 
-##################################################################
-#  SETTINGS END
-##################################################################
-
+//#################################################################
+//  SETTINGS END
+//#################################################################
 
 ///////////////////////////////////////////////////////
 // do not change code below
@@ -86,17 +85,16 @@ $timeout = (TIMEOUT_MINUTES == 0 ? 0 : time() + TIMEOUT_MINUTES * 60);
 
 // logout?
 if (isset($_GET['logout'])) {
-  setcookie("verify", '', $timeout, '/'); // clear password;
+  setcookie('verify', '', $timeout, '/'); // clear password;
   header('Location: ' . LOGOUT_URL);
   exit();
 }
 
 if (!function_exists('showLoginPasswordProtect')) {
-
   // show login form
   function showLoginPasswordProtect($error_msg)
   {
-?>
+    ?>
     <html>
 
     <head>
@@ -115,7 +113,9 @@ if (!function_exists('showLoginPasswordProtect')) {
         <form method="post">
           <h3>Please enter password to access this page</h3>
           <font color="red"><?php echo $error_msg; ?></font><br />
-          <?php if (USE_USERNAME) echo 'Login:<br /><input type="input" name="access_login" /><br />Password:<br />'; ?>
+          <?php if (USE_USERNAME) {
+      echo 'Login:<br /><input type="input" name="access_login" /><br />Password:<br />';
+    } ?>
           <input type="password" name="access_password" />
           <p></p><input type="submit" name="Submit" value="Submit" />
         </form>
@@ -127,36 +127,32 @@ if (!function_exists('showLoginPasswordProtect')) {
     </html>
 
 <?php
-    // stop at this point
-    die();
+  // stop at this point
+  die();
   }
 }
 
 // user provided password
 if (isset($_POST['access_password'])) {
-
   $login = isset($_POST['access_login']) ? $_POST['access_login'] : '';
   $pass = $_POST['access_password'];
   if (
-    !USE_USERNAME && !in_array($pass, $LOGIN_INFORMATION)
-    || (USE_USERNAME && (!array_key_exists($login, $LOGIN_INFORMATION) || $LOGIN_INFORMATION[$login] != $pass))
+  !USE_USERNAME && !in_array($pass, $LOGIN_INFORMATION)
+  || (USE_USERNAME && (!array_key_exists($login, $LOGIN_INFORMATION) || $LOGIN_INFORMATION[$login] != $pass))
   ) {
-    showLoginPasswordProtect("Incorrect password.");
+    showLoginPasswordProtect('Incorrect password.');
   } else {
     // set cookie if password was validated
-    setcookie("verify", md5($login . '%' . $pass), $timeout, '/');
+    setcookie('verify', md5($login . '%' . $pass), $timeout, '/');
 
     // Some programs (like Form1 Bilder) check $_POST array to see if parameters passed
     // So need to clear password protector variables
-    unset($_POST['access_login']);
-    unset($_POST['access_password']);
-    unset($_POST['Submit']);
+    unset($_POST['access_login'], $_POST['access_password'], $_POST['Submit']);
   }
 } else {
-
   // check if password cookie is set
   if (!isset($_COOKIE['verify'])) {
-    showLoginPasswordProtect("");
+    showLoginPasswordProtect('');
   }
 
   // check if cookie is good
@@ -167,13 +163,13 @@ if (isset($_POST['access_password'])) {
       $found = true;
       // prolong timeout
       if (TIMEOUT_CHECK_ACTIVITY) {
-        setcookie("verify", md5($lp), $timeout, '/');
+        setcookie('verify', md5($lp), $timeout, '/');
       }
       break;
     }
   }
   if (!$found) {
-    showLoginPasswordProtect("");
+    showLoginPasswordProtect('');
   }
 }
 

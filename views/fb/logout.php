@@ -1,3 +1,4 @@
 <?php
+
 session_destroy();
-exit(header("Location: /fb/login"));
+exit(header('Location: /fb/login'));

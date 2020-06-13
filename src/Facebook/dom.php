@@ -457,12 +457,12 @@ class simple_html_dom_node
       return $this->_[HDOM_INFO_INNER];
     }
     switch ($this->nodetype) {
-    case HDOM_TYPE_TEXT:
-    return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
-    case HDOM_TYPE_COMMENT:
-    return '';
-    case HDOM_TYPE_UNKNOWN:
-    return '';
+  case HDOM_TYPE_TEXT:
+  return $this->dom->restore_noise($this->_[HDOM_INFO_TEXT]);
+  case HDOM_TYPE_COMMENT:
+  return '';
+  case HDOM_TYPE_UNKNOWN:
+  return '';
   }
     if (0 === strcasecmp($this->tag, 'script')) {
       return '';
@@ -523,15 +523,15 @@ class simple_html_dom_node
         $ret .= $key;
       } else {
         switch ($this->_[HDOM_INFO_QUOTE][$i]) {
-      case HDOM_QUOTE_DOUBLE:
-      $quote = '"';
-      break;
-      case HDOM_QUOTE_SINGLE:
-      $quote = '\'';
-      break;
-      default:
-      $quote = '';
-    }
+    case HDOM_QUOTE_DOUBLE:
+    $quote = '"';
+    break;
+    case HDOM_QUOTE_SINGLE:
+    $quote = '\'';
+    break;
+    default:
+    $quote = '';
+  }
         $ret .= $key . $this->_[HDOM_INFO_SPACE][$i][1] . '=' . $this->_[HDOM_INFO_SPACE][$i][2] . $quote . $val . $quote;
       }
     }
@@ -727,20 +727,20 @@ class simple_html_dom_node
     }
 
     switch ($exp) {
-    case '=':
-    return $value === $pattern;
-    case '!=':
-    return $value !== $pattern;
-    case '^=':
-    return preg_match('/^' . preg_quote($pattern, '/') . '/', $value);
-    case '$=':
-    return preg_match('/' . preg_quote($pattern, '/') . '$/', $value);
-    case '*=':
-    if ('/' == $pattern[0]) {
-      return preg_match($pattern, $value);
-    }
+  case '=':
+  return $value === $pattern;
+  case '!=':
+  return $value !== $pattern;
+  case '^=':
+  return preg_match('/^' . preg_quote($pattern, '/') . '/', $value);
+  case '$=':
+  return preg_match('/' . preg_quote($pattern, '/') . '$/', $value);
+  case '*=':
+  if ('/' == $pattern[0]) {
+    return preg_match($pattern, $value);
+  }
 
-    return preg_match('/' . $pattern . '/i', $value);
+  return preg_match('/' . $pattern . '/i', $value);
   }
 
     return false;
@@ -829,30 +829,30 @@ class simple_html_dom_node
       return $this->convert_text($this->attr[$name]);
     }
     switch ($name) {
-    case 'outertext':
-    return $this->outertext();
-    case 'innertext':
-    return $this->innertext();
-    case 'plaintext':
-    return $this->text();
-    case 'xmltext':
-    return $this->xmltext();
-    default:
-    return array_key_exists($name, $this->attr);
+  case 'outertext':
+  return $this->outertext();
+  case 'innertext':
+  return $this->innertext();
+  case 'plaintext':
+  return $this->text();
+  case 'xmltext':
+  return $this->xmltext();
+  default:
+  return array_key_exists($name, $this->attr);
   }
   }
 
   public function __set($name, $value)
   {
     switch ($name) {
-    case 'outertext':
-    return $this->_[HDOM_INFO_OUTER] = $value;
-    case 'innertext':
-    if (isset($this->_[HDOM_INFO_TEXT])) {
-      return $this->_[HDOM_INFO_TEXT] = $value;
-    }
+  case 'outertext':
+  return $this->_[HDOM_INFO_OUTER] = $value;
+  case 'innertext':
+  if (isset($this->_[HDOM_INFO_TEXT])) {
+    return $this->_[HDOM_INFO_TEXT] = $value;
+  }
 
-    return $this->_[HDOM_INFO_INNER] = $value;
+  return $this->_[HDOM_INFO_INNER] = $value;
   }
     if (!isset($this->attr[$name])) {
       $this->_[HDOM_INFO_SPACE][] = [' ', '', ''];
@@ -864,12 +864,12 @@ class simple_html_dom_node
   public function __isset($name)
   {
     switch ($name) {
-    case 'outertext':
-    return true;
-    case 'innertext':
-    return true;
-    case 'plaintext':
-    return true;
+  case 'outertext':
+  return true;
+  case 'innertext':
+  return true;
+  case 'plaintext':
+  return true;
   }
     //no value attr: nowrap, checked selected...
     return (array_key_exists($name, $this->attr)) ? true : isset($this->attr[$name]);
@@ -930,7 +930,7 @@ class simple_html_dom_node
    *
    * @param mixed $str String to be tested
    *
-   * @return boolean
+   * @return bool
    */
   public static function is_utf8($str)
   {
@@ -976,8 +976,8 @@ class simple_html_dom_node
   /*
   function is_utf8($string)
   {
-    //this is buggy
-    return (utf8_encode(utf8_decode($string)) == $string);
+  //this is buggy
+  return (utf8_encode(utf8_decode($string)) == $string);
   }
   */
 
@@ -1705,21 +1705,21 @@ class simple_html_dom
 
     $space[2] = $this->copy_skip($this->token_blank);
     switch ($this->char) {
-    case '"':
-    $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_DOUBLE;
-    $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    $node->attr[$name] = $this->restore_noise($this->copy_until_char_escape('"'));
-    $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    break;
-    case '\'':
-    $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_SINGLE;
-    $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    $node->attr[$name] = $this->restore_noise($this->copy_until_char_escape('\''));
-    $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    break;
-    default:
-    $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_NO;
-    $node->attr[$name] = $this->restore_noise($this->copy_until($this->token_attr));
+  case '"':
+  $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_DOUBLE;
+  $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
+  $node->attr[$name] = $this->restore_noise($this->copy_until_char_escape('"'));
+  $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
+  break;
+  case '\'':
+  $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_SINGLE;
+  $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
+  $node->attr[$name] = $this->restore_noise($this->copy_until_char_escape('\''));
+  $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
+  break;
+  default:
+  $node->_[HDOM_INFO_QUOTE][] = HDOM_QUOTE_NO;
+  $node->attr[$name] = $this->restore_noise($this->copy_until($this->token_attr));
   }
     // PaperG: Attributes should not have \r or \n in them, that counts as html whitespace.
     $node->attr[$name] = str_replace("\r", '', $node->attr[$name]);
@@ -1918,16 +1918,16 @@ class simple_html_dom
   public function __get($name)
   {
     switch ($name) {
-    case 'outertext':
-    return $this->root->innertext();
-    case 'innertext':
-    return $this->root->innertext();
-    case 'plaintext':
-    return $this->root->text();
-    case 'charset':
-    return $this->_charset;
-    case 'target_charset':
-    return $this->_target_charset;
+  case 'outertext':
+  return $this->root->innertext();
+  case 'innertext':
+  return $this->root->innertext();
+  case 'plaintext':
+  return $this->root->text();
+  case 'charset':
+  return $this->_charset;
+  case 'target_charset':
+  return $this->_target_charset;
   }
   }
 

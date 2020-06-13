@@ -1,0 +1,63 @@
+/*
+* Typehinting vscode
+* @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+*/
+{
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "removeComments": true,
+    "allowUmdGlobalAccess": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "allowUnusedLabels": true,
+    "allowUnreachableCode": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "declaration": true,
+    "allowJs": true,
+    "lib": [
+      "DOM",
+      "ESNext",
+      "ES2020",
+      "ES2015",
+      "ES6"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "outDir": "./tmp/js",
+    //"outFile": "./tmp/js/app.js",
+    "declarationDir": "./tmp/js",
+    "declarationMap": true,
+    "sourceRoot": "./",
+    //"rootDir": "./libs",
+    "emitDeclarationOnly": true
+  },
+  "include": [
+    "./libs/**/*",
+    "./views/**/*",
+    "src/MVC/themes/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/.vscode/**",
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/tmp/**",
+    "**/assets/**",
+    "**.min.js",
+    "**/*.min.js",
+    "src/MVC/themes/assets/js",
+    "node_modules/@types/jquery"
+  ],
+  "compileOnSave": true,
+  "typeAcquisition": {
+    "include": [
+      "jQuery",
+      "toastr",
+      "sweetalert",
+      "CryptoJS"
+    ]
+  }
+}

@@ -1,143 +1,296 @@
 <?php
 
-define('ROOT', __DIR__);
-define('PDO_DEBUG', '3');
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Crypto\crypt;
-use User\user;
-use Facebook\client;
-use Indosat\m3;
-use JSON\json;
-use Telkomsel\api;
-use Session\session;
+// set root into current directory
+define('ROOT', __DIR__);
+resolve_dir(ROOT . '/tmp');
+resolve_dir(ROOT . '/processed');
 
-// ==== EDIT START
-$config = [
-  'database' => [
-    'user' => 'local',
-    'pass' => 'local',
-    'dbname' => 'gearbox',
-    'host' => 'localhost',
-    'port' => 3306
-  ]
-];
-// ==== EDIT END
+// define cors detector
+define('CORS', \MVC\helper::cors());
+
+// define localhost detector
+define('LOCAL', \MVC\helper::isLocal());
+
+// define PAGE UNIQUE ID
+$uri = \MVC\helper::get_clean_uri();
+$uid = md5($uri . \MVC\helper::getRequestIP() . \MVC\helper::useragent());
+define('UID', $uid);
+
+// set default timezone
+date_default_timezone_set('Asia/Jakarta');
+
+/**
+ * Session zones.
+ */
+$folder_session = null;
+if (!\Cookie\helper::has("zone{$uri}", false)) {
+  $zone = \MVC\helper::parse_url2(\MVC\helper::geturl());
+  if (isset($zone['path'])) {
+    $zone = $zone['path'];
+    $zone = array_values(array_filter(explode('/', $zone)));
+    if (isset($zone[0])) {
+      \Cookie\helper::hours("zone{$uri}", $zone[0], 24, $uri);
+    }
+  }
+}
+
+$zone_division = \Cookie\helper::get("zone{$uri}", false);
+if ($zone_division == 'coupon') {
+  //maintenance();
+  //$folder_session = \Filemanager\file::folder(__DIR__ . '/tmp/sessions/' . $zone[0]);
+}
+
+$session = new \Session\session(3600, $folder_session);
+$router = new \MVC\router();
+$router->session = $session;
+
+// start environtment as development for debugging
+$debug_pdo = 1;
+if (LOCAL || in_array($_SERVER['HTTP_HOST'], ['dev.webmanajemen.com'])) {
+  $router->environtment('development');
+  $debug_pdo = 3;
+} else {
+  $router->environtment('production');
+}
+define('ENVIRONMENT', $router->get_env());
+//show_error();
+
+if (!defined('PDO_DEBUG')) {
+  define('PDO_DEBUG', (string) $debug_pdo);
+}
+
+$config = \Filemanager\file::get(__DIR__ . '/config.json', true);
+
+if (!CORS) {
+  $cookie_latest = \Cookie\helper::get('latest_file');
+  if (!$cookie_latest || $router->is_req('clear_cache')) {
+    $cookie_latest = (string) latestFile([__DIR__ . '/src/MVC/', __DIR__ . '/libs/', __DIR__ . '/views/']);
+
+    \Cookie\helper::hours('latest_file', $cookie_latest, 3);
+  } else if ($router->is_header('Cache-Control') == 'no-cache') {
+    $cookie_latest = time();
+  }
+
+  $dateLatest = new DateTime(date('c', $cookie_latest));
+  $config['cache']['key'] .= $dateLatest->format('/d/m/Y/h/i/s/B');
+}
+
 define('CONFIG', $config);
+
+// ====== helper
+
+$GLOBALS['config'] = $config;
+
+function get_conf()
+{
+  if (!$GLOBALS['config']) {
+    $GLOBALS['config'] = \Filemanager\file::get(ROOT . '/config.json', true);
+  }
+
+  return $GLOBALS['config'];
+}
+
+function save_conf(array $newdata)
+{
+  \Filemanager\file::file(__DIR__ . '/config.json', array_replace(get_conf(), $newdata), true);
+}
+
+function get_db()
+{
+  return $GLOBALS['config']['database'];
+}
+
+/**
+ * Fastest Unique ID Generator
+ * @param int $length default 5
+ */
+function uid(int $length = 5)
+{
+  return bin2hex(openssl_random_pseudo_bytes($length / 2));
+}
 
 //======== begin conf [DO NOT EDIT]
 
-# ignore limitation if exists
+// ignore limitation if exists
 if (function_exists('set_time_limit')) {
   call_user_func('set_time_limit', 0);
 }
 
-# ignore user abort execution to false
+// ignore user abort execution to false
 if (function_exists('ignore_user_abort')) {
   call_user_func('ignore_user_abort', false);
 }
 
-# set output buffering to zero
+// set output buffering to zero
 ini_set('output_buffering', 0);
 
-# start output buffering
-ob_start();
+function useFB()
+{
+  include ROOT . '/config-fb.php';
+}
 
-# set default timezone
-date_default_timezone_set('Asia/Jakarta');
+function useTsel()
+{
+  if (!function_exists('telkomsel_api')) {
+    include ROOT . '/config-tsel.php';
+  }
+}
 
+function usem3()
+{
+  if (!function_exists('m3')) {
+    include ROOT . '/config-m3.php';
+  }
+}
 
-$session = new session();
-# start session with timeout 3600 secs
-$session->start_timeout(3600);
+function useGoogle()
+{
+  if (!function_exists('google')) {
+    include ROOT . '/config-google.php';
+  }
+}
 
 //======== end conf
 /**
- * @var user $user
+ * @var \User\user
  */
-$user = new user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
+$user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
 $pdo = $user->pdo_instance();
-//exit(var_dump($user->pdo_instance()));
+
+function getLimit(int $id_user = 0)
+{
+  global $user;
+
+  if (!$user) {
+    $user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
+  }
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+  $limit = [];
+  if ($user->is_login()) {
+    $limit = pdo()->select('limitation')->where([
+      'user_id' => $id_user,
+    ])->row_array();
+    if (empty($limit)) {
+      pdo()->insert_not_exists('limitation', [
+        'user_id' => $id_user,
+      ])->exec();
+
+      return getLimit();
+    }
+  }
+
+  return $limit;
+}
+
+function getLimitRemaining()
+{
+  $limit = (array) getLimit();
+
+  if (isset($limit['max']) && isset($limit['success'])) {
+    $max = (int) $limit['max'];
+    $suc = (int) $limit['success'];
+    $remaining = (int) ($max - $suc);
+    //var_dump($max, $suc, ($max - $suc));
+    return $remaining;
+  }
+
+  return 0;
+}
+function getLimitSuccess()
+{
+  $limit = (array) getLimit();
+  if (isset($limit['success']) && isset($limit['success'])) {
+    $max = (int) $limit['success'];
+
+    return $max;
+  }
+
+  return 0;
+}
+function getLimitMax()
+{
+  $limit = (array) getLimit();
+  if (isset($limit['max']) && isset($limit['success'])) {
+    $max = (int) $limit['max'];
+
+    return $max;
+  }
+
+  return 0;
+}
+
+function getLimitBanned()
+{
+  //var_dump(getLimitRemaining());
+  if (user()->is_login()) {
+    return getLimitRemaining() <= 0;
+  }
+}
+
+function addLimitSuccess(int $id_user = 0)
+{
+  global $user;
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+
+  return pdo()->sum('limitation', [
+    'success' => 1,
+  ], [
+    'user_id' => $id_user,
+  ])->exec();
+}
+
+function addLimitMax(int $id_user = 0, int $value)
+{
+  global $user;
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+
+  return pdo()->update('limitation', [
+    'max' => $value,
+  ], [
+    'user_id' => $id_user,
+  ])->exec();
+}
+
 /**
- * user instance
+ * user instance.
  *
  * @return \User\user
  */
 function user()
 {
   global $user;
+
   return $user;
 }
 /**
- * user instance
+ * user instance.
  *
  * @return \DB\pdo
  */
 function pdo()
 {
   global $pdo;
+
   return $pdo;
 }
 
-//exit(var_dump($user->pdo_instance()));
-
-# facebook instance
-$fb = new client();
-function fb()
-{
-  global $fb;
-
-  return $fb->get_instance();
-}
-//exit(var_dump(fb()));
-
-# telkomsel instance
-//error_reporting(1);
-$api = new api($user);
-$api->set_device()->set_api('android');
-if (isset($_REQUEST['version']) || !isset($_SESSION['version'])) {
-  $api->set_version(isset($_REQUEST['version']) ? trim($_REQUEST['version']) : null);
-}
-if (isset($_REQUEST['device']) || !isset($_SESSION['device'])) {
-  $api->set_device(isset($_REQUEST['device']) ? trim($_REQUEST['device']) : null);
-}
-if (isset($_REQUEST['user-agent']) || !isset($_SESSION['user-agent'])) {
-  $api->set_useragent(isset($_REQUEST['user-agent']) ? trim($_REQUEST['user-agent']) : null);
-}
-if (isset($_REQUEST['set-model'])) {
-  if (!isset($_REQUEST['user-agent']) && !isset($_REQUEST['device'])) {
-    $api->set_api($_REQUEST['set-model']);
-  }
-}
-//ev($api->get_version());
-function telkomsel_api()
-{
-  global $api;
-
-  return $api;
-}
-//exit(var_dump(telkomsel_api()));
-# im3 instance
-$m3 = new m3();
-$m3->set_app_model('Redmi Note 5')->set_imei(919027612808819);
-function m3()
-{
-  global $m3;
-
-  return $m3;
-}
-
-# file scanner
+// file scanner
 $scanner = new Filemanager\scan();
 
 function scan($dir)
 {
 }
 
-
-
 /**
- * Check if output buffering on
+ * Check if output buffering on.
  *
  * @return ob_get_level
  */
@@ -147,9 +300,10 @@ function isob()
 }
 
 /**
- * Base URL router
+ * Base URL router.
  *
  * @param string $path
+ *
  * @return void
  */
 function base(string $path)
@@ -158,7 +312,29 @@ function base(string $path)
 }
 
 /**
- * Filemanager Instance
+ * Exit JSON.
+ *
+ * @param mixed $result
+ *
+ * @return void
+ */
+function e()
+{
+  $results = func_get_args();
+  if (count($results) > 1) {
+    foreach ($results as $check) {
+      if (is_string($check) && \JSON\json::is_json($check)) {
+        $check = json_decode($check);
+      }
+    }
+  } else {
+    $results = $results[0];
+  }
+  \JSON\json::json($results);
+  exit;
+}
+/**
+ * Filemanager Instance.
  *
  * @return void
  */
@@ -167,19 +343,16 @@ function filemanager()
   return new \Filemanager\file();
 }
 
-# pre text
+// pre text
 function pre(...$obj)
 {
-  echo '<pre>';
+  echo '<pre style="word-wrap: break-word;">';
   foreach ($obj as $objek) {
-    json::json($objek, false, true);
+    \JSON\json::json($objek, false, true);
     echo "\n <center>========</center> \n";
   }
   echo '</pre>';
 }
-
-
-
 
 function include_asset($fn, $fn2 = null, $callback = null)
 {
@@ -192,12 +365,16 @@ function include_asset($fn, $fn2 = null, $callback = null)
   }
 }
 
-function ev(...$a)
+function ev()
 {
+  $args = func_get_args();
+  if (count($args) == 1) {
+    $args = $args[0];
+  }
   if (!headers_sent()) {
     header('Content-Type: text/plain; charset=utf-8');
   }
-  exit(var_dump($a));
+  exit(var_dump($args));
 }
 
 function vd($a, $_ = null)
@@ -210,7 +387,7 @@ function vd($a, $_ = null)
 
 function evj(...$a)
 {
-  json::json($a);
+  \JSON\json::json($a);
   exit;
 }
 
@@ -221,22 +398,18 @@ function clean_string($string)
   return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
 
-
-
-function tsc()
+function get_env()
 {
-  $tsc = 'A301' . date('ymdHiss') . ((int) microtime() * (int) 10000000);
-  $exp = explode('.', $tsc);
+  global $router;
 
-  return $exp[0];
+  return $router->get_env();
 }
 
-function hashKey($tsc, $brand, $priceplan)
+function router()
 {
-  $y = '2ljmmah8031123npr2321lki423sjb3129';
-  $parsing = $tsc . $brand . $priceplan . $y;
+  global $router;
 
-  return hash('sha256', $parsing);
+  return $router;
 }
 
 function Map($arr, $callback)
@@ -268,7 +441,6 @@ function strcond($first, $two, $success = null, $error = null)
     }
   }
 }
-
 
 /**
  * echo print_r in pretext.
@@ -315,19 +487,14 @@ function req($opt)
   return \Extender\request::static_request($opt);
 }
 
-function timestamp($digit)
+function maintenance()
 {
-  switch ($digit) {
-    case 13:
-      return round(microtime(true) * 1000);
-      break;
+  include __DIR__ . '/maintenance.php';
+  exit;
+}
 
-    case 17:
-      return round(microtime(true) * 10000);
-      break;
-
-    default:
-      return time();
-      break;
-  }
+function show_error()
+{
+  error_reporting(E_ALL);
+  ini_set('display_errors', 'On');
 }

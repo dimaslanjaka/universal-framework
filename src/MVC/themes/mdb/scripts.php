@@ -36,17 +36,17 @@
     var el = document.querySelector('.custom-scrollbar');
     var ps = new PerfectScrollbar(el);
     <?php
-    \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
-    if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
-      include $var['script'];
-    }
-    if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
-      include $var['js'];
-    }
-    $contentJS = preg_replace('/\.php$/s', '.js', $content);
-    \MVC\helper::include_asset($contentJS);
+  \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
+  if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
+    include $var['script'];
+  }
+  if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
+    include $var['js'];
+  }
+  $contentJS = preg_replace('/\.php$/s', '.js', $content);
+  \MVC\helper::include_asset($contentJS);
 
-    ?>
+  ?>
   });
 </script>
 <script type="text/javascript">

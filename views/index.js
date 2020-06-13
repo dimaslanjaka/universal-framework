@@ -4,6 +4,7 @@ alogin.prop('disabled', true);
 $.ajax({
   url: authUrl,
   method: 'POST',
+  indicator: true,
   success: function(res) {
     if (typeof res == 'string') {
       res = JSON.parse(res);
@@ -19,11 +20,12 @@ $.ajax({
         src: res.user_image
       });
     }
-    if (res.hasOwnProperty('user_first_name')){
+    if (res.hasOwnProperty('user_first_name')) {
       $('h4#profile-name').text(`${res.user_first_name} ${res.user_last_name}`);
     }
   },
   error: function(xhr) {
-    toastr.error('fetch login status failed', 'login info');
+    //toastr.error('fetch login status failed', 'login info');
   }
 });
+checkUID();

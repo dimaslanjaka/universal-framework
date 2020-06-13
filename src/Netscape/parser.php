@@ -2,13 +2,47 @@
 
 namespace Netscape;
 
+use function GuzzleHttp\json_encode;
+
+/**
+ * Netscape proxy parser.
+ *
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 class parser
 {
-  public function getCookies($file)
+  public static function getCookies($file)
   {
     if (realpath($file)) {
       return file_get_contents(realpath($file));
     }
+  }
+
+  public static function netscape2guzzle(string $cookietxt)
+  {
+    $parsed = self::extractCookies($cookietxt);
+    $guzzle = [];
+    foreach ($parsed as $cook) {
+      $ready = [];
+      foreach ($cook as $key => $value) {
+        $key = ucfirst($key);
+        switch ($key) {
+      case 'Httponly':
+      $key = 'HttpOnly';
+      break;
+      case 'Expiration-epoch':
+      $key = 'Expires';
+      break;
+      case 'value':
+      // code...
+      break;
+    }
+        $ready[$key] = $value;
+      }
+      $guzzle[] = $ready;
+    }
+    //var_dump($guzzle, $parsed);
+    return json_encode($guzzle);
   }
 
   /**
@@ -20,7 +54,7 @@ class parser
    *
    * @return array the array of cookies as extracted from the string
    */
-  public function extractCookies($string)
+  public static function extractCookies($string)
   {
     $lines = explode(PHP_EOL, $string);
 

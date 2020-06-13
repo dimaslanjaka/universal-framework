@@ -3,14 +3,26 @@
 namespace JSON;
 
 use DomainException;
-use Exception;
+use MVC\Exception;
 
 class json
 {
+  public static function headerJSON()
+  {
+    return self::json([], true, false);
+  }
+
+  public static function assoc($arr)
+  {
+    $str = json_encode($arr);
+
+    return json_decode($str, true);
+  }
+
   /**
    * JSON formatter.
    *
-   * @param array $data
+   * @param mixed $data
    * @param bool  $header
    * @param bool  $print
    */
@@ -20,7 +32,7 @@ class json
       header('Content-Type: application/json');
     }
     if ('string' == strtolower(gettype($data)) && self::is_json($data)) {
-      $data = json_decode($data);
+      $data = json_decode($data, true);
     }
 
     $json = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -32,7 +44,28 @@ class json
     }
   }
 
-  public static function is_json($string)
+  public static function beautify($data)
+  {
+    if (ctype_alnum($data)) {
+      $is_json = self::is_json($data);
+      if ($is_json) {
+        $data = json_decode($data);
+      } else {
+        throw new \MVC\Exception("INVALID JSON (\JSON\json::beautify)", 1);
+      }
+    }
+
+    return json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+  }
+
+  /**
+   * Validate json string.
+   *
+   * @param string $string
+   *
+   * @return bool
+   */
+  public static function is_json(string $string)
   {
     json_decode($string);
 
@@ -89,8 +122,32 @@ class json
     }
   }
 
+  /**
+   * json_decode default assoc.
+   *
+   * @param string $str
+   * @param bool   $assoc
+   *
+   * @return \json_decode
+   */
+  public static function json_decode(string $str, $err_callback = null, $assoc = true)
+  {
+    if (!self::isJson($str)) {
+      if (ctype_alnum($err_callback)) {
+        return $err_callback;
+      } else {
+        throw new Exception('str must be a valid JSON format, instead of ' . gettype($str), 1);
+      }
+    }
+
+    return json_decode($str, $assoc);
+  }
+
   public static function jsonDecode($input)
   {
+    if (!self::isJson($input)) {
+      throw new Exception('input must be a valid JSON format', 1);
+    }
     if (version_compare(PHP_VERSION, '5.4.0', '>=') && !(defined('JSON_C_VERSION') && PHP_INT_SIZE > 4)) {
       /** In PHP >=5.4.0, json_decode() accepts an options parameter, that allows you
        * to specify that large ints (like Steam Transaction IDs) should be treated as
@@ -117,7 +174,7 @@ class json
     return $obj;
   }
 
-  public function isJson($string)
+  public static function isJson($string)
   {
     json_decode($string);
 

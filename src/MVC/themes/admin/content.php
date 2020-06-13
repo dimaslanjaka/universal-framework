@@ -1,14 +1,21 @@
 <?php
 
 use MVC\helper;
+use User\user;
 
-include __DIR__ . '/password_protect.php';
+$user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
+if (!$user->is_admin()) {
+  \MVC\router::safe_redirect('/signin');
+
+  return;
+}
+//include __DIR__ . '/password_protect.php';
 ?>
 <!DOCTYPE html>
 <html>
 <title>
 
-  <?= $title ?></title>
+  <?= $title; ?></title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -81,9 +88,9 @@ include __DIR__ . '/password_protect.php';
   <footer class="w3-center w3-black w3-padding-16">
     <p>Powered by <a href="https://webmanajemen.com" title="WMI" target="_blank" class="w3-hover-text-green">webmanajemen</a></p>
   </footer>
-  <script src="<?= helper::webkit_asset(__DIR__ . '/../assets/js/require.js') ?>"></script>
+  <script src="/node_modules/requirejs/require.js"></script>
   <script>
-    <?= helper::include_asset(__DIR__ . '/view.js') ?>
+    <?= helper::include_asset(__DIR__ . '/view.js'); ?>
   </script>
 </body>
 

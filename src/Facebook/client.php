@@ -2,12 +2,14 @@
 
 namespace Facebook;
 
-require __DIR__ . '/dom.php';
+//require __DIR__ . '/dom.php';
 
-use Exception;
+use MVC\Exception;
 use Extender\request;
+use HTML\dom;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use function HTML\str_get_html;
 
 class client extends request
 {
@@ -131,7 +133,7 @@ class client extends request
       if (strpos($curlData, 'approvals_code')) {
         $loginhtml = $this->putfile(__DIR__ . "/tmp/html/$username.html", $curlData, false, true);
         $_SESSION['loginhtml'] = $loginhtml;
-        $html = str_get_html(file_get_contents($loginhtml));
+        $html = dom::str_get_html(file_get_contents($loginhtml));
         $this->htmlreturn = $this->getAsset('login/checkpoint.html', [
           'approvals_code' => $html->find('[name="approvals_code"]', 0)->outertext,
           'nh' => $html->find('[name="nh"]', 0)->outertext,
@@ -160,10 +162,9 @@ class client extends request
   }
 
   /**
-   * Get user ID from Cookie
+   * Get user ID from Cookie.
    *
    * @param string $cookie
-   * @return void
    */
   public function getUserID(string $cookie)
   {
@@ -252,8 +253,10 @@ class client extends request
 
   public function clearDump(...$s)
   {
-    ob_get_clean();
-    ob_start();
+    if (ob_get_level()) {
+      ob_end_clean();
+      ob_start();
+    }
     ev($s);
   }
 
@@ -498,8 +501,6 @@ class client extends request
    *
    * @param string $url
    * @param string $cookie
-   *
-   * @return void
    */
   public function fbg(string $url, $cookie = null)
   {

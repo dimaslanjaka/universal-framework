@@ -1,6 +1,6 @@
 <?php
 
-#FORM Controller
+//FORM Controller
 
 use Filemanager\file;
 use JSON\json;
@@ -10,12 +10,12 @@ if (isset($_REQUEST['config'])) {
   $path = $config['config'];
   unset($config['config']);
   if (isset($config['theme'])) {
-    $config['theme'] = (int) $config['theme'] == 0 ? false : true;
+    $config['theme'] = 0 == (int) $config['theme'] ? false : true;
   }
   if ($path = realpath($path)) {
     file::file($path, $config, true);
     json::json([
-      'success' => true
+      'success' => true,
     ]);
   }
   exit;

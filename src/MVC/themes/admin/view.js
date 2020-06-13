@@ -31,6 +31,9 @@ require(['jquery', 'jquery-ui', 'toastr'], function($, $_, toastr) {
         }
       }
     });
+    $(document).on('change', 'select', function(e) {
+      $(this).parent('form').trigger('submit');
+    });
     $('form').on('submit', function(e) {
       e.preventDefault();
       var data = $(this).serialize();
@@ -41,8 +44,8 @@ require(['jquery', 'jquery-ui', 'toastr'], function($, $_, toastr) {
         data: data,
         method: method,
         success: function(res) {
-          if (typeof res == 'object'){
-            if (res.hasOwnProperty('success')){
+          if (typeof res == 'object') {
+            if (res.hasOwnProperty('success')) {
               toastr.success('configuration saved successfully', 'Save Configuration');
             }
           }

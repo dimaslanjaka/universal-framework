@@ -29,7 +29,7 @@ $result = stringb('$ch = curl_init();') . stringb('curl_setopt($ch, CURLOPT_RETU
 
 if (preg_match('/^(GET|POST|PUT|PATCH|DELETE|HEAD)/s', $header_builder[0], $method)) {
   $method_builder = preg_split("[\s]", $header_builder[0]);
-  if ($method_builder[0] == 'POST') {
+  if ('POST' == $method_builder[0]) {
     $result .= stringb('curl_setopt($ch, CURLOPT_POST, 1);');
   } else {
     $result .= stringb('curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");');
@@ -59,13 +59,11 @@ if (curl_errno($ch)) {
 var_dump($result);
 curl_close($ch);');
 
-echo ($result);
+echo $result;
 
 file_put_contents(__DIR__ . '/raw2curl_result.php', "<?php \n\n $result \n\n ?>");
 
-
 //evj($header_builder);
-
 
 function stringb($str)
 {

@@ -2,31 +2,32 @@
 
 namespace Crypto;
 
-use Exception;
+use MVC\Exception;
 
 /**
  * Encryption class for encrypt/decrypt that works between programming languages.
  *
  * @author Vee Winch.
- * @link https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
+ *
+ * @see https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
  */
 class Encryption
 {
-
-
   /**
-   * @link http://php.net/manual/en/function.openssl-get-cipher-methods.php Available methods.
+   * @see http://php.net/manual/en/function.openssl-get-cipher-methods.php Available methods.
+   *
    * @var string Cipher method. Recommended AES-128-CBC, AES-192-CBC, AES-256-CBC
    */
   protected $encryptMethod = 'AES-256-CBC';
 
-
   /**
    * Decrypt string.
    *
-   * @link https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
-   * @param string $encryptedString The encrypted string that is base64 encode.
-   * @param string $key The key.
+   * @see https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
+   *
+   * @param string $encryptedString the encrypted string that is base64 encode
+   * @param string $key             the key
+   *
    * @return mixed Return original string value. Return null for failure get salt, iv.
    */
   public function decrypt($encryptedString, $key)
@@ -34,8 +35,8 @@ class Encryption
     $json = json_decode(base64_decode($encryptedString), true);
 
     try {
-      $salt = hex2bin($json["salt"]);
-      $iv = hex2bin($json["iv"]);
+      $salt = hex2bin($json['salt']);
+      $iv = hex2bin($json['iv']);
     } catch (Exception $e) {
       return null;
     }
@@ -53,16 +54,19 @@ class Encryption
     unset($cipherText, $hashKey, $iv);
 
     return $decrypted;
-  } // decrypt
+  }
 
+  // decrypt
 
   /**
    * Encrypt string.
    *
-   * @link https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
-   * @param string $string The original string to be encrypt.
-   * @param string $key The key.
-   * @return string Return encrypted string.
+   * @see https://stackoverflow.com/questions/41222162/encrypt-in-php-openssl-and-decrypt-in-javascript-cryptojs Reference.
+   *
+   * @param string $string the original string to be encrypt
+   * @param string $key    the key
+   *
+   * @return string return encrypted string
    */
   public function encrypt($string, $key)
   {
@@ -82,32 +86,35 @@ class Encryption
     unset($encryptedString, $iterations, $iv, $ivLength, $salt);
 
     return base64_encode(json_encode($output));
-  } // encrypt
+  }
 
+  // encrypt
 
   /**
    * Get encrypt method length number (128, 192, 256).
    *
-   * @return integer.
+   * @return int
    */
   protected function encryptMethodLength()
   {
     $number = filter_var($this->encryptMethod, FILTER_SANITIZE_NUMBER_INT);
 
     return intval(abs($number));
-  } // encryptMethodLength
+  }
 
+  // encryptMethodLength
 
   /**
    * Set encryption method.
    *
-   * @link http://php.net/manual/en/function.openssl-get-cipher-methods.php Available methods.
+   * @see http://php.net/manual/en/function.openssl-get-cipher-methods.php Available methods.
+   *
    * @param string $cipherMethod
    */
   public function setCipherMethod($cipherMethod)
   {
     $this->encryptMethod = $cipherMethod;
-  } // setCipherMethod
+  }
 
-
+  // setCipherMethod
 }

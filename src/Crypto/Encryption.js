@@ -9,7 +9,7 @@ class Encryption {
 
 
   /**
-   * @var integer Return encrypt method or Cipher method number. (128, 192, 256)
+   * @type integer Return encrypt method or Cipher method number. (128, 192, 256)
    */
   get encryptMethodLength() {
     var encryptMethod = this.encryptMethod;
@@ -21,7 +21,7 @@ class Encryption {
 
 
   /**
-   * @var integer Return cipher method divide by 8. example: AES number 256 will be 256/8 = 32.
+   * @type integer Return cipher method divide by 8. example: AES number 256 will be 256/8 = 32.
    */
   get encryptKeySize() {
     var aesNumber = this.encryptMethodLength;
@@ -31,7 +31,7 @@ class Encryption {
 
   /**
    * @link http://php.net/manual/en/function.openssl-get-cipher-methods.php Refer to available methods in PHP if we are working between JS & PHP encryption.
-   * @var string Cipher method.
+   * @type string Cipher method.
    *              Recommended AES-128-CBC, AES-192-CBC, AES-256-CBC
    *              due to there is no `openssl_cipher_iv_length()` function in JavaScript
    *              and all of these methods are known as 16 in iv_length.

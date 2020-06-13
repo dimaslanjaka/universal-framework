@@ -1,0 +1,22 @@
+{
+    "database": {
+        "user": "root",
+        "pass": "",
+        "dbname": "darkit",
+        "host": "localhost",
+        "port": 3306
+    },
+    "google": {
+        "key": "AIzaSyDlna9xQsXvsCK5oUKAsYozuk5YHczAyS0",
+        "client": "865208954077-jn5a4sagton7amf5b0vecjfcon53v1l9.apps.googleusercontent.com",
+        "secret": "y83OGaivOx1kD_ALvCKXML6L"
+    },
+    "cache": {
+        "enable": true,
+        "key": "api",
+        "timeout": 60
+    },
+    "htaccess": {
+        "cache": true
+    }
+}

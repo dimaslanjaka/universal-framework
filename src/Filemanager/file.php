@@ -2,7 +2,7 @@
 
 namespace Filemanager;
 
-use Exception;
+use MVC\Exception;
 
 class file
 {
@@ -10,31 +10,123 @@ class file
   {
   }
 
-  public static function folder($path)
+  public static function tmp()
   {
-    $fm = new file();
-    if (!is_dir(dirname($path))) {
-      mkdir(dirname($path), 0777, true);
+    $root = __DIR__;
+    if (defined('ROOT')) {
+      $root = ROOT;
     }
 
-    return $fm->_folder_($path);
+    return self::folder($root . '/tmp');
   }
 
-  public static function file(string $path, $create = true, $force = false, $append = false, $dump = false)
+  /**
+   * Flush directory.
+   *
+   * @todo empty the directory, deleting all files except directory
+   *
+   * @param string $dir
+   */
+  public static function empty(string $dir)
   {
-    $fm = new file();
-    # if directory not exists, create it
+    $subdir = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
+    /**
+     * @var \SplFileInfo[]
+     */
+    $dirs = new \RecursiveIteratorIterator($subdir, \RecursiveIteratorIterator::CHILD_FIRST);
+    foreach ($dirs as $file) {
+      if (!$file->isDir() && $file->isWritable()) {
+        unlink($file);
+      }
+    }
+  }
+
+  /**
+   * Recursive delete.
+   *
+   * @param string $path files or folder
+   */
+  public static function delete(string $path)
+  {
+    if (file_exists($path)) {
+      if (is_dir($path)) {
+        self::deleteDirectory($path);
+      } else {
+        unlink($path);
+      }
+    }
+  }
+
+  public static function deleteDirectory($dir)
+  {
+    if ($dir = realpath($dir)) {
+      if (!file_exists($dir)) {
+        return true;
+      }
+
+      if (!is_dir($dir)) {
+        return unlink($dir);
+      }
+
+      foreach (scandir($dir) as $item) {
+        if ('.' == $item || '..' == $item) {
+          continue;
+        }
+
+        if (!self::deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+          return false;
+        }
+      }
+
+      return rmdir($dir);
+    }
+  }
+
+  public static function folder(string $path)
+  {
+    //$fm = new file();
     if (!is_dir(dirname($path))) {
       mkdir(dirname($path), 0777, true);
     }
-    # set option flag
+    if (!is_dir($path)) {
+      mkdir($path, 0777, true);
+    }
+
+    return $path;
+    //return $fm->_folder_($path);
+  }
+
+  /**
+   * Create file nested.
+   *
+   * @param string $path
+   * @param bool   $create
+   * @param bool   $force
+   * @param bool   $append
+   * @param bool   $dump
+   *
+   * @return string
+   */
+  public static function file(string $path, $create = true, $force = false, $append = false, $dump = false)
+  {
+    if ($real = realpath($path)) {
+      $path = $real;
+    }
+    $fm = new file();
+    // if directory not exists, create it
+    if (!is_dir(dirname($path))) {
+      mkdir(dirname($path), 0777, true);
+    }
+    // set option flag
     $option = 0;
     if ($append) {
       $option = FILE_APPEND;
     }
-    # if forced or file exists, create it
+    // if forced or file exists, create it
     if ($force || !file_exists($path)) {
       $create = $fm->determineContent($create);
+      if (is_writable(dirname($path))) {
+      }
       file_put_contents($path, $create, $option);
     }
 
@@ -64,23 +156,31 @@ class file
     return $fm->_unlink_($str);
   }
 
-  public static function get(string $file)
+  public static function get(string $file, bool $parse_json = false)
   {
     //self::cleanDump($file, realpath($file), file_exists($file), is_writable($file));
+    $ret = null;
     if (realpath($file)) {
       $file = realpath($file);
     }
     if (file_exists($file)) {
-      return file_get_contents($file);
+      $ret = file_get_contents($file);
+      if ($parse_json && \JSON\json::is_json($ret)) {
+        $ret = json_decode($ret, true);
+      }
     } else {
       throw new Exception(basename($file) . ' not exists', 1);
     }
+
+    return $ret;
   }
 
   public function cleanDump($c, ...$_)
   {
-    ob_get_clean();
-    ob_start();
+    if (ob_get_level()) {
+      ob_end_clean();
+      ob_start();
+    }
     ev($c, $_);
   }
 
@@ -264,7 +364,7 @@ class file
   public function destroy_old_files($dir, $sec = 3600, $prefix = null)
   {
     if (!is_numeric($sec)) {
-      throw new \Exception('Seconds must be instance of number', 1);
+      throw new \MVC\Exception('Seconds must be instance of number', 1);
     }
     $mydir = opendir($dir);
     while ($file = readdir($mydir)) {

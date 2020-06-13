@@ -1,0 +1,10 @@
+declare function currentUID(): string;
+declare function getUID(): string;
+declare function sign_uid(UID: string): void;
+declare function checkUID(callback: Function | any): string;
+declare function isExpireUID(): boolean;
+declare function AddMinutesToDate(date: any, minutes: any): Date;
+declare function genUID(): string;
+declare function saveUID(data: Object): void;
+declare var UIDvalue: string;
+declare var UIDcalled: boolean;

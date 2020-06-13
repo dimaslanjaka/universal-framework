@@ -3,18 +3,21 @@
 namespace Extender;
 
 use Curl\Curl;
-use Exception;
+use MVC\Exception;
 use Filemanager\file;
+use JSON\json;
+use MVC\helper;
 
 class request extends Curl
 {
   private $result_request = [];
   /**
-   * request instances
+   * request instances.
    *
    * @var request
    */
   private static $_instance = null;
+
   public function __construct($base = null)
   {
     parent::__construct($base);
@@ -30,7 +33,7 @@ class request extends Curl
 
   public static function getInstance($base = null)
   {
-    if (self::$_instance === null) {
+    if (null === self::$_instance) {
       self::$_instance = new self($base);
     }
 
@@ -41,6 +44,30 @@ class request extends Curl
   {
     return self::getInstance()->request($opt);
     //return self::request($opt);
+  }
+
+  private $require_content_length = false;
+  private $dumpNow = false;
+
+  public function isDUMPNow()
+  {
+    return true === $this->dumpNow;
+  }
+
+  public function DUMPNow(...$what)
+  {
+    if ($this->isDUMPNow()) {
+      $this->exitJSON($what);
+    }
+  }
+
+  public function exitJSON(...$what)
+  {
+    foreach ($what as $these) {
+      json::json($these);
+      echo "\n\n";
+    }
+    exit;
   }
 
   /**
@@ -55,20 +82,40 @@ class request extends Curl
     if (!isset($opt['url'])) {
       throw new Exception('URL needed', 1);
     }
-    $msisdn = isset($_SESSION['msisdn']) ? $_SESSION['msisdn'] : 'default';
+    $msisdn = isset($_SESSION['telkomsel']['msisdn']) ? $_SESSION['telkomsel']['msisdn'] : 'default';
     //$verbose = __DIR__ . '/otp/http/' . $msisdn . '.' . substr(clean_string(urldecode(urldecode($opt['url']))), 0, 50) . '.txt';
     //file_put_contents($verbose, '');
     //$curl_log = fopen($verbose, 'a');
     $ch = curl_init();
+
     $result = ['request' => [], 'response' => []];
+    if (isset($opt['postdata'])) {
+      if (is_array($opt['postdata'])) {
+        $opt['postdata'] = http_build_query($opt['postdata'], '', '&');
+      }
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $opt['postdata']);
+      $result['request']['postdata'] = $opt['postdata'];
+      $this->require_content_length = true;
+    }
     if (isset($opt['headers']) && is_array($opt['headers'])) {
       $headers = $opt['headers'];
       if (isset($opt['headers_trim'])) {
-        /*$headers = array_map(function ($key) {
-        return preg_replace('/\r$/', '', $key);
-        }, $headers);*/
         $headers = array_map('trim', $headers);
+        $headers = array_filter($headers);
+        $headers = array_values($headers);
       }
+      for ($i = 0; $i < count($headers); ++$i) {
+        $header = array_map('trim', explode(':', $headers[$i]));
+        $small_header = strtolower($header[0]);
+        if ('content-length' == $small_header && true === $this->require_content_length) {
+          $headers[$i] = $header[0] . ': ' . strlen($opt['postdata']);
+        }
+        if ('user-agent' == $small_header) {
+          curl_setopt($ch, CURLOPT_USERAGENT, $header[1]);
+        }
+      }
+      //$this->DUMPNow($headers, $opt);
+
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       $result['request']['headers'] = $headers;
     }
@@ -77,13 +124,7 @@ class request extends Curl
     if (isset($opt['post']) && $opt['post']) {
       curl_setopt($ch, CURLOPT_POST, 1);
     }
-    if (isset($opt['postdata'])) {
-      if (is_array($opt['postdata'])) {
-        $opt['postdata'] = http_build_query($opt['postdata'], '', '&');
-      }
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $opt['postdata']);
-      $result['request']['postdata'] = $opt['postdata'];
-    }
+
     //evj($_SESSION, isset($opt['cookie']) && true === $opt['cookie'] && isset($_SESSION['cookie']));
     if (isset($opt['cookie']) && true === $opt['cookie'] && isset($_SESSION['cookie'])) {
       $cookie = isset($_SESSION['cookie']) ? $_SESSION['cookie'] : null;
@@ -94,7 +135,6 @@ class request extends Curl
       if ($cookie = file::file($cookie, '')) {
         if (!file_exists($cookie)) {
           throw new Exception("$cookie not exists", 1);
-
           //file_put_contents($cookie, '');
         }
         curl_setopt($ch, CURLOPT_COOKIEJAR, realpath($cookie));
@@ -121,60 +161,94 @@ class request extends Curl
       curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
       if (isset($opt['proxy_type'])) {
         switch ($opt['proxy_type']) {
-          case 'socks5':
-            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-            break;
-          case 'http':
-            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-            break;
-          case 'https':
-            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
-            break;
-          case 'socks4':
-            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
-            break;
-        }
+      case 'socks5':
+      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+      break;
+      case 'http':
+      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+      break;
+      case 'https':
+      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
+      break;
+      case 'socks4':
+      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
+      break;
+    }
       }
     }
 
     $data = curl_exec($ch);
+    if (!is_string($data) && $data) {
+      $data = json::assoc($data);
+    }
     $result['curl_exec'] = $data;
-
-    file_put_contents(ROOT . '/otp/http/' . $msisdn, $data);
+    // save to log
+    $parse_url = helper::parse_url2($opt['url']);
+    $filesave = "{$parse_url['host']}/{$parse_url['path']}";
+    $filepath = helper::platformSlashes(__DIR__ . "/log/curl_exec/$msisdn/$filesave");
+    if (!is_dir(dirname($filepath))) {
+      mkdir(dirname($filepath), 0777, true);
+    }
+    file::file($filepath, $data, true);
     //rewind($curl_log);
     $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT);
     $headerSent = explode("\n", $headerSent);
     $headerSent = array_map(function ($v) {
-      return preg_replace("/\r$/s", '', $v);
+      return preg_replace("/\r$/m", '', $v);
     }, $headerSent);
     $result['request']['raw'] = $headerSent;
     $header = substr($data, 0, $header_size);
     $body = substr($data, $header_size);
-    if (is_string($body)) {
+    if (json::is_json($body)) {
       $body = json_decode($body, true);
     }
 
     $header = explode("\n", $header);
     $header = array_map(function ($v) {
-      return preg_replace("/\r$/s", '', $v);
+      return preg_replace("/\r$/m", '', $v);
     }, $header);
 
     $result['response']['headers'] = $header;
+    foreach ($header as $h) {
+      $ex = explode(':', $h);
+      if (isset($ex[0]) && isset($ex[1])) {
+        $hkey = $ex[0];
+        //var_dump($hkey, strpos(strtolower(trim($hkey)), 'oauth'));
+        if (false !== strpos(strtolower($hkey), 'oauth')) {
+          $_SESSION['im3'][$opt['url']]['oauth'] = trim($ex[1]);
+          $_SESSION['im3']['oauth'] = trim($ex[1]);
+        }
+      }
+    }
+    if (is_iterable($body)) {
+      foreach ($body as $key => $value) {
+        $_SESSION['im3'][$key] = $value;
+      }
+      if (isset($body['data']['tokenid'])) {
+        $_SESSION['im3']['tokenid'] = $body['data']['tokenid'];
+      }
+    }
     $result['response']['body'] = $body;
     $result['options'] = $opt;
     if (isset($opt['verbose'])) {
       $_SESSION['verbose'][$opt['url']] = $result;
     }
+    //exit(gettype($ch));
     curl_close($ch);
 
     return $result;
   }
 
+  public static function getCurlOpt($ch, int $what)
+  {
+    return curl_getinfo($ch, $what);
+  }
+
   public function set_header_array($headers, $trim = false)
   {
     if (!is_array($headers)) {
-      throw new \Exception('Header must array formatted', 1);
+      throw new \MVC\Exception('Header must array formatted', 1);
     }
     if ($trim) {
       $headers = array_map('trim', $headers);
@@ -194,9 +268,7 @@ class request extends Curl
       }
     }
     if ($cookie) {
-      \Filemanager\file::file($cookie, '# Netscape HTTP Cookie File
-      # https://curl.haxx.se/docs/http-cookies.html
-      # This file was generated by libcurl! Edit at your own risk.');
+      \Filemanager\file::file($cookie, '#cookie');
     }
     $this->setCookieFile($cookie);
     $this->setCookieJar($cookie);
@@ -235,5 +307,12 @@ class request extends Curl
   public function has_string_keys(array $array)
   {
     return count(array_filter(array_keys($array), 'is_string')) > 0;
+  }
+}
+
+if (!function_exists('is_iterable')) {
+  function is_iterable($var)
+  {
+    return is_array($var) || $var instanceof \Traversable;
   }
 }

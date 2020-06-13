@@ -8,16 +8,17 @@ use RecursiveIteratorIterator;
 class scan
 {
   public static $static = null;
+  public static $opt;
 
   public function __construct($opt = [])
   {
-    $this->opt = $opt;
+    self::$opt = $opt;
   }
 
   public static function getStatic()
   {
     if (null === self::$static) {
-      self::$static = new self($this->opt);
+      self::$static = new self(self::$opt);
     }
 
     return self::$static;
@@ -33,6 +34,7 @@ class scan
         continue;
       }
       $b['path'] = realpath($filename);
+      $b['data'] = \Filemanager\file::get(realpath($filename), true);
       $b['folder'] = dirname(realpath($filename));
       $b['filename'] = $basename;
       $b['size'] = $file->getSize();

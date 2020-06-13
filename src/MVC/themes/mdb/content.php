@@ -1,7 +1,9 @@
 <?php
+
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
   echo 'title/content required';
+
   return;
 }
 
@@ -21,68 +23,23 @@ if (!isset($share)) {
   $share = isset($var['share']) ? true : false;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <PageMap>
-    <DataObject type="website"></DataObject>
-  </PageMap>
-  <!--<base href="https://dimaslanjaka.github.io/Web-Manajemen/">-->
   <?php
   include __DIR__ . '/meta.php';
   ?>
-
-  <script type='text/javascript'>
-    /* <![CDATA[ */
-    var mdw_search_object = {
-      "search_tree": {
-        "290": {
-          "title": "bootstrap panels - examples & tutorial. basic & advanced usage",
-          "description": "bootstrap panels are bordered boxes where you can place texts, lists, tables and other content. panels are similar to cards, but they don't include media.",
-          "link": "https:\/\/mdbootstrap.com?page_id=290",
-          "wptitle": "Panels"
-        },
-        "102429": {
-          "title": "material design for bootstrap installation guide",
-          "description": "download zip package to get the compiled css and javascript, source code or install mdbootstrap using npm. you can also use cdn for quick start.",
-          "link": "https:\/\/mdbootstrap.com?page_id=102429",
-          "wptitle": "Installation Guide"
-        }
-      }
-    };
-    /* ]]> */
-  </script>
-  <script src='https://dimaslanjaka.github.io/Web-Manajemen/js/compiled.core.js'></script>
-  <script src='https://dimaslanjaka.github.io/Web-Manajemen/js/compiled.search.js'></script>
-  <?php
-  include __DIR__ . '/styles.php';
-  ?>
 </head>
 
-<body class="fixed-sn  mdb-skin-custom" data-spy="scroll" data-target="#scrollspy" data-offset="15">
-  <?php if ($fbcomment) { ?>
-    <div id='fb-root'></div>
-    <script type='text/javascript'>
-      ! function(e, n, t) {
-        var o, c = e.getElementsByTagName(n)[0];
-        e.getElementById(t) || ((o = e.createElement(n)).id = t, o.src =
-          "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0", c.parentNode.insertBefore(o, c))
-      }(document, "script", "facebook-jssdk");
-    </script>
-  <?php }
-  \MVC\helper::include_asset(__DIR__ . '/../assets/partial/loading.php'); ?>
-
+<body class="fixed-sn mdb-skin-custom" data-spy="scroll" data-target="#scrollspy" data-offset="15" translate="no">
   <header>
     <!-- Sidebar navigation -->
     <div id="slide-out" class="side-nav sn-bg-4 mdb-sidenav fixed">
       <ul class="custom-scrollbar list-unstyled" style="max-height:100vh; padding-bottom:90px">
         <!-- Logo -->
         <li class="logo-sn d-block waves-effect">
-          <div class="text-center">
-            <a class="pl-0" href="/"><img id="MDB-logo" src="https://z9t4u9f6.stackpathcdn.com/wp-content/uploads/2018/06/logo-mdb-jquery-small.png" alt="MDB Logo"></a>
-          </div>
+          <img id="MDB-logo" src="/assets/img/logo.png" alt="WMI Logo" width="100%" height="100%">
         </li>
         <!--/. Logo -->
         <!--Search Form-->
@@ -101,96 +58,25 @@ if (!isset($share)) {
           <ul id="side-menu" class="collapsible collapsible-accordion">
             <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-product  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="https://webmanajemen.com"><i class="far fa-gem"></i>WMI</a></li>
             <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="https://dimaslanjaka.000webhostapp.com/"><i class="fas fa-gem"></i> AGC</a></li>
-            <li id="menu-item" data-label="Android" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children  menu-item">
-              <a class="collapsible-header waves-effect arrow-r active"><i class="fab fa-android"></i>Android<i class="fa fa-angle-down rotate-icon"></i></a>
+            <li id="menu-item" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children  menu-item">
+              <a class="collapsible-header waves-effect arrow-r active"><i class="fad fa-sim-card"></i>PANEL<i class="fa fa-angle-down rotate-icon"></i></a>
               <div class="collapsible-body" style="display: block;">
                 <ul class="sub-menu">
                   <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  menu-item">
-                    <a class="collapsible-header waves-effect" id="link-menu-item" href="https://mdbootstrap.com/">Home
-                      page</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Games" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-playstation"></i>Games<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#layout/overview/">Layout
-                      overview</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Tips & Tricks" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fas fa-bookmark"></i>Tips<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item">
-                    <a class="collapsible-header waves-effect" id="link-menu-item" href="#utilities/borders/">Borders</a>
+                    <a class="collapsible-header waves-effect" id="link-menu-item" href="/">
+                      Home
+                    </a>
                   </li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="PHP" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-php"></i>PHP<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#content/code/">Code</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="CSS" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-css3"></i>CSS<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#css/demo/">Demo</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Musics" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fas fa-music"></i>Musics<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#components/demo/">Demo</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="JS" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fas fa-code"></i>JavaScript<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#javascript/demo/">Demo</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="HTML" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-html5"></i> HTML<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#navigation/compositions/">Compositions</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Proxy" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fas fa-user-secret"></i> Proxy<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#forms/basic/">Basic
-                      examples</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Wordpress" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-wordpress"></i> Wordpress<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#tables/basic/">Basic
-                      examples</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Blogger" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fab fa-blogger"></i>Blogger<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#modals/basic/">Basic
-                      examples</a></li>
-                </ul>
-              </div>
-            </li>
-            <li id="menu-item" data-label="Script" data-type="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  menu-item"><a class="collapsible-header waves-effect arrow-r "><i class="fas fa-code"></i>Script<i class="fa fa-angle-down rotate-icon"></i></a>
-              <div class="collapsible-body">
-                <ul class="sub-menu">
-                  <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item"><a class="collapsible-header waves-effect" id="link-menu-item" href="#">Support</a></li>
+                  <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  menu-item">
+                    <a class="collapsible-header waves-effect" id="link-menu-item" href="/telkomsel/">
+                      Telkomsel
+                    </a>
+                  </li>
+                  <li id="menu-item" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  menu-item">
+                    <a class="collapsible-header waves-effect" id="link-menu-item" href="/im3/">
+                      IM3
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
@@ -262,230 +148,74 @@ if (!isset($share)) {
           <a class="nav-link dropdown-toggle" id="navbar-tools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-wrench"></i><span class="d-none d-xl-inline-block ml-1">Tools</span></a>
           <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbar-tools">
-            <a class="dropdown-item" href="/theme-manager">Theme manager</a>
+            <a class="dropdown-item d-none" href="/"><i class="fab fa-blogger"></i></a>
+            <a class="dropdown-item" href="#skin" id="skin"><i class="fab fa-blogger"></i></a>
           </div>
         </li>
 
         <!-- Login / register -->
-        <a id="navbar-static-login" alt="Sign Up" class="btn btn-info btn-rounded waves-effect waves-light" href="/signin">LOGIN</a>
+        <a id="navbar-static-login" alt="Sign Up" class="btn btn-info btn-rounded btn-sm waves-effect waves-light" href="/signin">LOGIN</a>
       </ul>
     </nav>
     <!-- /.Navbar-->
   </header>
+
   <?php
-  if ($share) {
-  ?>
-    <div id="share-wrap">
-      <style>
-        .switch-version {
-          z-index: 1000;
-        }
-
-        .switch-off {
-          display: none;
-        }
-
-        .switch-title {
-          font-size: 11px;
-        }
-
-        .switch-web {
-          border-top: 1px solid #33b5e5;
-          border-left: 1px solid #33b5e5;
-          color: #6b6e72;
-          border-top-left-radius: 4px;
-          transition: background-color 0.3s;
-        }
-
-        .switch-mobile {
-          border-bottom: 1px solid #FF8800;
-          border-left: 1px solid #FF8800;
-          color: #6b6e72;
-          border-bottom-left-radius: 4px;
-          transition: background-color 0.3s;
-        }
-
-        .switch-web.active,
-        .switch-web:not(.active):hover {
-          color: white;
-          background-color: #33b5e5;
-        }
-
-        .switch-mobile.active,
-        .switch-mobile:not(.active):hover {
-          color: white;
-          background-color: #FF8800;
-        }
-
-        .switch-web i,
-        .switch-mobile i {
-          position: relative;
-          top: 4px;
-        }
-
-        .switch-web span,
-        .switch-mobile span {
-          width: 100%;
-          position: relative;
-          top: -4px;
-        }
-
-        .switch-web-products {
-          border-left: 1px solid #33b5e5;
-        }
-
-        .switch-mobile-products {
-          border-left: 1px solid #FF8800;
-        }
-
-        .switch-version a:last-child>.switch-to {
-          -webkit-border-bottom-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-
-        .switch-version a:first-child>.switch-to {
-          -webkit-border-top-left-radius: 0;
-          border-top-left-radius: 0;
-        }
-
-        /*
-      .switch-to-mobile.mdb-vue-mobile {
-        background-image: url('img/logo/mdb-angular.png');
-        background-position: 0 -84px;
-      }
-
-      .switch-to-mobile.mdb-angular-mobile {
-        background-image: url('img/logo/mdb-angular.png');
-        background-position: 0 0;
-      }
-
-      .switch-to-mobile.mdb-react-mobile {
-        background-image: url('img/logo/mdb-angular.png');
-        background-position: 0 -123px;
-      }
-      */
-        .wow {
-          visibility: hidden;
-        }
-      </style>
-      <div class="switch-version d-none d-md-block">
-        <div class="switch-web active">
-          <a class="d-block text-center">
-            <i class="fas fa-share"></i>
-            <span class="switch-title">share</span>
-          </a>
-        </div>
-        <div class="switch-web-products ">
-          <a href="#" id="tw-share">
-            <center><i class="fab fa-twitter"></i></center>
-          </a>
-          <a href="/docs/angular/" id="fb-share">
-            <center><i class="fab fa-facebook-f"></i></center>
-          </a>
-          <a href="/docs/react/" id="pin-share">
-            <center><i class="fab fa-pinterest"></i></center>
-          </a>
-          <a href="/docs/vue/mobile/" id="mail-share">
-            <center><i class="fad fa-envelope"></i></center>
-          </a>
-        </div>
-        <div class="switch-mobile-products switch-off">
-          <a href="/docs/angular/mobile/" id="tu-share">
-            <center><i class="fab fa-tumblr"></i></center>
-          </a>
-          <a href="/docs/react/mobile/" id="lin-share">
-            <center><i class="fab fa-linkedin"></i></center>
-          </a>
-          <a href="/docs/vue/mobile/" id="st-share">
-            <center><i class="fab fa-stumbleupon-circle"></i></center>
-          </a>
-          <a href="/docs/vue/mobile/" id="more-share">
-            <center><i class="far fa-share-alt"></i></center>
-          </a>
-        </div>
-        <div class="switch-mobile ">
-          <a class="d-block text-center">
-            <i class="far fa-retweet"></i>
-            <span class="switch-title">share</span>
-          </a>
-        </div>
-      </div>
-      <script>
-        var share = document.getElementById('tw-share');
-        share.setAttribute('href', 'https://twitter.com/share?url=' + location.href + '&text=' + document.title +
-          '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('fb-share');
-        share.setAttribute('href', 'https://www.facebook.com/sharer/sharer.php?u=' + location.href + '&text=' + document
-          .title + '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('tu-share');
-        share.setAttribute('href', 'https://www.tumblr.com/share/link?url=' + location.href + '&text=' + document.title +
-          '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('lin-share');
-        share.setAttribute('href', 'https://www.linkedin.com/shareArticle?mini=true&url=' + location.href + '&text=' +
-          document.title + '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('pin-share');
-        share.setAttribute('href', 'https://www.pinterest.com/pin/create/button/?url=' + location.href + '&text=' +
-          document.title + '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('st-share');
-        share.setAttribute('href', 'http://www.stumbleupon.com/submit?url=' + location.href + '&text=' + document.title +
-          '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('more-share');
-        share.setAttribute('href', 'https://www.addtoany.com/share_save?linkurl=' + location.href + '&text=' + document
-          .title + '&via=' + location.host);
-        share.setAttribute('target', '_blank');
-        var share = document.getElementById('mail-share');
-        share.setAttribute('href', 'mailto:?subject=Share&body=' + location.href + ' ' + document.title + ' from ' +
-          location.host);
-        share.setAttribute('target', '_blank');
-      </script>
-
-    </div>
-  <?php
+  if (isset($share) && $share) {
+    include __DIR__ . '/share.php';
   }
   ?>
+
   <!-- Intro -->
   <div class="card card-intro blue-gradient">
+
     <div class="card-body white-text rgba-black-light text-center">
+
       <!--Grid row-->
       <div class="row d-flex justify-content-center">
+
         <!--Grid column-->
         <div class="col-md-6 wow fadeIn">
+
           <h1 class="font-weight-bold mb-3 h2"><?= $title; ?>
           </h1>
+
           <h4 class="mb-2 h5">
             <?= $desc; ?>
           </h4>
+
         </div>
         <!--Grid column-->
+
       </div>
       <!--Grid row-->
+
     </div>
+
   </div>
 
-  <!-- Start your project here-->
-  <main class="pt-4" id="mlbb">
-    <div class="ads d-none">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-" data-ad-slot="" data-ad-format="link" data-full-width-responsive="true"></ins>
+  </div>
+  <!--/.Panel-->
+  </div>
+
+
+
+  <!-- Intro -->
+
+  <!--Main layout-->
+
+  <main class="pt-1">
+    <div class="container">
+      <?php
+      if (isset($content) && file_exists($content)) {
+        include $content;
+      } else {
+        echo '404';
+      }
+      ?>
     </div>
-    <?php if (file_exists($content)) {
-      include $content;
-    } ?>
-    <div class="ads d-none">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    </div>
-    <?php if ($fbcomment) { ?>
-      <div class="container">
-        <div class="fb-comments" data-href="<?= $canonical; ?>" data-numposts="10" data-width="100%" data-colorscheme="light" data-order-by="reverse_time"></div>
-      </div>
-    <?php } ?>
   </main>
-  <!-- End your project here-->
+  <!--Main layout-->
 
   <!--Footer-->
   <footer id="footer" class="page-footer unique-color-dark mt-4">
@@ -503,63 +233,65 @@ if (!isset($share)) {
         <i class="fab fa-twitter white-text"> </i>
       </a>
     </div>
-    <!--Footer Links-->
-    <div class="container text-center text-md-left mt-5">
-      <div class="row mt-3">
-        <!--First column-->
-        <div class="col mb-4">
-          <h6 class="text-uppercase font-weight-bold">
-            <strong>Useful links</strong>
-          </h6>
-          <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-          <p>
-            <a id="footer-link-license" href="//webmanajemen.com/p/about.html">About</a>
-          </p>
-          <p>
-            <a id="footer-link-changelog" href="//webmanajemen.com/p/terms.html">Terms</a>
-          </p>
-          <p>
-            <a id="footer-link-policy" href="//webmanajemen.com/p/privacy.html">Privacy Policy</a>
-          </p>
-        </div>
-        <!--/.First column-->
-        <!--Third column-->
-        <div class="col mb-4">
-          <h6 class="text-uppercase font-weight-bold">
-            <strong>Free tutorials</strong>
-          </h6>
-          <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-          <p>
-            <a id="footer-link-tutBootstrap" href="https://www.webmanajemen.com/search/label/HTML">HTML</a>
-          </p>
-          <p>
-            <a id="footer-link-tutBootstrap" href="https://www.webmanajemen.com/search/label/CSS">CSS</a>
-          </p>
-          <p>
-            <a id="footer-link-tutAngular" href="https://www.webmanajemen.com/search/label/PHP">PHP</a>
-          </p>
-          <p>
-            <a id="footer-link-tutAngular" href="https://www.webmanajemen.com/search/label/JS">JS</a>
-          </p>
-        </div>
-        <!--/.Third column-->
-        <!--Fourth column-->
-        <div class="col">
-          <h6 class="text-uppercase font-weight-bold">
-            <strong>Company</strong>
-          </h6>
-          <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-          <!-- <p>
-              <i class="fas fa-building mr-3"></i> Our story</p> -->
-          <p>
-            <a id="footer-link-team" href="//github.com/dimaslanjaka">
-              <i class="fas fa-users mr-3"></i> About Me</a>
-          </p>
-        </div>
-        <!--/.Fourth column-->
-      </div>
-    </div>
-    <!--/.Footer Links-->
+    <?php
+    /*<!--Footer Links-->
+  <div class="container text-center text-md-left mt-5">
+  <div class="row mt-3">
+  <!--First column-->
+  <div class="col mb-4">
+    <h6 class="text-uppercase font-weight-bold">
+    <strong>Useful links</strong>
+    </h6>
+    <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+    <p>
+    <a id="footer-link-license" href="//webmanajemen.com/p/about.html">About</a>
+    </p>
+    <p>
+    <a id="footer-link-changelog" href="//webmanajemen.com/p/terms.html">Terms</a>
+    </p>
+    <p>
+    <a id="footer-link-policy" href="//webmanajemen.com/p/privacy.html">Privacy Policy</a>
+    </p>
+  </div>
+  <!--/.First column-->
+  <!--Third column-->
+  <div class="col mb-4">
+    <h6 class="text-uppercase font-weight-bold">
+    <strong>Free tutorials</strong>
+    </h6>
+    <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+    <p>
+    <a id="footer-link-tutBootstrap" href="https://www.webmanajemen.com/search/label/HTML">HTML</a>
+    </p>
+    <p>
+    <a id="footer-link-tutBootstrap" href="https://www.webmanajemen.com/search/label/CSS">CSS</a>
+    </p>
+    <p>
+    <a id="footer-link-tutAngular" href="https://www.webmanajemen.com/search/label/PHP">PHP</a>
+    </p>
+    <p>
+    <a id="footer-link-tutAngular" href="https://www.webmanajemen.com/search/label/JS">JS</a>
+    </p>
+  </div>
+  <!--/.Third column-->
+  <!--Fourth column-->
+  <div class="col">
+    <h6 class="text-uppercase font-weight-bold">
+    <strong>Company</strong>
+    </h6>
+    <hr class="info-color mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+    <!-- <p>
+    <i class="fas fa-building mr-3"></i> Our story</p> -->
+    <p>
+    <a id="footer-link-team" href="//github.com/dimaslanjaka">
+    <i class="fas fa-users mr-3"></i> About Me</a>
+    </p>
+  </div>
+  <!--/.Fourth column-->
+  </div>
+  </div>
+  <!--/.Footer Links-->*/
+    ?>
     <!-- Copyright-->
     <div class="footer-copyright py-3 text-center">
       &copy; 2020 Copyright:
@@ -571,30 +303,175 @@ if (!isset($share)) {
   </footer>
   <!--/.Footer-->
 
-  <!-- Modal -->
-  <div class="modal fade" id="modalRes" tabindex="-1" role="dialog" aria-labelledby="modalResTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary d-none">Save changes</button>
-        </div>
-      </div>
-    </div>
+  <style>
+    main input[type=email]:focus,
+    main input[type=password]:focus,
+    main input[type=text]:focus,
+    main input[type=url]:focus,
+    main textarea:focus {
+      border: 0;
+    }
+
+    .embed-responsive-16by9-fix-contact-form::before {
+      height: 450px;
+    }
+
+    @media (min-width:580px) {
+
+      .modal-contact-form-fix,
+      .modal-contact-form-fix * {
+
+        box-sizing: content-box !important;
+      }
+
+    }
+  </style>
+
+
+  <div id="dom-target-fb" style="display: none;">
+  </div>
+  <div id="dom-target-tw" style="display: none;">
+  </div>
+  <div id="dom-target-gp" style="display: none;">
   </div>
 
+  <script>
+    var mdw_search_object = {
+      "search_tree": {
+        "290": {
+          "title": "bootstrap panels - examples & tutorial. basic & advanced usage",
+          "description": "bootstrap panels are bordered boxes where you can place texts, lists, tables and other content. panels are similar to cards, but they don't include media.",
+          "link": "https:\/\/mdbootstrap.com?page_id=290",
+          "wptitle": "Panels"
+        },
+        "102429": {
+          "title": "material design for bootstrap installation guide",
+          "description": "download zip package to get the compiled css and javascript, source code or install mdbootstrap using npm. you can also use cdn for quick start.",
+          "link": "https:\/\/mdbootstrap.com?page_id=102429",
+          "wptitle": "Installation Guide"
+        }
+      }
+    };
+  </script>
+  <script src='/assets/js/compiled.core.min.js'></script>
+  <script src='/assets/js/compiled.search.min.js'></script>
+  <script src='/assets/js/compiled.gzip.min.js'></script>
+  <script src='/assets/js/compiled.min.js'></script>
+  <script src='/assets/js/compiled.footer.min.js'></script>
+  <script src='/assets/js/jquery.validate.min.js'></script>
+  <link rel='stylesheet' href='/assets/css/compiled.block.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='/assets/css/compiled.min.css' type='text/css' media='all' />
+
   <?php
-  include __DIR__ . '/scripts.php';
+  $element = new HTML\element();
+  // datatables is defined
+  if (defined('datatables')) {
+    echo $element->css([
+      '/assets/mdb/css/addons/datatables.min.css',
+    ]);
+    echo $element->js([
+      '/assets/mdb/js/addons/datatables.min.js',
+      '/assets/mdb/js/addons/datatables-select.min.js',
+    ]);
+  }
+  //if select2 defined
+  if (defined('select2')) {
+    echo $element->css(['/node_modules/select/dist/css/select2.min.css']);
+    echo $element->js(['/node_modules/select/dist/js/select2.min.js']);
+    $element->link([
+      [__DIR__ . '/assets/style.select2.min.css', __DIR__ . '/assets/style.select2.css'],
+    ], true, true, 'stylesheet');
+    $element->script([
+      [__DIR__ . '/assets/select2.parser.min.js', __DIR__ . '/assets/select2.parser.js'],
+    ], true, true);
+  }
+  //if materialize defined
+  if (defined('materialize')) {
+    echo $element->css([
+      //'/node_modules/materialize-css/dist/css/materialize.min.css',
+      'https://fonts.googleapis.com/icon?family=Material+Icons',
+    ]);
+    //echo $element->js(['/node_modules/materialize-css/dist/js/materialize.min.js']);
+  }
+  // default javascript
+  echo $element->js([
+    '/node_modules/sweetalert/dist/sweetalert.min.js',
+    '/node_modules/crypto-js/crypto-js.js',
+    '/node_modules/toastr/build/toastr.min.js',
+  ]);
+  //default css
+  echo $element->css(['/node_modules/toastr/build/toastr.min.css']);
+  // include content javascript
+  if (isset($content) && file_exists($content)) {
+    $contentCSS = preg_replace('/\.php$/s', '.css', $content);
+    $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
+    echo '<style>';
+    \MVC\helper::include_asset($contentMinCSS, $contentCSS);
+    echo '</style>';
+  }
+  // defined custom script
+  if (defined('SCRIPTSRC')) {
+    $element->script(SCRIPTSRC, true, true);
+  } else {
+    define('SCRIPTSRC', []);
+  }
+
+  // defined custom script
+  if (defined('STYLESRC')) {
+    $element->link(STYLESRC, true, true);
+  } else {
+    define('STYLESRC', []);
+  }
+
+  if (defined('STYLE')) {
+    echo '<style>';
+    foreach (STYLE as $style) {
+      if (is_string($style)) {
+        \MVC\helper::include_asset($style);
+      }
+    }
+    echo '</style>';
+  } else {
+    define('STYLE', []);
+  }
+  //echo $element->js([\MVC\helper::get_url_path(__DIR__ . '/../assets/js/app.min.js')]);
   ?>
+
+  <script>
+    <?php
+    \MVC\helper::include_asset(__DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js');
+
+    if (isset($content) && file_exists($content)) {
+      \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
+      if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
+        include $var['script'];
+      }
+      if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
+        include $var['js'];
+      }
+      $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
+      $contentJS = preg_replace('/\.php$/s', '.js', $content);
+      \MVC\helper::include_asset($contentMinJS, $contentJS);
+    }
+    if (defined('uidjs')) {
+      //echo '/*UID JS included*/';
+      //\MVC\uid::include_uid_js();
+    }
+    if (defined('SCRIPT')) {
+      foreach (SCRIPT as $primary => $secondary) {
+        \MVC\helper::include_asset($primary, $secondary);
+      }
+    } else {
+      define('SCRIPT', '');
+    }
+    \MVC\helper::include_asset(
+      __DIR__ . '/js/footer.min.js',
+      __DIR__ . '/js/footer.js'
+    );
+    ?>
+    /*'/assets/css/compiled.block.css'.CSS();
+    '/assets/css/compiled.min.css'.CSS();*/
+  </script>
 </body>
 
 </html>

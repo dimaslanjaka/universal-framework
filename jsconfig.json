@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs"
+  },
+  "include": [
+    "libs/**/*",
+    "views/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/.vscode/**",
+    "**/node_modules/**",
+    "**/vendor/**",
+    "**/tmp/**",
+    "**/assets/**",
+    "**.min.js",
+    "**/*.min.js",
+    "src/MVC/themes/assets/js",
+    "node_modules/@types/jquery"
+  ]
+}

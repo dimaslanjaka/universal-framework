@@ -25,7 +25,7 @@
             Login to dashboard
           </p>
           <!-- Link -->
-          <a href="/signin" class="black-text d-flex justify-content-end">
+          <a href="/telkomsel/login" class="black-text d-flex justify-content-end">
             <h5>Click here <i class="fas fa-angle-double-right"></i></h5>
           </a>
 
@@ -36,3 +36,6 @@
     </div>
   </div>
 </section>
+
+<?php
+const uidjs = '';

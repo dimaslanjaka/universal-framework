@@ -3,7 +3,7 @@
 namespace DB;
 
 use ArrayAccess;
-use Exception;
+use MVC\Exception;
 use PDO;
 
 /**

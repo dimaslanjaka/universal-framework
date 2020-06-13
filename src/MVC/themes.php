@@ -15,6 +15,12 @@ class themes
   public $config_folder;
   protected $admin_user = 'admin';
   protected $admin_pass = 'admin';
+  /**
+   * Session instances
+   *
+   * @var \Session\session
+   */
+  public $session = null;
 
   public function __construct()
   {
@@ -27,6 +33,7 @@ class themes
       'share' => false,
       'desc' => '',
       'content' => null,
+      'robot' => 'noindex, nofollow'
     ];
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');
@@ -79,6 +86,10 @@ class themes
   {
     $this->theme = $theme;
     $this->root_theme = helper::platformSlashes($this->root_theme . '/' . $theme);
+    if (isset($_REQUEST['theme']) && $this->is_admin()) {
+      $useTheme = 'false' == $_REQUEST['theme'] ? false : true;
+    }
+    //exit(var_dump($useTheme));
     $this->meta['theme'] = $useTheme;
 
     return $this;
@@ -94,6 +105,18 @@ class themes
       $this->view = realpath($this->view);
       $this->meta['content'] = $this->remove_root($this->view);
       $this->prepare_config();
+
+      /**
+       * begin form include
+       * @todo Form includer
+       */
+      $form = preg_replace('/\.php$/s', '-f.php', $this->view);
+      helper::include_asset($form);
+      if (!$this->meta['theme'] && $this->NoThemeRequest()) {
+        include $this->view;
+
+        exit;
+      }
     }
 
     return $this;
@@ -121,12 +144,56 @@ class themes
       if (!file_exists($config)) {
         file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
       } else {
-        $this->meta = (array) json_decode(file_get_contents($config));
+        $this->meta = json_decode(file_get_contents($config), true);
+        if (!isset($this->meta['robot'])) {
+          $this->meta['robot'] = 'noindex, nofollow';
+        }
+        header('X-Robots-Tag: ' . trim($this->meta['robot']), true);
+        // obfuscate javascript
+        if (!isset($this->meta['obfuscate'])) {
+          $this->meta['obfuscate'] = false;
+        }
+        // cache
+        if (!isset($this->meta['cache'])) {
+          $this->meta['cache'] = true;
+        }
         $this->meta['content'] = $this->root . $this->meta['content'];
+        if ($this->is_admin() && !helper::cors()) {
+          if (isset($_REQUEST['theme'])) {
+            $this->meta['theme'] = trim($_REQUEST['theme']) == 'true' ? true : false;
+            file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+          }
+          if (isset($_REQUEST['obfuscate'])) {
+            $this->meta['obfuscate'] = trim($_REQUEST['theme']) == 'true' ? true : false;
+            file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+          }
+        }
       }
     }
 
     return $this;
+  }
+
+  /**
+   * Dump this variable.
+   *
+   * @param variadic ...$var
+   */
+  public function dump(...$var)
+  {
+    if (ob_get_level()) {
+      ob_end_clean();
+      ob_start();
+    }
+    \JSON\json::headerJSON();
+    exit(var_dump($var));
+  }
+
+  public function is_admin()
+  {
+    if (isset($_SESSION['login']['role'])) {
+      return preg_match(\User\user::get_admin_pattern(), $_SESSION['login']['role']);
+    }
   }
 
   public function admin()
@@ -148,72 +215,85 @@ class themes
    */
   public function render($variables = [], $print = true)
   {
-    $output = null;
+    //exit('xxx');
+    \MVC\helper::trycatch(function () use ($variables, $print) {
+      $this->load_render($variables, $print);
+    });
+
+    return $this;
+  }
+
+  public function isJSONRequest()
+  {
+    $hasJSON = isset($_REQUEST['json']);
+    if (!$hasJSON) {
+      if (isset($_SERVER['HTTP_ACCEPT'])) {
+        $hasJSON = preg_match('/^application\/json/m', $_SERVER['HTTP_ACCEPT']);
+      }
+    }
+
+    return $hasJSON;
+  }
+
+  public function NoThemeRequest()
+  {
+    if (!isset($this->meta['theme']) || $this->meta['theme']) {
+      return false;
+    }
+    $accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : false;
+    if (false !== $accept) {
+      if (preg_match('/((application|text)\/(json|javascript))/m', $accept, $match)) {
+        if (isset($match[0]) && !headers_sent()) {
+          header('Content-Type: ' . $match[0]);
+        }
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public function load_render(array $variables, bool $print = true)
+  {
+    //exit(\JSON\json::json($this));
     if (file_exists($this->view)) {
       // Extract the variables to a local namespace
       extract($variables);
       extract($this->meta);
       $_SESSION['var'] = get_defined_vars();
       $content = $this->view;
-      // begin form include
-      $form = preg_replace('/\.php$/s', '-f.php', $content);
-      helper::include_asset($form);
+
       $theme = $this;
-      //var_dump($theme);
-      // cors detect
-      if ((\MVC\helper::cors() || isset($_REQUEST['json'])) && file_exists($content)) {
-        if (isset($_REQUEST['json'])) {
-          header('Content-Type: application/json');
-        }
-        if (isset($_SESSION['var']['content'])) {
-          include $_SESSION['var']['content'];
-        } else {
-          return json_encode([
-            'error' => true,
-            'message' => 'theme content file not exist',
-          ]);
-        }
-        exit;
-      }
+      //exit(\JSON\json::json($theme));
+
       // if not using theme
       if (!$this->meta['theme']) {
         include $content;
 
         return;
-      }
-      // Start output buffering
-      ob_start();
-
-      // Include the template file
-      if (file_exists($this->root_theme . '/content.php')) {
-        include $this->root_theme . '/content.php';
+      } else if ($this->meta['theme']) {
+        // Include the template file
+        $template_content = $this->root_theme . '/content.php';
+        if (file_exists($template_content)) {
+          include $template_content;
+        } else {
+          return json::json([
+            'error' => true,
+            'message' => $template_content . ' not exists',
+          ]);
+        }
       } else {
-        return json::json([
-          'error' => true,
-          'message' => $this->root_theme . '/content.php' . ' not exists',
-        ]);
+        exit('meta theme not defined');
       }
 
-      // End buffering and return its contents
-      $output = ob_get_clean();
+      /*// End buffering and return its contents
+      $output = ob_get_clean();*/
     } else {
-      return json::json([
+      json::json([
         'error' => true,
         'message' => $this->view . ' not exists',
       ]);
+      exit;
     }
-    if ($print) {
-      echo $output;
-      $inc = json::json(array_values(array_filter(array_map(function ($arr) {
-        if (strpos($arr, 'vendor')) {
-          return '';
-        }
-
-        return $arr;
-      }, get_included_files()))), false, false);
-      echo "<!--{$inc}-->";
-    }
-
-    return $output;
   }
 }

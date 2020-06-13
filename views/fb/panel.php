@@ -1,11 +1,13 @@
 <?php
 if (!fb()->is_loggedin()) {
   echo 'please <a href="' . base('/fb/login') . '">login</a> first';
+
   return;
 }
 if (fb()->check_cookie()->error) {
-  print fb()->errorMessage . ". <hr/>";
+  echo fb()->errorMessage . '. <hr/>';
   echo 'please verify your facebook account, and accept this login browser from your official <a href="http://fb.me">facebook</a> account. Then <a href="' . base('/fb/login') . '">Re-login</a> from here again.';
+
   return;
 }
 if ('POST' == $_SERVER['REQUEST_METHOD'] && isset($_POST['type'])) {
@@ -29,10 +31,10 @@ $groups = isset($config->groups) ? $config->groups : false;
         <select name="type" id="reactList" class="mdb-select mb-2">
           <option value="" disabled>Select Reactions</option>
           <?php
-          foreach (fb()->getListReactions() as $key => $value) {
-            echo '<option value="' . $key . '" ' . ((int) $reactionType == (int) $key ? 'selected' : false) . '>' . $value . '</option>';
-          }
-          ?>
+      foreach (fb()->getListReactions() as $key => $value) {
+        echo '<option value="' . $key . '" ' . ((int) $reactionType == (int) $key ? 'selected' : false) . '>' . $value . '</option>';
+      }
+      ?>
         </select>
       </div>
       <div class="md-form mb-2">
@@ -88,43 +90,43 @@ $groups = isset($config->groups) ? $config->groups : false;
   </div>
   <div class="">
     <?php
-    fb()->setOpt(CURLOPT_FOLLOWLOCATION, true);
-    $c = fb()->fbg('/me/allactivity');
-    $html = str_get_html($c);
-    if ($html) {
-      //print $html->outertext;
-      if ($html->find('.loadedSection')) {
-        $cl = $html->find('.loadedSection', 0);
-        if ($a = $cl->find('a')) {
-          foreach ($a as $link) {
-            $link->setAttribute('target', '_blank');
-            $link->setAttribute('rel', 'nofollow noopener');
-            if ($link->getAttribute('href')) {
-              $parse = parse_url($link->getAttribute('href'));
-              if (!isset($parse['host'])) {
-                $link->setAttribute('href', 'https://m.facebook.com' . $link->getAttribute('href'));
-              }
+  fb()->setOpt(CURLOPT_FOLLOWLOCATION, true);
+  $c = fb()->fbg('/me/allactivity');
+  $html = str_get_html($c);
+  if ($html) {
+    //print $html->outertext;
+    if ($html->find('.loadedSection')) {
+      $cl = $html->find('.loadedSection', 0);
+      if ($a = $cl->find('a')) {
+        foreach ($a as $link) {
+          $link->setAttribute('target', '_blank');
+          $link->setAttribute('rel', 'nofollow noopener');
+          if ($link->getAttribute('href')) {
+            $parse = parse_url($link->getAttribute('href'));
+            if (!isset($parse['host'])) {
+              $link->setAttribute('href', 'https://m.facebook.com' . $link->getAttribute('href'));
             }
-          }
-        }
-        if ($logc = $cl->find('.c')) {
-          foreach ($logc as $logw) {
-            if (!preg_match('/\b(liked|menyukai|menanggapi|reacted)\b/m', $logw->outertext)) {
-              continue;
-            }
-            $logw->setAttribute('class', 'p-2 border m-2');
-            if ($fxx = $logw->find('.fcg')) {
-              foreach ($fxx as $fx) {
-                $fx->outertext = '';
-              }
-            }
-            $logcont = $logw->outertext;
-
-            echo $logcont;
           }
         }
       }
+      if ($logc = $cl->find('.c')) {
+        foreach ($logc as $logw) {
+          if (!preg_match('/\b(liked|menyukai|menanggapi|reacted)\b/m', $logw->outertext)) {
+            continue;
+          }
+          $logw->setAttribute('class', 'p-2 border m-2');
+          if ($fxx = $logw->find('.fcg')) {
+            foreach ($fxx as $fx) {
+              $fx->outertext = '';
+            }
+          }
+          $logcont = $logw->outertext;
+
+          echo $logcont;
+        }
+      }
     }
-    ?>
+  }
+  ?>
   </div>
 </section>
