@@ -1,5 +1,5 @@
 /*
-* Typehinting vscode
+* Typehinting vscode (NOT FOR COMPILE)
 * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
 */
 {
@@ -16,13 +16,7 @@
     "importHelpers": true,
     "declaration": true,
     "allowJs": true,
-    "lib": [
-      "DOM",
-      "ESNext",
-      "ES2020",
-      "ES2015",
-      "ES6"
-    ],
+    "noLib": true,
     "typeRoots": [
       "node_modules/@types"
     ],

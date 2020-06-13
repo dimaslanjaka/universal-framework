@@ -19,3 +19,4 @@ tmp/
 .vscode/
 package-lock.json
 composer/
+__rar*
