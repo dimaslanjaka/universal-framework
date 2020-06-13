@@ -22,17 +22,7 @@ echo "DIR is '$DIR'"
 clear
 cd $DIR
 
-npm install -g javascript-obfuscator
-npm install -g typescript
-npm install -g terser
-npm install -g nodemon supervisor
-npm install -g gulp
-npm install -g sass
-npm install webpack webpack-cli --save-dev
-npm install --save-dev @babel/core @babel/cli
-npm install --save-dev babel-cli
-npm install -g typac
-npm i -g types-installer
+npm install -g javascript-obfuscator typescript terser nodemon supervisor yo generator-code sass typac types-installer
 composer update
 npm update
 
