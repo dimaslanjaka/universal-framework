@@ -436,7 +436,7 @@ $(document).ajaxSuccess(function (event, request, settings) {
         var error = res.hasOwnProperty('error') && res.error ? true : false;
         var title = res.hasOwnProperty('title') ? res.title : 'Unknown Title';
         var msg = res.hasOwnProperty('message') ? res.message : 'Unknown Error';
-        if (res.hasOwnProperty('error')) {
+        if (res.hasOwnProperty('error') && res.hasOwnProperty('message')) {
             if (error) {
                 toastr.error(msg, title);
             }
@@ -705,7 +705,7 @@ var dimas = {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/javascript',
-                    [header_name || md5(IP).rot13()]: ua
+                    [header_name || IP.rot13()]: ua
                 },
                 dataType: 'jsonp',
                 jsonpCallback: "framework().captcha.jspCallback"
@@ -901,47 +901,44 @@ var dimas = {
 function framework() {
     return dimas;
 }
-let app = (() => {
-    class app {
-        static setbase(path) {
-            this.base = path;
-        }
-        static direct(...args) {
-            var scripts = document.querySelectorAll("script[src]");
-            var last = scripts[scripts.length - 1];
-            var lastsrc = last.getAttribute('src');
-            var parsed = dimas.parseurl(lastsrc);
-            args.forEach(function (src) {
+class app {
+    static setbase(path) {
+        this.base = path;
+    }
+    static direct(...args) {
+        var scripts = document.querySelectorAll("script[src]");
+        var last = scripts[scripts.length - 1];
+        var lastsrc = last.getAttribute('src');
+        var parsed = dimas.parseurl(lastsrc);
+        args.forEach(function (src) {
+            dimas.js(`${app.base}${src}${parsed.search}`, function () {
+                console.log(`${src} engine inbound`);
+            });
+        });
+    }
+    static load(...args) {
+        var scripts = document.querySelectorAll("script[src]");
+        var last = scripts[scripts.length - 1];
+        var lastsrc = last.getAttribute('src');
+        var parsed = dimas.parseurl(lastsrc);
+        args.forEach(function (key, index) {
+            console.log(key, app.base);
+            let src = '';
+            if (/^(ajx|ajaxjQuery|ajxjquery|ajquery)$/s.test(key)) {
+                src = 'ajaxJquery.js';
+            }
+            else if (/^(ajv|ajaxVanilla|ajaxv|avanilla)$/s.test(key)) {
+                src = 'ajaxVanilla.js';
+            }
+            if (src != '') {
                 dimas.js(`${app.base}${src}${parsed.search}`, function () {
                     console.log(`${src} engine inbound`);
                 });
-            });
-        }
-        static load(...args) {
-            var scripts = document.querySelectorAll("script[src]");
-            var last = scripts[scripts.length - 1];
-            var lastsrc = last.getAttribute('src');
-            var parsed = dimas.parseurl(lastsrc);
-            args.forEach(function (key, index) {
-                console.log(key, app.base);
-                let src = '';
-                if (/^(ajx|ajaxjQuery|ajxjquery|ajquery)$/s.test(key)) {
-                    src = 'ajaxJquery.js';
-                }
-                else if (/^(ajv|ajaxVanilla|ajaxv|avanilla)$/s.test(key)) {
-                    src = 'ajaxVanilla.js';
-                }
-                if (src != '') {
-                    dimas.js(`${app.base}${src}${parsed.search}`, function () {
-                        console.log(`${src} engine inbound`);
-                    });
-                }
-            });
-        }
+            }
+        });
     }
-    app.base = '/src/MVC/themes/assets/js/';
-    return app;
-})();
+}
+app.base = '/src/MVC/themes/assets/js/';
 var debug_run = null;
 function bannedebug() {
     if (debug_run)

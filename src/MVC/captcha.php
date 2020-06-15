@@ -17,7 +17,7 @@ class captcha extends router
     if (!function_exists('getallheaders')) {
       foreach ($_SERVER as $name => $value) {
         /* RFC2616 (HTTP/1.1) defines header fields as case-insensitive entities. */
-        if (strtolower(substr($name, 0, 5)) == 'http_') {
+        if ('http_' == strtolower(substr($name, 0, 5))) {
           $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
         }
       }
@@ -39,12 +39,14 @@ class captcha extends router
     return $this->receiver2($header_name);
   }
 
-  function receiver2(string $header_name = null)
+  public function receiver2(string $header_name = null)
   {
     if (!$this->cors) {
       return;
     }
-    if (!$header_name) $header_name = str_rot13(md5(\MVC\helper::getRequestIP()));
+    if (!$header_name) {
+      $header_name = str_rot13(\MVC\helper::getRequestIP());
+    }
     $allow = isset($this->request_headers[$header_name]);
 
     if ($allow) {
@@ -81,6 +83,7 @@ class captcha extends router
     $random_alpha = md5(rand());
     $captcha_code = (string) substr($random_alpha, 0, 6);
     \Cookie\helper::mins($this->key, $captcha_code, 1, '/');
+
     return $captcha_code;
   }
 

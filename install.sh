@@ -23,7 +23,8 @@ clear
 cd $DIR
 
 npm install -g javascript-obfuscator typescript terser nodemon supervisor yo generator-code sass typac types-installer
-composer update
-npm update
+npm install
+composer install
+
 
 read -p "Press enter to continue"

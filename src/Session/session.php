@@ -12,14 +12,28 @@ if (!defined('ROOT')) {
 class session
 {
   private $path_defined = null;
+  public $sessionCookieName = 'uf';
+  public $cookiePath = '/';
+  public $cookieDomain = '';
+  /**
+   * Cookie will only be set if a secure HTTPS connection exists.
+   *
+   * @var bool
+   */
+  private $cookieSecure = false;
+  /**
+   * sid regex expression.
+   *
+   * @var string
+   */
+  private $sidRegexp;
 
   public function __construct(int $timeout = 3600, string $session_folder = null)
   {
     if (!$this->is_session_started()) {
-      if (null !== $session_folder) {
-        $this->set_session_path($timeout, $session_folder);
-      }
-      $this->start_timeout($timeout);
+      //$this->configure($timeout, $session_folder);
+      //$this->start_timeout($timeout);
+      $this->handle($timeout, $session_folder);
     }
   }
 
@@ -28,43 +42,139 @@ class session
     return PHP_SESSION_ACTIVE == session_status();
   }
 
-  public function set_session_path(int $timeout, string $folder = null)
+  public function handle(int $timeout, string $folder = null, string $name = null)
   {
-    if (!$this->is_session_started()) {
-      if (null !== $folder && !empty($folder) && $real_folder = realpath($folder)) {
-        $folder = $real_folder;
-      }
-      if (empty($folder) || null === $folder) {
-        $folder = file::folder(__DIR__ . '/sessions');
-      }
-      // Set session directory save path
-      ini_set('session.save_path', $folder);
-
-      // Change the save path. Sessions stored in teh same path
-      // all share the same lifetime; the lowest lifetime will be
-      // used for all. Therefore, for this to work, the session
-      // must be stored in a directory where only sessions sharing
-      // it's lifetime are. Best to just dynamically create on.
-      $seperator = strstr(strtoupper(substr(PHP_OS, 0, 3)), 'WIN') ? '\\' : '/';
-      $dir = isset($_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : \MVC\helper::getRequestIP();
-      if (!$dir) {
-        $dir = 'null';
-      }
-      $path = ini_get('session.save_path') . $seperator . $timeout . $dir;
-      $path = file::folder($path);
-      if (!is_dir(dirname($path))) {
-        if (!mkdir(dirname($path), 0777, true)) {
-          trigger_error("Failed to create session save path directory '$path'. Check permissions.", E_USER_ERROR);
-        }
-      }
-      if (!file_exists($path)) {
-        if (!mkdir($path, 0777, true)) {
-          trigger_error("Failed to create session save path directory '$path'. Check permissions.", E_USER_ERROR);
-        }
-      }
-      ini_set('session.save_path', $path);
-      $this->path_defined = $path;
+    if (!$name || empty(trim($name))) {
+      $name = '_' . \MVC\helper::clean_special_characters(\MVC\helper::getRequestIP()) . '_' . $timeout;
     }
+    if (empty(trim($folder)) || !$folder) {
+      $folder = \Filemanager\file::folder(__DIR__ . '/sessions');
+    }
+    session_save_path($folder);
+
+    ini_set('session.gc_maxlifetime', $timeout);
+    ini_set('session.cookie_lifetime', $timeout);
+    ini_set('session.gc_probability', 100);
+    ini_set('session.gc_divisor', 100);
+
+    session_id($name);
+    ini_set('session.use_strict_mode', 0);
+
+    session_name($name);
+    ini_set('session.use_strict_mode', 1);
+
+    $handler = new FileSessionHandler($folder, 'PHPJS');
+    session_set_save_handler(
+      [$handler, 'open'],
+      [$handler, 'close'],
+      [$handler, 'read'],
+      [$handler, 'write'],
+      [$handler, 'destroy'],
+      [$handler, 'gc']
+    );
+    register_shutdown_function('session_write_close');
+    session_start();
+    $this->protect_session($timeout);
+  }
+
+  private function configure(int $timeout, string $folder = null)
+  {
+    ini_set('session.autostart', false);
+    //increase memory
+    ini_set('memory_limit', '256M'); //-1
+
+    // Set the max lifetime
+    ini_set('session.gc_maxlifetime', $timeout);
+
+    // Set the session cookie to timeout
+    ini_set('session.cookie_lifetime', $timeout);
+
+    //coookie name
+    if (empty($this->sessionCookieName)) {
+      $this->sessionCookieName = \MVC\helper::clean_special_characters($_SERVER['HTTP_HOST']);
+    }
+    session_name('WebsiteID');
+    ini_set('session.name', 'WebsiteID');
+
+    //set session id
+    session_id(md5(\MVC\helper::getRequestIP()));
+
+    /*session_set_cookie_params(
+      $timeout,
+      $this->cookiePath,
+      $this->cookieDomain,
+      $this->cookieSecure,
+      true // HTTP only; Yes, this is intentional and not configurable for security reasons.
+    );*/
+
+    //========== Session save path
+    if ($folder && realpath($folder)) {
+      $folder = realpath($folder);
+    } else {
+      $folder = \Filemanager\file::folder(__DIR__ . '/sessions');
+    }
+    // Set session directory save path
+    ini_set('session.save_path', $folder);
+
+    // Change the save path. Sessions stored in teh same path
+    // all share the same lifetime; the lowest lifetime will be
+    // used for all. Therefore, for this to work, the session
+    // must be stored in a directory where only sessions sharing
+    // it's lifetime are. Best to just dynamically create on.
+    $seperator = strstr(strtoupper(substr(PHP_OS, 0, 3)), 'WIN') ? '\\' : '/';
+    $dir = isset($_SERVER['HTTP_USER_AGENT']) ? md5($_SERVER['HTTP_USER_AGENT']) : \MVC\helper::getRequestIP();
+    if (!$dir) {
+      $dir = 'null';
+    }
+    $path = ini_get('session.save_path') . $seperator . $timeout . $dir;
+    $path = file::folder($path);
+    if (!is_dir(dirname($path))) {
+      if (!mkdir(dirname($path), 0777, true)) {
+        trigger_error("Failed to create session save path directory '$path'. Check permissions.", E_USER_ERROR);
+      }
+    }
+    if (!file_exists($path)) {
+      if (!mkdir($path, 0777, true)) {
+        trigger_error("Failed to create session save path directory '$path'. Check permissions.", E_USER_ERROR);
+      }
+    }
+    ini_set('session.save_path', $path);
+    $this->path_defined = $path;
+    //========== Session save path
+
+    // Security is king
+    ini_set('session.use_trans_sid', 0);
+    ini_set('session.use_strict_mode', 1);
+    ini_set('session.use_cookies', 1);
+    //ini_set('session.use_only_cookies', 1);
+
+    $bits_per_character = (int) (false !== ini_get('session.sid_bits_per_character')
+      ? ini_get('session.sid_bits_per_character')
+      : 4);
+    $sid_length = (int) (false !== ini_get('session.sid_length')
+      ? ini_get('session.sid_length')
+      : 40);
+    if (($sid_length * $bits_per_character) < 160) {
+      $bits = ($sid_length * $bits_per_character);
+      // Add as many more characters as necessary to reach at least 160 bits
+      $sid_length += (int) ceil((160 % $bits) / $bits_per_character);
+      ini_set('session.sid_length', $sid_length);
+    }
+
+    // Yes, 4,5,6 are the only known possible values as of 2016-10-27
+    switch ($bits_per_character) {
+      case 4:
+        $this->sidRegexp = '[0-9a-f]';
+        break;
+      case 5:
+        $this->sidRegexp = '[0-9a-v]';
+        break;
+      case 6:
+        $this->sidRegexp = '[0-9a-zA-Z,-]';
+        break;
+    }
+
+    $this->sidRegexp .= '{' . $sid_length . '}';
   }
 
   /***
@@ -74,58 +184,19 @@ class session
    *        collection routine will be triggered right now.
    * @param strint $cookie_domain The domain path for the cookie.
    */
-  public function start_timeout($timeout = 5, $probability = 100, $cookie_domain = '/')
+  public function start_timeout($timeout = 5, $probability = 100)
   {
     if ($this->is_session_started()) {
-      return;
-    }
-    // Set the max lifetime
-    ini_set('session.gc_maxlifetime', $timeout);
-
-    // Set the session cookie to timeout
-    ini_set('session.cookie_lifetime', $timeout);
-
-    if (!$this->path_defined) {
-      $this->set_session_path($timeout, null);
+      throw new \MVC\Exception('Session already started', 1);
     }
 
     // Set the chance to trigger the garbage collection.
     ini_set('session.gc_probability', $probability);
     ini_set('session.gc_divisor', 100); // Should always be 100
 
-    // save cookie session into clientside
-    //ini_set('session.use_only_cookies', true);
-
-    // set referer session for only from this webserver/domain
-    //ini_set('session.referer_check', $_SERVER['HTTP_HOST']);
-
-    /* set cache limiter
-    public:
-      Expires: pageload + 3 hours
-      Cache-Control: public, max-age=10800
-
-    private:
-      Expires: Thu, 19 Nov 1981 08:52:00 GMT
-      Cache-Control: private, max-age=10800, pre-check=10800
-
-    nocache:
-      Expires: Thu, 19 Nov 1981 08:52:00 GMT
-      Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
-      Pragma: no-cache
-
-    private_no_expire:
-      Cache-Control: private, max-age=10800, pre-check=10800
-     */
-    //session_cache_limiter('nocache');
-
-    // set alogarithm session
-    //ini_set('session.hash_function', 'sha256');
-
-    // Secure session_set_cookie_params
-    //session_set_cookie_params(0, $cookie_domain, $_SERVER['HTTP_HOST'], true, true);
-
-    // set current session id
-    //session_id(md5(\MVC\helper::getRequestIP()));
+    if (!$this->path_defined) {
+      $this->configure($timeout, null);
+    }
 
     // Start the session!
     session_start();
@@ -135,7 +206,7 @@ class session
     // on the time when it was created, rather than when
     // it was last used.
     if (isset($_COOKIE[session_name()]) && !headers_sent()) {
-      setcookie(session_name(), $_COOKIE[session_name()], time() + $timeout, $cookie_domain);
+      setcookie(session_name(), $_COOKIE[session_name()], time() + $timeout, $this->cookiePath, $this->cookieDomain, $this->cookieSecure, true);
     }
     $this->protect_session($timeout);
   }
@@ -223,39 +294,7 @@ class session
     }
   }
 
-  /*public function start($timeout = 3600, $probability = 1, $cookie_domain = '/')
-  {
-  if (!$this->is_session_started()) {
-  ini_set('memory_limit', '256M'); //-1
-  $session_dir = file::folder(__DIR__ . '/sessions/' . $timeout);
-  chmod($session_dir, 0777);
-  if (is_writable($session_dir)) {
-  ini_set('session.gc_probability', $probability);
-  ini_set('session.save_path', $session_dir);
-  ini_set('session.gc_maxlifetime', $timeout);
-  session_set_cookie_params($timeout);
-  }
-  session_start();
-  $now = new \DateTime(null, new \DateTimeZone('Asia/Jakarta'));
-  $date_format = $now->format('Y-m-d H:i:s');
-  $timestamp = $now->getTimestamp();
-  $_SESSION['session_start'] = $date_format;
-  $current_time = strtotime('now');
-  if (isset($_REQUEST['detach-sessions'])) {
-  if ($current_time > strtotime('12:00am') && $current_time < strtotime('01:00am')) {
-  array_map('unlink', glob("$session_dir/sess_*"));
-  }
-  }
-  if (isset($_COOKIE[session_name()]) && !headers_sent()) {
-  setcookie(session_name(), $_COOKIE[session_name()], time() + $timeout, $cookie_domain);
-  }
-  }
-  $this->protect_session();
-
-  return $this;
-  }*/
-
-  public function protect_session(int $timeout)
+  private function protect_session(int $timeout)
   {
     //creating htaccess for deny direct access
     $path = ini_get('session.save_path');
@@ -273,14 +312,8 @@ class session
       $started = $_SESSION['session_started'];
       $ago = $started->getTimestamp() + $timeout;
       $_SESSION['session_expires_in'] = date('D M j G:i:s O Y', $ago);
-      if ($ago < $this->now()->getTimestamp() || isset($_SERVER['HTTP_LOGOUT'])) {
-        // Session ID must be regenerated when
-        //  - User logged in
-        //  - User logged out
-        //  - Certain period has passed
-        //$this->regenerate($timeout);
-        //exit(var_dump('expired'));
-        session_regenerate_id(false);
+      if ($ago < $this->now()->getTimestamp()) {
+        session_regenerate_id(isset($_SERVER['HTTP_LOGOUT']));
       }
     }
     if (isset($_SESSION['login'])) {
@@ -323,5 +356,16 @@ class session
     if (is_string($data)) {
       $_SESSION[$data] = $value;
     }
+  }
+
+  /**
+   * Regenerates the session ID.
+   *
+   * @param bool $destroy Should old session data be destroyed?
+   */
+  private function regenerate(bool $destroy = false)
+  {
+    $_SESSION['session_last_generate'] = time();
+    session_regenerate_id($destroy);
   }
 }

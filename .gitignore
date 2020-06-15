@@ -1,3 +1,7 @@
+.vscode/sftp*
+.vscode/vps*
+.vscode/*.bat
+out/*
 composer.phar
 vendor/
 composer.lock
@@ -16,7 +20,7 @@ application/
 node_modules/
 /tmp
 tmp/
-.vscode/
+
 package-lock.json
 composer/
 __rar*

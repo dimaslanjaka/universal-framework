@@ -22,13 +22,9 @@ echo "DIR is '$DIR'"
 clear
 cd $DIR
 
-composer update -o
+php composer.phar update -o
 npm update
 types-installer install
 tsc -p tsconfig.build.json
-
-#cp php.ini /opt/lampp/etc/php.ini
-#sudo /opt/lampp/lampp restart
-#cp /etc/php/7.0/cli/ /root/php/cli
 
 read -p "Press enter to continue"

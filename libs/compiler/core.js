@@ -4,6 +4,10 @@ const Terser = require('terser');
 const path = require('path');
 const _ = require('lodash');
 const slash = require('slash');
+const JavaScriptObfuscator = require('javascript-obfuscator');
+const chalk = require('chalk');
+const log = console.log;
+const clear = console.clear;
 
 Array.prototype.unique = function() {
   var a = this.concat();
@@ -16,6 +20,7 @@ Array.prototype.unique = function() {
 
   return a;
 };
+
 /**
  * Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
@@ -75,6 +80,30 @@ class core {
       });
       js.unique().forEach(function(file) {
         if (file) self.minify(file);
+      });
+    }
+  }
+
+  /**
+   * Obfuscate Javascript
+   * @param {string} filejs
+   */
+  static obfuscate(filejs) {
+    if (!/\.obfuscated\.js/s.test(filejs)) {
+      var output = filejs.replace(/\.js/s, '.obfuscated.js');
+      fs.readFile(filejs, {
+        encoding: "utf-8"
+      }, function(err, data) {
+        if (!err) {
+          var obfuscationResult = JavaScriptObfuscator.obfuscate(
+            data, {
+              compact: true,
+              controlFlowFlattening: true
+            }
+          );
+
+          fs.writeFileSync(output, obfuscationResult.getObfuscatedCode());
+        }
       });
     }
   }

@@ -37,7 +37,7 @@ var dimas = {
         method: 'POST',
         headers: {
           'Accept': 'application/javascript',
-          [header_name || md5(IP).rot13()]: ua
+          [header_name || IP.rot13()]: ua
         },
         dataType: 'jsonp',
         jsonpCallback: "framework().captcha.jspCallback"

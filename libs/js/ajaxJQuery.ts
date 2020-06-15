@@ -56,7 +56,7 @@ $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
 });
 
 $(document).ajaxSend(function (event, xhr, settings) {
-  if (settings.hasOwnProperty('indicator') && settings.indicator) {$('#' + ajaxIDLoader).fadeIn('fast');}
+  if (settings.hasOwnProperty('indicator') && settings.indicator) { $('#' + ajaxIDLoader).fadeIn('fast'); }
   if (dumpAjax) { toastr.info('Requesting...', "Request Info"); }
   if (!settings.hasOwnProperty('method')) {
     settings.method = 'POST';
@@ -112,7 +112,7 @@ $(document).ajaxSuccess(function (event, request, settings) {
     var error = res.hasOwnProperty('error') && res.error ? true : false;
     var title = res.hasOwnProperty('title') ? res.title : 'Unknown Title';
     var msg = res.hasOwnProperty('message') ? res.message : 'Unknown Error';
-    if (res.hasOwnProperty('error')) {
+    if (res.hasOwnProperty('error') && res.hasOwnProperty('message')) {
       if (error) {
         toastr.error(msg, title);
       } else {

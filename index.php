@@ -1,6 +1,6 @@
 <?php
 
-if (count($_COOKIE) < 50) {
+if (count($_COOKIE) <= 50) {
 	foreach ($_COOKIE as $key => $val) {
 		if (!is_numeric($key) || !is_string($key)) {
 			continue;
@@ -12,7 +12,6 @@ if (count($_COOKIE) < 50) {
 
 //import configuration
 include_once __DIR__ . '/config.php';
-require_once __DIR__ . '/index-optimizer.php';
 
 use MVC\helper;
 use MVC\router;
@@ -65,9 +64,6 @@ if ('development' == $router->get_env()) {
 		\Filemanager\file::empty(ROOT . '/tmp/html');
 		\Filemanager\file::empty(ROOT . '/processed/html');
 		\Filemanager\file::empty(ROOT . '/tmp/optimized');
-	} elseif ($router->is_hard_reload()) {
-		// flush cache if hard reload
-		\Filemanager\file::delete(ROOT . '/tmp/optimized/' . md5(UID));
 	}
 }
 
@@ -145,7 +141,7 @@ if (!realpath($view)) {
 
 function cache_expired(int $hour = 24)
 {
-	$file_indicator = normalize_path(ROOT . '/tmp/optimized/' . md5(UID));
+	$file_indicator = normalize_path(page_cache());
 
 	if (file_exists($file_indicator)) {
 		$is_24hours = time() - filemtime($file_indicator) > $hour * 3600;
@@ -174,10 +170,6 @@ function render()
 	}
 }
 
-function identifier()
-{
-	return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
-}
 
 function process_page(bool $obfuscatejs = true)
 {
@@ -188,6 +180,11 @@ function process_page(bool $obfuscatejs = true)
 	$is_development = 'development' == get_env();
 
 	echo optimize($buffer_content, $obfuscatejs, UID, $is_development, $is_reloaded, page_cache());
+}
+
+function identifier()
+{
+	return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
 }
 
 function page_cache()
@@ -221,49 +218,129 @@ function get_includes()
 
 function create_queue(string $page_cache)
 {
-	$uri = UID;
-	$identifier = identifier();
-	//queuer
-	$queue = resolve_file(ROOT . "/tmp/html/queues/{$identifier}.php", '');
-	$buffer_tmp = resolve_file(ROOT . "/tmp/html/queues/buffer/{$identifier}.html", '');
-
 	$optimized_buffer = \Filemanager\file::get($page_cache);
-	\Filemanager\file::file($buffer_tmp, $optimized_buffer, true);
-
-	echo $optimized_buffer; // print cached page
-	// set obfuscate indicator to integer for be able converted into boolean
-	settype($obfuscatejs, 'integer');
-	// begin script standalone builder
-	$f = <<<PHP
-<?php
-
-require_once __DIR__ . '/../../../config.php';
-\$buffer_content = file_get_contents('{$buffer_tmp}');
-\$obfuscatejs = {$obfuscatejs};
-settype(\$obfuscatejs, 'boolean');
-\$uri = '{$uri}';
-\$is_development = \$router->get_env() == 'development';
-settype(\$is_development, 'boolean');
-\$router = new \\MVC\\router();
-\$is_reloaded = \$router->is_hard_reload();
-settype(\$is_reloaded, 'boolean');
-echo optimize(
-\$buffer_content,
-\$obfuscatejs,
-\$uri,
-\$is_development,
-\$is_reloaded,
-'{$page_cache}'
-);
-sleep(3);
-unlink('{$buffer_tmp}');
-unlink('{$queue}');
-
-PHP;
-	$f .= trim(str_replace('<?php', '', file_get_contents(__DIR__ . '/index-optimizer.php')));
-	file_put_contents($queue, $f);
-
-	$ajax_cache = \MVC\helper::get_url_path($queue);
 	$script = file_get_contents(__DIR__ . '/index-optimizer.min.js');
-	echo trim("<script>async_process('$ajax_cache');async_process(location.href);$script</script>");
+	$add = trim("<script>async_process(location.href);async_process(location.href);$script</script>");
+	$optimized_buffer = str_replace('</html>', $add . '</html>', $optimized_buffer);
+	echo htmlmin($optimized_buffer);
+}
+
+
+/**
+ * HTML Optimizer and Obfuscator.
+ *
+ * @param \MVC\router $router
+ * @param string      $buffer_content
+ * @param bool        $obfuscatejs
+ * @param string      $uri
+ * @param bool        $is_development
+ * @param bool        $is_reloaded
+ * @param string      $filesave
+ *
+ * @return void
+ */
+function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $is_development, bool $is_reloaded, string $filesave)
+{
+	$dom = \simplehtmldom\helper::str_get_html($buffer_content);
+	/*
+	$scripts = $dom->find('script');
+	if ($scripts) {
+		$script_index = 0;
+		foreach ($scripts as $js) {
+			++$script_index;
+			$scriptText = trim($js->innertext);
+			if ($js->src || empty($scriptText)) {
+				continue;
+			} elseif ('application/ld+json' == $js->type) {
+				$js->innertext = preg_replace('/\s+/m', '', $scriptText);
+				continue;
+			}
+
+			// begin obfuscate and minify
+			$folder = normalize_path(ROOT) . '/processed/js/';
+		}
+	}
+	/*
+	$styles = $dom->find('style');
+	if ($styles) {
+		$css_index = 0;
+		foreach ($styles as $css) {
+			++$css_index;
+			$cache = ROOT . '/processed/css/' . md5($uri . $css_index) . '.css';
+			if (!empty($css->innertext) && $is_development) {
+				\Filemanager\file::file($cache, trim(mincss($css->innertext)), LOCAL);
+			}
+			if (file_exists($cache)) {
+				$css->innertext = \Filemanager\file::get($cache);
+			}
+		}
+	}
+*/
+	$imgs = $dom->find('img');
+	if ($imgs) {
+		foreach ($imgs as $img) {
+			if (!$img->title) {
+				$img->title = $dom->title();
+			}
+			if (!$img->alt) {
+				$img->alt = $dom->title();
+			}
+			if (!$img->rel) {
+				$img->rel = 'image';
+			}
+		}
+	}
+
+	/**
+	 * @todo Apply HTML Minification only on production
+	 */
+	if (!$is_development) {
+		// minify page
+		$dom->find('html', 0)->outertext = htmlmin($dom->find('html', 0)->outertext);
+		// save minified
+		$result = $dom->save();
+		// release
+		unset($dom);
+		// new dom
+		$dom = \simplehtmldom\helper::str_get_html($result);
+	}
+
+	// prettyprint pretext
+	$pres = $dom->find('pre');
+	if ($pres) {
+		$pre_index = 0;
+		foreach ($pres as $pre) {
+			++$pre_index;
+			$inner = $pre->innertext;
+			if (!$pre->title) {
+				$pre->title = "pre($pre_index)";
+			}
+			if (\JSON\json::is_json($inner)) {
+				$pre->innertext = \JSON\json::beautify(json_decode($inner));
+			}
+		}
+	}
+
+	$result = $dom->save();
+	file_put_contents($filesave, $result);
+
+	return $result;
+}
+
+function mincss($css)
+{
+	$css = preg_replace('/\/\*[^*]*\*+([^\/][^*]*\*+)*\//m', '', $css); // remove comments in beautify css
+	$css = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $css); // negative look ahead
+	$css = preg_replace('/\s{2,}/', ' ', $css);
+	$css = preg_replace('/\s*([:;{}])\s*/', '$1', $css);
+	$css = preg_replace('/;}/', '}', $css);
+	// clean whitespaces
+	/*$css = preg_replace(
+  "/(\t|\n|\v|\f|\r| |\xC2\x85|\xc2\xa0|\xe1\xa0\x8e|\xe2\x80[\x80-\x8D]|\xe2\x80\xa8|\xe2\x80\xa9|\xe2\x80\xaF|\xe2\x81\x9f|\xe2\x81\xa0|\xe3\x80\x80|\xef\xbb\xbf)+/",
+  "",
+  $css
+  );*/
+	$css = preg_replace('/\s+/m', ' ', $css);
+
+	return $css;
 }

@@ -133,7 +133,14 @@ class helper
     });
   }
 
-  public static function clean_special_characters($string, $replace = '')
+  /**
+   * Clean special characters from string
+   *
+   * @param string $string
+   * @param string $replace
+   * @return string
+   */
+  public static function clean_special_characters(string $string, $replace = '')
   {
     //$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
     $string = self::clean_multiple_hypens($string);

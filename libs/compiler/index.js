@@ -10,6 +10,12 @@ const chalk = require('chalk');
 const log = console.log;
 const clear = console.clear;
 const uglifycss = require('uglifycss');
+const watch_runner = [];
+const watch_global = {
+  'sass': new Date(),
+  'babel': new Date(),
+  'glob': new Date()
+}
 
 /**
  * Begin minify watcher
@@ -18,6 +24,9 @@ const uglifycss = require('uglifycss');
 watch(core.root() + '/views');
 watch(core.root() + '/src');
 watch(core.root() + '/libs/js');
+setTimeout(() => {}, 60000);
+
+
 
 function minJSFolder(dir) {
   fs.exists(instance, function(exists) {
@@ -40,9 +49,8 @@ function minJS(filepath) {
  */
 function minCSS(file) {
   fs.exists(file, function(exists) {
-    if (exists) {
+    if (exists && !/\.min\.css$/s.test(file)) {
       var min = file.replace(/\.css/s, '.min.css');
-
       fs.readFile(file, {
         encoding: 'utf-8'
       }, function(err, data) {
@@ -85,6 +93,7 @@ setInterval(() => {
     if (!isLibs(instance.file)) {
       if (instance.ext == '.js') {
         minJS(instance.file);
+        core.obfuscate(instance.file);
       } else if (instance.ext == '.css') {
         minCSS(instance.file);
       }
@@ -117,6 +126,12 @@ function watch(dir) {
   if (!dir.endsWith('/')) {
     dir += '/';
   }
+  if (watch_runner) {
+    if (watch_runner.includes(dir)) {
+      return;
+    }
+  }
+  watch_runner.push(watch_runner);
   fs.watch(dir, {
     persistent: true,
     recursive: true

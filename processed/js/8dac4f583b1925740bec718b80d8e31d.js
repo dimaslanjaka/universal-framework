@@ -1,1 +1,0 @@
-$(document).ready((function(){$("#button-collapse").sideNav();(new WOW).init();var target=$(location).attr("hash");var offset=$(this).attr("data-offset")?$(this).attr("data-offset"):0;if($(target).length){$("body,html").animate({scrollTop:$(target).offset().top-offset},700)}}));
