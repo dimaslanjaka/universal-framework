@@ -452,8 +452,8 @@ $(document).ajaxSuccess(function (event, request, settings) {
         }
     }
 });
-function processAjaxForm(xhr, success) {
-    var content_type = xhr.getResponseHeader('Content-Type'), res;
+function processAjaxForm(xhr, callback) {
+    var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
     if (xhr.hasOwnProperty('responseJSON')) {
         res = xhr.responseJSON;
     }
@@ -465,14 +465,16 @@ function processAjaxForm(xhr, success) {
             }
         }
     }
-    if (typeof success == 'function') {
-        success(res);
-    }
-    else if (typeof success == 'string') {
-        call_user_func(success, window, res);
-    }
-    else {
-        console.log(success + ' isnt success callback, instead of ' + typeof success);
+    if (callback) {
+        if (typeof callback == 'function') {
+            callback(res);
+        }
+        else if (typeof callback == 'string') {
+            call_user_func(callback, window, res);
+        }
+        else {
+            console.error('2nd parameters must be callback function, instead of ' + typeof callback);
+        }
     }
 }
 function ajx(settings, success, failed, complete) {

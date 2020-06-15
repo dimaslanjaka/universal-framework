@@ -42,11 +42,9 @@ class session
     return PHP_SESSION_ACTIVE == session_status();
   }
 
-  public function handle(int $timeout, string $folder = null, string $name = null)
+  public function handle(int $timeout, string $folder = null)
   {
-    if (!$name || empty(trim($name))) {
-      $name = '_' . \MVC\helper::clean_special_characters(\MVC\helper::getRequestIP()) . '_' . $timeout;
-    }
+    $name =  '_' . $timeout . md5(\MVC\helper::getRequestIP() . \MVC\helper::useragent());
     if (empty(trim($folder)) || !$folder) {
       $folder = \Filemanager\file::folder(__DIR__ . '/sessions');
     }

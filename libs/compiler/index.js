@@ -16,6 +16,26 @@ const watch_global = {
   'babel': new Date(),
   'glob': new Date()
 }
+const mysql = require('mysql');
+var config = require(`${core.root()}/config.json`);
+
+if (config.hasOwnProperty('database')) {
+  const database = config.database;
+  var con = mysql.createConnection({
+    host: database.host,
+    user: database.user,
+    password: database.pass,
+    port: database.port,
+    database: database.dbname
+  });
+  con.connect(function(err) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("Connected!");
+    }
+  });
+}
 
 /**
  * Begin minify watcher

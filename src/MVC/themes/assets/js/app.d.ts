@@ -30,7 +30,7 @@ declare var AJAX: any;
 declare var dumpAjax: boolean;
 declare var indicatorAjax: boolean;
 declare const ajaxIDLoader: string;
-declare function processAjaxForm(xhr: JQueryXHR, success: string | Function): void;
+declare function processAjaxForm(xhr: JQueryXHR, callback: string | Function): void;
 declare function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: null | Function, complete: null | Function): JQuery.jqXHR<any>;
 declare function AjaxForm(): void;
 declare var AjaxSchedulerInit: NodeJS.Timeout;

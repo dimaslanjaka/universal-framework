@@ -135,8 +135,8 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 });
 */
 
-function processAjaxForm(xhr: JQueryXHR, success: string | Function) {
-  var content_type = xhr.getResponseHeader('Content-Type'), res;
+function processAjaxForm(xhr: JQueryXHR, callback: string | Function) {
+  var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
   if (xhr.hasOwnProperty('responseJSON')) {
     res = xhr.responseJSON;
   } else if (xhr.hasOwnProperty('responseText')) {
@@ -149,12 +149,14 @@ function processAjaxForm(xhr: JQueryXHR, success: string | Function) {
     }
   }
 
-  if (typeof success == 'function') {
-    success(res);
-  } else if (typeof success == 'string') {
-    call_user_func(success, window, res);
-  } else {
-    console.log(success + ' isnt success callback, instead of ' + typeof success);
+  if (callback) {
+    if (typeof callback == 'function') {
+      callback(res);
+    } else if (typeof callback == 'string') {
+      call_user_func(callback, window, res);
+    } else {
+      console.error('2nd parameters must be callback function, instead of ' + typeof callback);
+    }
   }
 }
 

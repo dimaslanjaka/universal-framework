@@ -1,6 +1,6 @@
 <?php
 
-if (count($_COOKIE) <= 50) {
+/*if (count($_COOKIE) <= 50) {
 	foreach ($_COOKIE as $key => $val) {
 		if (!is_numeric($key) || !is_string($key)) {
 			continue;
@@ -8,7 +8,7 @@ if (count($_COOKIE) <= 50) {
 		setcookie('same-site-cookie', $key, ['samesite' => 'Lax']);
 		setcookie('cross-site-cookie', $key, ['samesite' => 'None', 'secure' => true]);
 	}
-}
+}*/
 
 //import configuration
 include_once __DIR__ . '/config.php';

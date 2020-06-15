@@ -20,7 +20,8 @@ application/
 node_modules/
 /tmp
 tmp/
-
+config-tsel.php
+config-m3.php
 package-lock.json
 composer/
 __rar*
