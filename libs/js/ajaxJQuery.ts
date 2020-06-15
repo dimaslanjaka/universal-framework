@@ -135,7 +135,20 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 });
 */
 
-function processAjaxForm(res: string | object | JQueryXHR, success: string | Function) {
+function processAjaxForm(xhr: JQueryXHR, success: string | Function) {
+  var content_type = xhr.getResponseHeader('Content-Type'), res;
+  if (xhr.hasOwnProperty('responseJSON')) {
+    res = xhr.responseJSON;
+  } else if (xhr.hasOwnProperty('responseText')) {
+    res = xhr.responseText;
+    if (typeof res == 'string' && !empty(res)) {
+      //begin decode json
+      if (is_json(res)) {
+        res = JSON.parse(res);
+      }
+    }
+  }
+
   if (typeof success == 'function') {
     success(res);
   } else if (typeof success == 'string') {
@@ -160,8 +173,8 @@ function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: nul
     settings.method = 'POST';
   }
 
-  return $.ajax(settings).done(function (res) {
-    processAjaxForm(res, success);
+  return $.ajax(settings).done(function (data, textStatus, jqXHR) {
+    processAjaxForm(jqXHR, success);
   }).fail(function (jqXHR, textStatus, errorThrown) {
     processAjaxForm(jqXHR, failed);
   }).always(function (jqXHR, textStatus, errorThrown) {

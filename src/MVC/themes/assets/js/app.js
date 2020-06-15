@@ -452,7 +452,19 @@ $(document).ajaxSuccess(function (event, request, settings) {
         }
     }
 });
-function processAjaxForm(res, success) {
+function processAjaxForm(xhr, success) {
+    var content_type = xhr.getResponseHeader('Content-Type'), res;
+    if (xhr.hasOwnProperty('responseJSON')) {
+        res = xhr.responseJSON;
+    }
+    else if (xhr.hasOwnProperty('responseText')) {
+        res = xhr.responseText;
+        if (typeof res == 'string' && !empty(res)) {
+            if (is_json(res)) {
+                res = JSON.parse(res);
+            }
+        }
+    }
     if (typeof success == 'function') {
         success(res);
     }
@@ -473,8 +485,8 @@ function ajx(settings, success, failed, complete) {
     if (!settings.hasOwnProperty('method')) {
         settings.method = 'POST';
     }
-    return $.ajax(settings).done(function (res) {
-        processAjaxForm(res, success);
+    return $.ajax(settings).done(function (data, textStatus, jqXHR) {
+        processAjaxForm(jqXHR, success);
     }).fail(function (jqXHR, textStatus, errorThrown) {
         processAjaxForm(jqXHR, failed);
     }).always(function (jqXHR, textStatus, errorThrown) {
@@ -549,7 +561,15 @@ function ajaxRun(url, method, data, success, failed, complete) {
             'Accept': 'application/json'
         },
         success: function (res) {
-            processAjaxForm(res, success);
+            if (typeof success == 'function') {
+                success(res);
+            }
+            else if (typeof success == 'string') {
+                call_user_func(success, window, res);
+            }
+            else {
+                console.log(success + ' isnt success callback, instead of ' + typeof success);
+            }
         },
         error: function (err) {
             if (typeof failed == 'function') {
