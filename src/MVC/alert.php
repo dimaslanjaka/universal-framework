@@ -17,7 +17,7 @@ class alert
     return self::$init;
   }
 
-  public function add(string $message)
+  public function add(string $title, string $message)
   {
   }
 }
