@@ -8,6 +8,9 @@ const JavaScriptObfuscator = require('javascript-obfuscator');
 const chalk = require('chalk');
 const log = console.log;
 const clear = console.clear;
+const {
+  exec
+} = require("child_process");
 
 Array.prototype.unique = function() {
   var a = this.concat();
@@ -26,6 +29,26 @@ Array.prototype.unique = function() {
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class core {
+  /**
+   * Composer
+   * @param {string} dir directory has composer.json
+   * @param {"update"|"install"|"validate"|"upgrade"|"self-update"} type
+   */
+  static composer(dir, type) {
+    if (type) {
+      exec(`cd ${dir} && php libs/bin/composer/composer.phar ${type}`, (error, stdout, stderr) => {
+        if (error) {
+          console.log(`error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.log(`stderr: ${stderr}`);
+          return;
+        }
+        console.log(`stdout: ${stdout}`);
+      });
+    }
+  }
   /**
    * @param {import("fs").PathLike} dir
    * @param {string[]} [filelist]

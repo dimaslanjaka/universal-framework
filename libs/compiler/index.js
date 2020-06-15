@@ -24,10 +24,25 @@ const watch_global = {
 watch(core.root() + '/views');
 watch(core.root() + '/src');
 watch(core.root() + '/libs/js');
-setTimeout(() => {}, 60000);
 
+/**
+ * Composer auto update once day
+ */
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage(`${core.root()}/tmp/storage`);
+}
+var today = new Date().toLocaleDateString();
+var yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString();
+if (!localStorage.getItem('composer') || localStorage.getItem('composer') == yesterday) {
+  core.composer(core.root(), 'update');
+  localStorage.setItem('composer', today);
+}
 
-
+/**
+ * minify folder
+ * @param {string} dir
+ */
 function minJSFolder(dir) {
   fs.exists(instance, function(exists) {
     if (exists && fs.lstatSync(dir).isDirectory()) {
@@ -49,7 +64,7 @@ function minJS(filepath) {
  */
 function minCSS(file) {
   fs.exists(file, function(exists) {
-    if (exists && !/\.min\.css$/s.test(file)) {
+    if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
       var min = file.replace(/\.css/s, '.min.css');
       fs.readFile(file, {
         encoding: 'utf-8'

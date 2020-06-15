@@ -75,6 +75,8 @@
     "materialize-css": "^1.0.0",
     "mdbootstrap": "^4.19.0",
     "mdbreact": "^4.27.0",
+    "mysql": "^2.18.1",
+    "node-localstorage": "^2.1.6",
     "node-sass": "^4.14.1",
     "popper": "^1.0.1",
     "react": "^16.13.1",

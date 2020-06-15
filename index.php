@@ -176,7 +176,6 @@ function process_page(bool $obfuscatejs = true)
 	global $router;
 	$buffer_content = ob_get_clean();
 	$is_reloaded = $router->is_hard_reload();
-
 	$is_development = 'development' == get_env();
 
 	echo optimize($buffer_content, $obfuscatejs, UID, $is_development, $is_reloaded, page_cache());
@@ -242,7 +241,7 @@ function create_queue(string $page_cache)
 function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $is_development, bool $is_reloaded, string $filesave)
 {
 	$dom = \simplehtmldom\helper::str_get_html($buffer_content);
-	/*
+
 	$scripts = $dom->find('script');
 	if ($scripts) {
 		$script_index = 0;
@@ -255,27 +254,17 @@ function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $
 				$js->innertext = preg_replace('/\s+/m', '', $scriptText);
 				continue;
 			}
-
-			// begin obfuscate and minify
-			$folder = normalize_path(ROOT) . '/processed/js/';
 		}
 	}
-	/*
+
 	$styles = $dom->find('style');
 	if ($styles) {
 		$css_index = 0;
 		foreach ($styles as $css) {
-			++$css_index;
-			$cache = ROOT . '/processed/css/' . md5($uri . $css_index) . '.css';
-			if (!empty($css->innertext) && $is_development) {
-				\Filemanager\file::file($cache, trim(mincss($css->innertext)), LOCAL);
-			}
-			if (file_exists($cache)) {
-				$css->innertext = \Filemanager\file::get($cache);
-			}
+			$css->innertext = trim(mincss($css->innertext));
 		}
 	}
-*/
+
 	$imgs = $dom->find('img');
 	if ($imgs) {
 		foreach ($imgs as $img) {
@@ -322,6 +311,7 @@ function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $
 	}
 
 	$result = $dom->save();
+	resolve_dir(dirname($filesave));
 	file_put_contents($filesave, $result);
 
 	return $result;
