@@ -38,26 +38,6 @@ if (!isset($share)) {
   <link href="/assets/mdb-dashboard/css/mdb.min.css" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="<?= \MVC\helper::get_url_path(__DIR__ . '/css/style.min.css', true); ?>">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Lato|Raleway">
-  <style>
-    #audiowide,
-    .audiowide,
-    h1 {
-      font-family: 'Audiowide';
-    }
-
-    #lato,
-    .lato,
-    span {
-      font-family: 'Lato';
-    }
-
-    #raleway,
-    .raleway,
-    label {
-      font-family: 'Raleway';
-    }
-  </style>
 </head>
 
 <body class="fixed-sn mdb-skin">

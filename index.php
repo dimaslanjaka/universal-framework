@@ -135,7 +135,7 @@ if (!realpath($view)) {
 		render();
 	} else {
 		header('Cache-Status: true');
-		create_queue(page_cache());
+		load_cache(page_cache());
 	}
 }
 
@@ -215,7 +215,7 @@ function get_includes()
 	return $inc;
 }
 
-function create_queue(string $page_cache)
+function load_cache(string $page_cache)
 {
 	$optimized_buffer = \Filemanager\file::get($page_cache);
 	$script = file_get_contents(__DIR__ . '/index-optimizer.min.js');
