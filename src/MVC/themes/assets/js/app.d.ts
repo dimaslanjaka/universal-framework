@@ -30,7 +30,7 @@ declare var AJAX: any;
 declare var dumpAjax: boolean;
 declare var indicatorAjax: boolean;
 declare const ajaxIDLoader: string;
-declare function successAjax(res: any, success: string | Function): void;
+declare function processAjaxForm(res: string | object | JQueryXHR, success: string | Function): void;
 declare function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: null | Function, complete: null | Function): JQuery.jqXHR<any>;
 declare function AjaxForm(): void;
 declare var AjaxSchedulerInit: NodeJS.Timeout;
@@ -60,7 +60,7 @@ declare var dimas: {
     url: string;
     captcha: {
         check: NodeJS.Timeout;
-        id: () => string;
+        id: (header_name: string | null) => string;
         get: (header_name: null | string) => void;
         callback: (arg?: any) => void;
         jspCallback: (res: {
@@ -101,7 +101,7 @@ declare function framework(): {
     url: string;
     captcha: {
         check: NodeJS.Timeout;
-        id: () => string;
+        id: (header_name: string) => string;
         get: (header_name: string) => void;
         callback: (arg?: any) => void;
         jspCallback: (res: {

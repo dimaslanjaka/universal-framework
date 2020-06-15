@@ -16,8 +16,8 @@ var dimas = {
     /**
      * Get current captcha id
      */
-    id: function (): string {
-      dimas.captcha.get(null);
+    id: function (header_name: string | null): string {
+      if (!dimas.captcha.check) { dimas.captcha.get(header_name); }
       return storage().get('captcha');
     },
     /**
@@ -37,7 +37,8 @@ var dimas = {
         method: 'POST',
         headers: {
           'Accept': 'application/javascript',
-          [header_name || IP.rot13()]: ua
+          [header_name]: ua,
+          [IP.rot13()]: ua
         },
         dataType: 'jsonp',
         jsonpCallback: "framework().captcha.jspCallback"

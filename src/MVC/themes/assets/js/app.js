@@ -452,7 +452,7 @@ $(document).ajaxSuccess(function (event, request, settings) {
         }
     }
 });
-function successAjax(res, success) {
+function processAjaxForm(res, success) {
     if (typeof success == 'function') {
         success(res);
     }
@@ -467,16 +467,19 @@ function ajx(settings, success, failed, complete) {
     settings.headers = {
         'unique-id': getUID()
     };
-    settings.error = function (res) {
-        toastr.error('ajax request error', 'ajax');
-    };
     if (!settings.hasOwnProperty('indicator')) {
         settings.indicator = true;
     }
     if (!settings.hasOwnProperty('method')) {
         settings.method = 'POST';
     }
-    return $.ajax(settings);
+    return $.ajax(settings).done(function (res) {
+        processAjaxForm(res, success);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        processAjaxForm(jqXHR, failed);
+    }).always(function (jqXHR, textStatus, errorThrown) {
+        processAjaxForm(jqXHR, complete);
+    });
 }
 function AjaxForm() {
     $(document).on('submit', 'form', function (e) {
@@ -546,7 +549,7 @@ function ajaxRun(url, method, data, success, failed, complete) {
             'Accept': 'application/json'
         },
         success: function (res) {
-            successAjax(res, success);
+            processAjaxForm(res, success);
         },
         error: function (err) {
             if (typeof failed == 'function') {
@@ -688,8 +691,10 @@ var dimas = {
     url: location.protocol + '//' + location.host + location.pathname,
     captcha: {
         check: null,
-        id: function () {
-            dimas.captcha.get(null);
+        id: function (header_name) {
+            if (!dimas.captcha.check) {
+                dimas.captcha.get(header_name);
+            }
             return storage().get('captcha');
         },
         get: function (header_name) {
@@ -705,7 +710,8 @@ var dimas = {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/javascript',
-                    [header_name || IP.rot13()]: ua
+                    [header_name]: ua,
+                    [IP.rot13()]: ua
                 },
                 dataType: 'jsonp',
                 jsonpCallback: "framework().captcha.jspCallback"

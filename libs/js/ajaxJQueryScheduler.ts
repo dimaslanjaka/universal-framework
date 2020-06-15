@@ -75,7 +75,7 @@ function ajaxRun(url: string, method: string, data: object, success: Function, f
       'Accept': 'application/json'
     },
     success: function (res) {
-      successAjax(res, success);
+      processAjaxForm(res, success);
     },
     error: function (err: JQueryXHR) {
       if (typeof failed == 'function') {

@@ -135,9 +135,7 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 });
 */
 
-
-
-function successAjax(res: any, success: string | Function) {
+function processAjaxForm(res: string | object | JQueryXHR, success: string | Function) {
   if (typeof success == 'function') {
     success(res);
   } else if (typeof success == 'string') {
@@ -155,19 +153,20 @@ function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: nul
   settings.headers = {
     'unique-id': getUID()
   }
-  /*settings.success = function (res: any | object) {
-    successAjax(res, success);
-  }*/
-  settings.error = function (res) {
-    toastr.error('ajax request error', 'ajax');
-  }
   if (!settings.hasOwnProperty('indicator')) {
     settings.indicator = true;
   }
   if (!settings.hasOwnProperty('method')) {
     settings.method = 'POST';
   }
-  return $.ajax(settings);
+
+  return $.ajax(settings).done(function (res) {
+    processAjaxForm(res, success);
+  }).fail(function (jqXHR, textStatus, errorThrown) {
+    processAjaxForm(jqXHR, failed);
+  }).always(function (jqXHR, textStatus, errorThrown) {
+    processAjaxForm(jqXHR, complete);
+  });
 }
 
 function AjaxForm() {
