@@ -60,7 +60,7 @@ if ('index/bot/glype/admin' == str_replace('.php', '', $view)) {
 
 // cleaner
 if ('development' == $router->get_env()) {
-	if ($router->is_req('clean')) {
+	if ($router->is_req('clean_cache')) {
 		\Filemanager\file::empty(ROOT . '/tmp/html');
 		\Filemanager\file::empty(ROOT . '/processed/html');
 		\Filemanager\file::empty(ROOT . '/tmp/optimized');
@@ -123,15 +123,24 @@ if (!realpath($view)) {
 } elseif ($view = realpath($view)) {
 	// if file exists, set as view
 	$theme->view($view);
+	$is_hard_reload = $router->is_hard_reload(); // render if Disabled Cache on browser
+	$page_cache_not_exist = !realpath(page_cache()); // force render if page cache not exists
+	$no_cache = !$theme->meta['cache'];  // disable cache based on meta
+	$cors = CORS; // disable cache on CORS
+
 	if (
 		cache_expired() // render if cache expired
-		|| $router->is_hard_reload() // render if Disabled Cache on browser
-		|| !realpath(page_cache()) // force render if page cache not exists
+		|| $is_hard_reload
+		|| $page_cache_not_exist
 		|| ENVIRONMENT == 'production' // temporarily disable on production
-		|| CORS // disable cache on CORS
-		|| !$theme->meta['cache']  // disable cache based on meta
+		|| $cors
+		|| $no_cache
 	) {
-		header('Cache-Status: no-cache');
+		settype($is_hard_reload, 'integer');
+		settype($no_cache, 'integer');
+		settype($page_cache_not_exist, 'integer');
+		settype($cors, 'integer');
+		header("Cache-Status: no-cache, hard({$is_hard_reload}), page_cache_not_exist({$page_cache_not_exist}), no_cache({$no_cache}), cors({$cors})");
 		render();
 	} else {
 		header('Cache-Status: true');
@@ -188,9 +197,9 @@ function identifier()
 
 function page_cache()
 {
-	return ROOT . '/processed/html/'
+	return normalize_path(ROOT . '/processed/html/'
 		. '/' . identifier()
-		. '.html';
+		. '.html');
 }
 
 function htmlmin(string $ori)
@@ -312,7 +321,7 @@ function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $
 
 	$result = $dom->save();
 	resolve_dir(dirname($filesave));
-	file_put_contents($filesave, $result);
+	\Filemanager\file::file($filesave, $result, true);
 
 	return $result;
 }

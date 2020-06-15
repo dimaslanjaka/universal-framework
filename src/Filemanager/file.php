@@ -30,7 +30,7 @@ class file
   public static function empty(string $dir)
   {
     if (!file_exists($dir)) {
-      \MVC\alert::init()->add('empty folder', $dir . ' not exists');
+      \MVC\alert::init()->error('empty folder', $dir . ' not exists');
       return;
     }
     $subdir = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);

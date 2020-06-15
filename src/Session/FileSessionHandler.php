@@ -7,7 +7,6 @@ use SessionHandlerInterface;
 
 class FileSessionHandler implements SessionHandlerInterface
 {
-
   protected $sess_path;
   protected $prefix;
   protected $postfix;

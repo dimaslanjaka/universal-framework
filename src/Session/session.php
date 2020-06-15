@@ -72,7 +72,16 @@ class session
     );
     register_shutdown_function('session_write_close');
     session_start();
-    $this->protect_session($timeout);
+
+    $path = ini_get('session.save_path');
+    if (!file_exists($path . '/.htaccess')) {
+      file::file($path . '/.htaccess', 'deny from all');
+    }
+    if (!isset($_SESSION['session_started'])) {
+      $_SESSION['session_started'] = $this->now();
+      $_SESSION['session_timeout'] = ini_get('session.gc_maxlifetime');
+      $_SESSION['cookie_timeout'] = ini_get('session.cookie_lifetime');
+    }
   }
 
   private function configure(int $timeout, string $folder = null)
