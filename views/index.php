@@ -25,6 +25,3 @@
   <div class="grid-item grid-item--height2"></div>
 </div>
 <div class="grid-alpha"></div>
-
-<?php
-define('SCRIPTSRC', ['https://npmcdn.com/masonry-layout@4.0/dist/masonry.pkgd.min.js']);
