@@ -108,4 +108,4 @@ body { font-family: sans-serif; /*background-color: #000;*/ position: relative; 
 
 .grid-item:nth-child(40) { background-image: url("https://unsplash.it/900/900?image=140"); }
 
-.grid-item:nth-child(2) { background-image: url("https://image.useinsider.com/mytelkomsel/8/1yP5Rj0fRRt7d3ZHOGc11522678250.png"); }
+.grid-item:nth-child(2) { background-image: url("/assets/img/telkomsel-red.png"); }

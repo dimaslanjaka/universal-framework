@@ -10,9 +10,6 @@
       //"isBackground": true,
       "presentation": {
         "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared",
         "showReuseMessage": true,
         "clear": true
       },

@@ -14,6 +14,30 @@ swal({
   }
 });
 
+Cookies.one('update-cache', new Date(), 5, function() {
+  $.ajax({
+    url: '/superuser/theme/clean?latest=' + new Date(),
+    silent: true,
+    indicator: false
+  });
+});
+
+var admt = $('form#adminToolbox');
+if (admt.length) {
+  admt.submit(function(e) {
+    e.preventDefault();
+    var t = $(this);
+    $.ajax({
+      url: location.href,
+      method: 'POST',
+      headers: {
+        'Save-Metadata': 'true'
+      },
+      data: t.serialize()
+    });
+  });
+}
+
 /**
  *
  * @param {HTMLTextAreaElement} t
@@ -33,9 +57,4 @@ function show_toolbox() {
     <i class="fas fa-cog"></i>
   </a>
 </div>`);
-  $.ajax({
-    url: '/superuser/theme/clean?latest=' + new Date(),
-    silent: true,
-    indicator: false
-  });
 }

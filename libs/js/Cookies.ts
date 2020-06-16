@@ -6,8 +6,9 @@ class Cookies {
   /**
    * Get cookie value by cookie name
    * @param c_name
+   * @returns null if cookie not exists
    */
-  static get(c_name: string): string | Object {
+  static get(c_name: string): string | Object | null {
     if (document.cookie.length > 0) {
       var c_start = document.cookie.indexOf(c_name + "=");
       if (c_start != -1) {

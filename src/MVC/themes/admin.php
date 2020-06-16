@@ -2,53 +2,6 @@
 $user = new \User\user();
 if (!$user->is_admin() || !isset($Config)) {
   return;
-} else {
-  if (isset($_POST['meta-save'])) {
-    unset($_POST['meta-save']);
-    if (isset($_POST['meta-config'])) {
-      $config_meta = $_POST['meta-config'];
-      unset($_POST['meta-config']);
-      if ($config_meta = realpath($config_meta)) {
-        foreach ($_POST as $key => $value) {
-          if ($value == 'true') {
-            $_POST[$key] = true;
-          } else if ($value == 'false') {
-            $_POST[$key] = false;
-          } else if (is_numeric($value)) {
-            settype($_POST[$key], 'integer');
-          } else if (is_string($value)) {
-            $_POST[$key] = trim($value);
-          }
-        }
-        $meta_data = $_POST;
-        //robot tag header
-        if (!isset($meta_data['robot'])) {
-          $meta_data['robot'] = 'noindex, nofollow';
-        }
-        //allow comments
-        if (!isset($meta_data['comments'])) {
-          $meta_data['comments'] = false;
-        }
-        //cache page
-        if (!isset($meta_data['cache'])) {
-          $meta_data['cache'] = false;
-        }
-        // obfuscate javascript
-        if (!isset($meta_data['obfuscate'])) {
-          $meta_data['obfuscate'] = true;
-        }
-        if (file_exists($config_meta)) {
-          \Filemanager\file::file($config_meta, $meta_data, true);
-          if (!\MVC\helper::cors()) {
-            safe_redirect(\MVC\helper::geturl());
-          } else {
-            ob_get_clean();
-            e(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]);
-          }
-        }
-      }
-    }
-  }
 }
 
 ?>
@@ -61,7 +14,7 @@ if (!$user->is_admin() || !isset($Config)) {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="" method="post">
+      <form action="" method="post" id="adminToolbox">
         <div class="modal-body">
           <input type="hidden" name="meta-save">
           <input type="hidden" name="meta-config" value="<?= $Config; ?>">

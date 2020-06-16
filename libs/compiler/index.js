@@ -37,6 +37,7 @@ var config = require(`${core.root()}/config.json`);
 watch(core.root() + '/views');
 watch(core.root() + '/src');
 watch(core.root() + '/libs/js');
+watch(core.root() + '/assets');
 
 /**
  * Composer auto update once day

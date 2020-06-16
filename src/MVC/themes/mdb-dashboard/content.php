@@ -34,7 +34,7 @@ if (!defined('ENVIRONMENT')) {
   include __DIR__ . '/meta.php';
   ?>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="/assets/css/all.css">
+  <link rel="stylesheet" href="/assets/css/all.min.css">
   <!-- Bootstrap core CSS -->
   <link href="/assets/mdb-dashboard/css/bootstrap.min.css" rel="stylesheet">
   <!-- Material Design Bootstrap -->

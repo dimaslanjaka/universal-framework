@@ -24,6 +24,61 @@ class themes
 
   public function __construct()
   {
+    if ($this->is_admin()) {
+      // Metadata receiver
+      if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
+        unset($_POST['meta-save']);
+        if (isset($_POST['meta-config'])) {
+          $config_meta = $_POST['meta-config'];
+          unset($_POST['meta-config']);
+          if ($config_meta = realpath($config_meta)) {
+            foreach ($_POST as $key => $value) {
+              if ('true' == $value) {
+                $_POST[$key] = true;
+              } elseif ('false' == $value) {
+                $_POST[$key] = false;
+              } elseif (is_numeric($value)) {
+                settype($_POST[$key], 'integer');
+              } elseif (is_string($value)) {
+                $_POST[$key] = trim($value);
+              }
+            }
+            $meta_data = $_POST;
+            //robot tag header
+            if (!isset($meta_data['robot'])) {
+              $meta_data['robot'] = 'noindex, nofollow';
+            }
+            //allow comments
+            if (!isset($meta_data['comments'])) {
+              $meta_data['comments'] = false;
+            }
+            //cache page
+            if (!isset($meta_data['cache'])) {
+              $meta_data['cache'] = false;
+            }
+            // obfuscate javascript
+            if (!isset($meta_data['obfuscate'])) {
+              $meta_data['obfuscate'] = true;
+            }
+            if (file_exists($config_meta)) {
+              \Filemanager\file::file($config_meta, $meta_data, true);
+              if (!\MVC\helper::cors()) {
+                safe_redirect(\MVC\helper::geturl());
+              } else {
+                if (ob_get_level()) {
+                  ob_end_clean();
+                }
+                exit(\JSON\json::json(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]));
+              }
+            }
+          }
+        }
+      }
+    }
+
+    /*
+     * Setup default meta
+     */
     $this->meta = [
       'published' => date('m/j/y g:i A'),
       'modified' => date('m/j/y g:i A'),
@@ -34,6 +89,8 @@ class themes
       'desc' => '',
       'content' => null,
       'robot' => 'noindex, nofollow',
+      'obfuscate' => false,
+      'cache' => false,
     ];
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');

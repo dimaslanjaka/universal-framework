@@ -11,7 +11,7 @@ declare function array_keys(haystack: any): string[];
 declare function array_shuffle(a: Array<any>): any[];
 declare function array_filter(array: []): never[];
 declare class Cookies {
-    static get(c_name: string): string | Object;
+    static get(c_name: string): string | Object | null;
     static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function): void;
     static one(name: string, value: any, expire: number, callback: Function): void;
 }
@@ -262,6 +262,7 @@ declare function genUID(): string;
 declare function saveUID(data: Object): void;
 declare var UIDvalue: string;
 declare var UIDcalled: boolean;
+declare function getParameterByName(name: string, url: string | null): string;
 declare class user {
     key: string;
     all(): undefined | object | any;

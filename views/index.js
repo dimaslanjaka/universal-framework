@@ -1,3 +1,15 @@
+function render_tile(text) {
+  return `
+<div style="position: absolute; bottom: 10px; left:0px;color:white;word-wrap:break-word;max-width:100%" class="p-1 purple">
+  <span class="h2 pr-2 pl-2">${text}</span>
+</div>
+`;
+}
+
+$('.grid-item[title]').each(function(i, el) {
+  el.innerHTML = render_tile(el.title);
+});
+
 $('.grid').masonry({
   itemSelector: '.grid-item',
   columnWidth: '.grid-sizer',
@@ -7,7 +19,7 @@ $('.grid').masonry({
 // Modal with transition
 $('.grid-item').click(function(event) {
   event.preventDefault();
-  /*if (!$(this).hasClass('item-opened')) {
+  if (!$(this).hasClass('item-opened')) {
     var elWidth = $(this).outerWidth() / 2;
     var elPosition = this.getBoundingClientRect();
 
@@ -36,7 +48,7 @@ $('.grid-item').click(function(event) {
     $('.grid').css('overflow', 'visible');
   } else {
     $('.grid').css('overflow', 'hidden');
-  }*/
+  }
 });
 
 $('[href]').not('a').on('click', function(e) {
