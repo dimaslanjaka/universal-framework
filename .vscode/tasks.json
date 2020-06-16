@@ -7,6 +7,15 @@
       "label": "echo",
       "type": "shell",
       "command": "nodemon libs/compiler/index.js",
+      //"isBackground": true,
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      },
       "runOptions": {
         "runOn": "folderOpen"
       }
