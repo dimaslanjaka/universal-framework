@@ -1,3 +1,5 @@
+async_process(location.href);
+
 function async_process(source_cache) {
   var xhr = new XMLHttpRequest();
   $.ajax({
@@ -11,7 +13,7 @@ function async_process(source_cache) {
     headers: {
       'Pragma': 'no-cache',
       'Cache-Control': 'no-cache',
-      'Cache-control': 'no-cache'
+      'Refresh-Cache': 'true'
     },
     success: function(response) {
       $("html").html($("html", response).html());

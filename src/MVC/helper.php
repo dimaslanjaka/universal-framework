@@ -87,6 +87,13 @@ class helper
     return $source;
   }
 
+  /**
+   * Sass Compiler.
+   *
+   * @requires shell_exec
+   *
+   * @param string $path
+   */
   public static function sass(string $path)
   {
     \Cookie\helper::one('sass' . self::$key, 'compiler', 1, function () use ($path) {
@@ -102,6 +109,42 @@ class helper
         }
       }
     });
+  }
+
+  /**
+   * GET PHP ERROR LOG.
+   *
+   * @return string|null
+   */
+  public static function php_error_log(bool $onlypath = false)
+  {
+    $log = __DIR__ . '/tmp/php-error.log';
+    if ($log = realpath($log)) {
+      if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+        if (self::is_header('Log') == 'php') {
+          unlink($log);
+        }
+      }
+      if (!$onlypath) {
+        return read_file($log);
+      } else {
+        return $log;
+      }
+    }
+  }
+
+  /**
+   * Check if header request has $any.
+   *
+   * @param string $any
+   *
+   * @return string|null
+   */
+  public static function is_header(string $any)
+  {
+    $allHeaders = getallheaders();
+
+    return array_key_exists($any, $allHeaders) ? $allHeaders[$any] : null;
   }
 
   public static function babel(string $path)
@@ -134,10 +177,11 @@ class helper
   }
 
   /**
-   * Clean special characters from string
+   * Clean special characters from string.
    *
    * @param string $string
    * @param string $replace
+   *
    * @return string
    */
   public static function clean_special_characters(string $string, $replace = '')
@@ -217,7 +261,9 @@ class helper
     }
     $url = html_entity_decode($url);
     $parts = parse_url($url);
-    if (!isset($parts['path'])) $parts['path'] = '';
+    if (!isset($parts['path'])) {
+      $parts['path'] = '';
+    }
     if (isset($parts['query'])) {
       parse_str($parts['query'], $query);
       $parts['original_query'] = $parts['query'];
@@ -323,6 +369,7 @@ class helper
     if (null === $url) {
       $url = self::geturl();
     }
+
     return self::parse_url2($url)['path'];
   }
 
@@ -761,7 +808,7 @@ class helper
   }
 
   /**
-   * Get Useragent
+   * Get Useragent.
    *
    * @return string
    */

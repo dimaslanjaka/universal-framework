@@ -16,7 +16,7 @@ class themes
   protected $admin_user = 'admin';
   protected $admin_pass = 'admin';
   /**
-   * Session instances
+   * Session instances.
    *
    * @var \Session\session
    */
@@ -33,7 +33,7 @@ class themes
       'share' => false,
       'desc' => '',
       'content' => null,
-      'robot' => 'noindex, nofollow'
+      'robot' => 'noindex, nofollow',
     ];
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');
@@ -107,7 +107,8 @@ class themes
       $this->prepare_config();
 
       /**
-       * begin form include
+       * begin form include.
+       *
        * @todo Form includer
        */
       $form = preg_replace('/\.php$/s', '-f.php', $this->view);
@@ -160,11 +161,11 @@ class themes
         $this->meta['content'] = $this->root . $this->meta['content'];
         if ($this->is_admin() && !helper::cors()) {
           if (isset($_REQUEST['theme'])) {
-            $this->meta['theme'] = trim($_REQUEST['theme']) == 'true' ? true : false;
+            $this->meta['theme'] = 'true' == trim($_REQUEST['theme']) ? true : false;
             file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
           }
           if (isset($_REQUEST['obfuscate'])) {
-            $this->meta['obfuscate'] = trim($_REQUEST['theme']) == 'true' ? true : false;
+            $this->meta['obfuscate'] = 'true' == trim($_REQUEST['theme']) ? true : false;
             file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
           }
         }
@@ -246,6 +247,7 @@ class themes
         if (isset($match[0]) && !headers_sent()) {
           header('Content-Type: ' . $match[0]);
         }
+
         return true;
       }
     }
@@ -271,7 +273,7 @@ class themes
         include $content;
 
         return;
-      } else if ($this->meta['theme']) {
+      } elseif ($this->meta['theme']) {
         // Include the template file
         $template_content = $this->root_theme . '/content.php';
         if (file_exists($template_content)) {
@@ -294,6 +296,14 @@ class themes
         'message' => $this->view . ' not exists',
       ]);
       exit;
+    }
+  }
+
+  public function load_admin_tools()
+  {
+    if ($this->is_admin()) {
+      $Config = normalize_path(realpath($this->config));
+      include __DIR__ . '/themes/admin.php';
     }
   }
 }

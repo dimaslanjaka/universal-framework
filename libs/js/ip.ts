@@ -36,6 +36,7 @@ class ip {
   static ipapi() {
     var self = this;
     return $.ajax({
+      proxy: false,
       url: 'https://ipapi.co/json/',
       success: function (res: { "ip": "114.4.83.195", "city": "Jakarta", "region": "Jakarta", "region_code": "JK", "country": "ID", "country_code": "ID", "country_code_iso3": "IDN", "country_capital": "Jakarta", "country_tld": ".id", "country_name": "Indonesia", "continent_code": "AS", "in_eu": false, "postal": null, "latitude": -6.1741, "longitude": 106.8296, "timezone": "Asia/Jakarta", "utc_offset": "+0700", "country_calling_code": "+62", "currency": "IDR", "currency_name": "Rupiah", "languages": "id,en,nl,jv", "country_area": 1919440.0, "country_population": 242968342.0, "asn": "AS4761", "org": "INDOSAT Internet Network Provider" }) {
         if (typeof res == 'object') {
@@ -48,9 +49,11 @@ class ip {
       }
     });
   }
+
   static l2io() {
     var self = this;
     return $.ajax({
+      proxy: false,
       url: 'https://l2.io/ip.json',
       success: function (res: { "ip": "114.4.83.195" }) {
         if (typeof res == 'object') {

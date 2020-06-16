@@ -11,7 +11,7 @@
   "grunt.autoDetect": "off",
   "jake.autoDetect": "off",
   "gulp.autoDetect": "off",
-  "npm.autoDetect": "off",
+  "npm.autoDetect": "off", //switch to OFF, if you want automatic minifier and obfuscator
   "files.exclude": {
     "out": false,
     ".vscode": false
@@ -23,5 +23,6 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.check.npmIsInstalled": true,
   "npm.packageManager": "npm",
-  "task.problemMatchers.neverPrompt": true
+  "task.problemMatchers.neverPrompt": true,
+  "git.enabled": true
 }

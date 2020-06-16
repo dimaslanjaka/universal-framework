@@ -43,15 +43,24 @@ class alert
     return $this;
   }
 
-  public function final()
+  public function final(bool $scriptTag = false)
   {
     if (!empty($this->result)) {
       foreach ($this->result as $alert) {
         if (isset($alert['error'])) {
           if ($alert['error']) {
-            $this->toastr .= 'toastr.error()';
+            $this->toastr .= "toastr.error('{$alert['title']}', '{$alert['message']}');";
+          } else {
+            $this->toastr .= "toastr.success('{$alert['title']}', '{$alert['message']}');";
           }
+        } else if (isset($alert['message'])) {
+          $this->toastr .= "toastr.info('{$alert['title']}', '{$alert['message']}');";
         }
+      }
+      if (!$scriptTag) {
+        echo $this->toastr;
+      } else {
+        echo "<script>{$this->toastr}</script>";
       }
     }
   }

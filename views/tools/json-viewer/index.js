@@ -6,6 +6,8 @@ $('#editor').on('change', function(e) {
 
 jviewer($('#editor').val());
 
+$('textarea').autoHeight();
+
 function jviewer(input) {
   var viewer = $('#json-viewer');
   if (is_json(input)) {

@@ -12,6 +12,50 @@ class json
     return self::json([], true, false);
   }
 
+  public static $static;
+
+  /**
+   * chaining.
+   *
+   * @return json
+   */
+  public static function init()
+  {
+    if (!self::$static) {
+      self::$static = new self();
+    }
+
+    return self::$static;
+  }
+
+  public $result;
+  private $file;
+
+  /**
+   * Load JSON.
+   *
+   * @param string $file
+   * @param bool   $assoc
+   */
+  public function load(string $file, bool $assoc = false)
+  {
+    if (is_file($file)) {
+      $this->file = $file;
+      $this->result = json_decode(file_get_contents($file), $assoc);
+    }
+
+    return $this;
+  }
+
+  public function save()
+  {
+    if ($this->file && file_exists($this->file)) {
+      file_put_contents($this->file, json_encode($this->result));
+    }
+
+    return $this;
+  }
+
   public static function assoc($arr)
   {
     $str = json_encode($arr);

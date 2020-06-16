@@ -119,12 +119,11 @@ function resolve_dir(string $dir)
 }
 
 /**
- * Create dir recursively
+ * Create dir recursively.
  *
  * @param string $dest
- * @param integer $permissions
- * @param boolean $create
- * @return void
+ * @param int    $permissions
+ * @param bool   $create
  */
 function recursive_mkdir(string $dest, $permissions = 0755, $create = true)
 {
@@ -165,5 +164,57 @@ function normalize_path(string $path)
   if (':' === substr($path, 1, 1)) {
     $path = ucfirst($path);
   }
+
   return $path;
+}
+
+/**
+ * Remove root from path
+ *
+ * @param string $path
+ * @return void
+ */
+function remove_root(string $path)
+{
+  $path = normalize_path($path);
+  $path = str_replace(normalize_path(ROOT), '', $path);
+
+  return $path;
+}
+
+/**
+ * Shell runner
+ *
+ * @param string $command
+ * @return string|null
+ */
+function shell(string $command)
+{
+  $output = null;
+  if (function_exists('exec')) {
+    exec($command, $output);
+  } else if (function_exists('shell_exec')) {
+    $output = shell_exec($command);
+  }
+  return \ArrayHelper\helper::is_iterable($output) ? \JSON\json::json($output, false, false) : $output;
+}
+
+/**
+ * Read file contents
+ *
+ * @param string $path
+ * @return string|null NULL if not exists
+ */
+function read_file(string $path)
+{
+  if (file_exists($path) && is_readable($path)) {
+    if (function_exists('file_get_contents')) {
+      return file_get_contents($path);
+    } else {
+      $handle = fopen($path, "r");
+      $contents = fread($handle, filesize($path));
+      fclose($handle);
+      return $contents;
+    }
+  }
 }

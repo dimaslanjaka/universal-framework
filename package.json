@@ -66,7 +66,6 @@
     "filesize": "^6.1.0",
     "ga-gtag": "^1.0.1",
     "grunt": "^1.1.0",
-    "gulp": "^4.0.2",
     "har-to-curl": "^0.4.1",
     "jquery": "^3.5.1",
     "jquery-autocomplete": "^1.2.8",
@@ -107,6 +106,8 @@
     "@types/node": "^14.0.13",
     "babel-cli": "^6.26.0",
     "eslint": "^3.6.0",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0",
     "javascript-obfuscator": "^0.28.5",
     "jsdoc": "^3.6.4",
     "mocha": "^2.3.3",
@@ -124,13 +125,11 @@
   "displayName": "UNIVERSAL FRAMEWORK [PHPJS]",
   "publisher": "dimaslanjaka",
   "version": "3.0.0",
-  "main": "./libs/index.js",
   "scripts": {
     "index": "node libs/compiler/index.js",
     "index-watch": "nodemon libs/compiler/index.js",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+    "install": "npm update",
+    "postinstall": "npm update"
   },
   "repository": {
     "type": "git",

@@ -47,14 +47,18 @@ $router = new \MVC\router();
 $router->session = $session;
 
 // start environtment as development for debugging
+$env = 'production';
 $debug_pdo = 1;
-if (LOCAL || in_array($_SERVER['HTTP_HOST'], ['dev.webmanajemen.com'])) {
-  $router->environtment('development');
+
+if (in_array($_SERVER['HTTP_HOST'], ['dev.ns.webmanajemen.com']) || LOCAL) {
+  $env = 'development';
   $debug_pdo = 3;
-} else {
-  $router->environtment('production');
 }
+
+$router->environtment($env);
+
 define('ENVIRONMENT', $router->get_env());
+
 //show_error();
 
 if (!defined('PDO_DEBUG')) {
@@ -64,17 +68,7 @@ if (!defined('PDO_DEBUG')) {
 $config = \Filemanager\file::get(__DIR__ . '/config.json', true);
 
 if (!CORS) {
-  $cookie_latest = \Cookie\helper::get('latest_file');
-  if (!$cookie_latest || $router->is_req('clear_cache')) {
-    $cookie_latest = (string) latestFile([__DIR__ . '/src/MVC/', __DIR__ . '/libs/', __DIR__ . '/views/']);
-
-    \Cookie\helper::hours('latest_file', $cookie_latest, 3);
-  } else if ($router->is_header('Cache-Control') == 'no-cache') {
-    $cookie_latest = time();
-  }
-
-  $dateLatest = new DateTime(date('c', $cookie_latest));
-  $config['cache']['key'] .= $dateLatest->format('/d/m/Y/h/i/s/B');
+  $config['cache']['key'] .= $config['cache']['ext'];
 }
 
 define('CONFIG', $config);

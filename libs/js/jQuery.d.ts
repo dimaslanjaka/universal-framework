@@ -17,6 +17,12 @@ interface JQuery {
   smartForm(): void;
 
   /**
+   * Auto height textarea based on input
+   * @example $('textarea').autoHeight();
+   */
+  autoHeight(): void;
+
+  /**
    * @see https://github.com/imalliar/jquery.progressBarTimer
    * @param arg0
    */

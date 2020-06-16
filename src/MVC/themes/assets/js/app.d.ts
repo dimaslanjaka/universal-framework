@@ -263,11 +263,10 @@ declare function saveUID(data: Object): void;
 declare var UIDvalue: string;
 declare var UIDcalled: boolean;
 declare class user {
-    constructor();
     key: string;
-    all(): undefined | object;
-    get(key: String): any;
-    fetch(callback: Function): JQuery.jqXHR<any>;
+    all(): undefined | object | any;
+    get(key: string): any;
+    fetch(callback: Function | null): JQuery.jqXHR<any>;
 }
 interface Window {
     user: user;

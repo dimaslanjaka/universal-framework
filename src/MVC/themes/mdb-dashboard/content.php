@@ -22,9 +22,12 @@ if (!isset($title)) {
 if (!isset($share)) {
   $share = isset($var['share']) ? true : false;
 }
+if (!defined('ENVIRONMENT')) {
+  exit('framework environtment doesnt exists');
+}
 ?>
 <!DOCTYPE html>
-<html lang="en" class="full-height" manifest="framework.appcache">
+<html lang="en" class="full-height" manifest="framework.appcache" environtment="<?= ENVIRONMENT ?>">
 
 <head>
   <?php
@@ -48,7 +51,7 @@ if (!isset($share)) {
   </header>
   <!-- Main Navigation -->
 
-  <main class="mb-3 mt-0 pt-3">
+  <main class="mb-3 mt-0 pt-3" style="min-height: 500px;">
     <div class="container-fluid mt-5">
       <?php
       if (isset($content) && file_exists($content)) {
@@ -59,6 +62,8 @@ if (!isset($share)) {
       ?>
     </div>
   </main>
+
+  <?php include __DIR__ . '/footer.php'; ?>
 
   <!-- SCRIPTS -->
   <!-- JQuery -->
@@ -71,24 +76,9 @@ if (!isset($share)) {
   <script type="text/javascript" src="/assets/mdb-dashboard/js/mdb.min.js"></script>
 
   <!-- Custom scripts -->
-  <script>
-    /** Minify */
-    $(document).ready(function() {
-      $("#button-collapse").sideNav();
-      new WOW().init();
-      var target = $(location).attr("hash");
-      var offset = ($(this).attr('data-offset') ? $(this).attr('data-offset') : 0);
-      if ($(target).length) {
-        $('body,html').animate({
-          scrollTop: $(target).offset().top - offset
-        }, 700);
-      }
-    });
-  </script>
 
   <?php
   include __DIR__ . '/script.php';
-  include __DIR__ . '/../admin.php';
   ?>
 
 </body>

@@ -15,25 +15,14 @@ pause() {
     read -p "Press [Enter] key to continue..." fackEnterKey
 }
 
-one() {
-    echo "one() called"
-    pause
-}
-
-# do something in two()
-two() {
-    echo "two() called"
-    pause
-}
-
 # function to display menus
 show_menus() {
     clear
     echo "~~~~~~~~~~~~~~~~~~~~~"
     echo "   Library builder   "
     echo "~~~~~~~~~~~~~~~~~~~~~"
-    echo "1. Separate Files"
-    echo "2. Combine into src/MVC/themes/assets/js/{app.js,app.min.js}"
+    echo "1. Compile JS src/MVC/themes/assets/js/{app.js,app.min.js}"
+    echo "2. Watch Compile JS src/MVC/themes/assets/js/{app.js,app.min.js}"
     echo "3. Exit"
 }
 # read input from the keyboard and take a action
@@ -45,11 +34,11 @@ read_options() {
     read -p "Enter choice [ 1 - 3] " choice
     case $choice in
     1)
-        tsc -p tsconfig.watch.json --watch
+        npm run index
         read -p "Press [Enter] key to continue..."
         ;;
     2)
-        npm run build-min
+        npm run index-watch
         read -p "Press [Enter] key to continue..."
         ;;
     3) exit 0 ;;

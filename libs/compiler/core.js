@@ -8,6 +8,8 @@ const JavaScriptObfuscator = require('javascript-obfuscator');
 const chalk = require('chalk');
 const log = console.log;
 const clear = console.clear;
+const uglifycss = require('uglifycss');
+const sass = require('node-sass');
 const {
   exec
 } = require("child_process");
@@ -72,6 +74,35 @@ class core {
     return filelist;
   };
 
+  static scss(scss_filename) {
+    if (fs.exists(scss_filename, function(exists) {
+        if (exists) {
+          var output = scss_filename.replace(/\.scss/s, '.css');
+          var outputcss = output;
+          if (/\.scss$/s.test(scss_filename) && !/\.min\.scss$/s.test(scss_filename)) {
+            sass.render({
+              file: scss_filename,
+              outputStyle: "compact",
+              outFile: output
+            }, function(err, result) {
+              if (!err) {
+                fs.writeFile(outputcss, result.css, function(err) {
+                  if (!err) {
+                    scss_filename = scss_filename.replace(core.root(), '');
+                    outputcss = outputcss.replace(core.root(), '');
+                    log(`${scss_filename} > ${outputcss} ${chalk.green('success')}`);
+                    core.minCSS(output);
+                  }
+                });
+              }
+            });
+          }
+        } else {
+          console.error(`${scss_filename} not found`);
+        }
+      }));
+  }
+
   /**
    * Get root path
    * @returns {string} posix/unix path format
@@ -93,18 +124,22 @@ class core {
   static minify_folder(folder) {
     var self = this;
     var js = new Array();
-    var read = this.readdir(folder);
-    if (Array.isArray(read)) {
-      read.forEach(file => {
-        if (!/\.min\.js$/s.test(file) && /\.js$/s.test(file)) {
-          js.push(file);
-          //console.log(file);
+    fs.exists(folder, function(exists) {
+      if (exists && fs.lstatSync(folder).isDirectory()) {
+        var read = this.readdir(folder);
+        if (Array.isArray(read)) {
+          read.forEach(file => {
+            if (!/\.min\.js$/s.test(file) && /\.js$/s.test(file)) {
+              js.push(file);
+              //console.log(file);
+            }
+          });
+          js.unique().forEach(function(file) {
+            if (file) self.minJS(file);
+          });
         }
-      });
-      js.unique().forEach(function(file) {
-        if (file) self.minify(file);
-      });
-    }
+      }
+    });
   }
 
   /**
@@ -135,11 +170,16 @@ class core {
    * Minify JS into *.min.js version
    * @param {string} file
    */
-  static minify(file) {
-    if (!file) return;
+  static minJS(file) {
+    if (!file) {
+      return;
+    }
     var self = this;
-    if (file.endsWith('min.js') || !/\.js$/s.test(file)) {
-      console.error('Only JS files Allowed');
+    if (/\.min\.js$/s.test(file) || !/\.js$/s.test(file)) {
+      log(chalk.red(`${file} minJS Not Allowed`));
+      return;
+    } else if (/\/(node_modules|processed|vendor|tmp)\/|\/libs\/js\//s.test(file)) {
+      log(chalk.red('Library folder detected'));
       return;
     }
     var min = file.replace(/\.js$/s, '.min.js');
@@ -200,12 +240,53 @@ class core {
               fs.unlinkSync(min);
             } else {
               fs.writeFileSync(min, terserResult.code, 'utf8');
-              console.log(`Minifying ${input} to ${output} success.`);
+              console.log(`${input} to ${output} ${chalk.green('success')}`);
             }
           }
         });
       } else {
         console.log(err);
+      }
+    });
+  }
+
+  /**
+   * minify css to *.min.css version
+   * @param {string} file
+   */
+  static minCSS(file) {
+    fs.exists(file, function(exists) {
+      if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
+        var min = file.replace(/\.css/s, '.min.css');
+        fs.readFile(file, {
+          encoding: 'utf-8'
+        }, function(err, data) {
+          if (!err) {
+            fs.writeFile(min, data, function(err) {
+              if (!err) {
+                var minified = uglifycss.processFiles(
+                  [min], {
+                    maxLineLen: 500,
+                    expandVars: true
+                  }
+                );
+                fs.writeFile(min, minified, {
+                  encoding: "utf-8"
+                }, function(err) {
+                  if (!err) {
+                    file = file.replace(core.root(), '');
+                    min = min.replace(core.root(), '');
+                    log(`${file} > ${min} ${chalk.green('success')}`);
+                  }
+                });
+              } else {
+                log(chalk.red(err));
+              }
+            });
+          } else {
+            log(chalk.red(err));
+          }
+        });
       }
     });
   }

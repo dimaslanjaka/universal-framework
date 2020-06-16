@@ -73,7 +73,7 @@ var reCaptcha = {
    * load or refreshing google recaptcha
    */
   exec: function(action, retry, callback) {
-    console.log('gtag is ' + typeof gtag);
+    //console.log('gtag is ' + typeof gtag);
     if (typeof gtag == 'function') {
       gtag('event', 'recaptcha', {
         'action': action
@@ -101,7 +101,7 @@ var reCaptcha = {
     }
     reCaptcha.gexec_count++;
     var execute = grecaptcha.execute(reCaptcha.key, {
-      'action': action || location.href
+      'action': action || 'location.href'
     });
     if (!execute) {
       if (typeof toastr != 'undefined') {
@@ -146,16 +146,15 @@ var reCaptcha = {
    * @param {String} token
    */
   distribute_token: function(token) {
-    var f = $('form');
-    var fg = f.find('[name="g-recaptcha-response"]');
-    if (fg.length === 0) {
-      $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo(f);
-    } else {
-      fg.val(token);
-    }
-    console.log({
-      info: 'token inserted ' + reCaptcha.gexec_count,
-      token: token
+    var form = $('form');
+    form.each(function(i, el) {
+      var fg = $(this).find('[name="g-recaptcha-response"]');
+      console.log(fg.length);
+      if (!fg.length) {
+        $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo($(this));
+      } else {
+        fg.val(token);
+      }
     });
   },
   /**

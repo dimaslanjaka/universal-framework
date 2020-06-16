@@ -5,5 +5,6 @@
     <li class="breadcrumb-item"><a href="/superuser/im3">IM3</a></li>
     <li class="breadcrumb-item"><a href="/superuser/theme">Themes</a></li>
     <li class="breadcrumb-item"><a href="/superuser/users">Users</a></li>
+    <li class="breadcrumb-item"><a href="/superuser/php">PHP</a></li>
   </ol>
 </nav>

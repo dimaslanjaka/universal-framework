@@ -1,61 +1,57 @@
 <?php
 $user = new \User\user();
-if (!$user->is_admin()) {
+if (!$user->is_admin() || !isset($Config)) {
   return;
-}
-if (isset($_POST['meta-save'])) {
-  unset($_POST['meta-save']);
-  if (isset($_POST['meta-config'])) {
-    $config_meta = $_POST['meta-config'];
-    unset($_POST['meta-config']);
-    if ($config_meta = realpath($config_meta)) {
-      foreach ($_POST as $key => $value) {
-        if ($value == 'true') {
-          $_POST[$key] = true;
-        } else if ($value == 'false') {
-          $_POST[$key] = false;
-        } else if (is_numeric($value)) {
-          settype($_POST[$key], 'integer');
-        } else if (is_string($value)) {
-          $_POST[$key] = trim($value);
+} else {
+  if (isset($_POST['meta-save'])) {
+    unset($_POST['meta-save']);
+    if (isset($_POST['meta-config'])) {
+      $config_meta = $_POST['meta-config'];
+      unset($_POST['meta-config']);
+      if ($config_meta = realpath($config_meta)) {
+        foreach ($_POST as $key => $value) {
+          if ($value == 'true') {
+            $_POST[$key] = true;
+          } else if ($value == 'false') {
+            $_POST[$key] = false;
+          } else if (is_numeric($value)) {
+            settype($_POST[$key], 'integer');
+          } else if (is_string($value)) {
+            $_POST[$key] = trim($value);
+          }
         }
-      }
-      $meta_data = $_POST;
-      //robot tag header
-      if (!isset($meta_data['robot'])) {
-        $meta_data['robot'] = 'noindex, nofollow';
-      }
-      //allow comments
-      if (!isset($meta_data['comments'])) {
-        $meta_data['comments'] = false;
-      }
-      //cache page
-      if (!isset($meta_data['cache'])) {
-        $meta_data['cache'] = false;
-      }
-      // obfuscate javascript
-      if (!isset($meta_data['obfuscate'])) {
-        $meta_data['obfuscate'] = true;
-      }
-      if (file_exists($config_meta)) {
-        \Filemanager\file::file($config_meta, $meta_data, true);
-        if (!\MVC\helper::cors()) {
-          safe_redirect(\MVC\helper::geturl());
-        } else {
-          ob_get_clean();
-          e(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]);
+        $meta_data = $_POST;
+        //robot tag header
+        if (!isset($meta_data['robot'])) {
+          $meta_data['robot'] = 'noindex, nofollow';
+        }
+        //allow comments
+        if (!isset($meta_data['comments'])) {
+          $meta_data['comments'] = false;
+        }
+        //cache page
+        if (!isset($meta_data['cache'])) {
+          $meta_data['cache'] = false;
+        }
+        // obfuscate javascript
+        if (!isset($meta_data['obfuscate'])) {
+          $meta_data['obfuscate'] = true;
+        }
+        if (file_exists($config_meta)) {
+          \Filemanager\file::file($config_meta, $meta_data, true);
+          if (!\MVC\helper::cors()) {
+            safe_redirect(\MVC\helper::geturl());
+          } else {
+            ob_get_clean();
+            e(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]);
+          }
         }
       }
     }
   }
 }
-?>
-<div class="fixed-action-btn smooth-scroll" style="bottom: 5px; right: 5px;">
-  <a href="#meta-editor" class="btn-floating btn-large red" data-toggle="modal" data-target="#MetaEditorModal">
-    <i class="fas fa-cog"></i>
-  </a>
-</div>
 
+?>
 <div class="modal fade" id="MetaEditorModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -68,9 +64,9 @@ if (isset($_POST['meta-save'])) {
       <form action="" method="post">
         <div class="modal-body">
           <input type="hidden" name="meta-save">
-          <input type="hidden" name="meta-config" value="<?= $this->config; ?>">
+          <input type="hidden" name="meta-config" value="<?= $Config; ?>">
           <?php
-          $c_meta = \Filemanager\file::get($this->config, true);
+          $c_meta = \Filemanager\file::get($Config, true);
           ksort($c_meta);
           foreach ($c_meta as $key => $value) {
             $typeMeta = 'text';
@@ -122,5 +118,6 @@ if (isset($_POST['meta-save'])) {
     </div>
   </div>
 </div>
-<script src="<?= \MVC\helper::get_url_path(__DIR__ . '/admin.min.js', true); ?>">
+<script async="true">
+  <?= read_file(__DIR__ . '/admin.min.js') ?>
 </script>

@@ -109,9 +109,7 @@ class router extends themes
         exit(1); // EXIT_ERROR
     }
 
-    if (!is_file(\Filemanager\file::tmp() . '/environtment.txt')) {
-      \Filemanager\file::file(\Filemanager\file::tmp() . '/environtment.txt', $env, true);
-    }
+    \Filemanager\file::file(\Filemanager\file::tmp() . '/environtment.txt', $env, true);
     $GLOBALS['router_state']['env'] = $this->env = $env;
 
     return $env;
@@ -197,8 +195,6 @@ class router extends themes
     return array_key_exists($any, $allHeaders) ? $allHeaders[$any] : null;
   }
 
-  private $is_hard_reload_state;
-
   /**
    * Check browser no-cache request (hard reload)
    *
@@ -206,11 +202,7 @@ class router extends themes
    */
   public function is_hard_reload()
   {
-    if (!$this->is_hard_reload_state) {
-      $this->is_hard_reload_state = $this->is_header('Cache-Control') == 'no-cache' && $this->is_header('Pragma') == 'no-cache';
-    }
-
-    return $this->is_hard_reload_state;
+    return $this->is_header('Cache-Control') == 'no-cache' && $this->is_header('Pragma') == 'no-cache';
   }
 
   /**

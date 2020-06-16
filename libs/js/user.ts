@@ -3,25 +3,27 @@
  * User framework
  */
 class user {
-  constructor() { }
+  //constructor() { if (!this.all()) { this.fetch(null); } }
   key = location.host + '/userdata'
   /**
    * Get all userdata
    */
-  all(): undefined | object {
-    var data = localStorage.getItem(this.key);
-    if (!data || data == '') { return undefined; }
-    return JSON.parse(data);
+  all(): undefined | object | any {
+    var data = storage().get(this.key);
+    if (!data || data == '') {
+      return undefined;
+    }
+    return data;
   }
   /**
    * get userdata
    */
-  get(key: String) {
+  get(key: string) {
     try {
       var data = this.all();
       if (data !== undefined) {
-        if (data.hasOwnProperty(key.toString())) {
-          return (<any>data)[key.toString()];
+        if (data.hasOwnProperty(key)) {
+          return data[key];
         }
       }
       console.log('user::get', data);
@@ -33,11 +35,13 @@ class user {
   /**
    * fetch userdata
    */
-  fetch(callback: Function) {
+  fetch(callback: Function | null) {
     const ini = this;
     return $.ajax({
       url: '/user',
       method: 'POST',
+      silent: true,
+      indicator: false,
       data: {
         check: true,
         user: true
@@ -57,7 +61,7 @@ class user {
             }
           }
         }
-        localStorage.setItem(ini.key, JSON.stringify(res));
+        storage().set(ini.key, JSON.stringify(res));
         console.log('user::fetch', ini.all());
       }
     });

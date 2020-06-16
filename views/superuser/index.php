@@ -78,6 +78,20 @@
           </div>
         </div>
       </div>
+
+      <div class="mb-2">
+        <div class="p-2">
+          <?php
+          $OS = \MVC\helper::is_windows() ? 'WINDOWS' : 'LINUX';
+          if (\MVC\helper::is_windows()) {
+            $output = shell('ipconfig -all');
+          } else {
+            $output = shell("ifconfig | grep 'inet ' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'");
+          }
+          ?>
+          <pre title="<?= $OS ?>"><?= $output ?></pre>
+        </div>
+      </div>
     </div>
   </div>
 </section>

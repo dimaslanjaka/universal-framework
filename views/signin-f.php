@@ -1,36 +1,34 @@
 <?php
 
-use Google\recaptcha;
-use JSON\json;
-
-$user = user();
 if (isset($_REQUEST['user']) && isset($_REQUEST['pass'])) {
-  recaptcha::verifyCaptcha(function () use ($user) {
-    $username = $_REQUEST['user'];
-    $password = $_REQUEST['pass'];
-    $result = $user->login($username, $password);
-
-    if (getLimitBanned() && $result) {
-      json::json([
-        'error' => true,
-        'message' => 'Limit reached',
-        'title' => 'Limitation',
-      ]);
-      exit;
-    } else {
-      json::json($result);
-      exit;
-    }
+  $username = $_REQUEST['user'];
+  $password = $_REQUEST['pass'];
+  Google\recaptcha::verifyCaptcha(function () use ($username, $password) {
+    dologin($username, $password);
   });
-  exit;
 }
 
 if (isset($_REQUEST['check'])) {
-  $user->check_login(function ($session) {
-    exit(json::json($session));
+  user()->check_login(function ($session) {
+    e($session);
   });
-} else {
-  if ($user->is_login()) {
-    exit(header('Location: /dashboard'));
+}
+
+function dologin($username, $password)
+{
+  $result = user()->login($username, $password);
+  if (isset($result['error'])) {
+    if (!$result['error']) {
+      $result['redirect'] = isset($_REQUEST['redirect']) ? urldecode($_SERVER['redirect']) : '/dashboard';
+    }
   }
+
+  if (getLimitBanned() && $result) {
+    $result = [
+      'error' => true,
+      'message' => 'Limit reached',
+      'title' => 'Limitation',
+    ];
+  }
+  e($result);
 }

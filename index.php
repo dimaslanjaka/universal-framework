@@ -1,14 +1,16 @@
 <?php
 
 /*if (count($_COOKIE) <= 50) {
-	foreach ($_COOKIE as $key => $val) {
-		if (!is_numeric($key) || !is_string($key)) {
-			continue;
-		}
-		setcookie('same-site-cookie', $key, ['samesite' => 'Lax']);
-		setcookie('cross-site-cookie', $key, ['samesite' => 'None', 'secure' => true]);
-	}
+  foreach ($_COOKIE as $key => $val) {
+  if (!is_numeric($key) || !is_string($key)) {
+  continue;
+  }
+  setcookie('same-site-cookie', $key, ['samesite' => 'Lax']);
+  setcookie('cross-site-cookie', $key, ['samesite' => 'None', 'secure' => true]);
+  }
 }*/
+
+header('X-Powered-By: L3n4r0x');
 
 //import configuration
 include_once __DIR__ . '/config.php';
@@ -56,15 +58,6 @@ $view = helper::fixSlash(VIEWPATH . $rc->findRoute() . '.php');
 if ('index/bot/glype/admin' == str_replace('.php', '', $view)) {
 	include __DIR__ . '/bot/glype/admin.php';
 	exit;
-}
-
-// cleaner
-if ('development' == $router->get_env()) {
-	if ($router->is_req('clean_cache')) {
-		\Filemanager\file::empty(ROOT . '/tmp/html');
-		\Filemanager\file::empty(ROOT . '/processed/html');
-		\Filemanager\file::empty(ROOT . '/tmp/optimized');
-	}
 }
 
 // start output buffering
@@ -123,28 +116,44 @@ if (!realpath($view)) {
 } elseif ($view = realpath($view)) {
 	// if file exists, set as view
 	$theme->view($view);
-	$is_hard_reload = $router->is_hard_reload(); // render if Disabled Cache on browser
-	$page_cache_not_exist = !realpath(page_cache()); // force render if page cache not exists
-	$no_cache = !$theme->meta['cache'];  // disable cache based on meta
-	$cors = CORS; // disable cache on CORS
+	/**
+	 * @var bool render if Disabled Cache on browser
+	 */
+	$is_hard_reload = $router->is_hard_reload();
+	/**
+	 * @var bool force render if page cache not exists / expired
+	 */
+	$cache_expired = cache_expired(2);
+	/**
+	 * @var bool disable cache based on meta
+	 */
+	$no_cache = !$theme->meta['cache'];
+	/**
+	 * @var bool disable cache on CORS
+	 */
+	$cors = CORS;
+	/**
+	 * @var bool temporarily disable on production
+	 */
+	$production = ('production' == get_env());
+	/**
+	 * @var bool Is refresh cache request
+	 */
+	$refreshCache = $router->is_header('Refresh-Cache');
 
-	if (
-		cache_expired() // render if cache expired
-		|| $is_hard_reload
-		|| $page_cache_not_exist
-		|| ENVIRONMENT == 'production' // temporarily disable on production
-		|| $cors
-		|| $no_cache
-	) {
-		settype($is_hard_reload, 'integer');
-		settype($no_cache, 'integer');
-		settype($page_cache_not_exist, 'integer');
-		settype($cors, 'integer');
-		header("Cache-Status: no-cache, hard({$is_hard_reload}), page_cache_not_exist({$page_cache_not_exist}), no_cache({$no_cache}), cors({$cors})");
-		render();
+	settype($is_hard_reload, 'integer');
+	settype($no_cache, 'integer');
+	settype($cache_expired, 'integer');
+	settype($cors, 'integer');
+
+	if ($no_cache || $cors || $production || $refreshCache || $is_hard_reload || $cache_expired) {
+		header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
+
+		return render();
 	} else {
-		header('Cache-Status: true');
-		load_cache(page_cache());
+		header('Cache-Status: true(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
+
+		return load_cache(page_cache());
 	}
 }
 
@@ -156,13 +165,14 @@ function cache_expired(int $hour = 24)
 		$is_24hours = time() - filemtime($file_indicator) > $hour * 3600;
 		if ($is_24hours) {
 			\Filemanager\file::delete($file_indicator);
+
+			return true;
 		} else {
 			return false; // cache valid
 		}
+	} else {
+		return true;
 	}
-	resolve_file($file_indicator, UID);
-
-	return true; // cache not saved or expired
 }
 
 function render()
@@ -179,15 +189,88 @@ function render()
 	}
 }
 
-
 function process_page(bool $obfuscatejs = true)
 {
-	global $router;
+	global $theme;
 	$buffer_content = ob_get_clean();
-	$is_reloaded = $router->is_hard_reload();
-	$is_development = 'development' == get_env();
+	$dom = \simplehtmldom\helper::str_get_html($buffer_content);
 
-	echo optimize($buffer_content, $obfuscatejs, UID, $is_development, $is_reloaded, page_cache());
+	$scripts = $dom->find('script');
+	if ($scripts) {
+		$script_index = 0;
+		foreach ($scripts as $js) {
+			++$script_index;
+			$js->index = $script_index;
+			$scriptText = trim($js->innertext);
+			if ($js->src || empty($scriptText)) {
+				continue;
+			} elseif ('application/ld+json' == $js->type) {
+				$js->innertext = preg_replace('/\s+/m', '', $scriptText);
+				continue;
+			}
+		}
+	}
+
+	$styles = $dom->find('style');
+	if ($styles) {
+		$css_index = 0;
+		foreach ($styles as $css) {
+			++$css_index;
+			$css->index = $css_index;
+			$css->innertext = trim(mincss($css->innertext));
+		}
+	}
+
+	$imgs = $dom->find('img');
+	if ($imgs) {
+		foreach ($imgs as $img) {
+			if (!$img->title) {
+				$img->title = $dom->title();
+			}
+			if (!$img->alt) {
+				$img->alt = $dom->title();
+			}
+			if (!$img->rel) {
+				$img->rel = 'image';
+			}
+		}
+	}
+
+	// minify page
+	$dom->find('html', 0)->outertext = htmlmin($dom->find('html', 0)->outertext);
+	// save minified
+	$result = $dom->save();
+	// release
+	unset($dom);
+	// new dom
+	$dom = \simplehtmldom\helper::str_get_html($result);
+
+	// prettyprint pretext
+	$pres = $dom->find('pre');
+	if ($pres) {
+		$pre_index = 0;
+		foreach ($pres as $pre) {
+			++$pre_index;
+			$inner = $pre->innertext;
+			if (!$pre->title) {
+				$pre->title = "pre($pre_index)";
+			}
+			if (\JSON\json::is_json($inner)) {
+				$pre->innertext = \JSON\json::beautify(json_decode($inner));
+			}
+		}
+	}
+
+	$result = $dom->save();
+	resolve_dir(dirname(page_cache()));
+	\Filemanager\file::file(page_cache(), $result, true);
+	/**
+	 * @var string Load admin toolbox
+	 */
+	$result = str_replace('</html>', '', $result);
+	echo $result;
+	$theme->load_admin_tools();
+	echo '</html>';
 }
 
 function identifier()
@@ -197,7 +280,7 @@ function identifier()
 
 function page_cache()
 {
-	return normalize_path(ROOT . '/processed/html/'
+	return normalize_path(ROOT . '/tmp/html/'
 		. '/' . identifier()
 		. '.html');
 }
@@ -226,104 +309,17 @@ function get_includes()
 
 function load_cache(string $page_cache)
 {
+	global $theme;
 	$optimized_buffer = \Filemanager\file::get($page_cache);
 	$script = file_get_contents(__DIR__ . '/index-optimizer.min.js');
-	$add = trim("<script>async_process(location.href);async_process(location.href);$script</script>");
-	$optimized_buffer = str_replace('</html>', $add . '</html>', $optimized_buffer);
-	echo htmlmin($optimized_buffer);
-}
-
-
-/**
- * HTML Optimizer and Obfuscator.
- *
- * @param \MVC\router $router
- * @param string      $buffer_content
- * @param bool        $obfuscatejs
- * @param string      $uri
- * @param bool        $is_development
- * @param bool        $is_reloaded
- * @param string      $filesave
- *
- * @return void
- */
-function optimize(string $buffer_content, bool $obfuscatejs, string $uri, bool $is_development, bool $is_reloaded, string $filesave)
-{
-	$dom = \simplehtmldom\helper::str_get_html($buffer_content);
-
-	$scripts = $dom->find('script');
-	if ($scripts) {
-		$script_index = 0;
-		foreach ($scripts as $js) {
-			++$script_index;
-			$scriptText = trim($js->innertext);
-			if ($js->src || empty($scriptText)) {
-				continue;
-			} elseif ('application/ld+json' == $js->type) {
-				$js->innertext = preg_replace('/\s+/m', '', $scriptText);
-				continue;
-			}
-		}
-	}
-
-	$styles = $dom->find('style');
-	if ($styles) {
-		$css_index = 0;
-		foreach ($styles as $css) {
-			$css->innertext = trim(mincss($css->innertext));
-		}
-	}
-
-	$imgs = $dom->find('img');
-	if ($imgs) {
-		foreach ($imgs as $img) {
-			if (!$img->title) {
-				$img->title = $dom->title();
-			}
-			if (!$img->alt) {
-				$img->alt = $dom->title();
-			}
-			if (!$img->rel) {
-				$img->rel = 'image';
-			}
-		}
-	}
-
+	$add = trim("<script>$script</script>");
 	/**
-	 * @todo Apply HTML Minification only on production
+	 * @var string Load admin toolbox
 	 */
-	if (!$is_development) {
-		// minify page
-		$dom->find('html', 0)->outertext = htmlmin($dom->find('html', 0)->outertext);
-		// save minified
-		$result = $dom->save();
-		// release
-		unset($dom);
-		// new dom
-		$dom = \simplehtmldom\helper::str_get_html($result);
-	}
-
-	// prettyprint pretext
-	$pres = $dom->find('pre');
-	if ($pres) {
-		$pre_index = 0;
-		foreach ($pres as $pre) {
-			++$pre_index;
-			$inner = $pre->innertext;
-			if (!$pre->title) {
-				$pre->title = "pre($pre_index)";
-			}
-			if (\JSON\json::is_json($inner)) {
-				$pre->innertext = \JSON\json::beautify(json_decode($inner));
-			}
-		}
-	}
-
-	$result = $dom->save();
-	resolve_dir(dirname($filesave));
-	\Filemanager\file::file($filesave, $result, true);
-
-	return $result;
+	$optimized_buffer = str_replace('</html>', $add, $optimized_buffer);
+	echo $optimized_buffer;
+	$theme->load_admin_tools();
+	echo '</html>';
 }
 
 function mincss($css)

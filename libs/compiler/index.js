@@ -5,21 +5,14 @@ const path = require('path');
 const slash = require('slash');
 const core = require('./core');
 const shell = require('child_process');
-const sass = require('node-sass');
 const chalk = require('chalk');
 const log = console.log;
 const clear = console.clear;
-const uglifycss = require('uglifycss');
 const watch_runner = [];
-const watch_global = {
-  'sass': new Date(),
-  'babel': new Date(),
-  'glob': new Date()
-}
 const mysql = require('mysql');
 var config = require(`${core.root()}/config.json`);
 
-if (config.hasOwnProperty('database')) {
+/*if (config.hasOwnProperty('database')) {
   const database = config.database;
   var con = mysql.createConnection({
     host: database.host,
@@ -30,12 +23,12 @@ if (config.hasOwnProperty('database')) {
   });
   con.connect(function(err) {
     if (err) {
-      console.error(err);
+      log(chalk.red(err));
     } else {
-      console.log("Connected!");
+      log(chalk.green("Connected!"));
     }
   });
-}
+}*/
 
 /**
  * Begin minify watcher
@@ -59,57 +52,6 @@ if (!localStorage.getItem('composer') || localStorage.getItem('composer') == yes
   localStorage.setItem('composer', today);
 }
 
-/**
- * minify folder
- * @param {string} dir
- */
-function minJSFolder(dir) {
-  fs.exists(instance, function(exists) {
-    if (exists && fs.lstatSync(dir).isDirectory()) {
-      core.minify_folder(dir);
-    }
-  });
-}
-
-function minJS(filepath) {
-  if (/\.(js|ts)$/s.test(filepath) && !/^(node_modules|processed|vendor|assets|tmp)$/s.test(filepath)) {
-    var filejs = slash(path.resolve(filepath));
-    core.minify(filejs);
-  }
-}
-
-/**
- * minify css to *.min.css version
- * @param {string} file
- */
-function minCSS(file) {
-  fs.exists(file, function(exists) {
-    if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
-      var min = file.replace(/\.css/s, '.min.css');
-      fs.readFile(file, {
-        encoding: 'utf-8'
-      }, function(err, data) {
-        if (!err) {
-          fs.writeFile(min, data, function(err) {
-            if (!err) {
-              uglifycss.processFiles(
-                [min], {
-                  maxLineLen: 500,
-                  expandVars: true
-                }
-              );
-            } else {
-              log(chalk.red(err));
-            }
-          });
-        } else {
-          log(chalk.red(err));
-        }
-      });
-    }
-  });
-}
-
 var instances = [];
 
 setInterval(() => {
@@ -117,21 +59,24 @@ setInterval(() => {
     return el != null;
   });
   if (instances.length) {
-    clear();
+    //clear();
     /**
-     * @type {{ext: ".css" | ".js" | ".php" | ".min.js" | ".min.css", file: string, dir: string}}
+     * @type {{ext: ".css" | ".js" | ".php" | ".min.js" | ".scss" | ".min.css", file: string, dir: string}}
      */
     var instance = instances[0];
-    log('Queue: ' + instances.length);
-    log('current: ' + JSON.stringify(instance, null, 4) + "\n");
+    //log('Queue: ' + instances.length);
+    //log('current: ' + instance.file);
 
     if (!isLibs(instance.file)) {
       if (instance.ext == '.js') {
-        minJS(instance.file);
+        core.minJS(instance.file);
         core.obfuscate(instance.file);
       } else if (instance.ext == '.css') {
-        minCSS(instance.file);
+        core.minCSS(instance.file);
+      } else if (instance.ext == '.scss') {
+        core.scss(instance.file);
       }
+      //console.log(instance);
     }
     delete instances[0]; //force delete
   }
@@ -145,11 +90,14 @@ var runningLibs = null;
 function isLibs(file) {
   var is = file.includes('/libs/js');
   if (is) { // framework library true
-    log(chalk.red('Library framework'));
-    const tsconfig = core.root() + '/tsconfig.build.json';
     if (!runningLibs) {
+      log(chalk.red('Library framework'));
+      const tsconfig = core.root() + '/tsconfig.build.json';
       runningLibs = shell.exec(`tsc -p ${tsconfig}`, function(err, stdout, stderr) {
         runningLibs = null;
+        if (!err) {
+          core.minJS(core.root() + `/src/MVC/themes/assets/js/app.js`);
+        }
       });
     }
     return true;
@@ -173,9 +121,8 @@ function watch(dir) {
   }, function(event, filename) {
     if (filename && event == 'change') {
       var filechanged = slash(dir + filename);
-      var allowed = !filechanged.endsWith('min.js') &&
-        /\.(js|ts)$/s.test(filechanged) &&
-        fs.existsSync(filechanged);
+      var allowed = !/\.min\.(js|ts|scss|sass|less|css)$/s.test(filechanged) &&
+        /\.(js|ts|scss|sass|less|css)$/s.test(filechanged);
       if (allowed) {
         var push = true;
         instances.filter(function(instance) {

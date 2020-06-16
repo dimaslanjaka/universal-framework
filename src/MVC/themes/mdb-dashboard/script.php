@@ -35,11 +35,11 @@ if (defined('materialize')) {
 }
 // include content css
 if (isset($content) && file_exists($content)) {
-  $contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
+  //$contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
   $contentCSS = preg_replace('/\.php$/s', '.css', $content);
   $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
   echo '<style>';
-  \MVC\helper::sass($contentSCSS);
+  //\MVC\helper::sass($contentSCSS);
   \MVC\helper::include_asset($contentMinCSS, $contentCSS);
   echo '</style>';
 }
@@ -133,3 +133,5 @@ echo $element->js([
 </script>
 <?php
 //include __DIR__ . '/bg.php';
+
+\MVC\alert::init()->final(true);

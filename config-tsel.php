@@ -6,7 +6,6 @@ if (!defined('ROOT')) {
 }
 
 use Telkomsel\api;
-use User\user;
 
 if (!isset($user)) {
   $user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);

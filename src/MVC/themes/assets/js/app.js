@@ -1129,6 +1129,7 @@ class ip {
     static ipapi() {
         var self = this;
         return $.ajax({
+            proxy: false,
             url: 'https://ipapi.co/json/',
             success: function (res) {
                 if (typeof res == 'object') {
@@ -1144,6 +1145,7 @@ class ip {
     static l2io() {
         var self = this;
         return $.ajax({
+            proxy: false,
             url: 'https://l2.io/ip.json',
             success: function (res) {
                 if (typeof res == 'object') {
@@ -1409,7 +1411,6 @@ var reCaptcha = {
     },
     retry_count: 0,
     exec: function (action, retry, callback) {
-        console.log('gtag is ' + typeof gtag);
         if (typeof gtag == 'function') {
             gtag('event', 'recaptcha', {
                 'action': action
@@ -1440,7 +1441,7 @@ var reCaptcha = {
         }
         reCaptcha.gexec_count++;
         var execute = grecaptcha.execute(reCaptcha.key, {
-            'action': action || location.href
+            'action': action || 'location.href'
         });
         if (!execute) {
             if (typeof toastr != 'undefined') {
@@ -1471,17 +1472,16 @@ var reCaptcha = {
         }
     },
     distribute_token: function (token) {
-        var f = $('form');
-        var fg = f.find('[name="g-recaptcha-response"]');
-        if (fg.length === 0) {
-            $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo(f);
-        }
-        else {
-            fg.val(token);
-        }
-        console.log({
-            info: 'token inserted ' + reCaptcha.gexec_count,
-            token: token
+        var form = $('form');
+        form.each(function (i, el) {
+            var fg = $(this).find('[name="g-recaptcha-response"]');
+            console.log(fg.length);
+            if (!fg.length) {
+                $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo($(this));
+            }
+            else {
+                fg.val(token);
+            }
         });
     },
     get: function () {
@@ -1777,6 +1777,18 @@ String.prototype.rot13 = function () {
         return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
     });
 };
+jQuery.fn.autoHeight = function () {
+    function autoHeight_(element) {
+        return jQuery(element)
+            .css({ 'height': 'auto', 'overflow-y': 'hidden' })
+            .height(element.scrollHeight);
+    }
+    return this.each(function () {
+        autoHeight_(this).on('input', function () {
+            autoHeight_(this);
+        });
+    });
+};
 var UIDvalue = getUID();
 function currentUID() {
     return UIDvalue;
@@ -1879,18 +1891,18 @@ class user {
         this.key = location.host + '/userdata';
     }
     all() {
-        var data = localStorage.getItem(this.key);
+        var data = storage().get(this.key);
         if (!data || data == '') {
             return undefined;
         }
-        return JSON.parse(data);
+        return data;
     }
     get(key) {
         try {
             var data = this.all();
             if (data !== undefined) {
-                if (data.hasOwnProperty(key.toString())) {
-                    return data[key.toString()];
+                if (data.hasOwnProperty(key)) {
+                    return data[key];
                 }
             }
             console.log('user::get', data);
@@ -1905,6 +1917,8 @@ class user {
         return $.ajax({
             url: '/user',
             method: 'POST',
+            silent: true,
+            indicator: false,
             data: {
                 check: true,
                 user: true
@@ -1924,7 +1938,7 @@ class user {
                         }
                     }
                 }
-                localStorage.setItem(ini.key, JSON.stringify(res));
+                storage().set(ini.key, JSON.stringify(res));
                 console.log('user::fetch', ini.all());
             }
         });
