@@ -94,7 +94,7 @@ body {
 
 @for $item from 1 through 40 {
   .grid-item:nth-child(#{$item}) {
-    background-image: url('https://unsplash.it/900/900?image=1#{$item}');
+    background-image: url('/img/unsplash?url=https://unsplash.it/900/900?image=1#{$item}');
   }
 }
 
