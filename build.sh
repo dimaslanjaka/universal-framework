@@ -6,7 +6,7 @@ RED='\033[0;41;30m'
 STD='\033[0;0;39m'
 
 node libs/compiler/git.js
-read -p "Press [Enter] key to continue..." fackEnterKey
+#read -p "Press [Enter] key to continue..." fackEnterKey
 
 :'
 pause() {
