@@ -18,22 +18,21 @@ Git.Repository.open(core.root())
       statuses.forEach(function(file) {
         var path = file.path();
         var status = statusToText(file);
+        cmd += `git add ${path}\ngit commit -m Update ${path}\n`;
         if (file.isModified()) {
           if (/\.(js|css|scss)/s.test(path)) {
             runmin = true;
-            cmd += `git add ${path}\ngit commit -m Update ${path}\n`;
-
           }
         }
       });
+      var target = `${core.root()}/git.sh`;
+      cmd += '\n\nrm -- "$0"\n';
+      fs.writeFile(target, cmd, function(err) {
+        if (!err) {
+          log(`writed to ${chalk.green(target)}`);
+        }
+      });
       if (runmin) {
-        var target = `${core.root()}/git.sh`;
-        cmd += '\n\nrm -- "$0"\n';
-        fs.writeFile(target, cmd, function(err) {
-          if (!err) {
-            log(`writed to ${chalk.green(target)}`);
-          }
-        });
         require('./single');
       }
     });
