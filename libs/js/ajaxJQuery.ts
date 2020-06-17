@@ -136,7 +136,8 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 */
 
 function processAjaxForm(xhr: JQueryXHR, callback: string | Function) {
-  var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
+  //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
+  var res;
   if (xhr.hasOwnProperty('responseJSON')) {
     res = xhr.responseJSON;
   } else if (xhr.hasOwnProperty('responseText')) {
@@ -196,5 +197,31 @@ function AjaxForm() {
       method: t.attr('method'),
       data: t.serialize()
     }, s, er, c);
+  });
+}
+
+/**
+ * process page asynchronously
+ * @param source_cache url
+ */
+function async_process(source_cache: string) {
+  var xhr = new XMLHttpRequest();
+  $.ajax({
+    url: source_cache,
+    method: 'POST',
+    silent: true,
+    indicator: false,
+    xhr: function () {
+      return xhr;
+    },
+    headers: {
+      'Pragma': 'no-cache',
+      'Cache-Control': 'no-cache',
+      'Refresh-Cache': 'true'
+    },
+    success: function (response) {
+      $("html").html($("html", response).html());
+      console.log(xhr.responseURL);
+    }
   });
 }

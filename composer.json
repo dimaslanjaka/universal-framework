@@ -54,7 +54,8 @@
       "Cookie\\": "src/Cookie/"
     },
     "files": [
-      "src/bootstrap.php"
+      "src/bootstrap.php",
+      "src/ZLIB.php"
     ]
   },
   "license": "MIT"

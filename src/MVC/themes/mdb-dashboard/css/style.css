@@ -66,27 +66,33 @@ pre:before {
 .absolute {
   position: absolute;
 }
+
 .left {
   left: 0;
 }
+
 .right {
   right: 0;
 }
+
 .top {
   top: 0;
 }
+
 .unpoint {
   pointer-events: none;
 }
+
 .bottom {
   bottom: 0;
 }
+
 .card-label {
   position: absolute;
   top: 5px;
   right: 0;
-  color: #fff!important;
-  background-color: #4285f4!important;
+  color: #fff !important;
+  background-color: #4285f4 !important;
   display: inline-block;
   padding: .25em .4em;
   font-size: 75%;
@@ -96,11 +102,12 @@ pre:before {
   white-space: nowrap;
   vertical-align: baseline;
 }
+
 .capital {
   text-transform: capitalize;
 }
 
-.md-form input.form-control[type="datetime-local"] ~ label {
+.md-form input.form-control[type="datetime-local"]~label {
   transform: translateY(-50%);
   font-size: .8rem;
 }

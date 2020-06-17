@@ -12,8 +12,10 @@ declare function array_shuffle(a: Array<any>): any[];
 declare function array_filter(array: []): never[];
 declare class Cookies {
     static get(c_name: string): string | Object | null;
-    static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function): void;
+    static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function): any;
     static one(name: string, value: any, expire: number, callback: Function): void;
+    static decompress(str: string): string;
+    static compress(str: string): string;
 }
 declare function datetime_local(date: any): string;
 declare function isMobile(): boolean;
@@ -33,6 +35,7 @@ declare const ajaxIDLoader: string;
 declare function processAjaxForm(xhr: JQueryXHR, callback: string | Function): void;
 declare function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: null | Function, complete: null | Function): JQuery.jqXHR<any>;
 declare function AjaxForm(): void;
+declare function async_process(source_cache: string): void;
 declare var AjaxSchedulerInit: NodeJS.Timeout;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -144,6 +147,10 @@ declare class app {
     static direct(...args: string[]): void;
     static load(...args: any[]): void;
 }
+declare function base64_encode(str: string): string;
+declare function base64_decode(str: string): string;
+declare function b64EncodeUnicode(str: any): string;
+declare function b64DecodeUnicode(str: any): string;
 declare function bannedebug(): void;
 declare function debug_detect(): void;
 declare function restrict_mode(restrict: boolean): void;
@@ -380,3 +387,8 @@ declare function socket_server(host: any): EventSource;
 declare function socket_stop(): void;
 declare function socket_check(): any;
 declare var socket: any;
+declare class ZLIB {
+    static atos(arr: Uint8Array): string;
+    static decompress(str: any): string;
+    static compress(str: any): string;
+}

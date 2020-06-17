@@ -1,6 +1,7 @@
 /**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ * @see http://localhost/src/Cookies/helper.php
  */
 class Cookies {
   /**
@@ -18,6 +19,7 @@ class Cookies {
           c_end = document.cookie.length;
         }
         var cookie = unescape(document.cookie.substring(c_start, c_end));
+        cookie = base64_decode(cookie);
         if (is_json(cookie)) {
           return JSON.parse(cookie);
         }
@@ -57,13 +59,15 @@ class Cookies {
         cookie_path = path;
       }
     }
-    if (typeof value == 'object' || Array.isArray(value)) {
-      value = JSON.stringify(value);
-    }
-    document.cookie = name + "=" + value + expires + "; path=" + cookie_path;
+    value = JSON.stringify(value);
+    value = base64_encode(JSON.stringify(value));
+    var formatted = name + "=" + value + expires + "; path=" + cookie_path;
+    console.info(`cookie formated: ` + formatted);
+    document.cookie = formatted;
     if (typeof callback == 'function') {
-      callback(arguments);
+      return callback(arguments);
     }
+    return this.get(name);
   }
 
   /**
@@ -77,5 +81,25 @@ class Cookies {
     if (this.get(name) == null) {
       this.set(name, value, expire, 'm', '/', callback);
     }
+  }
+
+  /**
+   * decompress cookie
+   * @param str
+   */
+  static decompress(str: string) {
+    return pako.inflateRaw(str, {
+      to: 'string'
+    });
+  }
+
+  /**
+   * compress cookie
+   * @param str
+   */
+  static compress(str: string) {
+    return pako.deflateRaw(str, {
+      to: 'string'
+    });
   }
 }

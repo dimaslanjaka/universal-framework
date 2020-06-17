@@ -75,7 +75,8 @@ class helper
     }
 
     try {
-      $value = gzdeflate(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 9);
+      //$value = gzdeflate(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 9);
+      $value = base64_encode(json_encode($value));
     } catch (\MVC\Exception $E) {
       $value = $value;
     }
@@ -101,7 +102,8 @@ class helper
       $ret = $_COOKIE[$name];
     }
     if ($ret) {
-      $ret = json_decode(gzinflate($ret), true);
+      //$ret = json_decode(gzinflate($ret), true);
+      $ret = json_decode(base64_decode($ret), true);
     }
     if (!$AllowEmpty && empty($ret)) {
       $ret = null;

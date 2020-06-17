@@ -13,15 +13,11 @@ swal({
     show_toolbox();
   }
 });
-
-Cookies.one('update-cache', new Date(), 5, function() {
-  $.ajax({
-    url: '/superuser/theme/clean?latest=' + new Date(),
-    silent: true,
-    indicator: false
-  });
+$.ajax({
+  url: '/superuser/theme/clean?latest=' + new Date(),
+  silent: true,
+  indicator: false
 });
-
 var admt = $('form#adminToolbox');
 if (admt.length) {
   admt.submit(function(e) {

@@ -35,6 +35,6 @@ class js
       $content = rtrim($content, ';');
     }
 
-    return 'var ' . $variable . ' = ' . $content . ';';
+    return 'var ' . $variable . ' = `' . $content . '`;';
   }
 }

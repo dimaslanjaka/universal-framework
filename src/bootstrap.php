@@ -191,10 +191,11 @@ function remove_root(string $path)
 function shell(string $command)
 {
   $output = null;
+  if (function_exists('shell_exec')) {
+    $output = shell_exec($command);
+  } else
   if (function_exists('exec')) {
     exec($command, $output);
-  } else if (function_exists('shell_exec')) {
-    $output = shell_exec($command);
   }
   return \ArrayHelper\helper::is_iterable($output) ? \JSON\json::json($output, false, false) : $output;
 }

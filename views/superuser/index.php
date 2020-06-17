@@ -89,7 +89,7 @@
             $output = shell("ifconfig | grep 'inet ' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'");
           }
           ?>
-          <pre title="<?= $OS ?>"><?= $output ?></pre>
+          <pre title="<?= $OS ?>"><?= str_replace('\n', "\n", \JSON\json::json(explode("\n", $output), false, true)) ?></pre>
         </div>
       </div>
     </div>

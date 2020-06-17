@@ -94,6 +94,7 @@ class Cookies {
                     c_end = document.cookie.length;
                 }
                 var cookie = unescape(document.cookie.substring(c_start, c_end));
+                cookie = base64_decode(cookie);
                 if (is_json(cookie)) {
                     return JSON.parse(cookie);
                 }
@@ -129,18 +130,30 @@ class Cookies {
                 cookie_path = path;
             }
         }
-        if (typeof value == 'object' || Array.isArray(value)) {
-            value = JSON.stringify(value);
-        }
-        document.cookie = name + "=" + value + expires + "; path=" + cookie_path;
+        value = JSON.stringify(value);
+        value = base64_encode(JSON.stringify(value));
+        var formatted = name + "=" + value + expires + "; path=" + cookie_path;
+        console.info(`cookie formated: ` + formatted);
+        document.cookie = formatted;
         if (typeof callback == 'function') {
-            callback(arguments);
+            return callback(arguments);
         }
+        return this.get(name);
     }
     static one(name, value, expire, callback) {
         if (this.get(name) == null) {
             this.set(name, value, expire, 'm', '/', callback);
         }
+    }
+    static decompress(str) {
+        return pako.inflateRaw(str, {
+            to: 'string'
+        });
+    }
+    static compress(str) {
+        return pako.deflateRaw(str, {
+            to: 'string'
+        });
     }
 }
 if (typeof jQuery.fn.dataTable != 'undefined') {
@@ -453,7 +466,7 @@ $(document).ajaxSuccess(function (event, request, settings) {
     }
 });
 function processAjaxForm(xhr, callback) {
-    var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
+    var res;
     if (xhr.hasOwnProperty('responseJSON')) {
         res = xhr.responseJSON;
     }
@@ -505,6 +518,27 @@ function AjaxForm() {
             method: t.attr('method'),
             data: t.serialize()
         }, s, er, c);
+    });
+}
+function async_process(source_cache) {
+    var xhr = new XMLHttpRequest();
+    $.ajax({
+        url: source_cache,
+        method: 'POST',
+        silent: true,
+        indicator: false,
+        xhr: function () {
+            return xhr;
+        },
+        headers: {
+            'Pragma': 'no-cache',
+            'Cache-Control': 'no-cache',
+            'Refresh-Cache': 'true'
+        },
+        success: function (response) {
+            $("html").html($("html", response).html());
+            console.log(xhr.responseURL);
+        }
     });
 }
 var AjaxSchedulerInit = null;
@@ -967,6 +1001,26 @@ class app {
     }
 }
 app.base = '/src/MVC/themes/assets/js/';
+function base64_encode(str) {
+    const encodedWord = CryptoJS.enc.Utf8.parse(str);
+    const encoded = CryptoJS.enc.Base64.stringify(encodedWord);
+    return encoded;
+}
+function base64_decode(str) {
+    const encodedWord = CryptoJS.enc.Base64.parse(str);
+    const decoded = CryptoJS.enc.Utf8.stringify(encodedWord);
+    return decoded;
+}
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+        return String.fromCharCode(parseInt(p1, 16));
+    }));
+}
+function b64DecodeUnicode(str) {
+    return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
 var debug_run = null;
 function bannedebug() {
     if (debug_run)
@@ -2941,5 +2995,39 @@ function socket_stop() {
 }
 function socket_check() {
     return socket;
+}
+class ZLIB {
+    static atos(arr) {
+        for (var i = 0, l = arr.length, s = '', c; c = arr[i++];)
+            s += String.fromCharCode(c > 0xdf && c < 0xf0 && i < l - 1 ?
+                (c & 0xf) << 12 | (arr[i++] & 0x3f) << 6 | arr[i++] & 0x3f :
+                c > 0x7f && i < l ?
+                    (c & 0x1f) << 6 | arr[i++] & 0x3f :
+                    c);
+        return s;
+    }
+    static decompress(str) {
+        var dec = this.atos(pako.ungzip(base64_decode(str)));
+        console.log({
+            'ZLIB.decompress': {
+                target: str,
+                result: dec
+            }
+        });
+        return dec;
+    }
+    static compress(str) {
+        var enc = pako.gzip(str, {
+            to: 'string'
+        });
+        enc = base64_encode(enc);
+        console.log({
+            'ZLIB.compress': {
+                target: str,
+                result: enc
+            }
+        });
+        return enc;
+    }
 }
 //# sourceMappingURL=app.js.map

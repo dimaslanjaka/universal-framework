@@ -41,14 +41,10 @@ $theme = new themes();
 $theme->set('mdb-dashboard');
 
 $theme_manager = 'theme-manager';
-$application_folder = '';
-$view_folder = 'views';
-$view_folder = __DIR__ . DIRECTORY_SEPARATOR . $application_folder . DIRECTORY_SEPARATOR . $view_folder . DIRECTORY_SEPARATOR;
+$application_folder = empty(CONFIG['app']['root']) ? __DIR__ : ROOT;
+$view_folder = CONFIG['app']['views'];
+$view_folder = "{$application_folder}/{$view_folder}/";
 define('VIEWPATH', $view_folder);
-
-if ($theme->isJSONRequest()) {
-	header('Content-type: application/json');
-}
 
 $rc = new router();
 
@@ -280,9 +276,12 @@ function identifier()
 
 function page_cache()
 {
-	return normalize_path(ROOT . '/tmp/html/'
-		. '/' . identifier()
-		. '.html');
+	$path = ROOT . '/tmp/html/';
+	$path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
+	$path .= '/' . identifier();
+	$path .= '.html';
+	$path = normalize_path($path);
+	return $path;
 }
 
 function htmlmin(string $ori)
@@ -311,8 +310,7 @@ function load_cache(string $page_cache)
 {
 	global $theme;
 	$optimized_buffer = \Filemanager\file::get($page_cache);
-	$script = file_get_contents(__DIR__ . '/index-optimizer.min.js');
-	$add = trim("<script>$script</script>");
+	$add = trim("<script>async_process(location.href);</script>");
 	/**
 	 * @var string Load admin toolbox
 	 */

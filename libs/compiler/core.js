@@ -40,14 +40,14 @@ class core {
     if (type) {
       exec(`cd ${dir} && php libs/bin/composer/composer.phar ${type}`, (error, stdout, stderr) => {
         if (error) {
-          console.log(`error: ${error.message}`);
+          log(`error: ${error.message}`);
           return;
         }
         if (stderr) {
-          console.log(`stderr: ${stderr}`);
+          log(`stderr: ${stderr}`);
           return;
         }
-        console.log(`stdout: ${stdout}`);
+        log(`stdout: ${stdout}`);
       });
     }
   }
@@ -131,7 +131,7 @@ class core {
           read.forEach(file => {
             if (!/\.min\.js$/s.test(file) && /\.js$/s.test(file)) {
               js.push(file);
-              //console.log(file);
+              //log(file);
             }
           });
           js.unique().forEach(function(file) {
@@ -147,7 +147,7 @@ class core {
    * @param {string} filejs
    */
   static obfuscate(filejs) {
-    if (!/\.obfuscated\.js/s.test(filejs)) {
+    if (!/\.obfuscated\.js$/s.test(filejs) && filejs.endsWith('.js')) {
       var output = filejs.replace(/\.js/s, '.obfuscated.js');
       fs.readFile(filejs, {
         encoding: "utf-8"
@@ -183,7 +183,7 @@ class core {
       return;
     }
     var min = file.replace(/\.js$/s, '.min.js');
-    //console.log(min);
+    //log(min);
     fs.readFile(file, {
       encoding: 'utf-8'
     }, function(err, data) {
@@ -236,25 +236,65 @@ class core {
             var input = slash(file).replace(self.root(), '');
             var output = slash(min).replace(self.root(), '');
             if (terserResult.error) {
-              console.log(`Minifying ${input} to ${output} error.`, terserResult.error);
-              fs.unlinkSync(min);
+              log(`${chalk.yellow(input)} > ${chalk.yellowBright(output)} ${chalk.red('fail')}`);
+              fs.exists(min, function(ex) {
+                if (ex) {
+                  fs.unlinkSync(min);
+                  log(`${chalk.yellowBright(min)} ${chalk.redBright('deleted')}`);
+                }
+              });
             } else {
               fs.writeFileSync(min, terserResult.code, 'utf8');
-              console.log(`${input} to ${output} ${chalk.green('success')}`);
+              log(`${chalk.yellow(input)} > ${chalk.yellowBright(output)} ${chalk.green('success')}`);
             }
           }
         });
       } else {
-        console.log(err);
+        log(err);
       }
     });
   }
 
   /**
-   * minify css to *.min.css version
+   * smart delete file
    * @param {string} file
    */
-  static minCSS(file) {
+  static unlink(file) {
+    var self = this;
+    fs.exists(file, function(exists) {
+      if (exists) {
+        fs.unlink(file, function(err) {
+          if (!err) {
+            file = slash(file).replace(self.root(), '');
+            log(`${chalk.whiteBright(file)} ${chalk.redBright('deleted')}`);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * format path to unix path
+   * @param {string} path
+   * @returns {string|null}
+   */
+  static normalize(path) {
+    return typeof slash(path) == 'string' ? slash(path).replace(/\/{2,99}/s, '/') : null;
+  }
+
+  /**
+   * Determine OS is windows
+   */
+  static isWin() {
+    return process.platform === "win32";
+  }
+
+  /**
+   * minify css to *.min.css version
+   * @param {string} file
+   * @param {Function|null} callback
+   */
+  static minCSS(file, callback) {
     fs.exists(file, function(exists) {
       if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
         var min = file.replace(/\.css/s, '.min.css');
@@ -274,9 +314,13 @@ class core {
                   encoding: "utf-8"
                 }, function(err) {
                   if (!err) {
-                    file = file.replace(core.root(), '');
-                    min = min.replace(core.root(), '');
-                    log(`${file} > ${min} ${chalk.green('success')}`);
+                    if (typeof callback != 'function') {
+                      file = file.replace(core.root(), '');
+                      min = min.replace(core.root(), '');
+                      log(`${chalk.blueBright(file)} > ${chalk.blueBright(min)} ${chalk.green('success')}`);
+                    } else {
+                      callback(true, file, min);
+                    }
                   }
                 });
               } else {

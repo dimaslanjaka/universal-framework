@@ -96,15 +96,18 @@ if ($style) {
 // application javascript
 echo $element->js([
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js',
+    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
   ])),
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
+  ]))
 ]);
 ?>
 <script>
   <?php
   //\MVC\helper::include_asset(__DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js');
   if (isset($content) && file_exists($content)) {
-    \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
+    //\MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
     if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
       include $var['script'];
     }

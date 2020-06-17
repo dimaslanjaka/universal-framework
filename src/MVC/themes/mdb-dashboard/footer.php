@@ -23,10 +23,11 @@
       <div class="col-md-6 mb-md-0 mb-3">
 
         <!-- Content -->
-        <h5 class="text-uppercase font-weight-bold">Footer text 2</h5>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio deserunt fuga perferendis modi earum
-          commodi aperiam temporibus quod nulla nesciunt aliquid debitis ullam omnis quos ipsam, aspernatur id
-          excepturi hic.</p>
+        <h5 class="text-uppercase font-weight-bold">Information</h5>
+        <p>
+          By accessing this website, you accept our cookie policies. Recommended using browser <b>chrome</b> with <b>disabled LITE mode</b>.
+          <div id="debug-container"></div>
+        </p>
 
       </div>
       <!-- Grid column -->
