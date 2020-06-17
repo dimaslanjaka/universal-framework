@@ -21,7 +21,7 @@ show_menus() {
     echo "~~~~~~~~~~~~~~~~~~~~~"
     echo "   Library builder   "
     echo "~~~~~~~~~~~~~~~~~~~~~"
-    echo "1. Compile JS src/MVC/themes/assets/js/{app.js,app.min.js}"
+    echo "1. Single compiler"
     echo "2. Watch Compile JS src/MVC/themes/assets/js/{app.js,app.min.js}"
     echo "3. Exit"
 }
@@ -34,11 +34,11 @@ read_options() {
     read -p "Enter choice [ 1 - 3] " choice
     case $choice in
     1)
-        npm run index
+        node libs/compiler/single.js
         read -p "Press [Enter] key to continue..."
         ;;
     2)
-        npm run index-watch
+        npm run index
         read -p "Press [Enter] key to continue..."
         ;;
     3) exit 0 ;;

@@ -21,7 +21,6 @@
     ".vscode": true
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.check.npmIsInstalled": true,
   "npm.packageManager": "npm",
   "task.problemMatchers.neverPrompt": true,
   "git.enabled": true

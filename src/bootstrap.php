@@ -219,3 +219,8 @@ function read_file(string $path)
     }
   }
 }
+
+function htmlcomment()
+{
+  return '<comment style="display:none"> ' . json_encode(func_get_args(), JSON_PRETTY_PRINT) . ' </comment>';
+}
