@@ -22,7 +22,7 @@ clear();
 
 var views = core.readdir(core.root() + `/${config.app.views}`);
 var assets = views.filter(function(item) {
-  return /\.(js|scss|css)$/.test(item) && !/\.min\.(js|css)$/.test(item) && !/\-ori|\-original|\-backup|\.bak/s.test(item);
+  return /\.(js|scss|css|sass|less)$/.test(item) && !/\.min\.(js|css)$/.test(item) && !/\-ori|\-original|\-backup|\.bak/s.test(item);
 }).map(function(asset) {
   return slash(asset);
 });
@@ -64,6 +64,8 @@ assets.map(
           core.unlink(obfuscatedminjs);
         }
       }
+    } else if (item.endsWith('.scss') && !item.endsWith('.min.scss')) {
+      core.scss(item);
     }
   }
 );
