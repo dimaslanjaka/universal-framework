@@ -3,58 +3,41 @@ const core = require('./core');
 const chalk = require('chalk');
 const log = console.log;
 const clear = console.clear;
+const shell = require('child_process');
+const fs = require('fs');
 clear();
 
-var cmd = '';
+var cmd = `cd ${core.root()}\n`;
 
 Git.Repository.open(core.root())
   .then(function(repo) {
     repository = repo;
     var status = repo.getStatus();
-    //var commits = repo.getMasterCommit();
     status.then(function(statuses) {
       var runmin = false;
-      var commitCheck = new Promise((resolve, reject) => {
-        statuses.forEach(function(file) {
-          var path = file.path();
-          var status = statusToText(file);
-          if (file.isModified()) {
-            if (/\.(js|css|scss)/s.test(path)) {
-              runmin = true;
-              cmd += `
-              git add ${path}
-              git commit -m Update ${path}
-              `;
-            }
+      statuses.forEach(function(file) {
+        var path = file.path();
+        var status = statusToText(file);
+        if (file.isModified()) {
+          if (/\.(js|css|scss)/s.test(path)) {
+            runmin = true;
+            cmd += `git add ${path}\ngit commit -m Update ${path}\n`;
+
           }
-        });
-      });
-      commitCheck.then(function() {
-        if (runmin) {
-          require('./single');
         }
       });
+      if (runmin) {
+        var target = `${core.root()}/git.sh`;
+        fs.writeFile(target, cmd, function(err) {
+          if (!err) {
+            log(`writed to ${chalk.green(target)}`);
+          }
+        });
+        require('./single');
+      }
     });
 
   });
-/*
-Git.Repository.open(core.root())
-              .then(function(repository) {
-                return repository.refreshIndex()
-              })
-              .then(function(index) {
-                return index.addByPath(path)
-                  .then(function() {
-                    return index.write();
-                  })
-                  .then(function() {
-                    return index.writeTree();
-                  });
-              })
-              .then(function(oid) {
-                return repository.createCommit('HEAD', signature, signature, `Update ${path}`, oid, []);
-              });;*/
-
 
 /**
  * get status text
