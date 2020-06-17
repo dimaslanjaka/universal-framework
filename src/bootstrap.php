@@ -110,6 +110,13 @@ function disable_direct_access_php(string $file)
   }
 }
 
+/**
+ * Create nested folder recursively.
+ *
+ * @param string $dir
+ *
+ * @return string $dir
+ */
 function resolve_dir(string $dir)
 {
   $dir = normalize_path($dir);
@@ -123,14 +130,21 @@ function resolve_dir(string $dir)
  *
  * @param string $dest
  * @param int    $permissions
- * @param bool   $create
+ * @param bool   $recursive
  */
-function recursive_mkdir(string $dest, $permissions = 0755, $create = true)
+function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
 {
   if (!is_dir(dirname($dest))) {
-    recursive_mkdir(dirname($dest), $permissions, $create);
-  } elseif (!is_dir($dest)) {
-    mkdir($dest, $permissions, $create);
+    recursive_mkdir(dirname($dest), $permissions, $recursive);
+  }
+  if (!file_exists($dest)) {
+    try {
+      mkdir($dest, $permissions, $recursive);
+
+      return true;
+    } catch (\Throwable $th) {
+      return false;
+    }
   } else {
     return true;
   }
@@ -169,10 +183,9 @@ function normalize_path(string $path)
 }
 
 /**
- * Remove root from path
+ * Remove root from path.
  *
  * @param string $path
- * @return void
  */
 function remove_root(string $path)
 {
@@ -183,9 +196,10 @@ function remove_root(string $path)
 }
 
 /**
- * Shell runner
+ * Shell runner.
  *
  * @param string $command
+ *
  * @return string|null
  */
 function shell(string $command)
@@ -193,29 +207,54 @@ function shell(string $command)
   $output = null;
   if (function_exists('shell_exec')) {
     $output = shell_exec($command);
-  } else
-  if (function_exists('exec')) {
+  } elseif (function_exists('exec')) {
     exec($command, $output);
   }
+
   return \ArrayHelper\helper::is_iterable($output) ? \JSON\json::json($output, false, false) : $output;
 }
 
 /**
- * Read file contents
+ * Read file contents.
  *
  * @param string $path
+ * @param mixed  $callback if null not exist return this callback
+ *
  * @return string|null NULL if not exists
  */
-function read_file(string $path)
+function read_file(string $path, $callback = null)
 {
   if (file_exists($path) && is_readable($path)) {
     if (function_exists('file_get_contents')) {
       return file_get_contents($path);
     } else {
-      $handle = fopen($path, "r");
+      $handle = fopen($path, 'r');
       $contents = fread($handle, filesize($path));
       fclose($handle);
+
       return $contents;
+    }
+  }
+  if (is_callable($callback)) {
+    return call_user_func($callback, $path);
+  }
+
+  return $callback;
+}
+
+function write_file(string $path, $content, bool $force = false)
+{
+  resolve_dir(dirname($path));
+  if (\ArrayHelper\helper::is_iterable($content)) {
+    $content = json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+  }
+  if ($force || !file_exists($path)) {
+    if (!function_exists('file_put_contents')) {
+      $fh = fopen($path, 'wa+');
+      fwrite($path, $content);
+      fclose($fh);
+    } else {
+      file_put_contents($path, $content);
     }
   }
 }
