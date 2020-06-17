@@ -17,6 +17,18 @@ if (isset($_REQUEST['url'])) {
 
 $url = $api->url;
 $cache = ROOT . '/tmp/img/' . md5($url);
+if (file_exists($cache) && !headers_sent()) {
+  header_remove('x-powered-by');
+  header_remove('pragma');
+  send_cache_header($cache);
+  $lastModified = gmdate('D, d M Y H:i:s', filemtime($cache)) . ' GMT';
+  header("Cache-Control: private");
+  header("Content-type: image/jpeg");
+  header("ETag: " . md5_file($cache));
+  header("Last-Modified: $lastModified");
+  // 1 day expires
+  header('Expires: ' . gmdate("D, d M Y H:i:s", ((60 * 60 * 24 * 1) + strtotime($lastModified))));
+}
 
 if (!isset($res[$url])) {
   $api->set_method('get');
@@ -40,8 +52,6 @@ if (!isset($res[$url])) {
   $api->set_url($res[$url])->set_method('get')->exec();
   writeCache();
 }
-
-send_cache_header($cache);
 
 function writeCache()
 {
