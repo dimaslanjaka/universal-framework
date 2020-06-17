@@ -31,6 +31,20 @@ class request extends Curl
     return $this;
   }
 
+  public function set_url(string $url)
+  {
+    $this->setUrl($url);
+
+    return $this;
+  }
+
+  public function set_method(string $method)
+  {
+    $this->setOpt(CURLOPT_CUSTOMREQUEST, strtoupper($method));
+
+    return $this;
+  }
+
   public static function getInstance($base = null)
   {
     if (null === self::$_instance) {
@@ -161,19 +175,19 @@ class request extends Curl
       curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
       if (isset($opt['proxy_type'])) {
         switch ($opt['proxy_type']) {
-      case 'socks5':
-      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-      break;
-      case 'http':
-      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-      break;
-      case 'https':
-      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
-      break;
-      case 'socks4':
-      curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
-      break;
-    }
+          case 'socks5':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            break;
+          case 'http':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+            break;
+          case 'https':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
+            break;
+          case 'socks4':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
+            break;
+        }
       }
     }
 
