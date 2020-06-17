@@ -39,8 +39,9 @@ assets.map(
     if (fs.existsSync(config)) {
       config = require(config);
     }
-
-    if (item.endsWith('.css') && !item.endsWith('.min.css')) {
+    if (item.endsWith('.scss') && !item.endsWith('.min.scss')) {
+      core.scss(item);
+    } else if (item.endsWith('.css') && !item.endsWith('.min.css')) {
       core.minCSS(item);
     } else if (item.endsWith('.js') && !item.endsWith('.min.js')) {
       if (!item.endsWith('.babel.js')) {
@@ -64,8 +65,6 @@ assets.map(
           core.unlink(obfuscatedminjs);
         }
       }
-    } else if (item.endsWith('.scss') && !item.endsWith('.min.scss')) {
-      core.scss(item);
     }
   }
 );
