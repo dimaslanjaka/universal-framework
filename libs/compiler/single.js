@@ -45,22 +45,28 @@ assets.map(
     } else if (item.endsWith('.js') && !item.endsWith('.min.js')) {
       if (!item.endsWith('.babel.js')) {
         core.minJS(item);
-        if (typeof config == 'object' && config.hasOwnProperty('obfuscate')) {
-          if (config.obfuscate) {
-            core.obfuscate(item);
+        var deleteObfuscated = false;
+        if (typeof config == 'object') {
+          if (config.hasOwnProperty('obfuscate')) {
+            if (config.obfuscate) {
+              core.obfuscate(item);
+            } else {
+              deleteObfuscated = true;
+            }
           } else {
-            var obfuscatedjs = item.replace(/\.js$/s, '.obfuscated.js');
-            var obfuscatedminjs = item.replace(/\.js$/s, '.obfuscated.min.js');
-            core.unlink(obfuscatedjs);
-            core.unlink(obfuscatedminjs);
+            deleteObfuscated = true;
           }
+        }
+        if (deleteObfuscated) {
+          var obfuscatedjs = item.replace(/\.js$/s, '.obfuscated.js');
+          var obfuscatedminjs = item.replace(/\.js$/s, '.obfuscated.min.js');
+          core.unlink(obfuscatedjs);
+          core.unlink(obfuscatedminjs);
         }
       }
     }
   }
 );
-
-return;
 
 /**
  * Typescript library builder and minifier
