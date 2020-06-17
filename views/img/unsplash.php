@@ -10,6 +10,9 @@ $api = new \Extender\request('https://unsplash.it');
 
 if (isset($_REQUEST['url'])) {
   $api->setUrl(urldecode(trim($_REQUEST['url'])));
+} else if (isset($_REQUEST['label'])) {
+  $api->setUrl('https://source.unsplash.com/1600x900/?' . $_REQUEST['label']);
+  exit;
 }
 
 $url = $api->url;
