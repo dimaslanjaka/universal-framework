@@ -28,6 +28,7 @@ Git.Repository.open(core.root())
       });
       if (runmin) {
         var target = `${core.root()}/git.sh`;
+        cmd += '\n\nrm -- "$0"\n';
         fs.writeFile(target, cmd, function(err) {
           if (!err) {
             log(`writed to ${chalk.green(target)}`);
