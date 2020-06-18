@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dimaslanjaka/universal-framework.png?branch=master)](https://travis-ci.org/dimaslanjaka/universal-framework)
 
-[![Known Vulnerabilities](https://snyk.io/test/github/serkanyersen/sync/badge.svg)](https://snyk.io/test/github/serkanyersen/sync)
+[![Known Vulnerabilities](https://snyk.io/test/github/serkanyersen/sync/badge.svg)](https://snyk.io/test/github/dimaslanjaka/universal-framework)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fserkanyersen%2Fsync.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fserkanyersen%2Fsync?ref=badge_shield)
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/dimaslanjaka/universal-framework/graphs/commit-activity)
