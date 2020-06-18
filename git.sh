@@ -3,12 +3,8 @@ git add config.json
 git commit -m "Update config.json"
 git add git.sh
 git commit -m "Update git.sh"
-git add index.php
-git commit -m "Update index.php"
-git add libs/compiler/git.js
-git commit -m "Update libs/compiler/git.js"
-git add libs/js/user.ts
-git commit -m "Update libs/js/user.ts"
+git add libs/js/devtools.js
+git commit -m "Update libs/js/devtools.js"
 git add libs/js/utility.js
 git commit -m "Update libs/js/utility.js"
 git add src/MVC/themes/assets/js/app.d.ts
