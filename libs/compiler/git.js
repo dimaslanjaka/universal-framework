@@ -18,7 +18,7 @@ Git.Repository.open(core.root())
       statuses.forEach(function(file) {
         var path = file.path();
         var status = statusToText(file);
-        cmd += `git add ${path}\ngit commit -m Update ${path}\n`;
+        cmd += `git add ${path}\ngit commit -m "Update ${path}"\n`;
         if (file.isModified()) {
           if (/\.(js|css|scss)/s.test(path)) {
             runmin = true;
