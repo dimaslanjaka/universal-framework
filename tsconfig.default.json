@@ -1,0 +1,29 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "module": "commonjs",
+    "target": "es6"
+  },
+  "include": [
+    "./libs/**/*",
+    "./views/**/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "assets",
+    "tmp",
+    "**/*.min.js",
+    "**.min.js",
+    "src/MVC/themes/assets/**/*"
+  ],
+  "typeAcquisition": {
+    "include": [
+      "jquery",
+      "toastr",
+      "CryptoJS",
+      "Popper",
+      "Require"
+    ]
+  }
+}

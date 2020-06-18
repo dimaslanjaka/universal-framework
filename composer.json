@@ -1,0 +1,79 @@
+{
+  "name": "dimaslanjaka/universal-framework",
+  "description": "Framework PHPJS full typehinting support with easy helper",
+  "authors": [
+    {
+      "name": "Dimas Lanjaka",
+      "email": "dimaslanjaka@gmail.com",
+      "homepage": "https://github.com/dimaslanjaka/universal-framework",
+      "role": "Developer"
+    }
+  ],
+  "bin": [
+    "libs/bin/php-obfuscate"
+  ],
+  "require": {
+    "php": ">=7",
+    "ext-curl": "*",
+    "php-curl-class/php-curl-class": "^8.8",
+    "guzzlehttp/guzzle": "~6.0",
+    "google/apiclient": "^2.4",
+    "cboden/ratchet": "^0.4.2",
+    "phpseclib/mcrypt_compat": "^1.0",
+    "ralouphie/getallheaders": "^3.0",
+    "kelvinmo/simplejwt": "^0.2.5",
+    "google/cloud-core": "^1.36",
+    "datatables.net/editor-php": "^1.9",
+    "scssphp/scssphp": "^1.1",
+    "phpseclib/phpseclib": "~2.0",
+    "nikic/php-parser": "~1@dev",
+    "symfony/console": "~2.5",
+    "symfony/dependency-injection": "~2.5",
+    "symfony/config": "~2.5",
+    "symfony/yaml": "~2.5",
+    "symfony/event-dispatcher": "~2.5"
+  },
+  "suggest": {
+    "paragonie/random_compat": "Provides better randomness in PHP 5.x"
+  },
+  "require-dev": {
+    "mikey179/vfsstream": "1.1.*",
+    "phpunit/phpunit": "^5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Telkomsel\\": "src/Telkomsel/",
+      "Indosat\\": "src/Indosat/",
+      "simplehtmldom\\": "src/simplehtmldom/",
+      "Facebook\\": "src/Facebook/",
+      "Extender\\": "src/Extender/",
+      "Naneau\\Obfuscator\\": "src/Naneau/Obfuscator/",
+      "User\\": "src/User/",
+      "DB\\": "src/DB/",
+      "Filemanager\\": "src/Filemanager/",
+      "Session\\": "src/Session/",
+      "Google\\": "src/Google/",
+      "IMEI\\": "src/IMEI/",
+      "Netscape\\": "src/Netscape/",
+      "MVC\\": "src/MVC/",
+      "JSON\\": "src/JSON/",
+      "HTML\\": "src/HTML/",
+      "Crypto\\": "src/Crypto/",
+      "Accounting\\": "src/Accounting/",
+      "ArrayHelper\\": "src/ArrayHelper/",
+      "DDOS\\": "src/DDOS/",
+      "Proxy\\": "src/Proxy/",
+      "Typehint\\": "src/Typehint/",
+      "Cookie\\": "src/Cookie/"
+    },
+    "files": [
+      "src/bootstrap.php",
+      "src/ZLIB.php",
+      "src/SmartDOMDocument.php",
+      "src/SmartDOMXpath.php",
+      "src/JSLikeHTMLElement.php",
+      "src/globals.php"
+    ]
+  },
+  "license": "MIT"
+}

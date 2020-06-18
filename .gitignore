@@ -1,0 +1,40 @@
+# Ignore major trash
+package-lock.json
+src/Indosat/otp/
+src/Telkomsel/otp/
+src/Extender/otp/
+src/Sessions/sessions/
+composer.lock
+config-tsel.php
+config-m3.php
+
+# Ignore trash from hashing
+hash_*
+trx_*
+__rar*
+
+# Ignore local configuration (Dont be suicide)
+.vscode/sftp*
+.vscode/vps*
+.vscode/*.bat
+sync-config.json
+sftp.json
+sftp*.json
+config.json
+
+# Ignore output builder
+out/*
+node_modules/
+vendor/
+tmp/
+test/
+processed/
+
+# No archives allowed
+*.rar
+*.zip
+*.gz
+*.tar
+
+# Allow
+!libs/bin/composer/

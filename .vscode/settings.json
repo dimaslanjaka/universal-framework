@@ -1,0 +1,27 @@
+{
+  "python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+  "javascript.validate.enable": true,
+  "editor.renameOnType": true,
+  "git.allowForcePush": true,
+  "git.enableSmartCommit": true,
+  "files.associations": {
+    "*.extension": "language"
+  },
+  "typescript.tsc.autoDetect": "off",
+  "grunt.autoDetect": "off",
+  "jake.autoDetect": "off",
+  "gulp.autoDetect": "off",
+  "npm.autoDetect": "off", //switch to OFF, if you want automatic minifier and obfuscator
+  "files.exclude": {
+    "out": false,
+    ".vscode": false
+  },
+  "search.exclude": {
+    "out": true,
+    ".vscode": true
+  },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "npm.packageManager": "npm",
+  "task.problemMatchers.neverPrompt": true,
+  "git.enabled": true
+}
