@@ -3,10 +3,18 @@ Array.prototype.forEach.call(textAreas, function(elem) {
   elem.placeholder = elem.placeholder.replace(/\\n/g, '\n');
 });
 
+/**
+ * Check current framework running at localhost
+ */
 function is_localhost() {
   var is_local = location.host.match(/^localhost|^127|\.io$/s);
   return is_local;
 }
+
+function is_development() {
+  return document.getElementsByTagName('html');
+}
+console.log(is_development());
 
 /**
  * Force HTTPS
