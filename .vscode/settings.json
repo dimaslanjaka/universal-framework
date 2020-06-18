@@ -11,7 +11,7 @@
   "grunt.autoDetect": "off",
   "jake.autoDetect": "off",
   "gulp.autoDetect": "off",
-  "npm.autoDetect": "off", //switch to OFF, if you want automatic minifier and obfuscator
+  "npm.autoDetect": "off",
   "files.exclude": {
     "out": false,
     ".vscode": false
@@ -20,6 +20,8 @@
     "out": true,
     ".vscode": true
   },
+  "php-cs-fixer.executablePath": "/libs/bin/php-cs-fixer/php-cs-fixer.phar",
+  "php-cs-fixer.executablePathWindows": "/libs/bin/php-cs-fixer/php-cs-fixer.bat",
   "typescript.tsdk": "./node_modules/typescript/lib",
   "npm.packageManager": "npm",
   "task.problemMatchers.neverPrompt": true,
