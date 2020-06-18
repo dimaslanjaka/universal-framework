@@ -5,9 +5,12 @@ const core = require('./libs/compiler/core');
 const process = require('process');
 const fs = require('fs');
 const config = require('./config.json');
+const argv = require('yargs').argv;
+const spawn = require('child_process').spawn;
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
+ * Minify Views Assets
  */
 gulp.task('build', function () {
   var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
@@ -26,8 +29,10 @@ gulp.task('build', function () {
 
 // watch libs/js/**/*
 gulp.task("watch", function () {
-  gulp.watch("./libs/js/**/*", ["build"]);
+  gulp.watch(["./libs/js/**/*", "./views/**/*"], gulp.series('build'));
 });
+
+gulp.task('default', gulp.series('build', 'watch'));
 
 /**
  * minify assets
@@ -108,4 +113,3 @@ function multiMinify(assets) {
   );
 }
 
-gulp.task('default', gulp.series('build', 'watch'));

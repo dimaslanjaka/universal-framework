@@ -6,6 +6,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var chokidar = require("chokidar");
+var upath = require("upath");
 var chalk = require("chalk");
 var observatory = require("observatory");
 
@@ -43,6 +44,7 @@ var Watcher = function () {
         };
         this.change = function (path) {
             _this.uploader.uploadFile(path).then(function (remote) {
+                console.log('remote' + remote);
                 _this.tasks[path].done("Done");
             }).catch(function (err) {
                 _this.tasks[path].fail("Fail").details(err.message);
@@ -62,11 +64,27 @@ var Watcher = function () {
                 _this.tasks[path].fail("Fail").details("Error deleting folder " + err);
             });
         };
-        var defaultIgnores = [/node_modules/, /.git/, /.svn/, /bower_components/];
+        var defaultIgnores = [/node_modules/, /.git/, /.svn/, /bower_components/, /vendor/, /tmp/];
+        base = upath.normalizeSafe(config.localPath.replace(__dirname, ''));
+
         this.files = chokidar.watch(base, {
             ignored: defaultIgnores.concat(this.config.ignores),
-            ignoreInitial: true
+            ignoreInitial: true,
+            followSymlinks: true,
+            disableGlobbing: false,
+            usePolling: false,
+            interval: 100,
+            binaryInterval: 300,
+            alwaysStat: false,
+            depth: 99,
+            awaitWriteFinish: {
+                stabilityThreshold: 2000,
+                pollInterval: 100
+            },
+            ignorePermissionErrors: false,
+            persistent: true
         });
+        var log = console.log.bind(console);
 
         ["all", "add", "change", "unlink", "unlinkDir"].forEach(function (method) {
             _this.files.on(method, _this.handler(method));

@@ -9,16 +9,17 @@ export default class Uploader {
 
     constructor(private config: Config, private cli: CLI) { }
 
-    connect(): Promise<string> {
+    connect(): Promise<string> { ///
         this.client = new Client({
             port: this.config.port,
             host: this.config.host,
             username: this.config.username,
             password: this.config.password,
             // agentForward: true,
-            privateKey: this.config.privateKey ? readFileSync(this.config.privateKey).toString() : undefined,
+            privateKey: this.config.privateKey ? readFileSync(upath.normalizeSafe(this.config.privateKey)).toString() : undefined,
             // debug: true
         });
+        //console.log(this.client);
 
         // Triggers the initial connection
         this.client.sftp((err, sftp) => {
@@ -38,7 +39,10 @@ export default class Uploader {
         let normalPath = upath.normalizeSafe(path);
         let normalLocalPath = upath.normalizeSafe(this.config.localPath);
         let remotePath = normalPath.replace(normalLocalPath, this.config.remotePath);
-        return upath.normalizeSafe(remotePath);
+        let pathJoin = upath.join(this.config.remotePath, remotePath);
+        console.log(pathJoin);
+        return upath.normalizeSafe(`${this.config.remotePath}/${remotePath}`);
+        //return upath.normalizeSafe(remotePath);
     }
 
     unlinkFile(fileName: string): Promise<string> {
@@ -82,6 +86,7 @@ export default class Uploader {
     uploadFile(fileName: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             let remote = this.getRemotePath(fileName);
+            console.log(remote);
 
             // Client upload also creates the folder but creates it using local mode
             // in windows it might mean we won't have permissons to save the fileName
@@ -90,7 +95,7 @@ export default class Uploader {
             this.client.mkdir(upath.dirname(remote), { mode: this.config.pathMode }, err => {
                 if (err) {
                     reject({
-                        message: `Could not create ${ upath.dirname(remote) }`,
+                        message: `Could not create ${upath.dirname(remote)}`,
                         error: err
                     });
                 } else {
@@ -98,7 +103,7 @@ export default class Uploader {
                     this.client.upload(fileName, remote, err => {
                         if (err) {
                             reject({
-                                message: `Could not upload ${ remote }`,
+                                message: `Could not upload ${remote}`,
                                 error: err
                             });
                         } else {

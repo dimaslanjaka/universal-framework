@@ -11,7 +11,7 @@
         "**/.git": true,
         "**/.svn": true,
         "**/.DS_Store": true,
-        "**/dist/*": true
+        "**/dist/*": false
     },
     "typescript.tsdk": "./node_modules/typescript/lib",
     "git.enabled": true

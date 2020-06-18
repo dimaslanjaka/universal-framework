@@ -28,7 +28,7 @@ var Uploader = function () {
                 username: this.config.username,
                 password: this.config.password,
 
-                privateKey: this.config.privateKey ? fs_1.readFileSync(this.config.privateKey).toString() : undefined
+                privateKey: this.config.privateKey ? fs_1.readFileSync(upath.normalizeSafe(this.config.privateKey)).toString() : undefined
             });
 
             this.client.sftp(function (err, sftp) {
@@ -48,7 +48,9 @@ var Uploader = function () {
             var normalPath = upath.normalizeSafe(path);
             var normalLocalPath = upath.normalizeSafe(this.config.localPath);
             var remotePath = normalPath.replace(normalLocalPath, this.config.remotePath);
-            return upath.normalizeSafe(remotePath);
+            var pathJoin = upath.join(this.config.remotePath, remotePath);
+            console.log(pathJoin);
+            return upath.normalizeSafe(this.config.remotePath + "/" + remotePath);
         }
     }, {
         key: "unlinkFile",
@@ -101,6 +103,7 @@ var Uploader = function () {
 
             return new Promise(function (resolve, reject) {
                 var remote = _this4.getRemotePath(fileName);
+                console.log(remote);
 
                 _this4.client.mkdir(upath.dirname(remote), { mode: _this4.config.pathMode }, function (err) {
                     if (err) {

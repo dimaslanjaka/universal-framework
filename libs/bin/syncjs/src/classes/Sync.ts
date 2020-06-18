@@ -3,6 +3,9 @@ import CLI from "./CLI";
 import Watcher from "./Watcher";
 import Uploader from "./Uploader";
 import InitConfig from './InitConfig';
+import * as upath from "upath";
+import * as fs from "fs";
+
 const observatory = require("observatory");
 
 export default class Sync {
@@ -29,6 +32,14 @@ export default class Sync {
                 //this.cli.write("Connecting");
                 //this.cli.startProgress();
                 this.task.status("watching files");
+
+                this.config.localPath = upath.normalizeSafe(this.config.localPath);
+                fs.exists(this.config.localPath, function (es) {
+                    if (!es) {
+                        throw new Error("Local path not exists");
+                    }
+                });
+
 
                 // Setup the uploader
                 this.uploader = new Uploader(this.config, this.cli);

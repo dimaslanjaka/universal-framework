@@ -1,4 +1,5 @@
 import * as chokidar from "chokidar"
+import * as upath from "upath";
 import * as chalk from "chalk";
 import { FSWatcher } from "fs";
 import Uploader from "./Uploader";
@@ -17,12 +18,32 @@ export default class Watcher {
         private base: string = config.localPath
     ) {
 
-        let defaultIgnores: Array<string | RegExp> = [/node_modules/, /.git/, /.svn/, /bower_components/];
+        let defaultIgnores: Array<string | RegExp> = [/node_modules/, /.git/, /.svn/, /bower_components/, /vendor/, /tmp/];
+
+        base = upath.normalizeSafe(config.localPath.replace(__dirname, ''));
+
+        /*setInterval(function () {
+            console.log(base);
+        }, 5000);*/
 
         this.files = chokidar.watch(base, {
             ignored: defaultIgnores.concat(this.config.ignores),
-            ignoreInitial: true
+            ignoreInitial: true,
+            followSymlinks: true,
+            disableGlobbing: false,
+            usePolling: false,
+            interval: 100,
+            binaryInterval: 300,
+            alwaysStat: false,
+            depth: 99,
+            awaitWriteFinish: {
+                stabilityThreshold: 2000,
+                pollInterval: 100
+            },
+            ignorePermissionErrors: false,
+            persistent: true
         });
+        const log = console.log.bind(console);
 
         // Attach events
         ["all", "add", "change", "unlink", "unlinkDir"].forEach(method => {
@@ -55,13 +76,14 @@ export default class Watcher {
             } else {
                 path = args[0];
             }
+            //console.log(path);
 
             // If not, continue as ususal
             this[method](...args);
         }
     }
 
-    private all = (event:string, path:string) => {
+    private all = (event: string, path: string) => {
         if (event in this.eventToWord) {
             this.tasks[path] = observatory.add(this.eventToWord[event] + " " + path.replace(this.config.localPath, ""));
             this.tasks[path].status("Uploading");
@@ -78,6 +100,7 @@ export default class Watcher {
 
     private change = (path: string) => {
         this.uploader.uploadFile(path).then(remote => {
+            console.log('remote' + remote);
             this.tasks[path].done("Done");
         }).catch((err) => {
             this.tasks[path].fail("Fail").details(err.message);

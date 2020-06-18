@@ -25,5 +25,5 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "npm.packageManager": "npm",
   "task.problemMatchers.neverPrompt": true,
-  "git.enabled": true
+  "git.enabled": false
 }

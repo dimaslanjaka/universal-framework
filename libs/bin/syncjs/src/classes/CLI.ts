@@ -137,12 +137,12 @@ export default class CLI {
      * Display the workspace for syncjs
      */
     workspace() {
-        // this.clear();
+        //this.clear();
 
         this.write(`Started monitoring \n`);
         this.write(`Quit the script with CONTROL-C".\n`);
         this.write(chalk.magenta("-----------------------------------------------------------\n"));
-        // this.showPrompt();
+        //this.showPrompt();
     }
 
     usage(message: string = null, code: number = 0): void {

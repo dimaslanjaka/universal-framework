@@ -8,6 +8,8 @@ var CLI_1 = require("./CLI");
 var Watcher_1 = require("./Watcher");
 var Uploader_1 = require("./Uploader");
 var InitConfig_1 = require("./InitConfig");
+var upath = require("upath");
+var fs = require("fs");
 var observatory = require("observatory");
 
 var Sync = function Sync() {
@@ -24,6 +26,12 @@ var Sync = function Sync() {
         this.task.status("reading config");
         this.config.ready().then(function () {
             _this.task.status("watching files");
+            _this.config.localPath = upath.normalizeSafe(_this.config.localPath);
+            fs.exists(_this.config.localPath, function (es) {
+                if (!es) {
+                    throw new Error("Local path not exists");
+                }
+            });
 
             _this.uploader = new Uploader_1.default(_this.config, _this.cli);
 
