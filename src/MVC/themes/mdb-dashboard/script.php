@@ -4,6 +4,17 @@
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
 <?php
 $element = new HTML\element();
+
+// application javascript
+echo $element->js([
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
+  ])),
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
+  ]))
+]);
+
 // datatables is defined
 if (defined('datatables')) {
   include __DIR__ . '/../assets/partial/datatables.php';
@@ -43,37 +54,30 @@ if (isset($content) && file_exists($content)) {
   \MVC\helper::include_asset($contentMinCSS, $contentCSS);
   echo '</style>';
 }
-// defined custom script
-/*
-if (defined('SCRIPTSRC')) {
-  $element->script(SCRIPTSRC, true, true);
-} else {
-  define('SCRIPTSRC', []);
-}*/
 
 /**
  * defined custom script src.
  *
  * @todo Dynamic include script src
  */
-$scriptsrc = defined('STYLESRC') ? SCRIPTSRC : (defined('stylesrc') ? scriptsrc : null);
+$scriptsrc = defined('SCRIPTSRC') ? SCRIPTSRC : (defined('scriptsrc') ? scriptsrc : null);
 if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (file_exists($scriptsrc)) {
-      $scriptsrc = \MVC\helper::get_url_path($scriptsrc);
+      $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
     }
     echo '<script src="' . $scriptsrc . '"></script>';
   } elseif (is_array($scriptsrc)) {
     foreach ($scriptsrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src)) {
+        if ($src = \MVC\helper::get_url_path($src, true)) {
           echo '<script src="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find)) {
+          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
             echo '<script src="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
           } else {
             echo htmlcomment("$find not exists");
@@ -97,20 +101,20 @@ $stylesrc = defined('STYLESRC') ? STYLESRC : (defined('stylesrc') ? stylesrc : n
 if (null !== $stylesrc) {
   if (is_string($stylesrc)) {
     if (file_exists($stylesrc)) {
-      $stylesrc = \MVC\helper::get_url_path($stylesrc);
+      $stylesrc = \MVC\helper::get_url_path($stylesrc, true);
     }
     echo '<link rel="stylesheet" href="' . $stylesrc . '">';
   } elseif (is_array($stylesrc)) {
     foreach ($stylesrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src)) {
+        if ($src = \MVC\helper::get_url_path($src, true)) {
           echo '<link rel="stylesheet" href="' . $src . '?cache=' . CONFIG['cache']['key'] . '">';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find)) {
+          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
             echo '<link rel="stylesheet" href="' . $find . '?cache=' . CONFIG['cache']['key'] . '">';
           } else {
             echo htmlcomment("$find not exists");
@@ -139,16 +143,6 @@ if ($style) {
   define('style', []);
   define('STYLE', []);
 }
-
-// application javascript
-echo $element->js([
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
-  ])),
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
-  ]))
-]);
 ?>
 <script>
   <?php
