@@ -152,7 +152,7 @@
     "@types/vscode": "1.30",
     "@types/webpack-env": "^1.13.6",
     "babel-cli": "^6.26.0",
-    "eslint": "^3.6.0",
+    "eslint": "^7.2.0",
     "gulp": "^4.0.2",
     "gulp-sass": "^4.1.0",
     "javascript-obfuscator": "^0.28.5",
