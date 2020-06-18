@@ -1,1 +1,0 @@
-function display_url(l){""!=l.value&&$("#display-url").html(l.value)}$(document).ready((function(){}));
