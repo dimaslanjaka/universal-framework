@@ -4,7 +4,8 @@
  */
 class user {
   //constructor() { if (!this.all()) { this.fetch(null); } }
-  key = location.host + '/userdata'
+  key = location.host + '/userdata';
+
   /**
    * Get all userdata
    */
