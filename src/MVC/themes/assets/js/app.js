@@ -1049,8 +1049,7 @@ function debug_detect() {
     }, 500);
 }
 var restrict = !isMobile();
-restrict = restrict && !is_localhost();
-console.log('is restricted mode : ' + restrict);
+restrict = restrict && !is_localhost() && !is_development();
 restrict_mode(restrict);
 function restrict_mode(restrict) {
     if (restrict) {
@@ -2031,9 +2030,8 @@ function is_localhost() {
     return is_local;
 }
 function is_development() {
-    return document.getElementsByTagName('html');
+    return document.getElementsByTagName('html')[0].getAttribute('environtment') == 'development';
 }
-console.log(is_development());
 function forceSSL() {
     if (location.protocol !== 'https:' && !is_localhost()) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
