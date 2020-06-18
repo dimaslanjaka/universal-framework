@@ -14,7 +14,7 @@ const {
   exec
 } = require("child_process");
 
-Array.prototype.unique = function() {
+Array.prototype.unique = function () {
   var a = this.concat();
   for (var i = 0; i < a.length; ++i) {
     for (var j = i + 1; j < a.length; ++j) {
@@ -64,7 +64,7 @@ class core {
     }
     var files = fs.readdirSync(dir);
     filelist = filelist || [];
-    files.forEach(function(file) {
+    files.forEach(function (file) {
       if (fs.statSync(dir + file).isDirectory()) {
         filelist = self.readdir(dir + file + '/', filelist);
       } else {
@@ -75,32 +75,32 @@ class core {
   };
 
   static scss(scss_filename) {
-    if (fs.exists(scss_filename, function(exists) {
-        if (exists) {
-          var output = scss_filename.replace(/\.scss/s, '.css');
-          var outputcss = output;
-          if (/\.scss$/s.test(scss_filename) && !/\.min\.scss$/s.test(scss_filename)) {
-            sass.render({
-              file: scss_filename,
-              outputStyle: "compact",
-              outFile: output
-            }, function(err, result) {
-              if (!err) {
-                fs.writeFile(outputcss, result.css, function(err) {
-                  if (!err) {
-                    scss_filename = scss_filename.replace(core.root(), '');
-                    outputcss = outputcss.replace(core.root(), '');
-                    log(`${scss_filename} > ${outputcss} ${chalk.green('success')}`);
-                    core.minCSS(output);
-                  }
-                });
-              }
-            });
-          }
-        } else {
-          console.error(`${scss_filename} not found`);
+    if (fs.exists(scss_filename, function (exists) {
+      if (exists) {
+        var output = scss_filename.replace(/\.scss/s, '.css');
+        var outputcss = output;
+        if (/\.scss$/s.test(scss_filename) && !/\.min\.scss$/s.test(scss_filename)) {
+          sass.render({
+            file: scss_filename,
+            outputStyle: "compact",
+            outFile: output
+          }, function (err, result) {
+            if (!err) {
+              fs.writeFile(outputcss, result.css, function (err) {
+                if (!err) {
+                  scss_filename = scss_filename.replace(core.root(), '');
+                  outputcss = outputcss.replace(core.root(), '');
+                  log(`${scss_filename} > ${outputcss} ${chalk.green('success')}`);
+                  core.minCSS(output);
+                }
+              });
+            }
+          });
         }
-      }));
+      } else {
+        console.error(`${scss_filename} not found`);
+      }
+    }));
   }
 
   /**
@@ -124,7 +124,7 @@ class core {
   static minify_folder(folder) {
     var self = this;
     var js = new Array();
-    fs.exists(folder, function(exists) {
+    fs.exists(folder, function (exists) {
       if (exists && fs.lstatSync(folder).isDirectory()) {
         var read = this.readdir(folder);
         if (Array.isArray(read)) {
@@ -134,7 +134,7 @@ class core {
               //log(file);
             }
           });
-          js.unique().forEach(function(file) {
+          js.unique().forEach(function (file) {
             if (file) self.minJS(file);
           });
         }
@@ -151,13 +151,13 @@ class core {
       var output = filejs.replace(/\.js/s, '.obfuscated.js');
       fs.readFile(filejs, {
         encoding: "utf-8"
-      }, function(err, data) {
+      }, function (err, data) {
         if (!err) {
           var obfuscationResult = JavaScriptObfuscator.obfuscate(
             data, {
-              compact: true,
-              controlFlowFlattening: true
-            }
+            compact: true,
+            controlFlowFlattening: true
+          }
           );
 
           fs.writeFileSync(output, obfuscationResult.getObfuscatedCode());
@@ -178,17 +178,14 @@ class core {
     if (/\.min\.js$/s.test(file) || !/\.js$/s.test(file)) {
       log(chalk.red(`${file} minJS Not Allowed`));
       return;
-    } else if (/\/(node_modules|processed|vendor|tmp)\/|\/libs\/js\//s.test(file)) {
-      log(chalk.red('Library folder detected'));
-      return;
     }
     var min = file.replace(/\.js$/s, '.min.js');
     //log(min);
     fs.readFile(file, {
       encoding: 'utf-8'
-    }, function(err, data) {
+    }, function (err, data) {
       if (!err) {
-        fs.writeFile(min, data, function(err) {
+        fs.writeFile(min, data, function (err) {
           if (err) {
             console.error(err);
           } else {
@@ -237,7 +234,7 @@ class core {
             var output = slash(min).replace(self.root(), '');
             if (terserResult.error) {
               log(`${chalk.yellow(input)} > ${chalk.yellowBright(output)} ${chalk.red('fail')}`);
-              fs.exists(min, function(ex) {
+              fs.exists(min, function (ex) {
                 if (ex) {
                   fs.unlinkSync(min);
                   log(`${chalk.yellowBright(min)} ${chalk.redBright('deleted')}`);
@@ -261,9 +258,9 @@ class core {
    */
   static unlink(file) {
     var self = this;
-    fs.exists(file, function(exists) {
+    fs.exists(file, function (exists) {
       if (exists) {
-        fs.unlink(file, function(err) {
+        fs.unlink(file, function (err) {
           if (!err) {
             file = slash(file).replace(self.root(), '');
             log(`${chalk.whiteBright(file)} ${chalk.redBright('deleted')}`);
@@ -295,24 +292,24 @@ class core {
    * @param {Function|null} callback
    */
   static minCSS(file, callback) {
-    fs.exists(file, function(exists) {
+    fs.exists(file, function (exists) {
       if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
         var min = file.replace(/\.css/s, '.min.css');
         fs.readFile(file, {
           encoding: 'utf-8'
-        }, function(err, data) {
+        }, function (err, data) {
           if (!err) {
-            fs.writeFile(min, data, function(err) {
+            fs.writeFile(min, data, function (err) {
               if (!err) {
                 var minified = uglifycss.processFiles(
                   [min], {
-                    maxLineLen: 500,
-                    expandVars: true
-                  }
+                  maxLineLen: 500,
+                  expandVars: true
+                }
                 );
                 fs.writeFile(min, minified, {
                   encoding: "utf-8"
-                }, function(err) {
+                }, function (err) {
                   if (!err) {
                     if (typeof callback != 'function') {
                       file = file.replace(core.root(), '');

@@ -41,7 +41,6 @@ backup() {
 }
 
 install() {
-    npm install -g javascript-obfuscator typescript terser nodemon sass typac types-installer
     npm install
     composer install
 }

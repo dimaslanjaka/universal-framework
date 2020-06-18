@@ -1,12 +1,17 @@
 {
   "name": "dimaslanjaka/universal-framework",
   "description": "Framework PHPJS full typehinting support with easy helper",
-  "authors": [{
-    "name": "Dimas Lanjaka",
-    "email": "dimaslanjaka@gmail.com",
-    "homepage": "https://github.com/dimaslanjaka/universal-framework",
-    "role": "Developer"
-  }],
+  "authors": [
+    {
+      "name": "Dimas Lanjaka",
+      "email": "dimaslanjaka@gmail.com",
+      "homepage": "https://github.com/dimaslanjaka/universal-framework",
+      "role": "Developer"
+    }
+  ],
+  "bin": [
+    "libs/bin/php-obfuscate"
+  ],
   "require": {
     "php": ">=7",
     "ext-curl": "*",
@@ -20,7 +25,13 @@
     "google/cloud-core": "^1.36",
     "datatables.net/editor-php": "^1.9",
     "scssphp/scssphp": "^1.1",
-    "phpseclib/phpseclib": "~2.0"
+    "phpseclib/phpseclib": "~2.0",
+    "nikic/php-parser": "~1@dev",
+    "symfony/console": "~2.5",
+    "symfony/dependency-injection": "~2.5",
+    "symfony/config": "~2.5",
+    "symfony/yaml": "~2.5",
+    "symfony/event-dispatcher": "~2.5"
   },
   "suggest": {
     "paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -36,6 +47,7 @@
       "simplehtmldom\\": "src/simplehtmldom/",
       "Facebook\\": "src/Facebook/",
       "Extender\\": "src/Extender/",
+      "Naneau\\Obfuscator\\": "src/Naneau/Obfuscator/",
       "User\\": "src/User/",
       "DB\\": "src/DB/",
       "Filemanager\\": "src/Filemanager/",
