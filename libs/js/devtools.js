@@ -33,7 +33,6 @@ function debug_detect() {
   }, 500);
 }
 
-
 var restrict = !isMobile();
 //restrict = true;
 restrict = restrict && !is_localhost() && !is_development();
