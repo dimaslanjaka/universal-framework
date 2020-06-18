@@ -185,11 +185,75 @@ function render()
 	}
 }
 
-function process_page(bool $obfuscatejs = true)
+function process_page(bool $obfuscatejs)
+{
+	global $theme;
+	$dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
+	$dom->preserveWhiteSpace = true;
+	$dom->formatOutput = true;
+	$dom->registerNodeClass('DOMElement', 'JSLikeHTMLElement');
+
+	$c = ob_get();
+
+	if (!$dom->loadHTML($c)) {
+		\HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
+		echo $c;
+
+		return;
+	}
+
+	$xpath = new SmartDOMXpath($dom);
+	$title = getTitle($dom);
+
+	$scripts = $xpath->query('//script');
+	if (!empty($scripts)) {
+		foreach ($scripts as $script) {
+			if ($script->hasAttribute('type') && 'application/ld+json' == $script->getAttribute('type')) {
+				$script->innerHTML = json_encode(json_decode(innerHTML($script)));
+			}
+		}
+	}
+
+	$imgs = $xpath->query('//img');
+	if (!empty($imgs)) {
+		foreach ($imgs as $img) {
+			if (!$img->hasAttribute('title')) {
+				$img->setAttribute('title', $title);
+			}
+			if (!$img->hasAttribute('alt')) {
+				$img->setAttribute('alt', $title);
+			}
+			if (!$img->hasAttribute('rel')) {
+				$img->setAttribute('rel', 'image');
+			}
+		}
+	}
+
+	$styles = $xpath->query('//style');
+	if (!empty($styles)) {
+		foreach ($styles as $style) {
+			$style->innerHTML = trim(mincss(innerHTML($style)));
+		}
+	}
+
+	$result = $dom->saveHTML();
+	$result = htmlmin($result);
+	resolve_dir(dirname(page_cache()));
+	\Filemanager\file::file(page_cache(), $result, true);
+	/**
+	 * @var string Load admin toolbox
+	 */
+	$result = str_replace('</html>', '', $result);
+	echo $result;
+	$theme->load_admin_tools();
+	echo '</html>';
+}
+
+function process_pageold(bool $obfuscatejs = true)
 {
 	global $theme;
 	$buffer_content = ob_get_clean();
-	$dom = \simplehtmldom\helper::str_get_html($buffer_content);
+	$dom = \simplehtmldom\helper::str_get_html($buffer_content, true, true, 'UTF-8', false);
 
 	$scripts = $dom->find('script');
 	if ($scripts) {
@@ -239,7 +303,7 @@ function process_page(bool $obfuscatejs = true)
 	// release
 	unset($dom);
 	// new dom
-	$dom = \simplehtmldom\helper::str_get_html($result);
+	$dom = \simplehtmldom\helper::str_get_html($result, true, true, 'UTF-8', false);
 
 	// prettyprint pretext
 	$pres = $dom->find('pre');
@@ -253,6 +317,8 @@ function process_page(bool $obfuscatejs = true)
 			}
 			if (\JSON\json::is_json($inner)) {
 				$pre->innertext = \JSON\json::beautify(json_decode($inner));
+			} elseif (is_string($inner)) {
+				$pre->style = 'white-space: pre-wrap';
 			}
 		}
 	}
@@ -281,12 +347,17 @@ function page_cache()
 	$path .= '/' . identifier();
 	$path .= '.html';
 	$path = normalize_path($path);
+
 	return $path;
 }
 
 function htmlmin(string $ori)
 {
-	return preg_replace('/<!--.*?-->|\s+/s', ' ', $ori);
+	//return preg_replace('/<!--.*?-->|\s+/s', ' ', $ori);
+	$no_tab = preg_replace('/\n|\t|\n+|\t+/m', '', $ori);
+	$no_comments = preg_replace('/<!--.*?-->/m', '', $no_tab);
+	$between_tags = preg_replace('/\>\s+\</', '><', $no_comments);
+	return $between_tags;
 }
 
 function get_includes()
@@ -310,7 +381,7 @@ function load_cache(string $page_cache)
 {
 	global $theme;
 	$optimized_buffer = \Filemanager\file::get($page_cache);
-	$add = trim("<script>async_process(location.href);</script>");
+	$add = trim('<script>async_process(location.href);</script>');
 	/**
 	 * @var string Load admin toolbox
 	 */
