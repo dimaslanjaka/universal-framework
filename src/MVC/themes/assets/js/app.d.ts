@@ -281,6 +281,7 @@ interface Window {
 }
 declare const userc: user;
 declare function is_localhost(): RegExpMatchArray;
+declare function is_development(): HTMLCollectionOf<HTMLHtmlElement>;
 declare function forceSSL(): void;
 declare function isNativeEvent(eventname: any): boolean;
 declare function hasEventBeenAdded(type: any): boolean;
