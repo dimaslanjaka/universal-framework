@@ -163,8 +163,8 @@
   "publisher": "dimaslanjaka",
   "version": "3.0.0",
   "scripts": {
-    "index": "node libs/compiler/index.js",
-    "index-watch": "nodemon libs/compiler/index.js"
+    "start": "node libs/compiler/index.js",
+    "watch": "nodemon libs/compiler/index.js"
   },
   "repository": {
     "type": "git",
