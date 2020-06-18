@@ -11,10 +11,12 @@ function is_localhost() {
   return is_local;
 }
 
+/**
+ * Is Development Mode
+ */
 function is_development() {
-  return document.getElementsByTagName('html');
+  return document.getElementsByTagName('html')[0].getAttribute('environtment') == 'development';
 }
-console.log(is_development());
 
 /**
  * Force HTTPS
