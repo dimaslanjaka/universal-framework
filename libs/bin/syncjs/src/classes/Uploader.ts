@@ -40,8 +40,9 @@ export default class Uploader {
         let normalLocalPath = upath.normalizeSafe(this.config.localPath);
         let remotePath = normalPath.replace(normalLocalPath, this.config.remotePath);
         let pathJoin = upath.join(this.config.remotePath, remotePath);
-        console.log(pathJoin);
-        return upath.normalizeSafe(`${this.config.remotePath}/${remotePath}`);
+        return pathJoin;
+        //console.log(pathJoin);
+        //return upath.normalizeSafe(`${this.config.remotePath}/${remotePath}`);
         //return upath.normalizeSafe(remotePath);
     }
 
@@ -86,7 +87,7 @@ export default class Uploader {
     uploadFile(fileName: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             let remote = this.getRemotePath(fileName);
-            console.log(remote);
+            ///console.log(remote);
 
             // Client upload also creates the folder but creates it using local mode
             // in windows it might mean we won't have permissons to save the fileName

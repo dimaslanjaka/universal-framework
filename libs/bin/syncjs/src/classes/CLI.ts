@@ -137,7 +137,7 @@ export default class CLI {
      * Display the workspace for syncjs
      */
     workspace() {
-        //this.clear();
+        this.clear();
 
         this.write(`Started monitoring \n`);
         this.write(`Quit the script with CONTROL-C".\n`);
@@ -153,7 +153,7 @@ export default class CLI {
         this.write("Make sure you have the config file by running.\n");
         this.write(chalk.green("syncjs init\n"));
         this.write("--------------------\n");
-        this.write("For more details please visit. https://github.com/serkanyersen/sync\n");
+        //this.write("For more details please visit. https://github.com/serkanyersen/sync\n");
         process.exit(code);
     }
 

@@ -10,6 +10,7 @@ var Uploader_1 = require("./Uploader");
 var InitConfig_1 = require("./InitConfig");
 var upath = require("upath");
 var fs = require("fs");
+var process = require("process");
 var observatory = require("observatory");
 
 var Sync = function Sync() {
@@ -26,6 +27,16 @@ var Sync = function Sync() {
         this.task.status("reading config");
         this.config.ready().then(function () {
             _this.task.status("watching files");
+            var ori = _this.config.localPath;
+            var root = process.cwd();
+            if (upath.isAbsolute(_this.config.localPath)) {
+                var mod = upath.normalizeSafe(_this.config.localPath.replace(root, ''));
+                if (mod == ori) {
+                    throw new Error("Cannot find absolute path");
+                } else {
+                    _this.config.localPath = '.' + mod;
+                }
+            }
             _this.config.localPath = upath.normalizeSafe(_this.config.localPath);
             fs.exists(_this.config.localPath, function (es) {
                 if (!es) {

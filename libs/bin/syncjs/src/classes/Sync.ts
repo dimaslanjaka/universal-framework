@@ -5,6 +5,7 @@ import Uploader from "./Uploader";
 import InitConfig from './InitConfig';
 import * as upath from "upath";
 import * as fs from "fs";
+import * as process from 'process';
 
 const observatory = require("observatory");
 
@@ -33,13 +34,23 @@ export default class Sync {
                 //this.cli.startProgress();
                 this.task.status("watching files");
 
+                var ori = this.config.localPath;
+                var root = process.cwd();
+                if (upath.isAbsolute(this.config.localPath)) {
+                    var mod = upath.normalizeSafe(this.config.localPath.replace(root, ''));
+                    if (mod == ori) {
+                        throw new Error("Cannot find absolute path");
+                    } else {
+                        this.config.localPath = '.' + mod;
+                    }
+                }
+
                 this.config.localPath = upath.normalizeSafe(this.config.localPath);
                 fs.exists(this.config.localPath, function (es) {
                     if (!es) {
                         throw new Error("Local path not exists");
                     }
                 });
-
 
                 // Setup the uploader
                 this.uploader = new Uploader(this.config, this.cli);

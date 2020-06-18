@@ -6,7 +6,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var chokidar = require("chokidar");
-var upath = require("upath");
 var chalk = require("chalk");
 var observatory = require("observatory");
 
@@ -44,7 +43,6 @@ var Watcher = function () {
         };
         this.change = function (path) {
             _this.uploader.uploadFile(path).then(function (remote) {
-                console.log('remote' + remote);
                 _this.tasks[path].done("Done");
             }).catch(function (err) {
                 _this.tasks[path].fail("Fail").details(err.message);
@@ -65,7 +63,6 @@ var Watcher = function () {
             });
         };
         var defaultIgnores = [/node_modules/, /.git/, /.svn/, /bower_components/, /vendor/, /tmp/];
-        base = upath.normalizeSafe(config.localPath.replace(__dirname, ''));
 
         this.files = chokidar.watch(base, {
             ignored: defaultIgnores.concat(this.config.ignores),
@@ -84,7 +81,6 @@ var Watcher = function () {
             ignorePermissionErrors: false,
             persistent: true
         });
-        var log = console.log.bind(console);
 
         ["all", "add", "change", "unlink", "unlinkDir"].forEach(function (method) {
             _this.files.on(method, _this.handler(method));

@@ -49,8 +49,7 @@ var Uploader = function () {
             var normalLocalPath = upath.normalizeSafe(this.config.localPath);
             var remotePath = normalPath.replace(normalLocalPath, this.config.remotePath);
             var pathJoin = upath.join(this.config.remotePath, remotePath);
-            console.log(pathJoin);
-            return upath.normalizeSafe(this.config.remotePath + "/" + remotePath);
+            return pathJoin;
         }
     }, {
         key: "unlinkFile",
@@ -103,7 +102,6 @@ var Uploader = function () {
 
             return new Promise(function (resolve, reject) {
                 var remote = _this4.getRemotePath(fileName);
-                console.log(remote);
 
                 _this4.client.mkdir(upath.dirname(remote), { mode: _this4.config.pathMode }, function (err) {
                     if (err) {

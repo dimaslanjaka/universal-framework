@@ -114,6 +114,7 @@ var CLI = function () {
     }, {
         key: "workspace",
         value: function workspace() {
+            this.clear();
             this.write("Started monitoring \n");
             this.write("Quit the script with CONTROL-C\".\n");
             this.write(chalk.magenta("-----------------------------------------------------------\n"));

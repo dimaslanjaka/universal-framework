@@ -1,6 +1,7 @@
 import * as chokidar from "chokidar"
 import * as upath from "upath";
 import * as chalk from "chalk";
+import * as process from 'process';
 import { FSWatcher } from "fs";
 import Uploader from "./Uploader";
 import Config from "./Config";
@@ -19,8 +20,6 @@ export default class Watcher {
     ) {
 
         let defaultIgnores: Array<string | RegExp> = [/node_modules/, /.git/, /.svn/, /bower_components/, /vendor/, /tmp/];
-
-        base = upath.normalizeSafe(config.localPath.replace(__dirname, ''));
 
         /*setInterval(function () {
             console.log(base);
@@ -43,7 +42,7 @@ export default class Watcher {
             ignorePermissionErrors: false,
             persistent: true
         });
-        const log = console.log.bind(console);
+        //const log = console.log.bind(console);
 
         // Attach events
         ["all", "add", "change", "unlink", "unlinkDir"].forEach(method => {
@@ -100,7 +99,7 @@ export default class Watcher {
 
     private change = (path: string) => {
         this.uploader.uploadFile(path).then(remote => {
-            console.log('remote' + remote);
+            //console.log('remote' + remote);
             this.tasks[path].done("Done");
         }).catch((err) => {
             this.tasks[path].fail("Fail").details(err.message);

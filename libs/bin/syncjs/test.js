@@ -5,9 +5,8 @@ var defaultIgnores = [/node_modules/, /.git/, /.svn/, /bower_components/, /vendo
 if (!config.hasOwnProperty('ignores')) {
   config.ignores = [];
 }
-
-var ff = upath.normalizeSafe(config.localPath.replace(__dirname, ''));
-console.log(ff);
+if (upath.isAbsolute(config.localPath)) { config.localPath = '.' + upath.normalizeSafe(config.localPath.replace(__dirname, '')); }
+console.log('is ' + upath.isAbsolute(config.localPath));
 
 
 
