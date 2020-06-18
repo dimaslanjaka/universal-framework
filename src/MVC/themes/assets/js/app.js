@@ -2030,6 +2030,10 @@ function is_localhost() {
     var is_local = location.host.match(/^localhost|^127|\.io$/s);
     return is_local;
 }
+function is_development() {
+    return document.getElementsByTagName('html');
+}
+console.log(is_development());
 function forceSSL() {
     if (location.protocol !== 'https:' && !is_localhost()) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
