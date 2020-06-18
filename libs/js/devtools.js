@@ -36,8 +36,8 @@ function debug_detect() {
 
 var restrict = !isMobile();
 //restrict = true;
-restrict = restrict && !is_localhost();
-console.log('is restricted mode : ' + restrict);
+restrict = restrict && !is_localhost() && !is_development();
+//console.log('is restricted mode : ' + restrict);
 restrict_mode(restrict);
 /**
  * restrict debug
