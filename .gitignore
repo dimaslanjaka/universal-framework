@@ -1,27 +1,39 @@
-.vscode/sftp*
-.vscode/vps*
-.vscode/*.bat
-out/*
-composer.phar
-vendor/
-composer.lock
-src/Sessions/sessions/
-java/
+# Ignore major trash
+package-lock.json
 src/Indosat/otp/
 src/Telkomsel/otp/
 src/Extender/otp/
-exclude/
-hash_*
-trx_*
-gbxsql/
-*.rar
-*.zip
-application/
-node_modules/
-/tmp
-tmp/
+src/Sessions/sessions/
+composer.lock
 config-tsel.php
 config-m3.php
-package-lock.json
-composer/
+
+# Ignore trash from hashing
+hash_*
+trx_*
 __rar*
+
+# Ignore local configuration (Dont be suicide)
+.vscode/sftp*
+.vscode/vps*
+.vscode/*.bat
+sync-config.json
+sftp.json
+sftp*.json
+
+# Ignore output builder
+out/*
+node_modules/
+vendor/
+tmp/
+test/
+processed/
+
+# No archives allowed
+*.rar
+*.zip
+*.gz
+*.tar
+
+# Allow
+!libs/bin/composer/
