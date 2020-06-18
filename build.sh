@@ -28,6 +28,14 @@ clean_git_history() {
     git push -f origin master
 }
 
+switch_dist() {
+    git remote set-url origin https://github.com/dimaslanjaka/universal-framework.git
+}
+
+switch_dev() {
+    git remote set-url origin https://github.com/dimaslanjaka/universal-framework.git
+}
+
 update() {
     composer update -o
     npm update
