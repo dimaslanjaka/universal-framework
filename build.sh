@@ -80,7 +80,7 @@ read_options() {
     read -p "Enter choice [ 1 - 3] " choice
     case $choice in
     1)
-        node libs/compiler/git.js
+        node libs/compiler/single.js
         ;;
     2)
         clean_git_history
@@ -93,7 +93,7 @@ read_options() {
 # ----------------------------------------------
 # Trap CTRL+C, CTRL+Z and quit singles
 # ----------------------------------------------
-trap '' SIGINT SIGQUIT SIGTSTP
+# trap '' SIGINT SIGQUIT SIGTSTP
 
 # -----------------------------------
 # Step #4: Main logic - infinite loop
