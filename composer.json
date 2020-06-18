@@ -19,7 +19,8 @@
     "kelvinmo/simplejwt": "^0.2.5",
     "google/cloud-core": "^1.36",
     "datatables.net/editor-php": "^1.9",
-    "scssphp/scssphp": "^1.1"
+    "scssphp/scssphp": "^1.1",
+    "phpseclib/phpseclib": "~2.0"
   },
   "suggest": {
     "paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -55,7 +56,11 @@
     },
     "files": [
       "src/bootstrap.php",
-      "src/ZLIB.php"
+      "src/ZLIB.php",
+      "src/SmartDOMDocument.php",
+      "src/SmartDOMXpath.php",
+      "src/JSLikeHTMLElement.php",
+      "src/globals.php"
     ]
   },
   "license": "MIT"
