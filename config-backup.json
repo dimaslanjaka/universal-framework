@@ -1,9 +1,9 @@
 {
   "database": {
-    "user": "root",
-    "pass": "",
-    "dbname": "darkit",
-    "host": "localhost",
+    "user": "database_username",
+    "pass": "database_password",
+    "dbname": "database_name",
+    "host": "database_host",
     "port": 3306
   },
   "google": {
