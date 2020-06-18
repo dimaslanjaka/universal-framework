@@ -27,7 +27,6 @@ out/*
 node_modules/
 vendor/
 tmp/
-test/
 processed/
 
 # No archives allowed
