@@ -263,3 +263,27 @@ function htmlcomment()
 {
   return '<comment style="display:none"> ' . json_encode(func_get_args(), JSON_PRETTY_PRINT) . ' </comment>';
 }
+
+function parse_newline(string $str)
+{
+  $str = str_replace("\r", '', $str);
+  $parsed = explode("\n", $str);
+  if ($parsed) {
+    return $parsed;
+  }
+
+  return [];
+}
+
+/**
+ * Get Output Buffer Content And Re-construct current output buffer
+ *
+ * @return string|false
+ */
+function ob_get()
+{
+  $content = ob_get_clean();
+  ob_end_clean();
+  ob_start();
+  return $content;
+}
