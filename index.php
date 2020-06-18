@@ -142,7 +142,7 @@ if (!realpath($view)) {
 	settype($cache_expired, 'integer');
 	settype($cors, 'integer');
 
-	if ($no_cache || $cors || $production || $refreshCache || $is_hard_reload || $cache_expired) {
+	if ($no_cache || $cors || $refreshCache || $is_hard_reload || $cache_expired) {
 		header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
 		return render();
