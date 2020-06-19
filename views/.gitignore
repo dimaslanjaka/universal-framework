@@ -1,0 +1,6 @@
+*
+!test.php
+!superuser
+!superuser/*
+!.gitignore
+!.htaccess
