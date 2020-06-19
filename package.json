@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "local-npm": "^0.1",
+    "npm-check-updates": "*",
+    "local-npm": "*",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@types/babel__core": "^7.1.8",
