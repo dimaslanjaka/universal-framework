@@ -1,13 +1,19 @@
 {
   "python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+  "explorer.autoReveal": true,
   "javascript.validate.enable": true,
   "editor.renameOnType": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 18000,
+  "editor.wordWrap": "on",
+  "git.enabled": true,
   "git.allowForcePush": true,
+  "files.encoding": "utf8",
   "git.enableSmartCommit": true,
+  "git.smartCommitChanges": "all",
   "files.associations": {
     "*.extension": "language"
   },
-  "typescript.tsc.autoDetect": "off",
   "grunt.autoDetect": "off",
   "jake.autoDetect": "off",
   "gulp.autoDetect": "off",
@@ -16,14 +22,39 @@
     "out": false,
     ".vscode": false
   },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/tmp/**": true,
+    "**/vendor/**": true
+  },
+  "terminal.integrated.environmentChangesIndicator": "on",
+  "php-docblocker.author": {
+    "name": "Dimas Lanjaka",
+    "email": "dimaslanjaka@gmail.com"
+  },
+  "git.autofetchPeriod": 1800,
   "search.exclude": {
     "out": true,
     ".vscode": true
   },
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsserver.watchOptions": {
+    "watchDirectory": "dynamicPriorityPolling",
+    "watchFile": "dynamicPriorityPolling",
+    "fallbackPolling": "dynamicPriorityPolling",
+    "synchronousWatchDirectory": false
+  },
+  "typescript.tsserver.maxTsServerMemory": 500,
+  "typescript.tsserver.log": "verbose",
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
   "php-cs-fixer.executablePath": "/libs/bin/php-cs-fixer/php-cs-fixer.phar",
   "php-cs-fixer.executablePathWindows": "/libs/bin/php-cs-fixer/php-cs-fixer.bat",
-  "typescript.tsdk": "./node_modules/typescript/lib",
   "npm.packageManager": "npm",
   "task.problemMatchers.neverPrompt": true,
-  "git.enabled": false
+  "files.maxMemoryForLargeFilesMB": 100,
+  "intelephense.maxMemory": 500,
+  "intelephense.telemetry.enabled": false,
+  "intelephense.trace.server": "off"
 }

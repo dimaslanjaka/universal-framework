@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "strict": false,
-    "target": "ES5",
-    "module": "commonjs",
+    "target": "ES6",
+    "module": "system",
     "declaration": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -15,11 +15,9 @@
     "noUnusedLocals": true,
     "allowJs": true,
     "checkJs": false,
-    "outDir": "./src/MVC/themes/assets/js",
-    //"outFile": "./src/MVC/themes/assets/js/app.js",
-    "declarationDir": "./tmp/js/separate/ts",
-    "sourceRoot": "./libs/js/",
-    "rootDir": "./libs/js/",
+    "outFile": "./libs/compiler/core.js",
+    "sourceRoot": "./libs/compiler/src/",
+    "rootDir": "./libs/compiler/src/",
     "sourceMap": true,
     "watch": false,
     "skipLibCheck": true,
@@ -34,7 +32,7 @@
     ]
   },
   "include": [
-    "./libs/js/**/*"
+    "./libs/compiler/src/**/*"
   ],
   "typeAcquisition": {
     "include": [

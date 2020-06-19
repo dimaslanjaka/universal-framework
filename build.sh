@@ -28,6 +28,11 @@ clean_git_history() {
     git push -f origin master
 }
 
+tweak_npm(){
+    npm set progress=false
+    npm i -g pnpm --prefer-offline
+}
+
 switch_dist() {
     git remote set-url origin https://github.com/dimaslanjaka/universal-framework.git
 }

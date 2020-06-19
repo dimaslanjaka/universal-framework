@@ -42,15 +42,12 @@ watch(core.root() + '/assets');
 /**
  * Composer auto update once day
  */
-if (typeof localStorage === "undefined" || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage;
-  localStorage = new LocalStorage(`${core.root()}/tmp/storage`);
-}
+
 var today = new Date().toLocaleDateString();
 var yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString();
-if (!localStorage.getItem('composer') || localStorage.getItem('composer') == yesterday) {
+if (!core.localStorage().getItem('composer') || core.localStorage().getItem('composer') == yesterday) {
   core.composer(core.root(), 'update');
-  localStorage.setItem('composer', today);
+  core.localStorage().setItem('composer', today);
 }
 
 var instances = [];

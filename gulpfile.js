@@ -7,6 +7,7 @@ const fs = require('fs');
 const config = require('./config.json');
 const argv = require('yargs').argv;
 const spawn = require('child_process').spawn;
+const log = core.log;
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
@@ -27,55 +28,40 @@ gulp.task('build', function () {
   return processTSC;
 });
 
-// watch libs/js/**/*
+// watch libs/js/**/* and views
 gulp.task("watch", function () {
-  gulp.watch(["./libs/js/**/*", "./views/**/*"], gulp.series('build'));
+  gulp.watch(["./libs/js/**/*", "./" + config.app.views + "/**/*"])
+    .on('change', function (file) {
+      minify(file);
+    });
 });
 
-gulp.task('default', gulp.series('build', 'watch'));
+gulp.task('composer', function () {
+  return core.async(function () {
+    var today = new Date().toLocaleDateString();
+    var yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString();
+    if (!core.localStorage().getItem('composer') || core.localStorage().getItem('composer') == yesterday) {
+      core.composer(core.root(), 'update');
+      core.localStorage().setItem('composer', today);
+    } else {
+      today = new Date(today);
+      yesterday = new Date(core.localStorage().getItem('composer'));
+      log('Composer already updated at ' + yesterday);
+      log('Today ' + today);
+      log('Is Older ' + today.getTime() > yesterday.getTime());
+    }
+  });
+});
+
+gulp.task('default', gulp.series('watch'));
 
 /**
  * minify assets
  * @param {string} file
  */
-function minify(file) {
-  fs.exists(file, function (exists) {
+function minify(item) {
+  fs.exists(item, function (exists) {
     if (exists) {
-      if (file.endsWith('.js') && !file.endsWith('.min.js')) {
-        core.minJS(file);
-        core.obfuscate(file);
-      } else if (file.endsWith('.css') && !file.endsWith('.min.css')) {
-        core.minCSS(file);
-      } else if (file.endsWith('.scss') && !file.endsWith('.min.scss')) {
-        core.scss(file);
-      }
-    }
-  });
-}
-
-/**
- * List views folder
- */
-function views() {
-  var views = core.readdir(__dirname + `/${config.app.views}`);
-  return views.filter(function (item) {
-    return /\.(js|scss|css|sass|less)$/.test(item) && !/\.min\.(js|css)$/.test(item) && !/\-ori|\-original|\-backup|\.bak/s.test(item);
-  }).map(function (asset) {
-    return core.normalize(asset);
-  });
-}
-
-/**
- * minify multiple assets
- * @param {any[]} assets
- */
-function multiMinify(assets) {
-  assets.map(
-    /**
-     * mapper
-     * @param {string} item
-     */
-    function (item) {
       var config = '/src/MVC/config/' + item.replace(core.root(), '');
       config = core.normalize(core.root() + config);
       config = config.replace(/\.(js|css)/s, '.json');
@@ -110,6 +96,25 @@ function multiMinify(assets) {
         }
       }
     }
-  );
+  });
 }
 
+/**
+ * List views folder
+ */
+function views() {
+  var views = core.readdir(__dirname + `/${config.app.views}`);
+  return views.filter(function (item) {
+    return /\.(js|scss|css|sass|less)$/.test(item) && !/\.min\.(js|css)$/.test(item) && !/\-ori|\-original|\-backup|\.bak/s.test(item);
+  }).map(function (asset) {
+    return core.normalize(asset);
+  });
+}
+
+/**
+ * minify multiple assets
+ * @param {any[]} assets
+ */
+function multiMinify(assets) {
+  assets.map(minify);
+}
