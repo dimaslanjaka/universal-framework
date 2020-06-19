@@ -14,6 +14,12 @@
   "files.associations": {
     "*.extension": "language"
   },
+  "markdown.preview.scrollEditorWithPreview": true,
+  "git.autofetch": true,
+  "git.autorefresh": true,
+  "git.countBadge": "all",
+  "git.enableStatusBarSync": true,
+  "github.gitAuthentication": true,
   "grunt.autoDetect": "off",
   "jake.autoDetect": "off",
   "gulp.autoDetect": "off",
@@ -21,6 +27,13 @@
   "files.exclude": {
     "out": false,
     ".vscode": false
+  },
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.defaultFormatter": "HookyQR.beautify",
+    "editor.suggest.insertMode": "replace"
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -33,6 +46,24 @@
     "name": "Dimas Lanjaka",
     "email": "dimaslanjaka@gmail.com"
   },
+  "[css]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "markdown.extension.list.indentationSize": "adaptive",
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": false
+  },
+  "editor.formatOnPaste": false,
+  "html.format.enable": true,
+  "intelephense.format.enable": true,
+  "javascript.format.enable": true,
+  "typescript.format.enable": true,
+  "json.format.enable": true,
   "git.autofetchPeriod": 1800,
   "search.exclude": {
     "out": true,
@@ -56,5 +87,6 @@
   "files.maxMemoryForLargeFilesMB": 100,
   "intelephense.maxMemory": 500,
   "intelephense.telemetry.enabled": false,
-  "intelephense.trace.server": "off"
+  "intelephense.trace.server": "off",
+  "git.supportCancellation": true
 }

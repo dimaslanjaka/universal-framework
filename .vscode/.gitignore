@@ -1,2 +1,5 @@
-sftp*
-*.tlp
+*
+!.gitignore
+!.htaccess
+!settings.json
+!tasks*.json

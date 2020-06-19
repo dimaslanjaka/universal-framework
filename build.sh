@@ -31,6 +31,9 @@ clean_git_history() {
 tweak_npm(){
     npm set progress=false
     npm i -g pnpm --prefer-offline
+    npm config set python libs/Windows/python2.7
+    node-gyp --python libs/Windows/python2.7
+    node-gyp configure --msvs_version=2015
 }
 
 switch_dist() {
