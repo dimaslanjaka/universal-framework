@@ -37,13 +37,14 @@
 
 - always use --prefer-offline for install npm packages to improving installer speed
 
-# Install
+# Install Windows
 
 - Open current folder with Command Prompt
 ```bat
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) else (set processor=x86)
 SET PATH=%PATH%;%~dp0libs\bin\composer;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
-set PYTHON=%~dp0libs\Windows\x64\python2.7
-set PYTHONPATH=%~dp0libs\Windows\x64\python2.7
+set PYTHON=%~dp0libs\Windows\%processor%\python2.7
+set PYTHONPATH=%~dp0libs\Windows\%processor%\python2.7
 set DIR=%~dp0
 set python_posix=%PYTHON:\=/%/python.exe
 npm config set python %PYTHON:\=/%/python.exe
