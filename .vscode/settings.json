@@ -88,5 +88,5 @@
   "intelephense.maxMemory": 500,
   "intelephense.telemetry.enabled": false,
   "intelephense.trace.server": "off",
-  "git.supportCancellation": true
+  "git.supportCancellation": false
 }
