@@ -2,8 +2,17 @@
 setlocal DISABLEDELAYEDEXPANSION
 cd /d %~dp0
 
-if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) else (set processor=x86)
-SET PATH=%PATH%;%~dp0libs\bin\composer;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
+IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) ELSE (set processor=x86)
+SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
+IF NOT EXIST "C:\Cygwin\bin" (
+   IF NOT EXIST "D:\cygwin64\bin" (
+      IF NOT EXIST "D:\cygwin\bin" (
+         IF EXIST "E:\cygwin\bin" (SET EXTEND=%EXTEND%;E:\cygwin\bin)
+      ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin\bin)
+   ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin64\bin)
+) ELSE (SET EXTEND=%EXTEND%;C:\Cygwin\bin)
+
+SET PATH=%PATH%;%EXTEND%
 set PYTHON=%~dp0libs\Windows\%processor%\python2.7
 set PYTHONPATH=%~dp0libs\Windows\%processor%\python2.7
 set DIR=%~dp0
@@ -15,7 +24,7 @@ rem node-gyp configure --msvs_version=2015
 rem node-gyp --python %PYTHON:\=/%/python.exe
 rem npm install --global --prefer-offline --production windows-build-tools
 
-:menu
+:BEGIN
 echo Select Terminal:
 echo 1 - CMD
 echo 2 - POWERSHELL
@@ -24,16 +33,16 @@ GOTO LABEL-%ERRORLEVEL%
 
 :LABEL-1 CMD
 cls
-cmd.exe /k "npm config set python %PYTHON:\=/%/python.exe"
-rem goto menu 
+cmd.exe /k "@echo ON & setlocal DISABLEDELAYEDEXPANSION & npm config set python %PYTHON:\=/%/python.exe"
+rem goto BEGIN 
 
 :LABEL-2 POWERSHELL
 cls
 Start powershell.exe -noexit -ExecutionPolicy Bypass -File "%~dp0cmd.ps1" -Command "npm config set python %PYTHON:\=/%/python.exe; Set-Location -literalPath '%~dp0';"
-rem goto menu
+rem goto BEGIN
 
 :END
-pause
+rem pause
 
 
 
