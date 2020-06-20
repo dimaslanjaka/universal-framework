@@ -1,7 +1,7 @@
 /*
-* Typehinting vscode (NOT FOR COMPILE)
-* @author Dimas Lanjaka <dimaslanjaka@gmail.com>
-*/
+ * Typehinting vscode (NOT FOR COMPILE)
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 {
   "compilerOptions": {
     "target": "es5",
@@ -16,6 +16,7 @@
     "importHelpers": true,
     "declaration": true,
     "allowJs": true,
+    "resolveJsonModule": true,
     //"noLib": true,
     "lib": [
       "DOM",

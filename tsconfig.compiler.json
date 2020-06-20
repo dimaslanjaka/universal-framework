@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "rootDirs": ["./"],
     "strict": false,
     "target": "ES6",
     "module": "commonjs",
@@ -12,8 +14,14 @@
     "rootDir": "./libs/src/compiler/",
     "sourceMap": false,
     "watch": false,
+    "allowUmdGlobalAccess": true,
+    "allowUnusedLabels": true,
+    "allowUnreachableCode": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "importHelpers": true,"incremental": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "incremental": true,
     "lib": [
       "DOM",
       "ES5",
@@ -24,6 +32,7 @@
     ]
   },
   "include": [
-    "./libs/src/compiler/**/*"
+    "./libs/src/compiler/**/*.ts",
+    "./libs/src/compiler/**/*.js"
   ]
 }

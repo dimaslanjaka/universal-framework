@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 console.clear();
 //import core from "./core";
-const log_1 = require("./log");
-const mysql_1 = require("mysql");
-const config_1 = require("./config");
+const log_1 = tslib_1.__importDefault(require("./log"));
+const mysql_1 = tslib_1.__importDefault(require("mysql"));
+const config_1 = tslib_1.__importDefault(require("./config"));
 var config = config_1.default;
 function mysql_connection() {
     var result = null;

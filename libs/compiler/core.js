@@ -1,20 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
+const tslib_1 = require("tslib");
+const fs_1 = tslib_1.__importDefault(require("fs"));
 const Terser = require("terser");
-const path_1 = require("path");
+const path_1 = tslib_1.__importDefault(require("path"));
 const slash = require("slash");
 const JavaScriptObfuscator = require("javascript-obfuscator");
-const log_1 = require("./log");
-const uglifycss_1 = require("uglifycss");
-const sass_1 = require("sass");
+const log_1 = tslib_1.__importDefault(require("./log"));
+const uglifycss_1 = tslib_1.__importDefault(require("uglifycss"));
+const sass_1 = tslib_1.__importDefault(require("sass"));
 const child_process_1 = require("child_process");
 const LocalStorage = require("node-localstorage").LocalStorage;
+const config_1 = tslib_1.__importDefault(require("./config"));
 /**
  * Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class core {
+    constructor() {
+        core.config = config_1.default;
+    }
     static arrayFilter(arr) {
         return arr.filter(function (el) {
             return el != null;

@@ -7,6 +7,7 @@ src/Sessions/sessions/
 composer.lock
 config-tsel.php
 config-m3.php
+yarn.lock
 
 # Ignore trash from hashing
 hash_*

@@ -8,12 +8,23 @@ import uglifycss from "uglifycss";
 import sass from "sass";
 import { exec } from "child_process";
 const LocalStorage = require("node-localstorage").LocalStorage;
+import configuration from "./config";
 
 /**
  * Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class core {
+  /**
+   * config.json
+   */
+  static config(){
+    return configuration;
+  }
+  /**
+   * filter array after deletion
+   * @param arr 
+   */
   static arrayFilter(arr: any[]) {
     return arr.filter(function (el) {
       return el != null;

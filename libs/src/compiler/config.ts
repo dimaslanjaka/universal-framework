@@ -1,4 +1,6 @@
-interface config {
+
+import core from "./core";
+var config: {
   database: {
     user: string;
     pass: string;
@@ -67,8 +69,6 @@ interface config {
     views: "views";
     root: "";
   };
-}
-import core from "./core";
-var configuration: config = require(`${core.root()}/config.json`);
+} = require(`${core.root()}/config.json`);
 
-export default configuration;
+export default config;
