@@ -394,6 +394,21 @@ class core {
       }
     });
   }
+  static reorder(value: any) {
+    var o = JSON.parse(value);
+    if (Array.isArray(o)) {
+      o = o.sort(function (a, b) {
+        var x = a[Object.keys(a)[0]];
+        var y = b[Object.keys(b)[0]];
+        if (x) {
+          return x < y ? -1 : x > y ? 1 : 0;
+        } else {
+          return x > y ? -1 : x < y ? 1 : 0;
+        }
+      });
+    }
+    return JSON.stringify(o, null, "\t");
+  }
 }
 
 export default core;
