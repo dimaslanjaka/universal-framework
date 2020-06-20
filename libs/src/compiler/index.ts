@@ -1,9 +1,10 @@
 console.clear();
 
-import core from "./core";
+//import core from "./core";
 import log from "./log";
 import mysql from "mysql";
-var config = require(`${core.root()}/config.json`);
+import configuration from "./config";
+var config = configuration;
 
 function mysql_connection(): null | mysql.Connection {
   var result = null;

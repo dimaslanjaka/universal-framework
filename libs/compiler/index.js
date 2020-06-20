@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 console.clear();
-const core_1 = require("./core");
+//import core from "./core";
 const log_1 = require("./log");
 const mysql_1 = require("mysql");
-var config = require(`${core_1.default.root()}/config.json`);
+const config_1 = require("./config");
+var config = config_1.default;
 function mysql_connection() {
     var result = null;
     if (config.hasOwnProperty("database")) {
