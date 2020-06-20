@@ -356,4 +356,3 @@ class core {
     }
 }
 exports.default = core;
-//# sourceMappingURL=core.js.map

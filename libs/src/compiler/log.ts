@@ -1,4 +1,4 @@
-import logger from "fancy-log";
+const logger = require('fancy-log');
 const chalk = require('chalk');
 
 class log {

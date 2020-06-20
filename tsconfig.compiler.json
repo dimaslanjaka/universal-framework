@@ -5,52 +5,25 @@
     "module": "commonjs",
     "declaration": false,
     "removeComments": false,
-    "preserveConstEnums": true,
-    "downlevelIteration": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "checkJs": false,
     "outDir": "./libs/compiler",
-    //"outFile": "./libs/compiler/core.js",
-    "sourceRoot": "./libs/src/compiler/",
     "rootDir": "./libs/src/compiler/",
-    "sourceMap": true,
+    "sourceMap": false,
     "watch": false,
     "skipLibCheck": true,
-    "importHelpers": true,
+    "importHelpers": true,"incremental": true,
     "lib": [
       "DOM",
+      "ES5",
       "ESNext",
-      "ES2020"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
+      "ES2020",
+      "ES6",
+      "ES2015"
     ]
   },
   "include": [
     "./libs/src/compiler/**/*"
-  ],
-  "typeAcquisition": {
-    "include": [
-      "jQuery",
-      "toastr",
-      "sweetalert",
-      "CryptoJS"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "**/.vscode/**",
-    "**/node_modules/**",
-    "**/vendor/**",
-    "**/tmp/**",
-    "**/assets/**",
-    "**/views/**",
-    "**.min.js"
   ]
 }

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fancy_log_1 = require("fancy-log");
+const logger = require('fancy-log');
 const chalk = require('chalk');
 class log {
     constructor(...arg) {
@@ -43,7 +43,7 @@ class log {
                     result.push(args);
                 }
             }
-            fancy_log_1.default(result.join(", "));
+            logger(result.join(", "));
         }
     }
 }
@@ -55,4 +55,3 @@ log.rainbow = function (want) {
     log.enable_rainbow = want;
 };
 exports.default = log;
-//# sourceMappingURL=log.js.map

@@ -394,19 +394,6 @@ class core {
       }
     });
   }
-  static reorder(value: any) {
-    var unordered = JSON.parse(value);
-    const ordered: objany = {};
-    Object.keys(unordered)
-      .sort()
-      .forEach(function (key) {
-        ordered[key] = unordered[key];
-      });
-    return JSON.stringify(unordered, null, "\t");
-  }
-}
-interface objany {
-  [str: string]: any;
 }
 
 export default core;
