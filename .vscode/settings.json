@@ -50,6 +50,14 @@
 		"**/tmp/**": true,
 		"**/vendor/**": true
 	},
+	"typescript.tsserver.watchOptions": {
+		"fallbackPolling": "dynamicPriorityPolling",
+		"synchronousWatchDirectory": true,
+		"watchDirectory": "dynamicPriorityPolling",
+		"watchFile": "dynamicPriorityPolling"
+	},
+	"typescript.tsserver.useSeparateSyntaxServer": true,
+	"typescript.suggest.autoImports": true,
 	"git.allowForcePush": true,
 	"git.autofetch": true,
 	"git.autofetchPeriod": 1800,

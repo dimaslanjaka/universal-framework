@@ -1,10 +1,10 @@
 /*
-* Typehinting vscode (NOT FOR COMPILE)
-* @author Dimas Lanjaka <dimaslanjaka@gmail.com>
-*/
+ * Typehinting vscode (NOT FOR COMPILE)
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "sourceMap": true,
     "removeComments": true,
     "allowUmdGlobalAccess": true,
@@ -13,10 +13,8 @@
     "allowUnusedLabels": true,
     "allowUnreachableCode": true,
     "skipLibCheck": true,
-    //"importHelpers": true,
     "declaration": true,
-    //"allowJs": true,
-    //"noLib": true,
+    "checkJs": true,
     "lib": [
       "DOM",
       "ES5",
@@ -28,14 +26,11 @@
       "ES2019",
       "ES2020"
     ],
-    //"typeRoots": ["node_modules/@types"],
     "outDir": "./tmp/js",
-    //"outFile": "./tmp/js/app.js",
     "declarationDir": "./tmp/js",
-    //"declarationMap": true,
     "sourceRoot": "./",
-    //"rootDir": "./libs",
-    //"emitDeclarationOnly": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "./libs/**/*",
@@ -59,6 +54,7 @@
     "include": [
       "jQuery",
       "toastr",
+      "datatables.net",
       "sweetalert",
       "CryptoJS"
     ]

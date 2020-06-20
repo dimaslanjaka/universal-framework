@@ -1,5 +1,5 @@
-const logger = require('fancy-log');
-const chalk = require('chalk');
+import logger from 'fancy-log';
+import chalk from 'chalk';
 
 class log {
   constructor(...arg: string[] | null) {
