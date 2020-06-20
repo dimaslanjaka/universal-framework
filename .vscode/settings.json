@@ -31,7 +31,7 @@
 	},
 	"editor.renameOnType": true,
 	"editor.wordWrap": "on",
-	"eslint.packageManager": "yarn",
+	"eslint.packageManager": "npm",
 	"explorer.autoReveal": true,
 	"files.associations": {
 		"*.extension": "language"
@@ -67,14 +67,14 @@
 	"javascript.validate.enable": true,
 	"markdown.extension.list.indentationSize": "adaptive",
 	"markdown.preview.scrollEditorWithPreview": true,
-	"npm.packageManager": "yarn",
+	"npm.packageManager": "npm",
 	"php-cs-fixer.executablePath": "/libs/bin/php-cs-fixer/php-cs-fixer.phar",
 	"php-cs-fixer.executablePathWindows": "/libs/bin/php-cs-fixer/php-cs-fixer.bat",
 	"php-docblocker.author": {
 		"name": "Dimas Lanjaka",
 		"email": "dimaslanjaka@gmail.com"
 	},
-	"prettier.packageManager": "yarn",
+	"prettier.packageManager": "npm",
 	"python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
 	"search.exclude": {
 		"out": true,
