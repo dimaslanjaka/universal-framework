@@ -6,7 +6,7 @@
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 18000,
   "editor.wordWrap": "on",
-  "git.enabled": true,
+  "git.enabled": false,
   "git.allowForcePush": true,
   "files.encoding": "utf8",
   "git.enableSmartCommit": true,
@@ -46,6 +46,9 @@
     "name": "Dimas Lanjaka",
     "email": "dimaslanjaka@gmail.com"
   },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[css]": {
     "editor.suggest.insertMode": "replace",
     "editor.defaultFormatter": "HookyQR.beautify"
@@ -56,14 +59,10 @@
   "markdown.extension.list.indentationSize": "adaptive",
   "[markdown]": {
     "editor.wordWrap": "on",
-    "editor.quickSuggestions": false
+    "editor.quickSuggestions": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnPaste": false,
-  "html.format.enable": true,
-  "intelephense.format.enable": true,
-  "javascript.format.enable": true,
-  "typescript.format.enable": true,
-  "json.format.enable": true,
   "git.autofetchPeriod": 1800,
   "search.exclude": {
     "out": true,
@@ -82,11 +81,19 @@
   "editor.formatOnType": false,
   "php-cs-fixer.executablePath": "/libs/bin/php-cs-fixer/php-cs-fixer.phar",
   "php-cs-fixer.executablePathWindows": "/libs/bin/php-cs-fixer/php-cs-fixer.bat",
-  "npm.packageManager": "npm",
+  "npm.packageManager": "yarn",
   "task.problemMatchers.neverPrompt": true,
   "files.maxMemoryForLargeFilesMB": 100,
   "intelephense.maxMemory": 500,
   "intelephense.telemetry.enabled": false,
   "intelephense.trace.server": "off",
-  "git.supportCancellation": false
+  "git.supportCancellation": false,
+  "typescript.check.npmIsInstalled": false,
+  "eslint.packageManager": "yarn",
+  "prettier.packageManager": "yarn",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  }
 }

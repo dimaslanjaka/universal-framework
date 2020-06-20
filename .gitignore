@@ -37,3 +37,4 @@ processed/
 
 # Allow
 !libs/bin/composer/
+!tmp/npm-cache
