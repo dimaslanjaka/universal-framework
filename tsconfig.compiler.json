@@ -2,9 +2,9 @@
   "compilerOptions": {
     "strict": false,
     "target": "ES6",
-    "module": "system",
-    "declaration": true,
-    "removeComments": true,
+    "module": "commonjs",
+    "declaration": false,
+    "removeComments": false,
     "preserveConstEnums": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -15,9 +15,10 @@
     "noUnusedLocals": true,
     "allowJs": true,
     "checkJs": false,
-    "outFile": "./libs/compiler/core.js",
-    "sourceRoot": "./libs/compiler/src/",
-    "rootDir": "./libs/compiler/src/",
+    "outDir": "./libs/compiler",
+    //"outFile": "./libs/compiler/core.js",
+    "sourceRoot": "./libs/src/compiler/",
+    "rootDir": "./libs/src/compiler/",
     "sourceMap": true,
     "watch": false,
     "skipLibCheck": true,
@@ -32,7 +33,7 @@
     ]
   },
   "include": [
-    "./libs/compiler/src/**/*"
+    "./libs/src/compiler/**/*"
   ],
   "typeAcquisition": {
     "include": [
