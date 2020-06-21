@@ -1,5 +1,5 @@
-import logger from 'fancy-log';
-import chalk from 'chalk';
+import logger from "fancy-log";
+import chalk from "chalk";
 
 export class log {
   constructor(...arg: string[] | any | null) {
@@ -7,20 +7,39 @@ export class log {
       log.log(arguments);
     }
   }
-  static chalk(){
-	  return chalk;
+  /**
+   * Chalk instance
+   */
+  static chalk(): chalk.Chalk {
+    return chalk;
   }
+  /**
+   * return greenBright color
+   * @param msg
+   */
   static success(msg: string) {
     return chalk.greenBright(msg);
   }
+  /**
+   * return redBright color
+   * @param msg
+   */
   static error(msg: string) {
     return chalk.redBright(msg);
   }
   /**
-   * Generate Random Hex Color
+   * Generate Random Hex Color 
    */
   static hexColor() {
     return Math.floor(Math.random() * 16777215).toString(16);
+  }
+  /**
+   * Output log custom hex color
+   * @param hex hex color
+   * @param msg message to output
+   */
+  static hex(hex: string, msg: string) {
+    return chalk.hex(hex)(msg);
   }
   /**
    * Indicator rainbow
@@ -37,18 +56,28 @@ export class log {
       var result = [];
       for (const key in arguments) {
         if (arguments.hasOwnProperty(key)) {
-          var args = arguments[key];
-          if (typeof args == "boolean") {
-            if (args) {
-              args = chalk.greenBright(args);
-            } else {
-              args = chalk.redBright(args);
-            }
-          }
+          var args = this.prettyprint(arguments[key]);
           result.push(args);
         }
       }
       logger(result.join(", "));
     }
+  }
+
+  static prettyprint(args: any) {
+    if (typeof args == "boolean") {
+      if (args) {
+        args = chalk.greenBright(args);
+      } else {
+        args = chalk.redBright(args);
+      }
+    } else if (typeof args == "string") {
+      args = chalk.hex("#c4750e")(args);
+    } else if (typeof args == "object" || Array.isArray(args)) {
+      args = this.prettyprint(JSON.stringify(args, null, 2));
+    } else if (typeof args == "undefined") {
+      args = chalk.red("undefined");
+    }
+    return args;
   }
 }

@@ -41,7 +41,7 @@
     ],
     "scripts": {
         "postinstall": "node index.js",
-        "build": "tsc -p tsconfig.build.json",
+        "build": "gulp build",
         "compiler": "tsc -p tsconfig.compiler.json"
     }, 
     "bin": "./libs/bin/syncjs/bin",
@@ -66,6 +66,12 @@
       "@types/datatables.net": "^1.10.19",
       "@types/jquery": "^3.3.38",
       "@types/toastr": "^2.1.38"
+    },
+    "requires": {
+      "@types/jquery": "*",
+      "@types/toastr": "*",
+      "@types/fancy-log": "*",
+      "@types/chalk": "*"
     },
     "prettier": {
       "bracketSpacing": true

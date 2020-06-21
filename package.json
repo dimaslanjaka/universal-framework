@@ -69,6 +69,7 @@
         "jquery": "*",
         "jquery-autocomplete": "*",
         "jquery-ui": "*",
+        "crypto-js": "*",
         "fancy-log": "*",
         "chalk": "*",
         "tslib": "*",
@@ -103,7 +104,7 @@
     ],
     "scripts": {
         "postinstall": "node index.js",
-        "build": "tsc -p tsconfig.build.json",
+        "build": "gulp build",
         "compiler": "tsc -p tsconfig.compiler.json"
     },
     "bin": "./libs/bin/syncjs/bin",
@@ -127,7 +128,25 @@
         "@types/uglifycss": "*",
         "@types/datatables.net": "*",
         "@types/jquery": "*",
-        "@types/toastr": "*"
+        "@types/toastr": "*",
+        "@babel/highlight": "^7.10.3",
+        "@babel/helper-validator-identifier": "^7.10.3",
+        "@types/sizzle": "*",
+        "@types/node": "*",
+        "@types/validator": "13.0.0",
+        "@sindresorhus/is": "^0.14.0",
+        "@szmarczak/http-timer": "^1.1.2",
+        "@tootallnate/once": "1",
+        "@gradecam/tsenum": "1.2.0",
+        "@nuxtjs/opencollective": "0.2.2",
+        "@types/minimatch": "^3.0.3",
+        "@babel/code-frame": "^7.0.0"
+    },
+    "requires": {
+        "@types/jquery": "*",
+        "@types/toastr": "*",
+        "@types/fancy-log": "*",
+        "@types/chalk": "*"
     },
     "prettier": {
         "bracketSpacing": true

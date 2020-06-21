@@ -4,7 +4,7 @@
  */
 {
   "compilerOptions": {
-    //"emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
     "target": "es5",
     "sourceMap": true,
     "removeComments": true,

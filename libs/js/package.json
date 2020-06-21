@@ -37,6 +37,6 @@
         "jquery": "^3.5.1",
         "jquery-autocomplete": "^1.2.8",
         "jquery-ui": "^1.12.1",
-        "": "*"
+        "crypto-js": "*"
     }
 }
