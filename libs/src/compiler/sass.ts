@@ -1,6 +1,6 @@
 import * as sass from "sass";
 import * as fs from "fs";
-import log from "./log";
+import {log} from "./log";
 import { core } from "./core";
 
 class sass_compiler {

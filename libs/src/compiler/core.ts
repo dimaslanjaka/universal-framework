@@ -3,7 +3,7 @@ import * as Terser from "terser";
 import * as path from "path";
 import slash from "slash";
 import * as JavaScriptObfuscator from "javascript-obfuscator";
-import log from "./log";
+import { log } from "./log";
 import * as uglifycss from "uglifycss";
 import * as sass from "sass";
 import { exec } from "child_process";
@@ -18,12 +18,12 @@ export class core {
   /**
    * config.json
    */
-  static config(){
+  static config() {
     return configuration;
   }
   /**
    * filter array after deletion
-   * @param arr 
+   * @param arr
    */
   static arrayFilter(arr: any[]) {
     return arr.filter(function (el) {
@@ -73,6 +73,12 @@ export class core {
         }
       );
     }
+  }
+  /**
+   * Console log prettyprint
+   */
+  static log() {
+    return log;
   }
   /**
    * @param {import("fs").PathLike} dir

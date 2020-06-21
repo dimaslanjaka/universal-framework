@@ -4,49 +4,50 @@ const rename = require("gulp-rename");
 const process = require('process');
 const fs = require('fs');
 const config = require('./config.json');
-
+const upath = require('upath');
 /**
  * Build to /src/MVC/themes/assets/js/app.js
  * Minify Views Assets
  */
 gulp.task('build', function () {
-  const core = require('./libs/compiler/core');
+  const core = require('./libs/compiler/core').core;
   const log = core.log;
-  var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
-  var processTSC = tsProject.src()
-    .pipe(tsProject())
-    .pipe(rename(function (path) {
-      path.extname = ".js";
-    }))
-    .pipe(gulp.dest("./src/MVC/themes/assets/js/"));
-  processTSC.on("end", function () {
-    minify(core.normalize(process.cwd() + '/src/MVC/themes/assets/js/app.js'));
-    multiMinify(views());
-  });
-  return processTSC;
-});
-
-gulp.task('build-compiler', function () {
-  var tsProject = ts.createProject(__dirname + "/tsconfig.compiler.json");
-  var processTSC = tsProject.src()
+  var tsCompiler = ts.createProject(__dirname + "/tsconfig.compiler.json");
+  var processCompiler = tsCompiler.src()
     .pipe(tsProject())
     .pipe(rename(function (path) {
       path.extname = ".js";
     }))
     .pipe(gulp.dest("./libs/compiler/"));
-  return processTSC;
+
+  var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
+  var processApp = tsProject.src()
+    .pipe(tsProject())
+    .pipe(rename(function (path) {
+      path.extname = ".js";
+    }))
+    .pipe(gulp.dest("./src/MVC/themes/assets/js/"));
+  processApp.on("end", function () {
+    minify(upath.normalizeSafe(process.cwd() + '/src/MVC/themes/assets/js/app.js'));
+    multiMinify(views());
+  });
+  return processApp;
 });
 
-gulp.task('merge', function () {
+gulp.task('postbuild', function () {
   const core = require('./libs/compiler/core').core;
   return core.async(function () {
-    const root_pkg = require("./package.json");
+    const root_pkg = require("./package-ori.json");
     const gui_pkg = require("./libs/gui/package.json");
     const compiler_pkg = require("./libs/compiler/package.json");
 
     Object.assign(root_pkg.dependencies, gui_pkg.dependencies, compiler_pkg.dependencies);
     Object.assign(root_pkg.devDependencies, gui_pkg.devDependencies, compiler_pkg.devDependencies);
-    console.log(root_pkg);
+    fs.writeFile(upath.join(__dirname, 'package.json'), JSON.stringify(root_pkg, null, 4), function(err){
+      if (!err){
+        console.log('success');
+      }
+    });
   });
 });
 
@@ -84,7 +85,7 @@ gulp.task('default', gulp.series('watch'));
  * @param {string} file
  */
 function minify(item) {
-  const core = require('./libs/compiler/core');
+  const core = require('./libs/compiler/core').core;
   const log = core.log;
   fs.exists(item, function (exists) {
     if (exists) {
@@ -129,7 +130,7 @@ function minify(item) {
  * List views folder
  */
 function views() {
-  const core = require('./libs/compiler/core');
+  const core = require('./libs/compiler/core').core;
   const log = core.log;
   var views = core.readdir(__dirname + `/${config.app.views}`);
   return views.filter(function (item) {

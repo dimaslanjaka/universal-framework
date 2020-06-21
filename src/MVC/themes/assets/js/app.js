@@ -146,14 +146,8 @@ class Cookies {
         }
     }
     static decompress(str) {
-        return pako.inflateRaw(str, {
-            to: 'string'
-        });
     }
     static compress(str) {
-        return pako.deflateRaw(str, {
-            to: 'string'
-        });
     }
 }
 if (typeof jQuery.fn.dataTable != 'undefined') {

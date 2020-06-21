@@ -88,9 +88,9 @@ class Cookies {
    * @param str
    */
   static decompress(str: string) {
-    return pako.inflateRaw(str, {
+    /*return pako.inflateRaw(str, {
       to: 'string'
-    });
+    });*/
   }
 
   /**
@@ -98,8 +98,8 @@ class Cookies {
    * @param str
    */
   static compress(str: string) {
-    return pako.deflateRaw(str, {
+    /*return pako.deflateRaw(str, {
       to: 'string'
-    });
+    });*/
   }
 }
