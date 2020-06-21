@@ -46,14 +46,18 @@ function createApp(withoutView) {
       })
     )
     .pipe(gulp.dest("./src/MVC/themes/assets/js/"))
-    .on('end', function () {
-      log.log(`successfully compiled ${log.success(path.resolve('./src/MVC/themes/assets/js/app.js'))}`);
-    });
-  if (!withoutView) {
-    processApp.on("end", function () {
+    .on("end", function () {
+      log.log(
+        `successfully compiled ${log.success(
+          path.resolve("./src/MVC/themes/assets/js/app.js")
+        )}`
+      );
       minify(
         upath.normalizeSafe(process.cwd() + "/src/MVC/themes/assets/js/app.js")
       );
+    });
+  if (!withoutView) {
+    processApp.on("end", function () {
       multiMinify(views());
     });
   }
@@ -74,7 +78,15 @@ gulp.task("watch", function () {
       const is_Lib = /libs\/js\//s.test(core.normalize(file));
 
       if (is_Lib) {
-        log.log(log.chalk().yellow(`start compile ${path.resolve('./src/MVC/themes/assets/js/app.js')}`));
+        log.log(
+          log
+            .chalk()
+            .yellow(
+              `start compile ${path.resolve(
+                "./src/MVC/themes/assets/js/app.js"
+              )}`
+            )
+        );
         createApp(true);
       } else {
         minify(file);

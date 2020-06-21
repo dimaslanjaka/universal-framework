@@ -4,7 +4,7 @@
 		"editor.defaultFormatter": "HookyQR.beautify"
 	},
 	"[javascript]": {
-		"editor.defaultFormatter": "HookyQR.beautify"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[json]": {
 		"editor.quickSuggestions": {

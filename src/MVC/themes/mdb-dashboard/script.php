@@ -4,17 +4,6 @@
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
 <?php
 $element = new HTML\element();
-
-// application javascript
-echo $element->js([
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
-  ])),
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
-  ]))
-]);
-
 // datatables is defined
 if (defined('datatables')) {
   include __DIR__ . '/../assets/partial/datatables.php';
@@ -30,20 +19,26 @@ if (defined('select2')) {
     [__DIR__ . '/assets/select2.parser.min.js', __DIR__ . '/assets/select2.parser.js'],
   ], true, true);
 }
+//if materialize defined
+if (defined('materialize')) {
+  echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+}
+// application javascript
+echo $element->js([
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
+  ])),
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
+  ]))
+]);
 
 if (defined('jquery-ui')) {
   echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>';
 }
 
-//if materialize defined
-if (defined('materialize')) {
-  echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">'; /*$element->css([
-  //'/node_modules/materialize-css/dist/css/materialize.min.css',
-  '',
-  ]);*/
-  //echo $element->js(['/node_modules/materialize-css/dist/js/materialize.min.js']);
-}
+
 // include content css
 if (isset($content) && file_exists($content)) {
   //$contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
@@ -178,4 +173,5 @@ if ($style) {
 <?php
 //include __DIR__ . '/bg.php';
 
+//render stacked alert
 \MVC\alert::init()->final(true);
