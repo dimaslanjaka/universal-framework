@@ -76,8 +76,8 @@
   "markdown.extension.list.indentationSize": "adaptive",
   "markdown.preview.scrollEditorWithPreview": true,
   "npm.packageManager": "npm",
-  "php-cs-fixer.executablePath": "libs/bin/php-cs-fixer/php-cs-fixer.phar",
-  "php-cs-fixer.executablePathWindows": "libs/bin/php-cs-fixer/php-cs-fixer.bat",
+  "php-cs-fixer.executablePath": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.phar",
+  "php-cs-fixer.executablePathWindows": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.bat",
   "php-docblocker.author": {
     "name": "Dimas Lanjaka",
     "email": "dimaslanjaka@gmail.com"
