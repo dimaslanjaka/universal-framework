@@ -74,6 +74,8 @@ declare var dimas: {
         jspCallback: (res: {
             captcha: string;
         }) => void;
+        listener_started: any;
+        listen: () => JQuery<Document>;
     };
     rp: (angka: number, prefix: string | any) => string;
     isNumber: (v: string | number) => boolean;
@@ -115,6 +117,8 @@ declare function framework(): {
         jspCallback: (res: {
             captcha: string;
         }) => void;
+        listener_started: any;
+        listen: () => JQuery<Document>;
     };
     rp: (angka: number, prefix: any) => string;
     isNumber: (v: string | number) => boolean;

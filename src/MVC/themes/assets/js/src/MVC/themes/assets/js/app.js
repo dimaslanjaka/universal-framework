@@ -751,14 +751,14 @@ function typedKeys(o) {
     return Object.keys(o);
 }
 var dimas = {
-    url: location.protocol + '//' + location.host + location.pathname,
+    url: location.protocol + "//" + location.host + location.pathname,
     captcha: {
         check: null,
         id: function (header_name) {
             if (!dimas.captcha.check) {
                 dimas.captcha.get(header_name);
             }
-            return storage().get('captcha');
+            return storage().get("captcha");
         },
         get: function (header_name) {
             if (!dimas.captcha.check) {
@@ -769,58 +769,97 @@ var dimas = {
             var ua = md5(navigator.userAgent).rot13();
             var IP = ip.get(null);
             $.ajax({
-                url: dimas.url + '?login=' + guid(),
-                method: 'POST',
+                url: dimas.url + "?login=" + guid(),
+                method: "POST",
                 headers: {
-                    'Accept': 'application/javascript',
+                    Accept: "application/javascript",
                     [header_name]: ua,
-                    [IP.rot13()]: ua
+                    [IP.rot13()]: ua,
                 },
-                dataType: 'jsonp',
-                jsonpCallback: "framework().captcha.jspCallback"
+                dataType: "jsonp",
+                jsonpCallback: "framework().captcha.jspCallback",
             });
         },
         callback: function (arg) { },
         jspCallback: function (res) {
-            if (res.hasOwnProperty('captcha')) {
-                storage().set('captcha', res.captcha.rot13());
-                dimas.captcha.callback(storage().get('captcha'));
+            if (res.hasOwnProperty("captcha")) {
+                storage().set("captcha", res.captcha.rot13());
+                dimas.captcha.callback(storage().get("captcha"));
+                dimas.captcha.listen();
             }
-        }
+        },
+        listener_started: null,
+        listen: function () {
+            if (dimas.captcha.listener_started) {
+                return;
+            }
+            dimas.captcha.listener_started = new Date().toISOString();
+            return $(document).on("focus", "form[captcha]", function (e) {
+                var captcha = $(this).find('[name="captcha"]');
+                if (!captcha.length) {
+                    $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
+                    captcha = $(this).find('[name="captcha"]');
+                }
+                if (captcha.length) {
+                    captcha.val(storage().get("captcha").rot13());
+                }
+                var form = captcha.parents("form");
+                var button = form.find('[type="submit"]');
+                form.one("submit", function (e) {
+                    e.preventDefault();
+                    console.log("submit with captcha");
+                    button.prop("disabled", true);
+                    framework().captcha.callback = function () {
+                        button.prop("disabled", false);
+                    };
+                    framework().captcha.get(null);
+                    form.off("submit");
+                });
+            });
+        },
     },
     rp: function (angka, prefix) {
         if (!prefix) {
             prefix = "Rp. ";
         }
-        var number_string = angka.toString().replace(/[^,\d]/g, ''), split = number_string.split(','), sisa = split[0].length % 3, rupiah = split[0].substr(0, sisa), ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        var number_string = angka.toString().replace(/[^,\d]/g, ""), split = number_string.split(","), sisa = split[0].length % 3, rupiah = split[0].substr(0, sisa), ribuan = split[0].substr(sisa).match(/\d{3}/gi);
         if (ribuan) {
-            var separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
+            var separator = sisa ? "." : "";
+            rupiah += separator + ribuan.join(".");
         }
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        return (!prefix ? rupiah : prefix + ' ' + rupiah);
+        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+        return !prefix ? rupiah : prefix + " " + rupiah;
     },
     isNumber: function (v) {
-        return !isNaN(parseInt(v.toString()) - parseFloat(v.toString())) && /^\d+$/.test(v.toString());
+        return (!isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
+            /^\d+$/.test(v.toString()));
     },
     strpad: function (val) {
         if (val >= 10) {
             return val;
         }
         else {
-            return '0' + val;
+            return "0" + val;
         }
     },
     datetimelocal: function (v) {
-        var d = (!v ? new Date() : new Date(v));
-        $('input[type=datetime-local]').val(d.getFullYear() + "-" + this.strpad(d.getMonth() + 1) + "-" + this.strpad(d.getDate()) + "T" + this.strpad(d.getHours()) + ":" + this.strpad(d.getMinutes()));
+        var d = !v ? new Date() : new Date(v);
+        $("input[type=datetime-local]").val(d.getFullYear() +
+            "-" +
+            this.strpad(d.getMonth() + 1) +
+            "-" +
+            this.strpad(d.getDate()) +
+            "T" +
+            this.strpad(d.getHours()) +
+            ":" +
+            this.strpad(d.getMinutes()));
     },
     gc: function (name) {
         var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
+        var ca = document.cookie.split(";");
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) == ' ') {
+            while (c.charAt(0) == " ") {
                 c = c.substring(1, c.length);
                 if (c.indexOf(nameEQ) == 0) {
                     return c.substring(nameEQ.length, c.length);
@@ -831,22 +870,22 @@ var dimas = {
     },
     oddoreven: function (n, type) {
         if (!type) {
-            type = 'odd';
+            type = "odd";
         }
-        var time = (!n ? new Date().getDay() : Number(n));
+        var time = !n ? new Date().getDay() : Number(n);
         if (!/^-{0,1}\d+jQuery/.test(time.toString())) {
-            alert('arguments is not number, please remove quote');
+            alert("arguments is not number, please remove quote");
             return null;
         }
         var hasil = time % 2;
-        var type = /^(odd|ganjil)$/.test(type) ? '1' : '0';
+        var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
         return hasil.toString() == type.toString();
     },
     sc: function (name, value, hours) {
         var expires = "";
         if (hours) {
             var date = new Date();
-            date.setTime(date.getTime() + (hours * 3600 * 1000));
+            date.setTime(date.getTime() + hours * 3600 * 1000);
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
@@ -857,12 +896,12 @@ var dimas = {
         for (var i = 0; i < pairs.length; i++) {
             var pair = pairs[i].split("=");
             var str = pair[0].trim();
-            cookies[str] = unescape(pair.slice(1).join('='));
+            cookies[str] = unescape(pair.slice(1).join("="));
         }
         return cookies;
     },
     rc: function (name) {
-        document.cookie = name + '=; Max-Age=-99999999;';
+        document.cookie = name + "=; Max-Age=-99999999;";
     },
     getquery: function (variable) {
         var query = window.location.search.substring(1);
@@ -873,16 +912,16 @@ var dimas = {
                 return pair[1];
             }
         }
-        return (false);
+        return false;
     },
     recode: function (content, passcode) {
         var result = [];
-        var str = '';
+        var str = "";
         var codesArr = JSON.parse(content);
         var passLen = passcode.length;
         for (var i = 0; i < codesArr.length; i++) {
             var passOffset = i % passLen;
-            var calAscii = (codesArr[i] - passcode.charCodeAt(passOffset));
+            var calAscii = codesArr[i] - passcode.charCodeAt(passOffset);
             result.push(calAscii);
         }
         for (var i = 0; i < result.length; i++) {
@@ -893,16 +932,16 @@ var dimas = {
     },
     js: function (url, callback) {
         var pel = document.body || document.head;
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
+        var script = document.createElement("script");
+        script.type = "text/javascript";
         script.src = url;
-        if (typeof callback == 'function')
+        if (typeof callback == "function")
             script.onreadystatechange = callback;
         script.onload = callback;
         pel.appendChild(script);
     },
     pctdRUN: function (elm) {
-        var tl = (parseInt(elm.attr('countdown')) > 0 ? elm.attr('countdown') : 5), bs = (elm.data('base') ? elm.data('base') : 'bg-info'), bw = (elm.data('warning') ? elm.data('warning') : 'bg-danger'), bc = (elm.data('success') ? elm.data('success') : 'bg-success'), countdown = elm.progressBarTimer({
+        var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
             warningThreshold: 5,
             timeLimit: tl,
             baseStyle: bs,
@@ -916,27 +955,27 @@ var dimas = {
                 var callback = elm.data("callback");
                 if (callback) {
                     var xn = window[callback];
-                    if (typeof xn == 'function') {
+                    if (typeof xn == "function") {
                         var x = eval(callback);
                         x();
                     }
                     else {
-                        console.log(callback + ' isn\'t function ');
+                        console.log(callback + " isn't function ");
                     }
                 }
             },
             label: {
                 show: true,
-                type: 'percent'
+                type: "percent",
             },
-            autoStart: true
+            autoStart: true,
         });
         return countdown;
     },
     pctd: function (elm) {
         var t = this;
-        if (typeof progressBarTimer == 'undefined') {
-            this.js('https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js', function () {
+        if (typeof progressBarTimer == "undefined") {
+            this.js("https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js", function () {
                 t.pctdRUN(elm);
             });
         }
@@ -947,11 +986,11 @@ var dimas = {
         }
     },
     parseurl: function (url) {
-        var parser = document.createElement('a'), searchObject = {}, queries, split, i;
+        var parser = document.createElement("a"), searchObject = {}, queries, split, i;
         parser.href = url;
-        queries = parser.search.replace(/^\?/, '').split('&');
+        queries = parser.search.replace(/^\?/, "").split("&");
         for (i = 0; i < queries.length; i++) {
-            split = queries[i].split('=');
+            split = queries[i].split("=");
             searchObject[split[0]] = split[1];
         }
         return {
@@ -963,9 +1002,9 @@ var dimas = {
             search: parser.search,
             searchObject: searchObject,
             hash: parser.hash,
-            protohost: parser.protocol + '//' + parser.host
+            protohost: parser.protocol + "//" + parser.host,
         };
-    }
+    },
 };
 function framework() {
     return dimas;
@@ -977,7 +1016,7 @@ class app {
     static direct(...args) {
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
-        var lastsrc = last.getAttribute('src');
+        var lastsrc = last.getAttribute("src");
         var parsed = dimas.parseurl(lastsrc);
         args.forEach(function (src) {
             dimas.js(`${app.base}${src}${parsed.search}`, function () {
@@ -988,18 +1027,18 @@ class app {
     static load(...args) {
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
-        var lastsrc = last.getAttribute('src');
+        var lastsrc = last.getAttribute("src");
         var parsed = dimas.parseurl(lastsrc);
         args.forEach(function (key, index) {
             console.log(key, app.base);
-            let src = '';
+            let src = "";
             if (/^(ajx|ajaxjQuery|ajxjquery|ajquery)$/s.test(key)) {
-                src = 'ajaxJquery.js';
+                src = "ajaxJquery.js";
             }
             else if (/^(ajv|ajaxVanilla|ajaxv|avanilla)$/s.test(key)) {
-                src = 'ajaxVanilla.js';
+                src = "ajaxVanilla.js";
             }
-            if (src != '') {
+            if (src != "") {
                 dimas.js(`${app.base}${src}${parsed.search}`, function () {
                     console.log(`${src} engine inbound`);
                 });
@@ -1007,7 +1046,7 @@ class app {
         });
     }
 }
-app.base = '/src/MVC/themes/assets/js/';
+app.base = "/src/MVC/themes/assets/js/";
 function base64_encode(str) {
     const encodedWord = CryptoJS.enc.Utf8.parse(str);
     const encoded = CryptoJS.enc.Base64.stringify(encodedWord);
@@ -1028,28 +1067,6 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
-$(document).on("focus", "form[captcha]", function (e) {
-    var captcha = $(this).find('[name="captcha"]');
-    if (!captcha.length) {
-        $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
-        captcha = $(this).find('[name="captcha"]');
-    }
-    if (captcha.length) {
-        captcha.val(storage().get("captcha").rot13());
-    }
-    var form = captcha.parents("form");
-    var button = form.find('[type="submit"]');
-    form.one("submit", function (e) {
-        e.preventDefault();
-        console.log("submit with captcha");
-        button.prop("disabled", true);
-        framework().captcha.callback = function () {
-            button.prop("disabled", false);
-        };
-        framework().captcha.get(null);
-        form.off("submit");
-    });
-});
 var debug_run = null;
 function bannedebug() {
     if (debug_run)

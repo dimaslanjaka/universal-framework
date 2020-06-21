@@ -25,6 +25,11 @@ declare class html {
     static create(options: any): any;
 }
 declare type NotFunction<T> = T extends Function ? never : T;
+declare class Timer {
+    private timeId;
+    constructor(callback: Function, time: number);
+    clear(): void;
+}
 declare function empty(str: string | null | undefined | number | boolean): boolean;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
@@ -69,6 +74,8 @@ declare var dimas: {
         jspCallback: (res: {
             captcha: string;
         }) => void;
+        listener_started: any;
+        listen: () => JQuery<Document>;
     };
     rp: (angka: number, prefix: string | any) => string;
     isNumber: (v: string | number) => boolean;
@@ -110,6 +117,8 @@ declare function framework(): {
         jspCallback: (res: {
             captcha: string;
         }) => void;
+        listener_started: any;
+        listen: () => JQuery<Document>;
     };
     rp: (angka: number, prefix: any) => string;
     isNumber: (v: string | number) => boolean;

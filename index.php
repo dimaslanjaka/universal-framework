@@ -137,6 +137,7 @@ if (!realpath($view)) {
 	 */
 	$refreshCache = $router->is_header('Refresh-Cache');
 
+	// set all indicator to integer for convert into boolean on next event
 	settype($is_hard_reload, 'integer');
 	settype($no_cache, 'integer');
 	settype($cache_expired, 'integer');

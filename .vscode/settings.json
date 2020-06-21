@@ -1,96 +1,99 @@
 {
-	"[css]": {
-		"editor.suggest.insertMode": "replace",
-		"editor.defaultFormatter": "HookyQR.beautify"
-	},
-	"[javascript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[json]": {
-		"editor.quickSuggestions": {
-			"strings": true
-		},
-		"editor.defaultFormatter": "HookyQR.beautify",
-		"editor.suggest.insertMode": "replace"
-	},
-	"[markdown]": {
-		"editor.wordWrap": "on",
-		"editor.quickSuggestions": false,
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"editor.formatOnPaste": false,
-	"editor.formatOnSave": false,
-	"editor.formatOnType": false,
-	"editor.quickSuggestions": {
-		"other": true,
-		"comments": false,
-		"strings": false
-	},
-	"editor.renameOnType": true,
-	"editor.wordWrap": "on",
-	"eslint.packageManager": "npm",
-	"explorer.autoReveal": true,
-	"files.associations": {
-		"*.extension": "language"
-	},
-	"files.autoSave": "afterDelay",
-	"files.autoSaveDelay": 18000,
-	"files.encoding": "utf8",
-	"files.exclude": {
-		"out": false,
-		".vscode": false
-	},
-	"files.maxMemoryForLargeFilesMB": 100,
-	"files.watcherExclude": {
-		"**/.git/objects/**": true,
-		"**/node_modules/**": true,
-		"**/tmp/**": true,
-		"**/vendor/**": true
-	},
-	"typescript.tsserver.watchOptions": {
-		"fallbackPolling": "dynamicPriorityPolling",
-		"synchronousWatchDirectory": true,
-		"watchDirectory": "dynamicPriorityPolling",
-		"watchFile": "dynamicPriorityPolling"
-	},
-	"typescript.tsserver.useSeparateSyntaxServer": true,
-	"typescript.suggest.autoImports": true,
-	"git.allowForcePush": true,
-	"git.autofetch": true,
-	"git.autofetchPeriod": 1800,
-	"git.autorefresh": true,
-	"git.countBadge": "all",
-	"git.enableSmartCommit": true,
-	"git.enableStatusBarSync": true,
-	"git.enabled": true,
-	"git.smartCommitChanges": "all",
-	"git.supportCancellation": false,
-	"github.gitAuthentication": true,
-	"intelephense.maxMemory": 500,
-	"intelephense.telemetry.enabled": false,
-	"intelephense.trace.server": "off",
-	"javascript.validate.enable": true,
-	"markdown.extension.list.indentationSize": "adaptive",
-	"markdown.preview.scrollEditorWithPreview": true,
-	"npm.packageManager": "npm",
-	"php-cs-fixer.executablePath": "/libs/bin/php-cs-fixer/php-cs-fixer.phar",
-	"php-cs-fixer.executablePathWindows": "/libs/bin/php-cs-fixer/php-cs-fixer.bat",
-	"php-docblocker.author": {
-		"name": "Dimas Lanjaka",
-		"email": "dimaslanjaka@gmail.com"
-	},
-	"prettier.packageManager": "npm",
-	"python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
-	"search.exclude": {
-		"out": true,
-		".vscode": true
-	},
-	"task.problemMatchers.neverPrompt": true,
-	"terminal.integrated.environmentChangesIndicator": "on",
-	"typescript.check.npmIsInstalled": false,
-	"typescript.tsc.autoDetect": "off",
-	"typescript.tsserver.log": "verbose"
+  "[css]": {
+    "editor.suggest.insertMode": "replace",
+    "editor.defaultFormatter": "HookyQR.beautify"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.defaultFormatter": "HookyQR.beautify",
+    "editor.suggest.insertMode": "replace"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+  "editor.renameOnType": true,
+  "editor.wordWrap": "on",
+  "eslint.packageManager": "npm",
+  "explorer.autoReveal": true,
+  "files.associations": {
+    "*.extension": "language"
+  },
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 18000,
+  "files.encoding": "utf8",
+  "files.exclude": {
+    "out": false,
+    ".vscode": false
+  },
+  "files.maxMemoryForLargeFilesMB": 100,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/tmp/**": true,
+    "**/vendor/**": true
+  },
+  "typescript.tsserver.watchOptions": {
+    "fallbackPolling": "dynamicPriorityPolling",
+    "synchronousWatchDirectory": true,
+    "watchDirectory": "dynamicPriorityPolling",
+    "watchFile": "dynamicPriorityPolling"
+  },
+  "typescript.tsserver.useSeparateSyntaxServer": true,
+  "typescript.suggest.autoImports": true,
+  "git.allowForcePush": true,
+  "git.autofetch": true,
+  "git.autofetchPeriod": 1800,
+  "git.autorefresh": true,
+  "git.countBadge": "all",
+  "git.enableSmartCommit": true,
+  "git.enableStatusBarSync": true,
+  "git.enabled": true,
+  "git.smartCommitChanges": "all",
+  "git.supportCancellation": false,
+  "github.gitAuthentication": true,
+  "intelephense.maxMemory": 500,
+  "intelephense.telemetry.enabled": false,
+  "intelephense.trace.server": "off",
+  "javascript.validate.enable": true,
+  "markdown.extension.list.indentationSize": "adaptive",
+  "markdown.preview.scrollEditorWithPreview": true,
+  "npm.packageManager": "npm",
+  "php-cs-fixer.executablePath": "libs/bin/php-cs-fixer/php-cs-fixer.phar",
+  "php-cs-fixer.executablePathWindows": "libs/bin/php-cs-fixer/php-cs-fixer.bat",
+  "php-docblocker.author": {
+    "name": "Dimas Lanjaka",
+    "email": "dimaslanjaka@gmail.com"
+  },
+  "prettier.packageManager": "npm",
+  "python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+  "search.exclude": {
+    "out": true,
+    ".vscode": true
+  },
+  "task.problemMatchers.neverPrompt": true,
+  "terminal.integrated.environmentChangesIndicator": "on",
+  "typescript.check.npmIsInstalled": false,
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsserver.log": "verbose",
+  "php-cs-fixer.formatHtml": true,
+  "php-cs-fixer.rules": "@PSR2",
+  "php-cs-fixer.config": ".php_cs;.php_cs.dist"
 }
