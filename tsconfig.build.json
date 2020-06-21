@@ -14,8 +14,6 @@
     "noUnusedLocals": true,
     "allowJs": true,
     "checkJs": false,
-    "outDir": "./src/MVC/themes/assets/js",
-    //"out": "./src/MVC/themes/assets/js/app.js",
     "outFile": "./src/MVC/themes/assets/js/app.js",
     "sourceRoot": "./libs/js/",
     "rootDir": "./libs/js/",

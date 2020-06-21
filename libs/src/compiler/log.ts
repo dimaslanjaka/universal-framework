@@ -1,5 +1,5 @@
 import logger from 'fancy-log';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 
 export class log {
   constructor(...arg: string[] | any | null) {
@@ -14,7 +14,7 @@ export class log {
     return chalk.greenBright(msg);
   }
   static error(msg: string) {
-    return chalk.redBright(msg);
+    return log.chalk().redBright(msg);
   }
   /**
    * Generate Random Hex Color

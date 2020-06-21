@@ -18,14 +18,9 @@ set PYTHON=%~dp0libs\Windows\%processor%\python2.7
 set PYTHONPATH=%~dp0libs\Windows\%processor%\python2.7
 set DIR=%~dp0
 set python_posix=%PYTHON:\=/%/python.exe
-rem set npm_config_devdir=%~dp0/tmp/.gyp
-rem set VCINSTALLDIR=C:\Program Files (x86)\MSBuild\14.0
-
-rem this is major installer tips
+set npm_config_devdir=%~dp0/tmp/.gyp
+set VCINSTALLDIR=C:\Program Files (x86)\MSBuild
 rem npm config set python %PYTHON:\=/%/python.exe 
-rem node-gyp configure --msvs_version=2015
-rem node-gyp --python %PYTHON:\=/%/python.exe
-rem npm install --global --prefer-offline --production windows-build-tools
 
 :BEGIN
 echo Select Terminal:

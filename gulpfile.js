@@ -13,8 +13,8 @@ gulp.task('build', function () {
   const core = require('./libs/compiler/core').core;
   const log = core.log;
   var tsCompiler = ts.createProject(__dirname + "/tsconfig.compiler.json");
-  var processCompiler = tsCompiler.src()
-    .pipe(tsProject())
+  tsCompiler.src()
+    .pipe(tsCompiler())
     .pipe(rename(function (path) {
       path.extname = ".js";
     }))
@@ -41,6 +41,14 @@ gulp.task("watch", function () {
       minify(file);
     });
 });
+
+gulp.task("package-dev", function () {
+  gulp.watch(["./package-ori.json"])
+    .on('change', function (file) {
+      require('./index');
+    });
+});
+
 
 gulp.task('composer', function () {
   const core = require('./libs/compiler/core');
