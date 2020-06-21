@@ -1,5 +1,5 @@
 import logger from 'fancy-log';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
 class log {
   constructor(...arg: string[] | null) {
@@ -53,4 +53,5 @@ class log {
   }
 }
 
-export default log;
+export = log;
+//export default log;

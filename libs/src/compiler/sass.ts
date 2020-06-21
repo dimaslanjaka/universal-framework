@@ -1,10 +1,10 @@
-import sass_core from "sass";
-import fs from "fs";
+import * as sass from "sass";
+import * as fs from "fs";
 import log from "./log";
-import core from "./core";
+import { core } from "./core";
 
-class sass {
-    /**
+class sass_compiler {
+  /**
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
@@ -17,7 +17,7 @@ class sass {
           /\.scss$/s.test(filename.toString()) &&
           !/\.min\.scss$/s.test(filename.toString())
         ) {
-          sass_core.render(
+          sass.render(
             {
               file: filename.toString(),
               outputStyle: "expanded",
@@ -45,3 +45,6 @@ class sass {
     });
   }
 }
+
+export = sass_compiler;
+//export default sass_compiler;

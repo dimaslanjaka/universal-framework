@@ -2,7 +2,7 @@ console.clear();
 
 //import core from "./core";
 import log from "./log";
-import mysql from "mysql";
+import * as mysql from "mysql";
 import configuration from "./config";
 var config = configuration;
 
@@ -29,4 +29,5 @@ function mysql_connection(): null | mysql.Connection {
   return result;
 }
 
-export default mysql_connection;
+//export = mysql_connection;
+//export default mysql_connection;

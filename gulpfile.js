@@ -1,31 +1,53 @@
 const gulp = require("gulp");
 const ts = require("gulp-typescript");
 const rename = require("gulp-rename");
-const core = require('./libs/compiler/core');
 const process = require('process');
 const fs = require('fs');
 const config = require('./config.json');
-const argv = require('yargs').argv;
-const spawn = require('child_process').spawn;
-const log = core.log;
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
  * Minify Views Assets
  */
 gulp.task('build', function () {
+  const core = require('./libs/compiler/core');
+  const log = core.log;
   var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
   var processTSC = tsProject.src()
     .pipe(tsProject())
     .pipe(rename(function (path) {
       path.extname = ".js";
     }))
-    .pipe(gulp.dest("./"));
+    .pipe(gulp.dest("./src/MVC/themes/assets/js/"));
   processTSC.on("end", function () {
     minify(core.normalize(process.cwd() + '/src/MVC/themes/assets/js/app.js'));
     multiMinify(views());
   });
   return processTSC;
+});
+
+gulp.task('build-compiler', function () {
+  var tsProject = ts.createProject(__dirname + "/tsconfig.compiler.json");
+  var processTSC = tsProject.src()
+    .pipe(tsProject())
+    .pipe(rename(function (path) {
+      path.extname = ".js";
+    }))
+    .pipe(gulp.dest("./libs/compiler/"));
+  return processTSC;
+});
+
+gulp.task('merge', function () {
+  const core = require('./libs/compiler/core').core;
+  return core.async(function () {
+    const root_pkg = require("./package.json");
+    const gui_pkg = require("./libs/gui/package.json");
+    const compiler_pkg = require("./libs/compiler/package.json");
+
+    Object.assign(root_pkg.dependencies, gui_pkg.dependencies, compiler_pkg.dependencies);
+    Object.assign(root_pkg.devDependencies, gui_pkg.devDependencies, compiler_pkg.devDependencies);
+    console.log(root_pkg);
+  });
 });
 
 // watch libs/js/**/* and views
@@ -37,6 +59,8 @@ gulp.task("watch", function () {
 });
 
 gulp.task('composer', function () {
+  const core = require('./libs/compiler/core');
+  const log = core.log;
   return core.async(function () {
     var today = new Date().toLocaleDateString();
     var yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString();
@@ -60,6 +84,8 @@ gulp.task('default', gulp.series('watch'));
  * @param {string} file
  */
 function minify(item) {
+  const core = require('./libs/compiler/core');
+  const log = core.log;
   fs.exists(item, function (exists) {
     if (exists) {
       var config = '/src/MVC/config/' + item.replace(core.root(), '');
@@ -103,6 +129,8 @@ function minify(item) {
  * List views folder
  */
 function views() {
+  const core = require('./libs/compiler/core');
+  const log = core.log;
   var views = core.readdir(__dirname + `/${config.app.views}`);
   return views.filter(function (item) {
     return /\.(js|scss|css|sass|less)$/.test(item) && !/\.min\.(js|css)$/.test(item) && !/\-ori|\-original|\-backup|\.bak/s.test(item);

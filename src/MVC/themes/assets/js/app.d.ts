@@ -14,8 +14,8 @@ declare class Cookies {
     static get(c_name: string): string | Object | null;
     static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function): any;
     static one(name: string, value: any, expire: number, callback: Function): void;
-    static decompress(str: string): string;
-    static compress(str: string): string;
+    static decompress(str: string): any;
+    static compress(str: string): any;
 }
 declare function datetime_local(date: any): string;
 declare function isMobile(): boolean;
@@ -147,8 +147,8 @@ declare class app {
     static direct(...args: string[]): void;
     static load(...args: any[]): void;
 }
-declare function base64_encode(str: string): string;
-declare function base64_decode(str: string): string;
+declare function base64_encode(str: string): any;
+declare function base64_decode(str: string): any;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
 declare function bannedebug(): void;
@@ -297,17 +297,17 @@ declare function makeid(length: number): string;
 declare function gexec(action: any, retry: any, callback: any): void;
 declare function geToken(): string;
 declare function JavaScriptCaller(url: string, callback: Function): void;
-declare function getKey(passphrase: string, salt: string): CryptoJS.WordArray;
-declare function userJSEncrypt(passphrase: string, plainText: string): string;
-declare function userJSDecrypt(passphrase: string, encryptedText: string): string;
+declare function getKey(passphrase: string, salt: string): any;
+declare function userJSEncrypt(passphrase: string, plainText: string): any;
+declare function userJSDecrypt(passphrase: string, encryptedText: string): any;
 declare function setInputFilter(textbox: any, inputFilter: any): void;
 declare function e_modal_error(data: any): void;
 declare function e_modal_success(data: any): void;
 declare function openInNewTab(url: any, name: any): void;
 declare function get_currency_symbol(filter: any): string;
-declare function CryptoK(passphrase: string, salt: string): CryptoJS.WordArray;
-declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): string;
-declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): string;
+declare function CryptoK(passphrase: string, salt: string): any;
+declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): any;
+declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): any;
 declare function GeneratorID(): void;
 declare class GeneratorID {
     rand: number;
@@ -347,7 +347,7 @@ declare function prepEntities(str: string): string;
 declare var textAreas: HTMLCollectionOf<HTMLTextAreaElement>;
 declare var events: {};
 declare var original: {
-    <K extends "error" | "abort" | "submit" | "message" | "input" | "progress" | "select" | "close" | "change" | "focus" | "afterprint" | "beforeprint" | "beforeunload" | "blur" | "canplay" | "canplaythrough" | "click" | "compassneedscalibration" | "contextmenu" | "dblclick" | "devicelight" | "devicemotion" | "deviceorientation" | "deviceorientationabsolute" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "hashchange" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "mousewheel" | "MSGestureChange" | "MSGestureDoubleTap" | "MSGestureEnd" | "MSGestureHold" | "MSGestureStart" | "MSGestureTap" | "MSInertiaStart" | "MSPointerCancel" | "MSPointerDown" | "MSPointerEnter" | "MSPointerLeave" | "MSPointerMove" | "MSPointerOut" | "MSPointerOver" | "MSPointerUp" | "offline" | "online" | "orientationchange" | "pagehide" | "pageshow" | "pause" | "play" | "playing" | "popstate" | "ratechange" | "readystatechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "storage" | "suspend" | "timeupdate" | "unload" | "volumechange" | "vrdisplayactivate" | "vrdisplayblur" | "vrdisplayconnect" | "vrdisplaydeactivate" | "vrdisplaydisconnect" | "vrdisplayfocus" | "vrdisplaypointerrestricted" | "vrdisplaypointerunrestricted" | "vrdisplaypresentchange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "cuechange" | "dragexit" | "focusin" | "focusout" | "gotpointercapture" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "languagechange" | "messageerror" | "rejectionhandled" | "unhandledrejection">(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+    <K extends "error" | "abort" | "submit" | "message" | "input" | "progress" | "select" | "change" | "focus" | "afterprint" | "beforeprint" | "beforeunload" | "blur" | "canplay" | "canplaythrough" | "click" | "compassneedscalibration" | "contextmenu" | "dblclick" | "devicelight" | "devicemotion" | "deviceorientation" | "deviceorientationabsolute" | "drag" | "dragend" | "dragenter" | "dragleave" | "dragover" | "dragstart" | "drop" | "durationchange" | "emptied" | "ended" | "hashchange" | "invalid" | "keydown" | "keypress" | "keyup" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "mousewheel" | "MSGestureChange" | "MSGestureDoubleTap" | "MSGestureEnd" | "MSGestureHold" | "MSGestureStart" | "MSGestureTap" | "MSInertiaStart" | "MSPointerCancel" | "MSPointerDown" | "MSPointerEnter" | "MSPointerLeave" | "MSPointerMove" | "MSPointerOut" | "MSPointerOver" | "MSPointerUp" | "offline" | "online" | "orientationchange" | "pagehide" | "pageshow" | "pause" | "play" | "playing" | "popstate" | "ratechange" | "readystatechange" | "reset" | "resize" | "scroll" | "seeked" | "seeking" | "stalled" | "storage" | "suspend" | "timeupdate" | "unload" | "volumechange" | "vrdisplayactivate" | "vrdisplayblur" | "vrdisplayconnect" | "vrdisplaydeactivate" | "vrdisplaydisconnect" | "vrdisplayfocus" | "vrdisplaypointerrestricted" | "vrdisplaypointerunrestricted" | "vrdisplaypresentchange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "dragexit" | "focusin" | "focusout" | "gotpointercapture" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "languagechange" | "messageerror" | "rejectionhandled" | "unhandledrejection">(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
     (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
 } & typeof addEventListener;
 declare var salt: string;
@@ -391,5 +391,5 @@ declare var socket: any;
 declare class ZLIB {
     static atos(arr: Uint8Array): string;
     static decompress(str: any): string;
-    static compress(str: any): string;
+    static compress(str: any): any;
 }

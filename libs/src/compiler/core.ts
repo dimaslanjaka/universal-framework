@@ -1,20 +1,20 @@
-import fs from "fs";
-import Terser from "terser";
-import path from "path";
+import * as fs from "fs";
+import * as Terser from "terser";
+import * as path from "path";
 import slash from "slash";
-import JavaScriptObfuscator from "javascript-obfuscator";
+import * as JavaScriptObfuscator from "javascript-obfuscator";
 import log from "./log";
-import uglifycss from "uglifycss";
-import sass from "sass";
+import * as uglifycss from "uglifycss";
+import * as sass from "sass";
 import { exec } from "child_process";
 const LocalStorage = require("node-localstorage").LocalStorage;
 import configuration from "./config";
 
 /**
- * Core compiler
+ * @class Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-class core {
+export class core {
   /**
    * config.json
    */
@@ -406,5 +406,3 @@ class core {
     });
   }
 }
-
-export default core;

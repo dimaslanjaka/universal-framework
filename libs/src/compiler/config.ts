@@ -1,6 +1,22 @@
+//import { core } from "./core";
+import * as process from "process";
+import * as upath from "upath";
+import * as path from "path";
 
-import core from "./core";
+const root =  function(): string {
+  var appDir = upath.normalizeSafe(path.dirname(require.main.filename)).toString();
+  if (/\/libs\/compiler$/s.test(appDir)) {
+    var split = appDir.split("/");
+    split = split.slice(0, -2);
+    appDir = split.join("/");
+  }
+  return appDir;
+}
 var config: {
+  /**
+   * Root directory
+   */
+  root: string,
   database: {
     user: string;
     pass: string;
@@ -69,6 +85,8 @@ var config: {
     views: "views";
     root: "";
   };
-} = require(`${core.root()}/config.json`);
+} = require(`${process.cwd()}/config.json`);
+config.root = root();
 
-export default config;
+export = config;
+//export default config;

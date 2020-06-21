@@ -1,38 +1,29 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "rootDirs": ["./"],
-    "strict": false,
-    "target": "ES6",
     "module": "commonjs",
-    "declaration": false,
-    "removeComments": false,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "checkJs": false,
-    "outDir": "./libs/compiler",
-    "rootDir": "./libs/src/compiler/",
-    "sourceMap": false,
-    "watch": false,
-    "allowUmdGlobalAccess": true,
-    "allowUnusedLabels": true,
-    "allowUnreachableCode": true,
-    "esModuleInterop": true,
+    "target": "es5",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "inlineSourceMap": true,
+    "allowUnreachableCode": false,
+    "noImplicitReturns": false,
+    "noImplicitAny": false,
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "importHelpers": true,
-    "incremental": true,
-    "lib": [
-      "DOM",
-      "ES5",
-      "ESNext",
-      "ES2020",
-      "ES6",
-      "ES2015"
-    ]
+    "lib": ["DOM", "ES2015", "ES7"],
+    "rootDir": "./libs/src/compiler",
+    "outDir": "./libs/compiler",
+    "noLib": false,
+    "esModuleInterop": true,
+    "importHelpers": true
   },
-  "include": [
-    "./libs/src/compiler/**/*.ts",
-    "./libs/src/compiler/**/*.js"
-  ]
+  "buildOnSave": true,
+  "compileOnSave": true,
+  "exclude": [
+    "./plugins/**/*",
+    "./typings/**/*",
+    "./node_modules/**/*",
+    "./libs/compiler/**/*"
+  ],
+  "include": ["./libs/src/compiler/**/*"]
 }
