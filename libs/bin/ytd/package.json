@@ -6,7 +6,8 @@
   "dependencies": {
     "googleapis": "^48.0.0",
     "mkdirp": "^1.0.4",
-    "youtube-mp3-downloader": "^0.6.6"
+    "youtube-mp3-downloader": "^0.6.6",
+    "ytdl-core": "*"
   },
   "devDependencies": {},
   "scripts": {

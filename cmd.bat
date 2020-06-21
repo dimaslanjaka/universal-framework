@@ -3,7 +3,7 @@ setlocal DISABLEDELAYEDEXPANSION
 cd /d %~dp0
 
 IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) ELSE (set processor=x86)
-SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
+SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
 rem cygwin detector
 IF NOT EXIST "C:\Cygwin\bin" (
    IF NOT EXIST "D:\cygwin64\bin" (
@@ -27,23 +27,23 @@ echo Select Terminal:
 echo 1 - CMD
 echo 2 - POWERSHELL
 echo 3 - PING
-choice /n /c:12345678 /M "Choose an option "
+choice /n /c:123 /M "Choose an option "
 GOTO LABEL-%ERRORLEVEL%
 
 :LABEL-1 CMD
 cls
 cmd.exe /k "@echo ON & setlocal DISABLEDELAYEDEXPANSION & npm config set python %PYTHON:\=/%/python.exe"
-rem goto BEGIN 
+goto END
 
 :LABEL-2 POWERSHELL
 cls
 Start powershell.exe -noexit -ExecutionPolicy Bypass -File "%~dp0cmd.ps1" -Command "npm config set python %PYTHON:\=/%/python.exe Set-Location -literalPath '%~dp0';"
-rem goto BEGIN
+goto END
 
 :LABEL-3 PING
 cls
-ping google.com -t
-rem goto BEGIN
+cmd.exe /k "@echo OFF & ping google.com -t"
+goto END
 
 :END
 rem pause

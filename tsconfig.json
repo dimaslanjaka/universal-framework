@@ -15,6 +15,7 @@
     "allowUnreachableCode": true,
     "skipLibCheck": true,
     "importHelpers": true,
+    "checkJs": true,
     "declaration": true,
     "allowJs": true,
     "resolveJsonModule": true,

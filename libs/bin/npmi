@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+const log = require('./../compiler/log').log;
+const path = require('path');
+const process = require('process');
+const {
+    exec
+} = require('child_process');
+const argv = process.argv.slice(2);
+
+var args = argv.join(' ');
+exec(`npm i ${args} --prefer-offline`, (err, stdout, stderr) => {
+    if (err) {
+        log.log(log.error('node couldn\'t execute the command'));
+        return;
+    }
+
+    // the *entire* stdout and stderr (buffered)
+    //console.log(`stdout: ${stdout}`);
+    //console.log(`stderr: ${stderr}`);
+    log.log(log.success(`>>>\n${stdout}`));
+    log.log(log.error(`>>>\n${stderr}`));
+});
