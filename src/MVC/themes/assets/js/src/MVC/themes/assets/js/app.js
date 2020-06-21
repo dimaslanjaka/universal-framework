@@ -161,7 +161,9 @@ if (typeof jQuery.fn.dataTable != 'undefined') {
             dt.ajax.reload();
         }
     };
-    setTimeout(function () { $('button.dt-button').not('.btn').addClass('btn btn-info'); }, 5000);
+    setTimeout(function () {
+        $('button.dt-button').not('.btn').addClass('btn btn-info');
+    }, 5000);
 }
 Date.prototype.isHourAgo = function (hour) {
     var hour = hour * 60 * 1000;

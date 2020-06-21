@@ -28,10 +28,17 @@ export class log {
     return chalk.redBright(msg);
   }
   /**
-   * Generate Random Hex Color 
+   * Generate Random Hex Color
    */
   static hexColor() {
     return Math.floor(Math.random() * 16777215).toString(16);
+  }
+  /**
+   * Random Color
+   * @param msg 
+   */
+  static random(msg: string) {
+    return this.hex(`#${this.hexColor()}`, msg);
   }
   /**
    * Output log custom hex color

@@ -1,3 +1,4 @@
+// @ts-nocheck
 if (typeof jQuery.fn.dataTable != 'undefined') {
   $.fn.dataTable.ext.errMode = 'none';
   $.fn.dataTable.ext.buttons.refresh = {
@@ -7,7 +8,9 @@ if (typeof jQuery.fn.dataTable != 'undefined') {
     action: function (e, dt, node, config) {
       dt.clear().draw();
       dt.ajax.reload();
-    }
+    } 
   };
-  setTimeout(function(){$('button.dt-button').not('.btn').addClass('btn btn-info');}, 5000);
+  setTimeout(function () {
+    $('button.dt-button').not('.btn').addClass('btn btn-info');
+  }, 5000);
 }
