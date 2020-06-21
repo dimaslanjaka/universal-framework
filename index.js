@@ -11,7 +11,6 @@ const compiler_pkg = require("./libs/compiler/package.json");
 const sftp_pkg = require("./libs/bin/syncjs/package.json");
 const ytd_pkg = require("./libs/bin/ytd/package.json");
 
-
 Object.assign(root_pkg.dependencies, ytd_pkg.dependencies, sftp_pkg.dependencies, gui_pkg.dependencies, app_pkg.dependencies, compiler_pkg.dependencies);
 Object.assign(root_pkg.devDependencies, ytd_pkg.devDependencies, sftp_pkg.devDependencies, gui_pkg.devDependencies, app_pkg.devDependencies, compiler_pkg.devDependencies);
 
