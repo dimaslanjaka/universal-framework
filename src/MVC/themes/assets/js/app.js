@@ -150,19 +150,23 @@ class Cookies {
     static compress(str) {
     }
 }
-if (typeof jQuery.fn.dataTable != 'undefined') {
-    $.fn.dataTable.ext.errMode = 'none';
-    $.fn.dataTable.ext.buttons.refresh = {
-        extend: 'collection',
-        text: '<i class="fas fa-sync"></i>',
-        className: 'btn btn-info',
-        action: function (e, dt, node, config) {
-            dt.clear().draw();
-            dt.ajax.reload();
-        }
-    };
-    setTimeout(function () { $('button.dt-button').not('.btn').addClass('btn btn-info'); }, 5000);
-}
+$(window).bind("load", function () {
+    if (typeof jQuery.fn.dataTable != "undefined") {
+        $.fn.dataTable.ext.errMode = "none";
+        $.fn.dataTable.ext.buttons.refresh = {
+            extend: "collection",
+            text: '<i class="fas fa-sync"></i>',
+            className: "btn btn-info",
+            action: function (e, dt, node, config) {
+                dt.clear().draw();
+                dt.ajax.reload();
+            },
+        };
+        setTimeout(function () {
+            $("button.dt-button").not(".btn").addClass("btn btn-info");
+        }, 5000);
+    }
+});
 Date.prototype.isHourAgo = function (hour) {
     var hour = hour * 60 * 1000;
     const hourago = Date.now() - hour;
@@ -1015,6 +1019,28 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+$(document).on("focus", "form[captcha]", function (e) {
+    var captcha = $(this).find('[name="captcha"]');
+    if (!captcha.length) {
+        $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
+        captcha = $(this).find('[name="captcha"]');
+    }
+    if (captcha.length) {
+        captcha.val(storage().get("captcha").rot13());
+    }
+    var form = captcha.parents("form");
+    var button = form.find('[type="submit"]');
+    form.one("submit", function (e) {
+        e.preventDefault();
+        console.log("submit with captcha");
+        button.prop("disabled", true);
+        framework().captcha.callback = function () {
+            button.prop("disabled", false);
+        };
+        framework().captcha.get(null);
+        form.off("submit");
+    });
+});
 var debug_run = null;
 function bannedebug() {
     if (debug_run)

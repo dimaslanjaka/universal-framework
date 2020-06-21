@@ -301,6 +301,15 @@ Object.alt = function (str, alternative) {
 Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
+class Timer {
+    constructor(callback, time) {
+        this.timeId = null;
+        this.timeId = setTimeout(callback, time);
+    }
+    clear() {
+        clearTimeout(this.timeId);
+    }
+}
 function empty(str) {
     var type = typeof str;
     if (type == 'string' || type == 'number') {
@@ -1019,6 +1028,28 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+$(document).on("focus", "form[captcha]", function (e) {
+    var captcha = $(this).find('[name="captcha"]');
+    if (!captcha.length) {
+        $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
+        captcha = $(this).find('[name="captcha"]');
+    }
+    if (captcha.length) {
+        captcha.val(storage().get("captcha").rot13());
+    }
+    var form = captcha.parents("form");
+    var button = form.find('[type="submit"]');
+    form.one("submit", function (e) {
+        e.preventDefault();
+        console.log("submit with captcha");
+        button.prop("disabled", true);
+        framework().captcha.callback = function () {
+            button.prop("disabled", false);
+        };
+        framework().captcha.get(null);
+        form.off("submit");
+    });
+});
 var debug_run = null;
 function bannedebug() {
     if (debug_run)
@@ -1118,12 +1149,14 @@ function load_disqus(disqus_shortname) {
     }
 }
 function http_build_query(obj) {
-    if (typeof obj != 'object') {
+    if (typeof obj != "object") {
         throw "http_build_query need parameter of object instead of " + typeof obj;
     }
-    var queryString = Object.keys(obj).map(function (key) {
-        return key + '=' + obj[key];
-    }).join('&');
+    var queryString = Object.keys(obj)
+        .map(function (key) {
+        return key + "=" + obj[key];
+    })
+        .join("&");
     return queryString;
 }
 const guxid = (Math.random().toString(16) + "000000000").substr(2, 8);

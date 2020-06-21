@@ -12,6 +12,9 @@ var dimas = {
    * framework captcha
    */
   captcha: {
+    /**
+     * DO NOT ASSIGN THIS
+     */
     check: null as NodeJS.Timeout,
     /**
      * Get current captcha id
