@@ -25,7 +25,7 @@ export class core {
    * filter array after deletion
    * @param arr
    */
-  static arrayFilter(arr: any[]) {
+  static array_filter(arr: any[]) {
     return arr.filter(function (el) {
       return el != null;
     });
@@ -62,14 +62,14 @@ export class core {
         `cd ${dir} && php libs/bin/composer/composer.phar ${type}`,
         (error: { message: any }, stdout: any, stderr: any) => {
           if (error) {
-            log.error(`error: ${error.message}`);
+            log.log(log.error(`error: ${error.message}`));
             return;
           }
           if (stderr) {
-            new log(`stderr: ${stderr}`);
+            log.log(`stderr: ${stderr}`);
             return;
           }
-          new log(`stdout: ${stdout}`);
+          log.log(`stdout: ${stdout}`);
         }
       );
     }
@@ -126,12 +126,19 @@ export class core {
               if (!err) {
                 fs.writeFile(outputcss, result.css, function (err) {
                   if (!err) {
-                    filename = filename.toString().replace(core.root(), "");
-                    outputcss = outputcss.replace(core.root(), "");
-                    new log(
+                    filename = filename
+                      .toString()
+                      .replace(core.normalize(core.root()), "");
+                    outputcss = outputcss.replace(
+                      core.normalize(core.root()),
+                      ""
+                    );
+                    log.log(
                       `${filename} > ${outputcss} ${log.success("success")}`
                     );
                     core.minCSS(output, null);
+                  } else {
+                    log.log(log.error(err.message));
                   }
                 });
               }
@@ -278,8 +285,12 @@ export class core {
                 },
               });
 
-              var input = slash(file).replace(self.root(), "");
-              var output = slash(min).replace(self.root(), "");
+              var input = core
+                .normalize(file)
+                .replace(core.normalize(core.root()), "");
+              var output = core
+                .normalize(min)
+                .replace(core.normalize(core.root()), "");
               if (terserResult.error) {
                 log.log(
                   `${log.chalk().yellow(input)} > ${log
@@ -301,7 +312,7 @@ export class core {
                 log.log(
                   `${log.chalk().yellow(input)} > ${log
                     .chalk()
-                    .yellowBright(output)} ${log.chalk().green("success")}`
+                    .yellowBright(output)} ${log.success("success")}`
                 );
               }
             }
@@ -324,7 +335,7 @@ export class core {
         fs.unlink(file, function (err) {
           if (!err) {
             file = slash(file).replace(self.root(), "");
-            new log(
+            log.log(
               `${log.chalk().whiteBright(file)} ${log
                 .chalk()
                 .redBright("deleted")}`
@@ -386,7 +397,7 @@ export class core {
                         if (typeof callback != "function") {
                           file = file.replace(core.root(), "");
                           min = min.replace(core.root(), "");
-                          new log(
+                          log.log(
                             `${log
                               .chalk()
                               .blueBright(file)} > ${log
@@ -400,11 +411,11 @@ export class core {
                     }
                   );
                 } else {
-                  new log(log.chalk().red(err));
+                  log.log(log.chalk().red(err));
                 }
               });
             } else {
-              new log(log.chalk().red(err));
+              log.log(log.chalk().red(err));
             }
           }
         );

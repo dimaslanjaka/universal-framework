@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sass_compiler = void 0;
 var tslib_1 = require("tslib");
 var sass = tslib_1.__importStar(require("sass"));
 var fs = tslib_1.__importStar(require("fs"));
@@ -43,5 +45,4 @@ var sass_compiler = /** @class */ (function () {
     };
     return sass_compiler;
 }());
-module.exports = sass_compiler;
-//export default sass_compiler;
+exports.sass_compiler = sass_compiler;

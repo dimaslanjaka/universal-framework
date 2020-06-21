@@ -19,9 +19,9 @@ function mysql_connection(): null | mysql.Connection {
     });
     con.connect(function (err: any) {
       if (err) {
-        log.error(err);
+        log.log(log.error(err));
       } else {
-        log.success("Connected!");
+        log.log(log.success("Connected!"));
         result = con;
       }
     });

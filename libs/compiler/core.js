@@ -30,7 +30,7 @@ var core = /** @class */ (function () {
      * filter array after deletion
      * @param arr
      */
-    core.arrayFilter = function (arr) {
+    core.array_filter = function (arr) {
         return arr.filter(function (el) {
             return el != null;
         });
@@ -62,14 +62,14 @@ var core = /** @class */ (function () {
         if (type) {
             child_process_1.exec("cd " + dir + " && php libs/bin/composer/composer.phar " + type, function (error, stdout, stderr) {
                 if (error) {
-                    log_1.log.error("error: " + error.message);
+                    log_1.log.log(log_1.log.error("error: " + error.message));
                     return;
                 }
                 if (stderr) {
-                    new log_1.log("stderr: " + stderr);
+                    log_1.log.log("stderr: " + stderr);
                     return;
                 }
-                new log_1.log("stdout: " + stdout);
+                log_1.log.log("stdout: " + stdout);
             });
         }
     };
@@ -122,10 +122,15 @@ var core = /** @class */ (function () {
                         if (!err) {
                             fs.writeFile(outputcss, result.css, function (err) {
                                 if (!err) {
-                                    filename = filename.toString().replace(core.root(), "");
-                                    outputcss = outputcss.replace(core.root(), "");
-                                    new log_1.log(filename + " > " + outputcss + " " + log_1.log.success("success"));
+                                    filename = filename
+                                        .toString()
+                                        .replace(core.normalize(core.root()), "");
+                                    outputcss = outputcss.replace(core.normalize(core.root()), "");
+                                    log_1.log.log(filename + " > " + outputcss + " " + log_1.log.success("success"));
                                     core.minCSS(output, null);
+                                }
+                                else {
+                                    log_1.log.log(log_1.log.error(err.message));
                                 }
                             });
                         }
@@ -261,8 +266,12 @@ var core = /** @class */ (function () {
                                 ascii_only: true,
                             },
                         });
-                        var input = slash_1.default(file).replace(self.root(), "");
-                        var output = slash_1.default(min).replace(self.root(), "");
+                        var input = core
+                            .normalize(file)
+                            .replace(core.normalize(core.root()), "");
+                        var output = core
+                            .normalize(min)
+                            .replace(core.normalize(core.root()), "");
                         if (terserResult.error) {
                             log_1.log.log(log_1.log.chalk().yellow(input) + " > " + log_1.log
                                 .chalk()
@@ -280,7 +289,7 @@ var core = /** @class */ (function () {
                             fs.writeFileSync(min, terserResult.code, "utf8");
                             log_1.log.log(log_1.log.chalk().yellow(input) + " > " + log_1.log
                                 .chalk()
-                                .yellowBright(output) + " " + log_1.log.chalk().green("success"));
+                                .yellowBright(output) + " " + log_1.log.success("success"));
                         }
                     }
                 });
@@ -301,7 +310,7 @@ var core = /** @class */ (function () {
                 fs.unlink(file, function (err) {
                     if (!err) {
                         file = slash_1.default(file).replace(self.root(), "");
-                        new log_1.log(log_1.log.chalk().whiteBright(file) + " " + log_1.log
+                        log_1.log.log(log_1.log.chalk().whiteBright(file) + " " + log_1.log
                             .chalk()
                             .redBright("deleted"));
                     }
@@ -351,7 +360,7 @@ var core = /** @class */ (function () {
                                         if (typeof callback != "function") {
                                             file = file.replace(core.root(), "");
                                             min = min.replace(core.root(), "");
-                                            new log_1.log(log_1.log
+                                            log_1.log.log(log_1.log
                                                 .chalk()
                                                 .blueBright(file) + " > " + log_1.log
                                                 .chalk()
@@ -364,12 +373,12 @@ var core = /** @class */ (function () {
                                 });
                             }
                             else {
-                                new log_1.log(log_1.log.chalk().red(err));
+                                log_1.log.log(log_1.log.chalk().red(err));
                             }
                         });
                     }
                     else {
-                        new log_1.log(log_1.log.chalk().red(err));
+                        log_1.log.log(log_1.log.chalk().red(err));
                     }
                 });
             }

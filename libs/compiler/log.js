@@ -21,7 +21,7 @@ var log = /** @class */ (function () {
         return chalk_1.default.greenBright(msg);
     };
     log.error = function (msg) {
-        return log.chalk().redBright(msg);
+        return chalk_1.default.redBright(msg);
     };
     /**
      * Generate Random Hex Color

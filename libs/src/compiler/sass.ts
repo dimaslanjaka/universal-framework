@@ -3,7 +3,7 @@ import * as fs from "fs";
 import {log} from "./log";
 import { core } from "./core";
 
-class sass_compiler {
+export class sass_compiler {
   /**
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
@@ -46,5 +46,3 @@ class sass_compiler {
   }
 }
 
-export = sass_compiler;
-//export default sass_compiler;

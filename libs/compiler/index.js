@@ -20,10 +20,10 @@ function mysql_connection() {
         });
         con.connect(function (err) {
             if (err) {
-                log_1.log.error(err);
+                log_1.log.log(log_1.log.error(err));
             }
             else {
-                log_1.log.success("Connected!");
+                log_1.log.log(log_1.log.success("Connected!"));
                 result = con;
             }
         });

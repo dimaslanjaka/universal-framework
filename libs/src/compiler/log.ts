@@ -14,7 +14,7 @@ export class log {
     return chalk.greenBright(msg);
   }
   static error(msg: string) {
-    return log.chalk().redBright(msg);
+    return chalk.redBright(msg);
   }
   /**
    * Generate Random Hex Color
