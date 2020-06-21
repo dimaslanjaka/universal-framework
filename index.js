@@ -1,34 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-console.clear();
-//import core from "./core";
-var log_1 = tslib_1.__importDefault(require("./log"));
-var mysql = tslib_1.__importStar(require("mysql"));
-var config_1 = tslib_1.__importDefault(require("./config"));
-var config = config_1.default;
-function mysql_connection() {
-    var result = null;
-    if (config.hasOwnProperty("database")) {
-        var database = config.database;
-        var con = mysql.createConnection({
-            host: database.host,
-            user: database.user,
-            password: database.pass,
-            port: database.port,
-            database: database.dbname,
-        });
-        con.connect(function (err) {
-            if (err) {
-                log_1.default.error(err);
-            }
-            else {
-                log_1.default.success("Connected!");
-                result = con;
-            }
-        });
+const fs = require('fs');
+const path = require('path');
+const root_pkg = require("./package-ori.json");
+const gui_pkg = require("./libs/gui/package.json");
+const compiler_pkg = require("./libs/compiler/package.json");
+
+Object.assign(root_pkg.dependencies, gui_pkg.dependencies, compiler_pkg.dependencies);
+Object.assign(root_pkg.devDependencies, gui_pkg.devDependencies, compiler_pkg.devDependencies);
+fs.writeFile(path.join(__dirname, 'package.json'), JSON.stringify(root_pkg, null, 4), function (err) {
+    if (!err) {
+        console.log('success');
     }
-    return result;
-}
-//export = mysql_connection;
-//export default mysql_connection;
+});

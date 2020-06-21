@@ -31,6 +31,7 @@ rem npm install --global --prefer-offline --production windows-build-tools
 echo Select Terminal:
 echo 1 - CMD
 echo 2 - POWERSHELL
+echo 3 - PING
 choice /n /c:12345678 /M "Choose an option "
 GOTO LABEL-%ERRORLEVEL%
 
@@ -42,6 +43,11 @@ rem goto BEGIN
 :LABEL-2 POWERSHELL
 cls
 Start powershell.exe -noexit -ExecutionPolicy Bypass -File "%~dp0cmd.ps1" -Command "npm config set python %PYTHON:\=/%/python.exe Set-Location -literalPath '%~dp0';"
+rem goto BEGIN
+
+:LABEL-3 PING
+cls
+ping google.com -t
 rem goto BEGIN
 
 :END

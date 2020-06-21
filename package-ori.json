@@ -38,7 +38,9 @@
       "tools",
       "tooling"
     ],
-    "scripts": {},
+    "scripts": {
+        "postinstall": "node index.js"
+    },
     "bin": "./libs/bin/syncjs/bin",
     "repository": {
       "type": "git",
