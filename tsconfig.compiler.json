@@ -8,6 +8,7 @@
     "allowUnreachableCode": false,
     "noImplicitReturns": false,
     "noImplicitAny": false,
+    "allowJs": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "lib": ["DOM", "ES2015", "ES7"],

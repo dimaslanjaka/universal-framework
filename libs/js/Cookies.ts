@@ -36,25 +36,32 @@ class Cookies {
    * @param days days to expire
    * @param expire_type d = days, m = minutes, s = seconds, default seconds
    */
-  static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function) {
+  static set(
+    name: string,
+    value: any,
+    expire: number,
+    expire_type: string,
+    path: string | any,
+    callback: any | Function
+  ) {
     var expires;
     if (expire) {
       var date = new Date();
       if (/^d$|day/s.test(expire_type)) {
-        date.setTime(date.getTime() + (expire * 24 * 60 * 60 * 1000));
+        date.setTime(date.getTime() + expire * 24 * 60 * 60 * 1000);
       } else if (/^m$|minute/s.test(expire_type)) {
-        date.setTime(date.getTime() + (expire * 60 * 1000));
+        date.setTime(date.getTime() + expire * 60 * 1000);
       } else if (/^s$|second/s.test(expire_type)) {
-        date.setTime(date.getTime() + (expire * 1000));
+        date.setTime(date.getTime() + expire * 1000);
       } else {
-        date.setTime(date.getTime() + (expire * 1000));
+        date.setTime(date.getTime() + expire * 1000);
       }
       expires = "; expires=" + date.toUTCString();
     } else {
       expires = "";
     }
-    var cookie_path = '/';
-    if (typeof path == 'string') {
+    var cookie_path = "/";
+    if (typeof path == "string") {
       if (path.length > 0) {
         cookie_path = path;
       }
@@ -64,7 +71,7 @@ class Cookies {
     var formatted = name + "=" + value + expires + "; path=" + cookie_path;
     console.info(`cookie formated: ` + formatted);
     document.cookie = formatted;
-    if (typeof callback == 'function') {
+    if (typeof callback == "function") {
       return callback(arguments);
     }
     return this.get(name);
@@ -79,7 +86,7 @@ class Cookies {
    */
   static one(name: string, value: any, expire: number, callback: Function) {
     if (this.get(name) == null) {
-      this.set(name, value, expire, 'm', '/', callback);
+      this.set(name, value, expire, "m", "/", callback);
     }
   }
 
@@ -102,4 +109,8 @@ class Cookies {
       to: 'string'
     });*/
   }
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports.Cookies = Cookies;
 }

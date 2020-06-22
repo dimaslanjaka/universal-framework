@@ -1,7 +1,7 @@
 import logger from "fancy-log";
 import chalk from "chalk";
 
-export class log {
+class log {
   constructor(...arg: string[] | any | null) {
     if (arguments.length) {
       log.log(arguments);
@@ -94,3 +94,4 @@ export class log {
     return args;
   }
 }
+export = log;

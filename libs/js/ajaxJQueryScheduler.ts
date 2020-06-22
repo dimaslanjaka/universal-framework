@@ -13,16 +13,19 @@ class ajaxScheduler {
    */
   static add(opt: JQueryAjaxSettings) {
     AjaxSchedulerRequests.push(opt);
-  };
+  }
   /**
    * Remove ajax from queues
    * @param opt
    */
   static remove(opt: Object) {
     if (jQuery.inArray(opt, AjaxSchedulerRequests) > -1) {
-      AjaxSchedulerRequests.splice(jQuery.inArray(opt, AjaxSchedulerRequests), 1);
+      AjaxSchedulerRequests.splice(
+        jQuery.inArray(opt, AjaxSchedulerRequests),
+        1
+      );
     }
-  };
+  }
   /**
    * Run Ajax Scheduler
    */
@@ -34,7 +37,9 @@ class ajaxScheduler {
       oriSuc = AjaxSchedulerRequests[0].complete;
 
       AjaxSchedulerRequests[0].complete = function () {
-        if (typeof (oriSuc) === 'function') { oriSuc(); }
+        if (typeof oriSuc === "function") {
+          oriSuc();
+        }
         AjaxSchedulerRequests.shift();
         self.run.apply(self, []);
       };
@@ -62,8 +67,18 @@ class ajaxScheduler {
  * @description ajax request one by one
  * @todo scheduling any jquery ajax
  */
-function ajaxRun(url: string, method: string, data: object, success: Function, failed: Function, complete: Function) {
-  if (!AjaxSchedulerRunning) { ajaxScheduler.run(); AjaxSchedulerRunning = true; }
+function ajaxRun(
+  url: string,
+  method: string,
+  data: object,
+  success: Function,
+  failed: Function,
+  complete: Function
+) {
+  if (!AjaxSchedulerRunning) {
+    ajaxScheduler.run();
+    AjaxSchedulerRunning = true;
+  }
   return ajaxScheduler.add({
     url: url,
     method: method,
@@ -71,47 +86,49 @@ function ajaxRun(url: string, method: string, data: object, success: Function, f
     data: data,
     indicator: true,
     headers: {
-      'unique-id': getUID(),
-      'Accept': 'application/json'
+      "unique-id": getUID(),
+      Accept: "application/json",
     },
     success: function (res) {
-      if (typeof success == 'function') {
+      if (typeof success == "function") {
         success(res);
-      } else if (typeof success == 'string') {
-        call_user_func(success, window, res);
+      } else if (typeof success == "string") {
+        ___call(success, window, res);
       } else {
-        console.log(success + ' isnt success callback, instead of ' + typeof success);
+        console.log(
+          success + " isnt success callback, instead of " + typeof success
+        );
       }
     },
     error: function (err: JQueryXHR) {
-      if (typeof failed == 'function') {
+      if (typeof failed == "function") {
         failed(err);
       }
     },
     complete: function (res: JQueryXHR) {
       AJAX = null;
-      if (typeof complete == 'function') {
+      if (typeof complete == "function") {
         complete(res);
       }
       //gexec('Ajax_Reload');
-    }
+    },
   });
 }
 
 function ajaxFormSchedule() {
-  $(document).on('submit', 'form', function (e) {
+  $(document).on("submit", "form", function (e) {
     e.preventDefault();
     var t = $(this);
-    var s = t.data('success'),
-      err = t.data('error'),
-      c = t.data('complete');
+    var s = t.data("success"),
+      err = t.data("error"),
+      c = t.data("complete");
     ajaxScheduler.add({
-      url: t.attr('action'),
-      method: t.attr('method'),
+      url: t.attr("action"),
+      method: t.attr("method"),
       data: t.serialize(),
       success: s,
       error: err,
-      complete: c
+      complete: c,
     });
   });
 }

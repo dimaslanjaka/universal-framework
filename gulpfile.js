@@ -6,15 +6,14 @@ const fs = require("fs");
 const config = require("./config.json");
 const upath = require("upath");
 const path = require("path");
+const core = require("./libs/compiler/core");
+const log = require("./libs/compiler/log");
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
  * Minify Views Assets
  */
 gulp.task("build", function () {
-  const core = require("./libs/compiler/core").core;
-  const log = core.log;
-
   return createCompiler(false);
 });
 
@@ -23,7 +22,6 @@ gulp.task("build", function () {
  * @param {boolean} withoutView
  */
 function createCompiler(withoutView) {
-  const core = require("./libs/compiler/core").core;
   return core.async(function () {
     var tsCompiler = ts.createProject(__dirname + "/tsconfig.compiler.json");
     tsCompiler
@@ -46,7 +44,6 @@ function createCompiler(withoutView) {
  * @param {boolean} withoutView false to not compile views javascripts
  */
 function createApp(withoutView) {
-  const log = require("./libs/compiler/log").log;
   var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
   var processApp = tsProject
     .src()
@@ -56,16 +53,27 @@ function createApp(withoutView) {
         path.extname = ".js";
       })
     )
-    .pipe(gulp.dest("./src/MVC/themes/assets/js/"))
+    .pipe(gulp.dest("./", { overwrite: true }))
     .on("end", function () {
       log.log(
         `successfully compiled ${log.success(
-          path.resolve("./src/MVC/themes/assets/js/app.js")
+          core.filelog("./src/MVC/themes/assets/js/app.js")
         )}`
       );
-      minify(
-        upath.normalizeSafe(process.cwd() + "/src/MVC/themes/assets/js/app.js")
+      var target = upath.normalizeSafe(
+        upath.resolve(upath.join(__dirname, "src/MVC/themes/assets/js/app.js"))
       );
+      var framework = upath.normalizeSafe(
+        upath.resolve(upath.join(__dirname, "libs/src/core/framework.js"))
+      );
+      minify(target);
+      fs.copyFile(target, framework, function (err) {
+        if (err) {
+          log.log(log.error("Failed copy framework"));
+        } else {
+          log.log(log.error("Success copy framework"));
+        }
+      });
     });
   if (!withoutView) {
     processApp.on("end", function () {
@@ -77,9 +85,6 @@ function createApp(withoutView) {
 
 // watch libs/js/**/* and views
 gulp.task("watch", function () {
-  const core = require("./libs/compiler/core").core;
-  const log = require("./libs/compiler/log").log;
-
   console.clear();
   log.log(log.random("Listening ./libs and ./" + config.app.views));
   gulp
@@ -95,13 +100,8 @@ gulp.task("watch", function () {
        * Check is library compiler or source compiler
        */
       const is_Lib = /libs\/(js|src)\//s.test(core.normalize(file));
-      const filename_log = path.join(
-        core
-          .normalize(path.dirname(file))
-          .replace(core.normalize(process.cwd()), ""),
-        path.basename(file)
-      );
-      
+      const filename_log = core.filelog(file);
+
       if (is_Lib) {
         log.log(
           log
@@ -157,7 +157,6 @@ gulp.task("default", gulp.series("watch"));
  * @param {string} file
  */
 function minify(item) {
-  const core = require("./libs/compiler/core").core;
   const log = core.log;
   fs.exists(item, function (exists) {
     if (exists) {
@@ -202,7 +201,6 @@ function minify(item) {
  * List views folder
  */
 function views() {
-  const core = require("./libs/compiler/core").core;
   const log = core.log;
   var views = core.readdir(__dirname + `/${config.app.views}`);
   return views

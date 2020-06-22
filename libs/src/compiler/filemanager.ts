@@ -1,26 +1,42 @@
 import rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
-import { log } from "./log";
-import { core } from "./core";
+import log from "./log";
+//import { core } from "./core";
+import core from "./core";
 
-export class filemanager {
+class filemanager {
   /**
    * Delete file or directory recursive
    * @param filedir
    * @param async
+   * @returns null = filedir not exists, false = delete filedir failed, true = success
    */
   static unlink(filedir: string, async: boolean) {
-    if (async) {
-      rimraf(filedir, function (err) {
-        if (!err) {
-          log.log(log.success("done"));
+    const execute = function () {
+      if (async) {
+        rimraf(filedir, function (err) {
+          if (!err) {
+            log.log(log.success("done"));
+          } else {
+            log.log(log.error(`cannot delete ${core.filelog(filedir)}`));
+          }
+        });
+      } else {
+        rimraf.sync(filedir);
+      }
+    };
+    try {
+      fs.exists(filedir, function (exists) {
+        if (exists) {
+          execute();
         } else {
-          log.log(log.error(`cannot delete ${core.filelog(filedir)}`));
+          return null;
         }
       });
-    } else {
-      rimraf.sync(filedir);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
@@ -32,7 +48,7 @@ export class filemanager {
   static empty(folder: string, exclude: RegExp) {
     fs.readdir(folder, (err, files) => {
       if (err) {
-        console.log(err);
+        log.log(log.error(err.message));
       } else {
         files.forEach((file) => {
           const fileDir = path.join(folder, file);
@@ -45,3 +61,5 @@ export class filemanager {
     });
   }
 }
+
+export = filemanager;

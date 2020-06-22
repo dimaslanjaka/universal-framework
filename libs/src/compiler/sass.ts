@@ -1,7 +1,8 @@
 import * as sass from "sass";
 import * as fs from "fs";
-import {log} from "./log";
-import { core } from "./core";
+import log from "./log";
+//import { core } from "./core";
+import core = require('./core');
 
 export class sass_compiler {
   /**

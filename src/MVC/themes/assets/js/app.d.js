@@ -66,6 +66,7 @@ declare var gtag: any;
 declare function typedKeys<T>(o: T): (keyof T)[];
 declare var dimas: {
     url: string;
+    isNode(): boolean;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string | null) => string;
@@ -109,6 +110,7 @@ declare var dimas: {
 };
 declare function framework(): {
     url: string;
+    isNode(): boolean;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string) => string;

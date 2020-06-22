@@ -1,7 +1,7 @@
 {
   "[css]": {
     "editor.suggest.insertMode": "replace",
-    "editor.defaultFormatter": "HookyQR.beautify"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -10,8 +10,17 @@
     "editor.quickSuggestions": {
       "strings": true
     },
-    "editor.defaultFormatter": "HookyQR.beautify",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.suggest.insertMode": "replace"
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
+  },
+  "terminal.integrated.env.linux": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
   },
   "[markdown]": {
     "editor.wordWrap": "on",
@@ -22,13 +31,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnPaste": false,
-  "typescript.tsserver.maxTsServerMemory": 1000,
+  "typescript.tsserver.maxTsServerMemory": 3000,
   "editor.formatOnSave": false,
   "editor.formatOnType": false,
   "editor.quickSuggestions": {
     "other": true,
-    "comments": false,
-    "strings": false
+    "comments": true,
+    "strings": true
   },
   "editor.renameOnType": true,
   "editor.wordWrap": "on",
@@ -61,7 +70,7 @@
   "typescript.suggest.autoImports": true,
   "git.allowForcePush": true,
   "git.autofetch": true,
-  "git.autofetchPeriod": 1800,
+  "git.autofetchPeriod": 18000,
   "git.autorefresh": true,
   "git.countBadge": "all",
   "git.enableSmartCommit": true,
@@ -96,5 +105,13 @@
   "typescript.tsserver.log": "verbose",
   "php-cs-fixer.formatHtml": true,
   "php-cs-fixer.rules": "@PSR2",
-  "php-cs-fixer.config": ".php_cs;.php_cs.dist"
+  "php-cs-fixer.config": ".php_cs;.php_cs.dist",
+  "npm.autoDetect": "off",
+  "grunt.autoDetect": "off",
+  "gulp.autoDetect": "off",
+  "jake.autoDetect": "off",
+  "task.autoDetect": "on",
+  "sync.autoUpload": false,
+  "sync.autoDownload": false,
+  "sync.forceUpload": true
 }

@@ -3,18 +3,20 @@ import * as Terser from "terser";
 import * as path from "path";
 import slash from "slash";
 import * as JavaScriptObfuscator from "javascript-obfuscator";
-import { log } from "./log";
+import log from "./log";
 import * as uglifycss from "uglifycss";
 import * as sass from "sass";
 import { exec } from "child_process";
 const LocalStorage = require("node-localstorage").LocalStorage;
 import configuration from "./config";
-
+import * as framework from "./framework";
+const dimas = framework.dimas;
+ 
 /**
  * @class Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
-export class core {
+class core {
   /**
    * config.json
    */
@@ -101,6 +103,17 @@ export class core {
       }
     });
     return filelist;
+  }
+
+  /**
+   * Is Node or CommonJS Browser
+   */
+  static isNode() {
+    var isNode = false;
+    if (typeof module !== "undefined" && module.exports) {
+      isNode = true;
+    }
+    return isNode;
   }
 
   /**
@@ -418,9 +431,13 @@ export class core {
                           log.log(
                             `${log
                               .chalk()
-                              .blueBright(self.filelog(file))} > ${log
+                              .blueBright(
+                                self.filelog(file)
+                              )} > ${log
                               .chalk()
-                              .blueBright(self.filelog(min))} ${log.chalk().green("success")}`
+                              .blueBright(
+                                self.filelog(min)
+                              )} ${log.chalk().green("success")}`
                           );
                         } else {
                           callback(true, file, min);
@@ -441,4 +458,13 @@ export class core {
     });
   }
 }
- 
+
+if (core.isNode()) {
+  //exports.module = core;
+  //exports = core;
+} else {
+  //window['core'] = {};
+}
+
+export = core;
+//export default core;

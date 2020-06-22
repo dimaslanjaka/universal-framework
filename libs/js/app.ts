@@ -431,4 +431,9 @@ class app {
   }
 }
 
+if (typeof module !== "undefined" && module.exports) {
+  module.exports.app = app;
+  module.exports.dimas = dimas;
+}
+
 //app.direct('Array.js', 'Object.js', 'saver.js', 'user.js');

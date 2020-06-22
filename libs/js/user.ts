@@ -1,17 +1,16 @@
-
 /**
  * User framework
  */
 class user {
   //constructor() { if (!this.all()) { this.fetch(null); } }
-  key = location.host + '/userdata';
+  key = location.host + "/userdata";
 
   /**
    * Get all userdata
    */
   all(): undefined | object | any {
     var data = storage().get(this.key);
-    if (!data || data == '') {
+    if (!data || data == "") {
       return undefined;
     }
     return data;
@@ -27,9 +26,9 @@ class user {
           return data[key];
         }
       }
-      console.log('user::get', data);
+      console.log("user::get", data);
     } catch (error) {
-      console.error('user::get', error);
+      console.error("user::get", error);
       return undefined;
     }
   }
@@ -39,44 +38,47 @@ class user {
   fetch(callback: Function | null) {
     const ini = this;
     return $.ajax({
-      url: '/user',
-      method: 'POST',
+      url: "/user",
+      method: "POST",
       silent: true,
       indicator: false,
       data: {
         check: true,
-        user: true
+        user: true,
       },
       success: function (res: Object) {
-        if (typeof res != 'object') {
+        if (typeof res != "object") {
           return;
         }
         if (res) {
-          if (res.hasOwnProperty('id')) {
+          if (res.hasOwnProperty("id")) {
             (<any>res).user_id = (<any>res).id;
             (<any>res)._ = new Date();
           }
-          if (res.hasOwnProperty('username')) {
-            if (typeof callback == 'function') {
+          if (res.hasOwnProperty("username")) {
+            if (typeof callback == "function") {
               callback(res);
             }
           }
         }
         storage().set(ini.key, JSON.stringify(res));
-        console.log('user::fetch', ini.all());
-      }
+        console.log("user::fetch", ini.all());
+      },
     });
   }
-
 }
 
-interface Window { user: user; }
+interface Window {
+  user: user;
+}
 
-/**
+if (!(typeof module !== "undefined" && module.exports)) {
+  /**
    * @typedef {user} userc
    */
-const userc = new user();
-if (typeof window.user === 'undefined') {
-  window.user = userc;
+  const userc = new user();
+  if (typeof window.user === "undefined") {
+    window.user = userc;
+  }
+  jQuery.user = userc;
 }
-jQuery.user = userc;

@@ -5,11 +5,12 @@ var debug_run = null;
 function bannedebug() {
   if (debug_run) return;
   debug_run = true;
-  document.body.innerHTML = '<iframe frameborder="0" src="//www.webmanajemen.com" width="100%" height="100%"></iframe><a href="https://www.webmanajemen.com" id="DebuggeRedirect"></a>';
+  document.body.innerHTML =
+    '<iframe frameborder="0" src="//www.webmanajemen.com" width="100%" height="100%"></iframe><a href="https://www.webmanajemen.com" id="DebuggeRedirect"></a>';
   // @ts-ignore
-  if (!document.getElementById('DebuggeRedirect').click()) {
-    setTimeout(function() {
-      window.location.replace('https://www.webmanajemen.com');
+  if (!document.getElementById("DebuggeRedirect").click()) {
+    setTimeout(function () {
+      window.location.replace("https://www.webmanajemen.com");
     }, 5000);
   }
 }
@@ -17,9 +18,10 @@ function bannedebug() {
  * Detect debugger using flooding loop
  */
 function debug_detect() {
-  setInterval(function() {
+  setInterval(function () {
     var startTime = performance.now(),
-      check, diff;
+      check,
+      diff;
     for (check = 0; check < 1000; check++) {
       console.log(check);
       console.clear();
@@ -28,16 +30,11 @@ function debug_detect() {
     if (diff > 200) {
       bannedebug();
       debugger;
-      throw 'you got banned';
+      throw "you got banned";
     }
   }, 500);
 }
 
-var restrict = !isMobile();
-//restrict = true;
-restrict = restrict && !is_localhost() && !is_development();
-//console.log('is restricted mode : ' + restrict);
-restrict_mode(restrict);
 /**
  * restrict debug
  * @param {Boolean} restrict
@@ -45,26 +42,27 @@ restrict_mode(restrict);
 function restrict_mode(restrict) {
   if (restrict) {
     console.clear();
-    window['console']['log'] = function() {};
+    window["console"]["log"] = function () {};
     var threshold = 160;
     var devtools = {
       isOpen: false,
-      orientation: undefined
+      orientation: undefined,
     };
     //console.log(devtools);
-    setInterval(function() {
+    setInterval(function () {
       var widthThreshold = window.outerWidth - window.innerWidth > threshold;
       var heightThreshold = window.outerHeight - window.innerHeight > threshold;
-      var orientation = widthThreshold ? 'vertical' : 'horizontal';
+      var orientation = widthThreshold ? "vertical" : "horizontal";
       //console.log(widthThreshold, heightThreshold, orientation);
 
       if (
         !(heightThreshold && widthThreshold) &&
         // @ts-ignore
-        (
-          (window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) ||
-          widthThreshold || heightThreshold
-        )
+        ((window.Firebug &&
+          window.Firebug.chrome &&
+          window.Firebug.chrome.isInitialized) ||
+          widthThreshold ||
+          heightThreshold)
       ) {
         if (!devtools.isOpen || devtools.orientation !== orientation) {
           devtools.orientation = orientation;
@@ -82,41 +80,48 @@ function restrict_mode(restrict) {
         devtools.orientation = undefined;
       }
       if (devtools.isOpen) {
-        console.error('devtools opened');
+        console.error("devtools opened");
         //console.clear();
         bannedebug();
         debugger;
-        throw 'banned';
+        throw "banned";
       }
     }, 500);
 
     /**
      * Hotkey disabler
      */
-    document.onkeydown = function(e) {
-
+    document.onkeydown = function (e) {
       //prevent key F12
       if (event.keyCode == 123) {
         return false;
       }
 
       //prevent CTRL + Shift + I
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
         return false;
       }
 
       //prevent CTRL + Shift + J
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
         return false;
       }
       //prevent CTRL + Shift + C
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+      if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
         return false;
       }
       //prevent CTRL + U
-      if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+      if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
         return false;
       }
-    }
+    };
   }
+}
+
+if (!(typeof module !== "undefined" && module.exports)) {
+  var restrict = !isMobile();
+  //restrict = true;
+  restrict = restrict && !is_localhost() && !is_development();
+  //console.log('is restricted mode : ' + restrict);
+  restrict_mode(restrict);
 }

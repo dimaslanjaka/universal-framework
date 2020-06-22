@@ -1,6 +1,10 @@
+/**
+ * check empty
+ * @param str 
+ */
 function empty(str: string | null | undefined | number | boolean) {
   var type = typeof str;
-  if (type == 'string' || type == 'number') {
+  if (type == "string" || type == "number") {
     str = str.toString().trim();
   }
   switch (str) {

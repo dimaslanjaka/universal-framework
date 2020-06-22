@@ -1,7 +1,7 @@
 console.clear();
 
 //import core from "./core";
-import {log} from "./log";
+import log from "./log";
 import * as mysql from "mysql";
 import configuration from "./config";
 var config = configuration;

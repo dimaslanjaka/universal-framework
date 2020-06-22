@@ -1,4 +1,6 @@
-var UIDvalue = getUID();
+if (!(typeof module !== "undefined" && module.exports)){
+  var UIDvalue = getUID();
+}
 
 function currentUID() {
   return UIDvalue;

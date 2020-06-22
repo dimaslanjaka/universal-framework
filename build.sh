@@ -96,10 +96,14 @@ read_options() {
     read -p "Enter choice [ 1 - 3] " choice
     case $choice in
     1)
-        node libs/compiler/single.js
+        tsc -p tsconfig.build.json
+        tsc -p tsconfig.precompiler.json
+        #libs/src/compiler/framework.js
+        tsc -p tsconfig.compiler.json
+        pause
         ;;
     2)
-        clean_git_history
+        #clean_git_history
         ;;
     3) exit 0 ;;
     *) echo -e "${RED}Error...${STD}" && sleep 2 ;;
@@ -114,7 +118,7 @@ read_options() {
 # -----------------------------------
 # Step #4: Main logic - infinite loop
 # ------------------------------------
-:'while true; do
+while true; do
     show_menus
     read_options
-done'
+done

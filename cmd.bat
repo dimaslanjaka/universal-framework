@@ -22,6 +22,7 @@ set npm_config_devdir=%~dp0/tmp/.gyp
 set VCINSTALLDIR=C:\Program Files (x86)\MSBuild
 rem npm config set python %PYTHON:\=/%/python.exe 
 
+
 :BEGIN
 echo Select Terminal:
 echo 1 - CMD
