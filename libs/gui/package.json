@@ -14,7 +14,7 @@
     "html2pug": "^4.0.0",
     "http-errors": "~1.6.3",
     "jade": "^1.11.0",
-    "morgan": "~1.9.1",
+    "morgan": "~1.10.0",
     "mysql2": "^2.1.0",
     "php-express": "0.0.3",
     "php-node": "0.0.2",
