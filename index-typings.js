@@ -28,7 +28,7 @@ for (const key in packages) {
 
         fs.exists(typings, function (exists) {
           if (exists) {
-            ncp.limit = 16;
+            ncp.limit = 100;
             
             ncp(typings, move_to, function (err) {
               if (err) {
