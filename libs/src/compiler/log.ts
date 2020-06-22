@@ -28,6 +28,12 @@ export class log {
     return chalk.redBright(msg);
   }
   /**
+   * Clear console
+   */
+  static clear() {
+    return console.clear();
+  }
+  /**
    * Generate Random Hex Color
    */
   static hexColor() {
@@ -35,7 +41,7 @@ export class log {
   }
   /**
    * Random Color
-   * @param msg 
+   * @param msg
    */
   static random(msg: string) {
     return this.hex(`#${this.hexColor()}`, msg);
@@ -63,7 +69,7 @@ export class log {
       var result = [];
       for (const key in arguments) {
         if (arguments.hasOwnProperty(key)) {
-          var args = this.prettyprint(arguments[key]);
+          var args = log.prettyprint(arguments[key]);
           result.push(args);
         }
       }

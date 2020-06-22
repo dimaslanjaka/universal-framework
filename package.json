@@ -62,6 +62,7 @@
         "morgan": "*",
         "mysql": "*",
         "mysql2": "*",
+        "ncp": "*",
         "node-localstorage": "*",
         "nodemon": "*",
         "observatory": "*",
@@ -125,6 +126,7 @@
         "@types/request": "^2.48.2",
         "@types/sass": "*",
         "@types/sizzle": "*",
+        "@types/sweetalert": "*",
         "@types/through": "*",
         "@types/toastr": "*",
         "@types/tough-cookie": "*",
@@ -169,7 +171,7 @@
     },
     "scripts": {
         "compiler": "tsc -p tsconfig.compiler.json",
-        "postinstall": "gulp build",
+        "postinstall": "gulp build && node ./index-typings.js",
         "preinstall": "node ./index.js"
     },
     "version": "3.0.0"

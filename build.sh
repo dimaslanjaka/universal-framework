@@ -19,6 +19,8 @@ PASSWD=/etc/passwd
 RED='\033[0;41;30m'
 STD='\033[0;0;39m'
 
+export npm_config_devdir=./tmp/.gyp
+
 clean_git_history() {
     git checkout --orphan latest_branch
     git add -A

@@ -287,3 +287,5 @@ function ob_get()
   ob_start();
   return $content;
 }
+
+include __DIR__ . '/MVC/themes/assets/partial/fab.php';

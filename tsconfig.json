@@ -15,7 +15,7 @@
     "allowUnreachableCode": true,
     "skipLibCheck": true,
     "importHelpers": true,
-    "checkJs": true,
+    "checkJs": false,
     "declaration": true,
     "allowJs": true,
     "resolveJsonModule": true,
@@ -30,14 +30,20 @@
       "ES2019",
       "ES2020"
     ],
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "outDir": "./tmp/js",
     "esModuleInterop": true,
     "declarationDir": "./tmp/js",
     "declarationMap": true,
     "sourceRoot": "./"
   },
-  "include": ["./libs/**/*", "./views/**/*", "src/MVC/themes/**/*"],
+  "include": [
+    "./libs/**/*",
+    "./views/**/*",
+    "./src/MVC/themes/**/*"
+  ],
   "exclude": [
     "node_modules",
     "**/.vscode/**",

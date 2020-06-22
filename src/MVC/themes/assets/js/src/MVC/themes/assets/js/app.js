@@ -791,7 +791,7 @@ var dimas = {
         listener_started: null,
         listen: function () {
             if (dimas.captcha.listener_started) {
-                return;
+                return null;
             }
             dimas.captcha.listener_started = new Date().toISOString();
             return $(document).on("focus", "form[captcha]", function (e) {

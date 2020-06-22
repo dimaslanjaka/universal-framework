@@ -8,7 +8,7 @@
     "sourceMap": true,
     "removeComments": true,
     "allowUmdGlobalAccess": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true, 
     "noImplicitAny": true,
     "allowUnusedLabels": true,
     "allowUnreachableCode": true,

@@ -22,6 +22,7 @@ sync-config.json
 sftp.json
 sftp*.json
 config.json
+*-private*
 
 # Ignore output builder
 out/*
