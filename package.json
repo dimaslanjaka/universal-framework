@@ -8,6 +8,7 @@
         "url": "https://github.com/dimaslanjaka/universal-framework/issues"
     },
     "dependencies": {
+        "@types/rimraf": "^3.0.0",
         "animate.css": "*",
         "bootbox": "*",
         "chalk": "*",
@@ -74,6 +75,7 @@
         "pug": "*",
         "recaptcha-v3": "*",
         "requirejs": "*",
+        "rimraf": "^3.0.2",
         "sass": "*",
         "scp2": "*",
         "sequelize": "*",

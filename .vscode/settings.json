@@ -22,6 +22,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnPaste": false,
+  "typescript.tsserver.maxTsServerMemory": 1000,
   "editor.formatOnSave": false,
   "editor.formatOnType": false,
   "editor.quickSuggestions": {

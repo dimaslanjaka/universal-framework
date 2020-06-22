@@ -17,7 +17,8 @@
     "typescript-tslint-plugin": "^0.0.6",
     "upath": "^1.0.0",
     "vscode": "^1.1.37",
-    "ncp": "*"
+    "ncp": "*",
+    "rimraf": "*"
   },
   "files": [
     "libs/"

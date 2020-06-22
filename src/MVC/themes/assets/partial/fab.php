@@ -14,13 +14,7 @@ function fab(...$c1)
     $return = '';
     $id_wrapper = uniqid('fab-wrapper-');
     $id_checkbox = uniqid('fab-checkbox-');
-    if (empty($GLOBALS['fab-creator'])) {
-        $css = read_file(ROOT . '/src/MVC/themes/assets/partial/fab.min.css');
-        $return .= '<style>' . $css . '</style>';
-        $js = read_file(ROOT . '/src/MVC/themes/assets/partial/fab.min.js');
-        $return .= "<script>const id_fab = '$id_wrapper'; const id_fab_checkbox = '$id_checkbox';" . $js . '</script>';
-        $GLOBALS['fab-creator'] = 'true';
-    }
+
     $return .= '
 <div class="fab-wrapper" id="' . $id_wrapper . '">
     <input id="' . $id_checkbox . '" name="' . $id_checkbox . '" type="checkbox" class="fab-checkbox" />
@@ -49,5 +43,12 @@ function fab(...$c1)
     $return .= '
     </div>
 </div>';
+    if (empty($GLOBALS['fab-creator'])) {
+        $css = read_file(ROOT . '/src/MVC/themes/assets/partial/fab.min.css');
+        $return .= '<style>' . $css . '</style>';
+        $js = \MVC\helper::get_url_path(ROOT . '/src/MVC/themes/assets/partial/fab.min.js', true);
+        $return .= "<script>const id_fab = '$id_wrapper';const id_fab_checkbox = '$id_checkbox';</script><script src='$js' async='true'></script>";
+        $GLOBALS['fab-creator'] = 'true';
+    }
     return $return;
 }

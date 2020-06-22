@@ -15,6 +15,15 @@ gulp.task("build", function () {
   const core = require("./libs/compiler/core").core;
   const log = core.log;
 
+  return createCompiler(false);
+});
+
+/**
+ * create compiler then app.js
+ * @param {boolean} withoutView
+ */
+function createCompiler(withoutView) {
+  const core = require("./libs/compiler/core").core;
   return core.async(function () {
     var tsCompiler = ts.createProject(__dirname + "/tsconfig.compiler.json");
     tsCompiler
@@ -26,9 +35,11 @@ gulp.task("build", function () {
         })
       )
       .pipe(gulp.dest("./libs/compiler/"))
-      .end(createApp);
+      .on("end", function () {
+        createApp(withoutView);
+      });
   });
-});
+}
 
 /**
  * Create App.js
@@ -70,26 +81,47 @@ gulp.task("watch", function () {
   const log = require("./libs/compiler/log").log;
 
   console.clear();
-  log.log(log.success("Listening ./libs and ./" + config.app.views));
+  log.log(log.random("Listening ./libs and ./" + config.app.views));
   gulp
-    .watch(["./libs/js/**/*", "./" + config.app.views + "/**/*"])
+    .watch([
+      "./libs/js/**/*",
+      "./libs/src/**/*",
+      "./src/MVC/**/*",
+      "./" + config.app.views + "/**/*",
+    ])
     .on("change", function (file) {
       file = core.normalize(path.resolve(file));
-      const is_Lib = /libs\/js\//s.test(core.normalize(file));
-
+      /**
+       * Check is library compiler or source compiler
+       */
+      const is_Lib = /libs\/(js|src)\//s.test(core.normalize(file));
+      const filename_log = path.join(
+        core
+          .normalize(path.dirname(file))
+          .replace(core.normalize(process.cwd()), ""),
+        path.basename(file)
+      );
+      
       if (is_Lib) {
         log.log(
           log
             .chalk()
-            .yellow(
-              `start compile ${path.resolve(
-                "./src/MVC/themes/assets/js/app.js"
-              )}`
-            )
+            .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
         );
-        createApp(true);
+        return createCompiler(true);
       } else {
-        minify(file);
+        if (/\.(js|scss|css)$/s.test(file)) {
+          if (!/\.min\.(js|css)$/s.test(file)) {
+            return minify(file);
+          }
+        } else {
+          var reason = log.error(undefined);
+          if (/\.php$/s.test(filename_log)) {
+            reason = log.random("excluded");
+          }
+          log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
+          return core.async(null);
+        }
       }
     });
 });

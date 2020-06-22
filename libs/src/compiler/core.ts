@@ -104,10 +104,24 @@ export class core {
   }
 
   /**
+   * File Log Output Console
+   * @param file
+   */
+  static filelog(file: string) {
+    return path.join(
+      core
+        .normalize(path.dirname(file))
+        .replace(core.normalize(process.cwd()), ""),
+      path.basename(file)
+    );
+  }
+
+  /**
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
   static scss(filename: fs.PathLike) {
+    const self = this;
     fs.exists(filename, function (exists) {
       if (exists) {
         var output = filename.toString().replace(/\.scss/s, ".css");
@@ -126,15 +140,10 @@ export class core {
               if (!err) {
                 fs.writeFile(outputcss, result.css, function (err) {
                   if (!err) {
-                    filename = filename
-                      .toString()
-                      .replace(core.normalize(core.root()), "");
-                    outputcss = outputcss.replace(
-                      core.normalize(core.root()),
-                      ""
-                    );
                     log.log(
-                      `${filename} > ${outputcss} ${log.success("success")}`
+                      `${self.filelog(filename.toString())} > ${self.filelog(
+                        outputcss
+                      )} ${log.success("success")}`
                     );
                     core.minCSS(output, null);
                   } else {
@@ -197,6 +206,7 @@ export class core {
    * @param {string} filejs
    */
   static obfuscate(filejs: string) {
+    const self = this;
     if (!/\.obfuscated\.js$/s.test(filejs) && filejs.endsWith(".js")) {
       var output = filejs.replace(/\.js/s, ".obfuscated.js");
       fs.readFile(
@@ -211,7 +221,19 @@ export class core {
               controlFlowFlattening: true,
             });
 
-            fs.writeFileSync(output, obfuscationResult.getObfuscatedCode());
+            fs.writeFile(
+              output,
+              obfuscationResult.getObfuscatedCode(),
+              function (err) {
+                if (!err) {
+                  log.log(
+                    `${self.filelog(filejs)} > ${self.filelog(
+                      output
+                    )} ${log.success("success")}`
+                  );
+                }
+              }
+            );
           }
         }
       );
@@ -223,10 +245,11 @@ export class core {
    * @param {string} file
    */
   static minJS(file: string) {
+    const self = this;
     if (!file) {
       return;
     }
-    var self = this;
+
     if (/\.min\.js$/s.test(file) || !/\.js$/s.test(file)) {
       log.log(log.error(`${file} minJS Not Allowed`));
       return;
@@ -285,12 +308,8 @@ export class core {
                 },
               });
 
-              var input = core
-                .normalize(file)
-                .replace(core.normalize(core.root()), "");
-              var output = core
-                .normalize(min)
-                .replace(core.normalize(core.root()), "");
+              var input = self.filelog(file);
+              var output = self.filelog(min);
               if (terserResult.error) {
                 log.log(
                   `${log.chalk().yellow(input)} > ${log
@@ -370,6 +389,7 @@ export class core {
    * @param {Function|null} callback
    */
   static minCSS(file: string, callback: Function | null) {
+    const self = this;
     fs.exists(file, function (exists) {
       if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
         var min = file.replace(/\.css/s, ".min.css");
@@ -395,14 +415,12 @@ export class core {
                     function (err) {
                       if (!err) {
                         if (typeof callback != "function") {
-                          file = file.replace(core.root(), "");
-                          min = min.replace(core.root(), "");
                           log.log(
                             `${log
                               .chalk()
-                              .blueBright(file)} > ${log
+                              .blueBright(self.filelog(file))} > ${log
                               .chalk()
-                              .blueBright(min)} ${log.chalk().green("success")}`
+                              .blueBright(self.filelog(min))} ${log.chalk().green("success")}`
                           );
                         } else {
                           callback(true, file, min);
@@ -423,3 +441,4 @@ export class core {
     });
   }
 }
+ 
