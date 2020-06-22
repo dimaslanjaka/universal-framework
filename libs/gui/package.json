@@ -12,7 +12,7 @@
     "ejs-locals": "^1.0.2",
     "express": "~4.16.1",
     "html2pug": "^4.0.0",
-    "http-errors": "~1.6.3",
+    "http-errors": "~1.7.3",
     "jade": "^1.11.0",
     "morgan": "~1.9.1",
     "mysql2": "^2.1.0",
