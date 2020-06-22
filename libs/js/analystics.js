@@ -46,12 +46,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
       elem.addEventListener("click", function(event) {
         var data = null;
         var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
-        // @ts-ignore
+        
         dump = document.getElementById('positionTrack');
-        // @ts-ignore
+        
         if (dump) {
           data = this.tagName + '(' + clickon + ')';
-          // @ts-ignore
+          
           dump.textContent = data;
         }
         gtag("event", "ClickPosition", {

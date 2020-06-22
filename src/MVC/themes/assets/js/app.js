@@ -184,6 +184,29 @@ function userJSDecrypt(passphrase, encryptedText) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
+var iterations = "999";
+function CryptoK(passphrase, salt) {
+    var key = CryptoJS.PBKDF2(passphrase, salt, {
+        hasher: CryptoJS.algo.SHA256,
+        keySize: 64 / 8,
+        iterations: iterations,
+    });
+    return key;
+}
+function CryptoE(passphrase, plainText, salt, iv) {
+    var key = CryptoK(passphrase, salt, iterations);
+    var encrypted = CryptoJS.AES.encrypt(plainText, key, {
+        iv: CryptoJS.enc.Utf8.parse(iv),
+    });
+    return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+}
+function CryptoD(passphrase, encryptedText, salt, iv) {
+    var key = CryptoK(passphrase, salt);
+    var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
+        iv: CryptoJS.enc.Utf8.parse(iv),
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
 if (!(typeof module !== "undefined" && module.exports)) {
     $(window).bind("load", function () {
         if (typeof jQuery.fn.dataTable != "undefined") {
@@ -249,6 +272,18 @@ function isMobile() {
             Cookies.set('deviceInfo', 'x', 1, 'd', null, null);
         }
         return false;
+    }
+}
+class GeneratorID {
+    constructor() {
+        this.rand = Math.floor(Math.random() * 26) + Date.now();
+    }
+    genId() {
+        return this.rand++;
+    }
+    getId() {
+        this.genId();
+        return jQuery.fn.jquery + "." + this.rand;
     }
 }
 function createElement(options) {
@@ -834,8 +869,16 @@ if (!(typeof module !== "undefined" && module.exports)) {
 function typedKeys(o) {
     return Object.keys(o);
 }
+var ORIGIN = null;
+if (isnode()) {
+    const process = require("process");
+    ORIGIN = process.cwd();
+}
+else {
+    ORIGIN = location.protocol + "//" + location.host + location.pathname;
+}
 var dimas = {
-    url: location.protocol + "//" + location.host + location.pathname,
+    url: ORIGIN,
     captcha: {
         check: null,
         id: function (header_name) {
@@ -1339,16 +1382,18 @@ function guid() {
     }
     return _p8(false) + _p8(true) + _p8(true) + _p8(false);
 }
-jQuery.guid = function () {
-    function _p8(s) {
-        var p = guxid;
-        return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
-    }
-    return _p8(false) + _p8(true) + _p8(true) + _p8(false);
-};
+if (typeof jQuery != "undefined" && !isnode()) {
+    jQuery.guid = function () {
+        function _p8(s) {
+            var p = guxid;
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8(false) + _p8(true) + _p8(true) + _p8(false);
+    };
+}
 function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
 }
@@ -2481,74 +2526,85 @@ function JavaScriptCaller(url, callback) {
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
 }
-$(document).one("click", "#logout", function (e) {
-    e.preventDefault();
-    jQuery.post(location.href, {
-        logout: true,
-    }, function () {
-        jQuery.get($(this).attr("href"));
-        window.location.reload(1);
-    });
-});
-if (typeof dimas == "object" &&
-    typeof framework().datetimelocal != "undefined") {
-    framework().datetimelocal(undefined);
-}
-var hash = window.location.hash.substr(1);
-var result = hash.split("&").reduce(function (result, item) {
-    var parts = item.split("=");
-    result[parts[0]] = parts[1];
-    return result;
-}, {});
-if (hash.length > 1) {
-    console.log(result);
-}
-var elm = $("[countdown]");
-if (elm.length > 0) {
-    elm.each(function (e) {
-        var t = $(this);
-        framework().pctd(t);
-    });
-}
-$(document.body).on("click", "[data-redirect]", function (E) {
-    var red = $(this).attr("data-redirect");
-    if (red && red != "") {
-        window.open(red, location.host).focus();
-    }
-});
-if (typeof mask_link != "undefined") {
-    var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
-    window.onload = function () {
-        L.linkify({
-            target: "_blank",
-            attributes: null,
-            className: "linkified",
-            format: function (value, type) {
-                return value;
-            },
-            formatHref: function (href, type) {
-                return ("/youtube/s/" +
-                    btoa(CryptoJS.AES.encrypt(href, typeof hash_pass != "undefined" ? hash_pass : location.host)));
-            },
-        });
-    };
-}
-var nwtb = $("[data-newtab]");
-if (nwtb.length) {
-    nwtb.click(function (e) {
-        window.open("http://href.li/?" + $(this).data("newtab"), "newtab").focus();
-    });
-}
-var aform = $("[form]");
-if (aform.length > 1) {
-    aform.click(function (e) {
+if (!isnode()) {
+    $(document).one("click", "#logout", function (e) {
         e.preventDefault();
-        var id_form = $(this).attr("form");
-        if (typeof id_form != "undefined") {
-            var winame = document.getElementById(id_form).getAttribute("target");
-            console.log("Submiting Form ID#" + id_form);
-            window.open("", winame ? winame : "FormDynamic").focus();
-            document.getElementById($(this).attr("form")).submit();
+        jQuery.post(location.href, {
+            logout: true,
+        }, function () {
+            jQuery.get($(this).attr("href"));
+            window.location.reload(1);
+        });
+    });
+    var hash = window.location.hash.substr(1);
+    var result = hash.split("&").reduce(function (result, item) {
+        var parts = item.split("=");
+        result[parts[0]] = parts[1];
+        return result;
+    }, {});
+    if (hash.length > 1) {
+        console.log(result);
+    }
+    if (typeof dimas == "object" &&
+        typeof framework().datetimelocal != "undefined") {
+        framework().datetimelocal(undefined);
+    }
+    var elm = $("[countdown]");
+    if (elm.length > 0) {
+        elm.each(function (e) {
+            var t = $(this);
+            framework().pctd(t);
+        });
+    }
+    $(document.body).on("click", "[data-redirect]", function (E) {
+        var red = $(this).attr("data-redirect").toString();
+        if (red && red.trim() != "") {
+            window.open(red, location.host).focus();
+        }
+    });
+    if (typeof mask_link != "undefined") {
+        var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
+        window.onload = function () {
+            L.linkify({
+                target: "_blank",
+                attributes: null,
+                className: "linkified",
+                format: function (value, type) {
+                    return value;
+                },
+                formatHref: function (href, type) {
+                    return ("/youtube/s/" +
+                        btoa(CryptoJS.AES.encrypt(href, typeof hash_pass != "undefined" ? hash_pass : location.host)));
+                },
+            });
+        };
+    }
+    var nwtb = $("[data-newtab]");
+    if (nwtb.length) {
+        nwtb.click(function (e) {
+            window
+                .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+                .focus();
+        });
+    }
+    var aform = $("[form]");
+    if (aform.length > 1) {
+        aform.click(function (e) {
+            e.preventDefault();
+            var id_form = $(this).attr("form");
+            if (typeof id_form != "undefined") {
+                var winame = document.getElementById(id_form).getAttribute("target");
+                console.log("Submiting Form ID#" + id_form);
+                window.open("", winame.length ? winame : "FormDynamic").focus();
+                document.getElementById($(this).attr("form")).submit();
+            }
+        });
+    }
+    $(document.body).on("click", 'a[id="newtab"],[newtab]', function (e) {
+        e.preventDefault();
+        const t = $(this);
+        if (t.attr("href")) {
+            openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
         }
     });
 }
@@ -2558,13 +2614,7 @@ function openInNewTab(url, name) {
         win.focus();
     }
 }
-$(document.body).on("click", '[id="newtab"]', function (e) {
-    e.preventDefault();
-    if ($(this).attr("href")) {
-        openInNewTab($(this).attr("href"), $(this).data("name") ? $(this).data("name") : "_blank");
-    }
-});
-function get_currency_symbol(filter) {
+function get_currency_symbol() {
     var amount = 0;
     var ident = navigator.language;
     var currency_type;
@@ -2585,42 +2635,6 @@ function get_currency_symbol(filter) {
     });
     return format.toString().replace("0,00", "");
 }
-var iterations = "999";
-function CryptoK(passphrase, salt) {
-    var key = CryptoJS.PBKDF2(passphrase, salt, {
-        hasher: CryptoJS.algo.SHA256,
-        keySize: 64 / 8,
-        iterations: iterations,
-    });
-    return key;
-}
-function CryptoE(passphrase, plainText, salt, iv) {
-    var key = CryptoK(passphrase, salt, iterations);
-    var encrypted = CryptoJS.AES.encrypt(plainText, key, {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-    });
-    return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-}
-function CryptoD(passphrase, encryptedText, salt, iv) {
-    var key = CryptoK(passphrase, salt);
-    var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-    });
-    return decrypted.toString(CryptoJS.enc.Utf8);
-}
-function GeneratorID() { }
-GeneratorID.prototype.rand = Math.floor(Math.random() * 26) + Date.now();
-GeneratorID.prototype.genId = function () {
-    return this.rand++;
-};
-GeneratorID.prototype.getId = function () {
-    this.genId();
-    return jQuery.fn.jquery + "." + this.rand;
-};
-var GID = new GeneratorID();
-var IV = Date.now();
-var GI = GID.getId();
-var ST = (location.host.replace(".", "") + GI).toUpperCase();
 function createJSON(jsObj, tabs) {
     if (tabs) {
         return JSON.stringify(jsObj, null, "\t");
@@ -2851,4 +2865,3 @@ class ZLIB {
         return enc;
     }
 }
-//# sourceMappingURL=app.js.map

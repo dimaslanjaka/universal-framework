@@ -100,7 +100,7 @@ read_options() {
         tsc -p tsconfig.precompiler.json
         #libs/src/compiler/framework.js
         tsc -p tsconfig.compiler.json
-        pause
+        #pause
         ;;
     2)
         #clean_git_history

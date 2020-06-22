@@ -84,18 +84,18 @@ function checkUID(callback) {
 
 
 function isExpireUID() {
-  // @ts-ignore
+  
   if (typeof UIDForce == 'boolean' && UIDForce) {
     console.log("UID FORCED");
-    // @ts-ignore
+    
     delete UIDForce;
     return true;
   } else {
     var timeLeft = framework().gc('signature-timeleft');
-    // @ts-ignore
+    
     timeLeft = new Date(timeLeft).getTime();
     var date = new Date().getTime();
-    // @ts-ignore
+    
     var isExpired = timeLeft < date;
     //console.log('uid is expired ' + isExpired);
     if (isExpired) {

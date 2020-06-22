@@ -3,7 +3,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
    * jQuery Extender
    */
   (function ($) {
-    // @ts-ignore
+    
     jQuery.fn.inputFilter = function (inputFilter) {
       return this.on(
         "input keydown keyup mousedown mouseup select contextmenu drop",
@@ -19,7 +19,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
               this.oldSelectionEnd
             );
           } else {
-            // @ts-ignore
+            
             this.value = "";
           }
         }
@@ -55,9 +55,9 @@ if (!(typeof module !== "undefined" && module.exports)) {
   }
 
   //Filter number only
-  // @ts-ignore
+  
   if (typeof jQuery.fn.inputFilter != "undefined") {
-    // @ts-ignore
+    
     $(
       "input[type='number'], textarea[type='number'], [filter='number']"
     ).inputFilter(function (value) {

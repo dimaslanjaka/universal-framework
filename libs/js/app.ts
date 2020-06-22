@@ -2,12 +2,19 @@ function typedKeys<T>(o: T): (keyof T)[] {
   // type cast should be safe because that's what really Object.keys() does
   return Object.keys(o) as (keyof T)[];
 }
+var ORIGIN = null as any;
+if (isnode()) {
+  const process = require("process");
+  ORIGIN = process.cwd();
+} else {
+  ORIGIN = location.protocol + "//" + location.host + location.pathname;
+}
 
 var dimas = {
   /**
    * get current url without querystrings
    */
-  url: location.protocol + "//" + location.host + location.pathname,
+  url: ORIGIN,
   /**
    * framework captcha
    */

@@ -2,8 +2,8 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
 /// <reference path="../../../../../libs/js/jQuery.d.ts" />
 /// <reference path="../../../../../libs/js/JQueryStatic.d.ts" />
-/// <reference types="jquery" />
 /// <reference types="node" />
+/// <reference types="jquery" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 declare function inArray(needle: any, haystack: Array<any>): boolean;
 declare function in_array(needle: any, haystack: Array<any>): boolean;
@@ -17,8 +17,23 @@ declare class Cookies {
     static decompress(str: string): void;
     static compress(str: string): void;
 }
+declare function getKey(passphrase: string, salt: string): any;
+declare function userJSEncrypt(passphrase: string, plainText: string): any;
+declare function userJSDecrypt(passphrase: string, encryptedText: string): any;
+declare function CryptoK(passphrase: string, salt: string): any;
+declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): any;
+declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): any;
+declare var salt: string;
+declare var iv: string;
+declare var iterations: string;
 declare function datetime_local(date: any): string;
 declare function isMobile(): boolean;
+declare class GeneratorID {
+    private rand;
+    constructor();
+    genId(): number;
+    getId(): string;
+}
 declare function createElement(params: createElementOpt): any;
 declare function createElement(options: typeof createElement): any;
 declare class html {
@@ -31,16 +46,14 @@ declare class Timer {
     clear(): void;
 }
 declare function empty(str: string | null | undefined | number | boolean): boolean;
+interface Window {
+    [func: string]: any;
+}
+declare function ___call(functionName: string, context: Window, args: any): void;
+declare function __call(func: string): void;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
-declare var AJAX: any;
-declare var dumpAjax: boolean;
-declare var indicatorAjax: boolean;
-declare const ajaxIDLoader: string;
-declare function processAjaxForm(xhr: JQueryXHR, callback: string | Function): void;
-declare function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: null | Function, complete: null | Function): JQuery.jqXHR<any>;
-declare function AjaxForm(): void;
-declare function async_process(source_cache: string): void;
+declare function isnode(): boolean;
 declare var AjaxSchedulerInit: NodeJS.Timeout;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -52,7 +65,13 @@ declare class ajaxScheduler {
 }
 declare function ajaxRun(url: string, method: string, data: object, success: Function, failed: Function, complete: Function): void;
 declare function ajaxFormSchedule(): void;
-declare function ajax(): typeof ajax;
+declare function ajax(): {
+    (): any;
+    x(): any;
+    send(url: any, callback: any, method: any, data: any, async: any): void;
+    get(url: any, data: any, callback: any, async: any): void;
+    post(url: any, data: any, callback: any, async: any): void;
+};
 declare namespace ajax {
     function x(): any;
     function send(url: any, callback: any, method: any, data: any, async: any): void;
@@ -64,9 +83,9 @@ declare var gtagID: string;
 declare var create_gtagscript: HTMLScriptElement;
 declare var gtag: any;
 declare function typedKeys<T>(o: T): (keyof T)[];
+declare var ORIGIN: any;
 declare var dimas: {
-    url: string;
-    isNode(): boolean;
+    url: any;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string | null) => string;
@@ -109,8 +128,7 @@ declare var dimas: {
     };
 };
 declare function framework(): {
-    url: string;
-    isNode(): boolean;
+    url: any;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string) => string;
@@ -168,10 +186,34 @@ declare function restrict_mode(restrict: boolean): void;
 declare var debug_run: any;
 declare var restrict: boolean;
 declare function load_disqus(disqus_shortname: string): void;
+declare function prepEntities(str: string): string;
+declare var entityMap: {
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
+};
 declare function http_build_query(obj: Object): string;
+declare function is_localhost(): RegExpMatchArray;
+declare function is_development(): boolean;
+declare function forceSSL(): void;
+declare function json_decode(obj: string): any;
+declare function is_json(str: string): boolean;
 declare const guxid: string;
 declare function guid(): string;
 declare function uuidv4(): string;
+declare function setInputFilter(textbox: any, inputFilter: any): void;
+declare var INPT: NodeListOf<Element>;
+declare var index: number;
+declare var element: Element;
+declare var inputrp: JQuery<HTMLElement>;
 declare class ip {
     private static status;
     static check(): Promise<void>;
@@ -212,23 +254,18 @@ declare var reCaptcha: {
     get: () => string;
     reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
 };
-declare var count: number;
-declare var storageKey: String;
-declare var formField: object | Array<any>;
-declare var formSaved: string;
-declare var uniqueid: string;
 declare function smartform(): void;
 declare function copyToClipboard(text: string, el: JQuery): void;
 declare function storage(): {
     get: (key: string) => any;
-    set: (key: string, value: string | Array | Object) => void;
+    set: (key: string, value: string | Array | any) => void;
     has: (key: string) => boolean;
     extend: (key: string, value: string) => void;
     remove: (key: string) => void;
 };
 declare var STORAGE: {
     get: (key: string) => any;
-    set: (key: string, value: string | Array | Object) => void;
+    set: (key: string, value: string | Array | any) => void;
     has: (key: string) => boolean;
     extend: (key: string, value: string) => void;
     remove: (key: string) => void;
@@ -277,7 +314,7 @@ declare function checkUID(callback: Function | any): string;
 declare function isExpireUID(): boolean;
 declare function AddMinutesToDate(date: any, minutes: any): Date;
 declare function genUID(): string;
-declare function saveUID(data: Object): void;
+declare function saveUID(data: any): void;
 declare var UIDvalue: string;
 declare var UIDcalled: boolean;
 declare function getParameterByName(name: string, url: string | null): string;
@@ -290,48 +327,19 @@ declare class user {
 interface Window {
     user: user;
 }
-declare const userc: user;
-declare function is_localhost(): RegExpMatchArray;
-declare function is_development(): boolean;
-declare function forceSSL(): void;
-declare function isNativeEvent(eventname: any): boolean;
-declare function hasEventBeenAdded(type: any): boolean;
-declare function call_user_func(functionName: string, context: Window, ...args: any[]): any;
-declare function prevent_iframe(): void;
 declare function tafocus(id: string, placeholder: string): void;
 declare function formatNewLines(placeholder: string): string;
 declare function countNewLines(placeholder: string): string | number;
-declare function isJSON(obj: string): any;
-declare function is_json(str: string): boolean;
 declare function findDups(arr: Array<any>, callback: Function): any;
 declare function makeid(length: number): string;
 declare function gexec(action: any, retry: any, callback: any): void;
 declare function geToken(): string;
 declare function JavaScriptCaller(url: string, callback: Function): void;
-declare function getKey(passphrase: string, salt: string): any;
-declare function userJSEncrypt(passphrase: string, plainText: string): any;
-declare function userJSDecrypt(passphrase: string, encryptedText: string): any;
-declare function setInputFilter(textbox: any, inputFilter: any): void;
-declare function e_modal_error(data: any): void;
-declare function e_modal_success(data: any): void;
-declare function openInNewTab(url: any, name: any): void;
-declare function get_currency_symbol(filter: any): string;
-declare function CryptoK(passphrase: string, salt: string): any;
-declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): any;
-declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): any;
-declare function GeneratorID(): void;
-declare class GeneratorID {
-    rand: number;
-    genId(): number;
-    getId(): string;
-}
+declare function openInNewTab(url: string, name: string): void;
+declare function get_currency_symbol(): string;
 declare function createJSON(jsObj: any, tabs: boolean): string;
 declare function loadingio(text: any, callback: any, mode: any, ...args: any[]): void;
 declare function LoadScript(url: any, callback: any): void;
-declare function isAdmin(successcb: any, errorcb: any): void;
-declare function loadCSS(CSSFiles: string): void;
-declare function createLink(CSSFile: any, type: any, rel: any): void;
-declare function __call(func: string, ...args: any[]): void;
 declare function parse_proxy(str: string): Array<any>;
 declare function array_rand(arrays: Array<any>, unique: boolean): {
     index: number;
@@ -339,61 +347,18 @@ declare function array_rand(arrays: Array<any>, unique: boolean): {
 };
 declare function array_unique(arrays: Array<any>): any[];
 declare function array_unset(arrayName: Array<any>, key: string | number): any[];
-declare function Loading(text: {
-    title: string;
-    content: string;
-    footer: string;
-}, options: {
-    callback: Function;
-    position: string;
-    disable: boolean;
-}): any;
 declare function toogleClass(element: Element, className: string): boolean;
 declare function UNIQUE_ID(): string;
-declare function check_blogger(callback: Function): void;
 declare function pseudo_builder(string: string): string;
-declare function foreach(object: Object, callback: Function): void;
+declare function foreach(object: any, callback: Function): void;
 declare function getRandom(arr: Array<any>, n: number, callback: Function): any;
-declare function prepEntities(str: string): string;
 declare var textAreas: HTMLCollectionOf<HTMLTextAreaElement>;
-declare var events: {};
-declare var original: {
-    <K extends "error" | "abort" | "submit" | "message" | "input" | "progress" | "select" | "focus" | "change" | "resize" | "scroll" | "click" | "contextmenu" | "dblclick" | "mousedown" | "mouseenter" | "mouseleave" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "drag" | "dragend" | "dragenter" | "dragexit" | "dragleave" | "dragover" | "dragstart" | "drop" | "keydown" | "keypress" | "keyup" | "touchcancel" | "touchend" | "touchmove" | "touchstart" | "blur" | "focusin" | "focusout" | "afterprint" | "beforeprint" | "beforeunload" | "canplay" | "canplaythrough" | "compassneedscalibration" | "devicelight" | "devicemotion" | "deviceorientation" | "deviceorientationabsolute" | "durationchange" | "emptied" | "ended" | "hashchange" | "invalid" | "load" | "loadeddata" | "loadedmetadata" | "loadstart" | "mousewheel" | "MSGestureChange" | "MSGestureDoubleTap" | "MSGestureEnd" | "MSGestureHold" | "MSGestureStart" | "MSGestureTap" | "MSInertiaStart" | "MSPointerCancel" | "MSPointerDown" | "MSPointerEnter" | "MSPointerLeave" | "MSPointerMove" | "MSPointerOut" | "MSPointerOver" | "MSPointerUp" | "offline" | "online" | "orientationchange" | "pagehide" | "pageshow" | "pause" | "play" | "playing" | "popstate" | "ratechange" | "readystatechange" | "reset" | "seeked" | "seeking" | "stalled" | "storage" | "suspend" | "timeupdate" | "unload" | "volumechange" | "vrdisplayactivate" | "vrdisplayblur" | "vrdisplayconnect" | "vrdisplaydeactivate" | "vrdisplaydisconnect" | "vrdisplayfocus" | "vrdisplaypointerrestricted" | "vrdisplaypointerunrestricted" | "vrdisplaypresentchange" | "waiting" | "animationcancel" | "animationend" | "animationiteration" | "animationstart" | "auxclick" | "cancel" | "close" | "cuechange" | "gotpointercapture" | "lostpointercapture" | "pointercancel" | "pointerdown" | "pointerenter" | "pointerleave" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "securitypolicyviolation" | "selectionchange" | "selectstart" | "toggle" | "transitioncancel" | "transitionend" | "transitionrun" | "transitionstart" | "wheel" | "languagechange" | "messageerror" | "rejectionhandled" | "unhandledrejection">(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-    (type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-} & typeof addEventListener;
-declare var salt: string;
-declare var iv: string;
-declare var iterations: string;
-declare var INPT: NodeListOf<Element>;
-declare var index: number;
-declare var element: Element;
-declare var modal: JQuery<HTMLElement>;
-declare var inputrp: JQuery<HTMLElement>;
-declare var select_method: JQuery<HTMLElement>;
 declare var hash: string;
 declare var result: {};
 declare var elm: JQuery<HTMLElement>;
 declare var L: JQuery<HTMLElement>;
 declare var nwtb: JQuery<HTMLElement>;
 declare var aform: JQuery<HTMLElement>;
-declare var GID: GeneratorID;
-declare var IV: number;
-declare var GI: string;
-declare var ST: string;
-declare var LoadingOpt: any;
-declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
-};
 declare function socket_start(host: any): void;
 declare function socket_server(host: any): EventSource;
 declare function socket_stop(): void;

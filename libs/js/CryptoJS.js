@@ -31,7 +31,7 @@ function userJSEncrypt(passphrase, plainText) {
   var encrypted = CryptoJS.AES.encrypt(plainText, key, {
     iv: CryptoJS.enc.Utf8.parse(iv),
   });
-  // @ts-ignore
+
   return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
 }
 /**
@@ -42,6 +42,54 @@ function userJSEncrypt(passphrase, plainText) {
 function userJSDecrypt(passphrase, encryptedText) {
   if (typeof CryptoJS == "undefined") return;
   var key = getKey(passphrase, salt);
+  var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
+    iv: CryptoJS.enc.Utf8.parse(iv),
+  });
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
+// another
+/*var salt = 'salt';
+  var iv = '1111111111111111';
+  */
+var iterations = "999";
+/**
+ * Crypto get key
+ * @param {String} passphrase
+ * @param {String} salt
+ */
+function CryptoK(passphrase, salt) {
+  var key = CryptoJS.PBKDF2(passphrase, salt, {
+    hasher: CryptoJS.algo.SHA256,
+    keySize: 64 / 8,
+    iterations: iterations,
+  });
+  return key;
+}
+/**
+ * Crypto encrypt
+ * @param {String} passphrase
+ * @param {String} plainText
+ * @param {String} salt
+ * @param {String} iv
+ */
+function CryptoE(passphrase, plainText, salt, iv) {
+  var key = CryptoK(passphrase, salt, iterations);
+  var encrypted = CryptoJS.AES.encrypt(plainText, key, {
+    iv: CryptoJS.enc.Utf8.parse(iv),
+  });
+
+  return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+}
+/**
+ * Crypto decrypt
+ * @param {String} passphrase
+ * @param {String} encryptedText
+ * @param {String} salt
+ * @param {String} iv
+ */
+function CryptoD(passphrase, encryptedText, salt, iv) {
+  var key = CryptoK(passphrase, salt);
   var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
     iv: CryptoJS.enc.Utf8.parse(iv),
   });

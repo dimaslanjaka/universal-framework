@@ -44,26 +44,23 @@ if (!(typeof module !== "undefined" && module.exports)) {
   $(document).ready(function () {
     /** Tooltip */
     if (jQuery.fn.tooltip && $('[data-toggle="tooltip"]')) {
-      // @ts-ignore
       $("body").tooltip({
         selector: '[data-toggle="tooltip"]',
       });
       //$('[data-toggle="tooltip"]').tooltip();
 
       // colored tooltip
-      // @ts-ignore
+
       $('[data-toggle="tooltip-primary"]').tooltip({
         template:
           '<div class="tooltip tooltip-primary" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
       });
 
-      // @ts-ignore
       $('[data-toggle="tooltip-secondary"]').tooltip({
         template:
           '<div class="tooltip tooltip-secondary" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
       });
 
-      // @ts-ignore
       $('[data-toggle="tooltip-danger"]').tooltip({
         template:
           '<div class="tooltip tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
@@ -76,7 +73,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         responsive: true,
         language: {
           searchPlaceholder: "Search...",
-          // @ts-ignore
+
           sSearch: "",
           lengthMenu: "_MENU_ items/page",
         },
@@ -102,18 +99,15 @@ if (!(typeof module !== "undefined" && module.exports)) {
  */
 function tafocus(id, placeholder) {
   var count_newlines = countNewLines(placeholder);
-  // @ts-ignore
+
   $(id).on("focus", function (e) {
-    // @ts-ignore
     var count_length = $(this).val().length;
     if (count_length === count_newlines || $(this).val() == placeholder) {
       $(this).val("");
     }
   });
 
-  // @ts-ignore
   $(id).on("blur", function (e) {
-    // @ts-ignore
     var count_length = $(this).val().length;
     if (!count_length) {
       $(this).val(formatNewLines(placeholder));
@@ -232,123 +226,140 @@ function JavaScriptCaller(url, callback) {
  * Function initialization
  */
 
-$(document).one("click", "#logout", function (e) {
-  e.preventDefault();
-  jQuery.post(
-    location.href,
-    {
-      logout: true,
-    },
-    function () {
-      jQuery.get($(this).attr("href"));
-      // @ts-ignore
-      window.location.reload(1);
-    }
-  );
-});
-
-/** datetime-local */
-if (
-  typeof dimas == "object" &&
-  typeof framework().datetimelocal != "undefined"
-) {
-  framework().datetimelocal(undefined);
-}
-
-/** Query URL */
-var hash = window.location.hash.substr(1);
-
-var result = hash.split("&").reduce(function (result, item) {
-  var parts = item.split("=");
-  result[parts[0]] = parts[1];
-  return result;
-}, {});
-
-if (hash.length > 1) {
-  console.log(result);
-}
-
-/** Progress bar */
-var elm = $("[countdown]");
-if (elm.length > 0) {
-  // @ts-ignore
-  elm.each(function (e) {
-    var t = $(this);
-    framework().pctd(t);
-  });
-}
-
-/** document body listener */
-// @ts-ignore
-$(document.body).on("click", "[data-redirect]", function (E) {
-  var red = $(this).attr("data-redirect");
-  if (red && red != "") {
-    window.open(red, location.host).focus();
-  }
-});
-
-/** Linkify */
-// @ts-ignore
-if (typeof mask_link != "undefined") {
-  /**
-   * @type {JQuery<HTMLElement>} L
-   */
-  var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
-  window.onload = function () {
-    // @ts-ignore
-    L.linkify({
-      target: "_blank",
-      attributes: null,
-      className: "linkified",
-      // @ts-ignore
-      format: function (value, type) {
-        return value;
-      },
-      // @ts-ignore
-      formatHref: function (href, type) {
-        // @ts-ignore
-        return (
-          "/youtube/s/" +
-          btoa(
-            CryptoJS.AES.encrypt(
-              href,
-              typeof hash_pass != "undefined" ? hash_pass : location.host
-            )
-          )
-        );
-      },
-    });
-  };
-}
-
-//new tab links hide refferer
-var nwtb = $("[data-newtab]");
-if (nwtb.length) {
-  // @ts-ignore
-  nwtb.click(function (e) {
-    window.open("http://href.li/?" + $(this).data("newtab"), "newtab").focus();
-  });
-}
-
-//links new tab form submit
-var aform = $("[form]");
-if (aform.length > 1) {
-  aform.click(function (e) {
+if (!isnode()) {
+  $(document).one("click", "#logout", function (e) {
     e.preventDefault();
-    var id_form = $(this).attr("form");
-    if (typeof id_form != "undefined") {
-      var winame = document.getElementById(id_form).getAttribute("target"); //reduce caching
-      console.log("Submiting Form ID#" + id_form);
-      window.open("", winame ? winame : "FormDynamic").focus();
-      document.getElementById($(this).attr("form")).submit();
+    jQuery.post(
+      location.href,
+      {
+        logout: true,
+      },
+      function () {
+        jQuery.get($(this).attr("href"));
+
+        window.location.reload(1);
+      }
+    );
+  });
+
+  /** Query URL */
+  var hash = window.location.hash.substr(1);
+
+  var result = hash.split("&").reduce(function (result, item) {
+    var parts = item.split("=");
+    result[parts[0]] = parts[1];
+    return result;
+  }, {});
+
+  if (hash.length > 1) {
+    console.log(result);
+  }
+
+  /** datetime-local */
+  if (
+    typeof dimas == "object" &&
+    typeof framework().datetimelocal != "undefined"
+  ) {
+    framework().datetimelocal(undefined);
+  }
+
+  /** Progress bar */
+  var elm = $("[countdown]");
+  if (elm.length > 0) {
+    elm.each(function (e) {
+      var t = $(this);
+      framework().pctd(t);
+    });
+  }
+
+  /** document body listener */
+  $(document.body).on("click", "[data-redirect]", function (E) {
+    var red = $(this).attr("data-redirect").toString();
+    if (red && red.trim() != "") {
+      window.open(red, location.host).focus();
     }
-    //w = window.open('', 'bagas31-post');
-    //$('form#' + $(this).attr('form')).submit();
-    //w.focus();
+  });
+
+  /** Linkify */
+  if (typeof mask_link != "undefined") {
+    /**
+     * @type {JQuery<HTMLElement>} L
+     */
+    var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
+    window.onload = function () {
+      L.linkify({
+        target: "_blank",
+        attributes: null,
+        className: "linkified",
+
+        format: function (value, type) {
+          return value;
+        },
+
+        formatHref: function (href, type) {
+          return (
+            "/youtube/s/" +
+            btoa(
+              CryptoJS.AES.encrypt(
+                href,
+                typeof hash_pass != "undefined" ? hash_pass : location.host
+              )
+            )
+          );
+        },
+      });
+    };
+  }
+
+  /**
+   * new tab links hide refferer
+   */
+  var nwtb = $("[data-newtab]");
+  if (nwtb.length) {
+    nwtb.click(function (e) {
+      window
+        .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+        .focus();
+    });
+  }
+
+  /**
+   * links new tab form submit
+   */
+  var aform = $("[form]");
+  if (aform.length > 1) {
+    aform.click(function (e) {
+      e.preventDefault();
+      var id_form = $(this).attr("form");
+      if (typeof id_form != "undefined") {
+        var winame = document.getElementById(id_form).getAttribute("target"); //reduce caching
+        console.log("Submiting Form ID#" + id_form);
+        window.open("", winame.length ? winame : "FormDynamic").focus();
+        document.getElementById($(this).attr("form")).submit();
+      }
+      //w = window.open('', 'bagas31-post');
+      //$('form#' + $(this).attr('form')).submit();
+      //w.focus();
+    });
+  }
+
+  /**
+   * open in new tab
+   */
+  $(document.body).on("click", 'a[id="newtab"],[newtab]', function (e) {
+    e.preventDefault();
+    const t = $(this);
+    if (t.attr("href")) {
+      openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+    }
   });
 }
 
-//open in new tab
+/**
+ * open in new tab
+ * @param {string} url
+ * @param {string} name
+ */
 function openInNewTab(url, name) {
   if (typeof url != "undefined" && typeof name != "undefined") {
     var win = window.open(url, name);
@@ -356,20 +367,10 @@ function openInNewTab(url, name) {
   }
 }
 
-//open in new tab
-$(document.body).on("click", '[id="newtab"]', function (e) {
-  e.preventDefault();
-  if ($(this).attr("href")) {
-    openInNewTab(
-      $(this).attr("href"),
-      $(this).data("name") ? $(this).data("name") : "_blank"
-    );
-  }
-});
-
-//get currency symbol
-// @ts-ignore
-function get_currency_symbol(filter) {
+/**
+ * get currency symbol from navigator
+ */
+function get_currency_symbol() {
   var amount = 0;
   var ident = navigator.language;
   var currency_type;
@@ -391,158 +392,7 @@ function get_currency_symbol(filter) {
   return format.toString().replace("0,00", "");
 }
 
-//CryptoJS
 
-/*var salt = 'salt';
-  var iv = '1111111111111111';
-  */
-var iterations = "999";
-/**
- * Crypto get key
- * @param {String} passphrase
- * @param {String} salt
- */
-function CryptoK(passphrase, salt) {
-  var key = CryptoJS.PBKDF2(passphrase, salt, {
-    hasher: CryptoJS.algo.SHA256,
-    keySize: 64 / 8,
-    iterations: iterations,
-  });
-  return key;
-}
-/**
- * Crypto encrypt
- * @param {String} passphrase
- * @param {String} plainText
- * @param {String} salt
- * @param {String} iv
- */
-function CryptoE(passphrase, plainText, salt, iv) {
-  // @ts-ignore
-  var key = CryptoK(passphrase, salt, iterations);
-  var encrypted = CryptoJS.AES.encrypt(plainText, key, {
-    iv: CryptoJS.enc.Utf8.parse(iv),
-  });
-  // @ts-ignore
-  return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-}
-/**
- * Crypto decrypt
- * @param {String} passphrase
- * @param {String} encryptedText
- * @param {String} salt
- * @param {String} iv
- */
-function CryptoD(passphrase, encryptedText, salt, iv) {
-  var key = CryptoK(passphrase, salt);
-  var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
-    iv: CryptoJS.enc.Utf8.parse(iv),
-  });
-  return decrypted.toString(CryptoJS.enc.Utf8);
-}
-/**
- * Generate unique id
- */
-function GeneratorID() {}
-GeneratorID.prototype.rand = Math.floor(Math.random() * 26) + Date.now();
-GeneratorID.prototype.genId = function () {
-  return this.rand++;
-};
-GeneratorID.prototype.getId = function () {
-  this.genId();
-  return jQuery.fn.jquery + "." + this.rand;
-};
-var GID = new GeneratorID();
-var IV = Date.now();
-var GI = GID.getId();
-var ST = (location.host.replace(".", "") + GI).toUpperCase();
-/*
-if (typeof NO_CSRF == 'undefined') {
-  refreshCSRF();
-  setInterval(function() {
-    refreshCSRF();
-  }, 60000);
-}
-
-function refreshCSRF() {
-  $.ajax({
-    type: "POST",
-    url: '/session/get?check=1',
-    xhrFields: {
-      withCredentials: true
-    },
-    headers: {
-      'Authorization': 'Basic ' + btoa('a:b'),
-      'X-Identity': navigator.userAgent,
-    },
-    success: function(x) {
-      if (typeof x[0] != 'undefined') {
-        if (typeof x[0].expired != 'undefined') {
-          if (x[0].expired !== false) {
-            $.ajax({
-              type: "POST",
-              url: '/session/get?delete=1',
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                'Authorization': 'Basic ' + btoa('a:b'),
-                'X-Identity': navigator.userAgent,
-              },
-              beforeSend: function() {
-                //loadingio('Refreshing CSRF Security');
-              },
-              success: function(x) {
-                $.ajax({
-                  type: "POST",
-                  url: '/session/set',
-                  headers: {
-                    'X-Set': GI,
-                    'X-Salt': ST,
-                    'X-Iv': IV,
-                    'X-Requested-With': CryptoE(GI, navigator.userAgent, ST, IV),
-                    'X-Cookie-Enabled': navigator.cookieEnabled,
-                    'X-Browser-Online': navigator.onLine
-                  },
-                  beforeSend: function() {
-                    loadingio('Refreshing CSRF Security');
-                  },
-                  success: function(eCSRF) {
-                    if (typeof eCSRF.getResponseHeader == 'function') {
-                      //console.log(e.getAllResponseHeaders());
-                      //console.log(navigator);
-                      if (eCSRF.getResponseHeader('x-requested-with')) {
-                        if (eCSRF.getResponseHeader('x-requested-with') == navigator.userAgent) {
-                          framework().sc('csrf-lifetime', new Date().addHours(0.1), 0.1);
-                          if (eCSRF.getResponseHeader('x-csrf')) {
-                            framework().sc('csrf', eCSRF.getResponseHeader('x-csrf'), 0.1);
-                          }
-                          location.reload(1);
-                        }
-                      }
-                    }
-                  },
-                  complete: function() {
-                    //loadingio(false, null, 'disabled');
-                  }
-                });
-              },
-              complete: function() {
-                loadingio(false, null, 'disabled');
-              }
-            });
-          } else {
-            var els = document.querySelectorAll('form,input,textarea,a');
-            for (var i = 0; i < els.length; i++) {
-              els[i].setAttribute("data-csrf", x[0].csrf);
-            }
-          }
-        }
-      }
-    }
-  });
-}
-*/
 /**
  * Create JSON
  * @param {any} jsObj
@@ -629,7 +479,6 @@ __call.call(o, "target", "Hello");
  * @return {Array<any>} proxy list filtered
  */
 function parse_proxy(str) {
-  // @ts-ignore
   var matchs,
     px = [];
   loadingio("Parsing proxies", function () {
@@ -743,7 +592,6 @@ function pseudo_builder(string) {
  * @param {Function} callback
  */
 function foreach(object, callback) {
-  // @ts-ignore
   var key, value;
   Object.keys(object).forEach(function (key) {
     if (typeof callback == "function") {

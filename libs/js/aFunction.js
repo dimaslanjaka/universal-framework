@@ -21,7 +21,7 @@ function call_user_func(functionName, context /*, args */) {
     return window[func](arguments);
   } else if (func != "") {
     try {
-      // @ts-ignore
+      
       var tmpFunc = new Function(func(arguments));
       tmpFunc();
     } catch (error) {

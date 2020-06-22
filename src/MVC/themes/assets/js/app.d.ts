@@ -20,11 +20,20 @@ declare class Cookies {
 declare function getKey(passphrase: string, salt: string): any;
 declare function userJSEncrypt(passphrase: string, plainText: string): any;
 declare function userJSDecrypt(passphrase: string, encryptedText: string): any;
+declare function CryptoK(passphrase: string, salt: string): any;
+declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): any;
+declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): any;
 declare var salt: string;
 declare var iv: string;
 declare var iterations: string;
 declare function datetime_local(date: any): string;
 declare function isMobile(): boolean;
+declare class GeneratorID {
+    private rand;
+    constructor();
+    genId(): number;
+    getId(): string;
+}
 declare function createElement(params: createElementOpt): any;
 declare function createElement(options: typeof createElement): any;
 declare class html {
@@ -74,8 +83,9 @@ declare var gtagID: string;
 declare var create_gtagscript: HTMLScriptElement;
 declare var gtag: any;
 declare function typedKeys<T>(o: T): (keyof T)[];
+declare var ORIGIN: any;
 declare var dimas: {
-    url: string;
+    url: any;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string | null) => string;
@@ -118,7 +128,7 @@ declare var dimas: {
     };
 };
 declare function framework(): {
-    url: string;
+    url: any;
     captcha: {
         check: NodeJS.Timeout;
         id: (header_name: string) => string;
@@ -325,17 +335,8 @@ declare function makeid(length: number): string;
 declare function gexec(action: any, retry: any, callback: any): void;
 declare function geToken(): string;
 declare function JavaScriptCaller(url: string, callback: Function): void;
-declare function openInNewTab(url: any, name: any): void;
-declare function get_currency_symbol(filter: any): string;
-declare function CryptoK(passphrase: string, salt: string): any;
-declare function CryptoE(passphrase: string, plainText: string, salt: string, iv: string): any;
-declare function CryptoD(passphrase: string, encryptedText: string, salt: string, iv: string): any;
-declare function GeneratorID(): void;
-declare class GeneratorID {
-    rand: number;
-    genId(): number;
-    getId(): string;
-}
+declare function openInNewTab(url: string, name: string): void;
+declare function get_currency_symbol(): string;
 declare function createJSON(jsObj: any, tabs: boolean): string;
 declare function loadingio(text: any, callback: any, mode: any, ...args: any[]): void;
 declare function LoadScript(url: any, callback: any): void;
@@ -358,11 +359,6 @@ declare var elm: JQuery<HTMLElement>;
 declare var L: JQuery<HTMLElement>;
 declare var nwtb: JQuery<HTMLElement>;
 declare var aform: JQuery<HTMLElement>;
-declare var iterations: string;
-declare var GID: GeneratorID;
-declare var IV: number;
-declare var GI: string;
-declare var ST: string;
 declare function socket_start(host: any): void;
 declare function socket_server(host: any): EventSource;
 declare function socket_stop(): void;

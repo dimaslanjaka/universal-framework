@@ -17,7 +17,7 @@ function socket_start(host) {
     socket = socket_server(host);
   }
   try {
-    // @ts-ignore
+    
     socket.onopen = function(msg) {
       console.log('socket initialized');
     };
@@ -26,7 +26,7 @@ function socket_start(host) {
       //do with data response
       console.log(data);
     };
-    // @ts-ignore
+    
     socket.onclose = function(msg) {
       console.log({
         closed: socket
@@ -46,7 +46,7 @@ function socket_server(host) {
   if (!window.EventSource) {
     var socket = new EventSource(host);
   } else {
-    // @ts-ignore
+    
     var socket = new WebSocket(host);
   }
   return socket;
