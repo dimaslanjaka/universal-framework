@@ -53,7 +53,7 @@ function arrayCompare(a1, a2) {
 function inArray(needle, haystack) {
     var length = haystack.length;
     for (var i = 0; i < length; i++) {
-        if (typeof haystack[i] == 'object') {
+        if (typeof haystack[i] == "object") {
             if (arrayCompare(haystack[i], needle))
                 return true;
         }
@@ -105,14 +105,14 @@ Array.prototype.unique = function () {
 };
 if (!Array.prototype.every) {
     Array.prototype.every = function (fun /*, thisp */) {
-        'use strict';
+        "use strict";
         var t, len, i, thisp;
         if (this == null) {
             throw new TypeError();
         }
         t = Object(this);
         len = t.length >>> 0;
-        if (typeof fun !== 'function') {
+        if (typeof fun !== "function") {
             throw new TypeError();
         }
         thisp = arguments[1];
@@ -406,6 +406,28 @@ function isMobile() {
         }
         return false;
     }
+}
+/** Add one or more listeners to an element
+ * @param element - DOM element to add listeners to
+ * @param eventNames - space separated list of event names, e.g. 'click change'
+ * @param listener - function to attach for each event as a listener
+ */
+function setEventListener(element, eventNames, listener) {
+    eventNames.split(" ").forEach(function (e) {
+        //element.addEventListener(e, listener, false);
+        if (element.attachEvent) {
+            if (e == "click") {
+                e = "onclick";
+            }
+            element.attachEvent(e, listener);
+        }
+        else if (element.addEventListener) {
+            element.addEventListener(e, listener, false);
+        }
+        else {
+            console.error("cannot attach event to FAB wrapper");
+        }
+    });
 }
 /**
  * @class Generate unique id
@@ -1711,6 +1733,35 @@ function load_disqus(disqus_shortname) {
             toastr.error('disqus container not exists', 'disqus comment');
         }
     }
+}
+var distance_already_calculated = [];
+/**
+ * find distance
+ * @param target
+ * @param callback
+ */
+function calculateDistance(target, callback) {
+    if (distance_already_calculated.includes(target)) {
+        return null;
+    }
+    distance_already_calculated.push(target);
+    var mX, mY, distance, $element = $("#" + target);
+    return $(document).on("mousemove click", function (e) {
+        mX = e.pageX;
+        mY = e.pageY;
+        distance = calculatorDistance($element, mX, mY);
+        return callback(distance);
+    });
+}
+/**
+ * calculate distance mouse x element
+ * @param elem
+ * @param mouseX
+ * @param mouseY
+ */
+function calculatorDistance(elem, mouseX, mouseY) {
+    return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + elem.width() / 2), 2) +
+        Math.pow(mouseY - (elem.offset().top + elem.height() / 2), 2)));
 }
 // A map of the entities we want to handle.
 // The numbers on the left are the Unicode code point values; their

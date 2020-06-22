@@ -1,50 +1,54 @@
 (function () {
-  const jquery_loaded = typeof jQuery;
-  console.info({
-    jQuery: "is loaded ? " + (jquery_loaded != "undefined" ? "true" : "false"),
-  });
+  const jquery_loaded = typeof jQuery != "undefined";
+  console.info("jQuery is " + (jquery_loaded === true ? "loaded" : "missing"));
   if (typeof id_fab == "string" && typeof id_fab_checkbox == "string") {
-    var fab_wrapper =
-      jquery_loaded != "undefined"
-        ? $(`#${id_fab}`)
-        : document.getElementById(id_fab);
-    if (fab_wrapper.length) {
-      fab_wrapper = fab_wrapper[0];
-      if (fab_wrapper instanceof HTMLElement) {
-        if (fab_wrapper.attachEvent) {
-          fab_wrapper.attachEvent("onclick", fab_click_handler);
-        } else if (fab_wrapper.addEventListener) {
-          fab_wrapper.addEventListener("click", fab_click_handler);
-        } else {
-          console.error("cannot attach event to FAB wrapper");
-        }
-      } else if (fab_wrapper instanceof jQuery) {
-        fab_wrapper.on("click", fab_click_handler);
-      }
-      fab_wrapper.onclick = fab_click_handler;
-
-      console.log(
-        `fab found (${
-          fab_wrapper instanceof HTMLElement ? "VanillaJS" : "jQuery"
-        })`,
-        fab_wrapper
-      );
+    if (jquery_loaded) {
+      return fab_set_listener($(`#${id_fab}`));
     } else {
-      console.error("fab not found", fab_wrapper);
-      console.log(id_fab);
+      return fab_set_listener(document.getElementById(id_fab));
     }
   }
 })();
 
-function fab_click_handler(e) {
-  console.log(e);
+/**
+ *
+ * @param {HTMLElement|JQuery} fab_wrapper
+ */
+function fab_set_listener(fab_wrapper) {
+  const is_jquery = fab_wrapper instanceof jQuery;
+  if (fab_wrapper.length) {
+    if (is_jquery) {
+      fab_wrapper.on("click mouseover", function (e) {
+        e.preventDefault();
+        fab_click_handler(e, true);
+      });
+    } else {
+      fab_wrapper = fab_wrapper[0];
+      setEventListener(fab_wrapper, "click mouseover", function (e) {
+        fab_click_handler(e, true);
+      });
+    }
+
+    console.log(`fab found (${is_jquery ? "jQuery" : "VanillaJS"})`);
+    console.log(fab_wrapper);
+  } else {
+    console.error("fab not found", fab_wrapper);
+    console.log(id_fab);
+  }
+}
+
+function fab_click_handler(e, activate) {
+  //console.log("clicked FAB", e);
   /**
    * @type {HTMLInputElement}
    */
   var fab_checkbox = document.getElementById(id_fab_checkbox);
   if (fab_checkbox) {
-    fab_checkbox.setAttribute("aria-checked", "true");
-    fab_checkbox.checked = true;
+    fab_checkbox.setAttribute("aria-checked", activate ? "true" : "false");
+    fab_checkbox.checked = activate;
+    calculateDistance(id_fab_checkbox, function(distance){
+      console.log(distance);
+    });
 
     console.log("fab checkbox found", fab_checkbox);
   } else {

@@ -6,7 +6,7 @@ swal({
   timer: 5000,
   buttons: {
     cancel: true,
-    confirm: true,
+    confirm: true, 
   },
 }).then(
   /**

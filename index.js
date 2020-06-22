@@ -1,7 +1,8 @@
+//@ts-check
 const fs = require("fs");
 const path = require("path");
-const log = require("./libs/compiler/log").log;
-const core = require("./libs/compiler/core").core;
+const log = require("./libs/compiler/log");
+const core = require("./libs/compiler/core");
 const sorter = require("./libs/compiler/sorter").sorter;
 const ncp = require("ncp").ncp;
 //shared packages.json
@@ -36,7 +37,7 @@ for (const key in root_pkg.dependencies) {
       delete root_pkg.dependencies[key];
       continue;
     }
-    
+
     root_pkg.dependencies[key] = "*";
   }
 }

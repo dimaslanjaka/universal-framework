@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+/// <reference path="./Array.d.ts"/>
 function arrayCompare(a1, a2) {
     if (a1.length != a2.length)
         return false;
@@ -17,10 +18,15 @@ function arrayCompare(a1, a2) {
     }
     return true;
 }
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
 function inArray(needle, haystack) {
     var length = haystack.length;
     for (var i = 0; i < length; i++) {
-        if (typeof haystack[i] == 'object') {
+        if (typeof haystack[i] == "object") {
             if (arrayCompare(haystack[i], needle))
                 return true;
         }
@@ -31,12 +37,25 @@ function inArray(needle, haystack) {
     }
     return false;
 }
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
 function in_array(needle, haystack) {
     return inArray(needle, haystack);
 }
+/**
+ * get all keys
+ * @param haystack string etc
+ */
 function array_keys(haystack) {
     return Object.keys(haystack);
 }
+/**
+ * Shuffles array in place.
+ * @param a items An array containing the items.
+ */
 function array_shuffle(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
@@ -58,15 +77,15 @@ Array.prototype.unique = function () {
     return a;
 };
 if (!Array.prototype.every) {
-    Array.prototype.every = function (fun) {
-        'use strict';
+    Array.prototype.every = function (fun /*, thisp */) {
+        "use strict";
         var t, len, i, thisp;
         if (this == null) {
             throw new TypeError();
         }
         t = Object(this);
         len = t.length >>> 0;
-        if (typeof fun !== 'function') {
+        if (typeof fun !== "function") {
             throw new TypeError();
         }
         thisp = arguments[1];
@@ -83,7 +102,17 @@ function array_filter(array) {
         return el != null;
     });
 }
+/**
+ * Cookie Helper
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ * @see http://localhost/src/Cookies/helper.php
+ */
 class Cookies {
+    /**
+     * Get cookie value by cookie name
+     * @param c_name
+     * @returns null if cookie not exists
+     */
     static get(c_name) {
         if (document.cookie.length > 0) {
             var c_start = document.cookie.indexOf(c_name + "=");
@@ -103,6 +132,13 @@ class Cookies {
         }
         return null;
     }
+    /**
+     * Create cookie expiring in days
+     * @param name cookie name
+     * @param value cookie value
+     * @param days days to expire
+     * @param expire_type d = days, m = minutes, s = seconds, default seconds
+     */
     static set(name, value, expire, expire_type, path, callback) {
         var expires;
         if (expire) {
@@ -140,22 +176,52 @@ class Cookies {
         }
         return this.get(name);
     }
+    /**
+     * Call function if cookie name not set
+     * @param name
+     * @param value
+     * @param expire Expires number (minutes)
+     * @param callback Function callback to be executed one time
+     */
     static one(name, value, expire, callback) {
         if (this.get(name) == null) {
             this.set(name, value, expire, "m", "/", callback);
         }
     }
+    /**
+     * decompress cookie
+     * @param str
+     */
     static decompress(str) {
+        /*return pako.inflateRaw(str, {
+          to: 'string'
+        });*/
     }
+    /**
+     * compress cookie
+     * @param str
+     */
     static compress(str) {
+        /*return pako.deflateRaw(str, {
+          to: 'string'
+        });*/
     }
 }
 if (typeof module !== "undefined" && module.exports) {
     module.exports.Cookies = Cookies;
 }
-var salt = "salt";
-var iv = "1111111111111111";
-var iterations = "999";
+/**
+ * @todo CryptoJS
+ * @package https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js
+ */
+var salt = "salt"; //salt
+var iv = "1111111111111111"; //pass salt minimum length 12 chars
+var iterations = "999"; //iterations
+/**
+ * Get key
+ * @param {string} passphrase
+ * @param {string} salt
+ */
 function getKey(passphrase, salt) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -166,6 +232,11 @@ function getKey(passphrase, salt) {
     });
     return key;
 }
+/**
+ * Encrypt function
+ * @param {string} passphrase
+ * @param {string} plainText
+ */
 function userJSEncrypt(passphrase, plainText) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -175,6 +246,11 @@ function userJSEncrypt(passphrase, plainText) {
     });
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
 }
+/**
+ * Decrypt function
+ * @param {string} passphrase
+ * @param {string} encryptedText
+ */
 function userJSDecrypt(passphrase, encryptedText) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -184,7 +260,16 @@ function userJSDecrypt(passphrase, encryptedText) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
+// another
+/*var salt = 'salt';
+  var iv = '1111111111111111';
+  */
 var iterations = "999";
+/**
+ * Crypto get key
+ * @param {String} passphrase
+ * @param {String} salt
+ */
 function CryptoK(passphrase, salt) {
     var key = CryptoJS.PBKDF2(passphrase, salt, {
         hasher: CryptoJS.algo.SHA256,
@@ -193,6 +278,13 @@ function CryptoK(passphrase, salt) {
     });
     return key;
 }
+/**
+ * Crypto encrypt
+ * @param {String} passphrase
+ * @param {String} plainText
+ * @param {String} salt
+ * @param {String} iv
+ */
 function CryptoE(passphrase, plainText, salt, iv) {
     var key = CryptoK(passphrase, salt, iterations);
     var encrypted = CryptoJS.AES.encrypt(plainText, key, {
@@ -200,6 +292,13 @@ function CryptoE(passphrase, plainText, salt, iv) {
     });
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
 }
+/**
+ * Crypto decrypt
+ * @param {String} passphrase
+ * @param {String} encryptedText
+ * @param {String} salt
+ * @param {String} iv
+ */
 function CryptoD(passphrase, encryptedText, salt, iv) {
     var key = CryptoK(passphrase, salt);
     var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
@@ -227,7 +326,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
     });
 }
 Date.prototype.isHourAgo = function (hour) {
-    var hour = hour * 60 * 1000;
+    var hour = hour * 60 * 1000; /* ms */
     const hourago = Date.now() - hour;
     return hour > hourago;
 };
@@ -238,6 +337,7 @@ if (!Date.now) {
 }
 Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + h * 60 * 60 * 1000);
+    //this.setHours(this.getHours()+h);
     return this;
 };
 Date.prototype.addHours2 = function (hrs) {
@@ -247,6 +347,9 @@ Date.prototype.addHours2 = function (hrs) {
 function datetime_local(date) {
     return new Date(date).toJSON().slice(0, 19);
 }
+/**
+ * Detect is mobile
+ */
 function isMobile() {
     var target = navigator.userAgent || navigator.vendor || window.opera;
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(target) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(target.substr(0, 4))) {
@@ -274,10 +377,38 @@ function isMobile() {
         return false;
     }
 }
+/** Add one or more listeners to an element
+ * @param element - DOM element to add listeners to
+ * @param eventNames - space separated list of event names, e.g. 'click change'
+ * @param listener - function to attach for each event as a listener
+ */
+function setEventListener(element, eventNames, listener) {
+    eventNames.split(" ").forEach(function (e) {
+        //element.addEventListener(e, listener, false);
+        if (element.attachEvent) {
+            if (e == "click") {
+                e = "onclick";
+            }
+            element.attachEvent(e, listener);
+        }
+        else if (element.addEventListener) {
+            element.addEventListener(e, listener, false);
+        }
+        else {
+            console.error("cannot attach event to FAB wrapper");
+        }
+    });
+}
+/**
+ * @class Generate unique id
+ */
 class GeneratorID {
     constructor() {
         this.rand = Math.floor(Math.random() * 26) + Date.now();
     }
+    /**
+     * Increase new id
+     */
     genId() {
         return this.rand++;
     }
@@ -286,6 +417,9 @@ class GeneratorID {
         return jQuery.fn.jquery + "." + this.rand;
     }
 }
+/**
+ * @param {createElement} options
+ */
 function createElement(options) {
     var el, a, i;
     if (!options.tagName) {
@@ -308,6 +442,7 @@ function createElement(options) {
     if (options.text) {
         el.appendChild(document.createTextNode(options.text));
     }
+    // IE 8 doesn"t have HTMLElement
     if (window.HTMLElement === undefined) {
         window.HTMLElement = Element;
     }
@@ -329,7 +464,7 @@ Number.prototype.getMS = function (type) {
 };
 Number.prototype.addHour = function (source) {
     var self = this;
-    var Hour = this * 60 * 1000;
+    var Hour = this * 60 * 1000; /* ms */
     if (!source)
         source = new Date();
     return new Date(source.getTime() + Hour).getTime();
@@ -372,6 +507,12 @@ Object.alt = function (str, alternative) {
 Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
+/**
+ * @class Timer constructor
+ * @example
+ * const time = new Timer(() => console.log('hi'), 1000);
+ * console.log(time instanceof Timer); // true
+ */
 class Timer {
     constructor(callback, time) {
         this.timeId = null;
@@ -381,6 +522,10 @@ class Timer {
         clearTimeout(this.timeId);
     }
 }
+/**
+ * check empty
+ * @param str
+ */
 function empty(str) {
     var type = typeof str;
     if (type == "string" || type == "number") {
@@ -390,12 +535,16 @@ function empty(str) {
         case "":
         case null:
         case false:
-        case type == "undefined":
+        case type == "undefined": //typeof (str) == "undefined"
             return true;
         default:
             return false;
     }
 }
+/**
+ * call_user_func
+ * @param functionName function name
+ */
 function ___call(functionName, context, args) {
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
@@ -404,9 +553,16 @@ function ___call(functionName, context, args) {
         window[func](arguments);
     }
 }
+/**
+ * call_user_func
+ * @param func function name
+ */
 function __call(func) {
     this[func].apply(this, Array.prototype.slice.call(arguments, 1));
 }
+/**
+ * Begin global toastr options
+ */
 if (typeof toastr == 'object') {
     toastr.options.closeMethod = 'fadeOut';
     toastr.options.closeDuration = 300;
@@ -420,8 +576,8 @@ if (typeof toastr == 'object') {
     toastr.options.preventDuplicates = true;
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<button><i class="fas fa-times"></i></button>';
-    toastr.options.timeOut = 3000;
-    toastr.options.extendedTimeOut = 6000;
+    toastr.options.timeOut = 3000; // How long the toast will display without user interaction
+    toastr.options.extendedTimeOut = 6000; // How long the toast will display after a user hovers over it
     toastr.options.progressBar = true;
     toastr.options.escapeHtml = false;
 }
@@ -433,14 +589,26 @@ function pageid(length) {
     return Math.random().toString(20).substr(2, length);
 }
 const randstr = (length = 6) => Math.random().toString(20).substr(2, length);
+/**
+ * Is Node ?
+ */
 function isnode() {
     if (typeof module !== "undefined" && module.exports) {
         return true;
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * AJAX runner base
+     */
     var AJAX = null;
+    /**
+     * Ajax dump base
+     */
     var dumpAjax = false;
+    /**
+     * Ajax indicator base
+     */
     var indicatorAjax = false;
     const ajaxIDLoader = "ajxLoader_" +
         Math.random().toString(36).substring(2) +
@@ -458,6 +626,9 @@ if (!(typeof module !== "undefined" && module.exports)) {
         indicatorAjax =
             typeof options.indicator == "boolean" && options.indicator === true;
         dumpAjax = typeof options.dump == "boolean" && options.dump === true;
+        /**
+         * Proxying begin
+         */
         if (options.crossDomain && jQuery.support.cors) {
             var allowed = true;
             if (options.url.match(/\.html$/g)) {
@@ -481,6 +652,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
             }
         }
     });
+    /*
+  $(document).ajaxStart(function () {
+  });
+  */
     $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
         var content_type = jqXHR.getResponseHeader("Content-Type");
         if (typeof toastr != "undefined") {
@@ -523,6 +698,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
             if (typeof res == "string" &&
                 !empty(res) &&
                 /json|text\/plain/s.test(content_type)) {
+                //begin decode json
                 if (is_json(res)) {
                     res = JSON.parse(res);
                 }
@@ -551,6 +727,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         if (typeof res == "string" &&
             !empty(res) &&
             /json|text\/plain/s.test(content_type)) {
+            //begin decode json
             if (is_json(res)) {
                 res = JSON.parse(res);
             }
@@ -578,7 +755,15 @@ if (!(typeof module !== "undefined" && module.exports)) {
             }
         }
     });
+    /*
+  jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    if (typeof options.data != 'undefined' && !jQuery.isEmptyObject(options.data)) {
+      jqXHR.setRequestHeader('timeStamp', new Date().getTime().toString());
+    }
+  });
+  */
     function processAjaxForm(xhr, callback) {
+        //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
         var res;
         if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
@@ -586,6 +771,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         else if (xhr.hasOwnProperty("responseText")) {
             res = xhr.responseText;
             if (typeof res == "string" && !empty(res)) {
+                //begin decode json
                 if (is_json(res)) {
                     res = JSON.parse(res);
                 }
@@ -604,6 +790,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
             }
         }
     }
+    /**
+     * Custom ajax
+     * @param settings ajax settings object
+     */
     function ajx(settings, success, failed, complete) {
         settings.headers = {
             "unique-id": getUID(),
@@ -637,6 +827,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
             }, s, er, c);
         });
     }
+    /**
+     * process page asynchronously
+     * @param source_cache url
+     */
     function async_process(source_cache) {
         var xhr = new XMLHttpRequest();
         $.ajax({
@@ -662,18 +856,35 @@ if (!(typeof module !== "undefined" && module.exports)) {
 var AjaxSchedulerInit = null;
 var AjaxSchedulerRequests = [];
 var AjaxSchedulerRunning = false;
+/**
+ * AJAX MANAGER
+ * @todo handle ajax request queue
+ * @see https://bit.ly/2Tz0wrf
+ */
 class ajaxScheduler {
+    /**
+     * Add ajax to queues
+     * @param opt
+     */
     static add(opt) {
         AjaxSchedulerRequests.push(opt);
     }
+    /**
+     * Remove ajax from queues
+     * @param opt
+     */
     static remove(opt) {
         if (jQuery.inArray(opt, AjaxSchedulerRequests) > -1) {
             AjaxSchedulerRequests.splice(jQuery.inArray(opt, AjaxSchedulerRequests), 1);
         }
     }
+    /**
+     * Run Ajax Scheduler
+     */
     static run() {
         var self = this;
         var oriSuc;
+        //console.log(AjaxSchedulerRequests.length);
         if (AjaxSchedulerRequests.length > 0) {
             oriSuc = AjaxSchedulerRequests[0].complete;
             AjaxSchedulerRequests[0].complete = function () {
@@ -692,11 +903,20 @@ class ajaxScheduler {
         }
         return true;
     }
+    /**
+     * Stop ajax scheduler
+     */
     static stop() {
         AjaxSchedulerRequests = [];
         clearTimeout(AjaxSchedulerInit);
     }
 }
+/**
+ * RUN AJAX Scheduler
+ * @param method POST, GET, HEAD, DELETE, OPTIONS, PATCH, PROPATCH
+ * @description ajax request one by one
+ * @todo scheduling any jquery ajax
+ */
 function ajaxRun(url, method, data, success, failed, complete) {
     if (!AjaxSchedulerRunning) {
         ajaxScheduler.run();
@@ -733,6 +953,7 @@ function ajaxRun(url, method, data, success, failed, complete) {
             if (typeof complete == "function") {
                 complete(res);
             }
+            //gexec('Ajax_Reload');
         },
     });
 }
@@ -854,8 +1075,34 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     }
                 };
             }
+            /*var elementsArray = document.querySelectorAll('b,iframe,ins,button,img,input,.adsense,#adsense,.ads,#ads,.ad_slot,.adsbygoogle,blockquote');
+          elementsArray.forEach(function(elem) {
+            elem.addEventListener("click", function(event) {
+              var data = null;
+              var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
+              
+              dump = document.getElementById('positionTrack');
+              
+              if (dump) {
+                data = this.tagName + '(' + clickon + ')';
+                
+                dump.textContent = data;
+              }
+              gtag("event", "ClickPosition", {
+                'elements': data
+              });
+            });
+          });*/
         }
     };
+    /**
+     * Google analystic reporter
+     * @param {String} event_action
+     * @param {string} event_label
+     * @param {string} event_category
+     * @param {string} event_value
+     * @param {Function|any} event_callback
+     */
     function analys(event_action, event_label, event_category, event_value, event_callback) {
         var conf = {
             event_label: event_label,
@@ -867,6 +1114,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
     }
 }
 function typedKeys(o) {
+    // type cast should be safe because that's what really Object.keys() does
     return Object.keys(o);
 }
 var ORIGIN = null;
@@ -878,15 +1126,31 @@ else {
     ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
 var dimas = {
+    /**
+     * get current url without querystrings
+     */
     url: ORIGIN,
+    /**
+     * framework captcha
+     */
     captcha: {
+        /**
+         * DO NOT ASSIGN THIS
+         */
         check: null,
+        /**
+         * Get current captcha id
+         */
         id: function (header_name) {
             if (!dimas.captcha.check) {
                 dimas.captcha.get(header_name);
             }
             return storage().get("captcha");
         },
+        /**
+         * Get current captcha from backend
+         * And process it by jsonpCallback
+         */
         get: function (header_name) {
             if (!dimas.captcha.check) {
                 dimas.captcha.check = setTimeout(() => {
@@ -908,6 +1172,9 @@ var dimas = {
             });
         },
         callback: function (arg) { },
+        /**
+         * Captcha JSONP callback
+         */
         jspCallback: function (res) {
             if (res.hasOwnProperty("captcha")) {
                 storage().set("captcha", res.captcha.rot13());
@@ -916,6 +1183,9 @@ var dimas = {
             }
         },
         listener_started: null,
+        /**
+         * Form Captcha listener
+         */
         listen: function () {
             if (dimas.captcha.listener_started) {
                 return null;
@@ -942,9 +1212,13 @@ var dimas = {
                     framework().captcha.get(null);
                     form.off("submit");
                 });
+                //captcha.parents('form').find('[type="submit"]').one('click', function());
             });
         },
     },
+    /**
+     * Rupiah currency auto format
+     */
     rp: function (angka, prefix) {
         if (!prefix) {
             prefix = "Rp. ";
@@ -957,10 +1231,18 @@ var dimas = {
         rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
         return !prefix ? rupiah : prefix + " " + rupiah;
     },
+    /**
+     * Check if variable is number / numeric
+     * @param {String|Number} v
+     */
     isNumber: function (v) {
         return (!isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
             /^\d+$/.test(v.toString()));
     },
+    /**
+     * strpad / startwith zero [0]
+     * @param {number} val
+     */
     strpad: function (val) {
         if (val >= 10) {
             return val;
@@ -969,6 +1251,9 @@ var dimas = {
             return "0" + val;
         }
     },
+    /**
+     * Autofill datetime-local value
+     */
     datetimelocal: function (v) {
         var d = !v ? new Date() : new Date(v);
         $("input[type=datetime-local]").val(d.getFullYear() +
@@ -981,6 +1266,10 @@ var dimas = {
             ":" +
             this.strpad(d.getMinutes()));
     },
+    /**
+     * Get cookie
+     * @param string name cookie
+     */
     gc: function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(";");
@@ -995,6 +1284,10 @@ var dimas = {
         }
         return null;
     },
+    /**
+     * Odd or Even (Ganjil Genap);
+     * @param type odd or even
+     */
     oddoreven: function (n, type) {
         if (!type) {
             type = "odd";
@@ -1006,8 +1299,15 @@ var dimas = {
         }
         var hasil = time % 2;
         var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
+        //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
         return hasil.toString() == type.toString();
     },
+    /**
+     * Set cookie
+     * @param {String} name
+     * @param {any} value
+     * @param {number} hours
+     */
     sc: function (name, value, hours) {
         var expires = "";
         if (hours) {
@@ -1027,9 +1327,15 @@ var dimas = {
         }
         return cookies;
     },
+    /**
+     * Remove Cookie
+     */
     rc: function (name) {
         document.cookie = name + "=; Max-Age=-99999999;";
     },
+    /**
+     * Get Query name from current url
+     */
     getquery: function (variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -1057,6 +1363,11 @@ var dimas = {
         }
         return str;
     },
+    /**
+     * Get js file from url
+     * @param {String} url
+     * @param {Function} callback
+     */
     js: function (url, callback) {
         var pel = document.body || document.head;
         var script = document.createElement("script");
@@ -1067,16 +1378,28 @@ var dimas = {
         script.onload = callback;
         pel.appendChild(script);
     },
+    /**
+     * Countdown trigger
+     * @param {JQuery} elm
+     */
     pctdRUN: function (elm) {
         var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
             warningThreshold: 5,
             timeLimit: tl,
+            // base style
             baseStyle: bs,
+            // warning style
             warningStyle: bw,
+            // complete style
             completeStyle: bc,
+            // should the timer be smooth or stepping
             smooth: true,
+            // striped progress bar
             striped: true,
+            // animated stripes
             animated: true,
+            // height of progress bar
+            // 0 = default height
             height: 0,
             onFinish: function () {
                 var callback = elm.data("callback");
@@ -1099,6 +1422,10 @@ var dimas = {
         });
         return countdown;
     },
+    /**
+     * Progress Countdown
+     * @param {JQuery} elm
+     */
     pctd: function (elm) {
         var t = this;
         if (typeof progressBarTimer == "undefined") {
@@ -1112,9 +1439,14 @@ var dimas = {
             };
         }
     },
+    /**
+     * Parseurl just like as parse_url at php
+     */
     parseurl: function (url) {
         var parser = document.createElement("a"), searchObject = {}, queries, split, i;
+        // Let the browser do the work
         parser.href = url;
+        // Convert query string to object
         queries = parser.search.replace(/^\?/, "").split("&");
         for (i = 0; i < queries.length; i++) {
             split = queries[i].split("=");
@@ -1133,6 +1465,9 @@ var dimas = {
         };
     },
 };
+/**
+ * Framework object initializer
+ */
 function framework() {
     return dimas;
 }
@@ -1178,14 +1513,25 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports.app = app;
     module.exports.dimas = dimas;
 }
+//app.direct('Array.js', 'Object.js', 'saver.js', 'user.js');
+/**
+ * base64 encoding
+ * @param {string} str string raw
+ */
 function base64_encode(str) {
-    const encodedWord = CryptoJS.enc.Utf8.parse(str);
-    const encoded = CryptoJS.enc.Base64.stringify(encodedWord);
+    // PROCESS
+    const encodedWord = CryptoJS.enc.Utf8.parse(str); // encodedWord Array object
+    const encoded = CryptoJS.enc.Base64.stringify(encodedWord); // string: 'NzUzMjI1NDE='
     return encoded;
 }
+/**
+ * base64 decoding
+ * @param {string} str base64 string
+ */
 function base64_decode(str) {
-    const encodedWord = CryptoJS.enc.Base64.parse(str);
-    const decoded = CryptoJS.enc.Utf8.stringify(encodedWord);
+    // PROCESS
+    const encodedWord = CryptoJS.enc.Base64.parse(str); // encodedWord via Base64.parse()
+    const decoded = CryptoJS.enc.Utf8.stringify(encodedWord); // decode encodedWord via Utf8.stringify() '75322541'
     return decoded;
 }
 function b64EncodeUnicode(str) {
@@ -1199,6 +1545,9 @@ function b64DecodeUnicode(str) {
     }).join(''));
 }
 var debug_run = null;
+/**
+ * Disable debugger
+ */
 function bannedebug() {
     if (debug_run)
         return;
@@ -1211,6 +1560,9 @@ function bannedebug() {
         }, 5000);
     }
 }
+/**
+ * Detect debugger using flooding loop
+ */
 function debug_detect() {
     setInterval(function () {
         var startTime = performance.now(), check, diff;
@@ -1226,6 +1578,10 @@ function debug_detect() {
         }
     }, 500);
 }
+/**
+ * restrict debug
+ * @param {Boolean} restrict
+ */
 function restrict_mode(restrict) {
     if (restrict) {
         console.clear();
@@ -1235,10 +1591,12 @@ function restrict_mode(restrict) {
             isOpen: false,
             orientation: undefined,
         };
+        //console.log(devtools);
         setInterval(function () {
             var widthThreshold = window.outerWidth - window.innerWidth > threshold;
             var heightThreshold = window.outerHeight - window.innerHeight > threshold;
             var orientation = widthThreshold ? "vertical" : "horizontal";
+            //console.log(widthThreshold, heightThreshold, orientation);
             if (!(heightThreshold && widthThreshold) &&
                 ((window.Firebug &&
                     window.Firebug.chrome &&
@@ -1248,6 +1606,7 @@ function restrict_mode(restrict) {
                 if (!devtools.isOpen || devtools.orientation !== orientation) {
                     devtools.orientation = orientation;
                 }
+                //console.log('opened');
                 devtools.isOpen = true;
                 devtools.orientation = orientation;
             }
@@ -1261,24 +1620,33 @@ function restrict_mode(restrict) {
             }
             if (devtools.isOpen) {
                 console.error("devtools opened");
+                //console.clear();
                 bannedebug();
                 debugger;
                 throw "banned";
             }
         }, 500);
+        /**
+         * Hotkey disabler
+         */
         document.onkeydown = function (e) {
+            //prevent key F12
             if (event.keyCode == 123) {
                 return false;
             }
+            //prevent CTRL + Shift + I
             if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
                 return false;
             }
+            //prevent CTRL + Shift + J
             if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
                 return false;
             }
+            //prevent CTRL + Shift + C
             if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
                 return false;
             }
+            //prevent CTRL + U
             if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
                 return false;
             }
@@ -1287,11 +1655,21 @@ function restrict_mode(restrict) {
 }
 if (!(typeof module !== "undefined" && module.exports)) {
     var restrict = !isMobile();
+    //restrict = true;
     restrict = restrict && !is_localhost() && !is_development();
+    //console.log('is restricted mode : ' + restrict);
     restrict_mode(restrict);
 }
+/**
+ * Disqus loader which verifies the existence of `#disqus_thread` on
+ * the web page and then prepares the disqus embed script to hook in
+ * the document
+ * @param disqus_shortname disqus username/shortname
+ */
 function load_disqus(disqus_shortname) {
+    // Prepare the trigger and target
     var disqus_trigger = $('#disqus_trigger'), disqus_target = $('#disqus_thread');
+    // Load script asynchronously only when the trigger and target exist
     if (disqus_target.length) {
         framework().js('//' + disqus_shortname + '.disqus.com/embed.js', null);
         disqus_trigger.remove();
@@ -1302,6 +1680,38 @@ function load_disqus(disqus_shortname) {
         }
     }
 }
+const distance_already_calculated = [];
+/**
+ * find distance
+ * @param target
+ * @param callback
+ */
+function calculateDistance(target, callback) {
+    if (distance_already_calculated.includes(target)) {
+        return null;
+    }
+    distance_already_calculated.push(target);
+    var mX, mY, distance, $element = $(`#${target}`);
+    return $(document).on("mousemove click", function (e) {
+        mX = e.pageX;
+        mY = e.pageY;
+        distance = calculatorDistance($element, mX, mY);
+        return callback(distance);
+    });
+}
+/**
+ * calculate distance mouse x element
+ * @param elem
+ * @param mouseX
+ * @param mouseY
+ */
+function calculatorDistance(elem, mouseX, mouseY) {
+    return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + elem.width() / 2), 2) +
+        Math.pow(mouseY - (elem.offset().top + elem.height() / 2), 2)));
+}
+// A map of the entities we want to handle.
+// The numbers on the left are the Unicode code point values; their
+// matching named entity strings are on the right.
 var entityMap = {
     "160": "&nbsp;",
     "161": "&iexcl;",
@@ -1313,26 +1723,52 @@ var entityMap = {
     "167": "&#sect;",
     "168": "&#uml;",
     "169": "&copy;",
+    // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
     "8364": "&euro;",
 };
+// The function to do the work.
+// Accepts a string, returns a string with replacements made.
+/**
+ * Encode HTML string to HTML entities
+ * @param {String} str
+ */
 function prepEntities(str) {
+    // The regular expression below uses an alternation to look for a surrogate pair _or_
+    // a single character that we might want to make an entity out of. The first part of the
+    // alternation (the [\uD800-\uDBFF][\uDC00-\uDFFF] before the |), you want to leave
+    // alone, it searches for the surrogates. The second part of the alternation you can
+    // adjust as you see fit, depending on how conservative you want to be. The example
+    // below uses [\u0000-\u001f\u0080-\uFFFF], meaning that it will match and convert any
+    // character with a value from 0 to 31 ("control characters") or above 127 -- e.g., if
+    // it's not "printable ASCII" (in the old parlance), convert it. That's probably
+    // overkill, but you said you wanted to make entities out of things, so... :-);
     return str.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u0000-\u001f\u0080-\uFFFF]/g, function (match) {
         var high, low, charValue, rep;
+        // Get the character value, handling surrogate pairs
         if (match.length == 2) {
+            // It's a surrogate pair, calculate the Unicode code point
             high = match.charCodeAt(0) - 0xd800;
             low = match.charCodeAt(1) - 0xdc00;
             charValue = high * 0x400 + low + 0x10000;
         }
         else {
+            // Not a surrogate pair, the value *is* the Unicode code point
             charValue = match.charCodeAt(0);
         }
+        // See if we have a mapping for it
         rep = entityMap[charValue];
         if (!rep) {
+            // No, use a numeric entity. Here we brazenly (and possibly mistakenly);
             rep = "&#" + charValue + ";";
         }
+        // Return replacement
         return rep;
     });
 }
+/**
+ * php equivalent http_build_query
+ * @param obj
+ */
 function http_build_query(obj) {
     if (typeof obj != "object") {
         throw "http_build_query need parameter of object instead of " + typeof obj;
@@ -1344,19 +1780,32 @@ function http_build_query(obj) {
         .join("&");
     return queryString;
 }
+/**
+ * Check current framework running at localhost
+ */
 function is_localhost() {
     var is_local = location.host.match(/^localhost|^127|\.io$/s);
     return is_local;
 }
+/**
+ * Is Development Mode
+ */
 function is_development() {
     return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
         "development");
 }
+/**
+ * Force HTTPS
+ */
 function forceSSL() {
     if (location.protocol !== "https:" && !is_localhost()) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
 }
+/**
+ * json decode fails return false
+ * @param  obj
+ */
 function json_decode(obj) {
     try {
         return JSON.parse(obj);
@@ -1365,6 +1814,10 @@ function json_decode(obj) {
         return false;
     }
 }
+/**
+ * check string is json
+ * @param str
+ */
 function is_json(str) {
     try {
         JSON.parse(str);
@@ -1375,6 +1828,9 @@ function is_json(str) {
     return true;
 }
 const guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
+/**
+ * Get current unique global page user id
+ */
 function guid() {
     function _p8(s) {
         var p = guxid;
@@ -1391,6 +1847,9 @@ if (typeof jQuery != "undefined" && !isnode()) {
         return _p8(false) + _p8(true) + _p8(true) + _p8(false);
     };
 }
+/**
+ * Generate UUID v4
+ */
 function uuidv4() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
@@ -1398,6 +1857,9 @@ function uuidv4() {
     });
 }
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * jQuery Extender
+     */
     (function ($) {
         jQuery.fn.inputFilter = function (inputFilter) {
             return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
@@ -1416,6 +1878,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
             });
         };
     })(jQuery);
+    // Restricts input for the given textbox to the given inputFilter function.
     function setInputFilter(textbox, inputFilter) {
         [
             "input",
@@ -1443,6 +1906,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
             });
         });
     }
+    //Filter number only
     if (typeof jQuery.fn.inputFilter != "undefined") {
         $("input[type='number'], textarea[type='number'], [filter='number']").inputFilter(function (value) {
             if (typeof value == "string") {
@@ -1455,12 +1919,13 @@ if (!(typeof module !== "undefined" && module.exports)) {
         for (var index = 0; index < INPT.length; index++) {
             var element = INPT[index];
             setInputFilter(element, function (value) {
-                return /^\d*$/.test(value);
+                return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
             });
         }
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
+    /** Format Rupiah */
     var inputrp = $('[id="format-rupiah"]');
     if (inputrp.length) {
         inputrp.on("keyup keydown change", function (e) {
@@ -1494,6 +1959,10 @@ class ip {
         return Cookies.get('status_ip'.rot13());
     }
     ;
+    /**
+     * Checks ip
+     * @returns promises
+     */
     static check() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.ipapi();
@@ -1505,6 +1974,11 @@ class ip {
             }
         });
     }
+    /**
+     * Gets ip
+     * @param callback function callback(ip) or null return ip
+     * @returns {String} ip or callback
+     */
     static get(callback) {
         if (!this.status(null)) {
             this.check();
@@ -1752,12 +2226,20 @@ function md5(string) {
 }
 ;
 var reCaptcha = {
+    /**
+     * @type {Number} counter executions
+     */
     gexec_count: 0,
     key: '6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie',
+    /**
+     * Javascript caller
+     * @param {String} url
+     * @param {Function} callback
+     */
     js: function (url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) {
+        if (script.readyState) { //IE
             script.onreadystatechange = function () {
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
@@ -1768,7 +2250,7 @@ var reCaptcha = {
                 }
             };
         }
-        else {
+        else { //Others
             script.onload = function () {
                 if (typeof callback == 'function') {
                     callback();
@@ -1778,9 +2260,16 @@ var reCaptcha = {
         script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script);
     },
+    /**
+     * Set recaptcha site key
+     * @param {String} key
+     */
     set_key: function (key) {
         reCaptcha.key = key;
     },
+    /**
+     * Start recaptcha
+     */
     start: function () {
         reCaptcha.reCaptcha_buttons(true, function () {
             reCaptcha.js('https://www.google.com/recaptcha/api.js?render=' + reCaptcha.key + '&render=explicit', function () {
@@ -1791,6 +2280,9 @@ var reCaptcha = {
             });
         });
     },
+    /**
+     * Initialize Recaptcha by defining jquery
+     */
     init: function () {
         if (typeof jQuery == 'undefined' || typeof jQuery == 'undefined') {
             reCaptcha.js('https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js', reCaptcha.start);
@@ -1800,7 +2292,11 @@ var reCaptcha = {
         }
     },
     retry_count: 0,
+    /**
+     * load or refreshing google recaptcha
+     */
     exec: function (action, retry, callback) {
+        //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == 'function') {
             gtag('event', 'recaptcha', {
                 'action': action
@@ -1840,8 +2336,15 @@ var reCaptcha = {
             return;
         }
         if (execute) {
-            execute.then(function (token) {
+            execute.then(
+            /**
+             * Process token string from recaptcha
+             * and distribute it into all form elements
+             * @param {String} token
+             */
+            function (token) {
                 reCaptcha.reCaptcha_buttons(false, null);
+                //console.info(token);
                 reCaptcha.insert(token);
                 if (typeof callback == 'function') {
                     callback(token);
@@ -1849,6 +2352,10 @@ var reCaptcha = {
             });
         }
     },
+    /**
+     * Insert reCaptcha Token
+     * @param {String} token
+     */
     insert: function (token) {
         framework().sc('token', token, 1);
         if (typeof jQuery == 'undefined') {
@@ -1861,6 +2368,10 @@ var reCaptcha = {
             reCaptcha.distribute_token(token);
         }
     },
+    /**
+     * Distribute reCaptcha Token
+     * @param {String} token
+     */
     distribute_token: function (token) {
         var form = $('form');
         form.each(function (i, el) {
@@ -1874,6 +2385,9 @@ var reCaptcha = {
             }
         });
     },
+    /**
+     * Get token recaptcha
+     */
     get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
@@ -1882,7 +2396,13 @@ var reCaptcha = {
         }
         return null;
     },
+    /**
+     * Button Controller
+     * @param {Boolean} reCaptcha_disable
+     * @param {Function} callback
+     */
     reCaptcha_buttons: function (reCaptcha_disable, callback) {
+        //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
         $('button,[type="submit"],input').not('[data-recaptcha="no-action"]').not('[recaptcha-exclude]').each(function (i, e) {
             if ($(this).attr('type') == 'radio') {
                 return;
@@ -1899,12 +2419,32 @@ var reCaptcha = {
         }
     }
 };
+/**
+ * Hidden reCaptcha v3 object initializer
+ */
 function recaptcha() {
     return reCaptcha;
 }
+/// <reference path="./Array.d.ts"/>
+/// <reference path="./jQuery.d.ts"/>
+/// <reference path="./JQueryStatic.d.ts"/>
+/// <reference path="./Object.d.ts"/>
+/**
+ * SMARTFORM
+ * @todo save form user input
+ */
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * Element Counter
+     */
     var count = -1;
+    /**
+     * Local Storage key
+     */
     var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
+    /**
+     * Element Indexer
+     */
     var formField;
     var formSaved = localStorage.getItem(storageKey.toString());
     if (!formSaved) {
@@ -1916,9 +2456,16 @@ if (!(typeof module !== "undefined" && module.exports)) {
     var uniqueid = guid();
     (function ($) {
         $.fn.getIDName = function () {
+            //var native: HTMLElement = this;
+            /**
+             * @todo Adding attribute id if not have id
+             */
             if (!$(this).attr("id") || $(this).attr("id") == "") {
                 try {
                     if (!(count in formField)) {
+                        /**
+                         * @todo ID generator 6 digit alphanumerics
+                         */
                         var id = Math.random().toString(20).substr(2, 6);
                         $(this).attr("id", id);
                         formField[count] = id;
@@ -1932,6 +2479,9 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     console.error(error);
                     console.log(formField, typeof formField);
                 }
+                /**
+                 * Increase index offset
+                 */
                 count++;
             }
             if ($(this).attr("aria-autovalue")) {
@@ -1952,11 +2502,14 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 return;
             }
             var t = $(this);
+            //set indicator
             t.attr("aria-smartform", uniqueid);
             var item;
             var key = t.getIDName().toString();
             var type = $(this).attr("type");
+            // begin restoration
             if (key) {
+                // checkbox input button
                 if (type === "checkbox") {
                     item = JSON.parse(localStorage.getItem(key));
                     if (item === null) {
@@ -1965,11 +2518,13 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     $(this).prop("checked", item);
                     return;
                 }
+                // radio input button
                 else if (type === "radio") {
                     item = localStorage.getItem(key) === "on";
                     $(this).prop("checked", item);
                     return;
                 }
+                // input text number, textarea, or select
                 else {
                     item = localStorage.getItem(key);
                     if (item === null || !item.toString().length) {
@@ -1977,8 +2532,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     }
                     $(this).val(item);
                 }
+                //console.log('load', type, key, item);
             }
         };
+        // bind to new elements
         $(document).bind("DOMNodeInserted", function () {
             var t = $(this);
             var val = localStorage.getItem(t.getIDName().toString());
@@ -1997,6 +2554,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 }
             }
         });
+        // detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
             var t = $(this);
             var allowed = !t.attr("no-save") && t.attr("aria-smartform");
@@ -2010,6 +2568,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 }
             }
         });
+        //save value to localstorage
         $(document).on("change", "select, input, textarea", function (e) {
             var t = $(this);
             var key = t.getIDName().toString();
@@ -2032,6 +2591,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     return;
                 }
                 localStorage.setItem(key, item.toString());
+                //console.log('save', key, localStorage.getItem(key));
             }
         });
         $(document).on("focus", "input,textarea,select", function () {
@@ -2045,14 +2605,22 @@ if (!(typeof module !== "undefined" && module.exports)) {
         });
     })(jQuery);
 }
+/**
+ * Set all forms to be smart
+ */
 function smartform() {
+    //set value from localstorage
     var setglobal = function () {
         $("input,textarea,select").each(function (i, el) {
             $(this).smartForm();
         });
     };
     setglobal();
+    //setInterval(function () { }, 500);
 }
+/**
+ * Copy to clipboard
+ */
 function copyToClipboard(text, el) {
     var copyTest = document.queryCommandSupported("copy");
     var elOriginalText = el.attr("data-original-title");
@@ -2074,10 +2642,15 @@ function copyToClipboard(text, el) {
         el.attr("data-original-title", elOriginalText);
     }
     else {
+        // Fallback if browser doesn't support .execCommand('copy')
         window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
     }
 }
 var STORAGE = {
+    /**
+     * get localstorage by key
+     * @param {String} key
+     */
     get: function (key) {
         if (!this.has(key)) {
             return false;
@@ -2090,6 +2663,11 @@ var STORAGE = {
             return data;
         }
     },
+    /**
+     * Set localstorage key value
+     * @param {String} key
+     * @param {String|Array|Object} value
+     */
     set: function (key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
@@ -2098,9 +2676,18 @@ var STORAGE = {
             localStorage.setItem(key, value);
         }
     },
+    /**
+     * Check localstorage key exists
+     * @param {String} key
+     */
     has: function (key) {
         return !!localStorage[key] && !!localStorage[key].length;
     },
+    /**
+     * Extend or set localstorage key
+     * @param {String} key
+     * @param {String} value
+     */
     extend: function (key, value) {
         if (this.has(key)) {
             var _value = this.get(key);
@@ -2111,16 +2698,25 @@ var STORAGE = {
             this.set(key, value);
         }
     },
+    /**
+     * Remove localstorage key
+     * @param {String} key
+     */
     remove: function (key) {
         localStorage.removeItem(key);
     }
 };
+/**
+ * localStorage helper
+ */
 function storage() {
     return STORAGE;
 }
 String.prototype.parse_url = function () {
     var parser = document.createElement('a'), searchObject, queries, split, i;
+    // Let the browser do the work
     parser.href = this.toString();
+    // Convert query string to object
     queries = parser.search.replace(/^\?/, '').split('&');
     for (i = 0; i < queries.length; i++) {
         split = queries[i].split('=');
@@ -2138,6 +2734,9 @@ String.prototype.parse_url = function () {
         protohost: parser.protocol + '//' + parser.host
     };
 };
+/**
+ * Load css
+ */
 String.prototype.CSS = function () {
     var e = document.createElement("link");
     e.rel = "stylesheet";
@@ -2179,6 +2778,9 @@ String.prototype.rot13 = function () {
     });
 };
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * @see https://mdbootstrap.com/support/general/text-area-auto-grow/
+     */
     jQuery.fn.autoHeight = function () {
         function autoHeight_(element) {
             return jQuery(element)
@@ -2198,11 +2800,19 @@ if (!(typeof module !== "undefined" && module.exports)) {
 function currentUID() {
     return UIDvalue;
 }
+/**
+ * Get uid saved in browser
+ */
 function getUID() {
     return localStorage.getItem('uid');
 }
+/**
+ * Signing the uid
+ * @param {String} UID
+ */
 function sign_uid(UID) {
     var url = location.protocol + '//' + location.host + location.pathname;
+    //console.log(url);
     if (typeof jQuery != 'undefined') {
         $.ajax({
             url: url,
@@ -2237,6 +2847,11 @@ function sign_uid(UID) {
     }
 }
 var UIDcalled = false;
+/**
+ * Check UID
+ * @return {string} uid
+ * @param {Function|any} callback
+ */
 function checkUID(callback) {
     UIDvalue = getUID();
     if (isExpireUID()) {
@@ -2268,6 +2883,7 @@ function isExpireUID() {
         timeLeft = new Date(timeLeft).getTime();
         var date = new Date().getTime();
         var isExpired = timeLeft < date;
+        //console.log('uid is expired ' + isExpired);
         if (isExpired) {
             return true;
         }
@@ -2280,6 +2896,10 @@ function AddMinutesToDate(date, minutes) {
 function genUID() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
+/**
+ *  Save uid
+ * @param {Object} data
+ */
 function saveUID(data) {
     console.log(data);
     if (typeof data == 'object') {
@@ -2287,10 +2907,16 @@ function saveUID(data) {
             console.log(`${data.uid} was saved`);
             localStorage.setItem('uid', data.uid);
             var date = new Date();
-            framework().sc('signature-timeleft', AddMinutesToDate(date, 5));
+            framework().sc('signature-timeleft', AddMinutesToDate(date, 5)); // 5 mins
+            //location.reload();
         }
     }
 }
+/**
+ * get url parameter by name
+ * @param name parameter name
+ * @param url url target, null for current location.href
+ */
 function getParameterByName(name, url) {
     if (typeof URLSearchParams !== 'undefined') {
         if (!window.location.search) {
@@ -2310,10 +2936,17 @@ function getParameterByName(name, url) {
         return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+/**
+ * User framework
+ */
 class user {
     constructor() {
+        //constructor() { if (!this.all()) { this.fetch(null); } }
         this.key = location.host + "/userdata";
     }
+    /**
+     * Get all userdata
+     */
     all() {
         var data = storage().get(this.key);
         if (!data || data == "") {
@@ -2321,6 +2954,9 @@ class user {
         }
         return data;
     }
+    /**
+     * get userdata
+     */
     get(key) {
         try {
             var data = this.all();
@@ -2336,6 +2972,9 @@ class user {
             return undefined;
         }
     }
+    /**
+     * fetch userdata
+     */
     fetch(callback) {
         const ini = this;
         return $.ajax({
@@ -2369,6 +3008,9 @@ class user {
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * @typedef {user} userc
+     */
     const userc = new user();
     if (typeof window.user === "undefined") {
         window.user = userc;
@@ -2376,10 +3018,16 @@ if (!(typeof module !== "undefined" && module.exports)) {
     jQuery.user = userc;
 }
 if (!(typeof module !== "undefined" && module.exports)) {
+    /**
+     * @todo Auto replace placeholder textarea newLines
+     */
     var textAreas = document.getElementsByTagName("textarea");
     Array.prototype.forEach.call(textAreas, function (elem) {
         elem.placeholder = elem.placeholder.replace(/\\n/g, "\n");
     });
+    /**
+     * @todo Disable hotkey
+     */
     $(document).bind("keydown", function (e) {
         e = e || window.event;
         if (e.ctrlKey && e.which == 83) {
@@ -2393,6 +3041,9 @@ if (!(typeof module !== "undefined" && module.exports)) {
             return false;
         }
     });
+    /**
+     * @todo Textarea placeholders
+     */
     $("textarea").each(function (index, el) {
         if ($(this).val().toString().length)
             return;
@@ -2406,11 +3057,17 @@ if (!(typeof module !== "undefined" && module.exports)) {
         $(this).val(formatNewLines(placeholder));
         tafocus("#" + id, placeholder);
     });
+    /**
+     * @todo datatables select2 jquery tooltip
+     */
     $(document).ready(function () {
+        /** Tooltip */
         if (jQuery.fn.tooltip && $('[data-toggle="tooltip"]')) {
             $("body").tooltip({
                 selector: '[data-toggle="tooltip"]',
             });
+            //$('[data-toggle="tooltip"]').tooltip();
+            // colored tooltip
             $('[data-toggle="tooltip-primary"]').tooltip({
                 template: '<div class="tooltip tooltip-primary" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
             });
@@ -2421,6 +3078,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 template: '<div class="tooltip tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
             });
         }
+        /** datatables */
         if (jQuery.fn.DataTable && $("#datatable1").length) {
             $("#datatable1").DataTable({
                 responsive: true,
@@ -2431,6 +3089,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 },
             });
         }
+        /** Select2 */
         var ds = $(".dataTables_length select");
         if (typeof jQuery.fn.select2 != "undefined") {
             if (ds.length || ds.data("select2")) {
@@ -2441,6 +3100,11 @@ if (!(typeof module !== "undefined" && module.exports)) {
         }
     });
 }
+/**
+ * textarea focus
+ * @param {String} id
+ * @param {String} placeholder
+ */
 function tafocus(id, placeholder) {
     var count_newlines = countNewLines(placeholder);
     $(id).on("focus", function (e) {
@@ -2456,6 +3120,10 @@ function tafocus(id, placeholder) {
         }
     });
 }
+/**
+ * format new lines
+ * @param {String} placeholder
+ */
 function formatNewLines(placeholder) {
     for (let index = 0; index < 1000; index++) {
         if (!placeholder)
@@ -2467,12 +3135,21 @@ function formatNewLines(placeholder) {
     }
     return placeholder;
 }
+/**
+ * Count newLines
+ * @param {String} placeholder
+ */
 function countNewLines(placeholder) {
     if (!placeholder)
         return placeholder;
     var match = placeholder.match(/\\n/g) || "";
     return placeholder.length - match.length;
 }
+/**
+ * find duplicate array
+ * @param {Array<any>} arr
+ * @param {Function} callback
+ */
 function findDups(arr, callback) {
     var sorted_arr = arr.slice().sort();
     var results = [];
@@ -2488,6 +3165,11 @@ function findDups(arr, callback) {
         return results;
     }
 }
+//=========== Auto id
+/**
+ * Auto Generate ID
+ * @param {Number} length
+ */
 function makeid(length) {
     var result = "";
     var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -2497,16 +3179,29 @@ function makeid(length) {
     }
     return result;
 }
+//=========== RECAPTCHA
+/**
+ * load or refreshing google recaptcha
+ */
 function gexec(action, retry, callback) {
     recaptcha().exec(action, retry, callback);
 }
+/**
+ * Get token recaptcha
+ */
 function geToken() {
     return recaptcha().get();
 }
+/**
+ * Javascript caller
+ * @param {String} url
+ * @param {Function} callback
+ */
 function JavaScriptCaller(url, callback) {
     var script = document.createElement("script");
     script.type = "text/javascript";
     if (script.readyState) {
+        //IE
         script.onreadystatechange = function () {
             if (script.readyState == "loaded" || script.readyState == "complete") {
                 script.onreadystatechange = null;
@@ -2517,6 +3212,7 @@ function JavaScriptCaller(url, callback) {
         };
     }
     else {
+        //Others
         script.onload = function () {
             if (typeof callback == "function") {
                 callback();
@@ -2526,6 +3222,9 @@ function JavaScriptCaller(url, callback) {
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
 }
+/**
+ * Function initialization
+ */
 if (!isnode()) {
     $(document).one("click", "#logout", function (e) {
         e.preventDefault();
@@ -2536,6 +3235,7 @@ if (!isnode()) {
             window.location.reload(1);
         });
     });
+    /** Query URL */
     var hash = window.location.hash.substr(1);
     var result = hash.split("&").reduce(function (result, item) {
         var parts = item.split("=");
@@ -2545,10 +3245,12 @@ if (!isnode()) {
     if (hash.length > 1) {
         console.log(result);
     }
+    /** datetime-local */
     if (typeof dimas == "object" &&
         typeof framework().datetimelocal != "undefined") {
         framework().datetimelocal(undefined);
     }
+    /** Progress bar */
     var elm = $("[countdown]");
     if (elm.length > 0) {
         elm.each(function (e) {
@@ -2556,13 +3258,18 @@ if (!isnode()) {
             framework().pctd(t);
         });
     }
+    /** document body listener */
     $(document.body).on("click", "[data-redirect]", function (E) {
         var red = $(this).attr("data-redirect").toString();
         if (red && red.trim() != "") {
             window.open(red, location.host).focus();
         }
     });
+    /** Linkify */
     if (typeof mask_link != "undefined") {
+        /**
+         * @type {JQuery<HTMLElement>} L
+         */
         var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
         window.onload = function () {
             L.linkify({
@@ -2579,6 +3286,9 @@ if (!isnode()) {
             });
         };
     }
+    /**
+     * new tab links hide refferer
+     */
     var nwtb = $("[data-newtab]");
     if (nwtb.length) {
         nwtb.click(function (e) {
@@ -2587,19 +3297,28 @@ if (!isnode()) {
                 .focus();
         });
     }
+    /**
+     * links new tab form submit
+     */
     var aform = $("[form]");
     if (aform.length > 1) {
         aform.click(function (e) {
             e.preventDefault();
             var id_form = $(this).attr("form");
             if (typeof id_form != "undefined") {
-                var winame = document.getElementById(id_form).getAttribute("target");
+                var winame = document.getElementById(id_form).getAttribute("target"); //reduce caching
                 console.log("Submiting Form ID#" + id_form);
                 window.open("", winame.length ? winame : "FormDynamic").focus();
                 document.getElementById($(this).attr("form")).submit();
             }
+            //w = window.open('', 'bagas31-post');
+            //$('form#' + $(this).attr('form')).submit();
+            //w.focus();
         });
     }
+    /**
+     * open in new tab
+     */
     $(document.body).on("click", 'a[id="newtab"],[newtab]', function (e) {
         e.preventDefault();
         const t = $(this);
@@ -2608,12 +3327,20 @@ if (!isnode()) {
         }
     });
 }
+/**
+ * open in new tab
+ * @param {string} url
+ * @param {string} name
+ */
 function openInNewTab(url, name) {
     if (typeof url != "undefined" && typeof name != "undefined") {
         var win = window.open(url, name);
         win.focus();
     }
 }
+/**
+ * get currency symbol from navigator
+ */
 function get_currency_symbol() {
     var amount = 0;
     var ident = navigator.language;
@@ -2635,12 +3362,17 @@ function get_currency_symbol() {
     });
     return format.toString().replace("0,00", "");
 }
+/**
+ * Create JSON
+ * @param {any} jsObj
+ * @param {boolean} tabs
+ */
 function createJSON(jsObj, tabs) {
     if (tabs) {
-        return JSON.stringify(jsObj, null, "\t");
+        return JSON.stringify(jsObj, null, "\t"); // stringify with tabs inserted at each level
     }
     else {
-        return JSON.stringify(jsObj, null, 4);
+        return JSON.stringify(jsObj, null, 4); // stringify with 4 spaces at each level}
     }
 }
 function loadingio(text, callback, mode) {
@@ -2692,13 +3424,41 @@ function LoadScript(url, callback) {
     document.body.appendChild(script);
     loadingio(false, false, "disable");
 }
+/**
+function target(a) {
+    alert(a);
+}
+
+var o = {
+    suffix: " World",
+    target: function(s) { alert(s + this.suffix); }
+};
+
+__call("target", "Hello");
+
+__call.call(o, "target", "Hello");
+ */
+/**
+ * parse proxy from string
+ * @param {string} str
+ * @return {Array<any>} proxy list filtered
+ */
 function parse_proxy(str) {
     var matchs, px = [];
     loadingio("Parsing proxies", function () {
+        /*
+        while (match = /([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}):?([0-9]{1,6})?/g.exec(str)) {
+          console.log('Match: "' + match[0] + '" first group: -> "' + match[1] + '" second group -> ' + match[2]);
+          if (typeof match[0] != 'undefined' && typeof match[2] != 'undefined' && !inArray(match[0], px)) {
+            px.push(match[0]);
+          }
+        }
+        */
         if (typeof str == "string") {
             var regex = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{1,6}/gm, match, proxyMatch;
             while ((match = regex.exec(str))) {
                 proxyMatch = match[0];
+                //console.log(proxyMatch);
                 if (proxyMatch.includes(":") && !inArray(proxyMatch, px)) {
                     px.push(proxyMatch);
                 }
@@ -2706,6 +3466,7 @@ function parse_proxy(str) {
             var regex = /Proxy\([\'\"]([a-zA-Z0-9\=]*)[\'\"]\)/gm, match, proxyMatch;
             while ((match = regex.exec(str))) {
                 proxyMatch = atob(match[1]);
+                //console.log(proxyMatch);
                 if (proxyMatch.includes(":") && !inArray(proxyMatch, px)) {
                     px.push(proxyMatch);
                 }
@@ -2716,6 +3477,11 @@ function parse_proxy(str) {
     });
     return array_shuffle(array_unique(px));
 }
+/**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
 function array_rand(arrays, unique) {
     if (unique) {
         arrays = array_unique(arrays);
@@ -2726,11 +3492,20 @@ function array_rand(arrays, unique) {
         value: arrays[index],
     };
 }
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
 function array_unique(arrays) {
     return arrays.filter(function (item, pos, self) {
         return self.indexOf(item) == pos;
     });
 }
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
 function array_unset(arrayName, key) {
     var x;
     var tmpArray = new Array();
@@ -2741,17 +3516,34 @@ function array_unset(arrayName, key) {
     }
     return tmpArray;
 }
+/**
+ * Add class if not exists
+ * @param {Element} element element from DOM
+ * @param {string} className class name
+ */
 function toogleClass(element, className) {
     return element.classList.toggle(className);
 }
 function UNIQUE_ID() {
+    // Math.random should be unique because of its seeding algorithm.
+    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+    // after the decimal.
     return "_" + Math.random().toString(36).substr(2, 9);
 }
+/**
+ * jQuery pseudo builder
+ * @param {string} string
+ */
 function pseudo_builder(string) {
     if (string) {
         return string.replace(/[\W\s]/gm, "");
     }
 }
+/**
+ * Loop key value of object
+ * @param {Object} object
+ * @param {Function} callback
+ */
 function foreach(object, callback) {
     var key, value;
     Object.keys(object).forEach(function (key) {
@@ -2759,7 +3551,22 @@ function foreach(object, callback) {
             callback(key, object[key]);
         }
     });
+    /*
+      for ([key, value] of Object.entries(object)) {
+        if (typeof callback == 'function'){
+          callback(key, value);
+        } else {
+          console.log(key, value);
+        }
+      }
+    */
 }
+/**
+ * Get multiple random element from array
+ * @param {Array<any>} arr array sources
+ * @param {Number} n maximum element to be in result
+ * @param {Function} callback function to process result
+ */
 function getRandom(arr, n, callback) {
     var result = new Array(n), len = arr.length, taken = new Array(len);
     if (n > len) {
@@ -2779,6 +3586,13 @@ function getRandom(arr, n, callback) {
         return result;
     }
 }
+/**
+ * Simple Websocket javascript
+ * @todo Live Data
+ * @description Don't miss data that changes even for a second
+ * @author Dimas Lanjaka <dimaslanjaka[at]gmail.com
+ * @see https://www.webmanajemen.com/p/simple-websocket.html Simple Web Socket
+ */
 var socket;
 function socket_start(host) {
     if (!host) {
@@ -2795,6 +3609,7 @@ function socket_start(host) {
         };
         socket.onmessage = function (msg) {
             var data = JSON.parse(msg.data);
+            //do with data response
             console.log(data);
         };
         socket.onclose = function (msg) {
@@ -2831,7 +3646,16 @@ function socket_stop() {
 function socket_check() {
     return socket;
 }
+/**
+ * ZLIB packer
+ * @see http://localhost/src/ZLIB.php
+ * @requires pako `npm i pako @types/pako`
+ */
 class ZLIB {
+    /**
+     * Base64 decode from php
+     * @param {Uint8Array} arr
+     */
     static atos(arr) {
         for (var i = 0, l = arr.length, s = '', c; c = arr[i++];)
             s += String.fromCharCode(c > 0xdf && c < 0xf0 && i < l - 1 ?
@@ -2865,3 +3689,4 @@ class ZLIB {
         return enc;
     }
 }
+//# sourceMappingURL=app.js.map

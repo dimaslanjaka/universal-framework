@@ -16,6 +16,7 @@
   "terminal.integrated.env.windows": {
     "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
   },
+  "javascript.implicitProjectConfig.checkJs": false,
   "terminal.integrated.env.linux": {
     "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
   },

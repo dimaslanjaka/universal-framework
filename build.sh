@@ -98,7 +98,6 @@ read_options() {
     1)
         tsc -p tsconfig.build.json
         tsc -p tsconfig.precompiler.json
-        #libs/src/compiler/framework.js
         tsc -p tsconfig.compiler.json
         #pause
         ;;

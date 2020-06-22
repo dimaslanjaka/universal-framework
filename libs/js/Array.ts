@@ -17,7 +17,7 @@ function arrayCompare(a1: Array<any>, a2: Array<any>) {
 function inArray(needle: any, haystack: Array<any>) {
   var length = haystack.length;
   for (var i = 0; i < length; i++) {
-    if (typeof haystack[i] == 'object') {
+    if (typeof haystack[i] == "object") {
       if (arrayCompare(haystack[i], needle)) return true;
     } else {
       if (haystack[i] == needle) return true;
@@ -60,8 +60,7 @@ Array.prototype.unique = function () {
   var a = this.concat();
   for (var i = 0; i < a.length; ++i) {
     for (var j = i + 1; j < a.length; ++j) {
-      if (a[i] === a[j])
-        a.splice(j--, 1);
+      if (a[i] === a[j]) a.splice(j--, 1);
     }
   }
 
@@ -70,7 +69,7 @@ Array.prototype.unique = function () {
 
 if (!Array.prototype.every) {
   Array.prototype.every = function (fun /*, thisp */) {
-    'use strict';
+    "use strict";
     var t, len, i, thisp;
 
     if (this == null) {
@@ -79,7 +78,7 @@ if (!Array.prototype.every) {
 
     t = Object(this);
     len = t.length >>> 0;
-    if (typeof fun !== 'function') {
+    if (typeof fun !== "function") {
       throw new TypeError();
     }
 
@@ -94,7 +93,7 @@ if (!Array.prototype.every) {
   };
 }
 
-function array_filter(array: []){
+function array_filter(array: []) {
   return array.filter(function (el) {
     return el != null;
   });

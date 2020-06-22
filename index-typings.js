@@ -2,16 +2,16 @@ const fs = require("fs");
 const path = require("path");
 const upath = require("upath");
 
-const log = require("./libs/compiler/log").log;
+const log = require("./libs/compiler/log");
 
-const core = require("./libs/compiler/core").core;
+const core = require("./libs/compiler/core");
 const sorter = require("./libs/compiler/sorter").sorter;
 const ncp = require("ncp").ncp;
 //shared packages.json
 const root_pkg = require("./package.json");
 const packages = {};
 Object.assign(packages, root_pkg.dependencies, root_pkg.devDependencies);
-
+return; //on development
 console.clear();
 
 for (const key in packages) {

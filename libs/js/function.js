@@ -1,55 +1,62 @@
 /**
- * Check variable is timeout instance (setInterval, setTimeout)
- * @param {NodeJS.Timeout} t
+ * php equivalent http_build_query
+ * @param obj
  */
-function isTimer(t) {
-  return t instanceof Timeout;
-}
-
-/**
- * check native event for CustomEvent
- * @param {any} eventname
- */
-function isNativeEvent(eventname) {
-  return typeof document.body["on" + eventname] !== "undefined";
-}
-
-var events = {};
-var original = window.addEventListener;
-
-window.addEventListener = function (type, listener, useCapture) {
-  events[type] = true;
-  return original(type, listener, useCapture);
-};
-
-/**
- * Check if object has been added into event
- * @param {any} type
- */
-function hasEventBeenAdded(type) {
-  return type in events;
-}
-
-/**
- * Load CSS asynchronous
- * @param {String} CSSFiles
- */
-function loadCSS(CSSFiles) {
-  if (Array.isArray(CSSFiles)) {
-    for (var x = 0; x < CSSFiles.length; x++) {
-      createLink(CSSFiles[x]);
+function http_build_query(obj) {
+    if (typeof obj != "object") {
+        throw "http_build_query need parameter of object instead of " + typeof obj;
     }
-  } else if (typeof CSSFiles == "string") {
-    createLink(CSSFiles);
-  }
+    var queryString = Object.keys(obj)
+        .map(function (key) {
+        return key + "=" + obj[key];
+    })
+        .join("&");
+    return queryString;
 }
-
 /**
- * Prevent iframe accessing your website
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ * Check current framework running at localhost
  */
-function prevent_iframe() {
-  if (top.location.href != self.location.href) {
-    top.location.href = self.location.href;
-  }
+function is_localhost() {
+    var is_local = location.host.match(/^localhost|^127|\.io$/s);
+    return is_local;
+}
+/**
+ * Is Development Mode
+ */
+function is_development() {
+    return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
+        "development");
+}
+/**
+ * Force HTTPS
+ */
+function forceSSL() {
+    if (location.protocol !== "https:" && !is_localhost()) {
+        location.replace("https:" + location.href.substring(location.protocol.length));
+    }
+}
+/**
+ * json decode fails return false
+ * @param  obj
+ */
+function json_decode(obj) {
+    try {
+        return JSON.parse(obj);
+    }
+    catch (error) {
+        return false;
+    }
+}
+/**
+ * check string is json
+ * @param str
+ */
+function is_json(str) {
+    try {
+        JSON.parse(str);
+    }
+    catch (e) {
+        return false;
+    }
+    return true;
 }

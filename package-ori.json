@@ -43,7 +43,7 @@
   ],
   "scripts": {
     "preinstall": "node ./index.js",
-    "postinstall": "gulp build && node ./index-typings.js",
+    "postinstall": "gulp build && node ./index-typings.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
     "compiler": "tsc -p tsconfig.compiler.json"
   },
   "bin": "./libs/bin/syncjs/bin",
