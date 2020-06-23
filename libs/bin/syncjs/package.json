@@ -20,7 +20,7 @@
     "observatory": "^1.0.0",
     "prompt": "^1.0.0",
     "scp2": "^0.5.0",
-    "upath": "^0.2.0",
+    "upath": "^1.0.2",
     "yargs": "^15.3.1"
   },
   "description": "sync.js let's you keep your remote files in sync with your local copy. Whenever you make a change on your local project, sync.js uploads the changed files to remote server using `scp` command.",
