@@ -10,8 +10,8 @@ import { exec } from "child_process";
 const LocalStorage = require("node-localstorage").LocalStorage;
 import configuration from "./config";
 import * as framework from "./framework";
-const dimas = framework.dimas;
- 
+import filemanager from "./filemanager";
+
 /**
  * @class Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
@@ -154,9 +154,15 @@ class core {
                 fs.writeFile(outputcss, result.css, function (err) {
                   if (!err) {
                     log.log(
-                      `${self.filelog(filename.toString())} > ${self.filelog(
-                        outputcss
-                      )} ${log.success("success")}`
+                      `${log
+                        .chalk()
+                        .red(
+                          self.filelog(filename.toString())
+                        )} > ${log
+                        .chalk()
+                        .blueBright(self.filelog(outputcss))} ${log.success(
+                        "success"
+                      )}`
                     );
                     core.minCSS(output, null);
                   } else {
@@ -361,21 +367,7 @@ class core {
    * @param {string} file
    */
   static unlink(file: string) {
-    var self = this;
-    fs.exists(file, function (exists) {
-      if (exists) {
-        fs.unlink(file, function (err) {
-          if (!err) {
-            file = slash(file).replace(self.root(), "");
-            log.log(
-              `${log.chalk().whiteBright(file)} ${log
-                .chalk()
-                .redBright("deleted")}`
-            );
-          }
-        });
-      }
-    });
+    return filemanager.unlink(file, false);
   }
 
   /**
@@ -459,12 +451,6 @@ class core {
   }
 }
 
-if (core.isNode()) {
-  //exports.module = core;
-  //exports = core;
-} else {
-  //window['core'] = {};
-}
+Object.assign(core, filemanager, framework.dimas);
 
 export = core;
-//export default core;

@@ -11,7 +11,7 @@ const ncp = require("ncp").ncp;
 const root_pkg = require("./package.json");
 const packages = {};
 Object.assign(packages, root_pkg.dependencies, root_pkg.devDependencies);
-return; //on development
+return;
 console.clear();
 
 for (const key in packages) {
@@ -29,7 +29,7 @@ for (const key in packages) {
         fs.exists(typings, function (exists) {
           if (exists) {
             ncp.limit = 100;
-            
+
             ncp(typings, move_to, function (err) {
               if (err) {
                 return log.log(log.error(err));

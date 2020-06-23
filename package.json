@@ -3,7 +3,6 @@
         "email": "dimaslanjaka@gmail.com",
         "name": "dimaslanjaka"
     },
-    "bin": "./libs/bin/syncjs/bin",
     "bugs": {
         "url": "https://github.com/dimaslanjaka/universal-framework/issues"
     },
@@ -12,6 +11,7 @@
         "bootbox": "*",
         "chalk": "*",
         "chokidar": "*",
+        "codemirror": "*",
         "cookie-parser": "*",
         "crypto-js": "*",
         "datatables.net": "*",
@@ -43,6 +43,7 @@
         "googleapis": "*",
         "gulp-sass": "*",
         "har-to-curl": "*",
+        "highlight.js": "*",
         "html2pug": "*",
         "http-errors": "*",
         "inquirer": "*",
@@ -113,10 +114,13 @@
         "@sindresorhus/is": "^0.14.0",
         "@szmarczak/http-timer": "^1.1.2",
         "@tootallnate/once": "1",
+        "@types/bootstrap": "*",
         "@types/caseless": "*",
         "@types/chalk": "*",
         "@types/chokidar": "*",
+        "@types/codemirror": "*",
         "@types/datatables.net": "*",
+        "@types/estree": "*",
         "@types/fancy-log": "*",
         "@types/inquirer": "*",
         "@types/jquery": "*",
@@ -128,6 +132,7 @@
         "@types/sass": "*",
         "@types/sizzle": "*",
         "@types/sweetalert": "*",
+        "@types/tern": "*",
         "@types/through": "*",
         "@types/toastr": "*",
         "@types/tough-cookie": "*",
@@ -143,9 +148,6 @@
         "typescript": "*"
     },
     "displayName": "UNIVERSAL FRAMEWORK [PHPJS]",
-    "files": [
-        "libs/"
-    ],
     "homepage": "https://github.com/dimaslanjaka/universal-framework#readme",
     "keywords": [
         "SFTP",
@@ -163,17 +165,37 @@
     "license": "MIT",
     "name": "universal-framework",
     "prettier": {
-        "bracketSpacing": true
+        "$schema": "http://json.schemastore.org/prettierrc",
+        "bracketSpacing": true,
+        "overrides": [
+            {
+                "excludeFiles": [
+                    "*.min.js",
+                    "*.min.css",
+                    "*.min.html",
+                    "*.min.scss"
+                ],
+                "files": [
+                    "*.js",
+                    "*.css",
+                    "*.sass",
+                    "*.html",
+                    "*.md"
+                ],
+                "options": {
+                    "semi": true
+                }
+            }
+        ],
+        "semi": false,
+        "singleQuote": true,
+        "tabWidth": 2,
+        "trailingComma": "es5"
     },
     "publisher": "dimaslanjaka",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/dimaslanjaka/universal-framework.git"
-    },
-    "scripts": {
-        "compiler": "tsc -p tsconfig.compiler.json",
-        "postinstall": "gulp build && node ./index-typings.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
-        "preinstall": "node ./index.js"
     },
     "version": "3.0.0"
 }

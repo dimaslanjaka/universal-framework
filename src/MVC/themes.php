@@ -24,6 +24,21 @@ class themes
 
   public function __construct()
   {
+    /**
+     * Load image cache if exists
+     */
+    $imgproxy = isset($_REQUEST['image-proxy']) ? $_REQUEST['image-proxy'] : (isset($_REQUEST['img-source']) ? $_REQUEST['img-source'] : null);
+    if ($imgproxy) {
+      $url = urldecode(trim($imgproxy));
+      if (helper::is_url($url)) {
+        helper::cleanBuffer();
+        exit(\img\cache::imageCache($url));
+      }
+    }
+
+    /**
+     * Load admin utility
+     */
     if ($this->is_admin()) {
       // Metadata receiver
       if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {

@@ -13,8 +13,10 @@
     "libs/bin/php-obfuscate"
   ],
   "require": {
-    "php": ">=7",
+    "php": "^5.6 || ^7.0",
+    "ext-json": "*",
     "ext-curl": "*",
+    "ext-mbstring": "*",
     "php-curl-class/php-curl-class": "^8.8",
     "guzzlehttp/guzzle": "~6.0",
     "google/apiclient": "^2.4",
@@ -26,22 +28,26 @@
     "datatables.net/editor-php": "^1.9",
     "scssphp/scssphp": "^1.1",
     "phpseclib/phpseclib": "~2.0",
-    "nikic/php-parser": "~1@dev",
     "symfony/console": "~2.5",
     "symfony/dependency-injection": "~2.5",
     "symfony/config": "~2.5",
     "symfony/yaml": "~2.5",
-    "symfony/event-dispatcher": "~2.5"
-  },
-  "suggest": {
-    "paragonie/random_compat": "Provides better randomness in PHP 5.x"
+    "symfony/event-dispatcher": "~2.5",
+    "friendsofphp/php-cs-fixer": "*",
+    "composer/semver": "^1.4",
+    "composer/xdebug-handler": "^1.2"
   },
   "require-dev": {
-    "mikey179/vfsstream": "1.1.*",
-    "phpunit/phpunit": "^5"
+    "ext-gd": "*",
+    "phpunit/phpunit": "*",
+    "squizlabs/php_codesniffer": "*",
+    "mikey179/vfsstream": "*",
+    "paragonie/random_compat": "*",
+    "nikic/php-parser": "~1@dev"
   },
   "autoload": {
     "psr-4": {
+      "img\\": "src/img/",
       "Telkomsel\\": "src/Telkomsel/",
       "Indosat\\": "src/Indosat/",
       "simplehtmldom\\": "src/simplehtmldom/",

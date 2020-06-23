@@ -3,7 +3,7 @@ $user = new \User\user();
 if (!$user->is_admin() || !isset($Config)) {
   return;
 }
-
+echo fab(['icon' => 'fa-user-shield', 'href' => '/superuser/', 'attributes' => 'title="Open Superuser Panel" data-toggle="tooltip" newtab'], ['href' => '#meta-editor', 'icon' => 'fa-cog', 'attributes' => 'data-toggle="tooltip" data-trigger="modal" title="Open Metadata Editor" data-target="#MetaEditorModal"']);
 ?>
 <div class="modal fade" id="MetaEditorModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">

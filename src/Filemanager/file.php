@@ -172,8 +172,6 @@ class file
       if ($parse_json && \JSON\json::is_json($ret)) {
         $ret = json_decode($ret, true);
       }
-    } else {
-      throw new Exception(basename($file) . ' not exists', 1);
     }
 
     return $ret;

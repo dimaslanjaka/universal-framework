@@ -106,6 +106,18 @@ var dimas = {
     },
   },
   /**
+   * Make async function
+   * @param callback
+   */
+  async: function (callback: any) {
+    return new Promise(function (resolve, reject) {
+      if (typeof callback == "function") {
+        callback();
+      }
+      resolve();
+    });
+  },
+  /**
    * Rupiah currency auto format
    */
   rp: function (angka: number, prefix: string | any) {

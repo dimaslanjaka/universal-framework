@@ -392,7 +392,6 @@ function get_currency_symbol() {
   return format.toString().replace("0,00", "");
 }
 
-
 /**
  * Create JSON
  * @param {any} jsObj
@@ -435,28 +434,7 @@ function loadingio(text, callback, mode) {
   }
 }
 
-function LoadScript(url, callback) {
-  loadingio("Loading Script " + url);
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = url;
-  script.onreadystatechange = function () {
-    if (typeof callback == "function") {
-      loadingio("Readystate " + url);
-      callback();
-    }
-    loadingio(false, false, "disable");
-  };
-  script.onload = function () {
-    loadingio("Onload Script " + url);
-    if (typeof callback == "function") {
-      callback();
-    }
-    loadingio(false, false, "disable");
-  };
-  document.body.appendChild(script);
-  loadingio(false, false, "disable");
-}
+
 
 /**
 function target(a) {

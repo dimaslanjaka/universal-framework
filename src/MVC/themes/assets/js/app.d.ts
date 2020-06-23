@@ -288,6 +288,11 @@ declare var dimas: {
         listen: () => JQuery<Document>;
     };
     /**
+     * Make async function
+     * @param callback
+     */
+    async: (callback: any) => Promise<unknown>;
+    /**
      * Rupiah currency auto format
      */
     rp: (angka: number, prefix: string | any) => string;
@@ -405,6 +410,11 @@ declare function framework(): {
          */
         listen: () => JQuery<Document>;
     };
+    /**
+     * Make async function
+     * @param callback
+     */
+    async: (callback: any) => Promise<unknown>;
     /**
      * Rupiah currency auto format
      */
@@ -583,7 +593,13 @@ declare function json_decode(obj: string): any;
  * check string is json
  * @param str
  */
-declare function is_json(str: string): boolean;
+declare function isJSON(str: string): boolean;
+/**
+ * Load CSS async
+ * @param href
+ * @param callback
+ */
+declare function loadCSS(href: string, callback: any): void;
 declare const guxid: string;
 /**
  * Get current unique global page user id
@@ -987,7 +1003,7 @@ declare function get_currency_symbol(): string;
  */
 declare function createJSON(jsObj: any, tabs: boolean): string;
 declare function loadingio(text: any, callback: any, mode: any, ...args: any[]): void;
-declare function LoadScript(url: any, callback: any): void;
+declare function LoadScript(urls: any, callback: any): void;
 /**
 function target(a) {
     alert(a);

@@ -41,11 +41,39 @@ class filemanager {
   }
 
   /**
-   * remove all files except matches regex
-   * @param {string} folder
-   * @param {RegExp} exclude
+   * create file recursive
+   * @param file
+   * @param content
    */
-  static empty(folder: string, exclude: RegExp) {
+  static mkfile(file: string, content: any) {
+    this.mkdir(path.dirname(file));
+    if (typeof content == "object" || Array.isArray(content)) {
+      content = JSON.stringify(content, null, 4);
+    }
+    fs.writeFileSync(file, content, { encoding: "utf-8" });
+    return file;
+  }
+
+  /**
+   * create directory recursive
+   * @param dir
+   */
+  static mkdir(dir: string) {
+    if (!fs.existsSync(path.dirname(dir))) {
+      this.mkdir(path.dirname(dir));
+    }
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    return dir;
+  }
+
+  /**
+   * remove all files/folders except matches regex
+   * @param folder
+   * @param exclude
+   */
+  static empty(folder: string, exclude: RegExp | null) {
     fs.readdir(folder, (err, files) => {
       if (err) {
         log.log(log.error(err.message));
@@ -53,7 +81,11 @@ class filemanager {
         files.forEach((file) => {
           const fileDir = path.join(folder, file);
 
-          if (exclude.test(file)) {
+          if (exclude) {
+            if (!exclude.test(file)) {
+              filemanager.unlink(fileDir, true);
+            }
+          } else {
             filemanager.unlink(fileDir, true);
           }
         });

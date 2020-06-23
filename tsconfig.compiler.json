@@ -8,6 +8,7 @@
     "allowUnreachableCode": false,
     "noImplicitReturns": false,
     "noImplicitAny": false,
+    "removeComments": true,
     "allowJs": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,

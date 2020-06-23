@@ -1,6 +1,21 @@
 {
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/bootstrap": "*",
+    "@types/codemirror": "*",
+    "@types/jquery": "*"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://www.opensource.org/licenses/mit-license.php"
+    },
+    {
+      "type": "Apache-2.0",
+      "url": "https://opensource.org/licenses/apache2.0.php"
+    }
+  ],
   "dependencies": {
+    "codemirror": "*",
     "datatables.net": "^1.10.21",
     "datatables.net-autofill": "^2.3.5",
     "animate.css": "^4.1.0",
@@ -11,6 +26,7 @@
     "sweetalert": "*",
     "requirejs": "^2.3.6",
     "ga-gtag": "^1.0.1",
+    "highlight.js": "*",
     "linkifyjs": "^2.1.9",
     "datatables.net-colreorder-dt": "^1.5.2",
     "datatables.net-dt": "^1.10.21",

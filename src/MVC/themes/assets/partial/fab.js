@@ -30,15 +30,15 @@ function fab_set_listener(fab_wrapper) {
     }
 
     console.log(`fab found (${is_jquery ? "jQuery" : "VanillaJS"})`);
-    console.log(fab_wrapper);
+    //console.log(fab_wrapper);
   } else {
     console.error("fab not found", fab_wrapper);
-    console.log(id_fab);
+    //console.log(id_fab);
   }
 }
 
 function fab_click_handler(e, activate) {
-  //console.log("clicked FAB", e);
+  //console.log($(`#${id_fab}`).position());
   /**
    * @type {HTMLInputElement}
    */
@@ -46,12 +46,16 @@ function fab_click_handler(e, activate) {
   if (fab_checkbox) {
     fab_checkbox.setAttribute("aria-checked", activate ? "true" : "false");
     fab_checkbox.checked = activate;
-    calculateDistance(id_fab_checkbox, function(distance){
-      console.log(distance);
+    calculateDistance(id_fab, function (distance) {
+      if (distance > 300) {
+        // if mouse leave more than 300 pixel, menu will deactivate
+        fab_checkbox.setAttribute("aria-checked", "false");
+        fab_checkbox.checked = false;
+      }
     });
 
-    console.log("fab checkbox found", fab_checkbox);
+    // console.log("fab checkbox found", fab_checkbox);
   } else {
-    console.error("fab checkbox not found", id_fab_checkbox);
+    //console.error("fab checkbox not found", id_fab_checkbox);
   }
 }

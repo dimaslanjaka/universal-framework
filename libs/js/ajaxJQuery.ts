@@ -114,7 +114,7 @@ $(document).ajaxStart(function () {
         /json|text\/plain/s.test(content_type)
       ) {
         //begin decode json
-        if (is_json(res)) {
+        if (isJSON(res)) {
           res = JSON.parse(res);
         }
       }
@@ -146,7 +146,7 @@ $(document).ajaxStart(function () {
       /json|text\/plain/s.test(content_type)
     ) {
       //begin decode json
-      if (is_json(res)) {
+      if (isJSON(res)) {
         res = JSON.parse(res);
       }
     }
@@ -191,7 +191,7 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
       res = xhr.responseText;
       if (typeof res == "string" && !empty(res)) {
         //begin decode json
-        if (is_json(res)) {
+        if (isJSON(res)) {
           res = JSON.parse(res);
         }
       }
@@ -207,7 +207,7 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
           "2nd parameters must be callback function, instead of " +
             typeof callback
         );
-      } 
+      }
     }
   }
 

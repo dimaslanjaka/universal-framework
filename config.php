@@ -5,7 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // set root into current directory
 define('ROOT', __DIR__);
 resolve_dir(ROOT . '/tmp');
-resolve_dir(ROOT . '/processed');
+resolve_dir(ROOT . '/src/Session/sessions');
 
 // define cors detector
 define('CORS', \MVC\helper::cors());
@@ -20,6 +20,19 @@ define('UID', $uid);
 
 // set default timezone
 date_default_timezone_set('Asia/Jakarta');
+
+// maintainer
+function maintenance()
+{
+  include __DIR__ . '/maintenance.php';
+  exit;
+}
+
+function show_error()
+{
+  error_reporting(E_ALL);
+  ini_set('display_errors', 'On');
+}
 
 /**
  * Session zones.
@@ -37,9 +50,15 @@ if (!\Cookie\helper::has("zone{$uri}", false)) {
 }
 
 $zone_division = \Cookie\helper::get("zone{$uri}", false);
-if ($zone_division == 'coupon') {
-  //maintenance();
-  //$folder_session = \Filemanager\file::folder(__DIR__ . '/tmp/sessions/' . $zone[0]);
+switch ($zone_division) {
+  case 'coupon':
+    //maintenance();
+    //$folder_session = \Filemanager\file::folder(__DIR__ . '/tmp/sessions/' . $zone[0]);
+    break;
+  default:
+    if (!\MVC\helper::isLocal()) {
+      //maintenance();
+    }
 }
 
 $session = new \Session\session(3600, $folder_session);
@@ -97,7 +116,8 @@ function get_db()
 }
 
 /**
- * Fastest Unique ID Generator
+ * Fastest Unique ID Generator.
+ *
  * @param int $length default 5
  */
 function uid(int $length = 5)
@@ -296,8 +316,6 @@ function isob()
 /**
  * Base URL router.
  *
- * @param string $path
- *
  * @return void
  */
 function base(string $path)
@@ -337,32 +355,10 @@ function filemanager()
   return new \Filemanager\file();
 }
 
-// pre text
-function pre(...$obj)
-{
-  echo '<pre style="word-wrap: break-word;">';
-  foreach ($obj as $objek) {
-    \JSON\json::json($objek, false, true);
-    echo "\n <center>========</center> \n";
-  }
-  echo '</pre>';
-}
-
-function include_asset($fn, $fn2 = null, $callback = null)
-{
-  if (file_exists($fn)) {
-    include $fn;
-  } elseif ($fn2 && file_exists($fn2)) {
-    include $fn2;
-  } elseif (is_callable($callback)) {
-    call_user_func($callback, $fn);
-  }
-}
-
 function ev()
 {
   $args = func_get_args();
-  if (count($args) == 1) {
+  if (1 == count($args)) {
     $args = $args[0];
   }
   if (!headers_sent()) {
@@ -479,16 +475,4 @@ function precom(...$str)
 function req($opt)
 {
   return \Extender\request::static_request($opt);
-}
-
-function maintenance()
-{
-  include __DIR__ . '/maintenance.php';
-  exit;
-}
-
-function show_error()
-{
-  error_reporting(E_ALL);
-  ini_set('display_errors', 'On');
 }

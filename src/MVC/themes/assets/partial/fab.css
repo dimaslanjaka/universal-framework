@@ -48,10 +48,10 @@
     position: absolute;
     bottom: -2em;
     right: -2em;
-    /*width: 4rem;
-    height: 4rem;*/
-    width: 51px;
-    height: 51px;
+    width: 4rem;
+    height: 4rem;
+    /*width: 51px;
+    height: 51px;*/
     background: blue;
     border-radius: 50%;
     background: #126ee2;

@@ -23,8 +23,12 @@ if (!isset($share)) {
   $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
-  exit('framework environtment doesnt exists');
-}
+  e([
+    'error' => true,
+    'message' => 'framework environtment doesnt exists',
+    'current' => __FILE__
+  ]);
+} 
 ?>
 <!DOCTYPE html>
 <html lang="en" class="full-height" manifest="framework.appcache" environtment="<?= ENVIRONMENT ?>">

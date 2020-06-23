@@ -25,6 +25,10 @@ body {
   width: 100% !important;
 }
 
+textarea {
+  overflow-y: auto !important;
+}
+
 pre {
   white-space: pre-wrap;
   /* css-3 */
@@ -38,7 +42,7 @@ pre {
   /* Internet Explorer 5.5+ */
 }
 
-pre:before {
+pre:before:not(.CodeMirror-line) {
   color: #ccc;
   font-family: "Font Awesome 5 Pro";
   content: attr(title) "\00a0\f101\00a0\a";
@@ -94,7 +98,7 @@ pre:before {
   color: #fff !important;
   background-color: #4285f4 !important;
   display: inline-block;
-  padding: .25em .4em;
+  padding: 0.25em 0.4em;
   font-size: 75%;
   font-weight: 700;
   line-height: 1;
@@ -107,7 +111,32 @@ pre:before {
   text-transform: capitalize;
 }
 
-.md-form input.form-control[type="datetime-local"]~label {
+.md-form input.form-control[type="datetime-local"] ~ label {
   transform: translateY(-50%);
-  font-size: .8rem;
+  font-size: 0.8rem;
+}
+
+.alert-top {
+  position: fixed;
+  top: 50px;
+  left: 2%;
+  width: 96%;
+  z-index: 3000;
+}
+
+.alert-bottom {
+  position: fixed;
+  bottom: 5px;
+  left: 2%;
+  width: 96%;
+  z-index: 3000;
+}
+
+div.fullscreen {
+  position: absolute;
+  width: 100%;
+  height: 960px;
+  top: 0;
+  left: 0;
+  background-color: lightblue;
 }

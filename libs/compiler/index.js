@@ -1,35 +1,22 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
-console.clear();
-//import core from "./core";
+var core_1 = tslib_1.__importDefault(require("./core"));
+var misc = tslib_1.__importStar(require("./framework"));
+var filemanager_1 = tslib_1.__importDefault(require("./filemanager"));
 var log_1 = tslib_1.__importDefault(require("./log"));
-var mysql = tslib_1.__importStar(require("mysql"));
-var config_1 = tslib_1.__importDefault(require("./config"));
-var config = config_1.default;
-function mysql_connection() {
-    var result = null;
-    if (config.hasOwnProperty("database")) {
-        var database = config.database;
-        var con = mysql.createConnection({
-            host: database.host,
-            user: database.user,
-            password: database.pass,
-            port: database.port,
-            database: database.dbname,
-        });
-        con.connect(function (err) {
-            if (err) {
-                log_1.default.log(log_1.default.error(err));
-            }
-            else {
-                log_1.default.log(log_1.default.success("Connected!"));
-                result = con;
-            }
-        });
+var sorter_1 = tslib_1.__importDefault(require("./sorter"));
+var framework = (function (_super) {
+    tslib_1.__extends(framework, _super);
+    function framework() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.filemanager = filemanager_1.default;
+        _this.misc = misc.dimas;
+        _this.log = log_1.default;
+        _this.array = {
+            sorter: sorter_1.default,
+        };
+        return _this;
     }
-    return result;
-}
-//export = mysql_connection;
-//export default mysql_connection;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvY29tcGlsZXIvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7O0FBQUEsT0FBTyxDQUFDLEtBQUssRUFBRSxDQUFDO0FBRWhCLDRCQUE0QjtBQUM1QixzREFBd0I7QUFDeEIsbURBQStCO0FBQy9CLDREQUFxQztBQUNyQyxJQUFJLE1BQU0sR0FBRyxnQkFBYSxDQUFDO0FBRTNCLFNBQVMsZ0JBQWdCO0lBQ3ZCLElBQUksTUFBTSxHQUFHLElBQUksQ0FBQztJQUNsQixJQUFJLE1BQU0sQ0FBQyxjQUFjLENBQUMsVUFBVSxDQUFDLEVBQUU7UUFDckMsSUFBTSxRQUFRLEdBQUcsTUFBTSxDQUFDLFFBQVEsQ0FBQztRQUNqQyxJQUFJLEdBQUcsR0FBRyxLQUFLLENBQUMsZ0JBQWdCLENBQUM7WUFDL0IsSUFBSSxFQUFFLFFBQVEsQ0FBQyxJQUFJO1lBQ25CLElBQUksRUFBRSxRQUFRLENBQUMsSUFBSTtZQUNuQixRQUFRLEVBQUUsUUFBUSxDQUFDLElBQUk7WUFDdkIsSUFBSSxFQUFFLFFBQVEsQ0FBQyxJQUFJO1lBQ25CLFFBQVEsRUFBRSxRQUFRLENBQUMsTUFBTTtTQUMxQixDQUFDLENBQUM7UUFDSCxHQUFHLENBQUMsT0FBTyxDQUFDLFVBQVUsR0FBUTtZQUM1QixJQUFJLEdBQUcsRUFBRTtnQkFDUCxhQUFHLENBQUMsR0FBRyxDQUFDLGFBQUcsQ0FBQyxLQUFLLENBQUMsR0FBRyxDQUFDLENBQUMsQ0FBQzthQUN6QjtpQkFBTTtnQkFDTCxhQUFHLENBQUMsR0FBRyxDQUFDLGFBQUcsQ0FBQyxPQUFPLENBQUMsWUFBWSxDQUFDLENBQUMsQ0FBQztnQkFDbkMsTUFBTSxHQUFHLEdBQUcsQ0FBQzthQUNkO1FBQ0gsQ0FBQyxDQUFDLENBQUM7S0FDSjtJQUNELE9BQU8sTUFBTSxDQUFDO0FBQ2hCLENBQUM7QUFFRCw0QkFBNEI7QUFDNUIsa0NBQWtDIn0=
+    return framework;
+}(core_1.default));
+module.exports = framework;

@@ -3,8 +3,6 @@
 /**
  * Include file if exists.
  *
- * @param string $file
- *
  * @return include|false
  */
 function inc(string $file)
@@ -13,9 +11,74 @@ function inc(string $file)
 }
 
 /**
- * Header redirect.
+ * Sort array key ascending multidimensional supported.
  *
- * @param string $url
+ * @return array
+ */
+function sort_iterable(array $arrayObj)
+{
+  $arrayObj = array_map(function ($object) {
+    if (\ArrayHelper\helper::is_iterable($object)) {
+      $object = sort_iterable($object);
+    }
+
+    return $object;
+  }, $arrayObj);
+  ksort($arrayObj);
+
+  return $arrayObj;
+}
+
+/**
+ * Include asset with fallback and callback.
+ * * if found automatically call include()
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ *
+ * @param string        $fn       first file to check
+ * @param string        $fn2      fallback file to check
+ * @param function|null $callback if not exists both, shoul we calling the callback
+ *
+ * @return void always void
+ */
+function include_asset($fn, $fn2 = null, $callback = null)
+{
+  if (file_exists($fn)) {
+    include $fn;
+  } elseif ($fn2 && file_exists($fn2)) {
+    include $fn2;
+  } elseif (is_callable($callback)) {
+    call_user_func($callback, $fn);
+  }
+}
+
+/**
+ * Create <pre/> element from array.
+ *
+ * @param variadic ...$obj
+ *
+ * @return void
+ */
+function pre(...$obj)
+{
+  echo '<pre style="word-wrap: break-word;">';
+  foreach ($obj as $objek) {
+    \JSON\json::json($objek, false, true);
+  }
+  echo '</pre>';
+}
+
+/**
+ * Check is json string.
+ *
+ * @return bool
+ */
+function is_json(string $string)
+{
+  return \JSON\json::is_json($string);
+}
+
+/**
+ * Header redirect.
  */
 function redirect(string $url, bool $exit = true)
 {
@@ -27,8 +90,6 @@ function redirect(string $url, bool $exit = true)
 
 /**
  * Header redirect advance.
- *
- * @param string $url
  */
 function safe_redirect(string $url, bool $exit = true)
 {
@@ -93,8 +154,6 @@ function latestFile(array $path, bool $return_timestamp = true)
 
 /**
  * Disable direct access static php.
- *
- * @param string $file
  */
 function disable_direct_access_php(string $file)
 {
@@ -113,8 +172,6 @@ function disable_direct_access_php(string $file)
 /**
  * Create nested folder recursively.
  *
- * @param string $dir
- *
  * @return string $dir
  */
 function resolve_dir(string $dir)
@@ -128,9 +185,8 @@ function resolve_dir(string $dir)
 /**
  * Create dir recursively.
  *
- * @param string $dest
- * @param int    $permissions
- * @param bool   $recursive
+ * @param int  $permissions
+ * @param bool $recursive
  */
 function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
 {
@@ -166,8 +222,6 @@ function resolve_file(string $file, string $content = '')
 /**
  * Convert Windows path to UNIX path.
  *
- * @param string $path
- *
  * @return string
  */
 function normalize_path(string $path)
@@ -184,8 +238,6 @@ function normalize_path(string $path)
 
 /**
  * Remove root from path.
- *
- * @param string $path
  */
 function remove_root(string $path)
 {
@@ -197,8 +249,6 @@ function remove_root(string $path)
 
 /**
  * Shell runner.
- *
- * @param string $command
  *
  * @return string|null
  */
@@ -217,8 +267,7 @@ function shell(string $command)
 /**
  * Read file contents.
  *
- * @param string $path
- * @param mixed  $callback if null not exist return this callback
+ * @param mixed $callback if null not exist return this callback
  *
  * @return string|null NULL if not exists
  */
@@ -276,7 +325,7 @@ function parse_newline(string $str)
 }
 
 /**
- * Get Output Buffer Content And Re-construct current output buffer
+ * Get Output Buffer Content And Re-construct current output buffer.
  *
  * @return string|false
  */
@@ -285,6 +334,7 @@ function ob_get()
   $content = ob_get_clean();
   ob_end_clean();
   ob_start();
+
   return $content;
 }
 

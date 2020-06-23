@@ -30,27 +30,25 @@ class router extends themes
     if (!headers_sent()) {
       header("Location: $path", true, 302);
     } else {
-?>
-      <!DOCTYPE html>
+      echo '<!DOCTYPE html>
       <html>
 
       <head>
         <title>Temporarily Unavailable</title>
         <meta name="robots" content="none" />
-        <meta http-equiv="refresh" content="5; url=<?= $path; ?>" />
+        <meta http-equiv="refresh" content="5; url=' . $path . '" />
       </head>
 
       <body>
         You will redirected automatically
       </body>
       <script>
-        location.href = `<?= $path; ?>`;
-        document.body.innerHTML = '';
-        throw '';
+        location.href = `' . $path . '`;
+        document.body.innerHTML = "";
+        throw "";
       </script>
 
-      </html>
-<?php
+      </html>';
     }
     exit;
   }
@@ -89,8 +87,6 @@ class router extends themes
         ini_set('error_log', \Filemanager\file::file(__DIR__ . '/tmp/php-error.log', ''));
         break;
 
-      case 'testing':
-        break;
       case 'production':
         ini_set('display_errors', 0);
         if (version_compare(PHP_VERSION, '5.3', '>=')) {
@@ -99,17 +95,17 @@ class router extends themes
           error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
         }
         break;
-
-      default:
-        if (ob_get_level()) {
-          ob_end_clean();
-        }
-        header('HTTP/1.1 503 Service Unavailable.', true, 503);
-        echo 'The application environment is not set correctly.';
-        exit(1); // EXIT_ERROR
+    }
+    if (empty($env)) {
+      if (ob_get_level()) {
+        ob_end_clean();
+      }
+      header('HTTP/1.1 503 Service Unavailable.', true, 503);
+      echo 'The application environment is not set correctly.';
+      exit(1); // EXIT_ERROR
     }
 
-    \Filemanager\file::file(\Filemanager\file::tmp() . '/environtment.txt', $env, true);
+    file_put_contents(ROOT . '/tmp/environtment.txt', $env, true);
     $GLOBALS['router_state']['env'] = $this->env = $env;
 
     return $env;
@@ -137,7 +133,6 @@ class router extends themes
     }
     if (!self::$env_status) {
       \Cookie\helper::del('environtment');
-      throw new Exception('ENVIRONTMENT NOT SET', 1);
     }
 
     return self::$env_status;

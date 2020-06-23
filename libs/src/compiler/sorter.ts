@@ -1,4 +1,4 @@
-export class sorter {
+ class sorter {
   /**
    * Sort Ascending Recursive
    * @param {Object|Array<any>} object
@@ -51,3 +51,4 @@ export class sorter {
     return this.ascending(ordered);
   }
 }
+export = sorter;

@@ -7,7 +7,12 @@ const config = require("./config.json");
 const upath = require("upath");
 const path = require("path");
 const core = require("./libs/compiler/core");
+const framework = require("./libs/compiler/index");
 const log = require("./libs/compiler/log");
+const { MD5 } = require("crypto-js");
+const filemanager = require("./libs/compiler/filemanager");
+console.clear();
+filemanager.empty(upath.join(__dirname, "tmp", "compiler"), null);
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
@@ -23,20 +28,40 @@ gulp.task("build", function () {
  */
 function createCompiler(withoutView) {
   return core.async(function () {
-    var tsCompiler = ts.createProject(__dirname + "/tsconfig.compiler.json");
-    tsCompiler
-      .src()
-      .pipe(tsCompiler())
-      .pipe(
-        rename(function (path) {
-          path.extname = ".js";
-        })
-      )
-      .pipe(gulp.dest("./libs/compiler/"))
-      .on("end", function () {
+    return typescriptCompiler(
+      __dirname + "/tsconfig.compiler.json",
+      "./libs/compiler/",
+      function () {
         createApp(withoutView);
-      });
+      }
+    );
   });
+}
+
+/**
+ * Typescript compiler
+ * @param {string} source
+ * @param {string} destination
+ * @param {Function} callback
+ * @returns {function(source,destination)} if callback is function
+ */
+function typescriptCompiler(source, destination, callback) {
+  const instance = ts.createProject(source);
+  return instance
+    .src()
+    .pipe(instance())
+    .pipe(
+      rename(function (path) {
+        path.extname = ".js";
+      })
+    )
+    .pipe(gulp.dest(destination, { overwrite: true }))
+    .on("end", function () {
+      log.log(`successfully compiled ${log.success(core.filelog(source))}`);
+      if (typeof callback == "function") {
+        callback(source, destination);
+      }
+    });
 }
 
 /**
@@ -44,50 +69,41 @@ function createCompiler(withoutView) {
  * @param {boolean} withoutView false to not compile views javascripts
  */
 function createApp(withoutView) {
-  var tsProject = ts.createProject(__dirname + "/tsconfig.build.json");
-  var processApp = tsProject
-    .src()
-    .pipe(tsProject())
-    .pipe(
-      rename(function (path) {
-        path.extname = ".js";
-      })
-    )
-    .pipe(gulp.dest("./", { overwrite: true }))
-    .on("end", function () {
+  return typescriptCompiler(
+    __dirname + "/tsconfig.build.json",
+    "./",
+    function () {
       log.log(
         `successfully compiled ${log.success(
           core.filelog("./src/MVC/themes/assets/js/app.js")
         )}`
       );
-      var target = upath.normalizeSafe(
-        upath.resolve(upath.join(__dirname, "src/MVC/themes/assets/js/app.js"))
-      );
-      var framework = upath.normalizeSafe(
-        upath.resolve(upath.join(__dirname, "libs/src/core/framework.js"))
-      );
-      minify(target);
-      fs.copyFile(target, framework, function (err) {
-        if (err) {
-          log.log(log.error("Failed copy framework"));
-        } else {
-          log.log(log.error("Success copy framework"));
+      return typescriptCompiler(
+        __dirname + "/tsconfig.precompiler.json",
+        "./",
+        async function (source, destination) {
+          var target = upath.normalizeSafe(
+            upath.resolve(
+              upath.join(__dirname, "src/MVC/themes/assets/js/app.js")
+            )
+          );
+          await core.async(function () {
+            minify(target);
+          });
+          if (!withoutView) {
+            multiMinify(views());
+          }
         }
-      });
-    });
-  if (!withoutView) {
-    processApp.on("end", function () {
-      multiMinify(views());
-    });
-  }
-  return processApp;
+      );
+    }
+  );
 }
 
 // watch libs/js/**/* and views
 gulp.task("watch", function () {
   console.clear();
   log.log(log.random("Listening ./libs and ./" + config.app.views));
-  gulp
+  return gulp
     .watch([
       "./libs/js/**/*",
       "./libs/src/**/*",
@@ -95,34 +111,58 @@ gulp.task("watch", function () {
       "./" + config.app.views + "/**/*",
     ])
     .on("change", function (file) {
-      file = core.normalize(path.resolve(file));
-      /**
-       * Check is library compiler or source compiler
-       */
-      const is_Lib = /libs\/(js|src)\//s.test(core.normalize(file));
-      const filename_log = core.filelog(file);
-
-      if (is_Lib) {
-        log.log(
-          log
-            .chalk()
-            .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
-        );
-        return createCompiler(true);
-      } else {
-        if (/\.(js|scss|css)$/s.test(file)) {
-          if (!/\.min\.(js|css)$/s.test(file)) {
-            return minify(file);
-          }
-        } else {
-          var reason = log.error(undefined);
-          if (/\.php$/s.test(filename_log)) {
-            reason = log.random("excluded");
-          }
-          log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
-          return core.async(null);
-        }
+      const lockfile = upath.join(
+        __dirname,
+        "tmp/compiler",
+        MD5(file).toString()
+      );
+      const lockProcess = function () {
+        log.log(log.random("locking process"));
+        filemanager.mkfile(lockfile, "lockfile");
+      };
+      const releaseLock = function () {
+        log.log(log.random("releasing process"));
+        filemanager.unlink(lockfile);
+      };
+      if (fs.existsSync(lockfile)) {
+        return null;
       }
+      lockProcess();
+      const trigger = function () {
+        file = core.normalize(path.resolve(file));
+        /**
+         * Check is library compiler or source compiler
+         */
+        const is_Lib = /libs\/(js|src)\//s.test(core.normalize(file));
+        const filename_log = core.filelog(file);
+
+        if (is_Lib) {
+          log.log(
+            log
+              .chalk()
+              .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
+          );
+          return function () {
+            createCompiler(true).then(function () {
+              releaseLock();
+            });
+          };
+        } else {
+          if (/\.(js|scss|css)$/s.test(file)) {
+            if (!/\.min\.(js|css)$/s.test(file)) {
+              minify(file);
+            }
+          } else {
+            var reason = log.error(undefined);
+            if (/\.php$/s.test(filename_log)) {
+              reason = log.random("excluded");
+            }
+            log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
+          }
+        }
+        releaseLock();
+      };
+      return trigger();
     });
 });
 

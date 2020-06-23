@@ -20,7 +20,7 @@ class Cookies {
         }
         var cookie = unescape(document.cookie.substring(c_start, c_end));
         cookie = base64_decode(cookie);
-        if (is_json(cookie)) {
+        if (isJSON(cookie)) {
           return JSON.parse(cookie);
         }
         return cookie;

@@ -23,6 +23,7 @@ class SmartDOMDocument extends DOMDocument
   {
     parent::__construct($version, $encoding);
     $this->root_uid = $this->genHash(10);
+    $this->registerNodeClass('DOMElement', 'JSLikeHTMLElement');
   }
 
   public function genHash(int $bytes)

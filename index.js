@@ -3,16 +3,34 @@ const fs = require("fs");
 const path = require("path");
 const log = require("./libs/compiler/log");
 const core = require("./libs/compiler/core");
-const sorter = require("./libs/compiler/sorter").sorter;
-const ncp = require("ncp").ncp;
+const sorter = require("./libs/compiler/sorter");
+const process = require("process");
+const args = process.argv.slice(2);
+
 //shared packages.json
-const root_pkg = require("./package-ori.json");
+const root_pkg = require("./libs/package.json");
 const gui_pkg = require("./libs/gui/package.json");
 const app_pkg = require("./libs/js/package.json");
 const compiler_pkg = require("./libs/compiler/package.json");
 const sftp_pkg = require("./libs/bin/syncjs/package.json");
 const ytd_pkg = require("./libs/bin/ytd/package.json");
 log.clear();
+
+/**
+ * @type {"production"|"development"}
+ */
+var variant = "production";
+if (typeof args[0] != "undefined") {
+  if (args[0] == "dev") {
+    variant = "development";
+  }
+}
+
+if (variant == "production") {
+  delete root_pkg.scripts;
+  delete root_pkg.files;
+  delete root_pkg.bin;
+}
 
 Object.assign(
   root_pkg.dependencies,

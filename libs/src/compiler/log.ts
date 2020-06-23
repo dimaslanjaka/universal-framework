@@ -94,4 +94,7 @@ class log {
     return args;
   }
 }
+
+Object.assign(log, chalk);
+
 export = log;

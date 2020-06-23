@@ -36,7 +36,7 @@ function fab(...$c1)
             $c1[$i]['icon'] = "fa-question";
         }
         $return .= '
-        <a id="' . $id . '" class="fab-action fab-action-1" href="' . $c1[$i]['href'] . '" ' . trim($c1[$i]['attributes']) . '>
+        <a id="' . $id . '" class="fab-action fab-action-' . $i . '" href="' . $c1[$i]['href'] . '" ' . trim($c1[$i]['attributes']) . '>
             <i class="fas ' . $c1[$i]['icon'] . '"></i>
         </a>';
     }
