@@ -13,7 +13,7 @@ var filemanager = (function () {
             if (async) {
                 rimraf_1.default(filedir, function (err) {
                     if (!err) {
-                        log_1.default.log(log_1.default.success("done"));
+                        log_1.default.log(log_1.default.success('done'));
                     }
                     else {
                         log_1.default.log(log_1.default.error("cannot delete " + core_1.default.filelog(filedir)));
@@ -41,10 +41,10 @@ var filemanager = (function () {
     };
     filemanager.mkfile = function (file, content) {
         this.mkdir(path.dirname(file));
-        if (typeof content == "object" || Array.isArray(content)) {
+        if (typeof content == 'object' || Array.isArray(content)) {
             content = JSON.stringify(content, null, 4);
         }
-        fs.writeFileSync(file, content, { encoding: "utf-8" });
+        fs.writeFileSync(file, content, { encoding: 'utf-8' });
         return file;
     };
     filemanager.mkdir = function (dir) {
@@ -67,6 +67,9 @@ var filemanager = (function () {
                     if (exclude) {
                         if (!exclude.test(file)) {
                             filemanager.unlink(fileDir, true);
+                        }
+                        else {
+                            log_1.default.log(log_1.default.error(fileDir + " in excluded lists"));
                         }
                     }
                     else {

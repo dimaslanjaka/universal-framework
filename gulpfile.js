@@ -1,42 +1,26 @@
-const gulp = require("gulp");
-const ts = require("gulp-typescript");
-const rename = require("gulp-rename");
-const process = require("process");
-const fs = require("fs");
-const config = require("./config.json");
-const upath = require("upath");
-const path = require("path");
-const core = require("./libs/compiler/core");
-const framework = require("./libs/compiler/index");
-const log = require("./libs/compiler/log");
-const { MD5 } = require("crypto-js");
-const filemanager = require("./libs/compiler/filemanager");
+const gulp = require('gulp');
+const ts = require('gulp-typescript');
+const rename = require('gulp-rename');
+const process = require('process');
+const fs = require('fs');
+const config = require('./config.json');
+const upath = require('upath');
+const path = require('path');
+const core = require('./libs/compiler/core');
+const framework = require('./libs/compiler/index');
+const log = require('./libs/compiler/log');
+const { MD5 } = require('crypto-js');
+const filemanager = require('./libs/compiler/filemanager');
 console.clear();
-filemanager.empty(upath.join(__dirname, "tmp", "compiler"), null);
+filemanager.empty(upath.join(__dirname, 'tmp', 'compiler'), null);
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
  * Minify Views Assets
  */
-gulp.task("build", function () {
-  return createCompiler(false);
+gulp.task('build', function () {
+  return createApp(false);
 });
-
-/**
- * create compiler then app.js
- * @param {boolean} withoutView
- */
-function createCompiler(withoutView) {
-  return core.async(function () {
-    return typescriptCompiler(
-      __dirname + "/tsconfig.compiler.json",
-      "./libs/compiler/",
-      function () {
-        createApp(withoutView);
-      }
-    );
-  });
-}
 
 /**
  * Typescript compiler
@@ -52,13 +36,13 @@ function typescriptCompiler(source, destination, callback) {
     .pipe(instance())
     .pipe(
       rename(function (path) {
-        path.extname = ".js";
+        path.extname = '.js';
       })
     )
     .pipe(gulp.dest(destination, { overwrite: true }))
-    .on("end", function () {
+    .on('end', function () {
       log.log(`successfully compiled ${log.success(core.filelog(source))}`);
-      if (typeof callback == "function") {
+      if (typeof callback == 'function') {
         callback(source, destination);
       }
     });
@@ -70,29 +54,28 @@ function typescriptCompiler(source, destination, callback) {
  */
 function createApp(withoutView) {
   return typescriptCompiler(
-    __dirname + "/tsconfig.build.json",
-    "./",
+    __dirname + '/tsconfig.build.json',
+    './',
     function () {
-      log.log(
-        `successfully compiled ${log.success(
-          core.filelog("./src/MVC/themes/assets/js/app.js")
-        )}`
-      );
       return typescriptCompiler(
-        __dirname + "/tsconfig.precompiler.json",
-        "./",
-        async function (source, destination) {
+        __dirname + '/tsconfig.precompiler.json',
+        './',
+        function (source, destination) {
           var target = upath.normalizeSafe(
             upath.resolve(
-              upath.join(__dirname, "src/MVC/themes/assets/js/app.js")
+              upath.join(__dirname, 'src/MVC/themes/assets/js/app.js')
             )
           );
-          await core.async(function () {
-            minify(target);
-          });
-          if (!withoutView) {
-            multiMinify(views());
-          }
+          return typescriptCompiler(
+            __dirname + '/tsconfig.compiler.json',
+            './libs/compiler/',
+            function () {
+              minify(target);
+              if (!withoutView) {
+                multiMinify(views());
+              }
+            }
+          );
         }
       );
     }
@@ -100,28 +83,28 @@ function createApp(withoutView) {
 }
 
 // watch libs/js/**/* and views
-gulp.task("watch", function () {
+gulp.task('watch', function () {
   console.clear();
-  log.log(log.random("Listening ./libs and ./" + config.app.views));
+  log.log(log.random('Listening ./libs and ./' + config.app.views));
   return gulp
     .watch([
-      "./libs/js/**/*",
-      "./libs/src/**/*",
-      "./src/MVC/**/*",
-      "./" + config.app.views + "/**/*",
+      './libs/js/**/*',
+      './libs/src/**/*',
+      './src/MVC/**/*',
+      './' + config.app.views + '/**/*',
     ])
-    .on("change", function (file) {
+    .on('change', function (file) {
       const lockfile = upath.join(
         __dirname,
-        "tmp/compiler",
+        'tmp/compiler',
         MD5(file).toString()
       );
       const lockProcess = function () {
-        log.log(log.random("locking process"));
-        filemanager.mkfile(lockfile, "lockfile");
+        log.log(log.random('locking process'));
+        filemanager.mkfile(lockfile, 'lockfile');
       };
       const releaseLock = function () {
-        log.log(log.random("releasing process"));
+        log.log(log.random('releasing process'));
         filemanager.unlink(lockfile);
       };
       if (fs.existsSync(lockfile)) {
@@ -140,10 +123,10 @@ gulp.task("watch", function () {
           log.log(
             log
               .chalk()
-              .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
+              .yellow(`start compile ${log.random('src/MVC/themes/assets/js')}`)
           );
           return function () {
-            createCompiler(true).then(function () {
+            createApp(true).then(function () {
               releaseLock();
             });
           };
@@ -155,7 +138,7 @@ gulp.task("watch", function () {
           } else {
             var reason = log.error(undefined);
             if (/\.php$/s.test(filename_log)) {
-              reason = log.random("excluded");
+              reason = log.random('excluded');
             }
             log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
           }
@@ -166,8 +149,8 @@ gulp.task("watch", function () {
     });
 });
 
-gulp.task("composer", function () {
-  const core = require("./libs/compiler/core");
+gulp.task('composer', function () {
+  const core = require('./libs/compiler/core');
   const log = core.log;
   return core.async(function () {
     var today = new Date().toLocaleDateString();
@@ -175,22 +158,22 @@ gulp.task("composer", function () {
       new Date().setDate(new Date().getDate() - 1)
     ).toLocaleDateString();
     if (
-      !core.localStorage().getItem("composer") ||
-      core.localStorage().getItem("composer") == yesterday
+      !core.localStorage().getItem('composer') ||
+      core.localStorage().getItem('composer') == yesterday
     ) {
-      core.composer(core.root(), "update");
-      core.localStorage().setItem("composer", today);
+      core.composer(core.root(), 'update');
+      core.localStorage().setItem('composer', today);
     } else {
       today = new Date(today);
-      yesterday = new Date(core.localStorage().getItem("composer"));
-      log("Composer already updated at " + yesterday);
-      log("Today " + today);
-      log("Is Older " + today.getTime() > yesterday.getTime());
+      yesterday = new Date(core.localStorage().getItem('composer'));
+      log('Composer already updated at ' + yesterday);
+      log('Today ' + today);
+      log('Is Older ' + today.getTime() > yesterday.getTime());
     }
   });
 });
 
-gulp.task("default", gulp.series("watch"));
+gulp.task('default', gulp.series('watch'));
 
 /**
  * minify assets
@@ -200,22 +183,22 @@ function minify(item) {
   const log = core.log;
   fs.exists(item, function (exists) {
     if (exists) {
-      var config = "/src/MVC/config/" + item.replace(core.root(), "");
+      var config = '/src/MVC/config/' + item.replace(core.root(), '');
       config = core.normalize(core.root() + config);
-      config = config.replace(/\.(js|css)/s, ".json");
+      config = config.replace(/\.(js|css)/s, '.json');
       if (fs.existsSync(config)) {
         config = require(config);
       }
-      if (item.endsWith(".scss") && !item.endsWith(".min.scss")) {
+      if (item.endsWith('.scss') && !item.endsWith('.min.scss')) {
         core.scss(item);
-      } else if (item.endsWith(".css") && !item.endsWith(".min.css")) {
+      } else if (item.endsWith('.css') && !item.endsWith('.min.css')) {
         core.minCSS(item);
-      } else if (item.endsWith(".js") && !item.endsWith(".min.js")) {
-        if (!item.endsWith(".babel.js")) {
+      } else if (item.endsWith('.js') && !item.endsWith('.min.js')) {
+        if (!item.endsWith('.babel.js')) {
           core.minJS(item);
           var deleteObfuscated = false;
-          if (typeof config == "object") {
-            if (config.hasOwnProperty("obfuscate")) {
+          if (typeof config == 'object') {
+            if (config.hasOwnProperty('obfuscate')) {
               if (config.obfuscate) {
                 core.obfuscate(item);
               } else {
@@ -226,8 +209,8 @@ function minify(item) {
             }
           }
           if (deleteObfuscated) {
-            var obfuscatedjs = item.replace(/\.js$/s, ".obfuscated.js");
-            var obfuscatedminjs = item.replace(/\.js$/s, ".obfuscated.min.js");
+            var obfuscatedjs = item.replace(/\.js$/s, '.obfuscated.js');
+            var obfuscatedminjs = item.replace(/\.js$/s, '.obfuscated.min.js');
             core.unlink(obfuscatedjs);
             core.unlink(obfuscatedminjs);
           }
