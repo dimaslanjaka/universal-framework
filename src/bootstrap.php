@@ -31,7 +31,8 @@ function sort_iterable(array $arrayObj)
 
 /**
  * Include asset with fallback and callback.
- * * if found automatically call include()
+ * * if found automatically call include().
+ *
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  *
  * @param string        $fn       first file to check
@@ -265,7 +266,13 @@ function shell(string $command)
 }
 
 /**
+ * ```php
+ * // callback if function
+ * call_user_func($callback, $path)
+ * ```
  * Read file contents.
+ *
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  *
  * @param mixed $callback if null not exist return this callback
  *
@@ -336,6 +343,16 @@ function ob_get()
   ob_start();
 
   return $content;
+}
+
+$imageCache = null;
+function imgCDN(string $url)
+{
+  global $imageCache;
+  if (!$imageCache) {
+    $imageCache = new \img\cache();
+  }
+  $imageCache->url2cache($url);
 }
 
 include __DIR__ . '/MVC/themes/assets/partial/fab.php';

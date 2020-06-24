@@ -11,6 +11,12 @@ class helper
 {
   public static $key = 'AUX';
   public static $expire = 10;
+  /**
+   * Class architecture database
+   *
+   * @var array
+   */
+  public static $arch = [];
 
   public function __construct()
   {
@@ -50,7 +56,7 @@ class helper
     }
   }
 
-  static function cleanBuffer()
+  public static function cleanBuffer()
   {
     if (ob_get_level()) {
       ob_end_clean();
@@ -66,9 +72,43 @@ class helper
     }
   }
 
+  /**
+   * is url ?
+   *
+   * @param string $url
+   *
+   * @return bool
+   */
   public static function is_url($url)
   {
     return filter_var($url, FILTER_VALIDATE_URL);
+  }
+
+  /**
+   * transfor url to host (domain only).
+   *
+   * @param mixed $fallback if url is not valid return $fallback value
+   *
+   * @return string|null
+   */
+  public static function url2host(string $url, $fallback = null)
+  {
+    if (
+      isset(self::$arch[__FUNCTION__][md5($url)]) &&
+      !empty(self::$arch[__FUNCTION__][md5($url)])
+    ) {
+      return self::$arch[__FUNCTION__][md5($url)];
+    }
+    if (self::is_url($url)) {
+      $parse = self::parse_url2($url);
+      if (isset($parse['host'])) {
+        self::$arch[__FUNCTION__][md5($url)] = $parse['host'];
+
+        return $parse['host'];
+      }
+    }
+
+    return $fallback;
   }
 
   public static function include_asset($fn, $fn2 = null, $callback = null)
@@ -99,8 +139,6 @@ class helper
    * Sass Compiler.
    *
    * @requires shell_exec
-   *
-   * @param string $path
    */
   public static function sass(string $path)
   {
@@ -128,8 +166,8 @@ class helper
   {
     $log = __DIR__ . '/tmp/php-error.log';
     if ($log = realpath($log)) {
-      if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-        if (self::is_header('Log') == 'php') {
+      if ('DELETE' == $_SERVER['REQUEST_METHOD']) {
+        if ('php' == self::is_header('Log')) {
           unlink($log);
         }
       }
@@ -143,8 +181,6 @@ class helper
 
   /**
    * Check if header request has $any.
-   *
-   * @param string $any
    *
    * @return string|null
    */
@@ -187,7 +223,6 @@ class helper
   /**
    * Clean special characters from string.
    *
-   * @param string $string
    * @param string $replace
    *
    * @return string
@@ -285,9 +320,6 @@ class helper
    * Fix path string `default OS` separate slash and replaced by `/`
    * * WIN (\\)
    * * LINUX (/).
-   *
-   * @param string $path
-   * @param int    $maxlength
    *
    * @return string
    */
@@ -401,7 +433,6 @@ class helper
   /**
    * Set cookie helper.
    *
-   * @param string    $name
    * @param mixed     $value
    * @param int|float $day
    * @param string    $path
@@ -424,8 +455,6 @@ class helper
 
   /**
    * Get Cookie By Name.
-   *
-   * @param string $name
    */
   public static function getcookie(string $name)
   {
