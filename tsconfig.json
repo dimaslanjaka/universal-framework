@@ -10,6 +10,7 @@
     "allowJs": true,
     "watch": false,
     "removeComments": false,
+    "resolveJsonModule": true,
     "declarationDir": "./tmp/js",
     "target": "ES5",
     "lib": [
@@ -25,7 +26,12 @@
     ]
   },
   "compileOnSave": true,
-  "include": ["./libs/src/**/*", "./libs/js/**/*", "./views/**/*", "./src/MVC/themes/**/*"],
+  "include": [
+    "./libs/src/**/*",
+    "./libs/js/**/*",
+    "./views/**/*",
+    "./src/MVC/themes/**/*"
+  ],
   "exclude": [
     "node_modules",
     "**/.vscode/**",

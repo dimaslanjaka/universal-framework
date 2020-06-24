@@ -42,8 +42,8 @@
     "tooling"
   ],
   "scripts": {
-    "preinstall": "npm i -g typescript gulp --prefer-offline",
-    "postinstall": "node ./index.js dev && npm install --prefer-offline && node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build && node ./index-typings.js",
+    "preinstall": "node ./index.js dev",
+    "postinstall": "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build && node ./index-typings.js",
     "compiler": "tsc -p tsconfig.compiler.json"
   },
   "bin": "./libs/bin/syncjs/bin",
@@ -71,11 +71,9 @@
     "@types/sweetalert": "*"
   },
   "prettier": {
-    "$schema": "http://json.schemastore.org/prettierrc",
     "bracketSpacing": true,
-    "trailingComma": "es5",
     "tabWidth": 2,
-    "semi": false,
+    "semi": true,
     "singleQuote": true,
     "overrides": [
       {

@@ -2,7 +2,7 @@
 var tslib_1 = require("tslib");
 var fancy_log_1 = tslib_1.__importDefault(require("fancy-log"));
 var chalk_1 = tslib_1.__importDefault(require("chalk"));
-var log = (function () {
+var log = /** @class */ (function () {
     function log() {
         var arg = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -12,27 +12,56 @@ var log = (function () {
             log.log(arguments);
         }
     }
+    /**
+     * Chalk instance
+     */
     log.chalk = function () {
         return chalk_1.default;
     };
+    /**
+     * return greenBright color
+     * @param msg
+     */
     log.success = function (msg) {
         return chalk_1.default.greenBright(msg);
     };
+    /**
+     * return redBright color
+     * @param msg
+     */
     log.error = function (msg) {
         return chalk_1.default.redBright(msg);
     };
+    /**
+     * Clear console
+     */
     log.clear = function () {
         return console.clear();
     };
+    /**
+     * Generate Random Hex Color
+     */
     log.hexColor = function () {
         return Math.floor(Math.random() * 16777215).toString(16);
     };
+    /**
+     * Random Color
+     * @param msg
+     */
     log.random = function (msg) {
         return this.hex("#" + this.hexColor(), msg);
     };
+    /**
+     * Output log custom hex color
+     * @param hex hex color
+     * @param msg message to output
+     */
     log.hex = function (hex, msg) {
         return chalk_1.default.hex(hex)(msg);
     };
+    /**
+     * console.log
+     */
     log.log = function () {
         var arg = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -69,6 +98,9 @@ var log = (function () {
         }
         return args;
     };
+    /**
+     * Indicator rainbow
+     */
     log.enable_rainbow = false;
     log.rainbow = function (want) {
         log.enable_rainbow = want;

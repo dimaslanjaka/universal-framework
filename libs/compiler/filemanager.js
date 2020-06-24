@@ -4,10 +4,17 @@ var rimraf_1 = tslib_1.__importDefault(require("rimraf"));
 var fs = tslib_1.__importStar(require("fs"));
 var path = tslib_1.__importStar(require("path"));
 var log_1 = tslib_1.__importDefault(require("./log"));
+//import { core } from "./core";
 var core_1 = tslib_1.__importDefault(require("./core"));
-var filemanager = (function () {
+var filemanager = /** @class */ (function () {
     function filemanager() {
     }
+    /**
+     * Delete file or directory recursive
+     * @param filedir
+     * @param async
+     * @returns null = filedir not exists, false = delete filedir failed, true = success
+     */
     filemanager.unlink = function (filedir, async) {
         var execute = function () {
             if (async) {
@@ -39,6 +46,11 @@ var filemanager = (function () {
             return false;
         }
     };
+    /**
+     * create file recursive
+     * @param file
+     * @param content
+     */
     filemanager.mkfile = function (file, content) {
         this.mkdir(path.dirname(file));
         if (typeof content == 'object' || Array.isArray(content)) {
@@ -47,6 +59,10 @@ var filemanager = (function () {
         fs.writeFileSync(file, content, { encoding: 'utf-8' });
         return file;
     };
+    /**
+     * create directory recursive
+     * @param dir
+     */
     filemanager.mkdir = function (dir) {
         if (!fs.existsSync(path.dirname(dir))) {
             this.mkdir(path.dirname(dir));
@@ -56,6 +72,11 @@ var filemanager = (function () {
         }
         return dir;
     };
+    /**
+     * remove all files/folders except matches regex
+     * @param folder
+     * @param exclude
+     */
     filemanager.empty = function (folder, exclude) {
         fs.readdir(folder, function (err, files) {
             if (err) {

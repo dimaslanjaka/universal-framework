@@ -1,24 +1,24 @@
 {
   "database": {
-    "user": "database_username",
-    "pass": "database_password",
-    "dbname": "database_name",
-    "host": "database_host",
-    "port": 3306
+    "user": "string",
+    "pass": "string",
+    "dbname": "string",
+    "host": "string",
+    "port": "number"
   },
   "google": {
-    "key": "Google Key",
-    "client": "GoogleClient.apps.googleusercontent.com",
-    "secret": "GoogleSecret"
+    "key": "string",
+    "client": "string",
+    "secret": "string"
   },
   "cache": {
-    "enable": true,
-    "ext": "\/18\/06\/2020\/08\/35\/45\/108",
-    "key": "api",
-    "timeout": 60
+    "enable": "boolean",
+    "ext": "string",
+    "key": "string",
+    "timeout": "number"
   },
   "htaccess": {
-    "cache": true
+    "cache": "boolean"
   },
   "vscode": {
     "tasks": [
@@ -28,7 +28,7 @@
           {
             "label": "Compiler Dist",
             "type": "shell",
-            "command": "npm run start",
+            "command": "npm run index",
             "isBackground": true,
             "presentation": {
               "echo": true,
@@ -45,7 +45,7 @@
           {
             "label": "Compiler Dev",
             "type": "shell",
-            "command": "npm run watch",
+            "command": "npm run index-watch",
             "isBackground": true,
             "presentation": {
               "echo": true,
@@ -64,7 +64,12 @@
     ]
   },
   "app": {
-    "views": "views",
-    "root": ""
-  }
+    "views": "string",
+    "root": "string"
+  },
+  "security": {
+    "salt": "string"
+  },
+  "root": "string",
+  "$schema": "string"
 }

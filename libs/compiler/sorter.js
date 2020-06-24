@@ -1,9 +1,14 @@
 "use strict";
-var sorter = (function () {
+var sorter = /** @class */ (function () {
     function sorter() {
     }
+    /**
+     * Sort Ascending Recursive
+     * @param {Object|Array<any>} object
+     */
     sorter.ascending = function (object) {
         if (typeof object != "object" || object instanceof Array) {
+            // Not to sort the array
             return object;
         }
         var keys = Object.keys(object);
@@ -22,9 +27,14 @@ var sorter = (function () {
             return result;
         }, {});
     };
+    /**
+     * reorder object/array
+     * @param {Object} parsed
+     */
     sorter.reorder = function (parsed) {
         var ordered = [];
         var is_array = Array.isArray(parsed);
+        //console.log('is_array ? ' + is_array);
         if (is_array) {
             parsed.forEach(function (item, index) {
                 if (typeof item == "object") {
@@ -41,6 +51,7 @@ var sorter = (function () {
                 ordered[key] = parsed[key];
             });
         }
+        //console.log(ordered);
         return this.ascending(ordered);
     };
     return sorter;

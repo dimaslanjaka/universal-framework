@@ -4,7 +4,7 @@
     "target": "ES5",
     "module": "amd",
     "declaration": false,
-    "removeComments": true,
+    "removeComments": false,
     "preserveConstEnums": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,

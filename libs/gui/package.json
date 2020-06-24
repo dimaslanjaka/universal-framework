@@ -21,5 +21,8 @@
     "pug": "^3.0.0",
     "sequelize": "^5.21.13"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/express": "*",
+    "@types/sequelize": "*"
+  }
 }

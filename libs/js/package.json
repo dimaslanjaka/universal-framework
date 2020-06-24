@@ -2,7 +2,8 @@
   "devDependencies": {
     "@types/bootstrap": "*",
     "@types/codemirror": "*",
-    "@types/jquery": "*"
+    "@types/jquery": "*",
+    "@types/crypto-js": "*"
   },
   "licenses": [
     {
