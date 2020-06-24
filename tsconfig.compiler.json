@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "lib": ["DOM", "ES2015", "ES7"],
     "rootDir": "./libs/src",
-    "outDir": "./libs/compiler",
+    "outDir": "./libs",
     "noLib": false,
     "esModuleInterop": true,
     "importHelpers": true

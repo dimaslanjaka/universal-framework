@@ -6,6 +6,9 @@ var filemanager_1 = tslib_1.__importDefault(require("./filemanager"));
 var log_1 = tslib_1.__importDefault(require("./log"));
 var sorter_1 = tslib_1.__importDefault(require("./sorter"));
 var process_1 = tslib_1.__importDefault(require("./process"));
+var locutus = tslib_1.__importStar(require("../locutus/src/index"));
+var sprintf = locutus.php.strings.sprintf;
+//var sprintf = require('./libs/src/locutus/src/php/strings/sprintf');
 /**
  * @class {core}
  * @extends {core}
@@ -29,6 +32,6 @@ var framework = /** @class */ (function (_super) {
     framework.process = process_1.default;
     return framework;
 }(core_1.default));
-var sprintf = require('./libs/locutus/php/strings/sprintf');
 module.exports = sprintf;
 module.exports = framework;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvY29tcGlsZXIvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSx3REFBMEI7QUFDMUIsd0RBQW9DO0FBQ3BDLHNFQUF3QztBQUN4QyxzREFBd0I7QUFDeEIsNERBQThCO0FBQzlCLDhEQUFnQztBQUNoQyxvRUFBZ0Q7QUFDaEQsSUFBSSxPQUFPLEdBQUcsT0FBTyxDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsT0FBTyxDQUFDO0FBQzFDLHNFQUFzRTtBQUV0RTs7OztHQUlHO0FBQ0g7SUFBd0IscUNBQUk7SUFBNUI7UUFBQSxxRUFXQztRQVZDLGlCQUFXLEdBQUcscUJBQVcsQ0FBQztRQUcxQixTQUFHLEdBQUcsYUFBRyxDQUFDO1FBS1YsYUFBTyxHQUFHLGlCQUFPLENBQUM7O0lBRXBCLENBQUM7SUFUUSxxQkFBVyxHQUFHLHFCQUFXLENBQUM7SUFDMUIsY0FBSSxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUM7SUFFbEIsYUFBRyxHQUFHLGFBQUcsQ0FBQztJQUNWLGVBQUssR0FBRztRQUNiLE1BQU0sRUFBRSxnQkFBTTtLQUNmLENBQUM7SUFFSyxpQkFBTyxHQUFHLGlCQUFPLENBQUM7SUFDM0IsZ0JBQUM7Q0FBQSxBQVhELENBQXdCLGNBQUksR0FXM0I7QUFHRCxNQUFNLENBQUMsT0FBTyxHQUFHLE9BQU8sQ0FBQztBQUR6QixpQkFBUyxTQUFTLENBQUMifQ==
