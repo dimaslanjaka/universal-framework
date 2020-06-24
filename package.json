@@ -7,7 +7,9 @@
         "url": "https://github.com/dimaslanjaka/universal-framework/issues"
     },
     "dependencies": {
+        "@types/axios": "^0.14.0",
         "animate.css": "*",
+        "axios": "^0.19.2",
         "bootbox": "*",
         "chalk": "*",
         "chokidar": "*",
