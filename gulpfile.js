@@ -6,7 +6,8 @@ const config = require('./config.json');
 const upath = require('upath');
 const path = require('path');
 const framework = require('./libs/compiler/index');
-const log = framework.log;
+const log = require('./libs/compiler/log');
+const process = require('./libs/compiler/process');
 console.clear();
 
 /**
@@ -43,7 +44,9 @@ gulp.task('watch', function () {
               .chalk()
               .yellow(`start compile ${log.random('src/MVC/themes/assets/js')}`)
           );
-          return createApp(true);
+          return process.doProcess('builder' + file, function () {
+            createApp(true);
+          });
         } else {
           if (/\.(js|scss|css)$/s.test(file)) {
             if (!/\.min\.(js|css)$/s.test(file)) {
@@ -51,14 +54,14 @@ gulp.task('watch', function () {
             }
           } else {
             var reason = log.error(undefined);
-            if (/\.php$/s.test(filename_log)) {
+            if (/\.(php|log|txt|htaccess)$/s.test(filename_log)) {
               reason = log.random('excluded');
             }
             log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
           }
         }
       };
-      return doProcess(file, trigger);
+      return trigger();
     });
 });
 
@@ -164,60 +167,48 @@ function multiMinify(assets) {
  * Create App.js
  * @param {boolean} withoutView false to not compile views javascripts
  */
-function createApp(withoutView) {
-  return typescriptCompiler(
-    __dirname + '/tsconfig.build.json',
-    './',
-    function () {
-      return typescriptCompiler(
-        __dirname + '/tsconfig.precompiler.json',
-        './',
-        function (source, destination) {
-          var target = upath.normalizeSafe(
-            upath.resolve(
-              upath.join(__dirname, 'src/MVC/themes/assets/js/app.js')
-            )
-          );
-          return typescriptCompiler(
-            __dirname + '/tsconfig.compiler.json',
-            './libs/compiler/',
-            function () {
-              minify(target);
-              if (!withoutView) {
-                multiMinify(views());
-              }
-            }
-          );
-        }
-      );
-    }
+async function createApp(withoutView) {
+  var target = upath.normalizeSafe(
+    upath.resolve(upath.join(__dirname, 'src/MVC/themes/assets/js/app.js'))
   );
+  await typescriptCompiler(__dirname + '/tsconfig.build.json', './');
+  await typescriptCompiler(__dirname + '/tsconfig.precompiler.json', './');
+  await typescriptCompiler(
+    __dirname + '/tsconfig.compiler.json',
+    './libs/compiler/'
+  );
+  minify(target);
+  if (!withoutView) {
+    multiMinify(views());
+  }
 }
 
 /**
  * Typescript compiler
  * @param {string} source
  * @param {string} destination
- * @param {Function} callback
- * @returns {function(source,destination)} if callback is function
+ * @param {function(source,destination)} callback
  */
 function typescriptCompiler(source, destination, callback) {
   const instance = ts.createProject(source);
-  return instance
-    .src()
-    .pipe(instance())
-    .pipe(
-      rename(function (path) {
-        path.extname = '.js';
-      })
-    )
-    .pipe(gulp.dest(destination, { overwrite: true }))
-    .on('end', function () {
-      log.log(
-        `successfully compiled ${log.success(framework.filelog(source))}`
-      );
-      if (typeof callback == 'function') {
-        callback(source, destination);
-      }
-    });
+  return new Promise((resolve, reject) => {
+    instance
+      .src()
+      .pipe(instance())
+      .pipe(
+        rename(function (path) {
+          path.extname = '.js';
+        })
+      )
+      .pipe(gulp.dest(destination, { overwrite: true }))
+      .on('end', function () {
+        log.log(
+          `successfully compiled ${log.success(framework.filelog(source))}`
+        );
+        if (typeof callback == 'function') {
+          callback(source, destination);
+        }
+        return resolve(true);
+      });
+  });
 }

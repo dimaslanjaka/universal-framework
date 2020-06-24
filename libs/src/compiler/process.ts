@@ -9,12 +9,13 @@ filemanager.empty(upath.join(coreProcess.cwd(), 'tmp', 'compiler'), null);
 
 class process {
   static verbose: boolean = false;
+  static tmp = 'tmp/compiler';
   /**
    * Create lock file
    * @param file
    */
   static lockCreate(file: string) {
-    return upath.join(coreProcess.cwd(), 'tmp/compiler', MD5(file).toString());
+    return upath.join(coreProcess.cwd(), this.tmp, MD5(file).toString());
   }
   /**
    * lock the process
@@ -58,16 +59,28 @@ class process {
     if (typeof options.verbose == 'boolean') {
       this.verbose = options.verbose;
     }
+    lockfile = process.lockCreate(lockfile);
     if (fs.existsSync(lockfile)) {
+      log.log(
+        log.error(`Process locked (${lockfile}). please provide unique ids.`)
+      );
       return null;
     }
-    this.lockProcess(lockfile);
-    if (typeof callback == 'function') {
-      callback(lockfile);
-    } else if (typeof options == 'function') {
-      options(lockfile);
-    }
-    this.releaseLock(lockfile);
+    const doCall = function () {
+      if (typeof callback == 'function') {
+        return callback(lockfile);
+      } else if (typeof options == 'function') {
+        return options(lockfile);
+      }
+    };
+    process.lockProcess(lockfile);
+    const load = new Promise((resolve, reject) => {
+      doCall();
+      resolve(true);
+    });
+    load.then(function () {
+      process.releaseLock(lockfile);
+    });
   }
 }
 

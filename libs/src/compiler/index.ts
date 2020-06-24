@@ -4,27 +4,17 @@ import filemanager from './filemanager';
 import log from './log';
 import sorter from './sorter';
 import process from './process';
-import * as locutus from '../locutus/src/index';
-var sprintf = locutus.php.strings.sprintf;
-//var sprintf = require('./libs/src/locutus/src/php/strings/sprintf');
 
-/**
- * @class {core}
- * @extends {core}
- * @inheritdoc {core}
- */
 class framework extends core {
-  filemanager = filemanager;
-  static filemanager = filemanager;
+  filemanager: filemanager = filemanager;
+  static filemanager: filemanager = filemanager;
   static misc = misc.dimas;
-  log = log;
-  static log = log;
-  static array = {
-    sorter: sorter,
-  };
-  process = process;
-  static process = process;
+  log: log = log;
+  static log: log = log;
+  sorter: sorter = sorter;
+  static sorter: sorter = sorter;
+  process: process = process;
+  static process: process = process;
 }
 
 export = framework;
-module.exports = sprintf;

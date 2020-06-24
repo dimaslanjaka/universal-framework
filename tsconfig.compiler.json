@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "ES5",
     "experimentalDecorators": true,
+    "strict": false,
     "emitDecoratorMetadata": true,
     "inlineSourceMap": true,
     "allowUnreachableCode": false,
@@ -12,7 +13,19 @@
     "allowJs": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "lib": ["DOM", "ES2015", "ES7"],
+    "lib": [
+      "DOM",
+      "ES2015",
+      "ES7",
+      "DOM.Iterable",
+      "ES2015",
+      "ESNext",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020"
+    ],
     "rootDir": "./libs/src",
     "outDir": "./libs",
     "noLib": false,
