@@ -27,6 +27,7 @@ date_default_timezone_set('Asia/Jakarta');
 $session = new \Session\session(3600, folder_session());
 $router = new \MVC\router();
 $router->session = $session;
+$router->shutdown('telkomsel');
 
 // start environtment as development for debugging
 $env = 'production';

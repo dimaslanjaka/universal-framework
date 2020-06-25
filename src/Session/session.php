@@ -5,6 +5,10 @@ namespace Session;
 use DateTime;
 use Filemanager\file;
 
+if (!function_exists('folder_session')) {
+  include __DIR__ . '/../MVC/loader.php';
+}
+
 if (!defined('ROOT')) {
   define('ROOT', __DIR__);
 }

@@ -43,7 +43,9 @@ goto END
 
 :LABEL-3 PING
 cls
-cmd.exe /k "@echo OFF & ping google.com -t"
+set /p domainhost="Enter Host: "
+IF %domainhost%=="" (set domainhost=google.com)
+cmd.exe /k "@echo OFF & ping %domainhost% -t"
 goto END
 
 :END

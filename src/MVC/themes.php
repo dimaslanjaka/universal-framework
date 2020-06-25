@@ -2,7 +2,9 @@
 
 namespace MVC;
 
-include __DIR__ . '/loader.php';
+if (!function_exists('folder_session')) {
+  include __DIR__ . '/loader.php';
+}
 
 use JSON\json;
 
@@ -27,7 +29,7 @@ class themes
   public function __construct()
   {
     /**
-     * Load image cache if exists
+     * Load image cache if exists.
      */
     $imgproxy = isset($_REQUEST['image-proxy']) ? $_REQUEST['image-proxy'] : (isset($_REQUEST['img-source']) ? $_REQUEST['img-source'] : null);
     if ($imgproxy) {
@@ -38,7 +40,7 @@ class themes
       }
     }
 
-    /**
+    /*
      * Load admin utility
      */
     if ($this->is_admin()) {
@@ -116,6 +118,26 @@ class themes
     $config_theme = json_decode(file_get_contents($this->config_folder . '/theme-admin.json'), true);
     $this->admin_user = $config_theme['user'];
     $this->admin_pass = $config_theme['pass'];
+  }
+
+  /**
+   * Turn zone into maintenance mode (Maintenance page).
+   *
+   * @param string $zone if empty, will turn into maintenance mode in all zone
+   *
+   * @return \MVC\themes
+   */
+  public function shutdown(string $zone)
+  {
+    $current = get_zone();
+
+    if ($current == $zone) {
+      maintenance();
+    } elseif (empty($zone)) {
+      maintenance();
+    }
+
+    return $this;
   }
 
   public function published($time)

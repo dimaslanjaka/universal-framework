@@ -13,7 +13,7 @@
     "libs/bin/php-obfuscate"
   ],
   "require": {
-    "php": "^5.6 || ^7.0",
+    "php": "^5.6 || ^7.1",
     "ext-json": "*",
     "ext-curl": "*",
     "ext-mbstring": "*",
