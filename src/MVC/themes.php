@@ -2,6 +2,8 @@
 
 namespace MVC;
 
+include __DIR__ . '/loader.php';
+
 use JSON\json;
 
 class themes

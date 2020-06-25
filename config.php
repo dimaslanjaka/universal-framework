@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * VSCode require extension php intelephense
+ */
 require_once __DIR__ . '/vendor/autoload.php';
 
 // set root into current directory
@@ -21,47 +24,7 @@ define('UID', $uid);
 // set default timezone
 date_default_timezone_set('Asia/Jakarta');
 
-// maintainer
-function maintenance()
-{
-  include __DIR__ . '/maintenance.php';
-  exit;
-}
-
-function show_error()
-{
-  error_reporting(E_ALL);
-  ini_set('display_errors', 'On');
-}
-
-/**
- * Session zones.
- */
-$folder_session = null;
-if (!\Cookie\helper::has("zone{$uri}", false)) {
-  $zone = \MVC\helper::parse_url2(\MVC\helper::geturl());
-  if (isset($zone['path'])) {
-    $zone = $zone['path'];
-    $zone = array_values(array_filter(explode('/', $zone)));
-    if (isset($zone[0])) {
-      \Cookie\helper::hours("zone{$uri}", $zone[0], 24, $uri);
-    }
-  }
-}
-
-$zone_division = \Cookie\helper::get("zone{$uri}", false);
-switch ($zone_division) {
-  case 'coupon':
-    //maintenance();
-    //$folder_session = \Filemanager\file::folder(__DIR__ . '/tmp/sessions/' . $zone[0]);
-    break;
-  default:
-    if (!\MVC\helper::isLocal()) {
-      //maintenance();
-    }
-}
-
-$session = new \Session\session(3600, $folder_session);
+$session = new \Session\session(3600, folder_session());
 $router = new \MVC\router();
 $router->session = $session;
 

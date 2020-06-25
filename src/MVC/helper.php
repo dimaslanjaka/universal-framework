@@ -12,7 +12,7 @@ class helper
   public static $key = 'AUX';
   public static $expire = 10;
   /**
-   * Class architecture database
+   * Class architecture database.
    *
    * @var array
    */
@@ -33,6 +33,16 @@ class helper
     }
   }
 
+  public static function config()
+  {
+    return \Filemanager\file::get(ROOT . '/config.json', true);
+  }
+
+  /**
+   * Get Header Request Accept.
+   *
+   * @return void
+   */
   public static function HeaderAccept()
   {
     if (isset($_SERVER['HTTP_ACCEPT']) && $accept = $_SERVER['HTTP_ACCEPT']) {
@@ -46,16 +56,24 @@ class helper
         case 'application/json':
           return 'json';
           break;
-        case strpos($accept, 'application/json') >= 0:
+          /*case strpos($accept, 'application/json') >= 0:
           return 'has_json';
           break;
         case strpos($accept, 'application/javascript') >= 0:
           return 'has_javascript';
+          break;*/
+        default:
+          return $accept;
           break;
       }
     }
   }
 
+  /**
+   * Clean output buffers.
+   *
+   * @return void
+   */
   public static function cleanBuffer()
   {
     if (ob_get_level()) {
