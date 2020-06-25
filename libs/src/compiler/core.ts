@@ -82,7 +82,11 @@ class core {
    * @param {string[]} [filelist]
    * @return {Array}
    */
-  static readdir(dir: import('fs').PathLike, filelist: string[]): Array<any> {
+  static readdir(
+    dir: import('fs').PathLike,
+    filelist: string[],
+    exclude: Array<string | RegExp>
+  ): Array<any> {
     if (!dir) return null;
     var self = this;
     if (!dir.toString().endsWith('/')) {
@@ -92,11 +96,26 @@ class core {
     filelist = filelist || [];
     files.forEach(function (file) {
       if (fs.statSync(dir + file).isDirectory()) {
-        filelist = self.readdir(dir + file + '/', filelist);
+        filelist = self.readdir(dir + file + '/', filelist, exclude);
       } else {
         filelist.push(path.resolve(dir + file));
       }
     });
+    if (exclude && exclude.length) {
+      exclude.forEach(function (ex) {
+        filelist = filelist.filter(function (item) {
+          var allow = null;
+          if (ex instanceof RegExp) {
+            allow = !ex.test(item);
+          } else {
+            var matches = item.indexOf(ex) !== -1;
+            allow = !matches;
+          }
+          console.log(allow, ex);
+        });
+      });
+    }
+
     return filelist;
   }
 
@@ -197,7 +216,7 @@ class core {
     var js = new Array();
     fs.exists(folder, function (exists) {
       if (exists && fs.lstatSync(folder).isDirectory()) {
-        var read = self.readdir(folder, []);
+        var read = self.readdir(folder, [], []);
         if (Array.isArray(read)) {
           read.forEach((file) => {
             if (!/\.min\.js$/s.test(file) && /\.js$/s.test(file)) {

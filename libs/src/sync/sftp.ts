@@ -2,13 +2,17 @@ import * as upath from 'upath';
 import { readFileSync } from 'fs';
 import { Client } from 'scp2';
 import Config from './Config';
+import local from './local';
 
 var Client2 = require('scp2').Client;
 
 export default class sftp {
   client: Client;
+  local: local;
 
-  constructor(private config: Config) {}
+  constructor(private config: Config) {
+    this.local = new local(config);
+  }
 
   connect(): Promise<string> {
     ///

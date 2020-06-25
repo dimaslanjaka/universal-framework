@@ -3,7 +3,7 @@ import * as upath from 'upath';
 import * as fs from 'fs';
 import * as process from 'process';
 import chokidar from 'chokidar';
-import observatory from 'observatory';
+import observatory from './../observatory/lib/observatory';
 import { Client } from 'scp2';
 import { readFileSync } from 'fs';
 import sftp from './sftp';
@@ -53,17 +53,13 @@ export default class sync {
 
         return true;
       })
-      .then(() => {
+      .then(async () => {
         this.task.status('connecting server');
 
-        return this.sftp.connect();
-      })
-      .then((any) => {
-        //console.log(any);
-        // this.cli.stopProgress();
-        //this.task.done(`Connected ${any}`).details(this.config.host);
-        //this.cli.workspace();
-        //this.task.done(any);
+        const any = await this.sftp.connect();
+        //this.task.done(any).details(this.config.host);
+        console.log(this.sftp.local.fetch());
+        //console.log(this.config.ignores);
       });
   }
 }

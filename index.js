@@ -9,9 +9,9 @@ const args = process.argv.slice(2);
 
 //shared packages.json
 const root_pkg = require('./libs/package.json');
-const gui_pkg = require('./libs/gui/package.json');
+const gui_pkg = require('./libs/src/gui/package.json');
 const app_pkg = require('./libs/js/package.json');
-const compiler_pkg = require('./libs/compiler/package.json');
+const compiler_pkg = require('./libs/src/compiler/package.json');
 const sftp_pkg = require('./libs/bin/syncjs/package.json');
 const ytd_pkg = require('./libs/bin/ytd/package.json');
 const locutus_pkg = require('./libs/src/locutus/package.json');

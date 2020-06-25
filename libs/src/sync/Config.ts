@@ -71,6 +71,12 @@ export default class Config implements SyncConfig {
     return new Promise<void>((resolve, reject) => {
       this._fetch();
       this._expand();
+      var ignores = [/node\_modules/, /vendor/, /\.git/];
+      if (this.ignores.length) {
+        this.ignores = this.ignores.concat(ignores);
+      } else {
+        this.ignores = ignores;
+      }
 
       // Temporary
       if (!this.password) {
@@ -85,7 +91,7 @@ export default class Config implements SyncConfig {
 
   private _fetch() {
     if (existsSync(this._filename)) {
-      let configraw;
+      let configraw: Buffer;
       if ((configraw = readFileSync(this._filename))) {
         try {
           this._config = parse(configraw.toString());
