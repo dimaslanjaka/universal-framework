@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -22,7 +22,7 @@ echo "DIR is '$DIR'"
 clear
 cd $DIR
 
-php composer.phar update -o
+composer update -o
 npm update
 types-installer install
 

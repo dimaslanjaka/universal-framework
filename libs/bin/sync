@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-var path = require('path');
-var Sync = require(path.resolve(__dirname, './syncjs/dist/index.js')).default;
-
-new Sync();

@@ -68,14 +68,16 @@ function pre(...$obj)
   echo '</pre>';
 }
 
-/**
- * Check is json string.
- *
- * @return bool
- */
-function is_json(string $string)
-{
-  return \JSON\json::is_json($string);
+if (!function_exists('is_json')) {
+  /**
+   * Check is json string.
+   *
+   * @return bool
+   */
+  function is_json(string $string)
+  {
+    return \JSON\json::is_json($string);
+  }
 }
 
 /**
@@ -353,6 +355,35 @@ function imgCDN(string $url)
     $imageCache = new \img\cache();
   }
   $imageCache->url2cache($url);
+}
+
+/**
+ * htaccess generator
+ *
+ * @param boolean $deny default deny access. default (true)
+ * @param boolean $DirectPHP allow direct php access. default (false)
+ * @param boolean $allowStatic allow static files access. default (true)
+ */
+function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
+{
+  $ht = '';
+  if ($deny) $ht .= 'deny from all';
+  if (!$DirectPHP) {
+    $ht .= 'RewriteEngine On
+    RewriteRule ^.*\.php$ - [F,L,NC]
+    <Files (file|class)\.php>
+      order allow,deny
+      deny from all
+      allow from 127.0.0.1
+      allow from 192.168.0.1
+    </Files>';
+  }
+  if ($allowStatic) {
+    $ht .= '<Files ~ "\.(css|js|png|jpg|svg|jpeg|ico|gif)$">
+  Allow from all
+</Files>';
+  }
+  return $ht;
 }
 
 include __DIR__ . '/MVC/themes/assets/partial/fab.php';

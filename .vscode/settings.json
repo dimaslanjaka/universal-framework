@@ -86,7 +86,7 @@
   "git.smartCommitChanges": "all",
   "git.supportCancellation": false,
   "github.gitAuthentication": true,
-  "intelephense.maxMemory": 500,
+  "intelephense.maxMemory": 1500,
   "intelephense.telemetry.enabled": false,
   "intelephense.trace.server": "off",
   "markdown.extension.list.indentationSize": "adaptive",

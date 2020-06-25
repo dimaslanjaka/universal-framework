@@ -50,6 +50,8 @@ class session
     }
     session_save_path($folder);
 
+    session_set_cookie_params($timeout);
+
     ini_set('session.gc_maxlifetime', $timeout);
     ini_set('session.cookie_lifetime', $timeout);
     ini_set('session.gc_probability', 100);
