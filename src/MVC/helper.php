@@ -144,9 +144,11 @@ class helper
   {
     $source = null;
     foreach ($fn as $src) {
-      if (file_exists($src) && is_file($src) && $src = realpath($src)) {
-        $source = $src;
-        break;
+      if ($src && !empty($src)) {
+        if (file_exists($src) && is_file($src) && $src = realpath($src)) {
+          $source = $src;
+          break;
+        }
       }
     }
 
@@ -877,7 +879,7 @@ class helper
     return join(PHP_EOL, $_SERVER);
   }
 
-  public static function get_url_path(string $path, bool $cache = null)
+  public static function get_url_path($path, bool $cache = null)
   {
     if ($realpath = realpath($path)) {
       $f = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', $realpath);

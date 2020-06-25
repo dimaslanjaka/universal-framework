@@ -6,12 +6,13 @@
 
 # Requirements
 
-| Programs                            | Links                                                       |
-| ----------------------------------- | ----------------------------------------------------------- |
-| NodeJS                              | [download](https://nodejs.org/en/blog/release/v10.16.0/)    |
-| vscode                              | powerfull syntax highlight and usage command helper         |
-| python 2.7                          | ./libs/Windows/x64/python2.7 or download from official site |
-| php intelephense (vscode extension) |                                                             |
+| Programs                            | Links                                                         |
+| ----------------------------------- | ------------------------------------------------------------- |
+| NodeJS                              | [download](https://nodejs.org/en/blog/release/v10.16.0/) v10^ |
+| vscode                              | powerfull syntax highlight and usage command helper           |
+| python 2.7                          | ./libs/Windows/x64/python2.7 or download from official site   |
+| php intelephense (vscode extension) | latest                                                        |
+| PHP                                 | 7.1^                                                          |
 
 # Support
 

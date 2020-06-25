@@ -86,7 +86,7 @@ class element
     return $this->dom->saveHTML();
   }
 
-  public function css(array $source, array $attr = ['rel' => 'stylesheet'])
+  public function css(array $source)
   {
     $result = '';
     $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';

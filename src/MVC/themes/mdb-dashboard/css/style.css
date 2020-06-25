@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body {
   height: 100%;
@@ -45,7 +46,7 @@ pre {
 pre:before:not(.CodeMirror-line) {
   color: #ccc;
   font-family: "Font Awesome 5 Pro";
-  content: attr(title) "\00a0\f101\00a0\a";
+  content: attr(title) "  \a";
   white-space: pre;
 }
 
@@ -57,11 +58,11 @@ pre:before:not(.CodeMirror-line) {
 *[before]::before {
   color: #ccc;
   font-family: "Font Awesome 5 Pro";
-  content: attr(before) "\00a0\f101\00a0\A";
+  content: attr(before) "  \a";
   white-space: pre;
 }
 
-[aria-disabled="true"],
+[aria-disabled=true],
 [disabled] {
   pointer-events: none;
   opacity: 0.4;
@@ -111,7 +112,7 @@ pre:before:not(.CodeMirror-line) {
   text-transform: capitalize;
 }
 
-.md-form input.form-control[type="datetime-local"] ~ label {
+.md-form input.form-control[type=datetime-local] ~ label {
   transform: translateY(-50%);
   font-size: 0.8rem;
 }
@@ -139,4 +140,8 @@ div.fullscreen {
   top: 0;
   left: 0;
   background-color: lightblue;
+}
+
+.dynamic-bg {
+  background-image: url("https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png");
 }

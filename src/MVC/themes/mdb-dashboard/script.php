@@ -38,18 +38,6 @@ if (defined('jquery-ui')) {
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>';
 }
 
-
-// include content css
-if (isset($content) && file_exists($content)) {
-  //$contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
-  $contentCSS = preg_replace('/\.php$/s', '.css', $content);
-  $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
-  echo '<style>';
-  //\MVC\helper::sass($contentSCSS);
-  \MVC\helper::include_asset($contentMinCSS, $contentCSS);
-  echo '</style>';
-}
-
 /**
  * defined custom script src.
  *
@@ -138,9 +126,44 @@ if ($style) {
   define('style', []);
   define('STYLE', []);
 }
+
+// process view content css
+if (isset($content) && file_exists($content)) {
+  //$contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
+  $contentCSS = preg_replace('/\.php$/s', '.css', $content);
+  $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
+  //echo '<style>';
+  //\MVC\helper::sass($contentSCSS);
+  //\MVC\helper::include_asset($contentMinCSS, $contentCSS);
+  //echo '</style>';
+  echo $element->css([
+    \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinCSS, $contentCSS]))
+  ]);
+}
+
+// process views content js
+if (isset($content) && file_exists($content)) {
+  //\MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
+  if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
+    include $var['script'];
+  }
+  if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
+    include $var['js'];
+  }
+  $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
+  $contentJS = preg_replace('/\.php$/s', '.js', $content);
+  $contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
+  \MVC\helper::babel($contentBABELJS);
+  //\MVC\helper::include_asset($contentMinJS, $contentJS);
+  echo $element->js([
+    \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinJS, $contentJS]))
+  ]);
+}
+/*
 ?>
 <script>
   <?php
+  
   //\MVC\helper::include_asset(__DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js');
   if (isset($content) && file_exists($content)) {
     //\MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
@@ -158,7 +181,9 @@ if ($style) {
   }
   ?>
 </script>
-
+<?php
+*/
+?>
 <script>
   <?php
   if (defined('SCRIPT')) {

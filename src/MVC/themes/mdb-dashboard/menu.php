@@ -1,5 +1,6 @@
 <!-- Sidebar navigation -->
-<div id="slide-out" class="side-nav fixed wide sn-bg-1 slim">
+<div id="slide-out" class="side-nav fixed wide slim dynamic-bg">
+  <!-- sn-bg-1 -->
   <ul class="custom-scrollbar">
     <!-- Logo -->
     <li>
@@ -74,7 +75,7 @@
 </div>
 <!--/. Sidebar navigation -->
 <!-- Navbar -->
-<nav class="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
+<nav class="navbar dynamic-bg fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
   <!-- SideNav slide-out button -->
   <div class="float-left">
     <a href="#" data-activates="slide-out" class="button-collapse" id="button-collapse"><i class="fas fa-bars"></i></a>

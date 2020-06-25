@@ -31,7 +31,7 @@
   "[markdown]": {
     "editor.wordWrap": "on",
     "editor.quickSuggestions": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

@@ -306,24 +306,22 @@ function CryptoD(passphrase, encryptedText, salt, iv) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
-if (!(typeof module !== "undefined" && module.exports)) {
-    $(window).bind("load", function () {
-        if (typeof jQuery.fn.dataTable != "undefined") {
-            $.fn.dataTable.ext.errMode = "none";
-            $.fn.dataTable.ext.buttons.refresh = {
-                extend: "collection",
-                text: '<i class="fas fa-sync"></i>',
-                className: "btn btn-info",
-                action: function (e, dt, node, config) {
-                    dt.clear().draw();
-                    dt.ajax.reload();
-                },
-            };
-            setTimeout(function () {
-                $("button.dt-button").not(".btn").addClass("btn btn-info");
-            }, 5000);
-        }
-    });
+if (!isnode()) {
+    if (typeof jQuery.fn.dataTable != 'undefined') {
+        $.fn.dataTable.ext.errMode = 'none';
+        $.fn.dataTable.ext.buttons.refresh = {
+            extend: 'collection',
+            text: '<i class="fas fa-sync"></i>',
+            className: 'btn btn-info',
+            action: function (e, dt, node, config) {
+                dt.clear().draw();
+                dt.ajax.reload();
+            },
+        };
+        setTimeout(function () {
+            $('button.dt-button').not('.btn').addClass('btn btn-info');
+        }, 5000);
+    }
 }
 Date.prototype.isHourAgo = function (hour) {
     var hour = hour * 60 * 1000; /* ms */

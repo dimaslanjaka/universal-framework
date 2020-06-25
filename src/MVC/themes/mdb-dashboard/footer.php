@@ -1,5 +1,6 @@
 <!-- Footer -->
-<footer class="page-footer font-small teal pt-4">
+<footer class="page-footer font-small dynamic-bg pt-4">
+  <!--sn-bg-1 -->
 
   <!-- Footer Text -->
   <div class="container-fluid text-center text-md-left">
