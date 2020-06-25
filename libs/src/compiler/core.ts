@@ -289,6 +289,10 @@ class core {
     }
     var min = file.replace(/\.js$/s, '.min.js');
     //log(min);
+    if (!fs.existsSync(file)) {
+      log.log(log.random(file) + log.error(' not found'));
+      return null;
+    }
     fs.readFile(
       file,
       {
@@ -351,11 +355,10 @@ class core {
                 );
                 fs.exists(min, function (ex) {
                   if (ex) {
-                    fs.unlinkSync(min);
+                    filemanager.unlink(min, false);
                     log.log(
-                      `${log.chalk().yellowBright(min)} ${log
-                        .chalk()
-                        .redBright('deleted')}`
+                      log.chalk().yellowBright(core.filelog(min)) +
+                        log.chalk().redBright(' deleted')
                     );
                   }
                 });

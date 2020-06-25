@@ -170,6 +170,10 @@ declare class Timer {
  * @param str
  */
 declare function empty(str: string | null | undefined | number | boolean): boolean;
+/**
+ * Get current function name
+ */
+declare function getFuncName(): string;
 interface Window {
     [func: string]: any;
 }
@@ -1126,5 +1130,5 @@ declare class ZLIB {
      */
     static atos(arr: Uint8Array): string;
     static decompress(str: any): string;
-    static compress(str: any): any;
+    static compress(str: any): string;
 }

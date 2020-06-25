@@ -1,39 +1,67 @@
-const fs = require('fs');
-const upath = require('upath');
-const log = require('./libs/compiler/log');
-const filemanager = require('./libs/compiler/filemanager');
+const fs = require("fs");
+const upath = require("upath");
+const log = require("./libs/compiler/log");
+const filemanager = require("./libs/compiler/filemanager");
 //shared packages.json
-const root_pkg = require('./package.json');
+const root_pkg = require("./package.json");
 const packages = {};
-const axios = require('axios');
+const axios = require("axios");
+const { exec } = require("child_process");
 
 Object.assign(packages, root_pkg.dependencies, root_pkg.devDependencies);
 
 var TypesLists = [];
+var types = [];
+var already = [];
+var exclude = ["animate.css"];
 for (const key in packages) {
   if (packages.hasOwnProperty(key)) {
     const version = packages[key];
-    if (!key.includes('@types')) {
+    if (!key.includes("@types")) {
       TypesLists.push(key);
+      types.push(`@types/${key}`);
       TypesLists = shuffle(TypesLists);
+    } else {
+      already.push(key);
     }
   }
 }
 
-fetchTypes();
-var TypesFound = [];
+types = types.filter((el) => !already.includes(el));
+installTypes();
 
+function installTypes() {
+  if (!types.length) {
+    exec("npm rebuild");
+    return;
+  }
+  exec(`npm install ${types[0]} --save-dev --prefer-offline`, function (
+    err,
+    stdout,
+    stderr
+  ) {
+    if (!err) {
+      console.log(stdout);
+      console.log(stderr);
+    } else {
+      log.log(log.error(err.message));
+    }
+    types.shift();
+    installTypes();
+  });
+}
+
+var TypesFound = [];
 /**
  * fetch typescript
- * @param {string[]} TypesLists
  */
 function fetchTypes() {
   if (TypesLists.length == 0) {
-    log.log(log.error('queue empty'));
+    log.log(log.error("queue empty"));
     if (TypesFound.length) {
-      log.log(log.success('get ready to install'));
-      const { exec } = require('child_process');
-      exec('npmi ' + TypesFound.join(' '));
+      log.log(log.success("get ready to install"));
+
+      exec("npmi " + TypesFound.join(" "));
     }
     return;
   }
@@ -93,10 +121,10 @@ function findTypes(package, callback) {
     try {
       const json = JSON.parse(body);
       console.log(json);
-      if (json.hasOwnProperty('name') && json.hasOwnProperty('description')) {
+      if (json.hasOwnProperty("name") && json.hasOwnProperty("description")) {
         fs.writeFileSync(cache, body);
-        if (typeof callback == 'function') {
-          callback(true, '@types/' + package);
+        if (typeof callback == "function") {
+          callback(true, "@types/" + package);
           return true;
         }
       }
@@ -107,27 +135,27 @@ function findTypes(package, callback) {
 
   function getPackage(package) {
     axios
-      .get('https://registry.npmjs.org/@types/' + package, {
+      .get("https://registry.npmjs.org/@types/" + package, {
         headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
-          'Content-Type':
-            'application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*',
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
+          "Content-Type":
+            "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
           Accept:
-            'application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*',
-          Referer: 'https://registry.npmjs.org/',
-          Connection: 'keep-alive',
+            "application/vnd.npm.install-v1+json; q=1.0, application/json; q=0.8, */*",
+          Referer: "https://registry.npmjs.org/",
+          Connection: "keep-alive",
         },
         timeout: 60000,
       })
       .catch(function (error) {
         log.log(log.error(error));
-        if (typeof callback == 'function') {
-          return callback(false, '@types/' + package);
+        if (typeof callback == "function") {
+          return callback(false, "@types/" + package);
         }
       })
       .then(function (res) {
-        if (res && res.hasOwnProperty('data')) {
+        if (res && res.hasOwnProperty("data")) {
           processPackage(res.data);
         }
       });

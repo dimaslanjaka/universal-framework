@@ -251,6 +251,10 @@ var core = /** @class */ (function () {
         }
         var min = file.replace(/\.js$/s, '.min.js');
         //log(min);
+        if (!fs.existsSync(file)) {
+            log_1.default.log(log_1.default.random(file) + log_1.default.error(' not found'));
+            return null;
+        }
         fs.readFile(file, {
             encoding: 'utf-8',
         }, function (err, data) {
@@ -308,10 +312,9 @@ var core = /** @class */ (function () {
                                 .yellowBright(output) + " " + log_1.default.chalk().red('fail'));
                             fs.exists(min, function (ex) {
                                 if (ex) {
-                                    fs.unlinkSync(min);
-                                    log_1.default.log(log_1.default.chalk().yellowBright(min) + " " + log_1.default
-                                        .chalk()
-                                        .redBright('deleted'));
+                                    filemanager_1.default.unlink(min, false);
+                                    log_1.default.log(log_1.default.chalk().yellowBright(core.filelog(min)) +
+                                        log_1.default.chalk().redBright(' deleted'));
                                 }
                             });
                         }

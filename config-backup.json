@@ -70,6 +70,7 @@
   "security": {
     "salt": "string"
   },
+  "session": [],
   "root": "string",
   "$schema": "string"
 }

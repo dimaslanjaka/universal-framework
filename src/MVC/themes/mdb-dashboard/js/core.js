@@ -66,10 +66,12 @@ $(document).ready(function () {
   ];
   var random = Math.floor(Math.random() * 6) + 0;
   var src = $img[random];
-  $(".dynamic-bg").css("background-image", "url(/?image-proxy=" + src + ")");
-  $(".dynamic-bg").each(function (index, elem) {
-    elem.style.backgroundImage = src;
-  });
+  if (is_development()) {
+    $(".dynamic-bg").css("background-image", "url(/?image-proxy=" + src + ")");
+    $(".dynamic-bg").each(function (index, elem) {
+      elem.style.backgroundImage = src;
+    });
+  }
   console.log(`background set ${src}`);
 });
 

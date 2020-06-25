@@ -18,7 +18,8 @@
     "upath": "^1.0.0",
     "vscode": "^1.1.37",
     "ncp": "*",
-    "rimraf": "*"
+    "rimraf": "*",
+    "axios": "*"
   },
   "files": [
     "libs/"
@@ -74,7 +75,10 @@
     "bracketSpacing": true,
     "tabWidth": 2,
     "semi": true,
-    "singleQuote": true,
+    "singleQuote": false,
+    "endOfLine": "lf",
+    "trailingComma": "es5",
+    "quoteProps": "as-needed",
     "overrides": [
       {
         "excludeFiles": [
@@ -95,5 +99,12 @@
         }
       }
     ]
-  }
+  },
+  "maintainers": [
+    {
+      "email": "dimaslanjaka@gmail.com",
+      "name": "Dimas Lanjaka",
+      "url": "https://www.github.com/dimaslanjaka"
+    }
+  ]
 }

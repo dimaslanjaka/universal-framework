@@ -25,7 +25,8 @@
       "ES2020"
     ]
   },
-  "compileOnSave": true,
+  "typeAcquisition": { "enable": true },
+  "compileOnSave": false,
   "include": [
     "./libs/src/**/*",
     "./libs/js/**/*",
