@@ -29,38 +29,54 @@ gulp.task("watch", function () {
       "./src/MVC/**/*",
       "./" + config.app.views + "/**/*",
     ])
-    .on("change", function (file) {
-      const trigger = function () {
-        file = framework.normalize(path.resolve(file));
-        /**
-         * Check is library compiler or source compiler
-         */
-        const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
-        const filename_log = framework.filelog(file);
+    .on(
+      "change",
+      /**
+       * @param {string} file
+       */
+      function (file) {
+        const trigger = function () {
+          file = framework.normalize(path.resolve(file));
+          /**
+           * Check is library compiler or source compiler
+           */
+          const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
+          const filename_log = framework.filelog(file);
 
-        if (is_Lib) {
-          log.log(
-            log
-              .chalk()
-              .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
-          );
-          createApp(true);
-        } else {
-          if (/\.(js|scss|css)$/s.test(file)) {
-            if (!/\.min\.(js|css)$/s.test(file)) {
-              minify(file);
-            }
+          if (is_Lib) {
+            var isCompiler = file.includes("/libs/compiler/");
+            var isFramework = /framework\.js$/s.test(file);
+            if (isCompiler || isFramework) return;
+            //console.log(file, isFramework);
+            log.log(
+              log.random("Library compiler triggered by ") +
+                log.random(framework.filelog(file))
+            );
+            log.log(
+              log
+                .chalk()
+                .yellow(
+                  `start compile ${log.random("src/MVC/themes/assets/js")}`
+                )
+            );
+            createApp(true);
           } else {
-            var reason = log.error(undefined);
-            if (/\.(php|log|txt|htaccess)$/s.test(filename_log)) {
-              reason = log.random("excluded");
+            if (/\.(js|scss|css)$/s.test(file)) {
+              if (!/\.min\.(js|css)$/s.test(file)) {
+                minify(file);
+              }
+            } else {
+              var reason = log.error(undefined);
+              if (/\.(php|log|txt|htaccess)$/s.test(filename_log)) {
+                reason = log.random("excluded");
+              }
+              log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
             }
-            log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
           }
-        }
-      };
-      return trigger();
-    });
+        };
+        return trigger();
+      }
+    );
 });
 
 gulp.task("composer", function () {
@@ -87,7 +103,7 @@ gulp.task("composer", function () {
   });
 });
 
-gulp.task("default", gulp.series("watch"));
+gulp.task("default", gulp.series("build", "watch"));
 
 /**
  * minify assets
