@@ -28,10 +28,10 @@ if (!defined('ENVIRONMENT')) {
     'message' => 'framework environtment doesnt exists',
     'current' => __FILE__
   ]);
-} 
+}
 ?>
 <!DOCTYPE html>
-<html lang="en" class="full-height" manifest="framework.appcache" environtment="<?= ENVIRONMENT ?>">
+<html lang="en" class="full-height" manifest="framework.appcache" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
 
 <head>
   <?php

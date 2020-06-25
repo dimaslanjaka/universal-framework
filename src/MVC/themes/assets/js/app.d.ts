@@ -170,6 +170,10 @@ declare class Timer {
  * @param str
  */
 declare function empty(str: string | null | undefined | number | boolean): boolean;
+/**
+ * Get current function name
+ */
+declare function getFuncName(): string;
 interface Window {
     [func: string]: any;
 }

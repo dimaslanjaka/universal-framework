@@ -68,6 +68,10 @@ function isJSON(str: string): boolean {
   return true;
 }
 
+if (isnode()) {
+  module.exports = isJSON;
+}
+
 /**
  * CodeMirror loader
  * @param id
@@ -184,16 +188,25 @@ function LoadScript(urls: string | string[], callback: null | Function) {
  * @param href
  * @param callback
  */
-function loadCSS(href: string, callback: any) {
-  const link = document.createElement("link");
-  link.media = "print";
-  link.rel = "stylesheet";
-  link.href = href;
-  link.onload = () => {
-    link.media = "all";
-    if (typeof callback == "function") {
-      callback(link, href);
-    }
+function loadCSS(href: string | string[], callback: any) {
+  const load = function (href: string) {
+    const link = document.createElement("link");
+    link.media = "print";
+    link.rel = "stylesheet";
+    link.href = href;
+    link.onload = () => {
+      link.media = "all";
+      if (typeof callback == "function") {
+        callback(link, href);
+      }
+    };
+    document.head.appendChild(link);
   };
-  document.head.appendChild(link);
+  if (typeof href == "string") {
+    load(href);
+  } else if (Array.isArray(href)) {
+    href.forEach(function (item) {
+      load(item);
+    });
+  }
 }

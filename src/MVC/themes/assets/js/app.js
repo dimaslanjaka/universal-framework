@@ -307,21 +307,49 @@ function CryptoD(passphrase, encryptedText, salt, iv) {
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
 if (!isnode()) {
-    if (typeof jQuery.fn.dataTable != 'undefined') {
-        $.fn.dataTable.ext.errMode = 'none';
+    if (typeof jQuery.fn.dataTable != "undefined") {
+        $.fn.dataTable.ext.errMode = "none";
         $.fn.dataTable.ext.buttons.refresh = {
-            extend: 'collection',
+            extend: "collection",
             text: '<i class="fas fa-sync"></i>',
-            className: 'btn btn-info',
+            className: "btn btn-info",
             action: function (e, dt, node, config) {
                 dt.clear().draw();
                 dt.ajax.reload();
             },
         };
         setTimeout(function () {
-            $('button.dt-button').not('.btn').addClass('btn btn-info');
+            $("button.dt-button").not(".btn").addClass("btn btn-info");
         }, 5000);
     }
+}
+/**
+ * Datatables loader
+ * @param {Function} callback
+ */
+function load_datatables(callback) {
+    return __awaiter(this, void 0, void 0, function* () {
+        LoadScript([
+            "/assets/mdb-dashboard/js/addons/datatables.min.js",
+            "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
+            "/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+            "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
+            "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+            "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
+            "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+        ], function () {
+            loadCSS([
+                "/src/MVC/themes/assets/partial/datatables.min.css",
+                "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
+                "/assets/mdb-dashboard/css/addons/datatables.min.css",
+                "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
+                "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
+            ]);
+            if (typeof callback == "function") {
+                yield callback();
+            }
+        });
+    });
 }
 Date.prototype.isHourAgo = function (hour) {
     var hour = hour * 60 * 1000; /* ms */
@@ -1884,6 +1912,9 @@ function isJSON(str) {
     }
     return true;
 }
+if (isnode()) {
+    module.exports = isJSON;
+}
 /**
  * CodeMirror loader
  * @param id
@@ -1992,17 +2023,27 @@ function LoadScript(urls, callback) {
  * @param callback
  */
 function loadCSS(href, callback) {
-    const link = document.createElement("link");
-    link.media = "print";
-    link.rel = "stylesheet";
-    link.href = href;
-    link.onload = () => {
-        link.media = "all";
-        if (typeof callback == "function") {
-            callback(link, href);
-        }
+    const load = function (href) {
+        const link = document.createElement("link");
+        link.media = "print";
+        link.rel = "stylesheet";
+        link.href = href;
+        link.onload = () => {
+            link.media = "all";
+            if (typeof callback == "function") {
+                callback(link, href);
+            }
+        };
+        document.head.appendChild(link);
     };
-    document.head.appendChild(link);
+    if (typeof href == "string") {
+        load(href);
+    }
+    else if (Array.isArray(href)) {
+        href.forEach(function (item) {
+            load(item);
+        });
+    }
 }
 const guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
 /**

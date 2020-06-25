@@ -114,6 +114,11 @@ declare function CryptoD(passphrase: string, encryptedText: string, salt: string
 declare var salt: string;
 declare var iv: string;
 declare var iterations: string;
+/**
+ * Datatables loader
+ * @param {Function} callback
+ */
+declare function load_datatables(callback: Function): Promise<void>;
 declare function datetime_local(date: any): string;
 /**
  * Detect is mobile
@@ -616,7 +621,7 @@ declare function LoadScript(urls: string | string[], callback: null | Function):
  * @param href
  * @param callback
  */
-declare function loadCSS(href: string, callback: any): void;
+declare function loadCSS(href: string | string[], callback: any): void;
 declare const guxid: string;
 /**
  * Get current unique global page user id
@@ -1130,5 +1135,5 @@ declare class ZLIB {
      */
     static atos(arr: Uint8Array): string;
     static decompress(str: any): string;
-    static compress(str: any): string;
+    static compress(str: any): any;
 }
