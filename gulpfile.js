@@ -173,10 +173,7 @@ async function createApp(withoutView) {
   );
   await typescriptCompiler(__dirname + '/tsconfig.build.json', './');
   await typescriptCompiler(__dirname + '/tsconfig.precompiler.json', './');
-  await typescriptCompiler(
-    __dirname + '/tsconfig.compiler.json',
-    './libs/compiler/'
-  );
+  await typescriptCompiler(__dirname + '/tsconfig.compiler.json', './libs/');
   minify(target);
   if (!withoutView) {
     multiMinify(views());

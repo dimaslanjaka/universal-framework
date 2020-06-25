@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+const path = require('path');
+const log = require('./../compiler/log');
+const sftp = require('../compiler/sftp');

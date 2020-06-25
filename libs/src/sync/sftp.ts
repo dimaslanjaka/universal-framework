@@ -2,12 +2,13 @@ import * as upath from 'upath';
 import { readFileSync } from 'fs';
 import { Client } from 'scp2';
 import Config from './Config';
-import CLI from './CLI';
 
-export default class Uploader {
+var Client2 = require('scp2').Client;
+
+export default class sftp {
   client: Client;
 
-  constructor(private config: Config, private cli: CLI) {}
+  constructor(private config: Config) {}
 
   connect(): Promise<string> {
     ///
