@@ -1,0 +1,77 @@
+{
+  "database": {
+    "user": "string",
+    "pass": "string",
+    "dbname": "string",
+    "host": "string",
+    "port": "number"
+  },
+  "google": {
+    "key": "string",
+    "client": "string",
+    "secret": "string",
+    "redirect": "string"
+  },
+  "cache": {
+    "enable": "boolean",
+    "ext": "string",
+    "key": "string",
+    "timeout": "number"
+  },
+  "htaccess": {
+    "cache": "boolean"
+  },
+  "vscode": {
+    "tasks": [
+      {
+        "version": "2.0.0",
+        "tasks": [
+          {
+            "label": "Compiler Dist",
+            "type": "shell",
+            "command": "npm run index",
+            "isBackground": true,
+            "presentation": {
+              "echo": true,
+              "reveal": "always",
+              "focus": false,
+              "panel": "dedicated",
+              "showReuseMessage": true,
+              "clear": true
+            },
+            "runOptions": {
+              "runOn": "folderOpen"
+            }
+          },
+          {
+            "label": "Compiler Dev",
+            "type": "shell",
+            "command": "npm run index-watch",
+            "isBackground": true,
+            "presentation": {
+              "echo": true,
+              "reveal": "always",
+              "focus": false,
+              "panel": "dedicated",
+              "showReuseMessage": true,
+              "clear": true
+            },
+            "runOptions": {
+              "runOn": "folderOpen"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "app": {
+    "views": "string",
+    "root": "string"
+  },
+  "security": {
+    "salt": "string"
+  },
+  "session": [],
+  "root": "string",
+  "$schema": "string"
+}

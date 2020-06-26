@@ -1,0 +1,23 @@
+/*Start CSS: FeedWind-v1-style */
+
+body{margin:20px;padding:0;overflow-x:hidden;}
+img{border:none;}
+a{text-decoration: none;}
+#fw-container{text-align:left;overflow:hidden;margin:0;padding:0;width:auto;font-family:Arial, Helvetica, sans-serif;font-size:12px;}
+header{margin:0;padding:5px;color:#FFFFFF;background-color:#0066FF;background-image:none;}
+header .fw-feed-title {margin:0;padding:0;font-weight:bold;border-bottom: none; word-wrap:break-word;}
+header .fw-feed-title a:link{color:#FFFFFF;text-decoration:none;}
+header .fw-feed-title a:hover{color:#FFFFFF;text-decoration:underline;}
+header .fw-feed-title a:hover{color:#FFFFFF;text-decoration:underline;}
+header .fw-feed-title a:visited{color:#FFFFFF;text-decoration:none;}
+header .fw-feed-title a:active{color:#FFFFFF;text-decoration:none;}
+#fw-feed-items{overflow:hidden;margin:0 0 0 0;padding:5px 0px 0px 0px;background-color:#FFFFFF;background-image:none;}
+#fw-feed-items .fw-feed-item{margin:0 0 7px 0;padding:0 0 7px 0;border-bottom:1px dashed #CCCCCC;clear:both;}
+#fw-feed-items .fw-feed-item-url{display: block;overflow: hidden;}
+#fw-feed-items .fw-feed-item-content-module{margin:0 0 0 3px;padding:0;}
+#fw-feed-items .fw-feed-item-title{margin:0;padding:0;color:#0066FF;font-weight:bold;}
+#fw-feed-items .fw-feed-item-image{width:110px; height:100px; float:left; margin:5px 8px 5px 5px; overflow:hidden;}
+#fw-feed-items .fw-feed-item-description{margin:0;padding:0;color:#666666;line-height:135%;word-wrap:break-word;clear:both;}
+#fw-feed-items .fw-feed-item-date{margin:3px 0;padding:3px 0;color:#666666;overflow:hidden;text-overflow:ellipsis;clear:both;}
+
+/* End CSS */
