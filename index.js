@@ -1,4 +1,4 @@
-//@ts-check
+const submodule = require("./libs/index");
 const fs = require("fs");
 const path = require("path");
 const log = require("./libs/compiler/log");
@@ -8,15 +8,57 @@ const process = require("process");
 const args = process.argv.slice(2);
 const { exec } = require("child_process");
 
-//shared packages.json
-const root_pkg = require("./libs/package.json");
-const gui_pkg = require("./libs/src/gui/package.json");
-const app_pkg = require("./libs/js/package.json");
-const compiler_pkg = require("./libs/src/compiler/package.json");
-const sftp_pkg = require("./libs/bin/syncjs/package.json");
-const ytd_pkg = require("./libs/bin/ytd/package.json");
-const locutus_pkg = require("./libs/src/locutus/package.json");
-log.clear();
+const constructor = {
+  scripts: {
+    preinstall: "",
+    postinstall: "gulp build",
+  },
+  files: ["libs/"],
+  name: "universal-framework",
+  description: "Universal framework php javascript",
+  displayName: "UNIVERSAL FRAMEWORK [PHPJS]",
+  publisher: "dimaslanjaka",
+  version: "3.0.0",
+  keywords: [
+    "SFTP",
+    "PHP",
+    "COMMONJS",
+    "WINDOWS",
+    "FRAMEWORK",
+    "GUI",
+    "project",
+    "typescript",
+    "javascript",
+    "tools",
+    "tooling",
+  ],
+  scripts: {
+    preinstall: "node ./index.js dev",
+    postinstall:
+      "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build",
+  },
+  bin: "./libs/bin/syncjs/bin",
+  repository: {
+    type: "git",
+    url: "git+https://github.com/dimaslanjaka/universal-framework.git",
+  },
+  author: {
+    name: "dimaslanjaka",
+    email: "dimaslanjaka@gmail.com",
+  },
+  license: "MIT",
+  bugs: {
+    url: "https://github.com/dimaslanjaka/universal-framework/issues",
+  },
+  homepage: "https://github.com/dimaslanjaka/universal-framework#readme",
+  maintainers: [
+    {
+      email: "dimaslanjaka@gmail.com",
+      name: "Dimas Lanjaka",
+      url: "https://www.github.com/dimaslanjaka",
+    },
+  ],
+};
 
 /**
  * @type {"production"|"development"}
@@ -25,101 +67,30 @@ var variant = "production";
 if (typeof args[0] != "undefined") {
   if (args[0] == "dev") {
     variant = "development";
-    const modifyConfig = require("./index-config");
+    config_builder();
   }
 }
 
 if (variant == "production") {
-  root_pkg.scripts = {
+  constructor.scripts = {
     preinstall: "",
-    postinstall: "gulp build",
+    postinstall: "gulp build && node index.js",
   };
-  delete root_pkg.files;
-  delete root_pkg.bin;
+  delete constructor.files;
+  delete constructor.bin;
 } else {
-  root_pkg.scripts = {
+  constructor.scripts = {
     preinstall: "node ./index.js dev",
     postinstall:
-      "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build",
+      "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
   };
-  root_pkg.bin = "./libs/bin/syncjs/bin";
-  root_pkg.files = ["./libs/"];
+  constructor.bin = "./libs/bin";
+  constructor.files = ["./libs/"];
 }
 
-Object.assign(
-  root_pkg.dependencies,
-  locutus_pkg.dependencies,
-  ytd_pkg.dependencies,
-  sftp_pkg.dependencies,
-  gui_pkg.dependencies,
-  app_pkg.dependencies,
-  compiler_pkg.dependencies
-);
-Object.assign(
-  root_pkg.devDependencies,
-  ytd_pkg.devDependencies,
-  locutus_pkg.devDependencies,
-  sftp_pkg.devDependencies,
-  gui_pkg.devDependencies,
-  app_pkg.devDependencies,
-  compiler_pkg.devDependencies
-);
-
-for (const key in root_pkg.dependencies) {
-  if (root_pkg.dependencies.hasOwnProperty(key)) {
-    if (key.trim() == "") {
-      delete root_pkg.dependencies[key];
-      continue;
-    }
-
-    root_pkg.dependencies[key] = "*";
-  }
-}
-
-for (const key in root_pkg.devDependencies) {
-  if (root_pkg.devDependencies.hasOwnProperty(key)) {
-    if (key.trim() == "") {
-      delete root_pkg.devDependencies[key];
-      continue;
-    }
-    root_pkg.devDependencies[key] = "*";
-  }
-}
-
-fs.exists(path.join(__dirname, "package-lock.json"), function (exists) {
-  if (exists) {
-    const lock = require("./package-lock.json");
-    for (const key in lock.dependencies) {
-      if (lock.dependencies.hasOwnProperty(key)) {
-        const pkg = lock.dependencies[key];
-        if (pkg.hasOwnProperty("requires")) {
-          for (const key in pkg.requires) {
-            if (pkg.requires.hasOwnProperty(key)) {
-              if (/^\@types/s.test(key)) {
-                log.log(`added ${log.chalk().blue(key)}`);
-                root_pkg.devDependencies[key] = pkg.requires[key];
-              }
-            }
-          }
-        }
-      }
-    }
-  } else {
-    log.log(log.error("package-lock.json read failed"));
-  }
-
-  for (const key in root_pkg.devDependencies) {
-    if (root_pkg.devDependencies.hasOwnProperty(key)) {
-      const dev_pkg = root_pkg.devDependencies[key];
-      if (typeof root_pkg.dependencies[key] != "undefined") {
-        delete root_pkg.dependencies[key];
-      }
-    }
-  }
-  writenow(root_pkg);
-  exec("npm dedupe");
-  exec("npm install prettier -D --save-exact");
-});
+writenow(constructor);
+exec("npm dedupe");
+exec("npm install prettier -D --save-exact --prefer-offline");
 
 /**
  * write package
@@ -137,4 +108,53 @@ function writenow(packageObject) {
       }
     }
   );
+}
+
+/**
+ * Configuration builder
+ */
+function config_builder() {
+  const config = require("./config.json");
+  const fs = require("fs");
+
+  var parsed = JSON.stringify(parseConfig(config, true), null, 2);
+
+  fs.writeFileSync("./config-backup.json", parsed);
+  var str = fs
+    .readFileSync("./libs/src/compiler/config.ts", {
+      encoding: "utf-8",
+    })
+    .replace(/\s|\t/gm, " ");
+
+  parsed = JSON.stringify(parseConfig(config, false), null, 2)
+    .replace(/\"string\"/gm, "string")
+    .replace(/\"boolean\"/gm, "boolean")
+    .replace(/\"number\"/gm, "number");
+
+  var regex = /config\:((.|\n)*)\=\srequire/gm;
+  var mod = str.replace(regex, `config:${parsed} = require`);
+  fs.writeFileSync("./libs/src/compiler/config.ts", mod);
+
+  function parseConfig(config, usingExclude) {
+    const excluded = function (key) {
+      return ["vscode"].indexOf(key) == -1;
+    };
+    for (const key in config) {
+      if (config.hasOwnProperty(key)) {
+        if (!excluded(key) && usingExclude) {
+          continue;
+        }
+        const element = config[key];
+        const type = typeof element;
+        if (["number", "string", "boolean"].indexOf(type) != -1) {
+          config[key] = type;
+        } else if (type == "object") {
+          config[key] = parseConfig(config[key]);
+        } else if (Array.isArray(config[key])) {
+          config[key].forEach(parseConfig);
+        }
+      }
+    }
+    return config;
+  }
 }

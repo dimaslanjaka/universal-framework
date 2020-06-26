@@ -1,7 +1,4 @@
 {
-    "ts-node": {
-        "transpileOnly": true
-    },
     "compilerOptions": {
         "emitDeclarationOnly": true,
         "declaration": true,
@@ -9,8 +6,11 @@
         "allowSyntheticDefaultImports": true,
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
+        "checkJs": true,
+        "pretty": true,
         "skipLibCheck": true,
         "watch": false,
+        "allowJs": true,
         "removeComments": false,
         "resolveJsonModule": true,
         "experimentalDecorators": true,

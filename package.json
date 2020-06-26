@@ -7,6 +7,7 @@
     "url": "https://github.com/dimaslanjaka/universal-framework/issues"
   },
   "dependencies": {
+    "@types/datatables.net-buttons": "^1.4.3",
     "animate.css": "*",
     "archiver": "*",
     "axios": "*",
@@ -18,6 +19,7 @@
     "crypto-js": "*",
     "datatables.net": "*",
     "datatables.net-autofill": "*",
+    "datatables.net-buttons": "^1.6.2",
     "datatables.net-buttons-dt": "*",
     "datatables.net-colreorder": "*",
     "datatables.net-colreorder-dt": "*",
@@ -86,9 +88,9 @@
     "terser": "*",
     "toastr": "*",
     "ts-loader": "*",
-    "ts-node": "*",
+    "ts-node": "^8.10.2",
     "ts-npm-lint": "*",
-    "tslib": "*",
+    "tslib": "*", 
     "tslint": "*",
     "typescript-closure-compiler": "*",
     "typescript-tslint-plugin": "*",
@@ -208,6 +210,7 @@
     "esprima": "*",
     "fakefile": "*",
     "globby": "*",
+    "gulp": "*",
     "gulp-babel": "*",
     "gulp-rename": "*",
     "gulp-typescript": "*",
@@ -220,10 +223,7 @@
     "npm-run-all": "*",
     "prettier": "2.0.5",
     "rimraf": "^3.0.2",
-    "strip-indent": "^3.0.0"
-  },
-  "peerDependencies": {
-    "gulp": "*",
+    "strip-indent": "^3.0.0",
     "typescript": "^4.0.0-dev.20200626"
   },
   "displayName": "UNIVERSAL FRAMEWORK [PHPJS]",

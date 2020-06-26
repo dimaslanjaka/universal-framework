@@ -71,8 +71,7 @@
     "**/libs/**": true,
     "**/views/**": true
   },
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.npm": "D:\\dimaslanjaka.github.io\\php-yt-api-inventory\\libs\\Windows\\x64\\node\\npm.cmd",
+  //"typescript.tsdk": "./node_modules/typescript/lib",
   "npm.enableScriptExplorer": false,
   "npm.enableRunFromFolder": false,
   "typescript.tsserver.watchOptions": {

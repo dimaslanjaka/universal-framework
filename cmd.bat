@@ -49,7 +49,7 @@ GOTO LABEL-%ERRORLEVEL%
   goto END
 
 :LABEL-4 Rebuild
-  cmd.exe /k "@echo OFF & cls & tsc -p tsconfig.build.json & tsc -p tsconfig.precompiler.json & tsc -p tsconfig.compiler.json & pause"
+  cmd.exe /k "@echo OFF & cls & tsc -p tsconfig.build.json & tsc -p tsconfig.precompiler.json & tsc -p tsconfig.compiler.json"
   goto END
 
 :END

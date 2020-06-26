@@ -1,5 +1,6 @@
 /// <reference path="../../../../../libs/js/Array.d.ts" />
 /// <reference path="../../../../../libs/js/Object.d.ts" />
+/// <reference path="../../../../../libs/js/datatables.d.ts" />
 /// <reference path="../../../../../libs/js/jQuery.d.ts" />
 /// <reference path="../../../../../libs/js/JQueryStatic.d.ts" />
 /// <reference types="node" />
@@ -121,22 +122,6 @@ declare function CryptoD(passphrase: string, encryptedText: string, salt: string
 declare var salt: string;
 declare var iv: string;
 declare var iterations: string;
-/**
- * Datatables loader
- * @param callback
- */
-declare function load_datatables(callback: Function): Promise<void>;
-/**
- * Datatables init
- * @todo disable error warning
- * @todo add refresh button
- */
-declare function datatables_init(): Promise<void>;
-/**
- * Scroll up after click pagination dt
- * @param {JQuery} target
- */
-declare function pagination_up(target: JQuery): void;
 declare function datetime_local(date: any): string;
 /**
  * Detect is mobile
@@ -216,6 +201,11 @@ declare const randstr: (length?: number) => string;
  * Is Node ?
  */
 declare function isnode(): boolean;
+/**
+ * Make function async
+ * @param callback
+ */
+declare function async_this(callback: Function): Promise<any>;
 declare var AjaxSchedulerInit: NodeJS.Timeout;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -540,6 +530,23 @@ declare function base64_encode(str: string): string;
 declare function base64_decode(str: string): string;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
+/**
+ * Datatables loader
+ * @param callback
+ */
+declare function load_datatables(callback: Function): Promise<void>;
+declare var datatables_ignited: boolean;
+/**
+ * Datatables init
+ * @todo disable error warning
+ * @todo add refresh button
+ */
+declare function datatables_init(): Promise<any>;
+/**
+ * Scroll up after click pagination dt
+ * @param target
+ */
+declare function pagination_up(target: JQuery): void;
 /**
  * Disable debugger
  */
