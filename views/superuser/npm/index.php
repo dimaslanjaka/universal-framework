@@ -11,6 +11,7 @@ function npm($cmd, $arg)
     $ext = '.cmd';
   }
   $command = normalize_path(ROOT . '/node_modules/.bin/' . $cmd . $ext);
+
   return "$command $arg";
 }
 ?>
@@ -19,10 +20,18 @@ function npm($cmd, $arg)
   <div class="card-body">
     <div class="row">
       <div class="col">
-        <kbd><?= $gui ?></kbd>
+        <kbd><?= $gui; ?></kbd>
       </div>
       <div class="col-2">
-        <?= $open ?>
+        <?= $open; ?>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        Install Typehinting VSCode
+      </div>
+      <div class="col-2">
+        <button class="btn-block purple btn" data-toggle="ajax" data-href="registry" data-method="post" data-postdata="install=true" data-success="show_install">Install</button>
       </div>
     </div>
   </div>

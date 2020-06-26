@@ -30,9 +30,20 @@ if (typeof args[0] != "undefined") {
 }
 
 if (variant == "production") {
-  delete root_pkg.scripts;
+  root_pkg.scripts = {
+    preinstall: "",
+    postinstall: "gulp build",
+  };
   delete root_pkg.files;
   delete root_pkg.bin;
+} else {
+  root_pkg.scripts = {
+    preinstall: "node ./index.js dev",
+    postinstall:
+      "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build",
+  };
+  root_pkg.bin = "./libs/bin/syncjs/bin";
+  root_pkg.files = ["./libs/"];
 }
 
 Object.assign(

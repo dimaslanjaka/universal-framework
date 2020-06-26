@@ -30,7 +30,7 @@ function sort_iterable(array $arrayObj)
 }
 
 /**
- * Local path to url path conversion
+ * Local path to url path conversion.
  *
  * @param string|array $locations
  */
@@ -43,11 +43,12 @@ function get_urlpath($locations)
     if (file_exists($location)) {
       return \MVC\helper::get_url_path($location, true);
     }
+
     return null;
   };
   if (is_string($locations)) {
     return $get($locations);
-  } else if (\ArrayHelper\helper::is_iterable($locations)) {
+  } elseif (\ArrayHelper\helper::is_iterable($locations)) {
     foreach ($locations as $location) {
       $result = $get($location);
       if ($result) {
@@ -56,6 +57,7 @@ function get_urlpath($locations)
       }
     }
   }
+
   return null;
 }
 
@@ -213,6 +215,55 @@ function resolve_dir(string $dir)
   recursive_mkdir($dir);
 
   return $dir;
+}
+
+/**
+ * Disable output buffering.
+ *
+ * @return void
+ */
+function disable_buffering()
+{
+  // Turn off output buffering
+  ini_set('output_buffering', 'off');
+  // Turn off PHP output compression
+  ini_set('zlib.output_compression', false);
+
+  //Flush (send) the output buffer and turn off output buffering
+  while (@ob_end_flush());
+
+  // Implicitly flush the buffer(s)
+  ini_set('implicit_flush', true);
+  ob_implicit_flush(true);
+}
+
+/**
+ * Disable user abort.
+ *
+ * @return ignore_user_abort|null
+ */
+function disable_abort(bool $abort = false)
+{
+  if (function_exists('ignore_user_abort')) {
+    return ignore_user_abort($abort);
+  }
+}
+
+function is_aborted()
+{
+  return CONNECTION_NORMAL != connection_status();
+}
+
+/**
+ * set Limit execution.
+ *
+ * @return set_time_limit|null
+ */
+function set_limit(int $secs = 0)
+{
+  if (function_exists('set_time_limit')) {
+    return set_time_limit($secs);
+  }
 }
 
 /**
@@ -388,16 +439,18 @@ function imgCDN(string $url)
 }
 
 /**
- * htaccess generator
+ * htaccess generator.
  *
- * @param boolean $deny default deny access. default (true)
- * @param boolean $DirectPHP allow direct php access. default (false)
- * @param boolean $allowStatic allow static files access. default (true)
+ * @param bool $deny        default deny access. default (true)
+ * @param bool $DirectPHP   allow direct php access. default (false)
+ * @param bool $allowStatic allow static files access. default (true)
  */
 function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
 {
   $ht = '';
-  if ($deny) $ht .= 'deny from all';
+  if ($deny) {
+    $ht .= 'deny from all';
+  }
   if (!$DirectPHP) {
     $ht .= 'RewriteEngine On
     RewriteRule ^.*\.php$ - [F,L,NC]
@@ -413,6 +466,7 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
   Allow from all
 </Files>';
   }
+
   return $ht;
 }
 

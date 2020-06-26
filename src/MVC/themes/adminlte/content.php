@@ -56,6 +56,7 @@ if (!defined('ENVIRONMENT')) {
   <link rel="stylesheet" href="<?= get_urlpath(__DIR__ . '/plugins/summernote/summernote-bs4.css') ?>" />
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+  <link rel="stylesheet" href="/node_modules/colors.css/css/colors.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -68,13 +69,29 @@ if (!defined('ENVIRONMENT')) {
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Dashboard</h1>
+              <h1 class="m-0 text-dark"><?= $title ?></h1>
             </div>
             <!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard v1</li>
+                <li class="breadcrumb-item"><a href="/"><i class="fad fa-home"></i></a></li>
+                <?php
+                $uri = \MVC\helper::get_clean_uri();
+                if (strpos($uri, '/') !== false) {
+                  $exp = explode('/', $uri);
+                  $stack = '/';
+                  for ($i = 0; $i < count($exp); $i++) {
+                    $part = $exp[$i];
+
+                    if (count($exp) == $i) {
+                      echo '<li class="breadcrumb-item active">' . $title . '</li>';
+                    } else if (!empty($part)) {
+                      $stack .= $part . '/';
+                      echo '<li class="breadcrumb-item"><a href="' . $stack . '">' . $part . '</a></li>';
+                    }
+                  }
+                }
+                ?>
               </ol>
             </div>
             <!-- /.col -->
@@ -101,7 +118,7 @@ if (!defined('ENVIRONMENT')) {
 
     <footer class="main-footer">
       <strong>Copyright &copy; 2014-2019
-        <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+        <a href="/"><?= $_SERVER['HTTP_HOST'] ?></a>.</strong>
       All rights reserved.
       <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 3.0.5
@@ -128,9 +145,9 @@ if (!defined('ENVIRONMENT')) {
   <script src="<?= get_urlpath(__DIR__ . '/plugins/chart.js/Chart.min.js') ?>"></script>
   <!-- Sparkline -->
   <script src="<?= get_urlpath(__DIR__ . '/plugins/sparklines/sparkline.js') ?>"></script>
-  <!-- JQVMap <script src="<?= get_urlpath(__DIR__ . '/plugins/jqvmap/jquery.vmap.min.js') ?>"></script>
-  <script src="<?= get_urlpath(__DIR__ . '/plugins/jqvmap/maps/jquery.vmap.usa.js') ?>"></script>-->
-
+  <!-- JQVMap -->
+  <script src="<?= get_urlpath(__DIR__ . '/plugins/jqvmap/jquery.vmap.min.js') ?>"></script>
+  <script src="<?= get_urlpath(__DIR__ . '/plugins/jqvmap/maps/jquery.vmap.usa.js') ?>"></script>
   <!-- jQuery Knob Chart -->
   <script src="<?= get_urlpath(__DIR__ . '/plugins/jquery-knob/jquery.knob.min.js') ?>"></script>
   <!-- daterangepicker -->
@@ -144,9 +161,8 @@ if (!defined('ENVIRONMENT')) {
   <script src="<?= get_urlpath(__DIR__ . '/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') ?>"></script>
   <!-- AdminLTE App -->
   <script src="<?= get_urlpath(__DIR__ . '/js/adminlte.min.js') ?>"></script>
-  <!-- AdminLTE dashboard demo (This is only for demo purposes) <script src="<?= get_urlpath(__DIR__ . '/js/pages/dashboard.js') ?>"></script> -->
-
-  <!-- AdminLTE for demo purposes -->
-  <!--<script src="<?= get_urlpath(__DIR__ . '/js/demo.js') ?>"></script>-->
   <?php include __DIR__ . '/script.php' ?>
+  <script src="<?= get_urlpath(__DIR__ . '/js/pages/dashboard.min.js') ?>"></script>
+  <script src="<?= get_urlpath(__DIR__ . '/js/demo.min.js') ?>"></script>
+
 </body>

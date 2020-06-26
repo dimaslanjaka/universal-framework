@@ -6,11 +6,11 @@ IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) ELSE (set processor=x
 SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
 rem cygwin detector
 IF NOT EXIST "C:\Cygwin\bin" (
-   IF NOT EXIST "D:\cygwin64\bin" (
-      IF NOT EXIST "D:\cygwin\bin" (
-         IF EXIST "E:\cygwin\bin" (SET EXTEND=%EXTEND%;E:\cygwin\bin)
-      ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin\bin)
-   ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin64\bin)
+  IF NOT EXIST "D:\cygwin64\bin" (
+    IF NOT EXIST "D:\cygwin\bin" (
+        IF EXIST "E:\cygwin\bin" (SET EXTEND=%EXTEND%;E:\cygwin\bin)
+    ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin\bin)
+  ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin64\bin)
 ) ELSE (SET EXTEND=%EXTEND%;C:\Cygwin\bin)
 
 SET PATH=%PATH%;%EXTEND%
@@ -32,25 +32,25 @@ choice /n /c:1234 /M "Choose an option "
 GOTO LABEL-%ERRORLEVEL%
 
 :LABEL-1 CMD
-   cls
-   cmd.exe /k "@echo ON & setlocal DISABLEDELAYEDEXPANSION & npm config set python %PYTHON:\=/%/python.exe"
-   goto END
+  cls
+  cmd.exe /k "@echo ON & setlocal DISABLEDELAYEDEXPANSION & npm config set python %PYTHON:\=/%/python.exe"
+  goto END
 
 :LABEL-2 POWERSHELL
-   cls
-   Start powershell.exe -noexit -ExecutionPolicy Bypass -File "%~dp0cmd.ps1" -Command "npm config set python %PYTHON:\=/%/python.exe Set-Location -literalPath '%~dp0';"
-   goto END
+  cls
+  Start powershell.exe -noexit -ExecutionPolicy Bypass -File "%~dp0cmd.ps1" -Command "npm config set python %PYTHON:\=/%/python.exe Set-Location -literalPath '%~dp0';"
+  goto END
 
 :LABEL-3 PING
-   cls
-   set /p domainhost="Enter Host: "
-   IF %domainhost%=="" (set domainhost=google.com)
-   cmd.exe /k "@echo OFF & ping %domainhost% -t"
-   goto END
+  cls
+  set /p domainhost="Enter Host: "
+  IF %domainhost%=="" (set domainhost=google.com)
+  cmd.exe /k "@echo OFF & ping %domainhost% -t"
+  goto END
 
 :LABEL-4 Rebuild
-   cmd.exe /k "@echo OFF & cls & tsc -p tsconfig.build.json & tsc -p tsconfig.precompiler.json & tsc -p tsconfig.compiler.json & pause"
-   goto BEGIN
+  cmd.exe /k "@echo OFF & cls & tsc -p tsconfig.build.json & tsc -p tsconfig.precompiler.json & tsc -p tsconfig.compiler.json & pause"
+  goto END
 
 :END
 rem pause

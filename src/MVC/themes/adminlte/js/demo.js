@@ -11,6 +11,8 @@
   var $container = $("<div />", {
     class: "p-3 control-sidebar-content",
   });
+  var existingID = $container.attr("id") || "";
+  $container.attr("id", existingID + " theme-control-" + guid());
 
   $sidebar.append($container);
 
@@ -39,7 +41,7 @@
     "navbar-orange",
   ];
 
-  $container.append('<h5>Customize AdminLTE</h5><hr class="mb-2"/>');
+  $container.append('<h5>Customize Theme</h5><hr class="mb-2"/>');
 
   var $no_border_checkbox = $("<input />", {
     type: "checkbox",
@@ -70,6 +72,7 @@
       $("body").removeClass("text-sm");
     }
   });
+
   var $text_sm_body_container = $("<div />", { class: "mb-1" })
     .append($text_sm_body_checkbox)
     .append("<span>Body small text</span>");

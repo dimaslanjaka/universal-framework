@@ -48,19 +48,23 @@ if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (file_exists($scriptsrc)) {
       $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
+      echo '<script src="' . $scriptsrc . '"></script>';
     }
-    echo '<script src="' . $scriptsrc . '"></script>';
   } elseif (is_array($scriptsrc)) {
     foreach ($scriptsrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src, true)) {
+        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
           echo '<script src="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
+          if (
+            file_exists($find) &&
+            $find = \MVC\helper::get_url_path($find, true) &&
+            !empty(trim($find))
+          ) {
             echo '<script src="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
           } else {
             echo htmlcomment("$find not exists");
@@ -90,14 +94,14 @@ if (null !== $stylesrc) {
   } elseif (is_array($stylesrc)) {
     foreach ($stylesrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src, true)) {
+        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
           echo '<link rel="stylesheet" href="' . $src . '?cache=' . CONFIG['cache']['key'] . '">';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
+          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true) && !empty(trim($find))) {
             echo '<link rel="stylesheet" href="' . $find . '?cache=' . CONFIG['cache']['key'] . '">';
           } else {
             echo htmlcomment("$find not exists");
@@ -129,60 +133,27 @@ if ($style) {
 
 // process view content css
 if (isset($content) && file_exists($content)) {
-  //$contentSCSS = preg_replace('/\.php$/s', '.scss', $content);
   $contentCSS = preg_replace('/\.php$/s', '.css', $content);
   $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
-  //echo '<style>';
-  //\MVC\helper::sass($contentSCSS);
-  //\MVC\helper::include_asset($contentMinCSS, $contentCSS);
-  //echo '</style>';
-  echo $element->css([
-    \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinCSS, $contentCSS]))
-  ]);
+  $href = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinCSS, $contentCSS]));
+  if (!empty($href)) {
+    echo $element->css([$href]);
+  }
 }
 
 // process views content js
 if (isset($content) && file_exists($content)) {
-  //\MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
-  if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
-    include $var['script'];
-  }
-  if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
-    include $var['js'];
-  }
   $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
   $contentJS = preg_replace('/\.php$/s', '.js', $content);
   $contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
   \MVC\helper::babel($contentBABELJS);
-  //\MVC\helper::include_asset($contentMinJS, $contentJS);
-  echo $element->js([
-    \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinJS, $contentJS]))
-  ]);
-}
-/*
-?>
-<script>
-  <?php
-  
-  //\MVC\helper::include_asset(__DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js');
-  if (isset($content) && file_exists($content)) {
-    //\MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
-    if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
-      include $var['script'];
-    }
-    if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
-      include $var['js'];
-    }
-    $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
-    $contentJS = preg_replace('/\.php$/s', '.js', $content);
-    $contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
-    \MVC\helper::babel($contentBABELJS);
-    \MVC\helper::include_asset($contentMinJS, $contentJS);
+  $src = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinJS, $contentJS]));
+
+  if (!empty(trim($src))) {
+    echo $element->js([$src]);
   }
-  ?>
-</script>
-<?php
-*/
+}
+
 ?>
 <script>
   <?php
@@ -191,12 +162,11 @@ if (isset($content) && file_exists($content)) {
       \MVC\helper::include_asset($primary, $secondary);
     }
   } else {
-    define('SCRIPT', '');
+    define('SCRIPT', []);
   }
   ?>
 </script>
 <?php
-//include __DIR__ . '/bg.php';
 
 //render stacked alert
 \MVC\alert::init()->final(true);

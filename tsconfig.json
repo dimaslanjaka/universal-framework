@@ -1,52 +1,67 @@
 {
-  "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "declaration": true,
-    "allowUmdGlobalAccess": true,
-    "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": true,
-    "allowUnusedLabels": true,
-    "skipLibCheck": true,
-    "allowJs": true,
-    "watch": false,
-    "removeComments": false,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "declarationDir": "./tmp/js",
-    "target": "ES5",
-    "lib": [
-      "DOM",
-      "ES5",
-      "ES6",
-      "ES2015",
-      "ES2016",
-      "ES2017",
-      "ES2018",
-      "ES2019",
-      "ES2020"
+    "ts-node": {
+        "transpileOnly": true
+    },
+    "compilerOptions": {
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "allowUmdGlobalAccess": true,
+        "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": true,
+        "allowUnusedLabels": true,
+        "skipLibCheck": true,
+        "watch": false,
+        "removeComments": false,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "declarationDir": "./tmp/js",
+        "module": "commonjs",
+        "typeRoots": [
+            "./node_modules/@types",
+            "./libs/typings"
+        ],
+        "target": "ES5",
+        "lib": [
+            "DOM",
+            "ES5",
+            "ES6",
+            "ES2015",
+            "ES2016",
+            "ES2017",
+            "ES2018",
+            "ES2019",
+            "ES2020"
+        ]
+    },
+    "typeAcquisition": {
+        "enable": true,
+        "include": [
+            "jquery",
+            "toastr",
+            "datatables.net",
+            "datatables.net-buttons",
+            "datatables.net-rowreorder"
+        ]
+    },
+    "compileOnSave": false,
+    "include": [
+        "./libs/src/**/*",
+        "./libs/js/**/*",
+        "./views/**/*",
+        "./src/MVC/themes/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*",
+        "./src",
+        "./vendor",
+        "./tmp",
+        "./assets",
+        "**.min.js",
+        "**/*.min.js",
+        "./src/MVC/themes/assets/js",
+        "./libs/compiler/**/*",
+        "./libs/src/compiler/framework.*",
+        "./libs/compiler/framework.*"
     ]
-  },
-  "typeAcquisition": {
-    "enable": true
-  },
-  "compileOnSave": false,
-  "include": [
-    "./libs/src/**/*",
-    "./libs/js/**/*",
-    "./views/**/*",
-    "./src/MVC/themes/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "src",
-    "vendor",
-    "tmp",
-    "assets",
-    "**.min.js",
-    "**/*.min.js",
-    "./src/MVC/themes/assets/js",
-    "./libs/compiler/**/*",
-    "./libs/src/compiler/framework.js",
-    "./libs/compiler/framework.js"
-  ]
 }

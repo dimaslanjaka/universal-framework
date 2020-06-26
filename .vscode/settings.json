@@ -62,10 +62,19 @@
   "files.maxMemoryForLargeFilesMB": 100,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
+    "**/log/**": true,
     "**/node_modules/**": true,
     "**/tmp/**": true,
-    "**/vendor/**": true
+    "**/vendor/**": true,
+    "**/src/**": true,
+    "**/assets/**": true,
+    "**/libs/**": true,
+    "**/views/**": true
   },
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.npm": "D:\\dimaslanjaka.github.io\\php-yt-api-inventory\\libs\\Windows\\x64\\node\\npm.cmd",
+  "npm.enableScriptExplorer": false,
+  "npm.enableRunFromFolder": false,
   "typescript.tsserver.watchOptions": {
     "fallbackPolling": "dynamicPriorityPolling",
     "synchronousWatchDirectory": true,

@@ -48,19 +48,23 @@ if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (file_exists($scriptsrc)) {
       $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
+      echo '<script src="' . $scriptsrc . '"></script>';
     }
-    echo '<script src="' . $scriptsrc . '"></script>';
   } elseif (is_array($scriptsrc)) {
     foreach ($scriptsrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src, true)) {
+        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
           echo '<script src="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
+          if (
+            file_exists($find) &&
+            $find = \MVC\helper::get_url_path($find, true) &&
+            !empty(trim($find))
+          ) {
             echo '<script src="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
           } else {
             echo htmlcomment("$find not exists");
@@ -90,14 +94,14 @@ if (null !== $stylesrc) {
   } elseif (is_array($stylesrc)) {
     foreach ($stylesrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src, true)) {
+        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
           echo '<link rel="stylesheet" href="' . $src . '?cache=' . CONFIG['cache']['key'] . '">';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true)) {
+          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true) && !empty(trim($find))) {
             echo '<link rel="stylesheet" href="' . $find . '?cache=' . CONFIG['cache']['key'] . '">';
           } else {
             echo htmlcomment("$find not exists");
@@ -144,7 +148,8 @@ if (isset($content) && file_exists($content)) {
   $contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
   \MVC\helper::babel($contentBABELJS);
   $src = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinJS, $contentJS]));
-  if (!empty($src)) {
+
+  if (!empty(trim($src))) {
     echo $element->js([$src]);
   }
 }

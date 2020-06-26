@@ -1958,6 +1958,11 @@ function is_localhost() {
     var is_local = location.host.match(/^localhost|^127|\.io$/s);
     return is_local;
 }
+if (!isnode() && is_localhost()) {
+    $.ajax({
+        url: '/superuser/theme/clean?latest=s'
+    });
+}
 /**
  * Is Development Mode
  */

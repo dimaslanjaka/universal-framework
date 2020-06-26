@@ -39,7 +39,7 @@ $theme = new themes();
 
 // set theme material bootstrap pro + font awesome pro 5
 $theme->set('adminlte');
-$theme->setThemeByZones(['mdb-dashboard' => ['telkomsel', 'coupon', 'im3', 'tools', 'superuser']]);
+//$theme->setThemeByZones(['mdb-dashboard' => ['telkomsel', 'coupon', 'im3', 'tools', 'superuser']]);
 //$theme->setThemeByZones(['puskesmas' => ['puskesmas']]);
 
 $theme_manager = 'theme-manager';
