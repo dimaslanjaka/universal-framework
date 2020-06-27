@@ -34,7 +34,7 @@
     "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnPaste": false,
   "typescript.tsserver.maxTsServerMemory": 1500,
@@ -56,8 +56,11 @@
   "files.autoSaveDelay": 18000,
   "files.encoding": "utf8",
   "files.exclude": {
-    "out": false,
-    ".vscode": false
+    ".vscode": false,
+    "**/node_modules": true,
+    "**/tmp": true,
+    "**/vendor": true,
+    "out": false
   },
   "files.maxMemoryForLargeFilesMB": 100,
   "files.watcherExclude": {

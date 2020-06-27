@@ -7,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-/// <reference path="./Array.d.ts"/>
 function arrayCompare(a1, a2) {
     if (a1.length != a2.length)
         return false;
@@ -459,7 +458,7 @@ class GeneratorID {
     }
 }
 /**
- * @param {createElement} options
+ * @param {createElementOpt} options
  */
 function createElement(options) {
     var el, a, i;
@@ -485,17 +484,24 @@ function createElement(options) {
     }
     // IE 8 doesn"t have HTMLElement
     if (window.HTMLElement === undefined) {
+        // @ts-ignore
         window.HTMLElement = Element;
     }
     if (options.childs && options.childs.length) {
         for (i = 0; i < options.childs.length; i++) {
-            el.appendChild(options.childs[i] instanceof window.HTMLElement ? options.childs[i] : createElement(options.childs[i]));
+            el.appendChild(options.childs[i] instanceof window.HTMLElement
+                ? options.childs[i]
+                : createElement(options.childs[i]));
         }
     }
     return el;
 }
 class html {
     static create(options) {
+        /**
+         * @param {createElementOpt}
+         * @returns {createElement}
+         */
         return createElement(options);
     }
 }
@@ -511,8 +517,8 @@ Number.prototype.addHour = function (source) {
     return new Date(source.getTime() + Hour).getTime();
 };
 Number.prototype.AddZero = function (b, c) {
-    var l = (String(b || 10).length - String(this).length) + 1;
-    return l > 0 ? new Array(l).join(c || '0') + this : this;
+    var l = String(b || 10).length - String(this).length + 1;
+    return l > 0 ? new Array(l).join(c || "0") + this : this;
 };
 Object.size = function (obj) {
     var size = 0, key;
@@ -564,31 +570,6 @@ class Timer {
     }
 }
 /**
- * check empty
- * @param str
- */
-function empty(str) {
-    var type = typeof str;
-    if (type == 'string' || type == 'number') {
-        str = str.toString().trim();
-    }
-    switch (str) {
-        case '':
-        case null:
-        case false:
-        case type == 'undefined': //typeof (str) == "undefined"
-            return true;
-        default:
-            return false;
-    }
-}
-/**
- * Get current function name
- */
-function getFuncName() {
-    return getFuncName.caller.name;
-}
-/**
  * call_user_func
  * @param functionName function name
  */
@@ -601,11 +582,59 @@ function ___call(functionName, context, args) {
     }
 }
 /**
+ * Is Node ?
+ */
+function isnode() {
+    if (typeof module !== "undefined" && module.exports) {
+        return true;
+    }
+}
+/**
+ * Make function async
+ * @param callback
+ */
+function async_this(callback) {
+    return new Promise(function (resolve, reject) {
+        if (typeof callback == "function") {
+            callback();
+            resolve(true);
+        }
+        else {
+            reject(new Error("callback is not function"));
+        }
+    });
+}
+/**
  * call_user_func
  * @param func function name
  */
 function __call(func) {
     this[func].apply(this, Array.prototype.slice.call(arguments, 1));
+}
+/**
+ * check empty
+ * @param str
+ */
+function empty(str) {
+    var type = typeof str;
+    if (type == "string" || type == "number") {
+        str = str.toString().trim();
+    }
+    switch (str) {
+        case "":
+        case null:
+        case false:
+        case type == "undefined": //typeof (str) == "undefined"
+            return true;
+        default:
+            return false;
+    }
+}
+/**
+ * Get current function name
+ */
+function getFuncName() {
+    return getFuncName.caller.name;
 }
 /**
  * Begin global toastr options
@@ -636,29 +665,6 @@ function pageid(length) {
     return Math.random().toString(20).substr(2, length);
 }
 const randstr = (length = 6) => Math.random().toString(20).substr(2, length);
-/**
- * Is Node ?
- */
-function isnode() {
-    if (typeof module !== "undefined" && module.exports) {
-        return true;
-    }
-}
-/**
- * Make function async
- * @param callback
- */
-function async_this(callback) {
-    return new Promise(function (resolve, reject) {
-        if (typeof callback == "function") {
-            callback();
-            resolve(true);
-        }
-        else {
-            reject(new Error("callback is not function"));
-        }
-    });
-}
 if (!isnode()) {
     /**
      * AJAX runner base
@@ -672,22 +678,22 @@ if (!isnode()) {
      * Ajax indicator base
      */
     var indicatorAjax = false;
-    const ajaxIDLoader = 'ajxLoader_' +
+    const ajaxIDLoader = "ajxLoader_" +
         Math.random().toString(36).substring(2) +
         Date.now().toString(36);
-    if (!$('#' + ajaxIDLoader).length) {
-        $('body').append('<div id="' +
+    if (!$("#" + ajaxIDLoader).length) {
+        $("body").append('<div id="' +
             ajaxIDLoader +
             '" style="position: fixed;z-index:9999;bottom:5px;left:5px;"><svg enable-background="new 0 0 40 40"height=40px id=loader-1 version=1.1 viewBox="0 0 40 40"width=40px x=0px xml:space=preserve xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink y=0px><path d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946\
   s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634\
   c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"fill=#000 opacity=0.2 /><path d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0\
   C22.32,8.481,24.301,9.057,26.013,10.047z"fill=#000><animateTransform attributeName=transform attributeType=xml dur=0.5s from="0 20 20"repeatCount=indefinite to="360 20 20"type=rotate /></path></svg></div>');
-        $('#' + ajaxIDLoader).fadeOut('fast');
+        $("#" + ajaxIDLoader).fadeOut("fast");
     }
     jQuery.ajaxPrefilter(function (options) {
         indicatorAjax =
-            typeof options.indicator == 'boolean' && options.indicator === true;
-        dumpAjax = typeof options.dump == 'boolean' && options.dump === true;
+            typeof options.indicator == "boolean" && options.indicator === true;
+        dumpAjax = typeof options.dump == "boolean" && options.dump === true;
         /**
          * Proxying begin
          */
@@ -699,17 +705,17 @@ if (!isnode()) {
             if (options.url.match(/^\//)) {
                 allowed = false;
             }
-            if (options.hasOwnProperty('proxy') && !options.proxy) {
+            if (options.hasOwnProperty("proxy") && !options.proxy) {
                 allowed = false;
             }
             if (allowed) {
-                var http = window.location.protocol === 'http:' ? 'http:' : 'https:';
-                if (typeof options.proxy == 'string') {
+                var http = window.location.protocol === "http:" ? "http:" : "https:";
+                if (typeof options.proxy == "string") {
                     options.url =
-                        options.proxy.replace(/\/{1,99}$/s, '') + '/' + options.url;
+                        options.proxy.replace(/\/{1,99}$/s, "") + "/" + options.url;
                 }
                 else {
-                    options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
+                    options.url = http + "//cors-anywhere.herokuapp.com/" + options.url;
                 }
             }
         }
@@ -719,45 +725,45 @@ if (!isnode()) {
   });
   */
     $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
-        var content_type = jqXHR.getResponseHeader('Content-Type');
-        if (typeof toastr != 'undefined') {
+        var content_type = jqXHR.getResponseHeader("Content-Type");
+        if (typeof toastr != "undefined") {
             if (/json|text\/plain/s.test(content_type)) {
-                toastr.error('Request failed. (' +
+                toastr.error("Request failed. (" +
                     jqXHR.status +
-                    ' ' +
+                    " " +
                     jqXHR.statusText +
-                    ') ' +
-                    errorThrown, 'Request Info');
+                    ") " +
+                    errorThrown, "Request Info");
             }
         }
     });
     $(document).ajaxSend(function (event, xhr, settings) {
-        if (settings.hasOwnProperty('indicator') && settings.indicator) {
-            $('#' + ajaxIDLoader).fadeIn('fast');
+        if (settings.hasOwnProperty("indicator") && settings.indicator) {
+            $("#" + ajaxIDLoader).fadeIn("fast");
         }
         if (dumpAjax) {
-            toastr.info('Requesting...', 'Request Info');
+            toastr.info("Requesting...", "Request Info");
         }
-        if (!settings.hasOwnProperty('method')) {
-            settings.method = 'POST';
+        if (!settings.hasOwnProperty("method")) {
+            settings.method = "POST";
         }
     });
     $(document).ajaxComplete(function (event, xhr, settings) {
-        if (settings.hasOwnProperty('indicator') && settings.indicator) {
-            $('#' + ajaxIDLoader).fadeOut('fast');
+        if (settings.hasOwnProperty("indicator") && settings.indicator) {
+            $("#" + ajaxIDLoader).fadeOut("fast");
         }
         if (dumpAjax) {
-            toastr.success('Request complete', 'Request Info');
+            toastr.success("Request complete", "Request Info");
         }
         AJAX = null;
-        $('#' + ajaxIDLoader).fadeOut('slow');
-        var content_type = xhr.getResponseHeader('Content-Type'), res;
-        if (xhr.hasOwnProperty('responseJSON')) {
+        $("#" + ajaxIDLoader).fadeOut("slow");
+        var content_type = xhr.getResponseHeader("Content-Type"), res;
+        if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
         }
         else {
             res = xhr.responseText;
-            if (typeof res == 'string' &&
+            if (typeof res == "string" &&
                 !empty(res) &&
                 /json|text\/plain/s.test(content_type)) {
                 //begin decode json
@@ -766,27 +772,27 @@ if (!isnode()) {
                 }
             }
         }
-        if (typeof res == 'object') {
-            if (res.hasOwnProperty('redirect')) {
+        if (typeof res == "object") {
+            if (res.hasOwnProperty("redirect")) {
                 this.location.replace(res.redirect);
-                throw 'Disabled';
+                throw "Disabled";
             }
-            if (res.hasOwnProperty('reload')) {
+            if (res.hasOwnProperty("reload")) {
                 location.href = location.href;
-                throw 'Disabled';
+                throw "Disabled";
             }
         }
     });
     $(document).ajaxSuccess(function (event, request, settings) {
         var res;
-        var content_type = request.getResponseHeader('Content-Type');
-        if (request.hasOwnProperty('responseJSON')) {
+        var content_type = request.getResponseHeader("Content-Type");
+        if (request.hasOwnProperty("responseJSON")) {
             res = request.responseJSON;
         }
         else {
             res = request.responseText;
         }
-        if (typeof res == 'string' &&
+        if (typeof res == "string" &&
             !empty(res) &&
             /json|text\/plain/s.test(content_type)) {
             //begin decode json
@@ -794,14 +800,14 @@ if (!isnode()) {
                 res = JSON.parse(res);
             }
         }
-        if (typeof res == 'object' &&
-            !settings.hasOwnProperty('silent') &&
-            typeof toastr != 'undefined' &&
+        if (typeof res == "object" &&
+            !settings.hasOwnProperty("silent") &&
+            typeof toastr != "undefined" &&
             /json|javascript/s.test(content_type)) {
-            var error = res.hasOwnProperty('error') && res.error ? true : false;
-            var title = res.hasOwnProperty('title') ? res.title : 'Unknown Title';
-            var msg = res.hasOwnProperty('message') ? res.message : 'Unknown Error';
-            if (res.hasOwnProperty('error') && res.hasOwnProperty('message')) {
+            var error = res.hasOwnProperty("error") && res.error ? true : false;
+            var title = res.hasOwnProperty("title") ? res.title : "Unknown Title";
+            var msg = res.hasOwnProperty("message") ? res.message : "Unknown Error";
+            if (res.hasOwnProperty("error") && res.hasOwnProperty("message")) {
                 if (error) {
                     toastr.error(msg, title);
                 }
@@ -809,11 +815,11 @@ if (!isnode()) {
                     toastr.success(msg, title);
                 }
             }
-            else if (res.hasOwnProperty('message')) {
+            else if (res.hasOwnProperty("message")) {
                 toastr.info(msg, title);
             }
-            if (res.hasOwnProperty('unauthorized')) {
-                location.replace('/signin');
+            if (res.hasOwnProperty("unauthorized")) {
+                location.replace("/signin");
             }
         }
     });
@@ -828,12 +834,12 @@ if (!isnode()) {
         //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
         console.log(getFuncName(), callback);
         var res;
-        if (xhr.hasOwnProperty('responseJSON')) {
+        if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
         }
-        else if (xhr.hasOwnProperty('responseText')) {
+        else if (xhr.hasOwnProperty("responseText")) {
             res = xhr.responseText;
-            if (typeof res == 'string' && !empty(res)) {
+            if (typeof res == "string" && !empty(res)) {
                 //begin decode json
                 if (isJSON(res)) {
                     res = JSON.parse(res);
@@ -841,21 +847,21 @@ if (!isnode()) {
             }
         }
         if (callback) {
-            if (typeof callback == 'function') {
+            if (typeof callback == "function") {
                 callback(res);
             }
-            else if (typeof callback == 'string') {
+            else if (typeof callback == "string") {
                 call_user_func(callback, window, res);
             }
             else {
-                console.error('2nd parameters must be callback function, instead of ' +
+                console.error("2nd parameters must be callback function, instead of " +
                     typeof callback);
             }
         }
     }
     function call_user_func(functionName, context, args) {
         var args = Array.prototype.slice.call(arguments, 2);
-        var namespaces = functionName.split('.');
+        var namespaces = functionName.split(".");
         var func = namespaces.pop();
         for (var i = 0; i < namespaces.length; i++) {
             context = context[namespaces[i]];
@@ -868,13 +874,13 @@ if (!isnode()) {
      */
     function ajx(settings, success, failed, complete) {
         settings.headers = {
-            'unique-id': getUID(),
+            "unique-id": getUID(),
         };
-        if (!settings.hasOwnProperty('indicator')) {
+        if (!settings.hasOwnProperty("indicator")) {
             settings.indicator = true;
         }
-        if (!settings.hasOwnProperty('method')) {
-            settings.method = 'POST';
+        if (!settings.hasOwnProperty("method")) {
+            settings.method = "POST";
         }
         return $.ajax(settings)
             .done(function (data, textStatus, jqXHR) {
@@ -894,24 +900,24 @@ if (!isnode()) {
      * @requires data-complete complete function name
      */
     function AjaxForm() {
-        $(document).on('submit', 'form', function (e) {
+        $(document).on("submit", "form", function (e) {
             e.preventDefault();
             var t = $(this);
-            var sukses = t.data('success');
-            var err = t.data('error');
-            var complete = t.data('complete');
-            var targetURL = t.attr('action');
+            var sukses = t.data("success");
+            var err = t.data("error");
+            var complete = t.data("complete");
+            var targetURL = t.attr("action");
             //console.log(targetURL, sukses, err, complete);
             if (!targetURL) {
-                console.error('Target url of this form not exists');
+                console.error("Target url of this form not exists");
                 return;
             }
             ajx({
                 url: targetURL,
-                method: t.attr('method') || 'POST',
+                method: t.attr("method") || "POST",
                 data: t.serialize(),
                 headers: {
-                    Accept: 'application/json',
+                    Accept: "application/json",
                     guid: guid(),
                 },
             }, sukses, err, complete);
@@ -925,19 +931,19 @@ if (!isnode()) {
         var xhr = new XMLHttpRequest();
         $.ajax({
             url: source_cache,
-            method: 'POST',
+            method: "POST",
             silent: true,
             indicator: false,
             xhr: function () {
                 return xhr;
             },
             headers: {
-                Pragma: 'no-cache',
-                'Cache-Control': 'no-cache',
-                'Refresh-Cache': 'true',
+                Pragma: "no-cache",
+                "Cache-Control": "no-cache",
+                "Refresh-Cache": "true",
             },
             success: function (response) {
-                $('html').html($('html', response).html());
+                $("html").html($("html", response).html());
                 console.log(xhr.responseURL);
             },
         });
@@ -1123,6 +1129,182 @@ if (!isnode()) {
     };
     function ajax() {
         return window.ajax;
+    }
+}
+/// <reference path="alert.d.ts" />
+/**
+ * Bootstrap Alert Generator
+ * @example createAlert(
+  "[title] Opps!",
+  "[description] Something went wrong",
+  "[details] Here is a bunch of text about some stuff that happened.",
+  "[mode|bg-color] danger",
+  true, false,
+  { position: "fixed", bottom: "15px", right: "15px" });
+ */
+function createAlert(
+/**
+ * Title alert
+ */
+title, 
+/**
+ * Summary description
+ */
+summary, 
+/**
+ * Another description
+ */
+details, 
+/**
+ * basic class bootstrap or you can insert color name
+ */
+severity, 
+/**
+ * can be closed ?
+ */
+dismissible, 
+/**
+ * auto closed ?
+ */
+autoDismiss, 
+/**
+ * Fill `CSSProperties` object or insert CSS object string
+ * @example {position: 'fixed', top: '5px', right: '5px'}
+ * @example 'position:fixed;top:10px;left:10px;'
+ */
+options) {
+    if (severity == "error") {
+        severity = "danger";
+    }
+    if (!$("style#alertcss")) {
+        createStyle(`#pageMessages {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      width: 30%;
+    }
+    
+    #pageMessages .alert {
+      position: relative;
+    }
+    
+    #pageMessages .alert .close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 1em;
+    }
+    
+    #pageMessages .alert .fa {
+      margin-right:.3em;
+    }`, { id: "alertcss" });
+    }
+    if (!$("#pageMessages").length) {
+        var style = "";
+        if (typeof options == "string") {
+            style = options;
+        }
+        else if (typeof options == "object") {
+            if (options.length) {
+                for (const key in options) {
+                    if (options.hasOwnProperty(key)) {
+                        var value = options[key];
+                        if (value && value.length) {
+                            style += `${key}: ${value};`;
+                        }
+                    }
+                }
+            }
+            else {
+                style = "position: fixed;bottom: 15px;right: 15px;width: 30%;";
+            }
+        }
+        $("body").append('<div id="pageMessages" style="' + style + '"></div>');
+    }
+    var iconMap = {
+        info: "fa fa-info-circle",
+        success: "fa fa-thumbs-up",
+        warning: "fa fa-exclamation-triangle",
+        danger: "fa ffa fa-exclamation-circle",
+    };
+    var iconAdded = false;
+    var alertClasses = ["alert", "animated", "flipInX"];
+    alertClasses.push("alert-" + severity.toLowerCase());
+    if (dismissible) {
+        alertClasses.push("alert-dismissible");
+    }
+    var msgIcon = $("<i />", {
+        class: iconMap[severity],
+    });
+    var msg = $("<div />", {
+        class: alertClasses.join(" "),
+    });
+    if (title) {
+        var msgTitle = $("<h4 />", {
+            html: title,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgTitle.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (summary) {
+        var msgSummary = $("<strong />", {
+            html: summary,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgSummary.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (details) {
+        var msgDetails = $("<p />", {
+            html: details,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgDetails.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (dismissible) {
+        var msgClose = $("<span />", {
+            class: "close",
+            "data-dismiss": "alert",
+            html: "<i class='fa fa-times-circle'></i>",
+        }).appendTo(msg);
+    }
+    $("#pageMessages").prepend(msg);
+    if (autoDismiss) {
+        setTimeout(function () {
+            msg.addClass("flipOutX");
+            setTimeout(function () {
+                msg.remove();
+            }, 1000);
+        }, 5000);
+    }
+}
+/**
+ * Create style css dynamic
+ * @example css = 'h1 { background: red; }'
+ * @example arributes = {id: 'customStyle', media: 'all'}
+ * @param css
+ */
+function createStyle(css, attributes = null) {
+    var head = document.head || document.getElementsByTagName("head")[0], style = document.createElement("style");
+    head.appendChild(style);
+    style.type = "text/css";
+    style.setAttribute("type", "text/css");
+    for (const key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+            style.setAttribute(key, attributes[key]);
+        }
+    }
+    if (style.styleSheet) {
+        // This is required for IE8 and below.
+        style.styleSheet.cssText = css;
+    }
+    else {
+        style.appendChild(document.createTextNode(css));
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
@@ -1659,8 +1841,27 @@ if (!isnode()) {
         });
     });
 }
-/// <reference path="./Array.d.ts"/>
-/// <reference path="./datatables.d.ts"/>
+if (typeof module == "undefined" && typeof jQuery != "undefined") {
+    if (typeof console != "undefined")
+        if (typeof console.log != "undefined") {
+            console.olog = console.log;
+        }
+        else {
+            console.olog = function () { };
+        }
+    console.log = function (message) {
+        console.olog(message);
+        if (!$("#debugConsole").length) {
+            $("body").append('<div id="debugConsole"></div>');
+        }
+        if (typeof console_callback == "function") {
+            console_callback(message);
+        }
+        else {
+            $("#debugConsole").append("<p> <kbd>" + typeof message + "</kbd> " + message + "</p>");
+        }
+    };
+}
 /**
  * Datatables loader
  * @param callback
@@ -2707,9 +2908,6 @@ var reCaptcha = {
 function recaptcha() {
     return reCaptcha;
 }
-/// <reference path="./Array.d.ts"/>
-/// <reference path="./jQuery.d.ts"/>
-/// <reference path="./JQueryStatic.d.ts"/>
 /// <reference path="./Object.d.ts"/>
 /**
  * SMARTFORM
@@ -2995,13 +3193,13 @@ function storage() {
     return STORAGE;
 }
 String.prototype.parse_url = function () {
-    var parser = document.createElement('a'), searchObject, queries, split, i;
+    var parser = document.createElement("a"), searchObject, queries, split, i;
     // Let the browser do the work
     parser.href = this.toString();
     // Convert query string to object
-    queries = parser.search.replace(/^\?/, '').split('&');
+    queries = parser.search.replace(/^\?/, "").split("&");
     for (i = 0; i < queries.length; i++) {
-        split = queries[i].split('=');
+        split = queries[i].split("=");
         searchObject[split[0]] = split[1];
     }
     return {
@@ -3013,7 +3211,7 @@ String.prototype.parse_url = function () {
         search: parser.search,
         searchObject: searchObject,
         hash: parser.hash,
-        protohost: parser.protocol + '//' + parser.host
+        protohost: parser.protocol + "//" + parser.host,
     };
 };
 /**
@@ -3024,14 +3222,20 @@ String.prototype.CSS = function () {
     e.rel = "stylesheet";
     e.href = this.toString();
     var n = document.getElementsByTagName("head")[0];
-    window.addEventListener ? window.addEventListener("load", function () {
-        n.parentNode.insertBefore(e, n);
-    }, !1) : window.attachEvent ? window.attachEvent("onload", function () {
-        n.parentNode.insertBefore(e, n);
-    }) : window.onload = function () { n.parentNode.insertBefore(e, n); };
+    window.addEventListener
+        ? window.addEventListener("load", function () {
+            n.parentNode.insertBefore(e, n);
+        }, !1)
+        : window.attachEvent
+            ? window.attachEvent("onload", function () {
+                n.parentNode.insertBefore(e, n);
+            })
+            : (window.onload = function () {
+                n.parentNode.insertBefore(e, n);
+            });
 };
 String.prototype.trim = function () {
-    return this.replace(/^\s+|\s+$/gm, '');
+    return this.replace(/^\s+|\s+$/gm, "");
 };
 String.prototype.hexE = function () {
     var hex, i;

@@ -11,6 +11,7 @@ class helper
 {
   public static $key = 'AUX';
   public static $expire = 10;
+  public static $router;
   /**
    * Class architecture database.
    *
@@ -30,6 +31,34 @@ class helper
     }
     if (isset($_REQUEST['cache'])) {
       self::$key .= $_REQUEST['cache'];
+    }
+    if (!self::$router) {
+      self::$router = new router();
+    }
+  }
+
+  /**
+   * ```php
+   * if (env('dev')) return boolean; //is development environtment or not
+   * ```
+   * Get environtment framework.
+   *
+   * @param string $for dev or prod
+   *
+   * @return string|bool
+   */
+  public static function env($for)
+  {
+    if (!self::$router) {
+      self::$router = new router();
+    }
+
+    if ('dev' == $for || 'development' == $for) {
+      return 'development' == self::$router->get_env();
+    } elseif ('prod' == $for || 'production' == $for) {
+      return 'production' == self::$router->get_env();
+    } else {
+      return self::$router->get_env();
     }
   }
 

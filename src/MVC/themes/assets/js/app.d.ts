@@ -1,9 +1,7 @@
-/// <reference path="../../../../../libs/js/Array.d.ts" />
 /// <reference path="../../../../../libs/js/Object.d.ts" />
-/// <reference path="../../../../../libs/js/datatables.d.ts" />
-/// <reference path="../../../../../libs/js/jQuery.d.ts" />
-/// <reference path="../../../../../libs/js/JQueryStatic.d.ts" />
+/// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference types="node" />
+/// <reference types="react" />
 /// <reference types="jquery" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
@@ -127,9 +125,6 @@ declare function datetime_local(date: any): string;
  * Detect is mobile
  */
 declare function isMobile(): boolean;
-interface HTMLElement {
-    [attachEvent: string]: any;
-}
 /** Add one or more listeners to an element
  * @param element - DOM element to add listeners to
  * @param eventNames - space separated list of event names, e.g. 'click change'
@@ -148,13 +143,32 @@ declare class GeneratorID {
     genId(): number;
     getId(): string;
 }
-declare function createElement(params: createElementOpt): any;
 /**
- * @param {createElement} options
+ * @param {createElementOpt} options
  */
-declare function createElement(options: typeof createElement): any;
+declare function createElement(options: createElementOpt): HTMLElement | DocumentFragment;
+declare function createElement(params: createElementOpt): any;
 declare class html {
     static create(options: any): any;
+}
+declare interface Number {
+    getMS(type: string): number;
+    /**
+     * Get X Hour from date
+     * @return number ms from Date().getTime()
+     * @example
+     * get `1 hour from current Date()`
+     * 1.addHour()
+     * get `1 hour from spesific Date()`
+     * 1.addHour(new Date('2020-06-04 01:10:53'))
+     */
+    addHour(source: Date | null): number;
+    /**
+     * add zero leading
+     * @param add
+     * @param target
+     */
+    AddZero(add: number, target: string): number;
 }
 /**
  * Object management
@@ -174,29 +188,10 @@ declare class Timer {
     clear(): void;
 }
 /**
- * check empty
- * @param str
- */
-declare function empty(str: string | null | undefined | number | boolean): boolean;
-/**
- * Get current function name
- */
-declare function getFuncName(): string;
-interface Window {
-    [func: string]: any;
-}
-/**
  * call_user_func
  * @param functionName function name
  */
 declare function ___call(functionName: string, context: Window, args: any): void;
-/**
- * call_user_func
- * @param func function name
- */
-declare function __call(func: string): void;
-declare function pageid(length: number): string;
-declare const randstr: (length?: number) => string;
 /**
  * Is Node ?
  */
@@ -206,7 +201,23 @@ declare function isnode(): boolean;
  * @param callback
  */
 declare function async_this(callback: Function): Promise<any>;
-declare var AjaxSchedulerInit: NodeJS.Timeout;
+/**
+ * call_user_func
+ * @param func function name
+ */
+declare function __call(func: string): void;
+/**
+ * check empty
+ * @param str
+ */
+declare function empty(str: string | null | undefined | number | boolean): boolean;
+/**
+ * Get current function name
+ */
+declare function getFuncName(): string;
+declare function pageid(length: number): string;
+declare const randstr: (length?: number) => string;
+declare var AjaxSchedulerInit: NodeJS.Timer;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
 /**
@@ -256,6 +267,54 @@ declare namespace ajax {
     function post(url: any, data: any, callback: any, async: any): void;
 }
 /**
+ * Bootstrap Alert Generator
+ * @example createAlert(
+  "[title] Opps!",
+  "[description] Something went wrong",
+  "[details] Here is a bunch of text about some stuff that happened.",
+  "[mode|bg-color] danger",
+  true, false,
+  { position: "fixed", bottom: "15px", right: "15px" });
+ */
+declare function createAlert(
+/**
+ * Title alert
+ */
+title: string, 
+/**
+ * Summary description
+ */
+summary: string, 
+/**
+ * Another description
+ */
+details: string, 
+/**
+ * basic class bootstrap or you can insert color name
+ */
+severity: "success" | "error" | "warning" | "info" | "danger", 
+/**
+ * can be closed ?
+ */
+dismissible: boolean, 
+/**
+ * auto closed ?
+ */
+autoDismiss: boolean, 
+/**
+ * Fill `CSSProperties` object or insert CSS object string
+ * @example {position: 'fixed', top: '5px', right: '5px'}
+ * @example 'position:fixed;top:10px;left:10px;'
+ */
+options: React.CSSProperties | string): void;
+/**
+ * Create style css dynamic
+ * @example css = 'h1 { background: red; }'
+ * @example arributes = {id: 'customStyle', media: 'all'}
+ * @param css
+ */
+declare function createStyle(css: string, attributes?: {}): void;
+/**
  * Google analystic reporter
  * @param {String} event_action
  * @param {string} event_label
@@ -281,7 +340,7 @@ declare var dimas: {
         /**
          * DO NOT ASSIGN THIS
          */
-        check: NodeJS.Timeout;
+        check: NodeJS.Timer;
         /**
          * Get current captcha id
          */
@@ -302,7 +361,7 @@ declare var dimas: {
         /**
          * Form Captcha listener
          */
-        listen: () => JQuery<Document>;
+        listen: () => JQuery<HTMLElement>;
     };
     /**
      * Make async function
@@ -404,7 +463,7 @@ declare function framework(): {
         /**
          * DO NOT ASSIGN THIS
          */
-        check: NodeJS.Timeout;
+        check: NodeJS.Timer;
         /**
          * Get current captcha id
          */
@@ -425,7 +484,7 @@ declare function framework(): {
         /**
          * Form Captcha listener
          */
-        listen: () => JQuery<Document>;
+        listen: () => JQuery<HTMLElement>;
     };
     /**
      * Make async function
@@ -530,6 +589,13 @@ declare function base64_encode(str: string): string;
 declare function base64_decode(str: string): string;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
+interface Console {
+    olog: {
+        (...data: any[]): void;
+        (message?: any, ...optionalParams: any[]): void;
+    };
+}
+declare var console_callback: any;
 /**
  * Datatables loader
  * @param callback
@@ -575,7 +641,7 @@ declare const distance_already_calculated: string[];
  * @param target
  * @param callback
  */
-declare function calculateDistance(target: string, callback: (arg0: number) => any): JQuery<Document>;
+declare function calculateDistance(target: string, callback: (arg0: number) => any): JQuery<HTMLElement>;
 /**
  * calculate distance mouse x element
  * @param elem
@@ -668,8 +734,8 @@ declare class ip {
      * @returns {String} ip or callback
      */
     static get(callback: Function | null): string;
-    static ipapi(): JQuery.jqXHR<any>;
-    static l2io(): JQuery.jqXHR<any>;
+    static ipapi(): JQueryXHR;
+    static l2io(): JQueryXHR;
 }
 declare function md5(string: any): string;
 interface progressBarTimer {
@@ -853,85 +919,6 @@ declare var STORAGE: {
      */
     remove: (key: string) => void;
 };
-interface String {
-    /**
-     * Matches a string an object that supports being matched against, and returns an array containing the results of that search.
-     * @param matcher An object that supports being matched against.
-     */
-    match(matcher: {
-        [Symbol.match](string: string): RegExpMatchArray | null;
-    }): RegExpMatchArray | null;
-    /**
-     * Replaces text in a string, using an object that supports replacement within a string.
-     * @param searchValue A object can search for and replace matches within a string.
-     * @param replaceValue A string containing the text to replace for every successful match of searchValue in this string.
-     */
-    replace(searchValue: {
-        [Symbol.replace](string: string, replaceValue: string): string;
-    }, replaceValue: string): string;
-    /**
-     * Replaces text in a string, using an object that supports replacement within a string.
-     * @param searchValue A object can search for and replace matches within a string.
-     * @param replacer A function that returns the replacement text.
-     */
-    replace(searchValue: {
-        [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
-    }, replacer: (substring: string, ...args: any[]) => string): string;
-    /**
-     * Finds the first substring match in a regular expression search.
-     * @param searcher An object which supports searching within a string.
-     */
-    search(searcher: {
-        [Symbol.search](string: string): number;
-    }): number;
-    /**
-     * Split a string into substrings using the specified separator and return them as an array.
-     * @param splitter An object that can split a string.
-     * @param limit A value used to limit the number of elements returned in the array.
-     */
-    split(splitter: {
-        [Symbol.split](string: string, limit?: number): string[];
-    }, limit?: number): string[];
-    /**
-     * Parse url into part object
-     */
-    parse_url: () => {
-        protocol: string;
-        host: string;
-        hostname: string;
-        port: string;
-        pathname: string;
-        search: string;
-        searchObject: {};
-        hash: string;
-        protohost: string;
-    };
-    /**
-     * Call css from url/path
-     */
-    CSS: () => void;
-    /**
-     * Hex encrypt
-     */
-    hexE: () => string;
-    /**
-     * Hex Decrypt
-     */
-    hexD: () => string;
-    /**
-     * Capitalize all first character string
-     * @example [PHP] ucwords($string)
-     */
-    capitalize: () => string;
-    /**
-     * PHP str_rot13 equivalent
-     */
-    rot13: () => string;
-}
-interface Window {
-    attachEvent(event: string, listener: EventListener): boolean;
-    detachEvent(event: string, listener: EventListener): void;
-}
 declare function currentUID(): string;
 /**
  * Get uid saved in browser
@@ -964,6 +951,8 @@ declare var UIDcalled: boolean;
  * @param url url target, null for current location.href
  */
 declare function getParameterByName(name: string, url: string | null): string;
+interface jQuery {
+}
 /**
  * User framework
  */
@@ -980,10 +969,7 @@ declare class user {
     /**
      * fetch userdata
      */
-    fetch(callback: Function | null): JQuery.jqXHR<any>;
-}
-interface Window {
-    user: user;
+    fetch(callback: Function | null): JQueryXHR;
 }
 /**
  * textarea focus

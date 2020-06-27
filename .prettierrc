@@ -10,7 +10,7 @@
   "overrides": [
     {
       "excludeFiles": ["*.min.js", "*.min.css", "*.min.html", "*.min.scss"],
-      "files": ["*.js", "*.css", "*.sass", "*.html", "*.md"],
+      "files": ["*.js", "*.css", "*.sass", "*.html", "*.md", "*.ts"],
       "options": {
         "semi": true
       }

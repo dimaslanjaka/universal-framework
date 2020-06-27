@@ -8,6 +8,7 @@
         "allowUnusedLabels": true,
         "checkJs": true,
         "pretty": true,
+        "esModuleInterop": true,
         "skipLibCheck": true,
         "watch": false,
         "allowJs": true,
@@ -18,7 +19,8 @@
         "module": "commonjs",
         "typeRoots": [
             "./node_modules/@types",
-            "./libs/typings"
+            "./libs/typings",
+            "./libs/js"
         ],
         "target": "ES5",
         "lib": [

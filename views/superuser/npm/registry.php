@@ -8,6 +8,7 @@ disable_abort(false);
 set_limit(0);
 header('Content-Type: text/plain', true);
 
+
 $curl = new \Extender\request('https://registry.npmjs.org');
 $curl->setHeader('Accept', 'application/vnd.npm.install-v1+json');
 $curl->cache = true;
@@ -46,41 +47,48 @@ $cmd = function ($pkg) {
   return 'cd ' . ROOT . ' && echo "Installing ' . $pkg . ' On %cd%" && ';
 };
 
-$result = [];
+$dev = json_decode(shell('npm list -json --depth=0 -dev -parseable'), true);
+$prod = json_decode(shell('npm list -json --depth=0 -prod -parseable'), true);
 
-if (isset($_REQUEST['install'])) {
-  $result[] = shell($cmd('dedupe') . ' npm dedupe && npm install --prefer-offline');
-}
-e($result);
-return;
-
-
-for ($i = 0; $i < count($packages); ++$i) {
-  if (is_aborted()) {
-    break;
+foreach ($dev as $key => $value) {
+  if (isset($prod[$key]) && is_array($dev[$key])) {
+    $dev[$key] = array_merge($dev[$key], $prod[$key]);
   }
+}
 
-  if ($i == count($packages) - 1) {
-    if (isset($_REQUEST['install'])) {
-      $result[] = shell($cmd('dedupe') . ' npm dedupe');
-    } else {
-      e($result);
+$list = array_merge($prod, $dev);
+
+$result = $list;
+
+if (!isset($_REQUEST['single'])) {
+  for ($i = 0; $i < count($packages); ++$i) {
+    if (is_aborted()) {
+      break;
     }
-  } else {
-    $exec = $curl->execute('get', "/{$packages[$i]}");
 
-    if ($exec) {
-      $response = $exec;
-      if (isset($response['name']) && strpos($response['name'], '@types') !== false) {
-        //$result[] = $cmd($packages[$i]) . 'npm install ' . $packages[$i] . ' --save-dev --prefer-offline';
-        if (isset($_REQUEST['install'])) {
-          //$result[] = shell($cmd($packages[$i]) . 'npm install ' . $packages[$i] . ' --save-dev --prefer-offline');
+    if ($i == count($packages) - 1) {
+      if (isset($_REQUEST['install'])) {
+        $result[] = shell($cmd('dedupe') . ' npm dedupe && npm install --prefer-offline');
+      }
+      e($result);
+    } else {
+      $exec = $curl->execute('get', "/{$packages[$i]}");
+
+      if ($exec) {
+        $response = $exec;
+        if (isset($response['name']) && strpos($response['name'], '@types') !== false) {
+          //$result[] = shell($cmd('dedupe') . ' npm dedupe && npm install --prefer-offline');
+          if (isset($_REQUEST['install'])) {
+            $result[] = shell($cmd($packages[$i]) . 'npm install ' . $packages[$i] . ' --save-dev --prefer-offline');
+          } else {
+            $result['types'][$packages[$i]] = '*';
+          }
+        } else {
+          var_dump($response);
         }
       } else {
-        var_dump($response);
+        var_dump($exec);
       }
-    } else {
-      var_dump($exec);
     }
   }
 }

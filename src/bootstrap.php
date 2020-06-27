@@ -349,6 +349,37 @@ function shell(string $command)
 }
 
 /**
+ * Check shell can be executed
+ *
+ * @return string|null
+ */
+function shell_check()
+{
+  if (function_exists('shell_exec')) {
+    return 'shell_exec';
+  } else if (function_exists('exec')) {
+    return 'exec';
+  } else {
+    return null;
+  }
+}
+
+function shell_required($callback)
+{
+  $result = [];
+  if (gettype(shell_check()) != 'string' || !\MVC\helper::env('dev')) {
+    $result = ['error' => true, 'message' => 'Cannot execute command here environtment(' . \MVC\helper::env('dev') . ') command(' . gettype(shell_check()) . ')', 'title' => 'Cannot Access This Page'];
+  }
+  if (!empty($result)) {
+    if (headers_sent()) {
+      exit('<div class="alert alert-danger">
+      <span class="alert-title"> ' . $result['title'] . ' </span>
+      </div>');
+    }
+  }
+}
+
+/**
  * ```php
  * // callback if function
  * call_user_func($callback, $path)
