@@ -703,6 +703,20 @@ var randstr = function (length) {
     if (length === void 0) { length = 6; }
     return Math.random().toString(20).substr(2, length);
 };
+/**
+ * check string is json
+ * @param {string} str
+ * @description check validate json
+ */
+function isJSON(str) {
+    try {
+        JSON.parse(str);
+    }
+    catch (e) {
+        return false;
+    }
+    return true;
+}
 if (!isnode()) {
     /**
      * AJAX runner base
@@ -2107,6 +2121,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
     //console.log('is restricted mode : ' + restrict);
     restrict_mode(restrict);
 }
+if (!isnode()) {
+    $.post = null;
+    $.get = null;
+    $.getJSON = null;
+    $.getScript = null;
+}
 /**
  * Disqus loader which verifies the existence of `#disqus_thread` on
  * the web page and then prepares the disqus embed script to hook in
@@ -2235,9 +2255,11 @@ function is_localhost() {
     return is_local;
 }
 if (!isnode() && is_localhost()) {
-    $.ajax({
-        url: '/superuser/theme/clean?latest=s'
-    });
+    setTimeout(function () {
+        $.ajax({
+            url: "/superuser/theme/clean?latest=s&force=true",
+        });
+    }, 5000);
 }
 /**
  * Is Development Mode
@@ -2265,19 +2287,6 @@ function json_decode(obj) {
     catch (error) {
         return false;
     }
-}
-/**
- * check string is json
- * @param str
- */
-function isJSON(str) {
-    try {
-        JSON.parse(str);
-    }
-    catch (e) {
-        return false;
-    }
-    return true;
 }
 if (isnode()) {
     module.exports = isJSON;

@@ -3,7 +3,7 @@
 <section>
   <div class="card mb-3">
     <div class="card-body">
-      <span class="card-label">DATABASE</span>
+      <span class="card-label">CONFIGURATION</span>
       <form action="" method="post" enctype="application/json">
         <input type="hidden" name="config">
         <div class="form-row mb-4">
@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row mb-4">
           <div class="col">
             <div class="md-form">
               <input type="text" name="database[dbname]" value="<?= get_db()['dbname'] ?>" no-save class="form-control">
@@ -37,6 +37,30 @@
             <div class="md-form">
               <input type="text" name="database[port]" value="<?= get_db()['port'] ?>" no-save class="form-control">
               <label for="">Port</label>
+            </div>
+          </div>
+        </div>
+        <hr class="hr-text" data-content="Google Api">
+        <div class="form-row mb-4">
+          <div class="col">
+            <div class="md-form">
+              <input type="text" name="google[key]" value="<?= get_conf()['google']['key'] ?>" no-save class="form-control">
+              <label for="">Google Key</label>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="md-form">
+              <input type="text" name="google[secret]" value="<?= get_conf()['google']['secret'] ?>" no-save class="form-control">
+              <label for="">Google Secret</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-4">
+          <div class="col">
+            <div class="md-form">
+              <input type="text" name="google[client]" value="<?= get_conf()['google']['client'] ?>" no-save class="form-control">
+              <label for="">Google Client</label>
             </div>
           </div>
         </div>

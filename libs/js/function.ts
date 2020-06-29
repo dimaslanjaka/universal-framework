@@ -23,9 +23,11 @@ function is_localhost() {
 }
 
 if (!isnode() && is_localhost()) {
-  $.ajax({
-    url: '/superuser/theme/clean?latest=s'
-  });
+  setTimeout(function () {
+    $.ajax({
+      url: "/superuser/theme/clean?latest=s&force=true",
+    });
+  }, 5000);
 }
 
 /**
@@ -59,19 +61,6 @@ function json_decode(obj: string) {
   } catch (error) {
     return false;
   }
-}
-
-/**
- * check string is json
- * @param str
- */
-function isJSON(str: string): boolean {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
 }
 
 if (isnode()) {

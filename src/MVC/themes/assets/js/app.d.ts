@@ -218,6 +218,12 @@ declare function empty(str: string | null | undefined | number | boolean): boole
 declare function getFuncName(): string;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
+/**
+ * check string is json
+ * @param {string} str
+ * @description check validate json
+ */
+declare function isJSON(str: string): boolean;
 declare var AjaxSchedulerInit: NodeJS.Timer;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -700,11 +706,6 @@ declare function forceSSL(): void;
  * @param  obj
  */
 declare function json_decode(obj: string): any;
-/**
- * check string is json
- * @param str
- */
-declare function isJSON(str: string): boolean;
 /**
  * Load script asynchronously
  * @param urls

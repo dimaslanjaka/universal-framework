@@ -63,7 +63,8 @@
         "**/*.min.js",
         "./src/MVC/themes/assets/js",
         "./libs/compiler/**/*",
-        "./libs/src/compiler/framework.*",
-        "./libs/compiler/framework.*"
+        "./libs/src/compiler/framework.js",
+        "./libs/compiler/framework.js",
+        "**/framework.js"
     ]
 }
