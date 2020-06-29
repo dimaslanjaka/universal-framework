@@ -1,5 +1,3 @@
-/// <reference path="./Array.d.ts"/>
-
 function arrayCompare(a1: Array<any>, a2: Array<any>) {
   if (a1.length != a2.length) return false;
   var length = a2.length;

@@ -1,4 +1,4 @@
-var AjaxSchedulerInit: NodeJS.Timeout = null;
+var AjaxSchedulerInit: NodeJS.Timer = null;
 var AjaxSchedulerRequests: Array<any> = [];
 var AjaxSchedulerRunning: Boolean = false;
 /**

@@ -191,6 +191,25 @@ class themes
     return $this;
   }
 
+  /**
+   * ```php
+   * setThemeByZones(['theme-name'=>['zone1', 'zone2'], 'another-theme'=>['zone3','zone4']])
+   * ```
+   * Set theme by zone divider.
+   *
+   * @return $this
+   */
+  public function setThemeByZones(array $config)
+  {
+    $current = get_zone();
+    foreach ($config as $theme_name => $zones) {
+      if (in_array($current, $zones)) {
+        $this->set($theme_name);
+      }
+    }
+    return $this;
+  }
+
   public function view($file)
   {
     $this->view = helper::platformSlashes($this->root . '/' . $file);

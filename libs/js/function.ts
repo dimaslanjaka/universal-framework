@@ -22,6 +22,12 @@ function is_localhost() {
   return is_local;
 }
 
+if (!isnode() && is_localhost()) {
+  $.ajax({
+    url: '/superuser/theme/clean?latest=s'
+  });
+}
+
 /**
  * Is Development Mode
  */
@@ -73,82 +79,13 @@ if (isnode()) {
 }
 
 /**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
- */
-function loadCodemirror(
-  element: HTMLTextAreaElement,
-  mode: string | string[],
-  theme: string
-) {
-  if (!(element instanceof HTMLTextAreaElement)) {
-    console.error("element must be instanceof HTMLTextAreaElement");
-    return null;
-  }
-  const scripts = ["/node_modules/codemirror/lib/codemirror.js"];
-  if (mode) {
-    if (typeof mode == "string") {
-      scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
-    } else if (Array.isArray(mode)) {
-      mode.forEach(function (m) {
-        scripts.push(`/node_modules/codemirror/mode/${m}/${m}.js`);
-      });
-    }
-  }
-  if (!theme) {
-    var themes = [
-      "3024-night",
-      "abcdef",
-      "ambiance",
-      "base16-dark",
-      "bespin",
-      "blackboard",
-      "cobalt",
-      "colorforth",
-      "dracula",
-      "erlang-dark",
-      "hopscotch",
-      "icecoder",
-      "isotope",
-      "lesser-dark",
-      "liquibyte",
-      "material",
-      "mbo",
-      "mdn-like",
-      "monokai",
-    ];
-    var theme = themes[Math.floor(Math.random() * themes.length)];
-  }
-  framework().async(function () {
-    LoadScript(scripts, function () {
-      loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-        const editor = CodeMirror.fromTextArea(element, {
-          lineNumbers: true,
-          mode: mode,
-          /*
-            smartIndent: true,
-            lineWrapping: true,
-            showCursorWhenSelecting: true,
-            matchHighlight: true,*/
-        });
-        loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
-          editor.setOption("theme", theme);
-        });
-      });
-    });
-  });
-}
-
-/**
  * Load script asynchronously
  * @param urls
  * @param callback
  */
 function LoadScript(urls: string | string[], callback: null | Function) {
   var loaded = null;
-  const load = function (url: string) {
+  const load = async function (url: string) {
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.src = url;
@@ -169,17 +106,25 @@ function LoadScript(urls: string | string[], callback: null | Function) {
     };
     document.body.appendChild(script);
   };
-  if (typeof urls == "string") {
-    load(urls);
-  } else if (Array.isArray(urls)) {
-    urls.forEach(function (src) {
-      load(src);
-    });
-  }
-  if (loaded) {
-    if (typeof callback == "function") {
-      callback();
+  var run = function () {
+    if (loaded) {
+      console.log(getFuncName() + `(${urls[0]}) running`);
+      if (typeof callback == "function") {
+        callback();
+      }
     }
+  };
+  if (typeof urls == "string") {
+    load(urls).then(run);
+  } else if (Array.isArray(urls)) {
+    load(urls[0]).then(function () {
+      urls.shift();
+      if (urls.length) {
+        LoadScript(urls, callback);
+      } else {
+        run();
+      }
+    });
   }
 }
 

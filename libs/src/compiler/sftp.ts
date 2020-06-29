@@ -1,4 +1,4 @@
-import sync from './../sync/sync';
+import sync from './../syncs/sync';
 
 const Sync = new sync();
 export default Sync;

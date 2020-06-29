@@ -1,22 +1,24 @@
-import * as fs from 'fs';
-import * as Terser from 'terser';
-import * as path from 'path';
-import slash from 'slash';
-import * as JavaScriptObfuscator from 'javascript-obfuscator';
-import log from './log';
-import * as uglifycss from 'uglifycss';
-import * as sass from 'sass';
-import { exec } from 'child_process';
-const LocalStorage = require('node-localstorage').LocalStorage;
-import configuration from './config';
-import * as framework from './framework';
-import filemanager from './filemanager';
+import * as fs from "fs";
+import * as Terser from "terser";
+import * as path from "path";
+import slash from "slash";
+import * as JavaScriptObfuscator from "javascript-obfuscator";
+import log from "./log";
+import * as uglifycss from "uglifycss";
+import * as sass from "sass";
+import { exec } from "child_process";
+const LocalStorage = require("node-localstorage").LocalStorage;
+import configuration from "./config";
+import * as framework from "./framework";
+import filemanager from "./filemanager";
 
 /**
  * @class Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class core {
+  static log = log;
+  log = log;
   /**
    * config.json
    */
@@ -38,7 +40,7 @@ class core {
    */
   static async(callback: Function) {
     return new Promise(function (resolve, reject) {
-      if (typeof callback == 'function') {
+      if (typeof callback == "function") {
         callback();
       }
       resolve();
@@ -57,7 +59,7 @@ class core {
    */
   static composer(
     dir: string,
-    type: 'update' | 'install' | 'validate' | 'upgrade' | 'self-update'
+    type: "update" | "install" | "validate" | "upgrade" | "self-update"
   ) {
     if (type) {
       exec(
@@ -78,25 +80,25 @@ class core {
   }
 
   /**
-   * @param {import("fs").PathLike} dir
-   * @param {string[]} [filelist]
-   * @return {Array}
+   * @param dir
+   * @param [filelist]
+   * @return
    */
   static readdir(
-    dir: import('fs').PathLike,
-    filelist: string[],
-    exclude: Array<string | RegExp>
+    dir: string | Buffer,
+    filelist: string[] = null,
+    exclude: Array<string | RegExp> = null
   ): Array<any> {
     if (!dir) return null;
     var self = this;
-    if (!dir.toString().endsWith('/')) {
-      dir += '/';
+    if (!dir.toString().endsWith("/")) {
+      dir += "/";
     }
     var files = fs.readdirSync(dir);
     filelist = filelist || [];
     files.forEach(function (file) {
       if (fs.statSync(dir + file).isDirectory()) {
-        filelist = self.readdir(dir + file + '/', filelist, exclude);
+        filelist = self.readdir(dir + file + "/", filelist, exclude);
       } else {
         filelist.push(path.resolve(dir + file));
       }
@@ -111,7 +113,8 @@ class core {
             var matches = item.indexOf(ex) !== -1;
             allow = !matches;
           }
-          console.log(allow, ex);
+          //console.log(allow, ex);
+          return allow;
         });
       });
     }
@@ -124,7 +127,7 @@ class core {
    */
   static isNode() {
     var isNode = false;
-    if (typeof module !== 'undefined' && module.exports) {
+    if (typeof module !== "undefined" && module.exports) {
       isNode = true;
     }
     return isNode;
@@ -138,7 +141,7 @@ class core {
     return path.join(
       core
         .normalize(path.dirname(file))
-        .replace(core.normalize(process.cwd()), ''),
+        .replace(core.normalize(process.cwd()), ""),
       path.basename(file)
     );
   }
@@ -147,11 +150,12 @@ class core {
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
-  static scss(filename: fs.PathLike) {
+  static scss(filename: string | Buffer) {
     const self = this;
-    fs.exists(filename, function (exists) {
+    const exists = fs.existsSync(filename);
+    if (exists) {
       if (exists) {
-        var output = filename.toString().replace(/\.scss/s, '.css');
+        var output = filename.toString().replace(/\.scss/s, ".css");
         var outputcss = output;
         if (
           /\.scss$/s.test(filename.toString()) &&
@@ -160,12 +164,12 @@ class core {
           sass.render(
             {
               file: filename.toString(),
-              outputStyle: 'expanded',
+              outputStyle: "expanded",
               outFile: output,
             },
             function (err, result) {
               if (!err) {
-                fs.writeFile(outputcss, result.css, function (err) {
+                fs.writeFile(outputcss, result.css.toString(), function (err) {
                   if (!err) {
                     log.log(
                       `${log
@@ -175,7 +179,7 @@ class core {
                         )} > ${log
                         .chalk()
                         .blueBright(self.filelog(outputcss))} ${log.success(
-                        'success'
+                        "success"
                       )}`
                     );
                     core.minCSS(output, null);
@@ -190,7 +194,7 @@ class core {
       } else {
         console.error(`${filename} not found`);
       }
-    });
+    }
   }
 
   /**
@@ -200,9 +204,9 @@ class core {
   static root(): string {
     var appDir = slash(path.dirname(require.main.filename)).toString();
     if (/\/libs\/compiler$/s.test(appDir)) {
-      var split = appDir.split('/');
+      var split = appDir.split("/");
       split = split.slice(0, -2);
-      appDir = split.join('/');
+      appDir = split.join("/");
     }
     return appDir;
   }
@@ -240,12 +244,12 @@ class core {
    */
   static obfuscate(filejs: string) {
     const self = this;
-    if (!/\.obfuscated\.js$/s.test(filejs) && filejs.endsWith('.js')) {
-      var output = filejs.replace(/\.js/s, '.obfuscated.js');
+    if (!/\.obfuscated\.js$/s.test(filejs) && filejs.endsWith(".js")) {
+      var output = filejs.replace(/\.js/s, ".obfuscated.js");
       fs.readFile(
         filejs,
         {
-          encoding: 'utf-8',
+          encoding: "utf-8",
         },
         function (err, data) {
           if (!err) {
@@ -262,7 +266,7 @@ class core {
                   log.log(
                     `${self.filelog(filejs)} > ${self.filelog(
                       output
-                    )} ${log.success('success')}`
+                    )} ${log.success("success")}`
                   );
                 }
               }
@@ -287,16 +291,16 @@ class core {
       log.log(log.error(`${file} minJS Not Allowed`));
       return;
     }
-    var min = file.replace(/\.js$/s, '.min.js');
+    var min = file.replace(/\.js$/s, ".min.js");
     //log(min);
     if (!fs.existsSync(file)) {
-      log.log(log.random(file) + log.error(' not found'));
+      log.log(log.random(file) + log.error(" not found"));
       return null;
     }
     fs.readFile(
       file,
       {
-        encoding: 'utf-8',
+        encoding: "utf-8",
       },
       function (err, data) {
         if (!err) {
@@ -304,7 +308,7 @@ class core {
             if (err) {
               console.error(err);
             } else {
-              const terserResult = Terser.minify(fs.readFileSync(min, 'utf8'), {
+              const terserResult = Terser.minify(fs.readFileSync(min, "utf8"), {
                 parse: {
                   ecma: 8,
                 },
@@ -351,23 +355,23 @@ class core {
                 log.log(
                   `${log.chalk().yellow(input)} > ${log
                     .chalk()
-                    .yellowBright(output)} ${log.chalk().red('fail')}`
+                    .yellowBright(output)} ${log.chalk().red("fail")}`
                 );
                 fs.exists(min, function (ex) {
                   if (ex) {
                     filemanager.unlink(min, false);
                     log.log(
                       log.chalk().yellowBright(core.filelog(min)) +
-                        log.chalk().redBright(' deleted')
+                        log.chalk().redBright(" deleted")
                     );
                   }
                 });
               } else {
-                fs.writeFileSync(min, terserResult.code, 'utf8');
+                fs.writeFileSync(min, terserResult.code, "utf8");
                 log.log(
                   `${log.chalk().yellow(input)} > ${log
                     .chalk()
-                    .yellowBright(output)} ${log.success('success')}`
+                    .yellowBright(output)} ${log.success("success")}`
                 );
               }
             }
@@ -393,8 +397,8 @@ class core {
    * @returns {string|null}
    */
   static normalize(path: string): string | null {
-    return typeof slash(path) == 'string'
-      ? slash(path).replace(/\/{2,99}/s, '/')
+    return typeof slash(path) == "string"
+      ? slash(path).replace(/\/{2,99}/s, "/")
       : null;
   }
 
@@ -402,23 +406,23 @@ class core {
    * Determine OS is windows
    */
   static isWin() {
-    return process.platform === 'win32';
+    return process.platform === "win32";
   }
 
   /**
    * minify css to *.min.css version
-   * @param {string} file
-   * @param {Function|null} callback
+   * @param file
+   * @param callback
    */
-  static minCSS(file: string, callback: Function | null) {
+  static minCSS(file: string, callback: Function | null = null) {
     const self = this;
     fs.exists(file, function (exists) {
       if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
-        var min = file.replace(/\.css/s, '.min.css');
+        var min = file.replace(/\.css/s, ".min.css");
         fs.readFile(
           file,
           {
-            encoding: 'utf-8',
+            encoding: "utf-8",
           },
           function (err, data) {
             if (!err) {
@@ -432,11 +436,11 @@ class core {
                     min,
                     minified,
                     {
-                      encoding: 'utf-8',
+                      encoding: "utf-8",
                     },
                     function (err) {
                       if (!err) {
-                        if (typeof callback != 'function') {
+                        if (typeof callback != "function") {
                           log.log(
                             `${log
                               .chalk()
@@ -446,7 +450,7 @@ class core {
                               .chalk()
                               .blueBright(
                                 self.filelog(min)
-                              )} ${log.chalk().green('success')}`
+                              )} ${log.chalk().green("success")}`
                           );
                         } else {
                           callback(true, file, min);

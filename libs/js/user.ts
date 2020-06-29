@@ -1,3 +1,5 @@
+interface jQuery {}
+
 /**
  * User framework
  */
@@ -66,10 +68,6 @@ class user {
       },
     });
   }
-}
-
-interface Window {
-  user: user;
 }
 
 if (!(typeof module !== "undefined" && module.exports)) {

@@ -29,6 +29,13 @@ declare function array_keys(haystack: any): string[];
 declare function array_shuffle(a: Array<any>): any[];
 declare function array_filter(array: []): never[];
 /**
+ * CodeMirror loader
+ * @param id
+ * @param mode
+ * @param theme
+ */
+declare function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], theme: string): any;
+/**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  * @see http://localhost/src/Cookies/helper.php
@@ -116,9 +123,20 @@ declare var iv: string;
 declare var iterations: string;
 /**
  * Datatables loader
- * @param {Function} callback
+ * @param callback
  */
 declare function load_datatables(callback: Function): Promise<void>;
+/**
+ * Datatables init
+ * @todo disable error warning
+ * @todo add refresh button
+ */
+declare function datatables_init(): Promise<void>;
+/**
+ * Scroll up after click pagination dt
+ * @param {JQuery} target
+ */
+declare function pagination_up(target: JQuery): void;
 declare function datetime_local(date: any): string;
 /**
  * Detect is mobile
@@ -603,13 +621,6 @@ declare function json_decode(obj: string): any;
  * @param str
  */
 declare function isJSON(str: string): boolean;
-/**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
- */
-declare function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], theme: string): any;
 /**
  * Load script asynchronously
  * @param urls
@@ -1135,5 +1146,5 @@ declare class ZLIB {
      */
     static atos(arr: Uint8Array): string;
     static decompress(str: any): string;
-    static compress(str: any): any;
+    static compress(str: any): string;
 }

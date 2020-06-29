@@ -38,7 +38,9 @@ new \DDOS\runner();
 $theme = new themes();
 
 // set theme material bootstrap pro + font awesome pro 5
-$theme->set('mdb-dashboard');
+$theme->set('adminlte');
+//$theme->setThemeByZones(['mdb-dashboard' => ['telkomsel', 'coupon', 'im3', 'tools', 'superuser']]);
+//$theme->setThemeByZones(['puskesmas' => ['puskesmas']]);
 
 $theme_manager = 'theme-manager';
 $application_folder = empty(CONFIG['app']['root']) ? __DIR__ : ROOT;

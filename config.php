@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/vendor/autoload.php';
 
-// set root into current directory
+// set root into current directory 
 define('ROOT', __DIR__);
 resolve_dir(ROOT . '/tmp');
 resolve_dir(ROOT . '/src/Session/sessions');
@@ -15,7 +15,7 @@ define('CORS', \MVC\helper::cors());
 
 // define localhost detector
 define('LOCAL', \MVC\helper::isLocal());
-
+ 
 // define PAGE UNIQUE ID
 $uri = \MVC\helper::get_clean_uri();
 $uid = md5($uri . \MVC\helper::getRequestIP() . \MVC\helper::useragent());

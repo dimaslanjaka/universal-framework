@@ -9,7 +9,8 @@ import * as process from 'process'; import * as upath from 'upath'; import * as 
   "google": {
     "key": string,
     "client": string,
-    "secret": string
+    "secret": string,
+    "redirect": string
   },
   "cache": {
     "enable": string,
@@ -65,7 +66,10 @@ import * as process from 'process'; import * as upath from 'upath'; import * as 
   },
   "app": {
     "views": string,
-    "root": string
+    "root": string,
+    "domain": string,
+    "protocol": string,
+    "environtment": string
   },
   "security": {
     "salt": string

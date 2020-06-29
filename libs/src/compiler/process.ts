@@ -5,9 +5,10 @@ import log from './log';
 import { MD5 } from 'crypto-js';
 import coreProcess from 'process';
 
-filemanager.empty(upath.join(coreProcess.cwd(), 'tmp', 'compiler'), null);
+filemanager.empty(upath.join(coreProcess.cwd(), 'tmp/compiler'), null);
 
 class process {
+  static root = coreProcess.cwd();
   static verbose: boolean = false;
   static tmp = 'tmp/compiler';
   /**

@@ -3,9 +3,9 @@
 namespace Extender;
 
 use Curl\Curl;
-use MVC\Exception;
 use Filemanager\file;
 use JSON\json;
+use MVC\Exception;
 use MVC\helper;
 
 class request extends Curl
@@ -29,6 +29,68 @@ class request extends Curl
     $this->setOpt(CURLOPT_SSL_VERIFYHOST, false);
 
     return $this;
+  }
+
+  public $cache = false;
+
+  /**
+   * Execute curl.
+   *
+   * @return string|array|null
+   */
+  public function execute(string $method, string $path, bool $rewrite = false)
+  {
+    $self = $this;
+    $self->set_method($method);
+    $self->set_url($path);
+    if ($self->cache) {
+      if (!$rewrite) {
+        if (file_exists($self->cache_path())) {
+          $this->response = $self->get_cache();
+        }
+      }
+    }
+
+    if (!$this->response || empty($this->response)) {
+      $this->exec();
+    } else {
+      $this->error = false;
+    }
+
+    if (!$this->error) {
+      if ($this->cache) {
+        \Filemanager\file::file($this->cache_path(), $this->response, true);
+      }
+      if (is_object($this->response)) {
+        $this->response = (array) $this->response;
+      }
+
+      return $this->response;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get Cache Path.
+   *
+   * @return string
+   */
+  private function cache_path()
+  {
+    return ROOT . '/tmp/curl/' . md5($this->url);
+  }
+
+  /**
+   * Get cached content.
+   *
+   * @return string|array|null
+   */
+  private function get_cache()
+  {
+    if (file_exists($this->cache_path())) {
+      return \Filemanager\file::get($this->cache_path(), true);
+    }
   }
 
   public function set_url(string $url)
@@ -298,8 +360,6 @@ class request extends Curl
    * * var_dump(isAssoc(["1" => 'a', "0" => 'b', "2" => 'c'])); // true
    * * var_dump(isAssoc(["a" => 'a', "b" => 'b', "c" => 'c'])); // true.
    *
-   * @param array $arr
-   *
    * @return bool
    */
   public function isAssoc(array $arr)
@@ -313,8 +373,6 @@ class request extends Curl
 
   /**
    * Check array has some string key.
-   *
-   * @param array $array
    *
    * @return bool
    */

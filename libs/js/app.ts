@@ -22,7 +22,7 @@ var dimas = {
     /**
      * DO NOT ASSIGN THIS
      */
-    check: null as NodeJS.Timeout,
+    check: null as NodeJS.Timer,
     /**
      * Get current captcha id
      */

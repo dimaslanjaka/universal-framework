@@ -1,9 +1,5 @@
-interface HTMLElement {
-  [attachEvent: string]: any;
-}
-
 /** Add one or more listeners to an element
- * @param element - DOM element to add listeners to 
+ * @param element - DOM element to add listeners to
  * @param eventNames - space separated list of event names, e.g. 'click change'
  * @param listener - function to attach for each event as a listener
  */

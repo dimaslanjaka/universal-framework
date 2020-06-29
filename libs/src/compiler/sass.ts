@@ -2,14 +2,14 @@ import * as sass from "sass";
 import * as fs from "fs";
 import log from "./log";
 //import { core } from "./core";
-import core = require('./core');
+import core = require("./core");
 
 export class sass_compiler {
   /**
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
-  static scss(filename: fs.PathLike) {
+  static scss(filename: string) {
     fs.exists(filename, function (exists) {
       if (exists) {
         var output = filename.toString().replace(/\.scss/s, ".css");
@@ -46,4 +46,3 @@ export class sass_compiler {
     });
   }
 }
-

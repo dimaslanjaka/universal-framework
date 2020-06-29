@@ -34,7 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-/// <reference path="./Array.d.ts"/>
 function arrayCompare(a1, a2) {
     if (a1.length != a2.length)
         return false;
@@ -127,6 +126,66 @@ if (!Array.prototype.every) {
 function array_filter(array) {
     return array.filter(function (el) {
         return el != null;
+    });
+}
+/**
+ * CodeMirror loader
+ * @param id
+ * @param mode
+ * @param theme
+ */
+function loadCodemirror(element, mode, theme) {
+    if (!(element instanceof HTMLTextAreaElement)) {
+        console.error("element must be instanceof HTMLTextAreaElement");
+        return null;
+    }
+    var scripts = ["/node_modules/codemirror/lib/codemirror.js"];
+    if (mode) {
+        if (typeof mode == "string") {
+            scripts.push("/node_modules/codemirror/mode/" + mode + "/" + mode + ".js");
+        }
+        else if (Array.isArray(mode)) {
+            mode.forEach(function (m) {
+                scripts.push("/node_modules/codemirror/mode/" + m + "/" + m + ".js");
+            });
+        }
+    }
+    if (!theme) {
+        var themes = [
+            "3024-night",
+            "abcdef",
+            "ambiance",
+            "base16-dark",
+            "bespin",
+            "blackboard",
+            "cobalt",
+            "colorforth",
+            "dracula",
+            "erlang-dark",
+            "hopscotch",
+            "icecoder",
+            "isotope",
+            "lesser-dark",
+            "liquibyte",
+            "material",
+            "mbo",
+            "mdn-like",
+            "monokai",
+        ];
+        var theme = themes[Math.floor(Math.random() * themes.length)];
+    }
+    framework().async(function () {
+        LoadScript(scripts, function () {
+            loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
+                var editor = CodeMirror.fromTextArea(element, {
+                    lineNumbers: true,
+                    mode: mode,
+                });
+                loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
+                    editor.setOption("theme", theme);
+                });
+            });
+        });
     });
 }
 /**
@@ -336,54 +395,6 @@ function CryptoD(passphrase, encryptedText, salt, iv) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
-if (!isnode()) {
-    if (typeof jQuery.fn.dataTable != "undefined") {
-        $.fn.dataTable.ext.errMode = "none";
-        $.fn.dataTable.ext.buttons.refresh = {
-            extend: "collection",
-            text: '<i class="fas fa-sync"></i>',
-            className: "btn btn-info",
-            action: function (e, dt, node, config) {
-                dt.clear().draw();
-                dt.ajax.reload();
-            },
-        };
-        setTimeout(function () {
-            $("button.dt-button").not(".btn").addClass("btn btn-info");
-        }, 5000);
-    }
-}
-/**
- * Datatables loader
- * @param {Function} callback
- */
-function load_datatables(callback) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            LoadScript([
-                "/assets/mdb-dashboard/js/addons/datatables.min.js",
-                "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
-                "/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
-                "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
-                "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
-                "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
-                "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
-            ], function () {
-                loadCSS([
-                    "/src/MVC/themes/assets/partial/datatables.min.css",
-                    "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
-                    "/assets/mdb-dashboard/css/addons/datatables.min.css",
-                    "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
-                    "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
-                ]);
-                if (typeof callback == "function") {
-                    yield callback();
-                }
-            });
-            return [2 /*return*/];
-        });
-    });
-}
 Date.prototype.isHourAgo = function (hour) {
     var hour = hour * 60 * 1000; /* ms */
     var hourago = Date.now() - hour;
@@ -478,7 +489,7 @@ var GeneratorID = /** @class */ (function () {
     return GeneratorID;
 }());
 /**
- * @param {createElement} options
+ * @param {createElementOpt} options
  */
 function createElement(options) {
     var el, a, i;
@@ -504,11 +515,14 @@ function createElement(options) {
     }
     // IE 8 doesn"t have HTMLElement
     if (window.HTMLElement === undefined) {
+        // @ts-ignore
         window.HTMLElement = Element;
     }
     if (options.childs && options.childs.length) {
         for (i = 0; i < options.childs.length; i++) {
-            el.appendChild(options.childs[i] instanceof window.HTMLElement ? options.childs[i] : createElement(options.childs[i]));
+            el.appendChild(options.childs[i] instanceof window.HTMLElement
+                ? options.childs[i]
+                : createElement(options.childs[i]));
         }
     }
     return el;
@@ -517,6 +531,10 @@ var html = /** @class */ (function () {
     function html() {
     }
     html.create = function (options) {
+        /**
+         * @param {createElementOpt}
+         * @returns {createElement}
+         */
         return createElement(options);
     };
     return html;
@@ -533,8 +551,8 @@ Number.prototype.addHour = function (source) {
     return new Date(source.getTime() + Hour).getTime();
 };
 Number.prototype.AddZero = function (b, c) {
-    var l = (String(b || 10).length - String(this).length) + 1;
-    return l > 0 ? new Array(l).join(c || '0') + this : this;
+    var l = String(b || 10).length - String(this).length + 1;
+    return l > 0 ? new Array(l).join(c || "0") + this : this;
 };
 Object.size = function (obj) {
     var size = 0, key;
@@ -587,31 +605,6 @@ var Timer = /** @class */ (function () {
     return Timer;
 }());
 /**
- * check empty
- * @param str
- */
-function empty(str) {
-    var type = typeof str;
-    if (type == 'string' || type == 'number') {
-        str = str.toString().trim();
-    }
-    switch (str) {
-        case '':
-        case null:
-        case false:
-        case type == 'undefined': //typeof (str) == "undefined"
-            return true;
-        default:
-            return false;
-    }
-}
-/**
- * Get current function name
- */
-function getFuncName() {
-    return getFuncName.caller.name;
-}
-/**
  * call_user_func
  * @param functionName function name
  */
@@ -624,11 +617,59 @@ function ___call(functionName, context, args) {
     }
 }
 /**
+ * Is Node ?
+ */
+function isnode() {
+    if (typeof module !== "undefined" && module.exports) {
+        return true;
+    }
+}
+/**
+ * Make function async
+ * @param callback
+ */
+function async_this(callback) {
+    return new Promise(function (resolve, reject) {
+        if (typeof callback == "function") {
+            callback();
+            resolve(true);
+        }
+        else {
+            reject(new Error("callback is not function"));
+        }
+    });
+}
+/**
  * call_user_func
  * @param func function name
  */
 function __call(func) {
     this[func].apply(this, Array.prototype.slice.call(arguments, 1));
+}
+/**
+ * check empty
+ * @param str
+ */
+function empty(str) {
+    var type = typeof str;
+    if (type == "string" || type == "number") {
+        str = str.toString().trim();
+    }
+    switch (str) {
+        case "":
+        case null:
+        case false:
+        case type == "undefined": //typeof (str) == "undefined"
+            return true;
+        default:
+            return false;
+    }
+}
+/**
+ * Get current function name
+ */
+function getFuncName() {
+    return getFuncName.caller.name;
 }
 /**
  * Begin global toastr options
@@ -662,14 +703,6 @@ var randstr = function (length) {
     if (length === void 0) { length = 6; }
     return Math.random().toString(20).substr(2, length);
 };
-/**
- * Is Node ?
- */
-function isnode() {
-    if (typeof module !== "undefined" && module.exports) {
-        return true;
-    }
-}
 if (!isnode()) {
     /**
      * AJAX runner base
@@ -683,22 +716,22 @@ if (!isnode()) {
      * Ajax indicator base
      */
     var indicatorAjax = false;
-    var ajaxIDLoader_1 = 'ajxLoader_' +
+    var ajaxIDLoader_1 = "ajxLoader_" +
         Math.random().toString(36).substring(2) +
         Date.now().toString(36);
-    if (!$('#' + ajaxIDLoader_1).length) {
-        $('body').append('<div id="' +
+    if (!$("#" + ajaxIDLoader_1).length) {
+        $("body").append('<div id="' +
             ajaxIDLoader_1 +
             '" style="position: fixed;z-index:9999;bottom:5px;left:5px;"><svg enable-background="new 0 0 40 40"height=40px id=loader-1 version=1.1 viewBox="0 0 40 40"width=40px x=0px xml:space=preserve xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink y=0px><path d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946\
   s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634\
   c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"fill=#000 opacity=0.2 /><path d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0\
   C22.32,8.481,24.301,9.057,26.013,10.047z"fill=#000><animateTransform attributeName=transform attributeType=xml dur=0.5s from="0 20 20"repeatCount=indefinite to="360 20 20"type=rotate /></path></svg></div>');
-        $('#' + ajaxIDLoader_1).fadeOut('fast');
+        $("#" + ajaxIDLoader_1).fadeOut("fast");
     }
     jQuery.ajaxPrefilter(function (options) {
         indicatorAjax =
-            typeof options.indicator == 'boolean' && options.indicator === true;
-        dumpAjax = typeof options.dump == 'boolean' && options.dump === true;
+            typeof options.indicator == "boolean" && options.indicator === true;
+        dumpAjax = typeof options.dump == "boolean" && options.dump === true;
         /**
          * Proxying begin
          */
@@ -710,17 +743,17 @@ if (!isnode()) {
             if (options.url.match(/^\//)) {
                 allowed = false;
             }
-            if (options.hasOwnProperty('proxy') && !options.proxy) {
+            if (options.hasOwnProperty("proxy") && !options.proxy) {
                 allowed = false;
             }
             if (allowed) {
-                var http = window.location.protocol === 'http:' ? 'http:' : 'https:';
-                if (typeof options.proxy == 'string') {
+                var http = window.location.protocol === "http:" ? "http:" : "https:";
+                if (typeof options.proxy == "string") {
                     options.url =
-                        options.proxy.replace(/\/{1,99}$/s, '') + '/' + options.url;
+                        options.proxy.replace(/\/{1,99}$/s, "") + "/" + options.url;
                 }
                 else {
-                    options.url = http + '//cors-anywhere.herokuapp.com/' + options.url;
+                    options.url = http + "//cors-anywhere.herokuapp.com/" + options.url;
                 }
             }
         }
@@ -730,45 +763,45 @@ if (!isnode()) {
   });
   */
     $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
-        var content_type = jqXHR.getResponseHeader('Content-Type');
-        if (typeof toastr != 'undefined') {
+        var content_type = jqXHR.getResponseHeader("Content-Type");
+        if (typeof toastr != "undefined") {
             if (/json|text\/plain/s.test(content_type)) {
-                toastr.error('Request failed. (' +
+                toastr.error("Request failed. (" +
                     jqXHR.status +
-                    ' ' +
+                    " " +
                     jqXHR.statusText +
-                    ') ' +
-                    errorThrown, 'Request Info');
+                    ") " +
+                    errorThrown, "Request Info");
             }
         }
     });
     $(document).ajaxSend(function (event, xhr, settings) {
-        if (settings.hasOwnProperty('indicator') && settings.indicator) {
-            $('#' + ajaxIDLoader_1).fadeIn('fast');
+        if (settings.hasOwnProperty("indicator") && settings.indicator) {
+            $("#" + ajaxIDLoader_1).fadeIn("fast");
         }
         if (dumpAjax) {
-            toastr.info('Requesting...', 'Request Info');
+            toastr.info("Requesting...", "Request Info");
         }
-        if (!settings.hasOwnProperty('method')) {
-            settings.method = 'POST';
+        if (!settings.hasOwnProperty("method")) {
+            settings.method = "POST";
         }
     });
     $(document).ajaxComplete(function (event, xhr, settings) {
-        if (settings.hasOwnProperty('indicator') && settings.indicator) {
-            $('#' + ajaxIDLoader_1).fadeOut('fast');
+        if (settings.hasOwnProperty("indicator") && settings.indicator) {
+            $("#" + ajaxIDLoader_1).fadeOut("fast");
         }
         if (dumpAjax) {
-            toastr.success('Request complete', 'Request Info');
+            toastr.success("Request complete", "Request Info");
         }
         AJAX = null;
-        $('#' + ajaxIDLoader_1).fadeOut('slow');
-        var content_type = xhr.getResponseHeader('Content-Type'), res;
-        if (xhr.hasOwnProperty('responseJSON')) {
+        $("#" + ajaxIDLoader_1).fadeOut("slow");
+        var content_type = xhr.getResponseHeader("Content-Type"), res;
+        if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
         }
         else {
             res = xhr.responseText;
-            if (typeof res == 'string' &&
+            if (typeof res == "string" &&
                 !empty(res) &&
                 /json|text\/plain/s.test(content_type)) {
                 //begin decode json
@@ -777,27 +810,27 @@ if (!isnode()) {
                 }
             }
         }
-        if (typeof res == 'object') {
-            if (res.hasOwnProperty('redirect')) {
+        if (typeof res == "object") {
+            if (res.hasOwnProperty("redirect")) {
                 this.location.replace(res.redirect);
-                throw 'Disabled';
+                throw "Disabled";
             }
-            if (res.hasOwnProperty('reload')) {
+            if (res.hasOwnProperty("reload")) {
                 location.href = location.href;
-                throw 'Disabled';
+                throw "Disabled";
             }
         }
     });
     $(document).ajaxSuccess(function (event, request, settings) {
         var res;
-        var content_type = request.getResponseHeader('Content-Type');
-        if (request.hasOwnProperty('responseJSON')) {
+        var content_type = request.getResponseHeader("Content-Type");
+        if (request.hasOwnProperty("responseJSON")) {
             res = request.responseJSON;
         }
         else {
             res = request.responseText;
         }
-        if (typeof res == 'string' &&
+        if (typeof res == "string" &&
             !empty(res) &&
             /json|text\/plain/s.test(content_type)) {
             //begin decode json
@@ -805,14 +838,14 @@ if (!isnode()) {
                 res = JSON.parse(res);
             }
         }
-        if (typeof res == 'object' &&
-            !settings.hasOwnProperty('silent') &&
-            typeof toastr != 'undefined' &&
+        if (typeof res == "object" &&
+            !settings.hasOwnProperty("silent") &&
+            typeof toastr != "undefined" &&
             /json|javascript/s.test(content_type)) {
-            var error = res.hasOwnProperty('error') && res.error ? true : false;
-            var title = res.hasOwnProperty('title') ? res.title : 'Unknown Title';
-            var msg = res.hasOwnProperty('message') ? res.message : 'Unknown Error';
-            if (res.hasOwnProperty('error') && res.hasOwnProperty('message')) {
+            var error = res.hasOwnProperty("error") && res.error ? true : false;
+            var title = res.hasOwnProperty("title") ? res.title : "Unknown Title";
+            var msg = res.hasOwnProperty("message") ? res.message : "Unknown Error";
+            if (res.hasOwnProperty("error") && res.hasOwnProperty("message")) {
                 if (error) {
                     toastr.error(msg, title);
                 }
@@ -820,11 +853,11 @@ if (!isnode()) {
                     toastr.success(msg, title);
                 }
             }
-            else if (res.hasOwnProperty('message')) {
+            else if (res.hasOwnProperty("message")) {
                 toastr.info(msg, title);
             }
-            if (res.hasOwnProperty('unauthorized')) {
-                location.replace('/signin');
+            if (res.hasOwnProperty("unauthorized")) {
+                location.replace("/signin");
             }
         }
     });
@@ -839,12 +872,12 @@ if (!isnode()) {
         //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
         console.log(getFuncName(), callback);
         var res;
-        if (xhr.hasOwnProperty('responseJSON')) {
+        if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
         }
-        else if (xhr.hasOwnProperty('responseText')) {
+        else if (xhr.hasOwnProperty("responseText")) {
             res = xhr.responseText;
-            if (typeof res == 'string' && !empty(res)) {
+            if (typeof res == "string" && !empty(res)) {
                 //begin decode json
                 if (isJSON(res)) {
                     res = JSON.parse(res);
@@ -852,21 +885,21 @@ if (!isnode()) {
             }
         }
         if (callback) {
-            if (typeof callback == 'function') {
+            if (typeof callback == "function") {
                 callback(res);
             }
-            else if (typeof callback == 'string') {
+            else if (typeof callback == "string") {
                 call_user_func(callback, window, res);
             }
             else {
-                console.error('2nd parameters must be callback function, instead of ' +
+                console.error("2nd parameters must be callback function, instead of " +
                     typeof callback);
             }
         }
     }
     function call_user_func(functionName, context, args) {
         var args = Array.prototype.slice.call(arguments, 2);
-        var namespaces = functionName.split('.');
+        var namespaces = functionName.split(".");
         var func = namespaces.pop();
         for (var i = 0; i < namespaces.length; i++) {
             context = context[namespaces[i]];
@@ -879,13 +912,13 @@ if (!isnode()) {
      */
     function ajx(settings, success, failed, complete) {
         settings.headers = {
-            'unique-id': getUID(),
+            "unique-id": getUID(),
         };
-        if (!settings.hasOwnProperty('indicator')) {
+        if (!settings.hasOwnProperty("indicator")) {
             settings.indicator = true;
         }
-        if (!settings.hasOwnProperty('method')) {
-            settings.method = 'POST';
+        if (!settings.hasOwnProperty("method")) {
+            settings.method = "POST";
         }
         return $.ajax(settings)
             .done(function (data, textStatus, jqXHR) {
@@ -905,24 +938,24 @@ if (!isnode()) {
      * @requires data-complete complete function name
      */
     function AjaxForm() {
-        $(document).on('submit', 'form', function (e) {
+        $(document).on("submit", "form", function (e) {
             e.preventDefault();
             var t = $(this);
-            var sukses = t.data('success');
-            var err = t.data('error');
-            var complete = t.data('complete');
-            var targetURL = t.attr('action');
+            var sukses = t.data("success");
+            var err = t.data("error");
+            var complete = t.data("complete");
+            var targetURL = t.attr("action");
             //console.log(targetURL, sukses, err, complete);
             if (!targetURL) {
-                console.error('Target url of this form not exists');
+                console.error("Target url of this form not exists");
                 return;
             }
             ajx({
                 url: targetURL,
-                method: t.attr('method') || 'POST',
+                method: t.attr("method") || "POST",
                 data: t.serialize(),
                 headers: {
-                    Accept: 'application/json',
+                    Accept: "application/json",
                     guid: guid(),
                 },
             }, sukses, err, complete);
@@ -936,19 +969,19 @@ if (!isnode()) {
         var xhr = new XMLHttpRequest();
         $.ajax({
             url: source_cache,
-            method: 'POST',
+            method: "POST",
             silent: true,
             indicator: false,
             xhr: function () {
                 return xhr;
             },
             headers: {
-                Pragma: 'no-cache',
-                'Cache-Control': 'no-cache',
-                'Refresh-Cache': 'true',
+                Pragma: "no-cache",
+                "Cache-Control": "no-cache",
+                "Refresh-Cache": "true",
             },
             success: function (response) {
-                $('html').html($('html', response).html());
+                $("html").html($("html", response).html());
                 console.log(xhr.responseURL);
             },
         });
@@ -1137,6 +1170,163 @@ if (!isnode()) {
     };
     function ajax() {
         return window.ajax;
+    }
+}
+/// <reference path="alert.d.ts" />
+/**
+ * Bootstrap Alert Generator
+ * @example createAlert(
+  "[title] Opps!",
+  "[description] Something went wrong",
+  "[details] Here is a bunch of text about some stuff that happened.",
+  "[mode|bg-color] danger",
+  true, false,
+  { position: "fixed", bottom: "15px", right: "15px" });
+ */
+function createAlert(
+/**
+ * Title alert
+ */
+title, 
+/**
+ * Summary description
+ */
+summary, 
+/**
+ * Another description
+ */
+details, 
+/**
+ * basic class bootstrap or you can insert color name
+ */
+severity, 
+/**
+ * can be closed ?
+ */
+dismissible, 
+/**
+ * auto closed ?
+ */
+autoDismiss, 
+/**
+ * Fill `CSSProperties` object or insert CSS object string
+ * @example {position: 'fixed', top: '5px', right: '5px'}
+ * @example 'position:fixed;top:10px;left:10px;'
+ */
+options) {
+    if (severity == "error") {
+        severity = "danger";
+    }
+    if (!$("style#alertcss")) {
+        createStyle("#pageMessages {\n      position: fixed;\n      bottom: 15px;\n      right: 15px;\n      width: 30%;\n    }\n    \n    #pageMessages .alert {\n      position: relative;\n    }\n    \n    #pageMessages .alert .close {\n      position: absolute;\n      top: 5px;\n      right: 5px;\n      font-size: 1em;\n    }\n    \n    #pageMessages .alert .fa {\n      margin-right:.3em;\n    }", { id: "alertcss" });
+    }
+    if (!$("#pageMessages").length) {
+        var style = "";
+        if (typeof options == "string") {
+            style = options;
+        }
+        else if (typeof options == "object") {
+            if (options.length) {
+                for (var key in options) {
+                    if (options.hasOwnProperty(key)) {
+                        var value = options[key];
+                        if (value && value.length) {
+                            style += key + ": " + value + ";";
+                        }
+                    }
+                }
+            }
+            else {
+                style = "position: fixed;bottom: 15px;right: 15px;width: 30%;";
+            }
+        }
+        $("body").append('<div id="pageMessages" style="' + style + '"></div>');
+    }
+    var iconMap = {
+        info: "fa fa-info-circle",
+        success: "fa fa-thumbs-up",
+        warning: "fa fa-exclamation-triangle",
+        danger: "fa ffa fa-exclamation-circle",
+    };
+    var iconAdded = false;
+    var alertClasses = ["alert", "animated", "flipInX"];
+    alertClasses.push("alert-" + severity.toLowerCase());
+    if (dismissible) {
+        alertClasses.push("alert-dismissible");
+    }
+    var msgIcon = $("<i />", {
+        class: iconMap[severity],
+    });
+    var msg = $("<div />", {
+        class: alertClasses.join(" "),
+    });
+    if (title) {
+        var msgTitle = $("<h4 />", {
+            html: title,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgTitle.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (summary) {
+        var msgSummary = $("<strong />", {
+            html: summary,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgSummary.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (details) {
+        var msgDetails = $("<p />", {
+            html: details,
+        }).appendTo(msg);
+        if (!iconAdded) {
+            msgDetails.prepend(msgIcon);
+            iconAdded = true;
+        }
+    }
+    if (dismissible) {
+        var msgClose = $("<span />", {
+            class: "close",
+            "data-dismiss": "alert",
+            html: "<i class='fa fa-times-circle'></i>",
+        }).appendTo(msg);
+    }
+    $("#pageMessages").prepend(msg);
+    if (autoDismiss) {
+        setTimeout(function () {
+            msg.addClass("flipOutX");
+            setTimeout(function () {
+                msg.remove();
+            }, 1000);
+        }, 5000);
+    }
+}
+/**
+ * Create style css dynamic
+ * @example css = 'h1 { background: red; }'
+ * @example arributes = {id: 'customStyle', media: 'all'}
+ * @param css
+ */
+function createStyle(css, attributes) {
+    if (attributes === void 0) { attributes = null; }
+    var head = document.head || document.getElementsByTagName("head")[0], style = document.createElement("style");
+    head.appendChild(style);
+    style.type = "text/css";
+    style.setAttribute("type", "text/css");
+    for (var key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+            style.setAttribute(key, attributes[key]);
+        }
+    }
+    if (style.styleSheet) {
+        // This is required for IE8 and below.
+        style.styleSheet.cssText = css;
+    }
+    else {
+        style.appendChild(document.createTextNode(css));
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
@@ -1686,6 +1876,106 @@ if (!isnode()) {
         });
     });
 }
+if (typeof module == "undefined" && typeof jQuery != "undefined") {
+    if (typeof console != "undefined")
+        if (typeof console.log != "undefined") {
+            console.olog = console.log;
+        }
+        else {
+            console.olog = function () { };
+        }
+    console.log = function (message) {
+        console.olog(message);
+        if (!$("#debugConsole").length) {
+            $("body").append('<div id="debugConsole"></div>');
+        }
+        if (typeof console_callback == "function") {
+            console_callback(message);
+        }
+        else {
+            $("#debugConsole").append("<p> <kbd>" + typeof message + "</kbd> " + message + "</p>");
+        }
+    };
+}
+/**
+ * Datatables loader
+ * @param callback
+ */
+function load_datatables(callback) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            LoadScript([
+                "/assets/mdb-dashboard/js/addons/datatables.min.js",
+                "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
+                "/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+                "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
+                "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+                "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+                "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
+            ], function () {
+                loadCSS([
+                    "/src/MVC/themes/assets/partial/datatables.min.css",
+                    "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
+                    "/assets/mdb-dashboard/css/addons/datatables.min.css",
+                    "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
+                    "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
+                ], null);
+                datatables_init().then(function () {
+                    $(".dataTables_length").addClass("bs-select");
+                    $("div.dt-toolbar").html("");
+                    if (typeof callback == "function") {
+                        callback();
+                    }
+                });
+            });
+            return [2 /*return*/];
+        });
+    });
+}
+var datatables_ignited = false;
+/**
+ * Datatables init
+ * @todo disable error warning
+ * @todo add refresh button
+ */
+function datatables_init() {
+    return async_this(function () {
+        if (datatables_ignited) {
+            return console.log("datatables already ignited");
+        }
+        if (typeof jQuery.fn.dataTable != "undefined") {
+            jQuery.fn.dataTable.ext.errMode = "none";
+            jQuery.fn.dataTable.ext.buttons.refresh = {
+                extend: "collection",
+                text: '<i class="fas fa-sync"></i>',
+                className: "btn btn-info",
+                action: function (e, dt, node, config) {
+                    dt.clear().draw();
+                    dt.ajax.reload();
+                },
+            };
+            setTimeout(function () {
+                $("button.dt-button").not(".btn").addClass("btn btn-info");
+            }, 5000);
+            datatables_ignited = true;
+        }
+    });
+}
+/**
+ * Scroll up after click pagination dt
+ * @param target
+ */
+function pagination_up(target) {
+    if (!(target instanceof jQuery)) {
+        return console.error(getFuncName() + " target element not instance of jQuery");
+    }
+    target.on("page.dt", function () {
+        $("html, body").animate({
+            scrollTop: jQuery(".dataTables_wrapper").offset().top,
+        }, "slow");
+        $("thead tr th:first-child").focus().blur();
+    });
+}
 var debug_run = null;
 /**
  * Disable debugger
@@ -1929,6 +2219,11 @@ function is_localhost() {
     var is_local = location.host.match(/^localhost|^127|\.io$/s);
     return is_local;
 }
+if (!isnode() && is_localhost()) {
+    $.ajax({
+        url: '/superuser/theme/clean?latest=s'
+    });
+}
 /**
  * Is Development Mode
  */
@@ -1973,66 +2268,6 @@ if (isnode()) {
     module.exports = isJSON;
 }
 /**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
- */
-function loadCodemirror(element, mode, theme) {
-    if (!(element instanceof HTMLTextAreaElement)) {
-        console.error("element must be instanceof HTMLTextAreaElement");
-        return null;
-    }
-    var scripts = ["/node_modules/codemirror/lib/codemirror.js"];
-    if (mode) {
-        if (typeof mode == "string") {
-            scripts.push("/node_modules/codemirror/mode/" + mode + "/" + mode + ".js");
-        }
-        else if (Array.isArray(mode)) {
-            mode.forEach(function (m) {
-                scripts.push("/node_modules/codemirror/mode/" + m + "/" + m + ".js");
-            });
-        }
-    }
-    if (!theme) {
-        var themes = [
-            "3024-night",
-            "abcdef",
-            "ambiance",
-            "base16-dark",
-            "bespin",
-            "blackboard",
-            "cobalt",
-            "colorforth",
-            "dracula",
-            "erlang-dark",
-            "hopscotch",
-            "icecoder",
-            "isotope",
-            "lesser-dark",
-            "liquibyte",
-            "material",
-            "mbo",
-            "mdn-like",
-            "monokai",
-        ];
-        var theme = themes[Math.floor(Math.random() * themes.length)];
-    }
-    framework().async(function () {
-        LoadScript(scripts, function () {
-            loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-                var editor = CodeMirror.fromTextArea(element, {
-                    lineNumbers: true,
-                    mode: mode,
-                });
-                loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
-                    editor.setOption("theme", theme);
-                });
-            });
-        });
-    });
-}
-/**
  * Load script asynchronously
  * @param urls
  * @param callback
@@ -2040,38 +2275,53 @@ function loadCodemirror(element, mode, theme) {
 function LoadScript(urls, callback) {
     var loaded = null;
     var load = function (url) {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = url;
-        script.onreadystatechange = function () {
-            loaded = true;
-        };
-        script.onload = function () {
-            loaded = true;
-        };
-        script.onerror = function () {
-            throw "error while loading " + url;
-        };
-        script.onabort = function () {
-            throw "error while loading " + url;
-        };
-        script.oncancel = function () {
-            throw "error while loading " + url;
-        };
-        document.body.appendChild(script);
+        return __awaiter(this, void 0, void 0, function () {
+            var script;
+            return __generator(this, function (_a) {
+                script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = url;
+                script.onreadystatechange = function () {
+                    loaded = true;
+                };
+                script.onload = function () {
+                    loaded = true;
+                };
+                script.onerror = function () {
+                    throw "error while loading " + url;
+                };
+                script.onabort = function () {
+                    throw "error while loading " + url;
+                };
+                script.oncancel = function () {
+                    throw "error while loading " + url;
+                };
+                document.body.appendChild(script);
+                return [2 /*return*/];
+            });
+        });
+    };
+    var run = function () {
+        if (loaded) {
+            console.log(getFuncName() + ("(" + urls[0] + ") running"));
+            if (typeof callback == "function") {
+                callback();
+            }
+        }
     };
     if (typeof urls == "string") {
-        load(urls);
+        load(urls).then(run);
     }
     else if (Array.isArray(urls)) {
-        urls.forEach(function (src) {
-            load(src);
+        load(urls[0]).then(function () {
+            urls.shift();
+            if (urls.length) {
+                LoadScript(urls, callback);
+            }
+            else {
+                run();
+            }
         });
-    }
-    if (loaded) {
-        if (typeof callback == "function") {
-            callback();
-        }
     }
 }
 /**
@@ -2513,6 +2763,212 @@ function md5(string) {
     return temp.toLowerCase();
 }
 ;
+/// <reference path="./globals.d.ts"/>
+if (!isnode()) {
+    /*
+   <div class="progress">
+   <div class="progress-bar progress-bar-success progress-bar-striped"
+   role="progressbar" aria-valuenow="40" aria-valuemin="0"
+   aria-valuemax="100" style="width: 40%">
+   <span class="sr-only">40% Complete (success)</span>
+   </div>
+   </div>
+   */
+    if (typeof jQuery === "undefined") {
+        throw new Error("jQuery progress timer requires jQuery");
+    }
+    /*!
+     * jQuery lightweight plugin boilerplate
+     * Original author: @ajpiano
+     * Further changes, comments: @addyosmani
+     * Licensed under the MIT license
+     */
+    (function ($, window, document, undefined) {
+        "use strict";
+        // undefined is used here as the undefined global
+        // variable in ECMAScript 3 and is mutable (i.e. it can
+        // be changed by someone else). undefined isn't really
+        // being passed in so we can ensure that its value is
+        // truly undefined. In ES5, undefined can no longer be
+        // modified.
+        // window and document are passed through as local
+        // variables rather than as globals, because this (slightly)
+        // quickens the resolution process and can be more
+        // efficiently minified (especially when both are
+        // regularly referenced in your plugin).
+        // Create the defaults once
+        var pluginName = "progressTimer";
+        // The actual plugin constructor
+        var Plugin = /** @class */ (function () {
+            function Plugin(element, options) {
+                this.defaults = {
+                    //total number of seconds
+                    timeLimit: 60,
+                    //seconds remaining triggering switch to warning color
+                    warningThreshold: 5,
+                    //invoked once the timer expires
+                    onFinish: function () { },
+                    //bootstrap progress bar style at the beginning of the timer
+                    baseStyle: "",
+                    //bootstrap progress bar style in the warning phase
+                    warningStyle: "progress-bar-danger",
+                    //bootstrap progress bar style at completion of timer
+                    completeStyle: "progress-bar-success",
+                    //show html on progress bar div area
+                    showHtmlSpan: true,
+                    //set the error text when error occurs
+                    errorText: "ERROR!",
+                    //set the success text when succes occurs
+                    successText: "100%",
+                };
+                this._defaults = this.defaults;
+                this._name = pluginName;
+                this.element = element;
+                this.$elem = $(element);
+                this.options = $.extend({}, this.defaults, options);
+                this._defaults = this.defaults;
+                this._name = pluginName;
+                this.metadata = this.$elem.data("plugin-options");
+            }
+            Plugin.prototype.init = function () {
+                var t = this;
+                $(t.element).empty();
+                t.span = $("<span/>");
+                t.barContainer = $("<div>").addClass("progress");
+                t.bar = $("<div>")
+                    .addClass("progress-bar active progress-bar-striped")
+                    .addClass(t.options.baseStyle)
+                    .attr("role", "progressbar")
+                    .attr("aria-valuenow", "0")
+                    .attr("aria-valuemin", "0")
+                    .attr("aria-valuemax", t.options.timeLimit);
+                t.span.appendTo(t.bar);
+                if (!t.options.showHtmlSpan) {
+                    t.span.addClass("sr-only");
+                }
+                t.bar.appendTo(t.barContainer);
+                t.barContainer.appendTo(t.element);
+                t.start = new Date();
+                t.limit = t.options.timeLimit * 1000;
+                t.warningThreshold = t.options.warningThreshold * 1000;
+                t.interval = window.setInterval(function () {
+                    t._run.call(t);
+                }, 250);
+                t.bar.data("progress-interval", t.interval);
+                return true;
+            };
+            Plugin.prototype._run = function () {
+                var t = this;
+                var elapsed = new Date().valueOf() - t.start.valueOf(), width = (elapsed / t.limit) * 100;
+                t.bar.attr("aria-valuenow", width);
+                t.bar.width(width + "%");
+                var percentage = new Number(width.toFixed(2));
+                if (percentage >= 100) {
+                    percentage = 100;
+                }
+                if (t.options.showHtmlSpan) {
+                    t.span.html(percentage + "%");
+                }
+                if (elapsed >= t.warningThreshold) {
+                    t.bar
+                        .removeClass(this.options.baseStyle)
+                        .removeClass(this.options.completeStyle)
+                        .addClass(this.options.warningStyle);
+                }
+                if (elapsed >= t.limit) {
+                    t.complete.call(t);
+                }
+                return true;
+            };
+            Plugin.prototype.removeInterval = function () {
+                var t = this, bar = $(".progress-bar", t.element);
+                if (typeof bar.data("progress-interval") !== "undefined") {
+                    var interval = bar.data("progress-interval");
+                    window.clearInterval(interval);
+                }
+                return bar;
+            };
+            Plugin.prototype.destroy = function () {
+                this.$elem.removeData();
+            };
+            Plugin.prototype.complete = function () {
+                var t = this, bar = t.removeInterval.call(t), args = arguments;
+                if (args.length !== 0 && typeof args[0] === "object") {
+                    t.options = $.extend({}, t.options, args[0]);
+                }
+                bar
+                    .removeClass(t.options.baseStyle)
+                    .removeClass(t.options.warningStyle)
+                    .addClass(t.options.completeStyle);
+                bar.width("100%");
+                if (t.options.showHtmlSpan) {
+                    $("span", bar).html(t.options.successText);
+                }
+                bar.attr("aria-valuenow", 100);
+                setTimeout(function () {
+                    t.options.onFinish.call(bar);
+                }, 500);
+                t.destroy.call(t);
+            };
+            Plugin.prototype.error = function () {
+                var t = this, bar = t.removeInterval.call(t), args = arguments;
+                if (args.length !== 0 && typeof args[0] === "object") {
+                    t.options = $.extend({}, t.options, args[0]);
+                }
+                bar.removeClass(t.options.baseStyle).addClass(t.options.warningStyle);
+                bar.width("100%");
+                if (t.options.showHtmlSpan) {
+                    $("span", bar).html(t.options.errorText);
+                }
+                bar.attr("aria-valuenow", 100);
+                setTimeout(function () {
+                    t.options.onFinish.call(bar);
+                }, 500);
+                t.destroy.call(t);
+            };
+            return Plugin;
+        }());
+        Plugin.prototype.constructor = Plugin;
+        // A really lightweight plugin wrapper around the constructor,
+        // preventing against multiple instantiations
+        $.fn[pluginName] = function (options) {
+            var args = arguments;
+            if (options === undefined || typeof options === "object") {
+                // Creates a new plugin instance
+                return this.each(function () {
+                    if (!$.data(this, "plugin_" + pluginName)) {
+                        $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+                    }
+                });
+            }
+            else if (typeof options === "string" &&
+                options[0] !== "_" &&
+                options !== "init") {
+                // Call a public plugin method (not starting with an underscore) and different
+                // from the "init" one
+                if (Array.prototype.slice.call(args, 1).length === 0 &&
+                    $.inArray(options, $.fn[pluginName].getters) !== -1) {
+                    // If the user does not pass any arguments and the method allows to
+                    // work as a getter then break the chainability so we can return a value
+                    // instead the element reference.
+                    var instance = $.data(this[0], "plugin_" + pluginName);
+                    return instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+                }
+                else {
+                    // Invoke the specified method on each selected element
+                    return this.each(function () {
+                        var instance = $.data(this, "plugin_" + pluginName);
+                        if (instance instanceof Plugin &&
+                            typeof instance[options] === "function") {
+                            instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+                        }
+                    });
+                }
+            }
+        };
+        $.fn[pluginName].getters = ["complete", "error"];
+    })(jQuery, window, document, undefined);
+}
 var reCaptcha = {
     /**
      * @type {Number} counter executions
@@ -2713,9 +3169,6 @@ var reCaptcha = {
 function recaptcha() {
     return reCaptcha;
 }
-/// <reference path="./Array.d.ts"/>
-/// <reference path="./jQuery.d.ts"/>
-/// <reference path="./JQueryStatic.d.ts"/>
 /// <reference path="./Object.d.ts"/>
 /**
  * SMARTFORM
@@ -3002,13 +3455,13 @@ function storage() {
     return STORAGE;
 }
 String.prototype.parse_url = function () {
-    var parser = document.createElement('a'), searchObject, queries, split, i;
+    var parser = document.createElement("a"), searchObject, queries, split, i;
     // Let the browser do the work
     parser.href = this.toString();
     // Convert query string to object
-    queries = parser.search.replace(/^\?/, '').split('&');
+    queries = parser.search.replace(/^\?/, "").split("&");
     for (i = 0; i < queries.length; i++) {
-        split = queries[i].split('=');
+        split = queries[i].split("=");
         searchObject[split[0]] = split[1];
     }
     return {
@@ -3020,7 +3473,7 @@ String.prototype.parse_url = function () {
         search: parser.search,
         searchObject: searchObject,
         hash: parser.hash,
-        protohost: parser.protocol + '//' + parser.host
+        protohost: parser.protocol + "//" + parser.host,
     };
 };
 /**
@@ -3031,14 +3484,20 @@ String.prototype.CSS = function () {
     e.rel = "stylesheet";
     e.href = this.toString();
     var n = document.getElementsByTagName("head")[0];
-    window.addEventListener ? window.addEventListener("load", function () {
-        n.parentNode.insertBefore(e, n);
-    }, !1) : window.attachEvent ? window.attachEvent("onload", function () {
-        n.parentNode.insertBefore(e, n);
-    }) : window.onload = function () { n.parentNode.insertBefore(e, n); };
+    window.addEventListener
+        ? window.addEventListener("load", function () {
+            n.parentNode.insertBefore(e, n);
+        }, !1)
+        : window.attachEvent
+            ? window.attachEvent("onload", function () {
+                n.parentNode.insertBefore(e, n);
+            })
+            : (window.onload = function () {
+                n.parentNode.insertBefore(e, n);
+            });
 };
 String.prototype.trim = function () {
-    return this.replace(/^\s+|\s+$/gm, '');
+    return this.replace(/^\s+|\s+$/gm, "");
 };
 String.prototype.hexE = function () {
     var hex, i;
@@ -3082,6 +3541,19 @@ if (!(typeof module !== "undefined" && module.exports)) {
             });
         });
     };
+}
+if (!isnode()) {
+    if (typeof jQuery != "undefined") {
+        var target = $(location).attr("hash");
+        var offset = $(this).attr("data-offset")
+            ? Number($(this).attr("data-offset"))
+            : 0;
+        if ($(target).length) {
+            $("body,html").animate({
+                scrollTop: $(target).offset().top - offset,
+            }, 700);
+        }
+    }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
     var UIDvalue = getUID();
@@ -3960,3 +4432,4 @@ var ZLIB = /** @class */ (function () {
     };
     return ZLIB;
 }());
+//# sourceMappingURL=framework.js.map

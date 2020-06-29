@@ -1,13 +1,11 @@
 <?php
 # facebook instance
 
-use Facebook\client;
-
 if (!defined('ROOT')) {
   define('ROOT', realpath(__DIR__));
 }
 
-$fb = new client();
+$fb = new Facebook\client();
 function fb()
 {
   global $fb;

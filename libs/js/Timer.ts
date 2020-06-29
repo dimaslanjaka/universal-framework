@@ -5,7 +5,7 @@
  * console.log(time instanceof Timer); // true
  */
 class Timer {
-  private timeId = null as NodeJS.Timeout | any;
+  private timeId = null as NodeJS.Timer | any;
   constructor(callback: Function, time: number) {
     this.timeId = setTimeout(callback, time);
   }

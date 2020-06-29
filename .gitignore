@@ -8,6 +8,11 @@ composer.lock
 config-tsel.php
 config-m3.php
 yarn.lock
+/libs
+/etc
+/processed
+/config-tsel.php
+/config-m3.php
 
 # Ignore trash from hashing
 hash_*
@@ -61,7 +66,6 @@ bower_components
 /packages
 /vendor
 /node_modules
-/views
 /Properties
 /Scripts
 /report

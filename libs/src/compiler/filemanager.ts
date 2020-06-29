@@ -1,9 +1,9 @@
-import rimraf from 'rimraf'
-import * as fs from 'fs'
-import * as path from 'path'
-import log from './log'
+import rimraf from "rimraf";
+import * as fs from "fs";
+import * as path from "path";
+import log from "./log";
 //import { core } from "./core";
-import core from './core'
+import core from "./core";
 
 class filemanager {
   /**
@@ -17,26 +17,26 @@ class filemanager {
       if (async) {
         rimraf(filedir, function (err) {
           if (!err) {
-            log.log(log.success('done'))
+            log.log(log.success("done"));
           } else {
-            log.log(log.error(`cannot delete ${core.filelog(filedir)}`))
+            log.log(log.error(`cannot delete ${core.filelog(filedir)}`));
           }
-        })
+        });
       } else {
-        rimraf.sync(filedir)
+        rimraf.sync(filedir);
       }
-    }
+    };
     try {
       fs.exists(filedir, function (exists) {
         if (exists) {
-          execute()
+          execute();
         } else {
-          return null
+          return null;
         }
-      })
-      return true
+      });
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
@@ -46,12 +46,12 @@ class filemanager {
    * @param content
    */
   static mkfile(file: string, content: any) {
-    this.mkdir(path.dirname(file))
-    if (typeof content == 'object' || Array.isArray(content)) {
-      content = JSON.stringify(content, null, 4)
+    this.mkdir(path.dirname(file));
+    if (typeof content == "object" || Array.isArray(content)) {
+      content = JSON.stringify(content, null, 4);
     }
-    fs.writeFileSync(file, content, { encoding: 'utf-8' })
-    return file
+    fs.writeFileSync(file, content, { encoding: "utf-8" });
+    return file;
   }
 
   /**
@@ -60,12 +60,12 @@ class filemanager {
    */
   static mkdir(dir: string) {
     if (!fs.existsSync(path.dirname(dir))) {
-      this.mkdir(path.dirname(dir))
+      this.mkdir(path.dirname(dir));
     }
     if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
+      fs.mkdirSync(dir);
     }
-    return dir
+    return dir;
   }
 
   /**
@@ -76,24 +76,24 @@ class filemanager {
   static empty(folder: string, exclude: RegExp | null) {
     fs.readdir(folder, (err, files) => {
       if (err) {
-        log.log(log.error(err.message))
+        log.log(log.error(err.message));
       } else {
         files.forEach((file) => {
-          const fileDir = path.join(folder, file)
+          const fileDir = path.join(folder, file);
 
           if (exclude) {
             if (!exclude.test(file)) {
-              filemanager.unlink(fileDir, true)
+              filemanager.unlink(fileDir, true);
             } else {
-              log.log(log.error(`${fileDir} in excluded lists`))
+              log.log(log.error(`${fileDir} in excluded lists`));
             }
           } else {
-            filemanager.unlink(fileDir, true)
+            filemanager.unlink(fileDir, true);
           }
-        })
+        });
       }
-    })
+    });
   }
 }
 
-export = filemanager
+export = filemanager;

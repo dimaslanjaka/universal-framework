@@ -8,6 +8,42 @@ class log {
     }
   }
   /**
+   * random array
+   * @param items
+   */
+  private static rand(items: any[]) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+  /**
+   * return color by their type
+   * @param any
+   */
+  static type(any: any) {
+    const type = typeof any;
+    if (type == "undefined") return log.error(any);
+    if (type == "string") return log.string(any);
+    if (type == "number" || type == "bigint") return log.number(any);
+    if (type == "function") return log.chalk().magentaBright(any);
+    if (type == "boolean") {
+      if (!any) {
+        return log.error(any);
+      } else {
+        return log.success(any);
+      }
+    }
+    if (type == "object") return log.chalk().cyan(any);
+    if (type == "symbol") return log.chalk().hex("#DC143C")(any);
+  }
+  static string(msg: any) {
+    return log.hex(log.rand(["#FF8C00", "#FFA500", "#FF7F50"]), msg);
+  }
+  static number(msg: any) {
+    return log.hex(
+      log.rand(["#7CFC00", "#7FFF00", "#ADFF2F", "#808000", "#98FB98"]),
+      msg
+    );
+  }
+  /**
    * Chalk instance
    */
   static chalk(): chalk.Chalk {

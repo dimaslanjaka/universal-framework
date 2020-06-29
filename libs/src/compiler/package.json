@@ -2,7 +2,12 @@
   "name": "compiler",
   "version": "1.0.0",
   "private": true,
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/archiver": "*",
+    "@types/sass": "*",
+    "@types/chalk": "*",
+    "@types/node-localstorage": "*"
+  },
   "dependencies": {
     "fancy-log": "*",
     "chalk": "*",
@@ -15,7 +20,7 @@
     "javascript-obfuscator": "*",
     "mysql2": "*",
     "mysql": "*",
-    "upath": "*"
+    "upath": "*",
+    "archiver": "*"
   }
 }
- 

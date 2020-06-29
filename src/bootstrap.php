@@ -30,6 +30,38 @@ function sort_iterable(array $arrayObj)
 }
 
 /**
+ * Local path to url path conversion.
+ *
+ * @param string|array $locations
+ */
+function get_urlpath($locations)
+{
+  /**
+   * @var string|null $get
+   */
+  $get = function (string $location) {
+    if (file_exists($location)) {
+      return \MVC\helper::get_url_path($location, true);
+    }
+
+    return null;
+  };
+  if (is_string($locations)) {
+    return $get($locations);
+  } elseif (\ArrayHelper\helper::is_iterable($locations)) {
+    foreach ($locations as $location) {
+      $result = $get($location);
+      if ($result) {
+        return $result;
+        break;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Include asset with fallback and callback.
  * * if found automatically call include().
  *
@@ -186,6 +218,55 @@ function resolve_dir(string $dir)
 }
 
 /**
+ * Disable output buffering.
+ *
+ * @return void
+ */
+function disable_buffering()
+{
+  // Turn off output buffering
+  ini_set('output_buffering', 'off');
+  // Turn off PHP output compression
+  ini_set('zlib.output_compression', false);
+
+  //Flush (send) the output buffer and turn off output buffering
+  while (@ob_end_flush());
+
+  // Implicitly flush the buffer(s)
+  ini_set('implicit_flush', true);
+  ob_implicit_flush(true);
+}
+
+/**
+ * Disable user abort.
+ *
+ * @return ignore_user_abort|null
+ */
+function disable_abort(bool $abort = false)
+{
+  if (function_exists('ignore_user_abort')) {
+    return ignore_user_abort($abort);
+  }
+}
+
+function is_aborted()
+{
+  return CONNECTION_NORMAL != connection_status();
+}
+
+/**
+ * set Limit execution.
+ *
+ * @return set_time_limit|null
+ */
+function set_limit(int $secs = 0)
+{
+  if (function_exists('set_time_limit')) {
+    return set_time_limit($secs);
+  }
+}
+
+/**
  * Create dir recursively.
  *
  * @param int  $permissions
@@ -265,6 +346,37 @@ function shell(string $command)
   }
 
   return \ArrayHelper\helper::is_iterable($output) ? \JSON\json::json($output, false, false) : $output;
+}
+
+/**
+ * Check shell can be executed
+ *
+ * @return string|null
+ */
+function shell_check()
+{
+  if (function_exists('shell_exec')) {
+    return 'shell_exec';
+  } else if (function_exists('exec')) {
+    return 'exec';
+  } else {
+    return null;
+  }
+}
+
+function shell_required($callback)
+{
+  $result = [];
+  if (gettype(shell_check()) != 'string' || !\MVC\helper::env('dev')) {
+    $result = ['error' => true, 'message' => 'Cannot execute command here environtment(' . \MVC\helper::env('dev') . ') command(' . gettype(shell_check()) . ')', 'title' => 'Cannot Access This Page'];
+  }
+  if (!empty($result)) {
+    if (headers_sent()) {
+      exit('<div class="alert alert-danger">
+      <span class="alert-title"> ' . $result['title'] . ' </span>
+      </div>');
+    }
+  }
 }
 
 /**
@@ -358,16 +470,18 @@ function imgCDN(string $url)
 }
 
 /**
- * htaccess generator
+ * htaccess generator.
  *
- * @param boolean $deny default deny access. default (true)
- * @param boolean $DirectPHP allow direct php access. default (false)
- * @param boolean $allowStatic allow static files access. default (true)
+ * @param bool $deny        default deny access. default (true)
+ * @param bool $DirectPHP   allow direct php access. default (false)
+ * @param bool $allowStatic allow static files access. default (true)
  */
 function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
 {
   $ht = '';
-  if ($deny) $ht .= 'deny from all';
+  if ($deny) {
+    $ht .= 'deny from all';
+  }
   if (!$DirectPHP) {
     $ht .= 'RewriteEngine On
     RewriteRule ^.*\.php$ - [F,L,NC]
@@ -383,6 +497,7 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
   Allow from all
 </Files>';
   }
+
   return $ht;
 }
 

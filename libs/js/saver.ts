@@ -1,6 +1,3 @@
-/// <reference path="./Array.d.ts"/>
-/// <reference path="./jQuery.d.ts"/>
-/// <reference path="./JQueryStatic.d.ts"/>
 /// <reference path="./Object.d.ts"/>
 
 /**
