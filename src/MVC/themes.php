@@ -199,14 +199,20 @@ class themes
    *
    * @return $this
    */
-  public function setThemeByZones(array $config)
+  public function setThemeByZones(array $config, string $default)
   {
     $current = get_zone();
+    $set = false;
     foreach ($config as $theme_name => $zones) {
       if (in_array($current, $zones)) {
         $this->set($theme_name);
+        $set = true;
       }
     }
+    if (!$set) {
+      $this->set($default);
+    }
+
     return $this;
   }
 
