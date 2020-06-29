@@ -1,19 +1,22 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "node" # these should be quoted; otherwise, 0.10 turns into 0.1
+  - "10"
 
 install:
-  - npm install -g gulp karma-cli
+  - npm install -g gulp typescript
   - npm install
 
 script:
-  - npm test
+  - npm run test
 
 cache:
   directories:
-  - node_modules
+    - node_modules
 
 branches:
   only:
-    - develop
-    - master 
+    - master
+
+deploy:
+  skip_cleanup: true
