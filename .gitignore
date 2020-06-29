@@ -8,7 +8,6 @@ composer.lock
 config-tsel.php
 config-m3.php
 yarn.lock
-/libs
 /etc
 /processed
 /config-tsel.php
@@ -44,7 +43,6 @@ processed/
 
 # Allow
 !libs/bin/composer/
-!tmp/npm-cache
 
 # merged .npmignore
 node_modules

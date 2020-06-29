@@ -1,0 +1,11 @@
+{
+  "name": "npm-gui-test-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "authors": [
+    "Paweł"
+  ],
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/static.min.css" rel="stylesheet"/>
+    <link href="demo.css" rel="stylesheet"/>
+    <title>jQuery Progress Timer DEMO</title>
+</head>
+<body>
+<div class="container">
+    <div class="loading-progress"></div>
+</div>
+<script src="js/static.min.js"></script>
+<script src="../dist/js/jquery.progresstimer.js"></script>
+<script>
+    var progress = $(".loading-progress").progressTimer({
+        timeLimit: 10,
+        onFinish: function () {
+            alert('completed!');
+        }
+    });
+    $.ajax({
+       url:"http://localhost/"
+    }).error(function(){
+        progress.progressTimer('error', {
+            errorText:'ERROR!',
+            onFinish:function(){
+                alert('There was an error processing your information!');
+            }
+        });
+    }).done(function(){
+        progress.progressTimer('complete');
+    });
+</script>
+</body>
+</html>

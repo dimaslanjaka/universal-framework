@@ -68,11 +68,7 @@
     "**/log/**": true,
     "**/node_modules/**": true,
     "**/tmp/**": true,
-    "**/vendor/**": true,
-    "**/src/**": true,
-    "**/assets/**": true,
-    "**/libs/**": true,
-    "**/views/**": true
+    "**/vendor/**": true
   },
   //"typescript.tsdk": "./node_modules/typescript/lib",
   "npm.enableScriptExplorer": false,
