@@ -99,6 +99,13 @@ class client extends Google_Client
     return $this;
   }
 
+  /**
+   * Set access token offline.
+   *
+   * @param bool $offline
+   *
+   * @return client
+   */
   public function set_offline($offline = true)
   {
     if ($offline) {
@@ -193,17 +200,13 @@ class client extends Google_Client
         //$this->setAccessToken($token);
       }
       if (isset($config['token']['folder']) && $this->getAccessToken()) {
-        $service = new \Google_Service_Oauth2($this);
-        $this->addScope(\Google_Service_Oauth2::USERINFO_EMAIL);
-        $this->addScope(\Google_Service_Oauth2::USERINFO_PROFILE);
-        $this->authenticate($_GET['code']);
-        $user = (array) $service->userinfo->get();
+        $user = $this->fetch_user();
         $_SESSION['google']['login'] = $user;
         file::file($config['token']['folder'] . '/' . $user['email'] . '.json', $token, true);
       }
     } else {
-      if (isset($this->userdata()['email'])) {
-        $email = $this->userdata()['email'];
+      if (isset($this->login_data()['email'])) {
+        $email = $this->login_data()['email'];
         $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
         if (file_exists($tokenpath)) {
           $token = json_decode(file_get_contents($tokenpath), true);
@@ -223,12 +226,37 @@ class client extends Google_Client
   }
 
   /**
-   * Get current user login
+   * Get current user login ($_SESSION['login']).
    *
    * @return array
    */
+  public function login_data()
+  {
+    return isset($_SESSION['login']) ? \ArrayHelper\helper::unset($_SESSION['login'], ['password']) : [];
+  }
+
+  /**
+   * Get current google user data.
+   *
+   * @return void
+   */
   public function userdata()
   {
-    return isset($_SESSION['login']) ? $_SESSION['login'] : [];
+    return isset($_SESSION['google']['login']) ? \ArrayHelper\helper::unset($_SESSION['google']['login'], ['password']) : [];
+  }
+
+  /**
+   * Fetch user information from google.
+   *
+   * @return array
+   */
+  public function fetch_user()
+  {
+    $service = new \Google_Service_Oauth2($this);
+    $this->addScope(\Google_Service_Oauth2::USERINFO_EMAIL);
+    $this->addScope(\Google_Service_Oauth2::USERINFO_PROFILE);
+    $this->authenticate($_GET['code']);
+
+    return (array) $service->userinfo->get();
   }
 }

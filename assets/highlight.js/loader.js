@@ -33,13 +33,15 @@ loadScript("/assets/highlight.js/highlight.pack.js", function () {
   hljs.initHighlightingOnLoad();
   //hljs.configure({ useBR: true });
 
-  document.addEventListener("DOMContentLoaded", (event) => {
-    document.querySelectorAll("pre code").forEach((block) => {
-      hljs.highlightBlock(block);
-    });
-  });
+  document.addEventListener("DOMContentLoaded", prettyprint);
+});
 
+function prettyprint(event) {
+  console.log("highlight.js", event);
+  document.querySelectorAll("pre code").forEach((block) => {
+    hljs.highlightBlock(block);
+  });
   document.querySelectorAll("pre").forEach((block) => {
     hljs.highlightBlock(block);
   });
-});
+}

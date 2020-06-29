@@ -941,6 +941,17 @@ declare var STORAGE: {
      */
     remove: (key: string) => void;
 };
+declare class ctable {
+    private can_edit;
+    private instance;
+    constructor(config?: ctableOpt);
+    create(id: string, where: string, data: string[]): void;
+    add(table: string, data: any[]): void;
+    editable($TABLE: JQuery, activate?: boolean): void;
+}
+interface ctableOpt {
+    editable?: boolean;
+}
 declare function currentUID(): string;
 /**
  * Get uid saved in browser
