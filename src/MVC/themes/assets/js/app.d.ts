@@ -365,6 +365,11 @@ declare var dimas: {
         listen: () => JQuery<HTMLElement>;
     };
     /**
+     * Count Array/Object/String length
+     * @param {any[]|string|object} data
+     */
+    count(data: any[] | string | object): number;
+    /**
      * Make async function
      * @param callback
      */
@@ -386,7 +391,7 @@ declare var dimas: {
     /**
      * Autofill datetime-local value
      */
-    datetimelocal: (v: string | number) => void;
+    datetimelocal: (v?: string | number) => void;
     /**
      * Get cookie
      * @param string name cookie
@@ -488,6 +493,11 @@ declare function framework(): {
         listen: () => JQuery<HTMLElement>;
     };
     /**
+     * Count Array/Object/String length
+     * @param {any[]|string|object} data
+     */
+    count(data: string | object | any[]): number;
+    /**
      * Make async function
      * @param callback
      */
@@ -509,7 +519,7 @@ declare function framework(): {
     /**
      * Autofill datetime-local value
      */
-    datetimelocal: (v: string | number) => void;
+    datetimelocal: (v?: string | number) => void;
     /**
      * Get cookie
      * @param string name cookie
@@ -1110,18 +1120,13 @@ declare function getRandom(arr: Array<any>, n: number, callback: Function): any;
  */
 declare var textAreas: HTMLCollectionOf<HTMLTextAreaElement>;
 /** Query URL */
-declare var hash: string;
-declare var result: {};
+declare function getLocationHash(): void;
 /** Progress bar */
 declare var elm: JQuery<HTMLElement>;
 /**
  * @type {JQuery<HTMLElement>} L
  */
 declare var L: JQuery<HTMLElement>;
-/**
- * new tab links hide refferer
- */
-declare var nwtb: JQuery<HTMLElement>;
 /**
  * links new tab form submit
  */

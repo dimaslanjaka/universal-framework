@@ -1,4 +1,3 @@
-
 /**
  * call_user_func
  * @param functionName function name
@@ -70,3 +69,4 @@ function empty(str: string | null | undefined | number | boolean) {
 function getFuncName() {
   return getFuncName.caller.name;
 }
+

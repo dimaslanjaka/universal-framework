@@ -13,7 +13,7 @@ var path_1 = require("path");
     ["log", "\x1b[2m"],
 ].forEach(function (pair) {
     var method = pair[0], reset = "\x1b[0m", color = "\x1b[36m" + pair[1];
-    console[method] = console[method].bind(console, color, method.toUpperCase() + "[" + new Date().toLocaleString() + "]", reset);
+    console[method] = console[method].bind(console, color, method.toUpperCase() + " [" + new Date().toLocaleString() + "]", reset);
 });
 console.error = (function () {
     var error = console.error;
@@ -101,6 +101,7 @@ function run() {
         },
     };
     constructor = Object.assign({}, constructor, require("./package.json"));
+    constructor = fixDeps(constructor);
     var variant = "production";
     if (typeof args[0] != "undefined") {
         switch (args[0]) {
@@ -275,6 +276,12 @@ function list_package() {
             try {
                 writeFile("./tmp/npm/local.json", JSON.parse(message.toString()));
                 results.local = Object.assign({}, JSON.parse(message.toString()));
+                for (var key in results.local) {
+                    if (results.local.hasOwnProperty(key)) {
+                        var version = results.local[key];
+                        getLatestVersion(key);
+                    }
+                }
             }
             catch (error) { }
             execute("npm list -json -depth=0 -g", function (error, message) {
@@ -293,6 +300,17 @@ function list_package() {
             });
         });
     }, 5000);
+}
+function getLatestVersion(key) {
+    execute("npm show " + key + " version", function (error, message) {
+        if (message instanceof Error || !error) {
+            console.error(error);
+        }
+        try {
+            writeFile("./tmp/npm/packages/" + key + "/latest.json", JSON.parse(message.toString()));
+        }
+        catch (error) { }
+    });
 }
 function async(callback) {
     return new Promise(function (resolve, reject) {
@@ -504,6 +522,10 @@ function execute(cmd, callback) {
     }
 }
 function fixDeps(pkg) {
+    if (!pkg.hasOwnProperty("dependencies")) {
+        console.error("package.json does not have dependencies");
+        return pkg;
+    }
     for (var key in pkg.dependencies) {
         if (pkg.dependencies.hasOwnProperty(key)) {
             var version = pkg.dependencies[key];

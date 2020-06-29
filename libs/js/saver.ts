@@ -9,7 +9,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
   /**
    * Element Counter
    */
-  var count = -1;
+  var Count = -1;
   /**
    * Local Storage key
    */
@@ -34,19 +34,19 @@ if (!(typeof module !== "undefined" && module.exports)) {
        */
       if (!$(this).attr("id") || $(this).attr("id") == "") {
         try {
-          if (!(count in formField)) {
+          if (!(Count in formField)) {
             /**
              * @todo ID generator 6 digit alphanumerics
              */
             var id: string = Math.random().toString(20).substr(2, 6);
             $(this).attr("id", id);
-            (<any>formField)[count] = id;
+            (<any>formField)[Count] = id;
             localStorage.setItem(
               storageKey.toString(),
               JSON.stringify(formField)
             );
           } else {
-            $(this).attr("id", (<any>formField)[count]);
+            $(this).attr("id", (<any>formField)[Count]);
           }
         } catch (error) {
           console.error(error);
@@ -55,7 +55,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         /**
          * Increase index offset
          */
-        count++;
+        Count++;
       }
       if ($(this).attr("aria-autovalue")) {
         $(this).val(uniqueid);
@@ -72,7 +72,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
       );
     };
     $.fn.smartForm = function () {
-      count++;
+      Count++;
       if ($(this).attr("no-save")) {
         return;
       }

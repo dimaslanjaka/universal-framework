@@ -106,6 +106,20 @@ var dimas = {
     },
   },
   /**
+   * Count Array/Object/String length
+   * @param {any[]|string|object} data
+   */
+  count(data: any[] | string | object) {
+    if (Array.isArray(data) || typeof data == "string") {
+      return data.length;
+    } else if (typeof data == "object") {
+      return Object.keys(data).length;
+    } else if (typeof data == "number") {
+      return data;
+    }
+  },
+
+  /**
    * Make async function
    * @param callback
    */
@@ -162,7 +176,7 @@ var dimas = {
   /**
    * Autofill datetime-local value
    */
-  datetimelocal: function (v: string | number) {
+  datetimelocal: function (v?: string | number) {
     var d = !v ? new Date() : new Date(v);
     $("input[type=datetime-local]").val(
       d.getFullYear() +
@@ -379,9 +393,9 @@ var dimas = {
   parseurl: function (url: string) {
     var parser = document.createElement("a"),
       searchObject: { [key: string]: any } = {},
-      queries,
-      split,
-      i;
+      queries: string[],
+      split: any[],
+      i: number;
     // Let the browser do the work
     parser.href = url;
     // Convert query string to object

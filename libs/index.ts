@@ -26,7 +26,7 @@ import { dirname } from "path";
   console[method] = console[method].bind(
     console,
     color,
-    `${method.toUpperCase()}[${new Date().toLocaleString()}]`,
+    `${method.toUpperCase()} [${new Date().toLocaleString()}]`,
     reset
   );
 });
@@ -120,6 +120,7 @@ function run() {
     },
   };
   constructor = Object.assign({}, constructor, require("./package.json"));
+  constructor = fixDeps(constructor);
 
   var variant: "production" | "development" | null = "production";
 
@@ -350,6 +351,12 @@ function list_package() {
       try {
         writeFile("./tmp/npm/local.json", JSON.parse(message.toString()));
         results.local = Object.assign({}, JSON.parse(message.toString()));
+        for (const key in results.local) {
+          if (results.local.hasOwnProperty(key)) {
+            const version = results.local[key];
+            getLatestVersion(key);
+          }
+        }
       } catch (error) {}
       execute("npm list -json -depth=0 -g", function (error, message) {
         if (message instanceof Error || !error) {
@@ -366,6 +373,24 @@ function list_package() {
       });
     });
   }, 5000);
+}
+
+/**
+ * Get latest version of packages
+ * @param key
+ */
+function getLatestVersion(key: string) {
+  execute(`npm show ${key} version`, function (error, message) {
+    if (message instanceof Error || !error) {
+      console.error(error);
+    }
+    try {
+      writeFile(
+        `./tmp/npm/packages/${key}/latest.json`,
+        JSON.parse(message.toString())
+      );
+    } catch (error) {}
+  });
 }
 
 function async(callback: Function) {
@@ -728,6 +753,10 @@ function execute(
  * @param pkg
  */
 function fixDeps(pkg: packagejson) {
+  if (!pkg.hasOwnProperty("dependencies")) {
+    console.error("package.json does not have dependencies");
+    return pkg;
+  }
   for (const key in pkg.dependencies) {
     if (pkg.dependencies.hasOwnProperty(key)) {
       const version = pkg.dependencies[key];

@@ -3,7 +3,7 @@ $(document).ready(function () {
     $(".mdb-select").not(".select-wrapper").materialSelect();
     $("input,textarea").each(function (i, el) {
       if (!empty($(el).val())) {
-        var labels = $(el).closest("div").find("label"); 
+        var labels = $(el).closest("div").find("label");
         if (labels.length) {
           if (!labels.hasClass("active")) {
             labels.addClass("active");
@@ -64,10 +64,15 @@ $(document).ready(function () {
     "https://images.squarespace-cdn.com/content/v1/57e38eac46c3c4b30fb01f60/1540770673639-40TXHKSVXKBUX2GB65EF/ke17ZwdGBToddI8pDm48kNvT88LknE-K9M4pGNO0Iqd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1USOFn4xF8vTWDNAUBm5ducQhX-V3oVjSmr829Rco4W2Uo49ZdOtO_QXox0_W7i2zEA/maxresdefault.jpg?format=2500w",
     "https://media.boingboing.net/wp-content/uploads/2018/05/cool-background1.png",
   ];
+  if (typeof fetch == "function") {
+    fetch(`https://source.unsplash.com/1600x900/?beach`).then((response) => {
+      $img.push(response.url);
+    });
+  }
   var random = Math.floor(Math.random() * 6) + 0;
   var src = $img[random];
   if (is_development()) {
-    $(".dynamic-bg").css("background-image", "url(/?image-proxy=" + src + ")");
+    $(".dynamic-bg").css("background-image", "url(" + src + ")");
     $(".dynamic-bg").each(function (index, elem) {
       elem.style.backgroundImage = src;
     });

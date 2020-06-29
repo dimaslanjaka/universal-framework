@@ -227,32 +227,36 @@ function JavaScriptCaller(url, callback) {
  */
 
 if (!isnode()) {
-  $(document).one("click", "#logout", function (e) {
-    e.preventDefault();
-    jQuery.post(
-      location.href,
-      {
-        logout: true,
-      },
-      function () {
-        jQuery.get($(this).attr("href"));
+  if ($("#logout").length) {
+    $(document).one("click", "#logout", function (e) {
+      e.preventDefault();
+      jQuery.post(
+        location.href,
+        {
+          logout: true,
+        },
+        function () {
+          jQuery.get($(this).attr("href"));
 
-        window.location.reload(1);
-      }
-    );
-  });
+          window.location.reload(1);
+        }
+      );
+    });
+  }
 
   /** Query URL */
-  var hash = window.location.hash.substr(1);
+  function getLocationHash() {
+    var hash = window.location.hash.substr(1);
 
-  var result = hash.split("&").reduce(function (result, item) {
-    var parts = item.split("=");
-    result[parts[0]] = parts[1];
-    return result;
-  }, {});
+    var result = hash.split("&").reduce(function (result, item) {
+      var parts = item.split("=");
+      result[parts[0]] = parts[1];
+      return result;
+    }, {});
 
-  if (hash.length > 1) {
-    console.log(result);
+    if (hash.length > 1) {
+      console.log(result);
+    }
   }
 
   /** datetime-local */
@@ -265,7 +269,7 @@ if (!isnode()) {
 
   /** Progress bar */
   var elm = $("[countdown]");
-  if (elm.length > 0) {
+  if (elm.length) {
     elm.each(function (e) {
       var t = $(this);
       framework().pctd(t);
@@ -312,18 +316,6 @@ if (!isnode()) {
   }
 
   /**
-   * new tab links hide refferer
-   */
-  var nwtb = $("[data-newtab]");
-  if (nwtb.length) {
-    nwtb.click(function (e) {
-      window
-        .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-        .focus();
-    });
-  }
-
-  /**
    * links new tab form submit
    */
   var aform = $("[form]");
@@ -346,13 +338,27 @@ if (!isnode()) {
   /**
    * open in new tab
    */
-  $(document.body).on("click", 'a[id="newtab"],[newtab]', function (e) {
-    e.preventDefault();
-    const t = $(this);
-    if (t.attr("href")) {
-      openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+  $(document.body).on(
+    "click",
+    'a[id="newtab"],[newtab],[data-newtab]',
+    function (e) {
+      e.preventDefault();
+      const t = $(this);
+      if (t.attr("href")) {
+        if (t.data("newtab")) {
+          //data-newtab hide referrer
+          window
+            .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+            .focus();
+        } else {
+          openInNewTab(
+            t.attr("href"),
+            t.data("name") ? t.data("name") : "_blank"
+          );
+        }
+      }
     }
-  });
+  );
 }
 
 /**
@@ -433,8 +439,6 @@ function loadingio(text, callback, mode) {
     callback(arguments);
   }
 }
-
-
 
 /**
 function target(a) {

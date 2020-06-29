@@ -1,7 +1,7 @@
 import core from "./core";
 import * as misc from "./framework";
 import filemanager from "./filemanager";
-import log from "./log";
+//import log from "./log";
 import sorter from "./sorter";
 import process from "./process";
 import { backup, fromRoot } from "./../archiver/backup";

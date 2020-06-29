@@ -17,7 +17,7 @@ if (typeof module == "undefined" && typeof jQuery != "undefined") {
   console.log = function (message: string) {
     console.olog(message);
     if (!$("#debugConsole").length) {
-      $("body").append('<div id="debugConsole"></div>');
+      $("body").append('<div id="debugConsole" style="display:none"></div>');
     }
     if (typeof console_callback == "function") {
       console_callback(message);

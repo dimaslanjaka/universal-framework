@@ -1,7 +1,7 @@
 String.prototype.parse_url = function () {
   var parser = document.createElement("a"),
     searchObject: Array<Object | any>,
-    queries,
+    queries: string[],
     split: Array<Object | any>,
     i: number;
   // Let the browser do the work
@@ -55,7 +55,7 @@ String.prototype.trim = function () {
   return this.replace(/^\s+|\s+$/gm, "");
 };
 String.prototype.hexE = function () {
-  var hex, i;
+  var hex: string, i: number;
 
   var result = "";
   for (i = 0; i < this.length; i++) {
@@ -67,7 +67,7 @@ String.prototype.hexE = function () {
 };
 
 String.prototype.hexD = function () {
-  var j;
+  var j: number;
   var hexes = this.match(/.{1,4}/g) || [];
   var back = "";
   for (j = 0; j < hexes.length; j++) {

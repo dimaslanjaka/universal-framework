@@ -1513,6 +1513,21 @@ var dimas = {
         },
     },
     /**
+     * Count Array/Object/String length
+     * @param {any[]|string|object} data
+     */
+    count: function (data) {
+        if (Array.isArray(data) || typeof data == "string") {
+            return data.length;
+        }
+        else if (typeof data == "object") {
+            return Object.keys(data).length;
+        }
+        else if (typeof data == "number") {
+            return data;
+        }
+    },
+    /**
      * Make async function
      * @param callback
      */
@@ -1887,7 +1902,7 @@ if (typeof module == "undefined" && typeof jQuery != "undefined") {
     console.log = function (message) {
         console.olog(message);
         if (!$("#debugConsole").length) {
-            $("body").append('<div id="debugConsole"></div>');
+            $("body").append('<div id="debugConsole" style="display:none"></div>');
         }
         if (typeof console_callback == "function") {
             console_callback(message);
@@ -3178,7 +3193,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
     /**
      * Element Counter
      */
-    var count = -1;
+    var Count = -1;
     /**
      * Local Storage key
      */
@@ -3203,17 +3218,17 @@ if (!(typeof module !== "undefined" && module.exports)) {
              */
             if (!$(this).attr("id") || $(this).attr("id") == "") {
                 try {
-                    if (!(count in formField)) {
+                    if (!(Count in formField)) {
                         /**
                          * @todo ID generator 6 digit alphanumerics
                          */
                         var id = Math.random().toString(20).substr(2, 6);
                         $(this).attr("id", id);
-                        formField[count] = id;
+                        formField[Count] = id;
                         localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
                     }
                     else {
-                        $(this).attr("id", formField[count]);
+                        $(this).attr("id", formField[Count]);
                     }
                 }
                 catch (error) {
@@ -3223,7 +3238,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 /**
                  * Increase index offset
                  */
-                count++;
+                Count++;
             }
             if ($(this).attr("aria-autovalue")) {
                 $(this).val(uniqueid);
@@ -3238,7 +3253,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 $(this).attr("name") || "empty" + "]");
         };
         $.fn.smartForm = function () {
-            count++;
+            Count++;
             if ($(this).attr("no-save")) {
                 return;
             }
@@ -3988,24 +4003,28 @@ function JavaScriptCaller(url, callback) {
  * Function initialization
  */
 if (!isnode()) {
-    $(document).one("click", "#logout", function (e) {
-        e.preventDefault();
-        jQuery.post(location.href, {
-            logout: true,
-        }, function () {
-            jQuery.get($(this).attr("href"));
-            window.location.reload(1);
+    if ($("#logout").length) {
+        $(document).one("click", "#logout", function (e) {
+            e.preventDefault();
+            jQuery.post(location.href, {
+                logout: true,
+            }, function () {
+                jQuery.get($(this).attr("href"));
+                window.location.reload(1);
+            });
         });
-    });
+    }
     /** Query URL */
-    var hash = window.location.hash.substr(1);
-    var result = hash.split("&").reduce(function (result, item) {
-        var parts = item.split("=");
-        result[parts[0]] = parts[1];
-        return result;
-    }, {});
-    if (hash.length > 1) {
-        console.log(result);
+    function getLocationHash() {
+        var hash = window.location.hash.substr(1);
+        var result = hash.split("&").reduce(function (result, item) {
+            var parts = item.split("=");
+            result[parts[0]] = parts[1];
+            return result;
+        }, {});
+        if (hash.length > 1) {
+            console.log(result);
+        }
     }
     /** datetime-local */
     if (typeof dimas == "object" &&
@@ -4014,7 +4033,7 @@ if (!isnode()) {
     }
     /** Progress bar */
     var elm = $("[countdown]");
-    if (elm.length > 0) {
+    if (elm.length) {
         elm.each(function (e) {
             var t = $(this);
             framework().pctd(t);
@@ -4049,17 +4068,6 @@ if (!isnode()) {
         };
     }
     /**
-     * new tab links hide refferer
-     */
-    var nwtb = $("[data-newtab]");
-    if (nwtb.length) {
-        nwtb.click(function (e) {
-            window
-                .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-                .focus();
-        });
-    }
-    /**
      * links new tab form submit
      */
     var aform = $("[form]");
@@ -4081,11 +4089,19 @@ if (!isnode()) {
     /**
      * open in new tab
      */
-    $(document.body).on("click", 'a[id="newtab"],[newtab]', function (e) {
+    $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
         e.preventDefault();
         var t = $(this);
         if (t.attr("href")) {
-            openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+            if (t.data("newtab")) {
+                //data-newtab hide referrer
+                window
+                    .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+                    .focus();
+            }
+            else {
+                openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+            }
         }
     });
 }
