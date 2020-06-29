@@ -1,7 +1,7 @@
 /// <reference types="jquery" />
 /// <reference path="./jQuery.d.ts" />
 /// <reference path="./JQueryStatic.d.ts" />
-/// <reference types="datatables.net"/>
+/// <reference types="datatables.net"/> 
 /// <reference types="datatables.net-buttons"/>
 
 interface JQuery extends jQuery {

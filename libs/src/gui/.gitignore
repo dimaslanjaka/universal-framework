@@ -2,7 +2,6 @@
 node_modules
 bower_components
 npm-debug*
-dist
 npm-gui*
 tests/projects/npm/package-lock.json
 tests/projects/npm/node_modules

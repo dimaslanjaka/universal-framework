@@ -1,2 +1,2 @@
-import gui from '../gui/index';
+import * as gui from "../gui/index";
 gui;
