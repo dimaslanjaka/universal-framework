@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "node" # these should be quoted; otherwise, 0.10 turns into 0.1
+  - "10"
+
+install:
+  - npm install -g gulp typescript
+  - npm ci
+
+script:
+  - npm run test
+
+cache:
+  directories:
+    - node_modules
+
+branches:
+  only:
+    - master
+
+deploy:
+  skip_cleanup: true

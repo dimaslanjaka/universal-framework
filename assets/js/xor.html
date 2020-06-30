@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang='en' class='container'>
+
+<head>
+  <script src="https://static.codepen.io/assets/editor/live/console_runner-35ce412171641ff1bf5aafef664326622ab85fdc72688d6861505d88ff7e036f.js"></script>
+  <script src="https://static.codepen.io/assets/editor/live/css_reload-5619dc0905a68b2e6298901de54f73cefe4e079f65a75406858d92924b4938bf.js"></script>
+  <meta charset='UTF-8'>
+  <meta name="robots" content="noindex">
+  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+  <link rel="canonical" href="https://codepen.io/dimaslanjaka/pen/GRgrWJg?editors=1010" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+  <style class="cp-pen-styles">
+
+  </style>
+</head>
+
+<body>
+  <div class="text-center">
+    <h2>Simple XOR encrypt & decrypt</h2>
+  </div>
+  <hr>
+  <div class="text-center">
+    <b>Encryption</b>
+  </div>
+  <div class="input-group">
+    <input name="" id="src" cols="30" rows="10" class="form-control" value='string to encoded'>
+    <input id="srcpw" class='form-control' value='Password'>
+  </div>
+  <div class="text-center">
+    <h5>Result</h5>
+  </div>
+  <input name="" id="rsc" cols="30" rows="10" class="form-control"></input>
+
+  <div class="text-center">
+    <b>Decryption</b>
+  </div>
+
+  <div class="input-group">
+    <input name="" id="dsrc" cols="30" rows="10" class="form-control" value='IxUBGhkIUhA='>
+    <input id="dsrcpw" class='form-control' value='Password'>
+  </div>
+  <div class="text-center">
+    <h5>Result</h5>
+  </div>
+  <input name="" id="drsc" cols="30" rows="10" class="form-control"></input>
+  <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
+  <script id="rendered-js">
+    require.config({
+      paths: {
+        "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min",
+        "slick": "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min",
+        "underscore": "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min",
+        "xor": "https://cdn.statically.io/gh/dimaslanjaka/Web-Manajemen/master/js/xor"
+      }
+    });
+    require(['jquery', 'underscore', 'xor'], function() {
+      $('#src,#srcpw').on('keyup change', function() {
+        $("#rsc").val(XORCipher.encode($('#srcpw').val(), $('#src').val()));
+      });
+      $('#dsrc,#dsrcpw').on('keyup change', function() {
+        $("#drsc").val(XORCipher.decode($('#dsrcpw').val(), $('#dsrc').val()));
+      });
+    });
+    if (location.host == 'cdpn.io') {
+      console.clear();
+    }
+  </script>
+</body>
+
+</html>

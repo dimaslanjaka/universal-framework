@@ -1,0 +1,28 @@
+{
+  "name": "ytdl",
+  "version": "1.0.0",
+  "description": "Youtube Downloader",
+  "main": "login.js",
+  "dependencies": {
+    "googleapis": "^48.0.0",
+    "mkdirp": "^1.0.4",
+    "youtube-mp3-downloader": "^0.6.6",
+    "ytdl-core": "*",
+    "prompt": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test login.js",
+    "restart": "node restart login.js",
+    "start": "node login.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "x"
+  },
+  "keywords": [
+    "x"
+  ],
+  "author": "dimaslanjaka",
+  "license": "MIT"
+}

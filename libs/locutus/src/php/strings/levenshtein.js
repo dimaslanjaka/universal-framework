@@ -1,0 +1,73 @@
+module.exports = function levenshtein(s1, s2, costIns, costRep, costDel) {
+    //       discuss at: https://locutus.io/php/levenshtein/
+    //      original by: Carlos R. L. Rodrigues (https://www.jsfromhell.com)
+    //      bugfixed by: Onno Marsman (https://twitter.com/onnomarsman)
+    //       revised by: Andrea Giammarchi (https://webreflection.blogspot.com)
+    // reimplemented by: Brett Zamir (https://brett-zamir.me)
+    // reimplemented by: Alexander M Beedie
+    // reimplemented by: Rafał Kukawski (https://blog.kukawski.pl)
+    //        example 1: levenshtein('Kevin van Zonneveld', 'Kevin van Sommeveld')
+    //        returns 1: 3
+    //        example 2: levenshtein("carrrot", "carrots")
+    //        returns 2: 2
+    //        example 3: levenshtein("carrrot", "carrots", 2, 3, 4)
+    //        returns 3: 6
+    // var LEVENSHTEIN_MAX_LENGTH = 255 // PHP limits the function to max 255 character-long strings
+    costIns = costIns == null ? 1 : +costIns;
+    costRep = costRep == null ? 1 : +costRep;
+    costDel = costDel == null ? 1 : +costDel;
+    if (s1 === s2) {
+        return 0;
+    }
+    var l1 = s1.length;
+    var l2 = s2.length;
+    if (l1 === 0) {
+        return l2 * costIns;
+    }
+    if (l2 === 0) {
+        return l1 * costDel;
+    }
+    // Enable the 3 lines below to set the same limits on string length as PHP does
+    // if (l1 > LEVENSHTEIN_MAX_LENGTH || l2 > LEVENSHTEIN_MAX_LENGTH) {
+    //   return -1;
+    // }
+    var split = false;
+    try {
+        split = !('0')[0];
+    }
+    catch (e) {
+        // Earlier IE may not support access by string index
+        split = true;
+    }
+    if (split) {
+        s1 = s1.split('');
+        s2 = s2.split('');
+    }
+    var p1 = new Array(l2 + 1);
+    var p2 = new Array(l2 + 1);
+    var i1, i2, c0, c1, c2, tmp;
+    for (i2 = 0; i2 <= l2; i2++) {
+        p1[i2] = i2 * costIns;
+    }
+    for (i1 = 0; i1 < l1; i1++) {
+        p2[0] = p1[0] + costDel;
+        for (i2 = 0; i2 < l2; i2++) {
+            c0 = p1[i2] + ((s1[i1] === s2[i2]) ? 0 : costRep);
+            c1 = p1[i2 + 1] + costDel;
+            if (c1 < c0) {
+                c0 = c1;
+            }
+            c2 = p2[i2] + costIns;
+            if (c2 < c0) {
+                c0 = c2;
+            }
+            p2[i2 + 1] = c0;
+        }
+        tmp = p1;
+        p1 = p2;
+        p2 = tmp;
+    }
+    c0 = p1[l2];
+    return c0;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGV2ZW5zaHRlaW4uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbG9jdXR1cy9zcmMvcGhwL3N0cmluZ3MvbGV2ZW5zaHRlaW4uanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxDQUFDLE9BQU8sR0FBRyxTQUFTLFdBQVcsQ0FBRSxFQUFFLEVBQUUsRUFBRSxFQUFFLE9BQU8sRUFBRSxPQUFPLEVBQUUsT0FBTztJQUN0RSx3REFBd0Q7SUFDeEQsd0VBQXdFO0lBQ3hFLG1FQUFtRTtJQUNuRSwyRUFBMkU7SUFDM0UseURBQXlEO0lBQ3pELHVDQUF1QztJQUN2Qyw4REFBOEQ7SUFDOUQsOEVBQThFO0lBQzlFLHNCQUFzQjtJQUN0QixzREFBc0Q7SUFDdEQsc0JBQXNCO0lBQ3RCLCtEQUErRDtJQUMvRCxzQkFBc0I7SUFFdEIsZ0dBQWdHO0lBRWhHLE9BQU8sR0FBRyxPQUFPLElBQUksSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsT0FBTyxDQUFBO0lBQ3hDLE9BQU8sR0FBRyxPQUFPLElBQUksSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsT0FBTyxDQUFBO0lBQ3hDLE9BQU8sR0FBRyxPQUFPLElBQUksSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsT0FBTyxDQUFBO0lBRXhDLElBQUksRUFBRSxLQUFLLEVBQUUsRUFBRTtRQUNiLE9BQU8sQ0FBQyxDQUFBO0tBQ1Q7SUFFRCxJQUFJLEVBQUUsR0FBRyxFQUFFLENBQUMsTUFBTSxDQUFBO0lBQ2xCLElBQUksRUFBRSxHQUFHLEVBQUUsQ0FBQyxNQUFNLENBQUE7SUFFbEIsSUFBSSxFQUFFLEtBQUssQ0FBQyxFQUFFO1FBQ1osT0FBTyxFQUFFLEdBQUcsT0FBTyxDQUFBO0tBQ3BCO0lBQ0QsSUFBSSxFQUFFLEtBQUssQ0FBQyxFQUFFO1FBQ1osT0FBTyxFQUFFLEdBQUcsT0FBTyxDQUFBO0tBQ3BCO0lBRUQsK0VBQStFO0lBQy9FLG9FQUFvRTtJQUNwRSxlQUFlO0lBQ2YsSUFBSTtJQUVKLElBQUksS0FBSyxHQUFHLEtBQUssQ0FBQTtJQUNqQixJQUFJO1FBQ0YsS0FBSyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQTtLQUNsQjtJQUFDLE9BQU8sQ0FBQyxFQUFFO1FBQ1Ysb0RBQW9EO1FBQ3BELEtBQUssR0FBRyxJQUFJLENBQUE7S0FDYjtJQUVELElBQUksS0FBSyxFQUFFO1FBQ1QsRUFBRSxHQUFHLEVBQUUsQ0FBQyxLQUFLLENBQUMsRUFBRSxDQUFDLENBQUE7UUFDakIsRUFBRSxHQUFHLEVBQUUsQ0FBQyxLQUFLLENBQUMsRUFBRSxDQUFDLENBQUE7S0FDbEI7SUFFRCxJQUFJLEVBQUUsR0FBRyxJQUFJLEtBQUssQ0FBQyxFQUFFLEdBQUcsQ0FBQyxDQUFDLENBQUE7SUFDMUIsSUFBSSxFQUFFLEdBQUcsSUFBSSxLQUFLLENBQUMsRUFBRSxHQUFHLENBQUMsQ0FBQyxDQUFBO0lBRTFCLElBQUksRUFBRSxFQUFFLEVBQUUsRUFBRSxFQUFFLEVBQUUsRUFBRSxFQUFFLEVBQUUsRUFBRSxHQUFHLENBQUE7SUFFM0IsS0FBSyxFQUFFLEdBQUcsQ0FBQyxFQUFFLEVBQUUsSUFBSSxFQUFFLEVBQUUsRUFBRSxFQUFFLEVBQUU7UUFDM0IsRUFBRSxDQUFDLEVBQUUsQ0FBQyxHQUFHLEVBQUUsR0FBRyxPQUFPLENBQUE7S0FDdEI7SUFFRCxLQUFLLEVBQUUsR0FBRyxDQUFDLEVBQUUsRUFBRSxHQUFHLEVBQUUsRUFBRSxFQUFFLEVBQUUsRUFBRTtRQUMxQixFQUFFLENBQUMsQ0FBQyxDQUFDLEdBQUcsRUFBRSxDQUFDLENBQUMsQ0FBQyxHQUFHLE9BQU8sQ0FBQTtRQUV2QixLQUFLLEVBQUUsR0FBRyxDQUFDLEVBQUUsRUFBRSxHQUFHLEVBQUUsRUFBRSxFQUFFLEVBQUUsRUFBRTtZQUMxQixFQUFFLEdBQUcsRUFBRSxDQUFDLEVBQUUsQ0FBQyxHQUFHLENBQUMsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEtBQUssRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsT0FBTyxDQUFDLENBQUE7WUFDakQsRUFBRSxHQUFHLEVBQUUsQ0FBQyxFQUFFLEdBQUcsQ0FBQyxDQUFDLEdBQUcsT0FBTyxDQUFBO1lBRXpCLElBQUksRUFBRSxHQUFHLEVBQUUsRUFBRTtnQkFDWCxFQUFFLEdBQUcsRUFBRSxDQUFBO2FBQ1I7WUFFRCxFQUFFLEdBQUcsRUFBRSxDQUFDLEVBQUUsQ0FBQyxHQUFHLE9BQU8sQ0FBQTtZQUVyQixJQUFJLEVBQUUsR0FBRyxFQUFFLEVBQUU7Z0JBQ1gsRUFBRSxHQUFHLEVBQUUsQ0FBQTthQUNSO1lBRUQsRUFBRSxDQUFDLEVBQUUsR0FBRyxDQUFDLENBQUMsR0FBRyxFQUFFLENBQUE7U0FDaEI7UUFFRCxHQUFHLEdBQUcsRUFBRSxDQUFBO1FBQ1IsRUFBRSxHQUFHLEVBQUUsQ0FBQTtRQUNQLEVBQUUsR0FBRyxHQUFHLENBQUE7S0FDVDtJQUVELEVBQUUsR0FBRyxFQUFFLENBQUMsRUFBRSxDQUFDLENBQUE7SUFFWCxPQUFPLEVBQUUsQ0FBQTtBQUNYLENBQUMsQ0FBQSJ9
