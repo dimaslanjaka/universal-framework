@@ -19,7 +19,7 @@
         "babel-cli": "^6.18.0",
         "babel-core": "6.23.1",
         "babel-eslint": "7.1.1",
-        "babel-plugin-add-module-exports": "0.2.1",
+        "babel-plugin-add-module-exports": "0.3.2",
         "babel-plugin-es6-promise": "1.1.1",
         "babel-plugin-syntax-async-functions": "6.13.0",
         "babel-plugin-transform-async-to-generator": "6.22.0",
