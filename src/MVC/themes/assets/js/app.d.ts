@@ -615,23 +615,6 @@ interface Console {
 }
 declare var console_callback: any;
 /**
- * Datatables loader
- * @param callback
- */
-declare function load_datatables(callback: Function): void;
-declare var datatables_ignited: boolean;
-/**
- * Datatables init
- * @todo disable error warning
- * @todo add refresh button
- */
-declare function datatables_init(): Promise<unknown>;
-/**
- * Scroll up after click pagination dt
- * @param target
- */
-declare function pagination_up(target: JQuery): void;
-/**
  * Disable debugger
  */
 declare function bannedebug(): void;
@@ -876,6 +859,24 @@ declare var reCaptcha: {
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 declare const dtpackage: () => string[];
+declare function load_module(name: string, callback: Function): void;
+/**
+ * Datatables loader
+ * @param callback
+ */
+declare function load_datatables(callback: Function): void;
+declare var datatables_ignited: boolean;
+/**
+ * Datatables init
+ * @todo disable error warning
+ * @todo add refresh button
+ */
+declare function datatables_init(): Promise<unknown>;
+/**
+ * Scroll up after click pagination dt
+ * @param target
+ */
+declare function pagination_up(target: JQuery): void;
 /**
  * Set all forms to be smart
  */
