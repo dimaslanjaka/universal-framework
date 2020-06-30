@@ -289,7 +289,7 @@
         "gulp-sourcemaps": "^1.12.1",
         "gulp-uglify": "^3.0.2",
         "gulp-uglify-es": "^2.0.0",
-        "jquery": "^1.12.4",
+        "jquery": "^3.5.1",
         "lodash": "^4.17.15",
         "mq4-hover-shim": "^0.3.0",
         "node": "^14.4.0",
