@@ -183,7 +183,7 @@
         "ts-npm-lint": "^0.1.0",
         "typeahead.js": "^0.11.1",
         "typescript-closure-compiler": "^1.8.11",
-        "typescript-tslint-plugin": "^0.0.6",
+        "typescript-tslint-plugin": "^0.5.5",
         "typings-for-css-modules-loader": "^1.7.0",
         "ua-parser-js": "^0.7.21",
         "uglifycss": "*",
