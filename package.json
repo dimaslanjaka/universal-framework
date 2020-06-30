@@ -177,7 +177,7 @@
         "systemjs": "*",
         "terser": "*",
         "time-grunt": "^2.0.0",
-        "tmp": "0.0.28",
+        "tmp": "0.2.1",
         "toastr": "*",
         "ts-loader": "^5.3.3",
         "ts-npm-lint": "^0.1.0",
