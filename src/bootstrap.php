@@ -153,6 +153,9 @@ function latestFile(array $path, bool $return_timestamp = true)
   $file = '';
 
   foreach ($path as $str_path) {
+    if (!is_dir($str_path)) {
+      continue;
+    }
     $cls_rii = new \RecursiveIteratorIterator(
       new \RecursiveDirectoryIterator($str_path),
       \RecursiveIteratorIterator::CHILD_FIRST
@@ -349,7 +352,7 @@ function shell(string $command)
 }
 
 /**
- * Check shell can be executed
+ * Check shell can be executed.
  *
  * @return string|null
  */
@@ -357,7 +360,7 @@ function shell_check()
 {
   if (function_exists('shell_exec')) {
     return 'shell_exec';
-  } else if (function_exists('exec')) {
+  } elseif (function_exists('exec')) {
     return 'exec';
   } else {
     return null;
@@ -367,7 +370,7 @@ function shell_check()
 function shell_required($callback)
 {
   $result = [];
-  if (gettype(shell_check()) != 'string' || !\MVC\helper::env('dev')) {
+  if ('string' != gettype(shell_check()) || !\MVC\helper::env('dev')) {
     $result = ['error' => true, 'message' => 'Cannot execute command here environtment(' . \MVC\helper::env('dev') . ') command(' . gettype(shell_check()) . ')', 'title' => 'Cannot Access This Page'];
   }
   if (!empty($result)) {

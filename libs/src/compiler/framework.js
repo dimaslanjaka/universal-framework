@@ -1931,33 +1931,40 @@ if (typeof module == "undefined" && typeof jQuery != "undefined") {
  * @param callback
  */
 function load_datatables(callback) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            LoadScript([
-                "/assets/mdb-dashboard/js/addons/datatables.min.js",
-                "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
-                "/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
-                "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
-                "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
-                "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
-                "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
-            ], function () {
-                loadCSS([
-                    "/src/MVC/themes/assets/partial/datatables.min.css",
-                    "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
-                    "/assets/mdb-dashboard/css/addons/datatables.min.css",
-                    "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
-                    "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
-                ], null);
-                datatables_init().then(function () {
-                    $(".dataTables_length").addClass("bs-select");
-                    $("div.dt-toolbar").html("");
-                    if (typeof callback == "function") {
-                        callback();
-                    }
-                });
-            });
-            return [2 /*return*/];
+    LoadScript([
+        "/assets/mdb-dashboard/js/addons/datatables.min.js",
+        "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
+        //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+        "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
+        "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+        "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+        "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
+    ], function () {
+        loadCSS([
+            "/src/MVC/themes/assets/partial/datatables.min.css",
+            "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
+            "/assets/mdb-dashboard/css/addons/datatables.min.css",
+            "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
+            "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
+        ], null);
+        datatables_init().then(function () {
+            var dtl = $(".dataTables_length");
+            var toolbar = $("div.dt-toolbar");
+            var button = $("button.dt-button").not(".btn");
+            setTimeout(function () {
+                if (button.length) {
+                    button.addClass("btn btn-info");
+                }
+                if (dtl.length) {
+                    dtl.addClass("bs-select");
+                }
+                if (toolbar.length) {
+                    toolbar.html("");
+                }
+            }, 5000);
+            if (typeof callback == "function") {
+                callback();
+            }
         });
     });
 }
@@ -1968,11 +1975,11 @@ var datatables_ignited = false;
  * @todo add refresh button
  */
 function datatables_init() {
-    return async_this(function () {
+    return new Promise(function (resolve, reject) {
         if (datatables_ignited) {
-            return console.log("datatables already ignited");
+            console.error("datatables already ignited");
         }
-        if (typeof jQuery.fn.dataTable != "undefined") {
+        else if (typeof jQuery.fn.dataTable != "undefined") {
             jQuery.fn.dataTable.ext.errMode = "none";
             jQuery.fn.dataTable.ext.buttons.refresh = {
                 extend: "collection",
@@ -1983,11 +1990,10 @@ function datatables_init() {
                     dt.ajax.reload();
                 },
             };
-            setTimeout(function () {
-                $("button.dt-button").not(".btn").addClass("btn btn-info");
-            }, 5000);
+            console.info("datatables ignited successfully");
             datatables_ignited = true;
         }
+        resolve();
     });
 }
 /**
@@ -2297,55 +2303,45 @@ if (isnode()) {
  * @param callback
  */
 function LoadScript(urls, callback) {
-    var loaded = null;
-    var load = function (url) {
-        return __awaiter(this, void 0, void 0, function () {
-            var script;
-            return __generator(this, function (_a) {
-                script = document.createElement("script");
-                script.type = "text/javascript";
-                script.src = url;
-                script.onreadystatechange = function () {
-                    loaded = true;
-                };
-                script.onload = function () {
-                    loaded = true;
-                };
-                script.onerror = function () {
-                    throw "error while loading " + url;
-                };
-                script.onabort = function () {
-                    throw "error while loading " + url;
-                };
-                script.oncancel = function () {
-                    throw "error while loading " + url;
-                };
-                document.body.appendChild(script);
-                return [2 /*return*/];
-            });
-        });
-    };
-    var run = function () {
-        if (loaded) {
-            console.log(getFuncName() + ("(" + urls[0] + ") running"));
-            if (typeof callback == "function") {
-                callback();
-            }
-        }
-    };
+    var loaded = [];
     if (typeof urls == "string") {
-        load(urls).then(run);
+        urls = [urls];
     }
-    else if (Array.isArray(urls)) {
-        load(urls[0]).then(function () {
-            urls.shift();
-            if (urls.length) {
-                LoadScript(urls, callback);
+    if (!urls) {
+        console.error("LoadScript must be load an javascript url");
+    }
+    if (Array.isArray(urls)) {
+        var lists = urls;
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = urls[0];
+        console.info("loading script(" + script.src + ")");
+        script.onload = script.onreadystatechange = function () {
+            if (!this.readyState ||
+                this.readyState === "loaded" ||
+                this.readyState === "complete") {
+                loaded.push(true);
+                lists.shift();
+                console.log("Script in queue " + lists.length);
+                if (!lists.length) {
+                    callback();
+                }
+                script.onload = script.onreadystatechange = null;
             }
-            else {
-                run();
-            }
-        });
+        };
+        script.onerror = function () {
+            loaded.push(false);
+            console.error("error while loading " + script.src);
+        };
+        script.onabort = function () {
+            loaded.push(false);
+            console.error("error while loading " + script.src);
+        };
+        script.oncancel = function () {
+            loaded.push(false);
+            console.error("error while loading " + script.src);
+        };
+        document.body.appendChild(script);
     }
 }
 /**
@@ -3193,6 +3189,73 @@ var reCaptcha = {
 function recaptcha() {
     return reCaptcha;
 }
+var vendor = "/node_modules";
+var rjs = /** @class */ (function () {
+    function rjs() {
+    }
+    rjs.init = function () {
+        function downloadJSAtOnload() {
+            var element = document.createElement("script");
+            element.src = "/node_modules/requirejs/requirejs.js";
+            document.body.appendChild(element);
+        }
+        if (window.addEventListener)
+            window.addEventListener("load", downloadJSAtOnload, false);
+        else if (window.attachEvent)
+            window.attachEvent("onload", downloadJSAtOnload);
+        else
+            window.onload = downloadJSAtOnload;
+    };
+    return rjs;
+}());
+var require_config = {
+    paths: {
+        app: "../require",
+        jquery: [
+            "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min",
+            vendor + "/jquery/dist/jquery.min",
+        ],
+        "jquery-ui": "//code.jquery.com/ui/1.11.4/jquery-ui",
+        //DataTables core
+        "datatables.net": vendor + "/datatables.net/js/jquery.dataTables.min",
+        //Dependencies
+        "datatables.net-autofill": vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
+        "datatables.net-editor": vendor + "/datatables.net-editor/js/dataTables.editor.min",
+        "datatables.net-buttons": vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
+        "datatables.net-buttons-html5": vendor + "/datatables.net-buttons/js/buttons.html5.min",
+        "datatables.net-buttons-flash": vendor + "/datatables.net-buttons/js/buttons.flash.min",
+        "datatables.net-buttons-print": vendor + "/datatables.net-buttons/js/buttons.print.min",
+        "datatables.net-colreorder": vendor + "/datatables.net-colreorder/js/dataTables.colReorder.min",
+        "datatables.net-rowreorder": vendor + "/datatables.net-rowreorder/js/dataTables.rowReorder.min",
+        "datatables.net-scroller": vendor + "/datatables.net-scroller/js/dataTables.scroller.min",
+        "datatables.net-select": vendor + "/datatables.net-select/js/dataTables.select.min",
+    },
+    shim: {
+        /**
+         * jQuery Compatibility
+         */
+        jquery: {
+            exports: "$",
+        },
+        "datatables.net": {
+            deps: ["jquery"],
+            exports: "$",
+        },
+    },
+};
+//rjs.init();
+var dtpackage = function () {
+    return [
+        "datatables.net",
+        "datatables.net-colreorder",
+        "datatables.net-rowreorder",
+        "datatables.net-scroller",
+        "datatables.net-select",
+        "datatables.net-buttons",
+        "datatables.net-buttons-html5",
+    ];
+};
+requirejs.config(require_config);
 /// <reference path="./Object.d.ts"/>
 /**
  * SMARTFORM
@@ -3553,20 +3616,46 @@ var ctable = /** @class */ (function () {
     function ctable(config) {
         this.can_edit = null;
         this.instance = null;
+        this.editable_run = false;
         if (typeof config == "object") {
             if (config.hasOwnProperty("editable") && config.editable) {
                 this.can_edit = true;
             }
         }
     }
+    ctable.prototype.editable = function (activate) {
+        var self = this;
+        if (this.editable_run) {
+            return;
+        }
+        if (activate && self.instance && self.instance.length) {
+            this.editable_run = true;
+            $(document).on("click", ".table-add", function (e) {
+                e.preventDefault();
+                var $clone = self.instance
+                    .find("tr.addthis")
+                    .clone(true)
+                    .removeClass("d-none");
+                self.instance.find("table").append($clone);
+            });
+            $(".table-remove").click(function () {
+                $(this).parents("tr").detach();
+            });
+            $(".table-up").click(function () {
+                var $row = $(this).parents("tr");
+                if ($row.index() === 1)
+                    return; // Don't go above the header
+                $row.prev().before($row.get(0));
+            });
+            $(".table-down").click(function () {
+                var $row = $(this).parents("tr");
+                $row.next().after($row.get(0));
+            });
+        }
+    };
     ctable.prototype.create = function (id, where, data) {
-        var table;
-        if (this.can_edit) {
-            table += "<table id='" + id + "' class='table table-responsive'><span class=\"table-add fas fa-plus\" style=\"position: absolute;right:15px;top:15px;\"></span><thead><tr>";
-        }
-        else {
-            table = "<table id='" + id + "' class='table table-responsive'><thead><tr>";
-        }
+        var table = "<table id='" + id + "' class='table table-responsive' style=\"position:relative\"><thead><tr>";
+        var self = this;
         for (var i = 0; i < data.length; i++) {
             table = table + "<th>" + data[i] + "</th>";
         }
@@ -3574,8 +3663,10 @@ var ctable = /** @class */ (function () {
         document.getElementById(where).innerHTML += table;
         if (this.can_edit) {
             setTimeout(function () {
-                this.instance = $("table#" + id);
-                this.editable(this.instance, true);
+                self.instance = $("table#" + id);
+                self.instance.append("<span class=\"table-add fas fa-plus text-success\" style=\"position: absolute;right:15px;top:15px;cursor:pointer\"></span>");
+                self.instance.find("tbody").append("<tr class=\"addthis d-none\">\n        <td contenteditable=\"true\">Untitled</td>\n        <td contenteditable=\"true\">Undocumented</td>\n        <td><span class=\"table-remove fas fa-trash text-danger\" style=\"cursor:pointer\"></span></td><td> <span class=\"table-up fas fa-arrow-up text-info\" style=\"cursor:pointer\"></span> <span class=\"table-down fas fa-arrow-down text-info\" style=\"cursor:pointer\"></span> </td>\n      </tr>");
+                self.editable(true);
             }, 500);
         }
     };
@@ -3594,36 +3685,12 @@ var ctable = /** @class */ (function () {
             }
         }
         if (this.can_edit) {
-            row += "<td><span class=\"table-remove fas fa-trash\"></span></td><td> <span class=\"table-up fas fa-arrow-up\"></span> <span class=\"table-down fas fa-arrow-down\"></span> </td>";
+            row += "<td><span class=\"table-remove fas fa-trash text-danger\" style=\"cursor:pointer\"></span></td><td> <span class=\"table-up fas fa-arrow-up text-info\" style=\"cursor:pointer\"></span> <span class=\"table-down fas fa-arrow-down text-info\" style=\"cursor:pointer\"></span> </td>";
         }
         row += "</tr>";
         document
             .getElementById(table)
             .getElementsByTagName("tbody")[0].innerHTML += row;
-    };
-    ctable.prototype.editable = function ($TABLE, activate) {
-        if (activate && $TABLE && $TABLE.length) {
-            $(".table-add").click(function () {
-                var $clone = $TABLE
-                    .find("tr.hide")
-                    .clone(true)
-                    .removeClass("hide table-line");
-                $TABLE.find("table").append($clone);
-            });
-            $(".table-remove").click(function () {
-                $(this).parents("tr").detach();
-            });
-            $(".table-up").click(function () {
-                var $row = $(this).parents("tr");
-                if ($row.index() === 1)
-                    return; // Don't go above the header
-                $row.prev().before($row.get(0));
-            });
-            $(".table-down").click(function () {
-                var $row = $(this).parents("tr");
-                $row.next().after($row.get(0));
-            });
-        }
     };
     return ctable;
 }());

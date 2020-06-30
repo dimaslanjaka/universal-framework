@@ -6,7 +6,13 @@
     "@types/archiver": "*",
     "@types/sass": "*",
     "@types/chalk": "*",
-    "@types/node-localstorage": "*"
+    "@types/node-localstorage": "*",
+    "coffeescript": "^1.12.7",
+    "coffeetape": "^2.0.0",
+    "lodash": "^4.17.15",
+    "nyc": "^14.1.1",
+    "tap-nyc": "^1.0.3",
+    "tap-spec": "^5.0.0"
   },
   "dependencies": {
     "fancy-log": "*",

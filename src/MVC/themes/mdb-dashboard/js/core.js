@@ -82,6 +82,9 @@ $(document).ready(function () {
 
 function getDebugInfo() {
   var infoSections = [];
+  if (typeof UAParser == "undefined") {
+    return;
+  }
   var parser = new UAParser();
   var userOs = parser.getOS();
   var userDevice = parser.getDevice();

@@ -34,6 +34,7 @@ loadScript("/assets/highlight.js/highlight.pack.js", function () {
   //hljs.configure({ useBR: true });
 
   document.addEventListener("DOMContentLoaded", prettyprint);
+  prettyprint();
 });
 
 function prettyprint(event) {

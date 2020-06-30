@@ -87,7 +87,7 @@ class Cookies {
   static one(name: string, value: any, expire: number, callback: Function) {
     if (this.get(name) == null) {
       this.set(name, value, expire, "m", "/", callback);
-    }
+    } 
   }
 
   /**

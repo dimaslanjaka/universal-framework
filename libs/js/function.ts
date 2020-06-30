@@ -73,47 +73,49 @@ if (isnode()) {
  * @param callback
  */
 function LoadScript(urls: string | string[], callback: null | Function) {
-  var loaded = null;
-  const load = async function (url: string) {
+  var loaded = [];
+  if (typeof urls == "string") {
+    urls = [urls];
+  }
+  if (!urls) {
+    console.error("LoadScript must be load an javascript url");
+  }
+  if (Array.isArray(urls)) {
+    var lists = urls;
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = url;
-    script.onreadystatechange = function () {
-      loaded = true;
+    script.src = urls[0];
+    console.info(`loading script(${script.src})`);
+    script.onload = script.onreadystatechange = function () {
+      if (
+        !this.readyState ||
+        this.readyState === "loaded" ||
+        this.readyState === "complete"
+      ) {
+        loaded.push(true);
+        lists.shift();
+        console.log(`Script in queue ${lists.length}`);
+        if (!lists.length) {
+          callback();
+        }
+
+        script.onload = script.onreadystatechange = null;
+      }
     };
-    script.onload = function () {
-      loaded = true;
-    };
+
     script.onerror = function () {
-      throw `error while loading ${url}`;
+      loaded.push(false);
+      console.error(`error while loading ${script.src}`);
     };
     script.onabort = function () {
-      throw `error while loading ${url}`;
+      loaded.push(false);
+      console.error(`error while loading ${script.src}`);
     };
     script.oncancel = function () {
-      throw `error while loading ${url}`;
+      loaded.push(false);
+      console.error(`error while loading ${script.src}`);
     };
     document.body.appendChild(script);
-  };
-  var run = function () {
-    if (loaded) {
-      console.log(getFuncName() + `(${urls[0]}) running`);
-      if (typeof callback == "function") {
-        callback();
-      }
-    }
-  };
-  if (typeof urls == "string") {
-    load(urls).then(run);
-  } else if (Array.isArray(urls)) {
-    load(urls[0]).then(function () {
-      urls.shift();
-      if (urls.length) {
-        LoadScript(urls, callback);
-      } else {
-        run();
-      }
-    });
   }
 }
 

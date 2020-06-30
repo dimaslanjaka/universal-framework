@@ -12,6 +12,7 @@ import core from "./core";
 const root = process.root;
 import sass from "sass"; // or require('node-sass');
 import { exec } from "child_process";
+import { localStorage } from "../node-localstorage/index";
 console.clear();
 
 /**
@@ -208,27 +209,32 @@ function multiMinify(assets: any[]) {
  * @param withoutView false to not compile views javascripts
  */
 async function createApp(withoutView: boolean) {
-  var target = upath.normalizeSafe(
-    upath.resolve(upath.join(root, "src/MVC/themes/assets/js/app.js"))
-  );
-  await typescriptCompiler("tsconfig.build.json", root + "/").catch(function (
-    err
-  ) {
-    log.log(log.error(err));
-  });
-  await typescriptCompiler("tsconfig.precompiler.json", root + "/").catch(
-    function (err) {
+  var exists = localStorage.getItem("compile");
+  if (!exists) {
+    localStorage.setItem("compile", "running");
+    var target = upath.normalizeSafe(
+      upath.resolve(upath.join(root, "src/MVC/themes/assets/js/app.js"))
+    );
+    await typescriptCompiler("tsconfig.build.json", root + "/").catch(function (
+      err
+    ) {
       log.log(log.error(err));
+    });
+    await typescriptCompiler("tsconfig.precompiler.json", root + "/").catch(
+      function (err) {
+        log.log(log.error(err));
+      }
+    );
+    await typescriptCompiler("tsconfig.compiler.json", root + "/libs/").catch(
+      function (err) {
+        log.log(log.error(err));
+      }
+    );
+    minify(target);
+    if (!withoutView) {
+      multiMinify(views());
     }
-  );
-  await typescriptCompiler("tsconfig.compiler.json", root + "/libs/").catch(
-    function (err) {
-      log.log(log.error(err));
-    }
-  );
-  minify(target);
-  if (!withoutView) {
-    multiMinify(views());
+    localStorage.removeItem("compile");
   }
 }
 

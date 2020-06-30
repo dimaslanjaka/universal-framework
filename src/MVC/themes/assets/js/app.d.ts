@@ -4,6 +4,7 @@
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="jquery" />
+/// <reference types="requirejs" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
  * in_array PHP equivalent
@@ -617,14 +618,14 @@ declare var console_callback: any;
  * Datatables loader
  * @param callback
  */
-declare function load_datatables(callback: Function): Promise<void>;
+declare function load_datatables(callback: Function): void;
 declare var datatables_ignited: boolean;
 /**
  * Datatables init
  * @todo disable error warning
  * @todo add refresh button
  */
-declare function datatables_init(): Promise<any>;
+declare function datatables_init(): Promise<unknown>;
 /**
  * Scroll up after click pagination dt
  * @param target
@@ -872,6 +873,12 @@ declare var reCaptcha: {
      */
     reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
 };
+declare const vendor = "/node_modules";
+declare class rjs {
+    static init(): void;
+}
+declare const require_config: RequireConfig;
+declare const dtpackage: () => string[];
 /**
  * Set all forms to be smart
  */
@@ -945,9 +952,10 @@ declare class ctable {
     private can_edit;
     private instance;
     constructor(config?: ctableOpt);
+    private editable_run;
+    private editable;
     create(id: string, where: string, data: string[]): void;
     add(table: string, data: any[]): void;
-    editable($TABLE: JQuery, activate?: boolean): void;
 }
 interface ctableOpt {
     editable?: boolean;

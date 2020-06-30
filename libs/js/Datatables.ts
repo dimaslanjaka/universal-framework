@@ -2,12 +2,12 @@
  * Datatables loader
  * @param callback
  */
-async function load_datatables(callback: Function) {
+function load_datatables(callback: Function) {
   LoadScript(
     [
       "/assets/mdb-dashboard/js/addons/datatables.min.js",
       "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
-      "/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+      //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
       "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
       "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
       "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
@@ -25,8 +25,20 @@ async function load_datatables(callback: Function) {
         null
       );
       datatables_init().then(function () {
-        $(".dataTables_length").addClass("bs-select");
-        $("div.dt-toolbar").html(``);
+        var dtl = $(".dataTables_length");
+        var toolbar = $("div.dt-toolbar");
+        var button = $("button.dt-button").not(".btn");
+        setTimeout(function () {
+          if (button.length) {
+            button.addClass("btn btn-info");
+          }
+          if (dtl.length) {
+            dtl.addClass("bs-select");
+          }
+          if (toolbar.length) {
+            toolbar.html(``);
+          }
+        }, 5000);
         if (typeof callback == "function") {
           callback();
         }
@@ -42,11 +54,10 @@ var datatables_ignited = false;
  * @todo add refresh button
  */
 function datatables_init() {
-  return async_this(function () {
+  return new Promise(function (resolve, reject) {
     if (datatables_ignited) {
-      return console.log("datatables already ignited");
-    }
-    if (typeof jQuery.fn.dataTable != "undefined") {
+      console.error("datatables already ignited");
+    } else if (typeof jQuery.fn.dataTable != "undefined") {
       jQuery.fn.dataTable.ext.errMode = "none";
       jQuery.fn.dataTable.ext.buttons.refresh = {
         extend: "collection",
@@ -57,11 +68,10 @@ function datatables_init() {
           dt.ajax.reload();
         },
       };
-      setTimeout(function () {
-        $("button.dt-button").not(".btn").addClass("btn btn-info");
-      }, 5000);
+      console.info("datatables ignited successfully");
       datatables_ignited = true;
     }
+    resolve();
   });
 }
 
