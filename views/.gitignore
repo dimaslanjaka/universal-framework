@@ -3,4 +3,5 @@
 !superuser
 !.htaccess
 !.gitignore
-!auth
+!auth/
+!auth/*
