@@ -14,7 +14,7 @@
         "ansi-escapes": "^1.1.0",
         "ansi-regex": "^5.0.0",
         "archiver": "*",
-        "async": "2.0.0-rc.3",
+        "async": "2.6.3",
         "axios": "^0.18.0",
         "babel-cli": "^6.18.0",
         "babel-core": "6.23.1",
