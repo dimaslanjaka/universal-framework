@@ -145,5 +145,8 @@
   "typescript.updateImportsOnFileMove.enabled": "never",
   "breadcrumbs.enabled": false,
   "prettier.useEditorConfig": true,
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "workbench.editor.limit.enabled": true,
+  "files.trimTrailingWhitespace": true,
+  "search.seedOnFocus": true
 }

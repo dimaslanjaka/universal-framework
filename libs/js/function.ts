@@ -125,24 +125,26 @@ function LoadScript(urls: string | string[], callback: null | Function) {
  * @param callback
  */
 function loadCSS(href: string | string[], callback: any) {
-  const load = function (href: string) {
+  if (typeof href == "string") {
+    href = [href];
+  }
+  if (Array.isArray(href)) {
+    var hrefs = href;
     const link = document.createElement("link");
     link.media = "print";
     link.rel = "stylesheet";
-    link.href = href;
-    link.onload = () => {
+    link.href = hrefs[0];
+    link.onload = function () {
       link.media = "all";
-      if (typeof callback == "function") {
-        callback(link, href);
+      hrefs.shift();
+      if (!hrefs.length) {
+        if (typeof callback == "function") {
+          callback(link, href);
+        }
+      } else {
+        loadCSS(hrefs, callback);
       }
     };
     document.head.appendChild(link);
-  };
-  if (typeof href == "string") {
-    load(href);
-  } else if (Array.isArray(href)) {
-    href.forEach(function (item) {
-      load(item);
-    });
   }
 }

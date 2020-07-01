@@ -12,6 +12,9 @@ import core from "./core";
 const root = process.root;
 import sass from "sass"; // or require('node-sass');
 import { exec } from "child_process";
+import sourcemaps from "gulp-sourcemaps";
+import concat from "gulp-concat";
+import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
 console.clear();
 
@@ -123,8 +126,11 @@ gulp.task("composer", function () {
 });
 
 gulp.task("default", function () {
-  //"build", "watch"
-  gulp.start("build").task("watch");
+  var merge = gulp
+    .src(["libs/compiler/**/*.js", "./index.js"])
+    .pipe(concat("index.js"))
+    .pipe(gulp.dest("./tmp/compiler"));
+  return merge;
 });
 
 /**

@@ -430,8 +430,14 @@ class helper
   }
 
   private static $canonical = [];
-
-  public static function get_canonical(string $url = null)
+  /**
+   * get canonical url
+   *
+   * @param string $url null for current page
+   * @param boolean $whos include host or not (http://domain)
+   * @return void
+   */
+  public static function get_canonical(string $url = null, bool $whos = true)
   {
     if (null === $url) {
       $url = self::geturl();
@@ -440,7 +446,11 @@ class helper
       return self::$canonical[$url];
     } else {
       $url_parts = parse_url($url);
-      self::$canonical[$url] = $url_parts['scheme'] . '://' . $url_parts['host'] . (isset($url_parts['path']) ? $url_parts['path'] : '');
+      if ($whos) {
+        self::$canonical[$url] = $url_parts['scheme'] . '://' . $url_parts['host'] . (isset($url_parts['path']) ? $url_parts['path'] : '');
+      } else {
+        self::$canonical[$url] = (isset($url_parts['path']) ? $url_parts['path'] : '');
+      }
     }
 
     return self::$canonical[$url];

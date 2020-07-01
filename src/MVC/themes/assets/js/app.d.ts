@@ -369,7 +369,7 @@ declare var dimas: {
         /**
          * Form Captcha listener
          */
-        listen: () => JQuery<HTMLElement>;
+        listen: () => JQuery<Document>;
     };
     /**
      * Count Array/Object/String length
@@ -497,7 +497,7 @@ declare function framework(): {
         /**
          * Form Captcha listener
          */
-        listen: () => JQuery<HTMLElement>;
+        listen: () => JQuery<Document>;
     };
     /**
      * Count Array/Object/String length
@@ -642,7 +642,7 @@ declare const distance_already_calculated: string[];
  * @param target
  * @param callback
  */
-declare function calculateDistance(target: string, callback: (arg0: number) => any): JQuery<HTMLElement>;
+declare function calculateDistance(target: string, callback: (arg0: number) => any): JQuery<Document>;
 /**
  * calculate distance mouse x element
  * @param elem
@@ -730,10 +730,16 @@ declare class ip {
      * @returns {String} ip or callback
      */
     static get(callback: Function | null): string;
-    static ipapi(): JQueryXHR;
-    static l2io(): JQueryXHR;
+    static ipapi(): JQuery.jqXHR<any>;
+    static l2io(): JQuery.jqXHR<any>;
 }
 declare function md5(string: any): string;
+/**
+ * Get gravatar url by email
+ * @param {string} email
+ */
+declare function gravatar(email: string): string;
+declare function MD5(string: any): string;
 interface progressBarTimer {
     warningThreshold: number;
 }
@@ -859,6 +865,7 @@ declare var reCaptcha: {
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 declare const dtpackage: () => string[];
+declare function load_requirejs(): void;
 declare function load_module(name: string, callback: Function): void;
 /**
  * Datatables loader
@@ -1008,7 +1015,7 @@ declare class user {
     /**
      * fetch userdata
      */
-    fetch(callback: Function | null): JQueryXHR;
+    fetch(callback: Function | null): JQuery.jqXHR<any>;
 }
 /**
  * textarea focus

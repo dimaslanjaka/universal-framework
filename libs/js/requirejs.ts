@@ -66,12 +66,16 @@ const dtpackage = function () {
 if (!isnode()) {
   function downloadRequireJS() {
     var element = document.createElement("script");
-    element.src = "/node_modules/requirejs/requirejs.js";
+    element.src = "/node_modules/requirejs/require.js";
     element.onload = element.onreadystatechange = function () {
-      requirejs.config(require_config);
+      if (typeof requirejs != "undefined") {
+        requirejs.config(require_config);
+      }
     };
     document.body.appendChild(element);
   }
+}
+function load_requirejs() {
   if (window.addEventListener)
     window.addEventListener("load", downloadRequireJS, false);
   else if (window.attachEvent) window.attachEvent("onload", downloadRequireJS);
@@ -139,19 +143,23 @@ function datatables_init() {
   return new Promise(function (resolve, reject) {
     if (datatables_ignited) {
       console.error("datatables already ignited");
-    } else if (typeof jQuery.fn.dataTable != "undefined") {
-      jQuery.fn.dataTable.ext.errMode = "none";
-      jQuery.fn.dataTable.ext.buttons.refresh = {
-        extend: "collection",
-        text: '<i class="fas fa-sync"></i>',
-        className: "btn btn-info",
-        action: function (e, dt, node, config) {
-          dt.clear().draw();
-          dt.ajax.reload();
-        },
-      };
-      console.info("datatables ignited successfully");
-      datatables_ignited = true;
+    } else {
+      if (typeof jQuery.fn.dataTable != "undefined") {
+        jQuery.fn.dataTable.ext.errMode = "none";
+        jQuery.fn.dataTable.ext.buttons.refresh = {
+          extend: "collection",
+          text: '<i class="fas fa-sync"></i>',
+          className: "btn btn-info",
+          action: function (e, dt, node, config) {
+            dt.clear().draw();
+            dt.ajax.reload();
+          },
+        };
+        console.info("datatables ignited successfully");
+        datatables_ignited = true;
+      } else {
+        console.error("Datatables not loaded");
+      }
     }
     resolve();
   });
