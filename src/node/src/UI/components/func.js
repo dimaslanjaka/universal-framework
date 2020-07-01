@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.random_rgba = exports.resolve_dir = exports.writeFile = exports.random_hex = exports.writenow = exports.asset = exports.isOffline = void 0;
+exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.random_rgba = exports.resolve_dir = exports.writeFile = exports.random_hex = exports.writenow = exports.readFile = exports.asset = exports.isOffline = void 0;
 var tslib_1 = require("tslib");
 var fs = tslib_1.__importStar(require("fs"));
 var child_process_1 = require("child_process");
@@ -39,6 +39,13 @@ function asset(file) {
     }
 }
 exports.asset = asset;
+function readFile(file) {
+    if (fs.existsSync(file)) {
+        return fs.readFileSync(file).toString();
+    }
+    return file + " not found";
+}
+exports.readFile = readFile;
 function writenow(packageObject) {
     var sorter;
     var log;

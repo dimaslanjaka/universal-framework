@@ -75,6 +75,9 @@ function LoadSocket(callback) {
     socket.on("announcements", function (data) {
       console.log("Got announcement:", data.message);
     });
+    socket.on("stats", function (data) {
+      console.log("Connected clients:", data.numClients);
+    });
   }
   //socket.emit("event", { message: "Hey, I have an important message!" });
   return socket;

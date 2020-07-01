@@ -1,7 +1,8 @@
 *
 !test.php
-!superuser
+!superuser/
+!superuser/**/*
 !.htaccess
 !.gitignore
 !auth/
-!auth/*
+!auth/**/*

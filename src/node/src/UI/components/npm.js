@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.npm = void 0;
+var func_1 = require("./func");
 var npm = (function () {
     function npm() {
     }
@@ -44,7 +45,7 @@ var npm = (function () {
         }
     };
     npm.npm = function (args) {
-        execute("npm " + args.join(" "));
+        func_1.execute("npm " + args.join(" "));
     };
     npm.args = [];
     npm.timer_run = null;

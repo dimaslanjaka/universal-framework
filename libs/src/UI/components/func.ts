@@ -44,6 +44,17 @@ export function asset(file: string) {
 }
 
 /**
+ * Smart read file
+ * @param file
+ */
+export function readFile(file: string) {
+  if (fs.existsSync(file)) {
+    return fs.readFileSync(file).toString();
+  }
+  return `${file} not found`;
+}
+
+/**
  * write package
  * @param packageObject
  */
