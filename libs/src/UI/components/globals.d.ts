@@ -34,6 +34,10 @@ interface packagejson {
    */
   scripts?: {
     /**
+     * test: Run by the npm test command.
+     */
+    test: string;
+    /**
      * preversion: Run BEFORE bumping the package version.
      */
     preversion?: string;

@@ -9,7 +9,7 @@ import { serve } from "./src/UI/index";
 import * as path from "path";
 import * as Process from "process";
 //import { spawn } from "child_process";
-import * as framework from "./src/compiler/index";
+import filemanager from "./src/compiler/filemanager";
 import * as http from "http";
 import {
   config_builder,
@@ -94,12 +94,10 @@ var constructor: packagejson = {
     "@types/node": "*",
   },
 };
-constructor = Object.assign({}, constructor, require("./package.json"));
-constructor = fixDeps(constructor);
 
 var variant: "production" | "development" | null = "production";
 
-function run() {
+export function run() {
   if (typeof args[0] != "undefined") {
     switch (args[0]) {
       case "gui":
@@ -123,6 +121,9 @@ function run() {
           __dirname + "/package.json",
           JSON.stringify(constructor, null, 4)
         );
+        if (fs.existsSync("./node_modules")) {
+          filemanager.unlink("./node_modules");
+        }
         execute("npm install --prefer-offline");
         break;
       case "test":
@@ -131,8 +132,8 @@ function run() {
         variant = null;
         break;
       case "fix":
-        //execute("npm dedupe");
-        //execute("npm audit fix");
+        constructor = Object.assign({}, constructor, require("./package.json"));
+        constructor = fixDeps(constructor);
         //framework.filemanager.
         variant = null;
         break;
@@ -168,8 +169,9 @@ function run() {
       delete constructor.files;
       delete constructor.bin;
     } else if (variant == "development") {
-      constructor.scripts.preinstall = "node ./index.js dev";
-      constructor.scripts.postinstall = "node ./index.js";
+      constructor.scripts.preinstall = "";
+      constructor.scripts.postinstall = "";
+      constructor.scripts.test = "";
       constructor.bin = "./libs/bin";
       constructor.files = ["./libs/"];
       Object.assign(
@@ -184,6 +186,6 @@ function run() {
     }
   }
 }
-serve();
+//serve();
 //run();
 //execute("npm list -json -depth=0");

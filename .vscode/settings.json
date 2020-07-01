@@ -68,7 +68,7 @@
     "**/node_modules/**": true,
     "**/tmp/**": true
   },
-  //"typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "npm.enableScriptExplorer": false,
   "npm.enableRunFromFolder": false,
   "typescript.tsserver.watchOptions": {
@@ -87,7 +87,7 @@
   "git.countBadge": "all",
   "git.enableSmartCommit": true,
   "git.enableStatusBarSync": true,
-  "git.enabled": false,
+  "git.enabled": true,
   "git.smartCommitChanges": "all",
   "git.supportCancellation": false,
   "github.gitAuthentication": true,
@@ -126,7 +126,7 @@
   "debug.javascript.terminalOptions": {
     "autoAttachChildProcesses": true
   },
-  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.disableAutomaticTypeAcquisition": false,
   "npm.runSilent": true,
   "prettier.resolveGlobalModules": true,
   "editor.minimap.size": "fit",

@@ -1,1 +1,2 @@
-const index = require("./src/node/index");
+const { run } = require("./src/node/index");
+run();

@@ -632,6 +632,9 @@ function get_device() {
         flashVersion: flashVersion,
     };
 }
+if (typeof module != "undefined") {
+    module.exports.get_device = get_device;
+}
 /** Add one or more listeners to an element
  * @param element - DOM element to add listeners to
  * @param eventNames - space separated list of event names, e.g. 'click change'

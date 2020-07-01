@@ -12,7 +12,7 @@ class filemanager {
    * @param async
    * @returns null = filedir not exists, false = delete filedir failed, true = success
    */
-  static unlink(filedir: string, async: boolean) {
+  static unlink(filedir: string, async?: boolean) {
     const execute = function () {
       if (async) {
         rimraf(filedir, function (err) {

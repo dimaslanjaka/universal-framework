@@ -4,7 +4,7 @@ node_js:
   - "10"
 
 install:
-  - npm install -g gulp typescript
+  - npm install -g gulp typescript grunt eslint tslint
   - npm install
 
 script:

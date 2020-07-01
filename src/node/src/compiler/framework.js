@@ -559,6 +559,9 @@ function get_device() {
         flashVersion: flashVersion,
     };
 }
+if (typeof module != "undefined") {
+    module.exports.get_device = get_device;
+}
 function setEventListener(element, eventNames, listener) {
     eventNames.split(" ").forEach(function (e) {
         if (element.attachEvent) {
