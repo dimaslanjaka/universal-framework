@@ -426,32 +426,18 @@ export function list_package() {
     local.stdout.on("data", function (data) {
       try {
         data = JSON.parse(data);
-        const pkgs = [];
         if (data.hasOwnProperty("dependencies")) {
           for (const key in data.dependencies) {
             if (data.dependencies.hasOwnProperty(key)) {
               const pkginfo = data.dependencies[key];
-              data.dependencies[key].latest = null;
-              //console.log(pkginfo);
-              pkgs.push(key);
+              var latest = exec("npm show " + key + " version");
+              latest.stdout.on("data", function (version) {
+                data.dependencies[key].latest = version;
+              });
             }
           }
-          console.log(data.dependencies);
-          var getlatest = function () {
-            if (!pkgs.length) {
-              writeFile("./tmp/npm/local.json", data);
-              localStorage.removeItem("list_package");
-              return null;
-            }
-            var latest = exec("npm show " + pkgs[0] + " version");
-            latest.stdout.on("data", function (data) {
-              //data.dependencies[pkgs[0]].latest = data;
-              //console.log(data.dependencies[pkgs[0]]);
-              pkgs.shift();
-              getlatest();
-            });
-          };
-          getlatest();
+          writeFile("./tmp/npm/local.json", data);
+          localStorage.removeItem("list_package");
         }
       } catch (error) {}
       writeFile("./tmp/npm/local.json", data);

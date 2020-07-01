@@ -223,7 +223,7 @@
         metaKey = this._metaKeyMap[key];
         if (!!metaKey) {
           filename = path.join(this._location, metaKey.key);
-          if (fs.existSync(filename)) {
+          if (fs.existsSync(filename)) {
             return fs.readFileSync(filename, 'utf8');
           } else {
             return false;

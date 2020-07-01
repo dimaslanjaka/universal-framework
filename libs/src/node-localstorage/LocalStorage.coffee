@@ -159,7 +159,7 @@ class LocalStorage extends events.EventEmitter
     metaKey = @_metaKeyMap[key]
     if !!metaKey
       filename = path.join(@_location, metaKey.key)
-      if fs.existSync(filename)
+      if fs.existsSync(filename)
         return fs.readFileSync(filename, 'utf8')
       else
         return false
