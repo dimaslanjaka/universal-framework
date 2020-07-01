@@ -16,7 +16,7 @@
         "ansi-regex": "^5.0.0",
         "archiver": "*",
         "async": "2.0.0-rc.3",
-        "axios": "^0.18.0",
+        "axios": "^0.19.2",
         "babel-cli": "^6.18.0",
         "babel-core": "6.23.1",
         "babel-eslint": "7.1.1",
