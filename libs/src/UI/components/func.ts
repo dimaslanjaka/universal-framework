@@ -29,6 +29,21 @@ export function isOffline() {
 }
 
 /**
+ * Locate asset file
+ * @param file
+ */
+export function asset(file: string) {
+  file = file.toString().trim().replace("./", "");
+  if (fs.existsSync(file)) {
+    return file;
+  } else if (fs.existsSync(`./${file}`)) {
+    return `./${file}`;
+  } else if (fs.existsSync(path.join(Process.cwd(), file))) {
+    return path.join(Process.cwd(), file);
+  }
+}
+
+/**
  * write package
  * @param packageObject
  */

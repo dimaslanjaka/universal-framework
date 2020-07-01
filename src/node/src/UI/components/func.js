@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.random_rgba = exports.resolve_dir = exports.writeFile = exports.random_hex = exports.writenow = exports.isOffline = void 0;
+exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.random_rgba = exports.resolve_dir = exports.writeFile = exports.random_hex = exports.writenow = exports.asset = exports.isOffline = void 0;
 var tslib_1 = require("tslib");
 var fs = tslib_1.__importStar(require("fs"));
 var child_process_1 = require("child_process");
 var path = tslib_1.__importStar(require("path"));
+var Process = tslib_1.__importStar(require("process"));
 var path_1 = require("path");
 var index_1 = require("../../node-localstorage/index");
 var util_1 = require("util");
@@ -25,6 +26,19 @@ function isOffline() {
     return res;
 }
 exports.isOffline = isOffline;
+function asset(file) {
+    file = file.toString().trim().replace("./", "");
+    if (fs.existsSync(file)) {
+        return file;
+    }
+    else if (fs.existsSync("./" + file)) {
+        return "./" + file;
+    }
+    else if (fs.existsSync(path.join(Process.cwd(), file))) {
+        return path.join(Process.cwd(), file);
+    }
+}
+exports.asset = asset;
 function writenow(packageObject) {
     var sorter;
     var log;

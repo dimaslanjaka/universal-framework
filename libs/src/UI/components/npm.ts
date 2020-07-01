@@ -1,3 +1,4 @@
+import { execute } from "./func";
 export class npm {
   static args = [];
   /**

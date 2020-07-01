@@ -21,7 +21,16 @@ function renderDatatables() {
     deferRender: true,
     paging: true,
     lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
-    buttons: ["refresh"],
+    buttons: [
+      {
+        text: "Refresh",
+        action: function (e, dt, node, config) {
+          dt.clear().draw();
+          dt.ajax.reload();
+          LoadSocket().emit("fetch");
+        },
+      },
+    ],
     ajax: {
       url: "fetch",
       method: "POST",
@@ -54,10 +63,19 @@ function renderDatatables() {
 
 LoadScript("/socket.io/socket.io.js", LoadSocket);
 
-function LoadSocket() {
-  var socket = io.connect("/");
-  socket.on("announcements", function (data) {
-    console.log("Got announcement:", data.message);
-  });
-  socket.emit("event", { message: "Hey, I have an important message!" });
+var socket;
+/**
+ * Load Socket.io
+ * @param {function('event', {message: "string"})} callback
+ * @returns {SocketIOClientStatic}
+ */
+function LoadSocket(callback) {
+  if (!socket) {
+    socket = io.connect("/");
+    socket.on("announcements", function (data) {
+      console.log("Got announcement:", data.message);
+    });
+  }
+  //socket.emit("event", { message: "Hey, I have an important message!" });
+  return socket;
 }

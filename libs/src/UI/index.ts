@@ -6,6 +6,7 @@ import * as http from "http";
 import { execute, list_package } from "./components/func";
 import app from "express";
 import io from "socket.io";
+import * as url_core from "url";
 
 export function serve(port: number = 3000) {
   console.clear();
@@ -102,11 +103,13 @@ export function serve(port: number = 3000) {
 
   const httpServer = http.createServer(function (req, res) {
     var url = req.url;
-    console.log(url);
+    //console.log(url);
+    var routerStatic = path.join(__dirname, `/components/router/${url}.js`);
+    console.log(routerStatic, fs.existsSync(routerStatic));
 
     if (url === "/") {
       res.write(template("Homepage", "index", [req, res])); //write a response
-    } else if (url === "/fetch") {
+    } /*else if (url === "/fetch") {
       res.write(
         template(
           function () {
@@ -116,6 +119,7 @@ export function serve(port: number = 3000) {
               if (fs.existsSync(installed)) {
                 result = JSON.parse(fs.readFileSync(installed).toString());
               } else {
+                list_package();
                 result = {
                   error: "package still not fetched",
                   local: {},
@@ -133,8 +137,19 @@ export function serve(port: number = 3000) {
           [req, res]
         )
       ); //write a response
+    }*/ else if (
+      fs.existsSync(path.join(__dirname, `/components/router/${url}.js`))
+    ) {
+      res.write(
+        template(require(path.join(__dirname, "/components/router", url)))
+      ); //write a response
     } else {
-      res.write("<h1>404<h1>"); //write a response
+      res.writeHead(302, {
+        Location: `${config.app.protocol}://${config.app.domain}/${
+          url_core.parse(url).pathname
+        }`,
+        //add other headers here...
+      });
     }
 
     res.end(); //end the response
@@ -144,7 +159,20 @@ export function serve(port: number = 3000) {
   webSocket.on("connect", (socket) => {
     console.log("websocket connected", socket.id);
   });
+  var numClients = 0;
   webSocket.on("connection", function (socket) {
+    numClients++;
+    socket.emit("stats", { numClients: numClients });
+
+    console.log("Connected clients:", numClients);
+
+    socket.on("disconnect", function () {
+      numClients--;
+      socket.emit("stats", { numClients: numClients });
+
+      console.log("Connected clients:", numClients);
+    });
+
     socket.emit("announcements", { message: "A new user has joined!" });
     socket.on("fetch", function (data) {
       list_package();

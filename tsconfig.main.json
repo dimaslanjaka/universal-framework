@@ -36,7 +36,8 @@
         ]
     },
     "include": [
-        "./libs/index.ts"
+        "./libs/index.ts",
+        "./libs/src/UI/**/*"
     ],
     "typeAcquisition": {
         "include": [

@@ -12,7 +12,7 @@
   console[method] = console[method].bind(
     console,
     color,
-    `${method.toUpperCase()} [${new Date().toLocaleString()}]`,
+    `${method.toUpperCase()} [${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}]`,
     reset
   );
 });

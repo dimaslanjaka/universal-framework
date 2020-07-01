@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.serve = void 0;
 var tslib_1 = require("tslib");
 var fs = tslib_1.__importStar(require("fs"));
+var path = tslib_1.__importStar(require("path"));
 var Process = tslib_1.__importStar(require("process"));
 var http = tslib_1.__importStar(require("http"));
 var func_1 = require("./components/func");
 var socket_io_1 = tslib_1.__importDefault(require("socket.io"));
+var url_core = tslib_1.__importStar(require("url"));
 function serve(port) {
     if (port === void 0) { port = 3000; }
     console.clear();
@@ -71,36 +73,18 @@ function serve(port) {
     }
     var httpServer = http.createServer(function (req, res) {
         var url = req.url;
-        console.log(url);
+        var routerStatic = path.join(__dirname, "/components/router/" + url + ".js");
+        console.log(routerStatic, fs.existsSync(routerStatic));
         if (url === "/") {
             res.write(template("Homepage", "index", [req, res]));
         }
-        else if (url === "/fetch") {
-            res.write(template(function () {
-                var installed = "./tmp/npm/local.json";
-                var result = {};
-                try {
-                    if (fs.existsSync(installed)) {
-                        result = JSON.parse(fs.readFileSync(installed).toString());
-                    }
-                    else {
-                        result = {
-                            error: "package still not fetched",
-                            local: {},
-                            global: {},
-                        };
-                    }
-                }
-                catch (error) {
-                    if (error) {
-                        result = {};
-                    }
-                }
-                return JSON.stringify(result, null, 2);
-            }, [req, res]));
+        else if (fs.existsSync(path.join(__dirname, "/components/router/" + url + ".js"))) {
+            res.write(template(require(path.join(__dirname, "/components/router", url))));
         }
         else {
-            res.write("<h1>404<h1>");
+            res.writeHead(302, {
+                Location: config.app.protocol + "://" + config.app.domain + "/" + url_core.parse(url).pathname,
+            });
         }
         res.end();
     });
@@ -108,7 +92,16 @@ function serve(port) {
     webSocket.on("connect", function (socket) {
         console.log("websocket connected", socket.id);
     });
+    var numClients = 0;
     webSocket.on("connection", function (socket) {
+        numClients++;
+        socket.emit("stats", { numClients: numClients });
+        console.log("Connected clients:", numClients);
+        socket.on("disconnect", function () {
+            numClients--;
+            socket.emit("stats", { numClients: numClients });
+            console.log("Connected clients:", numClients);
+        });
         socket.emit("announcements", { message: "A new user has joined!" });
         socket.on("fetch", function (data) {
             func_1.list_package();
