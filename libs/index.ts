@@ -145,7 +145,7 @@ if (typeof args[0] != "undefined") {
       }
       filemanager.unlink("./tmp/storage/compiler");
       filemanager.unlink("./tmp/storage/compile");
-      filemanager.unlink("./tmp/storage/list_package");
+
       variant = null;
       break;
     case "rebuild":

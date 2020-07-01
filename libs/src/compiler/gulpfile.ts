@@ -211,6 +211,7 @@ function multiMinify(assets: any[]) {
   assets.map(minify);
 }
 
+localStorage.removeItem("compile");
 /**
  * Create App.js
  * @param withoutView false to not compile views javascripts

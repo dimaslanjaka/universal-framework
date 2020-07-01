@@ -5,6 +5,8 @@ import * as Process from "process";
 import * as http from "http";
 import { dirname } from "path";
 import { localStorage } from "../../node-localstorage/index";
+//const { promisify } = require("util");
+import { promisify } from "util";
 
 require("./consoler");
 
@@ -411,6 +413,44 @@ export function getLatestVersion(key: string) {
   });
 }
 
+/**
+ * Async execute commands
+ * @param commands
+ * @param callback callback for each command return
+ */
+export function async_exec(
+  commands: string[],
+  callback: (stdout: string, stderr: string, isLast: boolean) => any
+) {
+  if (!Array.isArray(commands)) {
+    console.error("commands must be instance of array");
+    return null;
+  }
+  const executor = promisify(exec);
+  const exec2 = async function () {
+    let script: string;
+    let index = 0;
+    for await (script of commands) {
+      try {
+        let { stdout, stderr } = await executor(script);
+        if (typeof callback == "function") {
+          callback(stdout, stderr, !--commands.length);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      index++;
+    }
+    return true;
+  };
+  return exec2;
+}
+
+localStorage.removeItem("list_package_latest");
+localStorage.removeItem("list_package");
+/**
+ * Get list packages and fetch latest version
+ */
 export function list_package() {
   if (!localStorage.getItem("list_package")) {
     localStorage.setItem("list_package", "true");
@@ -426,21 +466,40 @@ export function list_package() {
     local.stdout.on("data", function (data) {
       try {
         data = JSON.parse(data);
-        if (data.hasOwnProperty("dependencies")) {
-          for (const key in data.dependencies) {
-            if (data.dependencies.hasOwnProperty(key)) {
-              const pkginfo = data.dependencies[key];
-              var latest = exec("npm show " + key + " version");
-              latest.stdout.on("data", function (version) {
-                data.dependencies[key].latest = version;
-              });
+        if (
+          data.hasOwnProperty("dependencies") &&
+          !localStorage.getItem("list_package_latest")
+        ) {
+          localStorage.setItem("list_package_latest", "1");
+          const executor = promisify(exec);
+          const dependencies = Object.keys(data.dependencies);
+          const checkLatest = async function () {
+            for await (const key of dependencies) {
+              if (data.dependencies.hasOwnProperty(key)) {
+                try {
+                  const { stdout, stderr } = await executor(
+                    "npm show " + key + " version"
+                  );
+                  data.dependencies[key].latest = stdout;
+                  writeFile("./tmp/npm/local.json", data);
+                  console.log(dependencies.length, key, stdout, stderr);
+                } catch (error) {
+                  console.error(error);
+                }
+                if (!--dependencies.length) {
+                  localStorage.removeItem("list_package_latest");
+                }
+              }
             }
-          }
-          writeFile("./tmp/npm/local.json", data);
-          localStorage.removeItem("list_package");
+          };
+
+          checkLatest()
+            .catch(function (err) {})
+            .then(function () {
+              localStorage.removeItem("list_package");
+            });
         }
       } catch (error) {}
-      writeFile("./tmp/npm/local.json", data);
     });
     local.stderr.on("data", function (data) {
       writeFile("./tmp/npm/local-error.json", data);

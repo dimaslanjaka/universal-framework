@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list_package = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.resolve_dir = exports.writeFile = exports.writenow = void 0;
+exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.resolve_dir = exports.writeFile = exports.writenow = void 0;
 var tslib_1 = require("tslib");
 var fs = tslib_1.__importStar(require("fs"));
 var child_process_1 = require("child_process");
 var path = tslib_1.__importStar(require("path"));
 var path_1 = require("path");
 var index_1 = require("../../node-localstorage/index");
+var util_1 = require("util");
 require("./consoler");
 function writenow(packageObject) {
     var sorter;
@@ -323,6 +324,74 @@ function getLatestVersion(key) {
     });
 }
 exports.getLatestVersion = getLatestVersion;
+function async_exec(commands, callback) {
+    if (!Array.isArray(commands)) {
+        console.error("commands must be instance of array");
+        return null;
+    }
+    var executor = util_1.promisify(child_process_1.exec);
+    var exec2 = function () {
+        var e_1, _a;
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var script, index, commands_1, commands_1_1, _b, stdout, stderr, e_2, e_1_1;
+            return tslib_1.__generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        index = 0;
+                        _c.label = 1;
+                    case 1:
+                        _c.trys.push([1, 10, 11, 16]);
+                        commands_1 = tslib_1.__asyncValues(commands);
+                        _c.label = 2;
+                    case 2: return [4, commands_1.next()];
+                    case 3:
+                        if (!(commands_1_1 = _c.sent(), !commands_1_1.done)) return [3, 9];
+                        script = commands_1_1.value;
+                        _c.label = 4;
+                    case 4:
+                        _c.trys.push([4, 6, , 7]);
+                        return [4, executor(script)];
+                    case 5:
+                        _b = _c.sent(), stdout = _b.stdout, stderr = _b.stderr;
+                        if (typeof callback == "function") {
+                            callback(stdout, stderr, !--commands.length);
+                        }
+                        return [3, 7];
+                    case 6:
+                        e_2 = _c.sent();
+                        console.error(e_2);
+                        return [3, 7];
+                    case 7:
+                        index++;
+                        _c.label = 8;
+                    case 8: return [3, 2];
+                    case 9: return [3, 16];
+                    case 10:
+                        e_1_1 = _c.sent();
+                        e_1 = { error: e_1_1 };
+                        return [3, 16];
+                    case 11:
+                        _c.trys.push([11, , 14, 15]);
+                        if (!(commands_1_1 && !commands_1_1.done && (_a = commands_1.return))) return [3, 13];
+                        return [4, _a.call(commands_1)];
+                    case 12:
+                        _c.sent();
+                        _c.label = 13;
+                    case 13: return [3, 15];
+                    case 14:
+                        if (e_1) throw e_1.error;
+                        return [7];
+                    case 15: return [7];
+                    case 16: return [2, true];
+                }
+            });
+        });
+    };
+    return exec2;
+}
+exports.async_exec = async_exec;
+index_1.localStorage.removeItem("list_package_latest");
+index_1.localStorage.removeItem("list_package");
 function list_package() {
     if (!index_1.localStorage.getItem("list_package")) {
         index_1.localStorage.setItem("list_package", "true");
@@ -337,26 +406,75 @@ function list_package() {
         local.stdout.on("data", function (data) {
             try {
                 data = JSON.parse(data);
-                if (data.hasOwnProperty("dependencies")) {
-                    var _loop_1 = function (key) {
-                        if (data.dependencies.hasOwnProperty(key)) {
-                            var pkginfo = data.dependencies[key];
-                            latest = child_process_1.exec("npm show " + key + " version");
-                            latest.stdout.on("data", function (version) {
-                                data.dependencies[key].latest = version;
+                if (data.hasOwnProperty("dependencies") &&
+                    !index_1.localStorage.getItem("list_package_latest")) {
+                    index_1.localStorage.setItem("list_package_latest", "1");
+                    var commands = [];
+                    var executor_1 = util_1.promisify(child_process_1.exec);
+                    var dependencies_1 = Object.keys(data.dependencies);
+                    var checkLatest = function () {
+                        var e_3, _a;
+                        return tslib_1.__awaiter(this, void 0, void 0, function () {
+                            var dependencies_2, dependencies_2_1, key, _b, stdout, stderr, error_1, e_3_1;
+                            return tslib_1.__generator(this, function (_c) {
+                                switch (_c.label) {
+                                    case 0:
+                                        _c.trys.push([0, 9, 10, 15]);
+                                        dependencies_2 = tslib_1.__asyncValues(dependencies_1);
+                                        _c.label = 1;
+                                    case 1: return [4, dependencies_2.next()];
+                                    case 2:
+                                        if (!(dependencies_2_1 = _c.sent(), !dependencies_2_1.done)) return [3, 8];
+                                        key = dependencies_2_1.value;
+                                        if (!data.dependencies.hasOwnProperty(key)) return [3, 7];
+                                        _c.label = 3;
+                                    case 3:
+                                        _c.trys.push([3, 5, , 6]);
+                                        return [4, executor_1("npm show " + key + " version")];
+                                    case 4:
+                                        _b = _c.sent(), stdout = _b.stdout, stderr = _b.stderr;
+                                        data.dependencies[key].latest = stdout;
+                                        return [3, 6];
+                                    case 5:
+                                        error_1 = _c.sent();
+                                        console.error(error_1);
+                                        return [3, 6];
+                                    case 6:
+                                        if (!--dependencies_1.length) {
+                                            index_1.localStorage.removeItem("list_package_latest");
+                                        }
+                                        _c.label = 7;
+                                    case 7: return [3, 1];
+                                    case 8: return [3, 15];
+                                    case 9:
+                                        e_3_1 = _c.sent();
+                                        e_3 = { error: e_3_1 };
+                                        return [3, 15];
+                                    case 10:
+                                        _c.trys.push([10, , 13, 14]);
+                                        if (!(dependencies_2_1 && !dependencies_2_1.done && (_a = dependencies_2.return))) return [3, 12];
+                                        return [4, _a.call(dependencies_2)];
+                                    case 11:
+                                        _c.sent();
+                                        _c.label = 12;
+                                    case 12: return [3, 14];
+                                    case 13:
+                                        if (e_3) throw e_3.error;
+                                        return [7];
+                                    case 14: return [7];
+                                    case 15: return [2];
+                                }
                             });
-                        }
+                        });
                     };
-                    var latest;
-                    for (var key in data.dependencies) {
-                        _loop_1(key);
-                    }
-                    writeFile("./tmp/npm/local.json", data);
-                    index_1.localStorage.removeItem("list_package");
+                    checkLatest()
+                        .catch(function (err) { })
+                        .then(function () {
+                        index_1.localStorage.removeItem("list_package");
+                    });
                 }
             }
             catch (error) { }
-            writeFile("./tmp/npm/local.json", data);
         });
         local.stderr.on("data", function (data) {
             writeFile("./tmp/npm/local-error.json", data);
