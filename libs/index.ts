@@ -95,7 +95,7 @@ var constructor: packagejson = {
   },
 };
 
-var variant: "production" | "development" | null = null;
+var variant: "production" | "development" | "gui" | null = null;
 var isWin = process.platform === "win32";
 
 if (isWin) {
@@ -106,6 +106,7 @@ if (typeof args[0] != "undefined") {
   switch (args[0]) {
     case "gui":
       serve();
+      variant = "gui";
       break;
 
     case "dev":
@@ -166,6 +167,7 @@ if (typeof args[0] != "undefined") {
   }
 } else {
   serve();
+  variant = "gui";
 }
 
 if (variant) {
@@ -189,6 +191,7 @@ if (variant) {
     );
     Object.assign(constructor.dependencies, shared_packages().dependencies);
     //console.log(constructor.dependencies);
+  } else if (variant == "gui") {
   }
   if (["development", "fix"].includes(variant)) {
     writenow(constructor);

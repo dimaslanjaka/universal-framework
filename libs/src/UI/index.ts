@@ -2,9 +2,10 @@ import * as fs from "fs";
 import { exec } from "child_process";
 import * as path from "path";
 import * as Process from "process";
-//import { spawn } from "child_process";
 import * as http from "http";
 import { execute, list_package } from "./components/func";
+import app from "express";
+import io from "socket.io";
 
 export function serve(port: number = 3000) {
   console.clear();
@@ -99,44 +100,58 @@ export function serve(port: number = 3000) {
     }
   }
 
-  http
-    .createServer(function (req, res) {
-      var url = req.url;
-      console.log(url);
+  const httpServer = http.createServer(function (req, res) {
+    var url = req.url;
+    console.log(url);
 
-      if (url === "/") {
-        res.write(template("Homepage", "index", [req, res])); //write a response
-      } else if (url === "/fetch") {
-        res.write(
-          template(
-            function () {
-              list_package();
-              var installed = "./tmp/npm/local.json";
-              var result = {};
-              try {
-                if (fs.existsSync(installed)) {
-                  result = JSON.parse(fs.readFileSync(installed).toString());
-                } else {
-                  result = { error: "package still not fetched" };
-                }
-              } catch (error) {
-                if (error) {
-                  result = {};
-                }
+    if (url === "/") {
+      res.write(template("Homepage", "index", [req, res])); //write a response
+    } else if (url === "/fetch") {
+      res.write(
+        template(
+          function () {
+            var installed = "./tmp/npm/local.json";
+            var result = {};
+            try {
+              if (fs.existsSync(installed)) {
+                result = JSON.parse(fs.readFileSync(installed).toString());
+              } else {
+                result = {
+                  error: "package still not fetched",
+                  local: {},
+                  global: {},
+                };
               }
+            } catch (error) {
+              if (error) {
+                result = {};
+              }
+            }
 
-              return JSON.stringify(result, null, 2);
-            },
-            [req, res]
-          )
-        ); //write a response
-      } else {
-        res.write("<h1>404<h1>"); //write a response
-      }
+            return JSON.stringify(result, null, 2);
+          },
+          [req, res]
+        )
+      ); //write a response
+    } else {
+      res.write("<h1>404<h1>"); //write a response
+    }
 
-      res.end(); //end the response
-    })
-    .listen(port, function () {
-      console.log("server start at port 3000"); //the server object listens on port 3000
+    res.end(); //end the response
+  });
+
+  const webSocket = io(httpServer);
+  webSocket.on("connect", (socket) => {
+    console.log("websocket connected", socket.id);
+  });
+  webSocket.on("connection", function (socket) {
+    socket.emit("announcements", { message: "A new user has joined!" });
+    socket.on("fetch", function (data) {
+      list_package();
     });
+  });
+
+  httpServer.listen(port, function () {
+    console.log("server start at port " + port);
+  });
 }

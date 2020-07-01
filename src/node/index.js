@@ -88,6 +88,7 @@ if (typeof args[0] != "undefined") {
     switch (args[0]) {
         case "gui":
             index_1.serve();
+            variant = "gui";
             break;
         case "dev":
         case "development":
@@ -137,6 +138,7 @@ if (typeof args[0] != "undefined") {
 }
 else {
     index_1.serve();
+    variant = "gui";
 }
 if (variant) {
     console.log("variant", variant);
@@ -155,6 +157,8 @@ if (variant) {
         constructor.files = ["./libs/"];
         Object.assign(constructor.devDependencies, func_1.shared_packages().devDependencies);
         Object.assign(constructor.dependencies, func_1.shared_packages().dependencies);
+    }
+    else if (variant == "gui") {
     }
     if (["development", "fix"].includes(variant)) {
         func_1.writenow(constructor);

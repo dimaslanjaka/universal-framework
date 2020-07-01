@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.resolve_dir = exports.writeFile = exports.writenow = void 0;
+exports.list_package = exports.async_exec = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.random_rgba = exports.resolve_dir = exports.writeFile = exports.random_hex = exports.writenow = exports.isOffline = void 0;
 var tslib_1 = require("tslib");
 var fs = tslib_1.__importStar(require("fs"));
 var child_process_1 = require("child_process");
@@ -8,7 +8,23 @@ var path = tslib_1.__importStar(require("path"));
 var path_1 = require("path");
 var index_1 = require("../../node-localstorage/index");
 var util_1 = require("util");
+var observatory_1 = tslib_1.__importDefault(require("../../observatory/lib/observatory"));
+var chalk_1 = tslib_1.__importDefault(require("chalk"));
+var dns_1 = tslib_1.__importDefault(require("dns"));
 require("./consoler");
+function isOffline() {
+    var res = null;
+    dns_1.default.resolve("www.google.com", function (err) {
+        if (err) {
+            res = true;
+        }
+        else {
+            res = false;
+        }
+    });
+    return res;
+}
+exports.isOffline = isOffline;
 function writenow(packageObject) {
     var sorter;
     var log;
@@ -33,6 +49,61 @@ function writenow(packageObject) {
     }
 }
 exports.writenow = writenow;
+function random_hex(familiar) {
+    if (familiar) {
+        var choose = {
+            aqua: "#00ffff",
+            azure: "#f0ffff",
+            beige: "#f5f5dc",
+            black: "#000000",
+            blue: "#0000ff",
+            brown: "#a52a2a",
+            cyan: "#00ffff",
+            darkblue: "#00008b",
+            darkcyan: "#008b8b",
+            darkgrey: "#a9a9a9",
+            darkgreen: "#006400",
+            darkkhaki: "#bdb76b",
+            darkmagenta: "#8b008b",
+            darkolivegreen: "#556b2f",
+            darkorange: "#ff8c00",
+            darkorchid: "#9932cc",
+            darkred: "#8b0000",
+            darksalmon: "#e9967a",
+            darkviolet: "#9400d3",
+            fuchsia: "#ff00ff",
+            gold: "#ffd700",
+            green: "#008000",
+            indigo: "#4b0082",
+            khaki: "#f0e68c",
+            lightblue: "#add8e6",
+            lightcyan: "#e0ffff",
+            lightgreen: "#90ee90",
+            lightgrey: "#d3d3d3",
+            lightpink: "#ffb6c1",
+            lightyellow: "#ffffe0",
+            lime: "#00ff00",
+            magenta: "#ff00ff",
+            maroon: "#800000",
+            navy: "#000080",
+            olive: "#808000",
+            orange: "#ffa500",
+            pink: "#ffc0cb",
+            purple: "#800080",
+            violet: "#800080",
+            red: "#ff0000",
+            silver: "#c0c0c0",
+            white: "#ffffff",
+            yellow: "#ffff00",
+        };
+        var values = Object.values(choose);
+        return values[Math.floor(Math.random() * values.length)];
+    }
+    else {
+        return ("#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6));
+    }
+}
+exports.random_hex = random_hex;
 function writeFile(path, contents, cb) {
     try {
         contents = JSON.parse(contents.toString());
@@ -66,6 +137,19 @@ function resolve_dir(path) {
     }
 }
 exports.resolve_dir = resolve_dir;
+function random_rgba() {
+    var o = Math.round, r = Math.random, s = 255;
+    return ("rgba(" +
+        o(r() * s) +
+        "," +
+        o(r() * s) +
+        "," +
+        o(r() * s) +
+        "," +
+        r().toFixed(1) +
+        ")");
+}
+exports.random_rgba = random_rgba;
 function fixDeps(pkg) {
     if (!pkg.hasOwnProperty("dependencies")) {
         console.error("package.json does not have dependencies");
@@ -393,6 +477,10 @@ exports.async_exec = async_exec;
 index_1.localStorage.removeItem("list_package_latest");
 index_1.localStorage.removeItem("list_package");
 function list_package() {
+    if (isOffline()) {
+        console.error("Are you offline");
+        return;
+    }
     if (!index_1.localStorage.getItem("list_package")) {
         index_1.localStorage.setItem("list_package", "true");
         var global = child_process_1.exec("npm list -json -depth=0 -g");
@@ -406,63 +494,97 @@ function list_package() {
         local.stdout.on("data", function (data) {
             try {
                 data = JSON.parse(data);
+                if (fs.existsSync("./tmp/npm/local.json")) {
+                    var old = JSON.parse(fs.readFileSync("./tmp/npm/local.json").toString());
+                    if (old) {
+                        data = Object.assign({}, data, old);
+                    }
+                }
                 if (data.hasOwnProperty("dependencies") &&
                     !index_1.localStorage.getItem("list_package_latest")) {
                     index_1.localStorage.setItem("list_package_latest", "1");
-                    var commands = [];
                     var executor_1 = util_1.promisify(child_process_1.exec);
                     var dependencies_1 = Object.keys(data.dependencies);
                     var checkLatest = function () {
                         var e_3, _a;
                         return tslib_1.__awaiter(this, void 0, void 0, function () {
-                            var dependencies_2, dependencies_2_1, key, _b, stdout, stderr, error_1, e_3_1;
-                            return tslib_1.__generator(this, function (_c) {
-                                switch (_c.label) {
+                            var task, dependencies_2, dependencies_2_1, key, stdout, stdout, error_1, e_3_1;
+                            return tslib_1.__generator(this, function (_b) {
+                                switch (_b.label) {
                                     case 0:
-                                        _c.trys.push([0, 9, 10, 15]);
+                                        task = observatory_1.default.add("Fetch latest version");
+                                        _b.label = 1;
+                                    case 1:
+                                        _b.trys.push([1, 12, 13, 18]);
                                         dependencies_2 = tslib_1.__asyncValues(dependencies_1);
-                                        _c.label = 1;
-                                    case 1: return [4, dependencies_2.next()];
-                                    case 2:
-                                        if (!(dependencies_2_1 = _c.sent(), !dependencies_2_1.done)) return [3, 8];
-                                        key = dependencies_2_1.value;
-                                        if (!data.dependencies.hasOwnProperty(key)) return [3, 7];
-                                        _c.label = 3;
+                                        _b.label = 2;
+                                    case 2: return [4, dependencies_2.next()];
                                     case 3:
-                                        _c.trys.push([3, 5, , 6]);
-                                        return [4, executor_1("npm show " + key + " version")];
+                                        if (!(dependencies_2_1 = _b.sent(), !dependencies_2_1.done)) return [3, 11];
+                                        key = dependencies_2_1.value;
+                                        if (!data.dependencies.hasOwnProperty(key)) return [3, 10];
+                                        _b.label = 4;
                                     case 4:
-                                        _b = _c.sent(), stdout = _b.stdout, stderr = _b.stderr;
-                                        data.dependencies[key].latest = stdout;
-                                        return [3, 6];
+                                        _b.trys.push([4, 8, , 9]);
+                                        return [4, executor_1("npm show " + key + " version")];
                                     case 5:
-                                        error_1 = _c.sent();
-                                        console.error(error_1);
-                                        return [3, 6];
+                                        stdout = (_b.sent()).stdout;
+                                        data.dependencies[key].latest = stdout.trim();
+                                        if (!!key.includes("@types")) return [3, 7];
+                                        return [4, executor_1("npm view @types/" + key + " version -json")];
                                     case 6:
+                                        stdout = (_b.sent()).stdout;
+                                        if (stdout.trim().length) {
+                                            data.dependencies[key].types = {
+                                                name: "@types/" + key,
+                                                version: stdout.trim(),
+                                            };
+                                        }
+                                        else {
+                                            data.dependencies[key].types = {
+                                                name: null,
+                                                version: null,
+                                            };
+                                        }
+                                        _b.label = 7;
+                                    case 7:
+                                        writeFile("./tmp/npm/local.json", data);
+                                        task
+                                            .status(((dependencies_1.length * 100) /
+                                            Object.keys(data.dependencies).length)
+                                            .toFixed(3)
+                                            .toString() + "%")
+                                            .details(chalk_1.default.hex(random_hex(true)).underline(key));
+                                        return [3, 9];
+                                    case 8:
+                                        error_1 = _b.sent();
+                                        console.error(error_1);
+                                        return [3, 9];
+                                    case 9:
                                         if (!--dependencies_1.length) {
                                             index_1.localStorage.removeItem("list_package_latest");
+                                            task.done("Complete");
                                         }
-                                        _c.label = 7;
-                                    case 7: return [3, 1];
-                                    case 8: return [3, 15];
-                                    case 9:
-                                        e_3_1 = _c.sent();
+                                        _b.label = 10;
+                                    case 10: return [3, 2];
+                                    case 11: return [3, 18];
+                                    case 12:
+                                        e_3_1 = _b.sent();
                                         e_3 = { error: e_3_1 };
-                                        return [3, 15];
-                                    case 10:
-                                        _c.trys.push([10, , 13, 14]);
-                                        if (!(dependencies_2_1 && !dependencies_2_1.done && (_a = dependencies_2.return))) return [3, 12];
-                                        return [4, _a.call(dependencies_2)];
-                                    case 11:
-                                        _c.sent();
-                                        _c.label = 12;
-                                    case 12: return [3, 14];
+                                        return [3, 18];
                                     case 13:
+                                        _b.trys.push([13, , 16, 17]);
+                                        if (!(dependencies_2_1 && !dependencies_2_1.done && (_a = dependencies_2.return))) return [3, 15];
+                                        return [4, _a.call(dependencies_2)];
+                                    case 14:
+                                        _b.sent();
+                                        _b.label = 15;
+                                    case 15: return [3, 17];
+                                    case 16:
                                         if (e_3) throw e_3.error;
                                         return [7];
-                                    case 14: return [7];
-                                    case 15: return [2];
+                                    case 17: return [7];
+                                    case 18: return [2];
                                 }
                             });
                         });

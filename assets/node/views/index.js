@@ -21,6 +21,7 @@ function renderDatatables() {
     deferRender: true,
     paging: true,
     lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
+    buttons: ["refresh"],
     ajax: {
       url: "fetch",
       method: "POST",
@@ -49,4 +50,14 @@ function renderDatatables() {
   });
   $(".mdb-select").not(".select-wrapper").materialSelect();
   $(".dt-button").addClass("btn btn-primary btn-sm");
+}
+
+LoadScript("/socket.io/socket.io.js", LoadSocket);
+
+function LoadSocket() {
+  var socket = io.connect("/");
+  socket.on("announcements", function (data) {
+    console.log("Got announcement:", data.message);
+  });
+  socket.emit("event", { message: "Hey, I have an important message!" });
 }

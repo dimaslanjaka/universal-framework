@@ -7,8 +7,26 @@ import { dirname } from "path";
 import { localStorage } from "../../node-localstorage/index";
 //const { promisify } = require("util");
 import { promisify } from "util";
+import observatory from "../../observatory/lib/observatory";
+import chalk from "chalk";
+import dns from "dns";
 
 require("./consoler");
+
+/**
+ * Check connectivity
+ */
+export function isOffline() {
+  var res = null;
+  dns.resolve("www.google.com", function (err) {
+    if (err) {
+      res = true;
+    } else {
+      res = false;
+    }
+  });
+  return res;
+}
 
 /**
  * write package
@@ -49,6 +67,62 @@ export function writenow(packageObject: packagejson) {
     }
   } else {
     console.warn("not object", typeof packageObject);
+  }
+}
+
+export function random_hex(familiar?: boolean) {
+  if (familiar) {
+    var choose = {
+      aqua: "#00ffff",
+      azure: "#f0ffff",
+      beige: "#f5f5dc",
+      black: "#000000",
+      blue: "#0000ff",
+      brown: "#a52a2a",
+      cyan: "#00ffff",
+      darkblue: "#00008b",
+      darkcyan: "#008b8b",
+      darkgrey: "#a9a9a9",
+      darkgreen: "#006400",
+      darkkhaki: "#bdb76b",
+      darkmagenta: "#8b008b",
+      darkolivegreen: "#556b2f",
+      darkorange: "#ff8c00",
+      darkorchid: "#9932cc",
+      darkred: "#8b0000",
+      darksalmon: "#e9967a",
+      darkviolet: "#9400d3",
+      fuchsia: "#ff00ff",
+      gold: "#ffd700",
+      green: "#008000",
+      indigo: "#4b0082",
+      khaki: "#f0e68c",
+      lightblue: "#add8e6",
+      lightcyan: "#e0ffff",
+      lightgreen: "#90ee90",
+      lightgrey: "#d3d3d3",
+      lightpink: "#ffb6c1",
+      lightyellow: "#ffffe0",
+      lime: "#00ff00",
+      magenta: "#ff00ff",
+      maroon: "#800000",
+      navy: "#000080",
+      olive: "#808000",
+      orange: "#ffa500",
+      pink: "#ffc0cb",
+      purple: "#800080",
+      violet: "#800080",
+      red: "#ff0000",
+      silver: "#c0c0c0",
+      white: "#ffffff",
+      yellow: "#ffff00",
+    };
+    var values = Object.values(choose);
+    return values[Math.floor(Math.random() * values.length)];
+  } else {
+    return (
+      "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
+    );
   }
 }
 
@@ -97,6 +171,26 @@ export function resolve_dir(path: string) {
   if (!fs.existsSync(path.toString())) {
     fs.mkdirSync(path.toString());
   }
+}
+
+/**
+ * Random RGB color
+ */
+export function random_rgba() {
+  var o = Math.round,
+    r = Math.random,
+    s = 255;
+  return (
+    "rgba(" +
+    o(r() * s) +
+    "," +
+    o(r() * s) +
+    "," +
+    o(r() * s) +
+    "," +
+    r().toFixed(1) +
+    ")"
+  );
 }
 
 /**
@@ -452,6 +546,10 @@ localStorage.removeItem("list_package");
  * Get list packages and fetch latest version
  */
 export function list_package() {
+  if (isOffline()) {
+    console.error("Are you offline");
+    return;
+  }
   if (!localStorage.getItem("list_package")) {
     localStorage.setItem("list_package", "true");
     var global = exec("npm list -json -depth=0 -g");
@@ -466,6 +564,14 @@ export function list_package() {
     local.stdout.on("data", function (data) {
       try {
         data = JSON.parse(data);
+        if (fs.existsSync("./tmp/npm/local.json")) {
+          var old = JSON.parse(
+            fs.readFileSync("./tmp/npm/local.json").toString()
+          );
+          if (old) {
+            data = Object.assign({}, data, old);
+          }
+        }
         if (
           data.hasOwnProperty("dependencies") &&
           !localStorage.getItem("list_package_latest")
@@ -474,20 +580,49 @@ export function list_package() {
           const executor = promisify(exec);
           const dependencies = Object.keys(data.dependencies);
           const checkLatest = async function () {
+            //observatory.settings({ prefix: chalk.cyan("[Buzz] ") });
+            var task = observatory.add("Fetch latest version");
+
             for await (const key of dependencies) {
               if (data.dependencies.hasOwnProperty(key)) {
                 try {
-                  const { stdout, stderr } = await executor(
+                  var { stdout } = await executor(
                     "npm show " + key + " version"
                   );
-                  data.dependencies[key].latest = stdout;
+                  data.dependencies[key].latest = stdout.trim();
+                  if (!key.includes("@types")) {
+                    var { stdout } = await executor(
+                      "npm view @types/" + key + " version -json"
+                    );
+                    if (stdout.trim().length) {
+                      data.dependencies[key].types = {
+                        name: "@types/" + key,
+                        version: stdout.trim(),
+                      };
+                    } else {
+                      data.dependencies[key].types = {
+                        name: null,
+                        version: null,
+                      };
+                    }
+                  }
                   writeFile("./tmp/npm/local.json", data);
-                  console.log(dependencies.length, key, stdout, stderr);
+                  task
+                    .status(
+                      (
+                        (dependencies.length * 100) /
+                        Object.keys(data.dependencies).length
+                      )
+                        .toFixed(3)
+                        .toString() + "%"
+                    )
+                    .details(chalk.hex(random_hex(true)).underline(key));
                 } catch (error) {
                   console.error(error);
                 }
                 if (!--dependencies.length) {
                   localStorage.removeItem("list_package_latest");
+                  task.done("Complete");
                 }
               }
             }

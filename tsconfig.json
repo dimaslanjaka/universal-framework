@@ -50,7 +50,8 @@
         "./libs/src/**/*",
         "./libs/js/**/*",
         "./views/**/*",
-        "./src/MVC/themes/**/*"
+        "./src/MVC/themes/**/*",
+        "./assets/node/**/*"
     ],
     "exclude": [
         "node_modules",

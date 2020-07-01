@@ -178,6 +178,8 @@
     "serve": "^11.3.2",
     "shelljs": "*",
     "slash": "*",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "standard": "*",
     "strip-ansi": "*",
     "strip-ansi-stream": "*",

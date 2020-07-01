@@ -6,6 +6,7 @@ var fs = tslib_1.__importStar(require("fs"));
 var Process = tslib_1.__importStar(require("process"));
 var http = tslib_1.__importStar(require("http"));
 var func_1 = require("./components/func");
+var socket_io_1 = tslib_1.__importDefault(require("socket.io"));
 function serve(port) {
     if (port === void 0) { port = 3000; }
     console.clear();
@@ -68,8 +69,7 @@ function serve(port) {
             }
         }
     }
-    http
-        .createServer(function (req, res) {
+    var httpServer = http.createServer(function (req, res) {
         var url = req.url;
         console.log(url);
         if (url === "/") {
@@ -77,7 +77,6 @@ function serve(port) {
         }
         else if (url === "/fetch") {
             res.write(template(function () {
-                func_1.list_package();
                 var installed = "./tmp/npm/local.json";
                 var result = {};
                 try {
@@ -85,7 +84,11 @@ function serve(port) {
                         result = JSON.parse(fs.readFileSync(installed).toString());
                     }
                     else {
-                        result = { error: "package still not fetched" };
+                        result = {
+                            error: "package still not fetched",
+                            local: {},
+                            global: {},
+                        };
                     }
                 }
                 catch (error) {
@@ -100,9 +103,19 @@ function serve(port) {
             res.write("<h1>404<h1>");
         }
         res.end();
-    })
-        .listen(port, function () {
-        console.log("server start at port 3000");
+    });
+    var webSocket = socket_io_1.default(httpServer);
+    webSocket.on("connect", function (socket) {
+        console.log("websocket connected", socket.id);
+    });
+    webSocket.on("connection", function (socket) {
+        socket.emit("announcements", { message: "A new user has joined!" });
+        socket.on("fetch", function (data) {
+            func_1.list_package();
+        });
+    });
+    httpServer.listen(port, function () {
+        console.log("server start at port " + port);
     });
 }
 exports.serve = serve;
