@@ -11,6 +11,10 @@ function ___call(functionName: string, context: Window, args: any) {
   }
 }
 
+if (isnode()) {
+  module.exports.___call = ___call;
+}
+
 /**
  * Is Node ?
  */
@@ -18,6 +22,10 @@ function isnode() {
   if (typeof module !== "undefined" && module.exports) {
     return true;
   }
+}
+
+if (isnode()) {
+  module.exports.isnode = isnode;
 }
 
 /**
@@ -63,6 +71,10 @@ function empty(str: string | null | undefined | number | boolean) {
   }
 }
 
+if (isnode()) {
+  module.exports.empty = empty;
+}
+
 /**
  * Get current function name
  */
@@ -70,3 +82,6 @@ function getFuncName() {
   return getFuncName.caller.name;
 }
 
+if (isnode()) {
+  module.exports.getFuncName = getFuncName;
+}

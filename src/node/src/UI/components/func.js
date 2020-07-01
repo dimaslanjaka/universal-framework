@@ -6,6 +6,8 @@ var fs = require("fs");
 var child_process_1 = require("child_process");
 var path = require("path");
 var path_1 = require("path");
+var index_1 = require("../../node-localstorage/index");
+var framework_1 = require("./../../compiler/framework");
 require("./consoler");
 function writenow(packageObject) {
     var sorter;
@@ -155,7 +157,7 @@ function module_exists(tmodule, global, dump) {
     if (dump === void 0) { dump = false; }
     var test = function (tmodule, global) {
         var result = null;
-        execute("npm list -json -depth=0 " + (global ? "-g" : ""), function (error, message) {
+        execute(("npm list -json -depth=0 " + (global ? "-g" : "")).trim(), function (error, message) {
             if (message instanceof Error || !error) {
                 result = false;
             }
@@ -322,21 +324,8 @@ function getLatestVersion(key) {
     });
 }
 exports.getLatestVersion = getLatestVersion;
-var timer_list = null;
-var timer_run = null;
 function list_package() {
-    var results = {
-        local: {},
-        global: {},
-    };
-    if (timer_list) {
-        clearTimeout(timer_list);
-    }
-    timer_list = setTimeout(function () {
-        if (timer_run) {
-            return;
-        }
-        timer_run = true;
+    if (index_1.localStorage.getItem(framework_1.getFuncName())) {
         var local = child_process_1.exec("npm list -json -depth=0");
         local.stdout.on("data", function (data) {
             writeFile("./tmp/npm/local.json", data);
@@ -351,7 +340,7 @@ function list_package() {
         global.stderr.on("data", function (data) {
             writeFile("./tmp/npm/global-error.json", data);
         });
-    }, 5000);
+    }
 }
 exports.list_package = list_package;
 //# sourceMappingURL=func.js.map

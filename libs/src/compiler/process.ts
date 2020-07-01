@@ -1,16 +1,19 @@
-import filemanager from './filemanager';
-import fs from 'fs';
-import upath from 'upath';
-import log from './log';
-import { MD5 } from 'crypto-js';
-import coreProcess from 'process';
+import filemanager from "./filemanager";
+import fs from "fs";
+import upath from "upath";
+import log from "./log";
+import { MD5 } from "crypto-js";
+import coreProcess from "process";
 
-filemanager.empty(upath.join(coreProcess.cwd(), 'tmp/compiler'), null);
+const savetemp = "./tmp/compiler";
+if (fs.existsSync(savetemp)) {
+  filemanager.empty(upath.join(coreProcess.cwd(), savetemp), null);
+}
 
 class process {
   static root = coreProcess.cwd();
   static verbose: boolean = false;
-  static tmp = 'tmp/compiler';
+  static tmp = savetemp;
   /**
    * Create lock file
    * @param file
@@ -24,12 +27,12 @@ class process {
    */
   private static lockProcess(lockfile: string) {
     if (this.verbose) {
-      log.log(log.random('locking process'));
+      log.log(log.random("locking process"));
     }
     if (!upath.resolve(upath.dirname(lockfile))) {
       filemanager.mkdir(upath.dirname(lockfile));
     }
-    filemanager.mkfile(lockfile, 'lockfile');
+    filemanager.mkfile(lockfile, "lockfile");
   }
   /**
    * release lock process
@@ -37,13 +40,13 @@ class process {
    */
   private static releaseLock(lockfile: string) {
     if (this.verbose) {
-      log.log(log.random('releasing process'));
+      log.log(log.random("releasing process"));
     }
     if (fs.existsSync(lockfile)) {
       filemanager.unlink(lockfile, false);
     } else {
       if (this.verbose) {
-        log.log(log.error('process file already deleted'));
+        log.log(log.error("process file already deleted"));
       }
     }
   }
@@ -57,7 +60,7 @@ class process {
     options: { verbose: boolean } | any,
     callback: Function
   ) {
-    if (typeof options.verbose == 'boolean') {
+    if (typeof options.verbose == "boolean") {
       this.verbose = options.verbose;
     }
     lockfile = process.lockCreate(lockfile);
@@ -68,9 +71,9 @@ class process {
       return null;
     }
     const doCall = function () {
-      if (typeof callback == 'function') {
+      if (typeof callback == "function") {
         return callback(lockfile);
-      } else if (typeof options == 'function') {
+      } else if (typeof options == "function") {
         return options(lockfile);
       }
     };

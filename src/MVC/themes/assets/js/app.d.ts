@@ -127,6 +127,17 @@ declare function datetime_local(date: any): string;
  * Detect is mobile
  */
 declare function isMobile(): boolean;
+declare function get_device(): {
+    screen: any;
+    browser: any;
+    browserVersion: any;
+    browserMajorVersion: any;
+    mobile: any;
+    os: any;
+    osVersion: any;
+    cookies: any;
+    flashVersion: string;
+};
 /** Add one or more listeners to an element
  * @param element - DOM element to add listeners to
  * @param eventNames - space separated list of event names, e.g. 'click change'

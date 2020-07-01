@@ -1,11 +1,90 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function fulfilled(value) { try {
+            step(generator.next(value));
+        }
+        catch (e) {
+            reject(e);
+        } }
+        function rejected(value) { try {
+            step(generator["throw"](value));
+        }
+        catch (e) {
+            reject(e);
+        } }
         function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function () { if (t[0] & 1)
+            throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f)
+            throw new TypeError("Generator is already executing.");
+        while (_)
+            try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done)
+                    return t;
+                if (y = 0, t)
+                    op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0:
+                    case 1:
+                        t = op;
+                        break;
+                    case 4:
+                        _.label++;
+                        return { value: op[1], done: false };
+                    case 5:
+                        _.label++;
+                        y = op[1];
+                        op = [0];
+                        continue;
+                    case 7:
+                        op = _.ops.pop();
+                        _.trys.pop();
+                        continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+                            _ = 0;
+                            continue;
+                        }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+                            _.label = op[1];
+                            break;
+                        }
+                        if (op[0] === 6 && _.label < t[1]) {
+                            _.label = t[1];
+                            t = op;
+                            break;
+                        }
+                        if (t && _.label < t[2]) {
+                            _.label = t[2];
+                            _.ops.push(op);
+                            break;
+                        }
+                        if (t[2])
+                            _.ops.pop();
+                        _.trys.pop();
+                        continue;
+                }
+                op = body.call(thisArg, _);
+            }
+            catch (e) {
+                op = [6, e];
+                y = 0;
+            }
+            finally {
+                f = t = 0;
+            }
+        if (op[0] & 5)
+            throw op[1];
+        return { value: op[0] ? op[1] : void 0, done: true };
+    }
 };
 function arrayCompare(a1, a2) {
     if (a1.length != a2.length)
@@ -17,11 +96,6 @@ function arrayCompare(a1, a2) {
     }
     return true;
 }
-/**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
- */
 function inArray(needle, haystack) {
     var length = haystack.length;
     for (var i = 0; i < length; i++) {
@@ -36,25 +110,12 @@ function inArray(needle, haystack) {
     }
     return false;
 }
-/**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
- */
 function in_array(needle, haystack) {
     return inArray(needle, haystack);
 }
-/**
- * get all keys
- * @param haystack string etc
- */
 function array_keys(haystack) {
     return Object.keys(haystack);
 }
-/**
- * Shuffles array in place.
- * @param a items An array containing the items.
- */
 function array_shuffle(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
@@ -76,7 +137,7 @@ Array.prototype.unique = function () {
     return a;
 };
 if (!Array.prototype.every) {
-    Array.prototype.every = function (fun /*, thisp */) {
+    Array.prototype.every = function (fun) {
         "use strict";
         var t, len, i, thisp;
         if (this == null) {
@@ -101,25 +162,19 @@ function array_filter(array) {
         return el != null;
     });
 }
-/**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
- */
 function loadCodemirror(element, mode, theme) {
     if (!(element instanceof HTMLTextAreaElement)) {
         console.error("element must be instanceof HTMLTextAreaElement");
         return null;
     }
-    const scripts = ["/node_modules/codemirror/lib/codemirror.js"];
+    var scripts = ["/node_modules/codemirror/lib/codemirror.js"];
     if (mode) {
         if (typeof mode == "string") {
-            scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
+            scripts.push("/node_modules/codemirror/mode/" + mode + "/" + mode + ".js");
         }
         else if (Array.isArray(mode)) {
             mode.forEach(function (m) {
-                scripts.push(`/node_modules/codemirror/mode/${m}/${m}.js`);
+                scripts.push("/node_modules/codemirror/mode/" + m + "/" + m + ".js");
             });
         }
     }
@@ -150,29 +205,21 @@ function loadCodemirror(element, mode, theme) {
     framework().async(function () {
         LoadScript(scripts, function () {
             loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-                const editor = CodeMirror.fromTextArea(element, {
+                var editor = CodeMirror.fromTextArea(element, {
                     lineNumbers: true,
                     mode: mode,
                 });
-                loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
+                loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                     editor.setOption("theme", theme);
                 });
             });
         });
     });
 }
-/**
- * Cookie Helper
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @see http://localhost/src/Cookies/helper.php
- */
-class Cookies {
-    /**
-     * Get cookie value by cookie name
-     * @param c_name
-     * @returns null if cookie not exists
-     */
-    static get(c_name) {
+var Cookies = (function () {
+    function Cookies() {
+    }
+    Cookies.get = function (c_name) {
         if (document.cookie.length > 0) {
             var c_start = document.cookie.indexOf(c_name + "=");
             if (c_start != -1) {
@@ -190,15 +237,8 @@ class Cookies {
             }
         }
         return null;
-    }
-    /**
-     * Create cookie expiring in days
-     * @param name cookie name
-     * @param value cookie value
-     * @param days days to expire
-     * @param expire_type d = days, m = minutes, s = seconds, default seconds
-     */
-    static set(name, value, expire, expire_type, path, callback) {
+    };
+    Cookies.set = function (name, value, expire, expire_type, path, callback) {
         var expires;
         if (expire) {
             var date = new Date();
@@ -228,59 +268,30 @@ class Cookies {
         value = JSON.stringify(value);
         value = base64_encode(JSON.stringify(value));
         var formatted = name + "=" + value + expires + "; path=" + cookie_path;
-        console.info(`cookie formated: ` + formatted);
+        console.info("cookie formated: " + formatted);
         document.cookie = formatted;
         if (typeof callback == "function") {
             return callback(arguments);
         }
         return this.get(name);
-    }
-    /**
-     * Call function if cookie name not set
-     * @param name
-     * @param value
-     * @param expire Expires number (minutes)
-     * @param callback Function callback to be executed one time
-     */
-    static one(name, value, expire, callback) {
+    };
+    Cookies.one = function (name, value, expire, callback) {
         if (this.get(name) == null) {
             this.set(name, value, expire, "m", "/", callback);
         }
-    }
-    /**
-     * decompress cookie
-     * @param str
-     */
-    static decompress(str) {
-        /*return pako.inflateRaw(str, {
-          to: 'string'
-        });*/
-    }
-    /**
-     * compress cookie
-     * @param str
-     */
-    static compress(str) {
-        /*return pako.deflateRaw(str, {
-          to: 'string'
-        });*/
-    }
-}
+    };
+    Cookies.decompress = function (str) {
+    };
+    Cookies.compress = function (str) {
+    };
+    return Cookies;
+}());
 if (typeof module !== "undefined" && module.exports) {
     module.exports.Cookies = Cookies;
 }
-/**
- * @todo CryptoJS
- * @package https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js
- */
-var salt = "salt"; //salt
-var iv = "1111111111111111"; //pass salt minimum length 12 chars
-var iterations = "999"; //iterations
-/**
- * Get key
- * @param {string} passphrase
- * @param {string} salt
- */
+var salt = "salt";
+var iv = "1111111111111111";
+var iterations = "999";
 function getKey(passphrase, salt) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -291,11 +302,6 @@ function getKey(passphrase, salt) {
     });
     return key;
 }
-/**
- * Encrypt function
- * @param {string} passphrase
- * @param {string} plainText
- */
 function userJSEncrypt(passphrase, plainText) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -305,11 +311,6 @@ function userJSEncrypt(passphrase, plainText) {
     });
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
 }
-/**
- * Decrypt function
- * @param {string} passphrase
- * @param {string} encryptedText
- */
 function userJSDecrypt(passphrase, encryptedText) {
     if (typeof CryptoJS == "undefined")
         return;
@@ -319,16 +320,7 @@ function userJSDecrypt(passphrase, encryptedText) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
-// another
-/*var salt = 'salt';
-  var iv = '1111111111111111';
-  */
 var iterations = "999";
-/**
- * Crypto get key
- * @param {String} passphrase
- * @param {String} salt
- */
 function CryptoK(passphrase, salt) {
     var key = CryptoJS.PBKDF2(passphrase, salt, {
         hasher: CryptoJS.algo.SHA256,
@@ -337,13 +329,6 @@ function CryptoK(passphrase, salt) {
     });
     return key;
 }
-/**
- * Crypto encrypt
- * @param {String} passphrase
- * @param {String} plainText
- * @param {String} salt
- * @param {String} iv
- */
 function CryptoE(passphrase, plainText, salt, iv) {
     var key = CryptoK(passphrase, salt, iterations);
     var encrypted = CryptoJS.AES.encrypt(plainText, key, {
@@ -351,13 +336,6 @@ function CryptoE(passphrase, plainText, salt, iv) {
     });
     return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
 }
-/**
- * Crypto decrypt
- * @param {String} passphrase
- * @param {String} encryptedText
- * @param {String} salt
- * @param {String} iv
- */
 function CryptoD(passphrase, encryptedText, salt, iv) {
     var key = CryptoK(passphrase, salt);
     var decrypted = CryptoJS.AES.decrypt(encryptedText, key, {
@@ -366,8 +344,8 @@ function CryptoD(passphrase, encryptedText, salt, iv) {
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
 Date.prototype.isHourAgo = function (hour) {
-    var hour = hour * 60 * 1000; /* ms */
-    const hourago = Date.now() - hour;
+    var hour = hour * 60 * 1000;
+    var hourago = Date.now() - hour;
     return hour > hourago;
 };
 if (!Date.now) {
@@ -377,7 +355,6 @@ if (!Date.now) {
 }
 Date.prototype.addHours = function (h) {
     this.setTime(this.getTime() + h * 60 * 60 * 1000);
-    //this.setHours(this.getHours()+h);
     return this;
 };
 Date.prototype.addHours2 = function (hrs) {
@@ -387,9 +364,6 @@ Date.prototype.addHours2 = function (hrs) {
 function datetime_local(date) {
     return new Date(date).toJSON().slice(0, 19);
 }
-/**
- * Detect is mobile
- */
 function isMobile() {
     var target = navigator.userAgent || navigator.vendor || window.opera;
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(target) ||
@@ -421,20 +395,17 @@ function isMobile() {
 function get_device() {
     var unknown, width, height, screenSize, browser, version, majorVersion, mobile, os, osVersion, cookieEnabled, flashVersion = "-";
     if (!isnode()) {
-        // screen
         if (screen.width) {
             width = screen.width ? screen.width : "";
             height = screen.height ? screen.height.toString() : "";
             screenSize += "" + width + " x " + height;
         }
-        // browser
         var nVer = navigator.appVersion;
         var nAgt = navigator.userAgent;
         browser = navigator.appName;
         version = "" + parseFloat(navigator.appVersion);
         majorVersion = parseInt(navigator.appVersion, 10);
         var nameOffset, verOffset, ix;
-        // Opera
         if ((verOffset = nAgt.indexOf("Opera")) != -1) {
             browser = "Opera";
             version = nAgt.substring(verOffset + 6);
@@ -442,27 +413,22 @@ function get_device() {
                 version = nAgt.substring(verOffset + 8);
             }
         }
-        // Opera Next
         if ((verOffset = nAgt.indexOf("OPR")) != -1) {
             browser = "Opera";
             version = nAgt.substring(verOffset + 4);
         }
-        // Edge
         else if ((verOffset = nAgt.indexOf("Edge")) != -1) {
             browser = "Microsoft Edge";
             version = nAgt.substring(verOffset + 5);
         }
-        // MSIE
         else if ((verOffset = nAgt.indexOf("MSIE")) != -1) {
             browser = "Microsoft Internet Explorer";
             version = nAgt.substring(verOffset + 5);
         }
-        // Chrome
         else if ((verOffset = nAgt.indexOf("Chrome")) != -1) {
             browser = "Chrome";
             version = nAgt.substring(verOffset + 7);
         }
-        // Safari
         else if ((verOffset = nAgt.indexOf("Safari")) != -1) {
             browser = "Safari";
             version = nAgt.substring(verOffset + 7);
@@ -470,17 +436,14 @@ function get_device() {
                 version = nAgt.substring(verOffset + 8);
             }
         }
-        // Firefox
         else if ((verOffset = nAgt.indexOf("Firefox")) != -1) {
             browser = "Firefox";
             version = nAgt.substring(verOffset + 8);
         }
-        // MSIE 11+
         else if (nAgt.indexOf("Trident/") != -1) {
             browser = "Microsoft Internet Explorer";
             version = nAgt.substring(nAgt.indexOf("rv:") + 3);
         }
-        // Other browsers
         else if ((nameOffset = nAgt.lastIndexOf(" ") + 1) <
             (verOffset = nAgt.lastIndexOf("/"))) {
             browser = nAgt.substring(nameOffset, verOffset);
@@ -489,7 +452,6 @@ function get_device() {
                 browser = navigator.appName;
             }
         }
-        // trim the version string
         if ((ix = version.indexOf(";")) != -1)
             version = version.substring(0, ix);
         if ((ix = version.indexOf(" ")) != -1)
@@ -501,16 +463,13 @@ function get_device() {
             version = "" + parseFloat(navigator.appVersion);
             majorVersion = parseInt(navigator.appVersion, 10);
         }
-        // mobile version
         mobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(nVer);
-        // cookie
         cookieEnabled = navigator.cookieEnabled ? true : false;
         if (typeof navigator.cookieEnabled == "undefined" && !cookieEnabled) {
             document.cookie = "testcookie";
             cookieEnabled =
                 document.cookie.indexOf("testcookie") != -1 ? true : false;
         }
-        // system
         var os = unknown;
         var clientStrings = [
             { s: "Windows 10", r: /(Windows 10.0|Windows NT 10.0)/ },
@@ -572,8 +531,6 @@ function get_device() {
                     osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
                 break;
         }
-        // flash (you'll need to include swfobject)
-        /* script src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" */
         var flashVersion = "no check";
         if (typeof swfobject != "undefined") {
             var fv = swfobject.getFlashPlayerVersion();
@@ -586,7 +543,7 @@ function get_device() {
         }
     }
     else {
-        const terminal = require("os");
+        var terminal = require("os");
         os = terminal.platform();
         version = terminal.version();
     }
@@ -602,14 +559,8 @@ function get_device() {
         flashVersion: flashVersion,
     };
 }
-/** Add one or more listeners to an element
- * @param element - DOM element to add listeners to
- * @param eventNames - space separated list of event names, e.g. 'click change'
- * @param listener - function to attach for each event as a listener
- */
 function setEventListener(element, eventNames, listener) {
     eventNames.split(" ").forEach(function (e) {
-        //element.addEventListener(e, listener, false);
         if (element.attachEvent) {
             if (e == "click") {
                 e = "onclick";
@@ -624,27 +575,19 @@ function setEventListener(element, eventNames, listener) {
         }
     });
 }
-/**
- * @class Generate unique id
- */
-class GeneratorID {
-    constructor() {
+var GeneratorID = (function () {
+    function GeneratorID() {
         this.rand = Math.floor(Math.random() * 26) + Date.now();
     }
-    /**
-     * Increase new id
-     */
-    genId() {
+    GeneratorID.prototype.genId = function () {
         return this.rand++;
-    }
-    getId() {
+    };
+    GeneratorID.prototype.getId = function () {
         this.genId();
         return jQuery.fn.jquery + "." + this.rand;
-    }
-}
-/**
- * @param {createElementOpt} options
- */
+    };
+    return GeneratorID;
+}());
 function createElement(options) {
     var el, a, i;
     if (!options.tagName) {
@@ -667,9 +610,7 @@ function createElement(options) {
     if (options.text) {
         el.appendChild(document.createTextNode(options.text));
     }
-    // IE 8 doesn"t have HTMLElement
     if (window.HTMLElement === undefined) {
-        // @ts-ignore
         window.HTMLElement = Element;
     }
     if (options.childs && options.childs.length) {
@@ -681,22 +622,21 @@ function createElement(options) {
     }
     return el;
 }
-class html {
-    static create(options) {
-        /**
-         * @param {createElementOpt}
-         * @returns {createElement}
-         */
-        return createElement(options);
+var html = (function () {
+    function html() {
     }
-}
+    html.create = function (options) {
+        return createElement(options);
+    };
+    return html;
+}());
 Number.prototype.getMS = function (type) {
     var self = this;
     return this * 60 * 1000;
 };
 Number.prototype.addHour = function (source) {
     var self = this;
-    var Hour = this * 60 * 1000; /* ms */
+    var Hour = this * 60 * 1000;
     if (!source)
         source = new Date();
     return new Date(source.getTime() + Hour).getTime();
@@ -739,25 +679,16 @@ Object.alt = function (str, alternative) {
 Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
-/**
- * @class Timer constructor
- * @example
- * const time = new Timer(() => console.log('hi'), 1000);
- * console.log(time instanceof Timer); // true
- */
-class Timer {
-    constructor(callback, time) {
+var Timer = (function () {
+    function Timer(callback, time) {
         this.timeId = null;
         this.timeId = setTimeout(callback, time);
     }
-    clear() {
+    Timer.prototype.clear = function () {
         clearTimeout(this.timeId);
-    }
-}
-/**
- * call_user_func
- * @param functionName function name
- */
+    };
+    return Timer;
+}());
 function ___call(functionName, context, args) {
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
@@ -769,9 +700,6 @@ function ___call(functionName, context, args) {
 if (isnode()) {
     module.exports.___call = ___call;
 }
-/**
- * Is Node ?
- */
 function isnode() {
     if (typeof module !== "undefined" && module.exports) {
         return true;
@@ -780,10 +708,6 @@ function isnode() {
 if (isnode()) {
     module.exports.isnode = isnode;
 }
-/**
- * Make function async
- * @param callback
- */
 function async_this(callback) {
     return new Promise(function (resolve, reject) {
         if (typeof callback == "function") {
@@ -795,17 +719,9 @@ function async_this(callback) {
         }
     });
 }
-/**
- * call_user_func
- * @param func function name
- */
 function __call(func) {
     this[func].apply(this, Array.prototype.slice.call(arguments, 1));
 }
-/**
- * check empty
- * @param str
- */
 function empty(str) {
     var type = typeof str;
     if (type == "string" || type == "number") {
@@ -815,7 +731,7 @@ function empty(str) {
         case "":
         case null:
         case false:
-        case type == "undefined": //typeof (str) == "undefined"
+        case type == "undefined":
             return true;
         default:
             return false;
@@ -824,18 +740,12 @@ function empty(str) {
 if (isnode()) {
     module.exports.empty = empty;
 }
-/**
- * Get current function name
- */
 function getFuncName() {
     return getFuncName.caller.name;
 }
 if (isnode()) {
     module.exports.getFuncName = getFuncName;
 }
-/**
- * Begin global toastr options
- */
 if (typeof toastr == 'object') {
     toastr.options.closeMethod = 'fadeOut';
     toastr.options.closeDuration = 300;
@@ -849,8 +759,8 @@ if (typeof toastr == 'object') {
     toastr.options.preventDuplicates = true;
     toastr.options.closeButton = true;
     toastr.options.closeHtml = '<button><i class="fas fa-times"></i></button>';
-    toastr.options.timeOut = 3000; // How long the toast will display without user interaction
-    toastr.options.extendedTimeOut = 6000; // How long the toast will display after a user hovers over it
+    toastr.options.timeOut = 3000;
+    toastr.options.extendedTimeOut = 6000;
     toastr.options.progressBar = true;
     toastr.options.escapeHtml = false;
 }
@@ -861,12 +771,12 @@ function pageid(length) {
     ;
     return Math.random().toString(20).substr(2, length);
 }
-const randstr = (length = 6) => Math.random().toString(20).substr(2, length);
-/**
- * check string is json
- * @param {string} str
- * @description check validate json
- */
+var randstr = function (length) {
+    if (length === void 0) {
+        length = 6;
+    }
+    return Math.random().toString(20).substr(2, length);
+};
 function isJSON(str) {
     try {
         JSON.parse(str);
@@ -877,37 +787,25 @@ function isJSON(str) {
     return true;
 }
 if (!isnode()) {
-    /**
-     * AJAX runner base
-     */
     var AJAX = null;
-    /**
-     * Ajax dump base
-     */
     var dumpAjax = false;
-    /**
-     * Ajax indicator base
-     */
     var indicatorAjax = false;
-    const ajaxIDLoader = "ajxLoader_" +
+    var ajaxIDLoader_1 = "ajxLoader_" +
         Math.random().toString(36).substring(2) +
         Date.now().toString(36);
-    if (!$("#" + ajaxIDLoader).length) {
+    if (!$("#" + ajaxIDLoader_1).length) {
         $("body").append('<div id="' +
-            ajaxIDLoader +
+            ajaxIDLoader_1 +
             '" style="position: fixed;z-index:9999;bottom:5px;left:5px;"><svg enable-background="new 0 0 40 40"height=40px id=loader-1 version=1.1 viewBox="0 0 40 40"width=40px x=0px xml:space=preserve xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink y=0px><path d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946\
   s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634\
   c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"fill=#000 opacity=0.2 /><path d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0\
   C22.32,8.481,24.301,9.057,26.013,10.047z"fill=#000><animateTransform attributeName=transform attributeType=xml dur=0.5s from="0 20 20"repeatCount=indefinite to="360 20 20"type=rotate /></path></svg></div>');
-        $("#" + ajaxIDLoader).fadeOut("fast");
+        $("#" + ajaxIDLoader_1).fadeOut("fast");
     }
     jQuery.ajaxPrefilter(function (options) {
         indicatorAjax =
             typeof options.indicator == "boolean" && options.indicator === true;
         dumpAjax = typeof options.dump == "boolean" && options.dump === true;
-        /**
-         * Proxying begin
-         */
         if (options.crossDomain && jQuery.support.cors) {
             var allowed = true;
             if (options.url.match(/\.html$/g)) {
@@ -931,10 +829,6 @@ if (!isnode()) {
             }
         }
     });
-    /*
-  $(document).ajaxStart(function () {
-  });
-  */
     $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
         var content_type = jqXHR.getResponseHeader("Content-Type");
         if (typeof toastr != "undefined") {
@@ -950,7 +844,7 @@ if (!isnode()) {
     });
     $(document).ajaxSend(function (event, xhr, settings) {
         if (settings.hasOwnProperty("indicator") && settings.indicator) {
-            $("#" + ajaxIDLoader).fadeIn("fast");
+            $("#" + ajaxIDLoader_1).fadeIn("fast");
         }
         if (dumpAjax) {
             toastr.info("Requesting...", "Request Info");
@@ -961,13 +855,13 @@ if (!isnode()) {
     });
     $(document).ajaxComplete(function (event, xhr, settings) {
         if (settings.hasOwnProperty("indicator") && settings.indicator) {
-            $("#" + ajaxIDLoader).fadeOut("fast");
+            $("#" + ajaxIDLoader_1).fadeOut("fast");
         }
         if (dumpAjax) {
             toastr.success("Request complete", "Request Info");
         }
         AJAX = null;
-        $("#" + ajaxIDLoader).fadeOut("slow");
+        $("#" + ajaxIDLoader_1).fadeOut("slow");
         var content_type = xhr.getResponseHeader("Content-Type"), res;
         if (xhr.hasOwnProperty("responseJSON")) {
             res = xhr.responseJSON;
@@ -977,7 +871,6 @@ if (!isnode()) {
             if (typeof res == "string" &&
                 !empty(res) &&
                 /json|text\/plain/s.test(content_type)) {
-                //begin decode json
                 if (isJSON(res)) {
                     res = JSON.parse(res);
                 }
@@ -1006,7 +899,6 @@ if (!isnode()) {
         if (typeof res == "string" &&
             !empty(res) &&
             /json|text\/plain/s.test(content_type)) {
-            //begin decode json
             if (isJSON(res)) {
                 res = JSON.parse(res);
             }
@@ -1034,15 +926,7 @@ if (!isnode()) {
             }
         }
     });
-    /*
-  jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-    if (typeof options.data != 'undefined' && !jQuery.isEmptyObject(options.data)) {
-      jqXHR.setRequestHeader('timeStamp', new Date().getTime().toString());
-    }
-  });
-  */
     function processAjaxForm(xhr, callback) {
-        //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
         console.log(getFuncName(), callback);
         var res;
         if (xhr.hasOwnProperty("responseJSON")) {
@@ -1051,7 +935,6 @@ if (!isnode()) {
         else if (xhr.hasOwnProperty("responseText")) {
             res = xhr.responseText;
             if (typeof res == "string" && !empty(res)) {
-                //begin decode json
                 if (isJSON(res)) {
                     res = JSON.parse(res);
                 }
@@ -1079,10 +962,6 @@ if (!isnode()) {
         }
         return context[func].apply(context, args);
     }
-    /**
-     * Custom ajax
-     * @param settings ajax settings object
-     */
     function ajx(settings, success, failed, complete) {
         settings.headers = {
             "unique-id": getUID(),
@@ -1104,12 +983,6 @@ if (!isnode()) {
             processAjaxForm(jqXHR, complete);
         });
     }
-    /**
-     * Handling form with ajax
-     * @requires data-success success function name
-     * @requires data-error error function name
-     * @requires data-complete complete function name
-     */
     function AjaxForm() {
         $(document).on("submit", "form", function (e) {
             e.preventDefault();
@@ -1118,7 +991,6 @@ if (!isnode()) {
             var err = t.data("error");
             var complete = t.data("complete");
             var targetURL = t.attr("action");
-            //console.log(targetURL, sukses, err, complete);
             if (!targetURL) {
                 console.error("Target url of this form not exists");
                 return;
@@ -1134,10 +1006,6 @@ if (!isnode()) {
             }, sukses, err, complete);
         });
     }
-    /**
-     * process page asynchronously
-     * @param source_cache url
-     */
     function async_process(source_cache) {
         var xhr = new XMLHttpRequest();
         $.ajax({
@@ -1163,35 +1031,20 @@ if (!isnode()) {
 var AjaxSchedulerInit = null;
 var AjaxSchedulerRequests = [];
 var AjaxSchedulerRunning = false;
-/**
- * AJAX MANAGER
- * @todo handle ajax request queue
- * @see https://bit.ly/2Tz0wrf
- */
-class ajaxScheduler {
-    /**
-     * Add ajax to queues
-     * @param opt
-     */
-    static add(opt) {
-        AjaxSchedulerRequests.push(opt);
+var ajaxScheduler = (function () {
+    function ajaxScheduler() {
     }
-    /**
-     * Remove ajax from queues
-     * @param opt
-     */
-    static remove(opt) {
+    ajaxScheduler.add = function (opt) {
+        AjaxSchedulerRequests.push(opt);
+    };
+    ajaxScheduler.remove = function (opt) {
         if (jQuery.inArray(opt, AjaxSchedulerRequests) > -1) {
             AjaxSchedulerRequests.splice(jQuery.inArray(opt, AjaxSchedulerRequests), 1);
         }
-    }
-    /**
-     * Run Ajax Scheduler
-     */
-    static run() {
+    };
+    ajaxScheduler.run = function () {
         var self = this;
         var oriSuc;
-        //console.log(AjaxSchedulerRequests.length);
         if (AjaxSchedulerRequests.length > 0) {
             oriSuc = AjaxSchedulerRequests[0].complete;
             AjaxSchedulerRequests[0].complete = function () {
@@ -1209,21 +1062,13 @@ class ajaxScheduler {
             }, 1000);
         }
         return true;
-    }
-    /**
-     * Stop ajax scheduler
-     */
-    static stop() {
+    };
+    ajaxScheduler.stop = function () {
         AjaxSchedulerRequests = [];
         clearTimeout(AjaxSchedulerInit);
-    }
-}
-/**
- * RUN AJAX Scheduler
- * @param method POST, GET, HEAD, DELETE, OPTIONS, PATCH, PROPATCH
- * @description ajax request one by one
- * @todo scheduling any jquery ajax
- */
+    };
+    return ajaxScheduler;
+}());
 function ajaxRun(url, method, data, success, failed, complete) {
     if (!AjaxSchedulerRunning) {
         ajaxScheduler.run();
@@ -1260,7 +1105,6 @@ function ajaxRun(url, method, data, success, failed, complete) {
             if (typeof complete == "function") {
                 complete(res);
             }
-            //gexec('Ajax_Reload');
         },
     });
 }
@@ -1284,7 +1128,7 @@ if (!isnode()) {
         window.ajax = {};
     }
     else {
-        const ajax = {};
+        var ajax_1 = {};
     }
     ajax.x = function () {
         if (typeof XMLHttpRequest !== "undefined") {
@@ -1342,73 +1186,12 @@ if (!isnode()) {
         return window.ajax;
     }
 }
-/// <reference path="alert.d.ts" />
-/**
- * Bootstrap Alert Generator
- * @example createAlert(
-  "[title] Opps!",
-  "[description] Something went wrong",
-  "[details] Here is a bunch of text about some stuff that happened.",
-  "[mode|bg-color] danger",
-  true, false,
-  { position: "fixed", bottom: "15px", right: "15px" });
- */
-function createAlert(
-/**
- * Title alert
- */
-title, 
-/**
- * Summary description
- */
-summary, 
-/**
- * Another description
- */
-details, 
-/**
- * basic class bootstrap or you can insert color name
- */
-severity, 
-/**
- * can be closed ?
- */
-dismissible, 
-/**
- * auto closed ?
- */
-autoDismiss, 
-/**
- * Fill `CSSProperties` object or insert CSS object string
- * @example {position: 'fixed', top: '5px', right: '5px'}
- * @example 'position:fixed;top:10px;left:10px;'
- */
-options) {
+function createAlert(title, summary, details, severity, dismissible, autoDismiss, options) {
     if (severity == "error") {
         severity = "danger";
     }
     if (!$("style#alertcss")) {
-        createStyle(`#pageMessages {
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      width: 30%;
-    }
-    
-    #pageMessages .alert {
-      position: relative;
-    }
-    
-    #pageMessages .alert .close {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      font-size: 1em;
-    }
-    
-    #pageMessages .alert .fa {
-      margin-right:.3em;
-    }`, { id: "alertcss" });
+        createStyle("#pageMessages {\n      position: fixed;\n      bottom: 15px;\n      right: 15px;\n      width: 30%;\n    }\n    \n    #pageMessages .alert {\n      position: relative;\n    }\n    \n    #pageMessages .alert .close {\n      position: absolute;\n      top: 5px;\n      right: 5px;\n      font-size: 1em;\n    }\n    \n    #pageMessages .alert .fa {\n      margin-right:.3em;\n    }", { id: "alertcss" });
     }
     if (!$("#pageMessages").length) {
         var style = "";
@@ -1417,11 +1200,11 @@ options) {
         }
         else if (typeof options == "object") {
             if (options.length) {
-                for (const key in options) {
+                for (var key in options) {
                     if (options.hasOwnProperty(key)) {
                         var value = options[key];
                         if (value && value.length) {
-                            style += `${key}: ${value};`;
+                            style += key + ": " + value + ";";
                         }
                     }
                 }
@@ -1494,24 +1277,20 @@ options) {
         }, 5000);
     }
 }
-/**
- * Create style css dynamic
- * @example css = 'h1 { background: red; }'
- * @example arributes = {id: 'customStyle', media: 'all'}
- * @param css
- */
-function createStyle(css, attributes = null) {
+function createStyle(css, attributes) {
+    if (attributes === void 0) {
+        attributes = null;
+    }
     var head = document.head || document.getElementsByTagName("head")[0], style = document.createElement("style");
     head.appendChild(style);
     style.type = "text/css";
     style.setAttribute("type", "text/css");
-    for (const key in attributes) {
+    for (var key in attributes) {
         if (attributes.hasOwnProperty(key)) {
             style.setAttribute(key, attributes[key]);
         }
     }
     if (style.styleSheet) {
-        // This is required for IE8 and below.
         style.styleSheet.cssText = css;
     }
     else {
@@ -1558,34 +1337,8 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     }
                 };
             }
-            /*var elementsArray = document.querySelectorAll('b,iframe,ins,button,img,input,.adsense,#adsense,.ads,#ads,.ad_slot,.adsbygoogle,blockquote');
-          elementsArray.forEach(function(elem) {
-            elem.addEventListener("click", function(event) {
-              var data = null;
-              var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
-              
-              dump = document.getElementById('positionTrack');
-              
-              if (dump) {
-                data = this.tagName + '(' + clickon + ')';
-                
-                dump.textContent = data;
-              }
-              gtag("event", "ClickPosition", {
-                'elements': data
-              });
-            });
-          });*/
         }
     };
-    /**
-     * Google analystic reporter
-     * @param {String} event_action
-     * @param {string} event_label
-     * @param {string} event_category
-     * @param {string} event_value
-     * @param {Function|any} event_callback
-     */
     function analys(event_action, event_label, event_category, event_value, event_callback) {
         var conf = {
             event_label: event_label,
@@ -1597,46 +1350,30 @@ if (!(typeof module !== "undefined" && module.exports)) {
     }
 }
 function typedKeys(o) {
-    // type cast should be safe because that's what really Object.keys() does
     return Object.keys(o);
 }
 var ORIGIN = null;
 if (isnode()) {
-    const process = require("process");
-    ORIGIN = process.cwd();
+    var process_1 = require("process");
+    ORIGIN = process_1.cwd();
 }
 else {
     ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
 var dimas = {
-    /**
-     * get current url without querystrings
-     */
     url: ORIGIN,
-    /**
-     * framework captcha
-     */
     captcha: {
-        /**
-         * DO NOT ASSIGN THIS
-         */
         check: null,
-        /**
-         * Get current captcha id
-         */
         id: function (header_name) {
             if (!dimas.captcha.check) {
                 dimas.captcha.get(header_name);
             }
             return storage().get("captcha");
         },
-        /**
-         * Get current captcha from backend
-         * And process it by jsonpCallback
-         */
         get: function (header_name) {
+            var _a;
             if (!dimas.captcha.check) {
-                dimas.captcha.check = setTimeout(() => {
+                dimas.captcha.check = setTimeout(function () {
                     dimas.captcha.get(header_name);
                 }, 60000);
             }
@@ -1645,19 +1382,17 @@ var dimas = {
             $.ajax({
                 url: dimas.url + "?login=" + guid(),
                 method: "POST",
-                headers: {
-                    Accept: "application/javascript",
-                    [header_name]: ua,
-                    [IP.rot13()]: ua,
+                headers: (_a = {
+                    Accept: "application/javascript"
                 },
+                    _a[header_name] = ua,
+                    _a[IP.rot13()] = ua,
+                    _a),
                 dataType: "jsonp",
                 jsonpCallback: "framework().captcha.jspCallback",
             });
         },
         callback: function (arg) { },
-        /**
-         * Captcha JSONP callback
-         */
         jspCallback: function (res) {
             if (res.hasOwnProperty("captcha")) {
                 storage().set("captcha", res.captcha.rot13());
@@ -1666,9 +1401,6 @@ var dimas = {
             }
         },
         listener_started: null,
-        /**
-         * Form Captcha listener
-         */
         listen: function () {
             if (dimas.captcha.listener_started) {
                 return null;
@@ -1695,15 +1427,10 @@ var dimas = {
                     framework().captcha.get(null);
                     form.off("submit");
                 });
-                //captcha.parents('form').find('[type="submit"]').one('click', function());
             });
         },
     },
-    /**
-     * Count Array/Object/String length
-     * @param {any[]|string|object} data
-     */
-    count(data) {
+    count: function (data) {
         if (Array.isArray(data) || typeof data == "string") {
             return data.length;
         }
@@ -1714,10 +1441,6 @@ var dimas = {
             return data;
         }
     },
-    /**
-     * Make async function
-     * @param callback
-     */
     async: function (callback) {
         return new Promise(function (resolve, reject) {
             if (typeof callback == "function") {
@@ -1726,9 +1449,6 @@ var dimas = {
             resolve();
         });
     },
-    /**
-     * Rupiah currency auto format
-     */
     rp: function (angka, prefix) {
         if (!prefix) {
             prefix = "Rp. ";
@@ -1741,18 +1461,10 @@ var dimas = {
         rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
         return !prefix ? rupiah : prefix + " " + rupiah;
     },
-    /**
-     * Check if variable is number / numeric
-     * @param {String|Number} v
-     */
     isNumber: function (v) {
         return (!isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
             /^\d+$/.test(v.toString()));
     },
-    /**
-     * strpad / startwith zero [0]
-     * @param {number} val
-     */
     strpad: function (val) {
         if (val >= 10) {
             return val;
@@ -1761,9 +1473,6 @@ var dimas = {
             return "0" + val;
         }
     },
-    /**
-     * Autofill datetime-local value
-     */
     datetimelocal: function (v) {
         var d = !v ? new Date() : new Date(v);
         $("input[type=datetime-local]").val(d.getFullYear() +
@@ -1776,10 +1485,6 @@ var dimas = {
             ":" +
             this.strpad(d.getMinutes()));
     },
-    /**
-     * Get cookie
-     * @param string name cookie
-     */
     gc: function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(";");
@@ -1794,10 +1499,6 @@ var dimas = {
         }
         return null;
     },
-    /**
-     * Odd or Even (Ganjil Genap);
-     * @param type odd or even
-     */
     oddoreven: function (n, type) {
         if (!type) {
             type = "odd";
@@ -1809,15 +1510,8 @@ var dimas = {
         }
         var hasil = time % 2;
         var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
-        //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
         return hasil.toString() == type.toString();
     },
-    /**
-     * Set cookie
-     * @param {String} name
-     * @param {any} value
-     * @param {number} hours
-     */
     sc: function (name, value, hours) {
         var expires = "";
         if (hours) {
@@ -1837,15 +1531,9 @@ var dimas = {
         }
         return cookies;
     },
-    /**
-     * Remove Cookie
-     */
     rc: function (name) {
         document.cookie = name + "=; Max-Age=-99999999;";
     },
-    /**
-     * Get Query name from current url
-     */
     getquery: function (variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -1873,11 +1561,6 @@ var dimas = {
         }
         return str;
     },
-    /**
-     * Get js file from url
-     * @param {String} url
-     * @param {Function} callback
-     */
     js: function (url, callback) {
         var pel = document.body || document.head;
         var script = document.createElement("script");
@@ -1888,28 +1571,16 @@ var dimas = {
         script.onload = callback;
         pel.appendChild(script);
     },
-    /**
-     * Countdown trigger
-     * @param {JQuery} elm
-     */
     pctdRUN: function (elm) {
         var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
             warningThreshold: 5,
             timeLimit: tl,
-            // base style
             baseStyle: bs,
-            // warning style
             warningStyle: bw,
-            // complete style
             completeStyle: bc,
-            // should the timer be smooth or stepping
             smooth: true,
-            // striped progress bar
             striped: true,
-            // animated stripes
             animated: true,
-            // height of progress bar
-            // 0 = default height
             height: 0,
             onFinish: function () {
                 var callback = elm.data("callback");
@@ -1932,10 +1603,6 @@ var dimas = {
         });
         return countdown;
     },
-    /**
-     * Progress Countdown
-     * @param {JQuery} elm
-     */
     pctd: function (elm) {
         var t = this;
         if (typeof progressBarTimer == "undefined") {
@@ -1949,14 +1616,9 @@ var dimas = {
             };
         }
     },
-    /**
-     * Parseurl just like as parse_url at php
-     */
     parseurl: function (url) {
         var parser = document.createElement("a"), searchObject = {}, queries, split, i;
-        // Let the browser do the work
         parser.href = url;
-        // Convert query string to object
         queries = parser.search.replace(/^\?/, "").split("&");
         for (i = 0; i < queries.length; i++) {
             split = queries[i].split("=");
@@ -1975,35 +1637,42 @@ var dimas = {
         };
     },
 };
-/**
- * Framework object initializer
- */
 function framework() {
     return dimas;
 }
-class app {
-    static setbase(path) {
-        this.base = path;
+var app = (function () {
+    function app() {
     }
-    static direct(...args) {
+    app.setbase = function (path) {
+        this.base = path;
+    };
+    app.direct = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
         var lastsrc = last.getAttribute("src");
         var parsed = dimas.parseurl(lastsrc);
         args.forEach(function (src) {
-            dimas.js(`${app.base}${src}${parsed.search}`, function () {
-                console.log(`${src} engine inbound`);
+            dimas.js("" + app.base + src + parsed.search, function () {
+                console.log(src + " engine inbound");
             });
         });
-    }
-    static load(...args) {
+    };
+    app.load = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
         var lastsrc = last.getAttribute("src");
         var parsed = dimas.parseurl(lastsrc);
         args.forEach(function (key, index) {
             console.log(key, app.base);
-            let src = "";
+            var src = "";
             if (/^(ajx|ajaxjQuery|ajxjquery|ajquery)$/s.test(key)) {
                 src = "ajaxJquery.js";
             }
@@ -2011,37 +1680,27 @@ class app {
                 src = "ajaxVanilla.js";
             }
             if (src != "") {
-                dimas.js(`${app.base}${src}${parsed.search}`, function () {
-                    console.log(`${src} engine inbound`);
+                dimas.js("" + app.base + src + parsed.search, function () {
+                    console.log(src + " engine inbound");
                 });
             }
         });
-    }
-}
-app.base = "/src/MVC/themes/assets/js/";
+    };
+    app.base = "/src/MVC/themes/assets/js/";
+    return app;
+}());
 if (typeof module !== "undefined" && module.exports) {
     module.exports.app = app;
     module.exports.dimas = dimas;
 }
-//app.direct('Array.js', 'Object.js', 'saver.js', 'user.js');
-/**
- * base64 encoding
- * @param {string} str string raw
- */
 function base64_encode(str) {
-    // PROCESS
-    const encodedWord = CryptoJS.enc.Utf8.parse(str); // encodedWord Array object
-    const encoded = CryptoJS.enc.Base64.stringify(encodedWord); // string: 'NzUzMjI1NDE='
+    var encodedWord = CryptoJS.enc.Utf8.parse(str);
+    var encoded = CryptoJS.enc.Base64.stringify(encodedWord);
     return encoded;
 }
-/**
- * base64 decoding
- * @param {string} str base64 string
- */
 function base64_decode(str) {
-    // PROCESS
-    const encodedWord = CryptoJS.enc.Base64.parse(str); // encodedWord via Base64.parse()
-    const decoded = CryptoJS.enc.Utf8.stringify(encodedWord); // decode encodedWord via Utf8.stringify() '75322541'
+    var encodedWord = CryptoJS.enc.Base64.parse(str);
+    var decoded = CryptoJS.enc.Utf8.stringify(encodedWord);
     return decoded;
 }
 function b64EncodeUnicode(str) {
@@ -2058,7 +1717,7 @@ if (!isnode()) {
     $(document).ready(function (e) {
         $(document).on("click", "[data-trigger]", function (e) {
             e.preventDefault();
-            const t = $(this);
+            var t = $(this);
             switch (t.data("trigger")) {
                 case "modal":
                     $(t.data("target")).modal("show");
@@ -2089,9 +1748,6 @@ if (typeof module == "undefined" && typeof jQuery != "undefined") {
     };
 }
 var debug_run = null;
-/**
- * Disable debugger
- */
 function bannedebug() {
     if (debug_run)
         return;
@@ -2104,9 +1760,6 @@ function bannedebug() {
         }, 5000);
     }
 }
-/**
- * Detect debugger using flooding loop
- */
 function debug_detect() {
     setInterval(function () {
         var startTime = performance.now(), check, diff;
@@ -2122,10 +1775,6 @@ function debug_detect() {
         }
     }, 500);
 }
-/**
- * restrict debug
- * @param {Boolean} restrict
- */
 function restrict_mode(restrict) {
     if (restrict) {
         console.clear();
@@ -2135,12 +1784,10 @@ function restrict_mode(restrict) {
             isOpen: false,
             orientation: undefined,
         };
-        //console.log(devtools);
         setInterval(function () {
             var widthThreshold = window.outerWidth - window.innerWidth > threshold;
             var heightThreshold = window.outerHeight - window.innerHeight > threshold;
             var orientation = widthThreshold ? "vertical" : "horizontal";
-            //console.log(widthThreshold, heightThreshold, orientation);
             if (!(heightThreshold && widthThreshold) &&
                 ((window.Firebug &&
                     window.Firebug.chrome &&
@@ -2150,7 +1797,6 @@ function restrict_mode(restrict) {
                 if (!devtools.isOpen || devtools.orientation !== orientation) {
                     devtools.orientation = orientation;
                 }
-                //console.log('opened');
                 devtools.isOpen = true;
                 devtools.orientation = orientation;
             }
@@ -2164,33 +1810,24 @@ function restrict_mode(restrict) {
             }
             if (devtools.isOpen) {
                 console.error("devtools opened");
-                //console.clear();
                 bannedebug();
                 debugger;
                 throw "banned";
             }
         }, 500);
-        /**
-         * Hotkey disabler
-         */
         document.onkeydown = function (e) {
-            //prevent key F12
             if (event.keyCode == 123) {
                 return false;
             }
-            //prevent CTRL + Shift + I
             if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0)) {
                 return false;
             }
-            //prevent CTRL + Shift + J
             if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0)) {
                 return false;
             }
-            //prevent CTRL + Shift + C
             if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0)) {
                 return false;
             }
-            //prevent CTRL + U
             if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) {
                 return false;
             }
@@ -2199,9 +1836,7 @@ function restrict_mode(restrict) {
 }
 if (!(typeof module !== "undefined" && module.exports)) {
     var restrict = !isMobile();
-    //restrict = true;
     restrict = restrict && !is_localhost() && !is_development();
-    //console.log('is restricted mode : ' + restrict);
     restrict_mode(restrict);
 }
 if (!isnode()) {
@@ -2210,16 +1845,8 @@ if (!isnode()) {
     $.getJSON = null;
     $.getScript = null;
 }
-/**
- * Disqus loader which verifies the existence of `#disqus_thread` on
- * the web page and then prepares the disqus embed script to hook in
- * the document
- * @param disqus_shortname disqus username/shortname
- */
 function load_disqus(disqus_shortname) {
-    // Prepare the trigger and target
     var disqus_trigger = $('#disqus_trigger'), disqus_target = $('#disqus_thread');
-    // Load script asynchronously only when the trigger and target exist
     if (disqus_target.length) {
         framework().js('//' + disqus_shortname + '.disqus.com/embed.js', null);
         disqus_trigger.remove();
@@ -2230,18 +1857,13 @@ function load_disqus(disqus_shortname) {
         }
     }
 }
-const distance_already_calculated = [];
-/**
- * find distance
- * @param target
- * @param callback
- */
+var distance_already_calculated = [];
 function calculateDistance(target, callback) {
     if (distance_already_calculated.includes(target)) {
         return null;
     }
     distance_already_calculated.push(target);
-    var mX, mY, distance, $element = $(`#${target}`);
+    var mX, mY, distance, $element = $("#" + target);
     return $(document).on("mousemove click", function (e) {
         mX = e.pageX;
         mY = e.pageY;
@@ -2249,19 +1871,10 @@ function calculateDistance(target, callback) {
         return callback(distance);
     });
 }
-/**
- * calculate distance mouse x element
- * @param elem
- * @param mouseX
- * @param mouseY
- */
 function calculatorDistance(elem, mouseX, mouseY) {
     return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + elem.width() / 2), 2) +
         Math.pow(mouseY - (elem.offset().top + elem.height() / 2), 2)));
 }
-// A map of the entities we want to handle.
-// The numbers on the left are the Unicode code point values; their
-// matching named entity strings are on the right.
 var entityMap = {
     "160": "&nbsp;",
     "161": "&iexcl;",
@@ -2273,52 +1886,26 @@ var entityMap = {
     "167": "&#sect;",
     "168": "&#uml;",
     "169": "&copy;",
-    // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
     "8364": "&euro;",
 };
-// The function to do the work.
-// Accepts a string, returns a string with replacements made.
-/**
- * Encode HTML string to HTML entities
- * @param {String} str
- */
 function prepEntities(str) {
-    // The regular expression below uses an alternation to look for a surrogate pair _or_
-    // a single character that we might want to make an entity out of. The first part of the
-    // alternation (the [\uD800-\uDBFF][\uDC00-\uDFFF] before the |), you want to leave
-    // alone, it searches for the surrogates. The second part of the alternation you can
-    // adjust as you see fit, depending on how conservative you want to be. The example
-    // below uses [\u0000-\u001f\u0080-\uFFFF], meaning that it will match and convert any
-    // character with a value from 0 to 31 ("control characters") or above 127 -- e.g., if
-    // it's not "printable ASCII" (in the old parlance), convert it. That's probably
-    // overkill, but you said you wanted to make entities out of things, so... :-);
     return str.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u0000-\u001f\u0080-\uFFFF]/g, function (match) {
         var high, low, charValue, rep;
-        // Get the character value, handling surrogate pairs
         if (match.length == 2) {
-            // It's a surrogate pair, calculate the Unicode code point
             high = match.charCodeAt(0) - 0xd800;
             low = match.charCodeAt(1) - 0xdc00;
             charValue = high * 0x400 + low + 0x10000;
         }
         else {
-            // Not a surrogate pair, the value *is* the Unicode code point
             charValue = match.charCodeAt(0);
         }
-        // See if we have a mapping for it
         rep = entityMap[charValue];
         if (!rep) {
-            // No, use a numeric entity. Here we brazenly (and possibly mistakenly);
             rep = "&#" + charValue + ";";
         }
-        // Return replacement
         return rep;
     });
 }
-/**
- * php equivalent http_build_query
- * @param obj
- */
 function http_build_query(obj) {
     if (typeof obj != "object") {
         throw "http_build_query need parameter of object instead of " + typeof obj;
@@ -2330,9 +1917,6 @@ function http_build_query(obj) {
         .join("&");
     return queryString;
 }
-/**
- * Check current framework running at localhost
- */
 function is_localhost() {
     var is_local = location.host.match(/^localhost|^127|\.io$/s);
     return is_local;
@@ -2344,25 +1928,15 @@ if (!isnode() && is_localhost()) {
         });
     }, 5000);
 }
-/**
- * Is Development Mode
- */
 function is_development() {
     return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
         "development");
 }
-/**
- * Force HTTPS
- */
 function forceSSL() {
     if (location.protocol !== "https:" && !is_localhost()) {
-        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        location.replace("https:" + location.href.substring(location.protocol.length));
     }
 }
-/**
- * json decode fails return false
- * @param  obj
- */
 function json_decode(obj) {
     try {
         return JSON.parse(obj);
@@ -2374,11 +1948,6 @@ function json_decode(obj) {
 if (isnode()) {
     module.exports = isJSON;
 }
-/**
- * Load script asynchronously
- * @param urls
- * @param callback
- */
 function LoadScript(urls, callback) {
     var loaded = [];
     if (typeof urls == "string") {
@@ -2392,14 +1961,14 @@ function LoadScript(urls, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.src = urls[0];
-        console.info(`loading script(${script.src})`);
+        console.info("loading script(" + script.src + ")");
         script.onload = script.onreadystatechange = function () {
             if (!this.readyState ||
                 this.readyState === "loaded" ||
                 this.readyState === "complete") {
                 loaded.push(true);
                 lists.shift();
-                console.log(`Script in queue ${lists.length}`);
+                console.log("Script in queue " + lists.length);
                 if (!lists.length) {
                     callback();
                 }
@@ -2408,53 +1977,45 @@ function LoadScript(urls, callback) {
         };
         script.onerror = function () {
             loaded.push(false);
-            console.error(`error while loading ${script.src}`);
+            console.error("error while loading " + script.src);
         };
         script.onabort = function () {
             loaded.push(false);
-            console.error(`error while loading ${script.src}`);
+            console.error("error while loading " + script.src);
         };
         script.oncancel = function () {
             loaded.push(false);
-            console.error(`error while loading ${script.src}`);
+            console.error("error while loading " + script.src);
         };
         document.body.appendChild(script);
     }
 }
-/**
- * Load CSS async
- * @param href
- * @param callback
- */
 function loadCSS(href, callback) {
     if (typeof href == "string") {
         href = [href];
     }
     if (Array.isArray(href)) {
         var hrefs = href;
-        const link = document.createElement("link");
-        link.media = "print";
-        link.rel = "stylesheet";
-        link.href = hrefs[0];
-        link.onload = function () {
-            link.media = "all";
+        var link_1 = document.createElement("link");
+        link_1.media = "print";
+        link_1.rel = "stylesheet";
+        link_1.href = hrefs[0];
+        link_1.onload = function () {
+            link_1.media = "all";
             hrefs.shift();
             if (!hrefs.length) {
                 if (typeof callback == "function") {
-                    callback(link, href);
+                    callback(link_1, href);
                 }
             }
             else {
                 loadCSS(hrefs, callback);
             }
         };
-        document.head.appendChild(link);
+        document.head.appendChild(link_1);
     }
 }
-const guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
-/**
- * Get current unique global page user id
- */
+var guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
 function guid() {
     function _p8(s) {
         var p = guxid;
@@ -2471,9 +2032,6 @@ if (typeof jQuery != "undefined" && !isnode()) {
         return _p8(false) + _p8(true) + _p8(true) + _p8(false);
     };
 }
-/**
- * Generate UUID v4
- */
 function uuidv4() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
         var r = (Math.random() * 16) | 0, v = c == "x" ? r : (r & 0x3) | 0x8;
@@ -2481,9 +2039,6 @@ function uuidv4() {
     });
 }
 if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * jQuery Extender
-     */
     (function ($) {
         jQuery.fn.inputFilter = function (inputFilter) {
             return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {
@@ -2502,7 +2057,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
             });
         };
     })(jQuery);
-    // Restricts input for the given textbox to the given inputFilter function.
     function setInputFilter(textbox, inputFilter) {
         [
             "input",
@@ -2530,7 +2084,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
             });
         });
     }
-    //Filter number only
     if (typeof jQuery.fn.inputFilter != "undefined") {
         $("input[type='number'], textarea[type='number'], [filter='number']").inputFilter(function (value) {
             if (typeof value == "string") {
@@ -2543,13 +2096,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
         for (var index = 0; index < INPT.length; index++) {
             var element = INPT[index];
             setInputFilter(element, function (value) {
-                return /^\d*$/.test(value); // Allow digits and '.' only, using a RegExp
+                return /^\d*$/.test(value);
             });
         }
     }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
-    /** Format Rupiah */
     var inputrp = $('[id="format-rupiah"]');
     if (inputrp.length) {
         inputrp.on("keyup keydown change", function (e) {
@@ -2575,35 +2127,39 @@ if (!(typeof module !== "undefined" && module.exports)) {
         });
     }
 }
-class ip {
-    static status(value) {
+var ip = (function () {
+    function ip() {
+    }
+    ip.status = function (value) {
         if (value === true) {
             Cookies.set('status_ip'.rot13(), String(value), 5, 'm', location.pathname, null);
         }
         return Cookies.get('status_ip'.rot13());
-    }
+    };
     ;
-    /**
-     * Checks ip
-     * @returns promises
-     */
-    static check() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.ipapi();
-            if (!this.status(null)) {
-                yield this.l2io();
-            }
-            if (this.status(null)) {
-                console.log(this.get(null));
-            }
+    ip.check = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.ipapi()];
+                    case 1:
+                        _a.sent();
+                        if (!!this.status(null))
+                            return [3, 3];
+                        return [4, this.l2io()];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        if (this.status(null)) {
+                            console.log(this.get(null));
+                        }
+                        return [2];
+                }
+            });
         });
-    }
-    /**
-     * Gets ip
-     * @param callback function callback(ip) or null return ip
-     * @returns {String} ip or callback
-     */
-    static get(callback) {
+    };
+    ip.get = function (callback) {
         if (!this.status(null)) {
             this.check();
         }
@@ -2613,8 +2169,8 @@ class ip {
             return callback(ips);
         }
         return ips;
-    }
-    static ipapi() {
+    };
+    ip.ipapi = function () {
         var self = this;
         return $.ajax({
             proxy: false,
@@ -2629,8 +2185,8 @@ class ip {
                 }
             }
         });
-    }
-    static l2io() {
+    };
+    ip.l2io = function () {
         var self = this;
         return $.ajax({
             proxy: false,
@@ -2645,8 +2201,9 @@ class ip {
                 }
             }
         });
-    }
-}
+    };
+    return ip;
+}());
 function md5(string) {
     function RotateLeft(lValue, iShiftBits) {
         return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
@@ -2845,70 +2402,28 @@ function md5(string) {
     var temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
     return temp.toLowerCase();
 }
-const MD5 = md5;
-/**
- * Get gravatar url by email
- * @param {string} email
- */
+var MD5 = md5;
 function gravatar(email) {
-    return `https://www.gravatar.com/avatar/${md5(email.trim().toLowerCase())}`;
+    return "https://www.gravatar.com/avatar/" + md5(email.trim().toLowerCase());
 }
-/// <reference path="./globals.d.ts"/>
 if (!isnode()) {
-    /*
-   <div class="progress">
-   <div class="progress-bar progress-bar-success progress-bar-striped"
-   role="progressbar" aria-valuenow="40" aria-valuemin="0"
-   aria-valuemax="100" style="width: 40%">
-   <span class="sr-only">40% Complete (success)</span>
-   </div>
-   </div>
-   */
     if (typeof jQuery === "undefined") {
         throw new Error("jQuery progress timer requires jQuery");
     }
-    /*!
-     * jQuery lightweight plugin boilerplate
-     * Original author: @ajpiano
-     * Further changes, comments: @addyosmani
-     * Licensed under the MIT license
-     */
     (function ($, window, document, undefined) {
         "use strict";
-        // undefined is used here as the undefined global
-        // variable in ECMAScript 3 and is mutable (i.e. it can
-        // be changed by someone else). undefined isn't really
-        // being passed in so we can ensure that its value is
-        // truly undefined. In ES5, undefined can no longer be
-        // modified.
-        // window and document are passed through as local
-        // variables rather than as globals, because this (slightly)
-        // quickens the resolution process and can be more
-        // efficiently minified (especially when both are
-        // regularly referenced in your plugin).
-        // Create the defaults once
         var pluginName = "progressTimer";
-        // The actual plugin constructor
-        class Plugin {
-            constructor(element, options) {
+        var Plugin = (function () {
+            function Plugin(element, options) {
                 this.defaults = {
-                    //total number of seconds
                     timeLimit: 60,
-                    //seconds remaining triggering switch to warning color
                     warningThreshold: 5,
-                    //invoked once the timer expires
                     onFinish: function () { },
-                    //bootstrap progress bar style at the beginning of the timer
                     baseStyle: "",
-                    //bootstrap progress bar style in the warning phase
                     warningStyle: "progress-bar-danger",
-                    //bootstrap progress bar style at completion of timer
                     completeStyle: "progress-bar-success",
-                    //show html on progress bar div area
                     showHtmlSpan: true,
-                    //set the error text when error occurs
                     errorText: "ERROR!",
-                    //set the success text when succes occurs
                     successText: "100%",
                 };
                 this._defaults = this.defaults;
@@ -2920,7 +2435,7 @@ if (!isnode()) {
                 this._name = pluginName;
                 this.metadata = this.$elem.data("plugin-options");
             }
-            init() {
+            Plugin.prototype.init = function () {
                 var t = this;
                 $(t.element).empty();
                 t.span = $("<span/>");
@@ -2946,8 +2461,8 @@ if (!isnode()) {
                 }, 250);
                 t.bar.data("progress-interval", t.interval);
                 return true;
-            }
-            _run() {
+            };
+            Plugin.prototype._run = function () {
                 var t = this;
                 var elapsed = new Date().valueOf() - t.start.valueOf(), width = (elapsed / t.limit) * 100;
                 t.bar.attr("aria-valuenow", width);
@@ -2969,19 +2484,19 @@ if (!isnode()) {
                     t.complete.call(t);
                 }
                 return true;
-            }
-            removeInterval() {
+            };
+            Plugin.prototype.removeInterval = function () {
                 var t = this, bar = $(".progress-bar", t.element);
                 if (typeof bar.data("progress-interval") !== "undefined") {
                     var interval = bar.data("progress-interval");
                     window.clearInterval(interval);
                 }
                 return bar;
-            }
-            destroy() {
+            };
+            Plugin.prototype.destroy = function () {
                 this.$elem.removeData();
-            }
-            complete() {
+            };
+            Plugin.prototype.complete = function () {
                 var t = this, bar = t.removeInterval.call(t), args = arguments;
                 if (args.length !== 0 && typeof args[0] === "object") {
                     t.options = $.extend({}, t.options, args[0]);
@@ -2999,8 +2514,8 @@ if (!isnode()) {
                     t.options.onFinish.call(bar);
                 }, 500);
                 t.destroy.call(t);
-            }
-            error() {
+            };
+            Plugin.prototype.error = function () {
                 var t = this, bar = t.removeInterval.call(t), args = arguments;
                 if (args.length !== 0 && typeof args[0] === "object") {
                     t.options = $.extend({}, t.options, args[0]);
@@ -3015,15 +2530,13 @@ if (!isnode()) {
                     t.options.onFinish.call(bar);
                 }, 500);
                 t.destroy.call(t);
-            }
-        }
+            };
+            return Plugin;
+        }());
         Plugin.prototype.constructor = Plugin;
-        // A really lightweight plugin wrapper around the constructor,
-        // preventing against multiple instantiations
         $.fn[pluginName] = function (options) {
             var args = arguments;
             if (options === undefined || typeof options === "object") {
-                // Creates a new plugin instance
                 return this.each(function () {
                     if (!$.data(this, "plugin_" + pluginName)) {
                         $.data(this, "plugin_" + pluginName, new Plugin(this, options));
@@ -3033,18 +2546,12 @@ if (!isnode()) {
             else if (typeof options === "string" &&
                 options[0] !== "_" &&
                 options !== "init") {
-                // Call a public plugin method (not starting with an underscore) and different
-                // from the "init" one
                 if (Array.prototype.slice.call(args, 1).length === 0 &&
                     $.inArray(options, $.fn[pluginName].getters) !== -1) {
-                    // If the user does not pass any arguments and the method allows to
-                    // work as a getter then break the chainability so we can return a value
-                    // instead the element reference.
                     var instance = $.data(this[0], "plugin_" + pluginName);
                     return instance[options].apply(instance, Array.prototype.slice.call(args, 1));
                 }
                 else {
-                    // Invoke the specified method on each selected element
                     return this.each(function () {
                         var instance = $.data(this, "plugin_" + pluginName);
                         if (instance instanceof Plugin &&
@@ -3059,20 +2566,12 @@ if (!isnode()) {
     })(jQuery, window, document, undefined);
 }
 var reCaptcha = {
-    /**
-     * @type {Number} counter executions
-     */
     gexec_count: 0,
     key: '6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie',
-    /**
-     * Javascript caller
-     * @param {String} url
-     * @param {Function} callback
-     */
     js: function (url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) { //IE
+        if (script.readyState) {
             script.onreadystatechange = function () {
                 if (script.readyState == "loaded" ||
                     script.readyState == "complete") {
@@ -3083,7 +2582,7 @@ var reCaptcha = {
                 }
             };
         }
-        else { //Others
+        else {
             script.onload = function () {
                 if (typeof callback == 'function') {
                     callback();
@@ -3093,16 +2592,9 @@ var reCaptcha = {
         script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script);
     },
-    /**
-     * Set recaptcha site key
-     * @param {String} key
-     */
     set_key: function (key) {
         reCaptcha.key = key;
     },
-    /**
-     * Start recaptcha
-     */
     start: function () {
         reCaptcha.reCaptcha_buttons(true, function () {
             reCaptcha.js('https://www.google.com/recaptcha/api.js?render=' + reCaptcha.key + '&render=explicit', function () {
@@ -3113,9 +2605,6 @@ var reCaptcha = {
             });
         });
     },
-    /**
-     * Initialize Recaptcha by defining jquery
-     */
     init: function () {
         if (typeof jQuery == 'undefined' || typeof jQuery == 'undefined') {
             reCaptcha.js('https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js', reCaptcha.start);
@@ -3125,11 +2614,7 @@ var reCaptcha = {
         }
     },
     retry_count: 0,
-    /**
-     * load or refreshing google recaptcha
-     */
     exec: function (action, retry, callback) {
-        //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == 'function') {
             gtag('event', 'recaptcha', {
                 'action': action
@@ -3142,9 +2627,9 @@ var reCaptcha = {
             else {
                 toastr.error('recaptcha not loaded, retrying...', 'captcha information');
             }
-            for (let index = 0; index < 3; index++) {
+            for (var index_1 = 0; index_1 < 3; index_1++) {
                 reCaptcha.exec(action, true);
-                if (index == 3 - 1) {
+                if (index_1 == 3 - 1) {
                     toastr.error('recaptcha has reached limit', 'captcha information');
                 }
             }
@@ -3169,15 +2654,8 @@ var reCaptcha = {
             return;
         }
         if (execute) {
-            execute.then(
-            /**
-             * Process token string from recaptcha
-             * and distribute it into all form elements
-             * @param {String} token
-             */
-            function (token) {
+            execute.then(function (token) {
                 reCaptcha.reCaptcha_buttons(false, null);
-                //console.info(token);
                 reCaptcha.insert(token);
                 if (typeof callback == 'function') {
                     callback(token);
@@ -3185,10 +2663,6 @@ var reCaptcha = {
             });
         }
     },
-    /**
-     * Insert reCaptcha Token
-     * @param {String} token
-     */
     insert: function (token) {
         framework().sc('token', token, 1);
         if (typeof jQuery == 'undefined') {
@@ -3201,10 +2675,6 @@ var reCaptcha = {
             reCaptcha.distribute_token(token);
         }
     },
-    /**
-     * Distribute reCaptcha Token
-     * @param {String} token
-     */
     distribute_token: function (token) {
         var form = $('form');
         form.each(function (i, el) {
@@ -3218,9 +2688,6 @@ var reCaptcha = {
             }
         });
     },
-    /**
-     * Get token recaptcha
-     */
     get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
@@ -3229,13 +2696,7 @@ var reCaptcha = {
         }
         return null;
     },
-    /**
-     * Button Controller
-     * @param {Boolean} reCaptcha_disable
-     * @param {Function} callback
-     */
     reCaptcha_buttons: function (reCaptcha_disable, callback) {
-        //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
         $('button,[type="submit"],input').not('[data-recaptcha="no-action"]').not('[recaptcha-exclude]').each(function (i, e) {
             if ($(this).attr('type') == 'radio') {
                 return;
@@ -3252,14 +2713,11 @@ var reCaptcha = {
         }
     }
 };
-/**
- * Hidden reCaptcha v3 object initializer
- */
 function recaptcha() {
     return reCaptcha;
 }
-const requirejs_vendor = "/node_modules";
-const require_config = {
+var requirejs_vendor = "/node_modules";
+var require_config = {
     paths: {
         app: "../require",
         jquery: [
@@ -3267,7 +2725,6 @@ const require_config = {
             requirejs_vendor + "/jquery/dist/jquery.min",
         ],
         "jquery-ui": "//code.jquery.com/ui/1.11.4/jquery-ui",
-        //DataTables
         "datatables.net": requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
         "datatables.net-autofill": requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
         "datatables.net-editor": requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",
@@ -3285,9 +2742,6 @@ const require_config = {
             "/datatables.net-responsive/js/dataTables.responsive.min",
     },
     shim: {
-        /**
-         * jQuery Compatibility
-         */
         jquery: {
             exports: "$",
         },
@@ -3297,7 +2751,7 @@ const require_config = {
         },
     },
 };
-const dtpackage = function () {
+var dtpackage = function () {
     return [
         "datatables.net",
         "datatables.net-colreorder",
@@ -3329,15 +2783,10 @@ function load_requirejs() {
         window.onload = downloadRequireJS;
 }
 function load_module(name, callback) { }
-/**
- * Datatables loader
- * @param callback
- */
 function load_datatables(callback) {
     LoadScript([
         "/assets/mdb-dashboard/js/addons/datatables.min.js",
         "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
-        //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
         "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
         "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
         "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
@@ -3362,7 +2811,7 @@ function load_datatables(callback) {
                     dtl.addClass("bs-select");
                 }
                 if (toolbar.length) {
-                    toolbar.html(``);
+                    toolbar.html("");
                 }
             }, 5000);
             if (typeof callback == "function") {
@@ -3372,11 +2821,6 @@ function load_datatables(callback) {
     });
 }
 var datatables_ignited = false;
-/**
- * Datatables init
- * @todo disable error warning
- * @todo add refresh button
- */
 function datatables_init() {
     return new Promise(function (resolve, reject) {
         if (datatables_ignited) {
@@ -3404,10 +2848,6 @@ function datatables_init() {
         resolve();
     });
 }
-/**
- * Scroll up after click pagination dt
- * @param target
- */
 function pagination_up(target) {
     if (!(target instanceof jQuery)) {
         return console.error(getFuncName() + " target element not instance of jQuery");
@@ -3419,23 +2859,9 @@ function pagination_up(target) {
         $("thead tr th:first-child").focus().blur();
     });
 }
-/// <reference path="./Object.d.ts"/>
-/**
- * SMARTFORM
- * @todo save form user input
- */
 if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * Element Counter
-     */
     var Count = -1;
-    /**
-     * Local Storage key
-     */
     var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
-    /**
-     * Element Indexer
-     */
     var formField;
     var formSaved = localStorage.getItem(storageKey.toString());
     if (!formSaved) {
@@ -3447,16 +2873,9 @@ if (!(typeof module !== "undefined" && module.exports)) {
     var uniqueid = guid();
     (function ($) {
         $.fn.getIDName = function () {
-            //var native: HTMLElement = this;
-            /**
-             * @todo Adding attribute id if not have id
-             */
             if (!$(this).attr("id") || $(this).attr("id") == "") {
                 try {
                     if (!(Count in formField)) {
-                        /**
-                         * @todo ID generator 6 digit alphanumerics
-                         */
                         var id = Math.random().toString(20).substr(2, 6);
                         $(this).attr("id", id);
                         formField[Count] = id;
@@ -3470,9 +2889,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     console.error(error);
                     console.log(formField, typeof formField);
                 }
-                /**
-                 * Increase index offset
-                 */
                 Count++;
             }
             if ($(this).attr("aria-autovalue")) {
@@ -3493,14 +2909,11 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 return;
             }
             var t = $(this);
-            //set indicator
             t.attr("aria-smartform", uniqueid);
             var item;
             var key = t.getIDName().toString();
             var type = $(this).attr("type");
-            // begin restoration
             if (key) {
-                // checkbox input button
                 if (type === "checkbox") {
                     item = JSON.parse(localStorage.getItem(key));
                     if (item === null) {
@@ -3509,13 +2922,11 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     $(this).prop("checked", item);
                     return;
                 }
-                // radio input button
                 else if (type === "radio") {
                     item = localStorage.getItem(key) === "on";
                     $(this).prop("checked", item);
                     return;
                 }
-                // input text number, textarea, or select
                 else {
                     item = localStorage.getItem(key);
                     if (item === null || !item.toString().length) {
@@ -3523,10 +2934,8 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     }
                     $(this).val(item);
                 }
-                //console.log('load', type, key, item);
             }
         };
-        // bind to new elements
         $(document).bind("DOMNodeInserted", function () {
             var t = $(this);
             var val = localStorage.getItem(t.getIDName().toString());
@@ -3545,7 +2954,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 }
             }
         });
-        // detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
             var t = $(this);
             var allowed = !t.attr("no-save") && t.attr("aria-smartform");
@@ -3559,8 +2967,8 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 }
             }
         });
-        //save value to localstorage
         $(document).on("change", "select, input, textarea", function (e) {
+            var _this = this;
             var t = $(this);
             var key = t.getIDName().toString();
             var item = t.val();
@@ -3575,14 +2983,13 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     $('[name="' + t.attr("name") + '"]').each(function (i, e) {
                         localStorage.setItem($(this).getIDName().toString(), "off");
                     });
-                    setTimeout(() => {
+                    setTimeout(function () {
                         localStorage.setItem(key, item.toString());
-                        console.log("save radio button ", $(this).offset());
+                        console.log("save radio button ", $(_this).offset());
                     }, 500);
                     return;
                 }
                 localStorage.setItem(key, item.toString());
-                //console.log('save', key, localStorage.getItem(key));
             }
         });
         $(document).on("focus", "input,textarea,select", function () {
@@ -3596,22 +3003,14 @@ if (!(typeof module !== "undefined" && module.exports)) {
         });
     })(jQuery);
 }
-/**
- * Set all forms to be smart
- */
 function smartform() {
-    //set value from localstorage
     var setglobal = function () {
         $("input,textarea,select").each(function (i, el) {
             $(this).smartForm();
         });
     };
     setglobal();
-    //setInterval(function () { }, 500);
 }
-/**
- * Copy to clipboard
- */
 function copyToClipboard(text, el) {
     var copyTest = document.queryCommandSupported("copy");
     var elOriginalText = el.attr("data-original-title");
@@ -3633,15 +3032,10 @@ function copyToClipboard(text, el) {
         el.attr("data-original-title", elOriginalText);
     }
     else {
-        // Fallback if browser doesn't support .execCommand('copy')
         window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
     }
 }
 var STORAGE = {
-    /**
-     * get localstorage by key
-     * @param {String} key
-     */
     get: function (key) {
         if (!this.has(key)) {
             return false;
@@ -3654,11 +3048,6 @@ var STORAGE = {
             return data;
         }
     },
-    /**
-     * Set localstorage key value
-     * @param {String} key
-     * @param {String|Array|Object} value
-     */
     set: function (key, value) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
@@ -3667,18 +3056,9 @@ var STORAGE = {
             localStorage.setItem(key, value);
         }
     },
-    /**
-     * Check localstorage key exists
-     * @param {String} key
-     */
     has: function (key) {
         return !!localStorage[key] && !!localStorage[key].length;
     },
-    /**
-     * Extend or set localstorage key
-     * @param {String} key
-     * @param {String} value
-     */
     extend: function (key, value) {
         if (this.has(key)) {
             var _value = this.get(key);
@@ -3689,25 +3069,16 @@ var STORAGE = {
             this.set(key, value);
         }
     },
-    /**
-     * Remove localstorage key
-     * @param {String} key
-     */
     remove: function (key) {
         localStorage.removeItem(key);
     }
 };
-/**
- * localStorage helper
- */
 function storage() {
     return STORAGE;
 }
 String.prototype.parse_url = function () {
     var parser = document.createElement("a"), searchObject, queries, split, i;
-    // Let the browser do the work
     parser.href = this.toString();
-    // Convert query string to object
     queries = parser.search.replace(/^\?/, "").split("&");
     for (i = 0; i < queries.length; i++) {
         split = queries[i].split("=");
@@ -3725,9 +3096,6 @@ String.prototype.parse_url = function () {
         protohost: parser.protocol + "//" + parser.host,
     };
 };
-/**
- * Load css
- */
 String.prototype.CSS = function () {
     var e = document.createElement("link");
     e.rel = "stylesheet";
@@ -3774,8 +3142,8 @@ String.prototype.rot13 = function () {
         return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
     });
 };
-class ctable {
-    constructor(config) {
+var ctable = (function () {
+    function ctable(config) {
         this.can_edit = null;
         this.instance = null;
         this.editable_run = false;
@@ -3785,8 +3153,8 @@ class ctable {
             }
         }
     }
-    editable(activate) {
-        const self = this;
+    ctable.prototype.editable = function (activate) {
+        var self = this;
         if (this.editable_run) {
             return;
         }
@@ -3806,7 +3174,7 @@ class ctable {
             $(".table-up").click(function () {
                 var $row = $(this).parents("tr");
                 if ($row.index() === 1)
-                    return; // Don't go above the header
+                    return;
                 $row.prev().before($row.get(0));
             });
             $(".table-down").click(function () {
@@ -3814,9 +3182,9 @@ class ctable {
                 $row.next().after($row.get(0));
             });
         }
-    }
-    create(id, where, data) {
-        var table = `<table id='${id}' class='table table-responsive' style="position:relative"><thead><tr>`;
+    };
+    ctable.prototype.create = function (id, where, data) {
+        var table = "<table id='" + id + "' class='table table-responsive' style=\"position:relative\"><thead><tr>";
         var self = this;
         for (var i = 0; i < data.length; i++) {
             table = table + "<th>" + data[i] + "</th>";
@@ -3825,23 +3193,19 @@ class ctable {
         document.getElementById(where).innerHTML += table;
         if (this.can_edit) {
             setTimeout(function () {
-                self.instance = $(`table#${id}`);
-                self.instance.append(`<span class="table-add fas fa-plus text-success" style="position: absolute;right:15px;top:15px;cursor:pointer"></span>`);
-                self.instance.find("tbody").append(`<tr class="addthis d-none">
-        <td contenteditable="true">Untitled</td>
-        <td contenteditable="true">Undocumented</td>
-        <td><span class="table-remove fas fa-trash text-danger" style="cursor:pointer"></span></td><td> <span class="table-up fas fa-arrow-up text-info" style="cursor:pointer"></span> <span class="table-down fas fa-arrow-down text-info" style="cursor:pointer"></span> </td>
-      </tr>`);
+                self.instance = $("table#" + id);
+                self.instance.append("<span class=\"table-add fas fa-plus text-success\" style=\"position: absolute;right:15px;top:15px;cursor:pointer\"></span>");
+                self.instance.find("tbody").append("<tr class=\"addthis d-none\">\n        <td contenteditable=\"true\">Untitled</td>\n        <td contenteditable=\"true\">Undocumented</td>\n        <td><span class=\"table-remove fas fa-trash text-danger\" style=\"cursor:pointer\"></span></td><td> <span class=\"table-up fas fa-arrow-up text-info\" style=\"cursor:pointer\"></span> <span class=\"table-down fas fa-arrow-down text-info\" style=\"cursor:pointer\"></span> </td>\n      </tr>");
                 self.editable(true);
             }, 500);
         }
-    }
-    add(table, data) {
+    };
+    ctable.prototype.add = function (table, data) {
         var row = "<tr>";
         for (var i = 0; i < data.length; i++) {
             var td = data[i];
             if (typeof td == "object" || Array.isArray(td)) {
-                td = `<pre class="json">${JSON.stringify(td, null, 2)}</pre>`;
+                td = "<pre class=\"json\">" + JSON.stringify(td, null, 2) + "</pre>";
             }
             if (!this.can_edit) {
                 row += "<td>" + td + "</td>";
@@ -3851,18 +3215,16 @@ class ctable {
             }
         }
         if (this.can_edit) {
-            row += `<td><span class="table-remove fas fa-trash text-danger" style="cursor:pointer"></span></td><td> <span class="table-up fas fa-arrow-up text-info" style="cursor:pointer"></span> <span class="table-down fas fa-arrow-down text-info" style="cursor:pointer"></span> </td>`;
+            row += "<td><span class=\"table-remove fas fa-trash text-danger\" style=\"cursor:pointer\"></span></td><td> <span class=\"table-up fas fa-arrow-up text-info\" style=\"cursor:pointer\"></span> <span class=\"table-down fas fa-arrow-down text-info\" style=\"cursor:pointer\"></span> </td>";
         }
         row += "</tr>";
         document
             .getElementById(table)
             .getElementsByTagName("tbody")[0].innerHTML += row;
-    }
-}
+    };
+    return ctable;
+}());
 if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * @see https://mdbootstrap.com/support/general/text-area-auto-grow/
-     */
     jQuery.fn.autoHeight = function () {
         function autoHeight_(element) {
             return jQuery(element)
@@ -3895,19 +3257,11 @@ if (!(typeof module !== "undefined" && module.exports)) {
 function currentUID() {
     return UIDvalue;
 }
-/**
- * Get uid saved in browser
- */
 function getUID() {
     return localStorage.getItem('uid');
 }
-/**
- * Signing the uid
- * @param {String} UID
- */
 function sign_uid(UID) {
     var url = location.protocol + '//' + location.host + location.pathname;
-    //console.log(url);
     if (typeof jQuery != 'undefined') {
         $.ajax({
             url: url,
@@ -3942,11 +3296,6 @@ function sign_uid(UID) {
     }
 }
 var UIDcalled = false;
-/**
- * Check UID
- * @return {string} uid
- * @param {Function|any} callback
- */
 function checkUID(callback) {
     UIDvalue = getUID();
     if (isExpireUID()) {
@@ -3954,7 +3303,7 @@ function checkUID(callback) {
         sign_uid(UIDvalue);
     }
     if (!UIDcalled) {
-        setTimeout(() => {
+        setTimeout(function () {
             checkUID();
         }, 60000);
         UIDcalled = true;
@@ -3978,7 +3327,6 @@ function isExpireUID() {
         timeLeft = new Date(timeLeft).getTime();
         var date = new Date().getTime();
         var isExpired = timeLeft < date;
-        //console.log('uid is expired ' + isExpired);
         if (isExpired) {
             return true;
         }
@@ -3991,33 +3339,23 @@ function AddMinutesToDate(date, minutes) {
 function genUID() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
-/**
- *  Save uid
- * @param {Object} data
- */
 function saveUID(data) {
     console.log(data);
     if (typeof data == 'object') {
         if (data.hasOwnProperty('uid')) {
-            console.log(`${data.uid} was saved`);
+            console.log(data.uid + " was saved");
             localStorage.setItem('uid', data.uid);
             var date = new Date();
-            framework().sc('signature-timeleft', AddMinutesToDate(date, 5)); // 5 mins
-            //location.reload();
+            framework().sc('signature-timeleft', AddMinutesToDate(date, 5));
         }
     }
 }
-/**
- * get url parameter by name
- * @param name parameter name
- * @param url url target, null for current location.href
- */
 function getParameterByName(name, url) {
     if (typeof URLSearchParams !== 'undefined') {
         if (!window.location.search) {
             url = window.location.href;
         }
-        const urlParams = new URLSearchParams(url);
+        var urlParams = new URLSearchParams(url);
         return urlParams.get(name);
     }
     if (!url) {
@@ -4031,28 +3369,18 @@ function getParameterByName(name, url) {
         return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-/**
- * User framework
- */
-class user {
-    constructor() {
-        //constructor() { if (!this.all()) { this.fetch(null); } }
+var user = (function () {
+    function user() {
         this.key = location.host + "/userdata";
     }
-    /**
-     * Get all userdata
-     */
-    all() {
+    user.prototype.all = function () {
         var data = storage().get(this.key);
         if (!data || data == "") {
             return undefined;
         }
         return data;
-    }
-    /**
-     * get userdata
-     */
-    get(key) {
+    };
+    user.prototype.get = function (key) {
         try {
             var data = this.all();
             if (data !== undefined) {
@@ -4066,12 +3394,9 @@ class user {
             console.error("user::get", error);
             return undefined;
         }
-    }
-    /**
-     * fetch userdata
-     */
-    fetch(callback) {
-        const ini = this;
+    };
+    user.prototype.fetch = function (callback) {
+        var ini = this;
         return $.ajax({
             url: "/user",
             method: "POST",
@@ -4100,29 +3425,21 @@ class user {
                 console.log("user::fetch", ini.all());
             },
         });
-    }
-}
+    };
+    return user;
+}());
 if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * @typedef {user} userc
-     */
-    const userc = new user();
+    var userc = new user();
     if (typeof window.user === "undefined") {
         window.user = userc;
     }
     jQuery.user = userc;
 }
 if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * @todo Auto replace placeholder textarea newLines
-     */
     var textAreas = document.getElementsByTagName("textarea");
     Array.prototype.forEach.call(textAreas, function (elem) {
         elem.placeholder = elem.placeholder.replace(/\\n/g, "\n");
     });
-    /**
-     * @todo Disable hotkey
-     */
     $(document).bind("keydown", function (e) {
         e = e || window.event;
         if (e.ctrlKey && e.which == 83) {
@@ -4136,9 +3453,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
             return false;
         }
     });
-    /**
-     * @todo Textarea placeholders
-     */
     $("textarea").each(function (index, el) {
         if ($(this).val().toString().length)
             return;
@@ -4152,17 +3466,11 @@ if (!(typeof module !== "undefined" && module.exports)) {
         $(this).val(formatNewLines(placeholder));
         tafocus("#" + id, placeholder);
     });
-    /**
-     * @todo datatables select2 jquery tooltip
-     */
     $(document).ready(function () {
-        /** Tooltip */
         if (jQuery.fn.tooltip && $('[data-toggle="tooltip"]')) {
             $("body").tooltip({
                 selector: '[data-toggle="tooltip"]',
             });
-            //$('[data-toggle="tooltip"]').tooltip();
-            // colored tooltip
             $('[data-toggle="tooltip-primary"]').tooltip({
                 template: '<div class="tooltip tooltip-primary" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
             });
@@ -4173,7 +3481,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 template: '<div class="tooltip tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
             });
         }
-        /** datatables */
         if (jQuery.fn.DataTable && $("#datatable1").length) {
             $("#datatable1").DataTable({
                 responsive: true,
@@ -4184,7 +3491,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 },
             });
         }
-        /** Select2 */
         var ds = $(".dataTables_length select");
         if (typeof jQuery.fn.select2 != "undefined") {
             if (ds.length || ds.data("select2")) {
@@ -4195,11 +3501,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
         }
     });
 }
-/**
- * textarea focus
- * @param {String} id
- * @param {String} placeholder
- */
 function tafocus(id, placeholder) {
     var count_newlines = countNewLines(placeholder);
     $(id).on("focus", function (e) {
@@ -4215,12 +3516,8 @@ function tafocus(id, placeholder) {
         }
     });
 }
-/**
- * format new lines
- * @param {String} placeholder
- */
 function formatNewLines(placeholder) {
-    for (let index = 0; index < 1000; index++) {
+    for (var index_2 = 0; index_2 < 1000; index_2++) {
         if (!placeholder)
             break;
         placeholder = placeholder.replace("\\n", "\n");
@@ -4230,21 +3527,12 @@ function formatNewLines(placeholder) {
     }
     return placeholder;
 }
-/**
- * Count newLines
- * @param {String} placeholder
- */
 function countNewLines(placeholder) {
     if (!placeholder)
         return placeholder;
     var match = placeholder.match(/\\n/g) || "";
     return placeholder.length - match.length;
 }
-/**
- * find duplicate array
- * @param {Array<any>} arr
- * @param {Function} callback
- */
 function findDups(arr, callback) {
     var sorted_arr = arr.slice().sort();
     var results = [];
@@ -4260,11 +3548,6 @@ function findDups(arr, callback) {
         return results;
     }
 }
-//=========== Auto id
-/**
- * Auto Generate ID
- * @param {Number} length
- */
 function makeid(length) {
     var result = "";
     var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -4274,29 +3557,16 @@ function makeid(length) {
     }
     return result;
 }
-//=========== RECAPTCHA
-/**
- * load or refreshing google recaptcha
- */
 function gexec(action, retry, callback) {
     recaptcha().exec(action, retry, callback);
 }
-/**
- * Get token recaptcha
- */
 function geToken() {
     return recaptcha().get();
 }
-/**
- * Javascript caller
- * @param {String} url
- * @param {Function} callback
- */
 function JavaScriptCaller(url, callback) {
     var script = document.createElement("script");
     script.type = "text/javascript";
     if (script.readyState) {
-        //IE
         script.onreadystatechange = function () {
             if (script.readyState == "loaded" || script.readyState == "complete") {
                 script.onreadystatechange = null;
@@ -4307,7 +3577,6 @@ function JavaScriptCaller(url, callback) {
         };
     }
     else {
-        //Others
         script.onload = function () {
             if (typeof callback == "function") {
                 callback();
@@ -4317,9 +3586,6 @@ function JavaScriptCaller(url, callback) {
     script.src = url;
     document.getElementsByTagName("head")[0].appendChild(script);
 }
-/**
- * Function initialization
- */
 if (!isnode()) {
     if ($("#logout").length) {
         $(document).one("click", "#logout", function (e) {
@@ -4332,7 +3598,6 @@ if (!isnode()) {
             });
         });
     }
-    /** Query URL */
     function getLocationHash() {
         var hash = window.location.hash.substr(1);
         var result = hash.split("&").reduce(function (result, item) {
@@ -4344,12 +3609,10 @@ if (!isnode()) {
             console.log(result);
         }
     }
-    /** datetime-local */
     if (typeof dimas == "object" &&
         typeof framework().datetimelocal != "undefined") {
         framework().datetimelocal(undefined);
     }
-    /** Progress bar */
     var elm = $("[countdown]");
     if (elm.length) {
         elm.each(function (e) {
@@ -4357,18 +3620,13 @@ if (!isnode()) {
             framework().pctd(t);
         });
     }
-    /** document body listener */
     $(document.body).on("click", "[data-redirect]", function (E) {
         var red = $(this).attr("data-redirect").toString();
         if (red && red.trim() != "") {
             window.open(red, location.host).focus();
         }
     });
-    /** Linkify */
     if (typeof mask_link != "undefined") {
-        /**
-         * @type {JQuery<HTMLElement>} L
-         */
         var L = $("[data-linkify]").length ? $("[data-linkify]") : $(document.body);
         window.onload = function () {
             L.linkify({
@@ -4385,34 +3643,24 @@ if (!isnode()) {
             });
         };
     }
-    /**
-     * links new tab form submit
-     */
     var aform = $("[form]");
     if (aform.length > 1) {
         aform.click(function (e) {
             e.preventDefault();
             var id_form = $(this).attr("form");
             if (typeof id_form != "undefined") {
-                var winame = document.getElementById(id_form).getAttribute("target"); //reduce caching
+                var winame = document.getElementById(id_form).getAttribute("target");
                 console.log("Submiting Form ID#" + id_form);
                 window.open("", winame.length ? winame : "FormDynamic").focus();
                 document.getElementById($(this).attr("form")).submit();
             }
-            //w = window.open('', 'bagas31-post');
-            //$('form#' + $(this).attr('form')).submit();
-            //w.focus();
         });
     }
-    /**
-     * open in new tab
-     */
     $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
         e.preventDefault();
-        const t = $(this);
+        var t = $(this);
         if (t.attr("href")) {
             if (t.data("newtab")) {
-                //data-newtab hide referrer
                 window
                     .open("http://href.li/?" + $(this).data("newtab"), "newtab")
                     .focus();
@@ -4423,20 +3671,12 @@ if (!isnode()) {
         }
     });
 }
-/**
- * open in new tab
- * @param {string} url
- * @param {string} name
- */
 function openInNewTab(url, name) {
     if (typeof url != "undefined" && typeof name != "undefined") {
         var win = window.open(url, name);
         win.focus();
     }
 }
-/**
- * get currency symbol from navigator
- */
 function get_currency_symbol() {
     var amount = 0;
     var ident = navigator.language;
@@ -4458,17 +3698,12 @@ function get_currency_symbol() {
     });
     return format.toString().replace("0,00", "");
 }
-/**
- * Create JSON
- * @param {any} jsObj
- * @param {boolean} tabs
- */
 function createJSON(jsObj, tabs) {
     if (tabs) {
-        return JSON.stringify(jsObj, null, "\t"); // stringify with tabs inserted at each level
+        return JSON.stringify(jsObj, null, "\t");
     }
     else {
-        return JSON.stringify(jsObj, null, 4); // stringify with 4 spaces at each level}
+        return JSON.stringify(jsObj, null, 4);
     }
 }
 function loadingio(text, callback, mode) {
@@ -4498,41 +3733,13 @@ function loadingio(text, callback, mode) {
         callback(arguments);
     }
 }
-/**
-function target(a) {
-    alert(a);
-}
-
-var o = {
-    suffix: " World",
-    target: function(s) { alert(s + this.suffix); }
-};
-
-__call("target", "Hello");
-
-__call.call(o, "target", "Hello");
- */
-/**
- * parse proxy from string
- * @param {string} str
- * @return {Array<any>} proxy list filtered
- */
 function parse_proxy(str) {
     var matchs, px = [];
     loadingio("Parsing proxies", function () {
-        /*
-        while (match = /([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}):?([0-9]{1,6})?/g.exec(str)) {
-          console.log('Match: "' + match[0] + '" first group: -> "' + match[1] + '" second group -> ' + match[2]);
-          if (typeof match[0] != 'undefined' && typeof match[2] != 'undefined' && !inArray(match[0], px)) {
-            px.push(match[0]);
-          }
-        }
-        */
         if (typeof str == "string") {
             var regex = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{1,6}/gm, match, proxyMatch;
             while ((match = regex.exec(str))) {
                 proxyMatch = match[0];
-                //console.log(proxyMatch);
                 if (proxyMatch.includes(":") && !inArray(proxyMatch, px)) {
                     px.push(proxyMatch);
                 }
@@ -4540,7 +3747,6 @@ function parse_proxy(str) {
             var regex = /Proxy\([\'\"]([a-zA-Z0-9\=]*)[\'\"]\)/gm, match, proxyMatch;
             while ((match = regex.exec(str))) {
                 proxyMatch = atob(match[1]);
-                //console.log(proxyMatch);
                 if (proxyMatch.includes(":") && !inArray(proxyMatch, px)) {
                     px.push(proxyMatch);
                 }
@@ -4551,11 +3757,6 @@ function parse_proxy(str) {
     });
     return array_shuffle(array_unique(px));
 }
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
 function array_rand(arrays, unique) {
     if (unique) {
         arrays = array_unique(arrays);
@@ -4566,20 +3767,11 @@ function array_rand(arrays, unique) {
         value: arrays[index],
     };
 }
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
 function array_unique(arrays) {
     return arrays.filter(function (item, pos, self) {
         return self.indexOf(item) == pos;
     });
 }
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
 function array_unset(arrayName, key) {
     var x;
     var tmpArray = new Array();
@@ -4590,34 +3782,17 @@ function array_unset(arrayName, key) {
     }
     return tmpArray;
 }
-/**
- * Add class if not exists
- * @param {Element} element element from DOM
- * @param {string} className class name
- */
 function toogleClass(element, className) {
     return element.classList.toggle(className);
 }
 function UNIQUE_ID() {
-    // Math.random should be unique because of its seeding algorithm.
-    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-    // after the decimal.
     return "_" + Math.random().toString(36).substr(2, 9);
 }
-/**
- * jQuery pseudo builder
- * @param {string} string
- */
 function pseudo_builder(string) {
     if (string) {
         return string.replace(/[\W\s]/gm, "");
     }
 }
-/**
- * Loop key value of object
- * @param {Object} object
- * @param {Function} callback
- */
 function foreach(object, callback) {
     var key, value;
     Object.keys(object).forEach(function (key) {
@@ -4625,22 +3800,7 @@ function foreach(object, callback) {
             callback(key, object[key]);
         }
     });
-    /*
-      for ([key, value] of Object.entries(object)) {
-        if (typeof callback == 'function'){
-          callback(key, value);
-        } else {
-          console.log(key, value);
-        }
-      }
-    */
 }
-/**
- * Get multiple random element from array
- * @param {Array<any>} arr array sources
- * @param {Number} n maximum element to be in result
- * @param {Function} callback function to process result
- */
 function getRandom(arr, n, callback) {
     var result = new Array(n), len = arr.length, taken = new Array(len);
     if (n > len) {
@@ -4660,13 +3820,6 @@ function getRandom(arr, n, callback) {
         return result;
     }
 }
-/**
- * Simple Websocket javascript
- * @todo Live Data
- * @description Don't miss data that changes even for a second
- * @author Dimas Lanjaka <dimaslanjaka[at]gmail.com
- * @see https://www.webmanajemen.com/p/simple-websocket.html Simple Web Socket
- */
 var socket;
 function socket_start(host) {
     if (!host) {
@@ -4683,7 +3836,6 @@ function socket_start(host) {
         };
         socket.onmessage = function (msg) {
             var data = JSON.parse(msg.data);
-            //do with data response
             console.log(data);
         };
         socket.onclose = function (msg) {
@@ -4720,17 +3872,10 @@ function socket_stop() {
 function socket_check() {
     return socket;
 }
-/**
- * ZLIB packer
- * @see http://localhost/src/ZLIB.php
- * @requires pako `npm i pako @types/pako`
- */
-class ZLIB {
-    /**
-     * Base64 decode from php
-     * @param {Uint8Array} arr
-     */
-    static atos(arr) {
+var ZLIB = (function () {
+    function ZLIB() {
+    }
+    ZLIB.atos = function (arr) {
         for (var i = 0, l = arr.length, s = '', c; c = arr[i++];)
             s += String.fromCharCode(c > 0xdf && c < 0xf0 && i < l - 1 ?
                 (c & 0xf) << 12 | (arr[i++] & 0x3f) << 6 | arr[i++] & 0x3f :
@@ -4738,8 +3883,8 @@ class ZLIB {
                     (c & 0x1f) << 6 | arr[i++] & 0x3f :
                     c);
         return s;
-    }
-    static decompress(str) {
+    };
+    ZLIB.decompress = function (str) {
         var dec = this.atos(pako.ungzip(base64_decode(str)));
         console.log({
             'ZLIB.decompress': {
@@ -4748,8 +3893,8 @@ class ZLIB {
             }
         });
         return dec;
-    }
-    static compress(str) {
+    };
+    ZLIB.compress = function (str) {
         var enc = pako.gzip(str, {
             to: 'string'
         });
@@ -4761,6 +3906,7 @@ class ZLIB {
             }
         });
         return enc;
-    }
-}
-//# sourceMappingURL=app.js.map
+    };
+    return ZLIB;
+}());
+//# sourceMappingURL=framework.js.map

@@ -11,7 +11,7 @@
         "allowJs": true,
         "checkJs": false,
         "declarationMap": false,
-        "outDir": "./",
+        "outDir": "./src/node",
         "sourceRoot": "./tmp/libs/",
         "rootDir": "./libs/",
         "sourceMap": true,

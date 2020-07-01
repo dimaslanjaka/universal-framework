@@ -11,11 +11,12 @@ import process from "../compiler/process";
 import core from "./core";
 const root = process.root;
 import sass from "sass"; // or require('node-sass');
-import { exec } from "child_process";
+import { exec, ExecException } from "child_process";
 import sourcemaps from "gulp-sourcemaps";
 import concat from "gulp-concat";
 import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
+localStorage.removeItem("compile");
 console.clear();
 
 /**
@@ -236,11 +237,21 @@ async function createApp(withoutView: boolean) {
         log.log(log.error(err));
       }
     );
+    await typescriptCompiler("tsconfig.main.json", root + "/").catch(function (
+      err
+    ) {
+      log.log(log.error(err));
+    });
     minify(target);
     if (!withoutView) {
       multiMinify(views());
     }
     localStorage.removeItem("compile");
+  } else {
+    log.log(log.error("Compiler lock process already exists"));
+    log.log(
+      log.chalk().yellow("node index.js fix") + log.chalk().green(" to fix it")
+    );
   }
 }
 
@@ -257,16 +268,20 @@ function typescriptCompiler(
 ) {
   return new Promise((resolve, reject) => {
     exec(`tsc -p ${source}`, function (
-      err: { message: any },
-      stdout: any,
-      stderr: any
+      err: ExecException,
+      stdout: string,
+      stderr: string
     ) {
       if (!err) {
         if (typeof callback == "function") {
           callback(source, destination);
         }
-        console.log(stdout);
-        console.log(stderr);
+        if (stdout.trim().length) {
+          console.log(stdout);
+        }
+        if (stderr.trim().length) {
+          console.log(stderr);
+        }
         log.log(
           log.random("successfully compiled ") +
             log.success(path.basename(source))

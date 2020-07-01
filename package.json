@@ -7,6 +7,7 @@
     "url": "https://github.com/dimaslanjaka/universal-framework/issues"
   },
   "dependencies": {
+    "@types/swfobject": "^2.2.27",
     "ajv": "^6.12.2",
     "amd-loader": "*",
     "analytics-node": "^3.3.0",
@@ -188,6 +189,7 @@
     "stylelint-processor-html": "^1.0.0",
     "supertest": "^4.0.2",
     "sweetalert": "*",
+    "swfobject": "^2.2.1",
     "systemjs": "*",
     "terser": "*",
     "time-grunt": "^2.0.0",
@@ -304,7 +306,6 @@
     "tslint": "^6.1.2",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-react": "^5.0.0",
-    "types-registry": "^0.1.496",
     "typescript": "^3.9.5",
     "webpack-dashboard": "^3.2.0",
     "webpack-dev-server": "^3.11.0"

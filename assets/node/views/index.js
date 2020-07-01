@@ -5,26 +5,28 @@ var packages = {
   local: [],
   global: [],
 };
-$(document).ready(function () {});
+$(document).ready(function () {
+  datatables_init().then(renderDatatables);
+});
 
-datatables_init();
 function renderDatatables() {
   $("#local").DataTable({
     destroy: true,
     dom: "Bfrtip",
     processing: false,
-    serverSide: true,
-    stateSave: false,
+    serverSide: false,
+    stateSave: true,
     autoWidth: false,
     responsive: true,
     deferRender: true,
     paging: true,
     lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
     ajax: {
-      url: "/fetch",
+      url: "fetch",
       method: "POST",
       data: { local: "true" },
-      success: function (data, textStatus, jqXHR) {
+      dataType: "json",
+      dataSrc: function (data, textStatus, jqXHR) {
         if (typeof data == "object" && data.hasOwnProperty("dependencies")) {
           if (data.hasOwnProperty("dependencies")) {
             for (const key in data.dependencies) {

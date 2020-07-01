@@ -2,9 +2,10 @@ import * as fs from "fs";
 import { exec, spawn, spawnSync, execSync } from "child_process";
 import * as path from "path";
 import * as Process from "process";
-//import { spawn } from "child_process";
 import * as http from "http";
 import { dirname } from "path";
+import { localStorage } from "../../node-localstorage/index";
+import { getFuncName } from "./../../compiler/framework";
 require("./consoler");
 
 /**
@@ -198,27 +199,27 @@ export function module_exists(
 ) {
   const test = function (tmodule: string, global: boolean) {
     var result = null;
-    execute("npm list -json -depth=0 " + (global ? "-g" : ""), function (
-      error,
-      message
-    ) {
-      if (message instanceof Error || !error) {
-        result = false;
-      } else {
-        try {
-          var json: npmlist = JSON.parse(message);
-
-          result = Object.keys(json.dependencies).includes(tmodule);
-          if (dump) {
-            console.log(
-              `${tmodule} is ${result ? "installed" : "not installed"}`
-            );
-          }
-        } catch (error) {
+    execute(
+      ("npm list -json -depth=0 " + (global ? "-g" : "")).trim(),
+      function (error, message) {
+        if (message instanceof Error || !error) {
           result = false;
+        } else {
+          try {
+            var json: npmlist = JSON.parse(message);
+
+            result = Object.keys(json.dependencies).includes(tmodule);
+            if (dump) {
+              console.log(
+                `${tmodule} is ${result ? "installed" : "not installed"}`
+              );
+            }
+          } catch (error) {
+            result = false;
+          }
         }
       }
-    });
+    );
     return result;
   };
   if (typeof tmodule == "string") {
@@ -410,23 +411,8 @@ export function getLatestVersion(key: string) {
   });
 }
 
-var timer_list = null;
-var timer_run = null;
-
 export function list_package() {
-  var results = {
-    local: {},
-    global: {},
-  };
-  if (timer_list) {
-    clearTimeout(timer_list);
-  }
-  timer_list = setTimeout(function () {
-    if (timer_run) {
-      return;
-    }
-    timer_run = true;
-
+  if (localStorage.getItem(getFuncName())) {
     var local = exec("npm list -json -depth=0");
     local.stdout.on("data", function (data) {
       writeFile("./tmp/npm/local.json", data);
@@ -442,7 +428,7 @@ export function list_package() {
     global.stderr.on("data", function (data) {
       writeFile("./tmp/npm/global-error.json", data);
     });
-  }, 5000);
+  }
 }
 
 /*
