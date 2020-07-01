@@ -13,21 +13,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.suggest.insertMode": "replace"
   },
-  "terminal.integrated.env.windows": {
-    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
-  },
-  "terminal.integrated.env.linux": {
-    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
-  },
-  "terminal.integrated.env.osx": {
-    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
-  },
-  "intelephense.format.braces": "psr12",
-  "php-cs-fixer.autoFixByBracket": true,
-  "php-cs-fixer.onsave": false,
-  "php-cs-fixer.autoFixBySemicolon": false,
-  "php-cs-fixer.lastDownload": 1,
-  "prettier.tabWidth": 2,
   "[markdown]": {
     "editor.wordWrap": "on",
     "editor.quickSuggestions": false,
@@ -36,10 +21,14 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "breadcrumbs.enabled": false,
+  "debug.javascript.terminalOptions": {
+    "autoAttachChildProcesses": true
+  },
   "editor.formatOnPaste": false,
-  "typescript.tsserver.maxTsServerMemory": 1500,
   "editor.formatOnSave": true,
   "editor.formatOnType": false,
+  "editor.minimap.size": "fit",
   "editor.quickSuggestions": {
     "other": true,
     "comments": true,
@@ -49,6 +38,7 @@
   "editor.wordWrap": "on",
   "eslint.packageManager": "npm",
   "explorer.autoReveal": true,
+  "extensions.ignoreRecommendations": true,
   "files.associations": {
     "*.extension": "language"
   },
@@ -62,24 +52,13 @@
     "out": false
   },
   "files.maxMemoryForLargeFilesMB": 100,
+  "files.trimTrailingWhitespace": true,
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/log/**": true,
     "**/node_modules/**": true,
     "**/tmp/**": true
   },
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "npm.enableScriptExplorer": false,
-  "npm.enableRunFromFolder": false,
-  "typescript.tsserver.watchOptions": {
-    "fallbackPolling": "dynamicPriorityPolling",
-    "synchronousWatchDirectory": true,
-    "watchDirectory": "dynamicPriorityPolling",
-    "watchFile": "dynamicPriorityPolling"
-  },
-  "npm.exclude": "**libs**",
-  "typescript.tsserver.useSeparateSyntaxServer": true,
-  "typescript.suggest.autoImports": true,
   "git.allowForcePush": true,
   "git.autofetch": true,
   "git.autofetchPeriod": 18000,
@@ -88,65 +67,89 @@
   "git.enableSmartCommit": true,
   "git.enableStatusBarSync": true,
   "git.enabled": true,
+  "git.ignoreLimitWarning": true,
   "git.smartCommitChanges": "all",
   "git.supportCancellation": false,
   "github.gitAuthentication": true,
+  "grunt.autoDetect": "off",
+  "gulp.autoDetect": "off",
+  "intelephense.format.braces": "psr12",
   "intelephense.maxMemory": 1500,
   "intelephense.telemetry.enabled": false,
   "intelephense.trace.server": "off",
+  "jake.autoDetect": "off",
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "javascript.suggest.completeFunctionCalls": true,
+  "javascript.updateImportsOnFileMove.enabled": "never",
   "markdown.extension.list.indentationSize": "adaptive",
   "markdown.preview.scrollEditorWithPreview": true,
+  "npm.autoDetect": "off",
+  "npm.enableRunFromFolder": false,
+  "npm.enableScriptExplorer": false,
+  "npm.exclude": "**libs**",
+  "npm.fetchOnlinePackageInfo": false,
   "npm.packageManager": "npm",
+  "npm.runSilent": true,
+  "php-cs-fixer.autoFixByBracket": true,
+  "php-cs-fixer.autoFixBySemicolon": false,
+  "php-cs-fixer.config": ".php_cs;.php_cs.dist",
   "php-cs-fixer.executablePath": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.phar",
   "php-cs-fixer.executablePathWindows": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.bat",
+  "php-cs-fixer.formatHtml": true,
+  "php-cs-fixer.lastDownload": 1,
+  "php-cs-fixer.onsave": false,
+  "php-cs-fixer.rules": "@PSR2",
   "php-docblocker.author": {
     "name": "Dimas Lanjaka",
     "email": "dimaslanjaka@gmail.com"
   },
   "prettier.packageManager": "npm",
+  "prettier.resolveGlobalModules": true,
+  "prettier.tabWidth": 2,
+  "prettier.useEditorConfig": true,
+  "problems.showCurrentInStatus": true,
   "python.pythonPath": "B:\\Users\\L3n4r0x\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
   "search.exclude": {
     "out": true,
     ".vscode": true
   },
-  "task.problemMatchers.neverPrompt": true,
-  "terminal.integrated.environmentChangesIndicator": "on",
-  "typescript.check.npmIsInstalled": true,
-  "typescript.tsc.autoDetect": "off",
-  "php-cs-fixer.formatHtml": true,
-  "php-cs-fixer.rules": "@PSR2",
-  "php-cs-fixer.config": ".php_cs;.php_cs.dist",
-  "npm.autoDetect": "off",
-  "grunt.autoDetect": "off",
-  "gulp.autoDetect": "off",
-  "jake.autoDetect": "off",
-  "task.autoDetect": "off",
+  "search.seedOnFocus": true,
+  "search.useIgnoreFiles": false,
+  "sqltools.disableReleaseNotifications": true,
+  "sqltools.historySize": 30,
   "sync.autoDownload": false,
   "sync.forceUpload": true,
-  "debug.javascript.terminalOptions": {
-    "autoAttachChildProcesses": true
-  },
-  "typescript.disableAutomaticTypeAcquisition": false,
-  "npm.runSilent": true,
-  "prettier.resolveGlobalModules": true,
-  "editor.minimap.size": "fit",
-  "sqltools.historySize": 30,
-  "extensions.ignoreRecommendations": true,
-  "sqltools.disableReleaseNotifications": true,
-  "search.useIgnoreFiles": false,
-  "problems.showCurrentInStatus": true,
+  "task.autoDetect": "off",
+  "task.problemMatchers.neverPrompt": true,
   "telemetry.enableCrashReporter": false,
   "telemetry.enableTelemetry": false,
-  "npm.fetchOnlinePackageInfo": false,
-  "javascript.implicitProjectConfig.experimentalDecorators": true,
-  "javascript.suggest.completeFunctionCalls": true,
-  "javascript.updateImportsOnFileMove.enabled": "never",
+  "terminal.integrated.env.linux": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "./node_modules/.bin;libs/Windows/x64/node;libs/Windows/x64/python2.7;libs/Windows/x64/utility"
+  },
+  "terminal.integrated.environmentChangesIndicator": "on",
+  "typescript.check.npmIsInstalled": true,
+  "typescript.disableAutomaticTypeAcquisition": false,
   "typescript.locale": "en",
+  "typescript.suggest.autoImports": true,
+  "typescript.tsc.autoDetect": "off",
+  "typescript.suggest.completeJSDocs": true,
+  "typescript.tsserver.log": "off",
+  "typescript.surveys.enabled": true,
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsserver.maxTsServerMemory": 1500,
+  "typescript.tsserver.useSeparateSyntaxServer": true,
+  "typescript.tsserver.watchOptions": {
+    "fallbackPolling": "dynamicPriorityPolling",
+    "synchronousWatchDirectory": true,
+    "watchDirectory": "dynamicPriorityPolling",
+    "watchFile": "dynamicPriorityPolling"
+  },
   "typescript.updateImportsOnFileMove.enabled": "never",
-  "breadcrumbs.enabled": false,
-  "prettier.useEditorConfig": true,
-  "git.ignoreLimitWarning": true,
-  "workbench.editor.limit.enabled": true,
-  "files.trimTrailingWhitespace": true,
-  "search.seedOnFocus": true
+  "workbench.editor.limit.enabled": true
 }

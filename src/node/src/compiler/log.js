@@ -1,6 +1,7 @@
 "use strict";
-var fancy_log_1 = require("fancy-log");
-var chalk_1 = require("chalk");
+var tslib_1 = require("tslib");
+var fancy_log_1 = tslib_1.__importDefault(require("fancy-log"));
+var chalk_1 = tslib_1.__importDefault(require("chalk"));
 var log = (function () {
     function log() {
         var arg = [];

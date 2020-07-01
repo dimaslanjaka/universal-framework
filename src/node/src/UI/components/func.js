@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.list_package = exports.getLatestVersion = exports.async = exports.trycatch = exports.count = exports.shared_packages = exports.array_remove = exports.config_builder = exports.module_exists = exports.execute = exports.fixDeps = exports.resolve_dir = exports.writeFile = exports.writenow = void 0;
 var tslib_1 = require("tslib");
-var fs = require("fs");
+var fs = tslib_1.__importStar(require("fs"));
 var child_process_1 = require("child_process");
-var path = require("path");
+var path = tslib_1.__importStar(require("path"));
 var path_1 = require("path");
 var index_1 = require("../../node-localstorage/index");
 var framework_1 = require("./../../compiler/framework");

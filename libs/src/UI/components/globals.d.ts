@@ -19,24 +19,25 @@ interface packagejson {
    * * prepack: run BEFORE a tarball is packed (on npm pack, npm publish, and when installing git dependencies)
    * * postpack: Run AFTER the tarball has been generated and moved to its final destination.
    * * publish, postpublish: Run AFTER the package is published.
-   * *
-   * *
    * * preuninstall, uninstall: Run BEFORE the package is uninstalled.
    * * postuninstall: Run AFTER the package is uninstalled.
-   * *
    * * version: Run AFTER bumping the package version, but BEFORE commit.
    * * postversion: Run AFTER bumping the package version, and AFTER commit.
    * * pretest, test, posttest: Run by the npm test command.
-   * * prestop, stop, poststop: Run by the npm stop command.
-   * *
-   * *
-   * *
    */
   scripts?: {
     /**
      * test: Run by the npm test command.
      */
-    test: string;
+    test?: string;
+    /**
+     * pretest: Run by the npm test command.
+     */
+    pretest?: string;
+    /**
+     * posttest: Run by the npm test command.
+     */
+    posttest?: string;
     /**
      * preversion: Run BEFORE bumping the package version.
      */

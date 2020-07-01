@@ -1,17 +1,18 @@
 "use strict";
-var fs = require("fs");
-var Terser = require("terser");
-var path = require("path");
-var slash_1 = require("slash");
-var JavaScriptObfuscator = require("javascript-obfuscator");
-var log_1 = require("./log");
-var uglifycss = require("uglifycss");
-var sass = require("sass");
+var tslib_1 = require("tslib");
+var fs = tslib_1.__importStar(require("fs"));
+var Terser = tslib_1.__importStar(require("terser"));
+var path = tslib_1.__importStar(require("path"));
+var slash_1 = tslib_1.__importDefault(require("slash"));
+var JavaScriptObfuscator = tslib_1.__importStar(require("javascript-obfuscator"));
+var log_1 = tslib_1.__importDefault(require("./log"));
+var uglifycss = tslib_1.__importStar(require("uglifycss"));
+var sass = tslib_1.__importStar(require("sass"));
 var child_process_1 = require("child_process");
 var LocalStorage = require("node-localstorage").LocalStorage;
-var config_1 = require("./config");
-var framework = require("./framework");
-var filemanager_1 = require("./filemanager");
+var config_1 = tslib_1.__importDefault(require("./config"));
+var framework = tslib_1.__importStar(require("./framework"));
+var filemanager_1 = tslib_1.__importDefault(require("./filemanager"));
 var core = (function () {
     function core() {
         this.log = log_1.default;

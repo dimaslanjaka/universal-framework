@@ -110,12 +110,14 @@ export function serve(port: number = 3000) {
         res.write(
           template(
             function () {
-              var installed = "./tmp/npm/local.json";
               list_package();
+              var installed = "./tmp/npm/local.json";
               var result = {};
               try {
                 if (fs.existsSync(installed)) {
                   result = JSON.parse(fs.readFileSync(installed).toString());
+                } else {
+                  result = { error: "package still not fetched" };
                 }
               } catch (error) {
                 if (error) {
@@ -123,9 +125,6 @@ export function serve(port: number = 3000) {
                 }
               }
 
-              if (!fs.existsSync(installed)) {
-                return "package still not fetched";
-              }
               return JSON.stringify(result, null, 2);
             },
             [req, res]

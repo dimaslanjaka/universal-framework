@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.serve = void 0;
-var fs = require("fs");
-var Process = require("process");
-var http = require("http");
+var tslib_1 = require("tslib");
+var fs = tslib_1.__importStar(require("fs"));
+var Process = tslib_1.__importStar(require("process"));
+var http = tslib_1.__importStar(require("http"));
 var func_1 = require("./components/func");
 function serve(port) {
     if (port === void 0) { port = 3000; }
@@ -76,21 +77,21 @@ function serve(port) {
         }
         else if (url === "/fetch") {
             res.write(template(function () {
-                var installed = "./tmp/npm/local.json";
                 func_1.list_package();
+                var installed = "./tmp/npm/local.json";
                 var result = {};
                 try {
                     if (fs.existsSync(installed)) {
                         result = JSON.parse(fs.readFileSync(installed).toString());
+                    }
+                    else {
+                        result = { error: "package still not fetched" };
                     }
                 }
                 catch (error) {
                     if (error) {
                         result = {};
                     }
-                }
-                if (!fs.existsSync(installed)) {
-                    return "package still not fetched";
                 }
                 return JSON.stringify(result, null, 2);
             }, [req, res]));

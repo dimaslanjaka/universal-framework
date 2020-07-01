@@ -1,9 +1,10 @@
 "use strict";
-var rimraf_1 = require("rimraf");
-var fs = require("fs");
-var path = require("path");
-var log_1 = require("./log");
-var core_1 = require("./core");
+var tslib_1 = require("tslib");
+var rimraf_1 = tslib_1.__importDefault(require("rimraf"));
+var fs = tslib_1.__importStar(require("fs"));
+var path = tslib_1.__importStar(require("path"));
+var log_1 = tslib_1.__importDefault(require("./log"));
+var core_1 = tslib_1.__importDefault(require("./core"));
 var filemanager = (function () {
     function filemanager() {
     }
