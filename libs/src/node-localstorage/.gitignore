@@ -5,5 +5,4 @@ coverage
 .play
 node_modules
 .idea
-LocalStorage.js
 *.map

@@ -134,8 +134,15 @@ if (typeof args[0] != "undefined") {
       variant = null;
       break;
     case "fix":
-      constructor = Object.assign({}, constructor, require("./package.json"));
-      constructor = fixDeps(constructor);
+      if (fs.existsSync("./package.json")) {
+        constructor = Object.assign(
+          {},
+          constructor,
+          JSON.parse(fs.readFileSync("./package.json").toString())
+        );
+        constructor = fixDeps(constructor);
+        writenow(constructor);
+      }
       filemanager.unlink("./tmp/storage/compiler");
       filemanager.unlink("./tmp/storage/compile");
       filemanager.unlink("./tmp/storage/list_package");

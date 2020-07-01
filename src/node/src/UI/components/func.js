@@ -326,11 +326,41 @@ exports.getLatestVersion = getLatestVersion;
 function list_package() {
     if (!index_1.localStorage.getItem("list_package")) {
         index_1.localStorage.setItem("list_package", "true");
+        var global = child_process_1.exec("npm list -json -depth=0 -g");
+        global.stdout.on("data", function (data) {
+            writeFile("./tmp/npm/global.json", data);
+        });
+        global.stderr.on("data", function (data) {
+            writeFile("./tmp/npm/global-error.json", data);
+        });
         var local = child_process_1.exec("npm list -json -depth=0");
         local.stdout.on("data", function (data) {
             try {
                 data = JSON.parse(data);
-                console.log(data);
+                var pkgs_1 = [];
+                if (data.hasOwnProperty("dependencies")) {
+                    for (var key in data.dependencies) {
+                        if (data.dependencies.hasOwnProperty(key)) {
+                            var pkginfo = data.dependencies[key];
+                            data.dependencies[key].latest = null;
+                            pkgs_1.push(key);
+                        }
+                    }
+                    console.log(data.dependencies);
+                    var getlatest = function () {
+                        if (!pkgs_1.length) {
+                            writeFile("./tmp/npm/local.json", data);
+                            index_1.localStorage.removeItem("list_package");
+                            return null;
+                        }
+                        var latest = child_process_1.exec("npm show " + pkgs_1[0] + " version");
+                        latest.stdout.on("data", function (data) {
+                            pkgs_1.shift();
+                            getlatest();
+                        });
+                    };
+                    getlatest();
+                }
             }
             catch (error) { }
             writeFile("./tmp/npm/local.json", data);
@@ -338,16 +368,9 @@ function list_package() {
         local.stderr.on("data", function (data) {
             writeFile("./tmp/npm/local-error.json", data);
         });
-        var global = child_process_1.exec("npm list -json -depth=0");
-        global.stdout.on("data", function (data) {
-            writeFile("./tmp/npm/global.json", data);
-        });
-        global.stderr.on("data", function (data) {
-            writeFile("./tmp/npm/global-error.json", data);
-        });
-        setTimeout(function () {
-            index_1.localStorage.removeItem("list_package");
-        }, 5000);
+    }
+    else {
+        console.warn("process for list_package is locked, if previous runner got error, please fix it using `node index.js fix`");
     }
 }
 exports.list_package = list_package;

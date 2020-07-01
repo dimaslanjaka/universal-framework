@@ -6,10 +6,12 @@
     "strict": false,
     "emitDecoratorMetadata": true,
     "inlineSourceMap": true,
-    "allowUnreachableCode": false,
+    "allowUnreachableCode": true,
     "noImplicitReturns": false,
     "noImplicitAny": false,
     "removeComments": false,
+    "allowUnusedLabels": true,
+    "allowUmdGlobalAccess": true,
     "allowJs": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
@@ -40,5 +42,7 @@
     "./node_modules/**/*",
     "./libs/compiler/**/*"
   ],
-  "include": ["./libs/src/compiler/**/*"]
+  "include": [
+    "./libs/src/compiler/**/*"
+  ]
 }

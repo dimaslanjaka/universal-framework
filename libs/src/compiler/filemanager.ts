@@ -10,31 +10,34 @@ class filemanager {
    * Delete file or directory recursive
    * @param filedir
    * @param async
-   * @returns null = filedir not exists, false = delete filedir failed, true = success
+   * @returns null = file/dir not exists, false = delete filedir failed, true = success
    */
   static unlink(filedir: string, async?: boolean) {
-    const execute = function () {
-      if (async) {
-        rimraf(filedir, function (err) {
-          if (!err) {
-            log.log(log.success("done"));
-          } else {
-            log.log(log.error(`cannot delete ${core.filelog(filedir)}`));
-          }
-        });
+    const deleteNow = function () {
+      if (fs.existsSync(filedir)) {
+        if (async) {
+          rimraf(filedir, function (err) {
+            if (!err) {
+              log.log(log.success("done"));
+            } else {
+              log.log(log.error(`cannot delete ${core.filelog(filedir)}`));
+            }
+          });
+        } else {
+          rimraf.sync(filedir);
+        }
+        return true;
       } else {
-        rimraf.sync(filedir);
+        return false;
       }
     };
     try {
-      fs.exists(filedir, function (exists) {
-        if (exists) {
-          execute();
-        } else {
-          return null;
-        }
-      });
-      return true;
+      var exists = fs.existsSync(filedir);
+      if (exists) {
+        return deleteNow();
+      } else {
+        return null;
+      }
     } catch (error) {
       return false;
     }

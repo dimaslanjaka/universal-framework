@@ -9,31 +9,35 @@ var filemanager = (function () {
     function filemanager() {
     }
     filemanager.unlink = function (filedir, async) {
-        var execute = function () {
-            if (async) {
-                rimraf_1.default(filedir, function (err) {
-                    if (!err) {
-                        log_1.default.log(log_1.default.success("done"));
-                    }
-                    else {
-                        log_1.default.log(log_1.default.error("cannot delete " + core_1.default.filelog(filedir)));
-                    }
-                });
+        var deleteNow = function () {
+            if (fs.existsSync(filedir)) {
+                if (async) {
+                    rimraf_1.default(filedir, function (err) {
+                        if (!err) {
+                            log_1.default.log(log_1.default.success("done"));
+                        }
+                        else {
+                            log_1.default.log(log_1.default.error("cannot delete " + core_1.default.filelog(filedir)));
+                        }
+                    });
+                }
+                else {
+                    rimraf_1.default.sync(filedir);
+                }
+                return true;
             }
             else {
-                rimraf_1.default.sync(filedir);
+                return false;
             }
         };
         try {
-            fs.exists(filedir, function (exists) {
-                if (exists) {
-                    execute();
-                }
-                else {
-                    return null;
-                }
-            });
-            return true;
+            var exists = fs.existsSync(filedir);
+            if (exists) {
+                return deleteNow();
+            }
+            else {
+                return null;
+            }
         }
         catch (error) {
             return false;

@@ -91,7 +91,7 @@ class LocalStorage extends events.EventEmitter
     # else it'll return this
     instanceMap[@_location] = this
     return instanceMap[@_location]
-    
+
   _init: () ->
     try
       stat = fs.statSync(@_location)
@@ -159,7 +159,10 @@ class LocalStorage extends events.EventEmitter
     metaKey = @_metaKeyMap[key]
     if !!metaKey
       filename = path.join(@_location, metaKey.key)
-      return fs.readFileSync(filename, 'utf8')
+      if fs.existSync(filename)
+        return fs.readFileSync(filename, 'utf8')
+      else
+        return false
     else
       return null
 
@@ -198,7 +201,7 @@ class LocalStorage extends events.EventEmitter
     if rawKey is KEY_FOR_EMPTY_STRING
       return ''
     else
-      return rawKey 
+      return rawKey
 
   clear: () ->
     _emptyDirectory(@_location)

@@ -109,10 +109,14 @@ if (typeof args[0] != "undefined") {
             variant = null;
             break;
         case "fix":
-            constructor = Object.assign({}, constructor, require("./package.json"));
-            constructor = func_1.fixDeps(constructor);
+            if (fs.existsSync("./package.json")) {
+                constructor = Object.assign({}, constructor, JSON.parse(fs.readFileSync("./package.json").toString()));
+                constructor = func_1.fixDeps(constructor);
+                func_1.writenow(constructor);
+            }
             filemanager_1.default.unlink("./tmp/storage/compiler");
             filemanager_1.default.unlink("./tmp/storage/compile");
+            filemanager_1.default.unlink("./tmp/storage/list_package");
             variant = null;
             break;
         case "rebuild":

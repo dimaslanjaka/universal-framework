@@ -414,28 +414,55 @@ export function getLatestVersion(key: string) {
 export function list_package() {
   if (!localStorage.getItem("list_package")) {
     localStorage.setItem("list_package", "true");
-    var local = exec("npm list -json -depth=0");
-    local.stdout.on("data", function (data) {
-      try {
-        data = JSON.parse(data);
-        console.log(data.dependencies);
-      } catch (error) {}
-      writeFile("./tmp/npm/local.json", data);
-    });
-    local.stderr.on("data", function (data) {
-      writeFile("./tmp/npm/local-error.json", data);
-    });
-
-    var global = exec("npm list -json -depth=0");
+    var global = exec("npm list -json -depth=0 -g");
     global.stdout.on("data", function (data) {
       writeFile("./tmp/npm/global.json", data);
     });
     global.stderr.on("data", function (data) {
       writeFile("./tmp/npm/global-error.json", data);
     });
-    setTimeout(function () {
-      localStorage.removeItem("list_package");
-    }, 5000);
+
+    var local = exec("npm list -json -depth=0");
+    local.stdout.on("data", function (data) {
+      try {
+        data = JSON.parse(data);
+        const pkgs = [];
+        if (data.hasOwnProperty("dependencies")) {
+          for (const key in data.dependencies) {
+            if (data.dependencies.hasOwnProperty(key)) {
+              const pkginfo = data.dependencies[key];
+              data.dependencies[key].latest = null;
+              //console.log(pkginfo);
+              pkgs.push(key);
+            }
+          }
+          console.log(data.dependencies);
+          var getlatest = function () {
+            if (!pkgs.length) {
+              writeFile("./tmp/npm/local.json", data);
+              localStorage.removeItem("list_package");
+              return null;
+            }
+            var latest = exec("npm show " + pkgs[0] + " version");
+            latest.stdout.on("data", function (data) {
+              //data.dependencies[pkgs[0]].latest = data;
+              //console.log(data.dependencies[pkgs[0]]);
+              pkgs.shift();
+              getlatest();
+            });
+          };
+          getlatest();
+        }
+      } catch (error) {}
+      writeFile("./tmp/npm/local.json", data);
+    });
+    local.stderr.on("data", function (data) {
+      writeFile("./tmp/npm/local-error.json", data);
+    });
+  } else {
+    console.warn(
+      "process for list_package is locked, if previous runner got error, please fix it using `node index.js fix`"
+    );
   }
 }
 
