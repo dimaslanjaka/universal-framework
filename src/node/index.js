@@ -82,12 +82,11 @@ var constructor = {
 var variant = null;
 var isWin = process.platform === "win32";
 if (isWin) {
-    func_1.execute("cls");
+    func_1.execute("cls", function () { });
 }
 if (typeof args[0] != "undefined") {
     switch (args[0]) {
         case "gui":
-        default:
             index_1.serve();
             break;
         case "dev":
@@ -132,6 +131,9 @@ if (typeof args[0] != "undefined") {
             });
             break;
     }
+}
+else {
+    index_1.serve();
 }
 if (variant) {
     console.log("variant", variant);

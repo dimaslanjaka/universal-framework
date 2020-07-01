@@ -99,13 +99,12 @@ var variant: "production" | "development" | null = null;
 var isWin = process.platform === "win32";
 
 if (isWin) {
-  execute("cls");
+  execute("cls", function () {});
 }
 
 if (typeof args[0] != "undefined") {
   switch (args[0]) {
     case "gui":
-    default:
       serve();
       break;
 
@@ -139,6 +138,7 @@ if (typeof args[0] != "undefined") {
       constructor = fixDeps(constructor);
       filemanager.unlink("./tmp/storage/compiler");
       filemanager.unlink("./tmp/storage/compile");
+      filemanager.unlink("./tmp/storage/list_package");
       variant = null;
       break;
     case "rebuild":
@@ -157,6 +157,8 @@ if (typeof args[0] != "undefined") {
       });
       break;
   }
+} else {
+  serve();
 }
 
 if (variant) {

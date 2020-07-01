@@ -1,1 +1,1 @@
-require("./src/node/index");
+var index = require("./src/node/index");

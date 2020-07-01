@@ -5,7 +5,7 @@ import * as Process from "process";
 import * as http from "http";
 import { dirname } from "path";
 import { localStorage } from "../../node-localstorage/index";
-import { getFuncName } from "./../../compiler/framework";
+
 require("./consoler");
 
 /**
@@ -412,9 +412,14 @@ export function getLatestVersion(key: string) {
 }
 
 export function list_package() {
-  if (localStorage.getItem(getFuncName())) {
+  if (!localStorage.getItem("list_package")) {
+    localStorage.setItem("list_package", "true");
     var local = exec("npm list -json -depth=0");
     local.stdout.on("data", function (data) {
+      try {
+        data = JSON.parse(data);
+        console.log(data.dependencies);
+      } catch (error) {}
       writeFile("./tmp/npm/local.json", data);
     });
     local.stderr.on("data", function (data) {
@@ -428,6 +433,9 @@ export function list_package() {
     global.stderr.on("data", function (data) {
       writeFile("./tmp/npm/global-error.json", data);
     });
+    setTimeout(function () {
+      localStorage.removeItem("list_package");
+    }, 5000);
   }
 }
 

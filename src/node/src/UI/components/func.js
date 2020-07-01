@@ -7,7 +7,6 @@ var child_process_1 = require("child_process");
 var path = tslib_1.__importStar(require("path"));
 var path_1 = require("path");
 var index_1 = require("../../node-localstorage/index");
-var framework_1 = require("./../../compiler/framework");
 require("./consoler");
 function writenow(packageObject) {
     var sorter;
@@ -325,9 +324,15 @@ function getLatestVersion(key) {
 }
 exports.getLatestVersion = getLatestVersion;
 function list_package() {
-    if (index_1.localStorage.getItem(framework_1.getFuncName())) {
+    if (!index_1.localStorage.getItem("list_package")) {
+        index_1.localStorage.setItem("list_package", "true");
         var local = child_process_1.exec("npm list -json -depth=0");
         local.stdout.on("data", function (data) {
+            try {
+                data = JSON.parse(data);
+                console.log(data);
+            }
+            catch (error) { }
             writeFile("./tmp/npm/local.json", data);
         });
         local.stderr.on("data", function (data) {
@@ -340,6 +345,9 @@ function list_package() {
         global.stderr.on("data", function (data) {
             writeFile("./tmp/npm/global-error.json", data);
         });
+        setTimeout(function () {
+            index_1.localStorage.removeItem("list_package");
+        }, 5000);
     }
 }
 exports.list_package = list_package;
