@@ -141,7 +141,7 @@
   "typescript.suggest.completeJSDocs": true,
   "typescript.tsserver.log": "off",
   "typescript.surveys.enabled": true,
-  "typescript.tsdk": "./node_modules/typescript/lib",
+  //"typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.tsserver.maxTsServerMemory": 1500,
   "typescript.tsserver.useSeparateSyntaxServer": true,
   "typescript.tsserver.watchOptions": {

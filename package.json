@@ -199,6 +199,7 @@
     "toastr": "*",
     "ts-loader": "^7.0.5",
     "ts-npm-lint": "^0.1.0",
+    "tsd": "^0.12.0",
     "typeahead.js": "^0.11.1",
     "typescript-closure-compiler": "^1.8.11",
     "typescript-tslint-plugin": "^0.5.5",
