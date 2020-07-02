@@ -135,7 +135,8 @@ if ($style) {
 if (isset($content) && file_exists($content)) {
   $contentCSS = preg_replace('/\.php$/s', '.css', $content);
   $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
-  $href = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinCSS, $contentCSS]));
+  //$href = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinCSS, $contentCSS]));
+  $href = \MVC\helper::get_url_path([$contentMinCSS, $contentCSS]);
   if (!empty($href)) {
     echo $element->css([$href]);
   }
@@ -145,12 +146,14 @@ if (isset($content) && file_exists($content)) {
 if (isset($content) && file_exists($content)) {
   $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
   $contentJS = preg_replace('/\.php$/s', '.js', $content);
-  $contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
-  \MVC\helper::babel($contentBABELJS);
-  $src = \MVC\helper::get_url_path(\MVC\helper::asset_find([$contentMinJS, $contentJS]));
+  //$contentBABELJS = preg_replace('/\.php$/s', '.babel.js', $content);
+  ///\MVC\helper::babel($contentBABELJS);
+  $src = \MVC\helper::get_url_path([$contentMinJS, $contentJS]);
 
   if (!empty(trim($src))) {
     echo $element->js([$src]);
+  } else {
+    echo "<comment style=\"display:none\">$src, $contentMinJS, $contentJS not found</comment>";
   }
 }
 

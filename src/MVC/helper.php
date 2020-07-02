@@ -918,20 +918,42 @@ class helper
     return join(PHP_EOL, $_SERVER);
   }
 
+  /**
+   * Get URL from local file
+   *
+   * @param string|array $path destinations
+   * * `array` will be looped, which found first, return them
+   * @param boolean $cache
+   * @return string if empty == not found
+   */
   public static function get_url_path($path, bool $cache = null)
   {
-    if ($realpath = realpath($path)) {
-      $f = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', $realpath);
+    $load = function (string $path) use ($cache) {
+      if ($realpath = realpath($path)) {
+        $f = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', $realpath);
 
-      $ret = self::fixSlash($f);
-      if (true === $cache) {
-        $ret .= '?cache=' . CONFIG['cache']['key'];
+        $ret = self::fixSlash($f);
+        if (true === $cache) {
+          $ret .= '?cache=' . CONFIG['cache']['key'];
+        }
+
+        return $ret;
       }
-
-      return $ret;
+    };
+    if (is_string($path)) {
+      if ($load($path)) {
+        return $load($path);
+      }
+    } else if (is_array($path)) {
+      foreach ($path as $dest) {
+        if ($load($dest)) {
+          return $load($dest);
+          break;
+        }
+      }
     }
 
-    //return $path;
+    return '';
   }
 
   public static function ddos_key()

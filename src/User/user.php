@@ -181,6 +181,16 @@ class user
     }
   }
 
+  /**
+   * Get current database name.
+   *
+   * @return array
+   */
+  public function get_dbname()
+  {
+    return $this->pdo->query('select database()')->row_array();
+  }
+
   public function login($username, $password)
   {
     if (!$this->pdo) {
