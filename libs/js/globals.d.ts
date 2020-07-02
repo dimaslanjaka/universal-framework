@@ -1,19 +1,20 @@
 /// <reference types="jquery" />
-/// <reference path="./jQuery.d.ts" />
-/// <reference path="./JQueryStatic.d.ts" />
-/// <reference types="datatables.net"/> 
+/// <reference types="datatables.net"/>
 /// <reference types="datatables.net-buttons"/>
+
+declare const $: JQuery;
+interface jQuery extends JQuery {}
 
 interface JQuery extends jQuery {
   /**
-   * Extension of the example plugin.
+   * Material bootstrap select. (only works on MDB template)
    */
-  examplePlugin: ExamplePlugin;
+  materialSelect(): any;
   /**
    * Tooltip
-   * @param arg0 show hide
+   * @param action show hide
    */
-  tooltip(arg0: string): void;
+  tooltip(action: "show" | "hide" | any): void;
   /**
    * Get current ID(*) or NAME attribute
    */
@@ -146,10 +147,7 @@ declare namespace DataTables {
       extend: "collection";
       text: '<i class="fas fa-sync"></i>';
       className: "btn btn-info";
-      action: Function = function (e, dt, node, config) {
-        dt.clear().draw();
-        dt.ajax.reload();
-      };
+      action: Function;
     };
   }
 }

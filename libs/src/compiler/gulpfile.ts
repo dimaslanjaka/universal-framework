@@ -87,6 +87,10 @@ gulp.task("watch", function () {
             if (!/\.min\.(js|css)$/s.test(file)) {
               minify(file);
             }
+          } else if (file.endsWith(".ts") && !file.endsWith(".d.ts")) {
+            if (!/libs\/|libs\\/s.test(file)) {
+              single_tsCompile(file);
+            }
           } else {
             var reason = log.error(undefined);
             if (/\.(php|log|txt|htaccess)$/s.test(filename_log)) {
@@ -126,20 +130,13 @@ gulp.task("composer", function () {
   });
 });
 
-gulp.task("default", function () {
-  var merge = gulp
-    .src(["libs/compiler/**/*.js", "./index.js"])
-    .pipe(concat("index.js"))
-    .pipe(gulp.dest("./tmp/compiler"));
-  return merge;
-});
+gulp.task("default", gulp.series(["build", "watch"]));
 
 /**
  * minify assets
  * @param file
  */
 function minify(item: string | Buffer) {
-  const log = framework.log;
   const exists = fs.existsSync(item);
   if (exists) {
     item = item.toString();
@@ -180,6 +177,10 @@ function minify(item: string | Buffer) {
           framework.unlink(obfuscatedjs);
           framework.unlink(obfuscatedminjs);
         }
+      }
+    } else if (item.endsWith(".ts") && !item.endsWith(".d.ts")) {
+      if (!/libs\/|libs\\/s.test(item)) {
+        single_tsCompile(item);
       }
     }
   }
@@ -258,6 +259,31 @@ async function createApp(withoutView: boolean) {
 }
 
 /**
+ * Single Typescript Compiler
+ * @param target
+ * @todo universal-framework typescript compiler support
+ */
+function single_tsCompile(target: string) {
+  var targetlog = log.chalk().magentaBright(framework.filelog(target));
+  if (target.endsWith(".d.ts")) {
+    log.log(`${targetlog} is declaration file`);
+    return;
+  }
+  var dest = path.dirname(target);
+  var filename = path.basename(target);
+  log.log(
+    `${targetlog} > ${log
+      .chalk()
+      .yellow(framework.filelog(target.replace(/\.ts$/, ".js")))} start`
+  );
+  var tsProject = ts.createProject({
+    declaration: false,
+    skipLibCheck: true,
+  });
+  return gulp.src(target).pipe(tsProject()).pipe(gulp.dest(dest));
+}
+
+/**
  * Typescript compiler
  * @param source
  * @param destination
@@ -296,39 +322,5 @@ function typescriptCompiler(
         reject(err.message);
       }
     });
-  });
-}
-
-/**
- * Typescript compiler
- * @param source
- * @param destination
- * @param callback
- */
-function typescriptCompiler2(
-  source: string,
-  destination: string,
-  callback: (arg0: any, arg1: any) => void = null
-) {
-  const instance = ts.createProject(source);
-  return new Promise((resolve, reject) => {
-    instance
-      .src()
-      .pipe(instance())
-      .pipe(
-        rename(function (path: { extname: string }) {
-          path.extname = ".js";
-        })
-      )
-      .pipe(gulp.dest(destination))
-      .on("end", function () {
-        log.log(
-          `successfully compiled ${log.success(framework.filelog(source))}`
-        );
-        if (typeof callback == "function") {
-          callback(source, destination);
-        }
-        return resolve(true);
-      });
   });
 }

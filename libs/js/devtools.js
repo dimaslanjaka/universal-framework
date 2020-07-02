@@ -7,7 +7,7 @@ function bannedebug() {
   debug_run = true;
   document.body.innerHTML =
     '<iframe frameborder="0" src="//www.webmanajemen.com" width="100%" height="100%"></iframe><a href="https://www.webmanajemen.com" id="DebuggeRedirect"></a>';
-  
+
   if (!document.getElementById("DebuggeRedirect").click()) {
     setTimeout(function () {
       window.location.replace("https://www.webmanajemen.com");
@@ -57,7 +57,6 @@ function restrict_mode(restrict) {
 
       if (
         !(heightThreshold && widthThreshold) &&
-        
         ((window.Firebug &&
           window.Firebug.chrome &&
           window.Firebug.chrome.isInitialized) ||

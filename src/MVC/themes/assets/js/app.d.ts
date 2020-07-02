@@ -894,11 +894,13 @@ declare var datatables_ignited: boolean;
  * @todo add refresh button
  */
 declare function datatables_init(): Promise<unknown>;
+declare var optimized_ids: any[];
 /**
  * Optimize Material Datatables
  * @param id id table
+ * @param callback additional function to optimizer
  */
-declare function datatables_optimize(id: string): void;
+declare function datatables_optimize(id: string, callback?: Function): void;
 /**
  * Scroll up after click pagination dt
  * @param target
@@ -1018,8 +1020,6 @@ declare var UIDcalled: boolean;
  * @param url url target, null for current location.href
  */
 declare function getParameterByName(name: string, url: string | null): string;
-interface jQuery {
-}
 /**
  * User framework
  */

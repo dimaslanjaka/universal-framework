@@ -2860,7 +2860,13 @@ function datatables_init() {
         resolve();
     });
 }
-function datatables_optimize(id) {
+var optimized_ids = [];
+function datatables_optimize(id, callback) {
+    if (optimized_ids.includes(id)) {
+        console.error("Datatables #" + id + " already optimized");
+        return;
+    }
+    optimized_ids.push(id);
     $("#" + id + "_wrapper")
         .add("#pkgList_wrapper")
         .find("label")

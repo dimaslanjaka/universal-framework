@@ -179,11 +179,18 @@ function datatables_init() {
   });
 }
 
+var optimized_ids = [];
 /**
  * Optimize Material Datatables
  * @param id id table
+ * @param callback additional function to optimizer
  */
-function datatables_optimize(id: string) {
+function datatables_optimize(id: string, callback?: Function) {
+  if (optimized_ids.includes(id)) {
+    console.error(`Datatables #${id} already optimized`);
+    return;
+  }
+  optimized_ids.push(id);
   $("#" + id + "_wrapper")
     .add("#pkgList_wrapper")
     .find("label")

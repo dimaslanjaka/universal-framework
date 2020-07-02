@@ -1,5 +1,3 @@
-interface jQuery {}
-
 /**
  * User framework
  */

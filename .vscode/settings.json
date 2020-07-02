@@ -134,7 +134,7 @@
   },*/
   "terminal.integrated.environmentChangesIndicator": "on",
   "typescript.check.npmIsInstalled": true,
-  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.disableAutomaticTypeAcquisition": false,
   "typescript.locale": "en",
   "typescript.suggest.autoImports": true,
   "typescript.tsc.autoDetect": "off",
