@@ -114,7 +114,7 @@ class pdo
 
   /**
    * Switch database.
-   *
+   * @todo Switch between databases
    * @param string $dbname
    *
    * @return $this
@@ -357,6 +357,12 @@ class pdo
     return $result;
   }
 
+  /**
+   * Automated Executor
+   *
+   * @param array $value
+   * @return void
+   */
   public function exec(array $value = [])
   {
     $exec = $this->SQL_Exec($this->trim($this->query), $value);
@@ -513,6 +519,13 @@ class pdo
     return $this;
   }
 
+  /**
+   * Get query result
+   * @todo check before execution
+   * @param array $data_value
+   * @return array
+   * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+   */
   public function getQuery(array $data_value = [])
   {
     $query = $this->query;
@@ -581,6 +594,7 @@ class pdo
         $result['message'] = 'SQL Error! Please contact the administrator.';
       }
     }
+    $result['title'] = __CLASS__ . '::' . __FUNCTION__;
 
     if (headers_sent()) {
       $result[] = '</pre>';
@@ -725,7 +739,7 @@ class pdo
 
   public function SQL_Exec($query, $values = false)
   {
-    $result = ['query' => $query, 'error' => false];
+    $result = ['query' => $query, 'error' => false, 'title' => 'Database Management'];
     try {
       if (!$values) {
         $status = $this->pdo->exec($query);

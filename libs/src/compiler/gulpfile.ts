@@ -249,9 +249,10 @@ async function createApp(withoutView: boolean) {
     }
     localStorage.removeItem("compile");
   } else {
-    log.log(log.error("Compiler lock process already exists"));
     log.log(
-      log.chalk().yellow("node index.js fix") + log.chalk().green(" to fix it")
+      log.error("Compiler lock process already exists ") +
+        log.chalk().yellow("node index.js fix") +
+        log.chalk().green(" to fix it")
     );
   }
 }

@@ -876,7 +876,11 @@ declare var reCaptcha: {
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 declare const dtpackage: () => string[];
-declare function load_requirejs(): void;
+declare var requirejs_ignited: boolean;
+/**
+ * Load requirejs
+ */
+declare function load_requirejs(): Promise<unknown>;
 declare function load_module(name: string, callback: Function): void;
 /**
  * Datatables loader
@@ -891,12 +895,18 @@ declare var datatables_ignited: boolean;
  */
 declare function datatables_init(): Promise<unknown>;
 /**
+ * Optimize Material Datatables
+ * @param id id table
+ */
+declare function datatables_optimize(id: string): void;
+/**
  * Scroll up after click pagination dt
  * @param target
  */
 declare function pagination_up(target: JQuery): void;
 /**
  * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
  */
 declare function smartform(): void;
 /**

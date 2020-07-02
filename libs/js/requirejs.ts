@@ -63,23 +63,37 @@ const dtpackage = function () {
   ];
 };
 
+var requirejs_ignited = false;
 if (!isnode()) {
-  function downloadRequireJS() {
-    var element = document.createElement("script");
-    element.src = "/node_modules/requirejs/require.js";
-    element.onload = element.onreadystatechange = function () {
-      if (typeof requirejs != "undefined") {
-        requirejs.config(require_config);
+  function downloadRequireJS(win?, event?) {
+    return new Promise(function (resolve) {
+      console.log(`Loading RequireJS using`, event);
+      if (!requirejs_ignited) {
+        var element = document.createElement("script");
+        element.src = "/node_modules/requirejs/require.js";
+        element.onload = element.onreadystatechange = function () {
+          if (typeof requirejs != "undefined") {
+            console.log("requirejs ignited and loaded successfuly");
+            requirejs.config(require_config);
+          }
+          resolve(true);
+        };
+        document.body.appendChild(element);
       }
-    };
-    document.body.appendChild(element);
+    });
   }
 }
+
+/**
+ * Load requirejs
+ */
 function load_requirejs() {
-  if (window.addEventListener)
-    window.addEventListener("load", downloadRequireJS, false);
-  else if (window.attachEvent) window.attachEvent("onload", downloadRequireJS);
-  else window.onload = downloadRequireJS;
+  if (!requirejs_ignited) {
+    console.info("RequireJS not loaded, loading them now");
+    return downloadRequireJS();
+  } else {
+    console.info("RequireJS already ignited");
+  }
 }
 
 function load_module(name: string, callback: Function) {}
@@ -163,6 +177,47 @@ function datatables_init() {
     }
     resolve();
   });
+}
+
+/**
+ * Optimize Material Datatables
+ * @param id id table
+ */
+function datatables_optimize(id: string) {
+  $("#" + id + "_wrapper")
+    .add("#pkgList_wrapper")
+    .find("label")
+    .each(function () {
+      $(this).parent().append($(this).children());
+    });
+  $("#" + id + "_wrapper .dataTables_filter")
+    .find("input")
+    .each(function () {
+      const $this = $(this);
+      $this.attr("placeholder", "Search");
+      $this.removeClass("form-control-sm");
+    });
+  $("#" + id + "_wrapper .dataTables_length")
+    .add("#pkgList_wrapper .dataTables_length")
+    .addClass("d-flex flex-row");
+  $("#" + id + "_wrapper .dataTables_filter")
+    .add("#pkgList_wrapper .dataTables_filter")
+    .addClass("md-form");
+  $("#" + id + "_wrapper select")
+    .add("#pkgList_wrapper select")
+    .removeClass("custom-select custom-select-sm form-control form-control-sm");
+  $("#" + id + "_wrapper select")
+    .add("#pkgList_wrapper select")
+    .addClass("mdb-select");
+  if (typeof $.fn.materialSelect == "function") {
+    $("#" + id + "_wrapper .mdb-select")
+      .add("#pkgList_wrapper .mdb-select")
+      .materialSelect();
+  }
+  $("#" + id + "_wrapper .dataTables_filter")
+    .add("#pkgList_wrapper .dataTables_filter")
+    .find("label")
+    .remove();
 }
 
 /**
