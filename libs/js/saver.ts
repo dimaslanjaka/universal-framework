@@ -1,4 +1,5 @@
 /// <reference path="./Object.d.ts"/>
+/// <reference path="./globals.d.ts"/>
 
 /**
  * SMARTFORM
