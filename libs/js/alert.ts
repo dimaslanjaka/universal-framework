@@ -54,18 +54,18 @@ function createAlert(
       right: 15px;
       width: 30%;
     }
-    
+
     #pageMessages .alert {
       position: relative;
     }
-    
+
     #pageMessages .alert .close {
       position: absolute;
       top: 5px;
       right: 5px;
       font-size: 1em;
     }
-    
+
     #pageMessages .alert .fa {
       margin-right:.3em;
     }`,

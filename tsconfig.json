@@ -31,7 +31,7 @@
     "./libs/src/**/*",
     "./libs/js/**/*",
     "./views/**/*",
-    "./views/inventory/warehouses/*.js",
+    "./views/inventory/warehouses/**/*",
     "./src/MVC/themes/**/*",
     "./assets/node/**/*"
   ],

@@ -1397,18 +1397,18 @@ options) {
       right: 15px;
       width: 30%;
     }
-    
+
     #pageMessages .alert {
       position: relative;
     }
-    
+
     #pageMessages .alert .close {
       position: absolute;
       top: 5px;
       right: 5px;
       font-size: 1em;
     }
-    
+
     #pageMessages .alert .fa {
       margin-right:.3em;
     }`, { id: "alertcss" });
@@ -2221,15 +2221,15 @@ if (!isnode()) {
  */
 function load_disqus(disqus_shortname) {
     // Prepare the trigger and target
-    var disqus_trigger = $('#disqus_trigger'), disqus_target = $('#disqus_thread');
+    var disqus_trigger = $("#disqus_trigger"), disqus_target = $("#disqus_thread");
     // Load script asynchronously only when the trigger and target exist
     if (disqus_target.length) {
-        framework().js('//' + disqus_shortname + '.disqus.com/embed.js', null);
+        framework().js("//" + disqus_shortname + ".disqus.com/embed.js", null);
         disqus_trigger.remove();
     }
     else {
-        if (typeof toastr != 'undefined') {
-            toastr.error('disqus container not exists', 'disqus comment');
+        if (typeof toastr != "undefined") {
+            toastr.error("disqus container not exists", "disqus comment");
         }
     }
 }
@@ -3066,7 +3066,7 @@ var reCaptcha = {
      * @type {Number} counter executions
      */
     gexec_count: 0,
-    key: '6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie',
+    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
     /**
      * Javascript caller
      * @param {String} url
@@ -3075,20 +3075,21 @@ var reCaptcha = {
     js: function (url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) { //IE
+        if (script.readyState) {
+            //IE
             script.onreadystatechange = function () {
-                if (script.readyState == "loaded" ||
-                    script.readyState == "complete") {
+                if (script.readyState == "loaded" || script.readyState == "complete") {
                     script.onreadystatechange = null;
-                    if (typeof callback == 'function') {
+                    if (typeof callback == "function") {
                         callback();
                     }
                 }
             };
         }
-        else { //Others
+        else {
+            //Others
             script.onload = function () {
-                if (typeof callback == 'function') {
+                if (typeof callback == "function") {
                     callback();
                 }
             };
@@ -3108,9 +3109,15 @@ var reCaptcha = {
      */
     start: function () {
         reCaptcha.reCaptcha_buttons(true, function () {
-            reCaptcha.js('https://www.google.com/recaptcha/api.js?render=' + reCaptcha.key + '&render=explicit', function () {
+            reCaptcha.js("https://www.google.com/recaptcha/api.js?render=" +
+                reCaptcha.key +
+                "&render=explicit", function () {
                 grecaptcha.ready(function () {
-                    var msg = 'first_start_' + location.href.replace(/[^a-zA-Z0-9 ]/g, '_').replace(/\_{2,99}/g, '_').replace(/\_$/g, '');
+                    var msg = "first_start_" +
+                        location.href
+                            .replace(/[^a-zA-Z0-9 ]/g, "_")
+                            .replace(/\_{2,99}/g, "_")
+                            .replace(/\_$/g, "");
                     reCaptcha.exec(msg);
                 });
             });
@@ -3120,8 +3127,8 @@ var reCaptcha = {
      * Initialize Recaptcha by defining jquery
      */
     init: function () {
-        if (typeof jQuery == 'undefined' || typeof jQuery == 'undefined') {
-            reCaptcha.js('https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js', reCaptcha.start);
+        if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
+            reCaptcha.js("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", reCaptcha.start);
         }
         else {
             reCaptcha.start();
@@ -3133,41 +3140,42 @@ var reCaptcha = {
      */
     exec: function (action, retry, callback) {
         //console.log('gtag is ' + typeof gtag);
-        if (typeof gtag == 'function') {
-            gtag('event', 'recaptcha', {
-                'action': action
+        if (typeof gtag == "function") {
+            gtag("event", "recaptcha", {
+                action: action,
             });
         }
-        if (typeof grecaptcha == 'undefined' || typeof grecaptcha.execute != 'function') {
-            if (typeof toastr == 'undefined') {
-                console.error('recaptcha not loaded');
+        if (typeof grecaptcha == "undefined" ||
+            typeof grecaptcha.execute != "function") {
+            if (typeof toastr == "undefined") {
+                console.error("recaptcha not loaded");
             }
             else {
-                toastr.error('recaptcha not loaded, retrying...', 'captcha information');
+                toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
             for (let index = 0; index < 3; index++) {
                 reCaptcha.exec(action, true);
                 if (index == 3 - 1) {
-                    toastr.error('recaptcha has reached limit', 'captcha information');
+                    toastr.error("recaptcha has reached limit", "captcha information");
                 }
             }
             return;
         }
         else if (retry) {
-            if (typeof toastr == 'undefined') {
-                console.info('recaptcha loaded successfully');
+            if (typeof toastr == "undefined") {
+                console.info("recaptcha loaded successfully");
             }
             else {
-                toastr.success('recaptcha loaded successfully', 'captcha information');
+                toastr.success("recaptcha loaded successfully", "captcha information");
             }
         }
         reCaptcha.gexec_count++;
         var execute = grecaptcha.execute(reCaptcha.key, {
-            'action': action || 'location.href'
+            action: action || "location.href",
         });
         if (!execute) {
-            if (typeof toastr != 'undefined') {
-                toastr.error('failed getting token');
+            if (typeof toastr != "undefined") {
+                toastr.error("failed getting token");
             }
             return;
         }
@@ -3182,7 +3190,7 @@ var reCaptcha = {
                 reCaptcha.reCaptcha_buttons(false, null);
                 //console.info(token);
                 reCaptcha.insert(token);
-                if (typeof callback == 'function') {
+                if (typeof callback == "function") {
                     callback(token);
                 }
             });
@@ -3193,10 +3201,10 @@ var reCaptcha = {
      * @param {String} token
      */
     insert: function (token) {
-        framework().sc('token', token, 1);
-        if (typeof jQuery == 'undefined') {
-            console.log('jQuery Not Loaded');
-            reCaptcha.js('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js', function () {
+        framework().sc("token", token, 1);
+        if (typeof jQuery == "undefined") {
+            console.log("jQuery Not Loaded");
+            reCaptcha.js("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", function () {
                 reCaptcha.distribute_token(token);
             });
         }
@@ -3209,12 +3217,14 @@ var reCaptcha = {
      * @param {String} token
      */
     distribute_token: function (token) {
-        var form = $('form');
+        var form = $("form");
         form.each(function (i, el) {
             var fg = $(this).find('[name="g-recaptcha-response"]');
             console.log(fg.length);
             if (!fg.length) {
-                $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo($(this));
+                $('<input type="hidden" readonly value="' +
+                    token +
+                    '" name="g-recaptcha-response">').appendTo($(this));
             }
             else {
                 fg.val(token);
@@ -3227,7 +3237,7 @@ var reCaptcha = {
     get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
-            var vr = gr[0].getAttribute('value');
+            var vr = gr[0].getAttribute("value");
             return vr;
         }
         return null;
@@ -3239,21 +3249,24 @@ var reCaptcha = {
      */
     reCaptcha_buttons: function (reCaptcha_disable, callback) {
         //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
-        $('button,[type="submit"],input').not('[data-recaptcha="no-action"]').not('[recaptcha-exclude]').each(function (i, e) {
-            if ($(this).attr('type') == 'radio') {
+        $('button,[type="submit"],input')
+            .not('[data-recaptcha="no-action"]')
+            .not("[recaptcha-exclude]")
+            .each(function (i, e) {
+            if ($(this).attr("type") == "radio") {
                 return;
             }
             if (reCaptcha_disable) {
                 if ($(this).is(":disabled")) {
-                    $(this).attr('recaptcha-exclude', makeid(5));
+                    $(this).attr("recaptcha-exclude", makeid(5));
                 }
             }
-            $(this).prop('disabled', reCaptcha_disable);
+            $(this).prop("disabled", reCaptcha_disable);
         });
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
             callback();
         }
-    }
+    },
 };
 /**
  * Hidden reCaptcha v3 object initializer
