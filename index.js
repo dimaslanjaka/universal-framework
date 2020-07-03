@@ -1,1 +1,1 @@
-var index = require("./src/node/index");
+var index = require("./dist/index");

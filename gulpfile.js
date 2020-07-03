@@ -1,1 +1,1 @@
-const gulp = require("./libs/compiler/gulpfile");
+const gulp = require("./dist/compiler/gulpfile");

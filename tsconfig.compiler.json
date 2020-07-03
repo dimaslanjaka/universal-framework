@@ -29,7 +29,7 @@
       "ES2020"
     ],
     "rootDir": "./libs/src",
-    "outDir": "./libs",
+    "outDir": "./dist",
     "noLib": false,
     "esModuleInterop": true,
     "importHelpers": true

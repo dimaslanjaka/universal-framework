@@ -10,7 +10,8 @@ import { promisify } from "util";
 import observatory from "../observatory/lib/observatory";
 import chalk from "chalk";
 import dns from "dns";
-
+import log from "./log";
+import sorter from "./sorter";
 require("./consoler");
 
 /**
@@ -33,7 +34,7 @@ export function isOffline() {
  * @param file
  */
 export function asset(file: string) {
-  file = file.toString().trim().replace("./", "");
+  file = file.toString().trim().replace(/\.\//gm, "");
   if (fs.existsSync(file)) {
     return file;
   } else if (fs.existsSync(`./${file}`)) {
@@ -59,16 +60,7 @@ export function readFile(file: string) {
  * @param packageObject
  */
 export function writenow(packageObject: packagejson) {
-  var sorter: { length: any; reorder: (arg0: object) => any };
-  var log: {
-    log: (arg0: any) => void;
-    success: (arg0: string) => any;
-    error: (arg0: any) => any;
-  };
-
   var sorterFound = trycatch(function () {
-    log = require("./libs/compiler/log");
-    sorter = require("./libs/compiler/sorter");
     return true;
   });
 
@@ -360,17 +352,19 @@ export function module_exists(
  * Configuration builder
  */
 export function config_builder() {
-  const config = require("./config.json");
+  const config = require(asset("./config.json"));
   var parsed = JSON.stringify(parseConfig(config, true), null, 2);
 
-  if (fs.existsSync("./libs")) {
+  if (fs.existsSync(asset("./libs"))) {
     console.error("Libs folder not exists, exiting config builder.");
     return null;
   }
 
-  fs.writeFileSync("./config-backup.json", parsed, { encoding: "utf-8" });
+  fs.writeFileSync(asset("./config-backup.json"), parsed, {
+    encoding: "utf-8",
+  });
   var str = fs
-    .readFileSync("./libs/src/compiler/config.ts", {
+    .readFileSync(asset("./libs/src/compiler/config.ts"), {
       encoding: "utf-8",
     })
     .toString()
@@ -383,7 +377,7 @@ export function config_builder() {
 
   var regex = /config\:((.|\n)*)\=\srequire/gm;
   var mod = str.replace(regex, `config:${parsed} = require`);
-  fs.writeFileSync("./libs/src/compiler/config.ts", mod);
+  fs.writeFileSync(asset("./libs/src/compiler/config.ts"), mod);
 
   function parseConfig(
     config: { [key: string]: any },
@@ -428,48 +422,6 @@ export function array_remove(source: Array<string>, target: Array<string>) {
   return source.filter(function (el) {
     return !target.includes(el);
   });
-}
-
-/**
- * Create Shared Modules
- */
-export function shared_packages() {
-  const libs: packagejson = require("./libs/package.json");
-  const packages = {};
-  Object.assign(packages, libs.dependencies, libs.devDependencies);
-
-  const common: packagejson = require("./libs/js/package.json");
-  Object.assign(packages, common.dependencies, common.devDependencies);
-
-  const compiler: packagejson = require("./libs/src/compiler/package.json");
-  Object.assign(packages, compiler.dependencies, compiler.devDependencies);
-
-  const gui: packagejson = require("./libs/src/gui/package.json");
-  Object.assign(packages, gui.dependencies, gui.devDependencies);
-
-  const locutus: packagejson = require("./libs/src/locutus/package.json");
-  Object.assign(packages, locutus.dependencies, locutus.devDependencies);
-
-  const observatory: packagejson = require("./libs/src/observatory/package.json");
-  Object.assign(
-    packages,
-    observatory.dependencies,
-    observatory.devDependencies
-  );
-
-  const sassjs: packagejson = require("./libs/src/sass.js/package.json");
-  Object.assign(packages, sassjs.dependencies, sassjs.devDependencies);
-
-  const syncs: packagejson = require("./libs/src/syncs/packages.json");
-  Object.assign(packages, syncs.dependencies, syncs.devDependencies);
-
-  const ytdl: packagejson = require("./libs/src/ytdl/package.json");
-  Object.assign(packages, ytdl.dependencies, ytdl.devDependencies);
-
-  var pkg: packagejson = require("./package.json");
-  pkg.dependencies = packages;
-  pkg = fixDeps(pkg);
-  return pkg;
 }
 
 /**

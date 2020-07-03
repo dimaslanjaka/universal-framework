@@ -1,0 +1,33 @@
+module.exports = function strspn(str1, str2, start, lgth) {
+    //  discuss at: https://locutus.io/php/strspn/
+    // original by: Valentina De Rosa
+    // improved by: Brett Zamir (https://brett-zamir.me)
+    //   example 1: strspn('42 is the answer, what is the question ...', '1234567890')
+    //   returns 1: 2
+    //   example 2: strspn('foo', 'o', 1, 2)
+    //   returns 2: 2
+    var found;
+    var stri;
+    var strj;
+    var j = 0;
+    var i = 0;
+    start = start ? (start < 0 ? (str1.length + start) : start) : 0;
+    lgth = lgth ? ((lgth < 0) ? (str1.length + lgth - start) : lgth) : str1.length - start;
+    str1 = str1.substr(start, lgth);
+    for (i = 0; i < str1.length; i++) {
+        found = 0;
+        stri = str1.substring(i, i + 1);
+        for (j = 0; j <= str2.length; j++) {
+            strj = str2.substring(j, j + 1);
+            if (stri === strj) {
+                found = 1;
+                break;
+            }
+        }
+        if (found !== 1) {
+            return i;
+        }
+    }
+    return i;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3Ryc3BuLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vbGlicy9zcmMvbG9jdXR1cy9zcmMvcGhwL3N0cmluZ3Mvc3Ryc3BuLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBQyxPQUFPLEdBQUcsU0FBUyxNQUFNLENBQUUsSUFBSSxFQUFFLElBQUksRUFBRSxLQUFLLEVBQUUsSUFBSTtJQUN2RCw4Q0FBOEM7SUFDOUMsaUNBQWlDO0lBQ2pDLG9EQUFvRDtJQUNwRCxrRkFBa0Y7SUFDbEYsaUJBQWlCO0lBQ2pCLHdDQUF3QztJQUN4QyxpQkFBaUI7SUFFakIsSUFBSSxLQUFLLENBQUE7SUFDVCxJQUFJLElBQUksQ0FBQTtJQUNSLElBQUksSUFBSSxDQUFBO0lBQ1IsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBQ1QsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBRVQsS0FBSyxHQUFHLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxLQUFLLEdBQUcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxNQUFNLEdBQUcsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUE7SUFDL0QsSUFBSSxHQUFHLElBQUksQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksR0FBRyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsTUFBTSxHQUFHLElBQUksR0FBRyxLQUFLLENBQUMsQ0FBQyxDQUFDLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksQ0FBQyxNQUFNLEdBQUcsS0FBSyxDQUFBO0lBQ3RGLElBQUksR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLEtBQUssRUFBRSxJQUFJLENBQUMsQ0FBQTtJQUUvQixLQUFLLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLElBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLEVBQUU7UUFDaEMsS0FBSyxHQUFHLENBQUMsQ0FBQTtRQUNULElBQUksR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUE7UUFDL0IsS0FBSyxDQUFDLEdBQUcsQ0FBQyxFQUFFLENBQUMsSUFBSSxJQUFJLENBQUMsTUFBTSxFQUFFLENBQUMsRUFBRSxFQUFFO1lBQ2pDLElBQUksR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUMsRUFBRSxDQUFDLEdBQUcsQ0FBQyxDQUFDLENBQUE7WUFDL0IsSUFBSSxJQUFJLEtBQUssSUFBSSxFQUFFO2dCQUNqQixLQUFLLEdBQUcsQ0FBQyxDQUFBO2dCQUNULE1BQUs7YUFDTjtTQUNGO1FBQ0QsSUFBSSxLQUFLLEtBQUssQ0FBQyxFQUFFO1lBQ2YsT0FBTyxDQUFDLENBQUE7U0FDVDtLQUNGO0lBRUQsT0FBTyxDQUFDLENBQUE7QUFDVixDQUFDLENBQUEifQ==
