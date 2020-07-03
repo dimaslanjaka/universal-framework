@@ -1,4 +1,4 @@
-/// <reference path="./src/UI/components/globals.d.ts" />
+/// <reference path="./src/compiler/globals.d.ts" />
 
 /**
  * Package.json maintainer
@@ -10,91 +10,21 @@ import * as path from "path";
 import * as Process from "process";
 //import { spawn } from "child_process";
 import filemanager from "./src/compiler/filemanager";
-import * as http from "http";
+import { minify } from "./src/compiler/gulpfile";
+import {} from "./src/syncs/sync";
 import {
   config_builder,
   fixDeps,
   writeFile,
   execute,
-  shared_packages,
   writenow,
-} from "./src/UI/components/func";
+  asset,
+} from "./src/compiler/func";
 const args = Process.argv.slice(2);
 
-var constructor: packagejson = {
-  main: "index.js",
-  files: ["libs/"],
-  name: "universal-framework",
-  description: "Universal framework php javascript",
-  displayName: "UNIVERSAL FRAMEWORK [PHPJS]",
-  publisher: "dimaslanjaka",
-  version: "3.0.0",
-  keywords: [
-    "SFTP",
-    "PHP",
-    "COMMONJS",
-    "WINDOWS",
-    "FRAMEWORK",
-    "GUI",
-    "project",
-    "typescript",
-    "javascript",
-    "tools",
-    "python",
-  ],
-  scripts: {
-    preinstall: "node ./index.js dev",
-    postinstall:
-      "node ./index.js && tsc -p tsconfig.build.json &&tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json && gulp build",
-  },
-  bin: "./libs/bin",
-  repository: {
-    type: "git",
-    url: "git+https://github.com/dimaslanjaka/universal-framework.git",
-  },
-  author: {
-    name: "dimaslanjaka",
-    email: "dimaslanjaka@gmail.com",
-  },
-  license: "MIT",
-  bugs: {
-    url: "https://github.com/dimaslanjaka/universal-framework/issues",
-  },
-  homepage: "https://github.com/dimaslanjaka/universal-framework#readme",
-  maintainers: [
-    {
-      email: "dimaslanjaka@gmail.com",
-      name: "Dimas Lanjaka",
-      url: "https://www.github.com/dimaslanjaka",
-    },
-  ],
-  dependencies: {
-    async: "*",
-    typescript: "*",
-    "ts-node": "*",
-    "amd-loader": "*",
-    systemjs: "*",
-    "gulp-typescript": "*",
-    upath: "*",
-    tslib: "*",
-    gulp: "*",
-    "gulp-rename": "*",
-    "gulp-series": "*",
-    terser: "*",
-    chalk: "*",
-    "javascript-obfuscator": "*",
-    node: "*",
-    jquery: "*",
-    toastr: "*",
-    "datatables.net-buttons": "*",
-    "datatables.net": "*",
-  },
-  devDependencies: {
-    node: "*",
-    "@types/node": "*",
-  },
-};
-
+var constructor = JSON.parse(
+  fs.readFileSync(asset("./package.json")).toString()
+);
 var variant: "production" | "development" | "gui" | null = null;
 var isWin = process.platform === "win32";
 
@@ -185,11 +115,11 @@ if (variant) {
     constructor.scripts.test = "";
     constructor.bin = "./libs/bin";
     constructor.files = ["./libs/"];
-    Object.assign(
+    /*Object.assign(
       constructor.devDependencies,
       shared_packages().devDependencies
     );
-    Object.assign(constructor.dependencies, shared_packages().dependencies);
+    Object.assign(constructor.dependencies, shared_packages().dependencies);*/
     //console.log(constructor.dependencies);
   } else if (variant == "gui") {
   }

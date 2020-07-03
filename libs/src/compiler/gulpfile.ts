@@ -32,7 +32,11 @@ gulp.task("build", function () {
     if (fs.existsSync(packageJson)) {
       var json = JSON.parse(fs.readFileSync(packageJson).toString());
       json = fixDeps(json);
-      console.log(json);
+      if (typeof json == "object" && Object.keys(json).length) {
+        fs.writeFileSync(root + "/package.json", JSON.stringify(json, null, 2), {
+          encoding: "utf-8",
+        });
+      }
     }
   } catch (error) {}
   return createApp(false);
@@ -57,12 +61,11 @@ gulp.task("watch", function () {
   );
 
   var compiler_runner: any = false;
-  var run_watch = gulp.watch(files, null).on(
-    "change",
-    /**
-     * @param {string} file
-     */
-    function (file: string | Buffer | import("url").URL | string[]) {
+  var run_watch = gulp
+    .watch(files, null)
+    .on("change", function (
+      file: string | Buffer | import("url").URL | string[]
+    ) {
       const trigger = function () {
         file = framework.normalize(path.resolve(file.toString()));
         /**
@@ -112,8 +115,7 @@ gulp.task("watch", function () {
         }
       };
       return trigger();
-    }
-  );
+    });
   return run_watch;
 });
 
@@ -177,7 +179,7 @@ function node2browser(target?: string, destination?: string, rename?: string) {
  * minify assets
  * @param file
  */
-function minify(item: string | Buffer) {
+export function minify(item: string | Buffer) {
   const exists = fs.existsSync(item);
   if (exists) {
     item = item.toString();
@@ -230,7 +232,7 @@ function minify(item: string | Buffer) {
 /**
  * List views folder
  */
-function views() {
+export function views() {
   var views = framework.readdir(root + `/${config.app.views}`);
   return views
     .filter(function (item) {
@@ -249,7 +251,7 @@ function views() {
  * minify multiple assets
  * @param assets
  */
-function multiMinify(assets: any[]) {
+export function multiMinify(assets: any[]) {
   assets.map(minify);
 }
 
@@ -258,7 +260,7 @@ localStorage.removeItem("compile");
  * Create App.js
  * @param withoutView false to not compile views javascripts
  */
-async function createApp(withoutView: boolean) {
+export async function createApp(withoutView: boolean) {
   var exists = localStorage.getItem("compile");
   if (!exists) {
     localStorage.setItem("compile", "running");
@@ -300,7 +302,7 @@ async function createApp(withoutView: boolean) {
  * @param target
  * @todo universal-framework typescript compiler support
  */
-function single_tsCompile(target: string) {
+export function single_tsCompile(target: string) {
   var targetlog = log.chalk().magentaBright(framework.filelog(target));
   if (target.endsWith(".d.ts")) {
     log.log(`${targetlog} is declaration file`);
@@ -326,7 +328,7 @@ function single_tsCompile(target: string) {
  * @param destination
  * @param callback
  */
-function typescriptCompiler(
+export function typescriptCompiler(
   source: string,
   destination: string,
   callback: (arg0: any, arg1: any) => void = null
