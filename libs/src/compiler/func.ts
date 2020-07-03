@@ -4,10 +4,10 @@ import * as path from "path";
 import * as Process from "process";
 import * as http from "http";
 import { dirname } from "path";
-import { localStorage } from "../../node-localstorage/index";
+import { localStorage } from "../node-localstorage/index";
 //const { promisify } = require("util");
 import { promisify } from "util";
-import observatory from "../../observatory/lib/observatory";
+import observatory from "../observatory/lib/observatory";
 import chalk from "chalk";
 import dns from "dns";
 

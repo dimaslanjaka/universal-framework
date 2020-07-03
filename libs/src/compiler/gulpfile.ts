@@ -18,6 +18,7 @@ import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
 import browserify from "browserify";
 import browserify_source from "vinyl-source-stream";
+import { fixDeps } from "./func";
 localStorage.removeItem("compile");
 console.clear();
 
@@ -30,13 +31,8 @@ gulp.task("build", function () {
     var packageJson = root + "/package.json";
     if (fs.existsSync(packageJson)) {
       var json = JSON.parse(fs.readFileSync(packageJson).toString());
-      for (const key in json.dependencies) {
-        if (json.dependencies.hasOwnProperty(key)) {
-          if (key.includes("@types")) {
-            json.devDependencies[key] = json.dependencies[key];
-          }
-        }
-      }
+      json = fixDeps(json);
+      console.log(json);
     }
   } catch (error) {}
   return createApp(false);
@@ -284,11 +280,6 @@ async function createApp(withoutView: boolean) {
         log.log(log.error(err));
       }
     );
-    await typescriptCompiler("tsconfig.main.json", root + "/").catch(function (
-      err
-    ) {
-      log.log(log.error(err));
-    });
     minify(target);
     if (!withoutView) {
       multiMinify(views());
