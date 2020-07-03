@@ -7,6 +7,7 @@
     "url": "https://github.com/dimaslanjaka/universal-framework/issues"
   },
   "dependencies": {
+    "@types/browserify": "^12.0.36",
     "@types/swfobject": "^2.2.27",
     "ajv": "^6.12.2",
     "amd-loader": "*",
@@ -32,7 +33,7 @@
     "bluebird": "*",
     "body-parser": "^1.19.0",
     "bootbox": "^5.4.0",
-    "browserify": "16.5.1",
+    "browserify": "^16.5.1",
     "budo": "^11.6.4",
     "bufferutil": "^4.0.1",
     "chai": "^4.2.0",
@@ -149,6 +150,7 @@
     "mysql": "*",
     "mysql2": "^2.1.0",
     "ncp": "*",
+    "node-glob": "^1.2.0",
     "node-localstorage": "*",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
@@ -209,6 +211,7 @@
     "upath": "^1.2.0",
     "url-loader": "^4.1.0",
     "utf-8-validate": "^5.0.2",
+    "vinyl-source-stream": "^2.0.0",
     "vscode": "^1.1.37",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",

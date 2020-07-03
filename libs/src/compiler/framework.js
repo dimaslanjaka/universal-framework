@@ -129,6 +129,45 @@ function array_filter(array) {
     });
 }
 /**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+function array_rand(arrays, unique) {
+    if (unique) {
+        arrays = array_unique(arrays);
+    }
+    var index = Math.floor(Math.random() * arrays.length);
+    return {
+        index: index,
+        value: arrays[index],
+    };
+}
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+function array_unique(arrays) {
+    return arrays.filter(function (item, pos, self) {
+        return self.indexOf(item) == pos;
+    });
+}
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+function array_unset(arrayName, key) {
+    var x;
+    var tmpArray = new Array();
+    for (x in arrayName) {
+        if (x != key) {
+            tmpArray[x] = arrayName[x];
+        }
+    }
+    return tmpArray;
+}
+/**
  * CodeMirror loader
  * @param id
  * @param mode
@@ -1432,7 +1471,7 @@ options) {
         severity = "danger";
     }
     if (!$("style#alertcss")) {
-        createStyle("#pageMessages {\n      position: fixed;\n      bottom: 15px;\n      right: 15px;\n      width: 30%;\n    }\n    \n    #pageMessages .alert {\n      position: relative;\n    }\n    \n    #pageMessages .alert .close {\n      position: absolute;\n      top: 5px;\n      right: 5px;\n      font-size: 1em;\n    }\n    \n    #pageMessages .alert .fa {\n      margin-right:.3em;\n    }", { id: "alertcss" });
+        createStyle("#pageMessages {\n      position: fixed;\n      bottom: 15px;\n      right: 15px;\n      width: 30%;\n    }\n\n    #pageMessages .alert {\n      position: relative;\n    }\n\n    #pageMessages .alert .close {\n      position: absolute;\n      top: 5px;\n      right: 5px;\n      font-size: 1em;\n    }\n\n    #pageMessages .alert .fa {\n      margin-right:.3em;\n    }", { id: "alertcss" });
     }
     if (!$("#pageMessages").length) {
         var style = "";
@@ -2099,11 +2138,49 @@ if (!isnode()) {
             var t = $(this);
             switch (t.data("trigger")) {
                 case "modal":
-                    $(t.data("target")).modal("show");
+                    var target = $(t.data("target"));
+                    console.log("open modal " + t.data("target"));
+                    if (target.length) {
+                        target.modal("show");
+                    }
                     break;
             }
         });
+        //href hyperlink button
+        $(document).on("click", "button[href].btn-link", function (e) {
+            e.preventDefault();
+            location.href = $(this).attr("href");
+        });
+        /**
+         * open in new tab
+         */
+        $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
+            e.preventDefault();
+            var t = $(this);
+            if (t.attr("href")) {
+                if (t.data("newtab")) {
+                    //data-newtab hide referrer
+                    window
+                        .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+                        .focus();
+                }
+                else {
+                    openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+                }
+            }
+        });
     });
+}
+/**
+ * open in new tab
+ * @param url
+ * @param name
+ */
+function openInNewTab(url, name) {
+    if (typeof url != "undefined" && typeof name != "undefined") {
+        var win = window.open(url, name);
+        win.focus();
+    }
 }
 if (typeof module == "undefined" && typeof jQuery != "undefined") {
     if (typeof console != "undefined")
@@ -2256,15 +2333,15 @@ if (!isnode()) {
  */
 function load_disqus(disqus_shortname) {
     // Prepare the trigger and target
-    var disqus_trigger = $('#disqus_trigger'), disqus_target = $('#disqus_thread');
+    var disqus_trigger = $("#disqus_trigger"), disqus_target = $("#disqus_thread");
     // Load script asynchronously only when the trigger and target exist
     if (disqus_target.length) {
-        framework().js('//' + disqus_shortname + '.disqus.com/embed.js', null);
+        framework().js("//" + disqus_shortname + ".disqus.com/embed.js", null);
         disqus_trigger.remove();
     }
     else {
-        if (typeof toastr != 'undefined') {
-            toastr.error('disqus container not exists', 'disqus comment');
+        if (typeof toastr != "undefined") {
+            toastr.error("disqus container not exists", "disqus comment");
         }
     }
 }
@@ -2426,24 +2503,30 @@ function LoadScript(urls, callback) {
         console.error("LoadScript must be load an javascript url");
     }
     if (Array.isArray(urls)) {
+        if (!urls[0].endsWith(".js")) {
+            console.error(urls[0] + " not valid javascript file");
+            return;
+        }
         var lists = urls;
+        //console.log(`Script in queue ${lists.length}`);
+        var callthis = function (event) {
+            console.log(this.readyState, event);
+            loaded.push(true);
+            lists.shift();
+            if (!lists.length) {
+                callback();
+            }
+            if (lists.length) {
+                LoadScript(lists, callback);
+            }
+        };
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.src = urls[0];
-        console.info("loading script(" + script.src + ")");
-        script.onload = script.onreadystatechange = function () {
-            if (!this.readyState ||
-                this.readyState === "loaded" ||
-                this.readyState === "complete") {
-                loaded.push(true);
-                lists.shift();
-                console.log("Script in queue " + lists.length);
-                if (!lists.length) {
-                    callback();
-                }
-                script.onload = script.onreadystatechange = null;
-            }
-        };
+        script.async = true;
+        script.defer = true;
+        //console.info(`loading script(${script.src})`);
+        script.onload = script.onreadystatechange = callthis;
         script.onerror = function () {
             loaded.push(false);
             console.error("error while loading " + script.src);
@@ -3115,7 +3198,7 @@ var reCaptcha = {
      * @type {Number} counter executions
      */
     gexec_count: 0,
-    key: '6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie',
+    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
     /**
      * Javascript caller
      * @param {String} url
@@ -3124,20 +3207,21 @@ var reCaptcha = {
     js: function (url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        if (script.readyState) { //IE
+        if (script.readyState) {
+            //IE
             script.onreadystatechange = function () {
-                if (script.readyState == "loaded" ||
-                    script.readyState == "complete") {
+                if (script.readyState == "loaded" || script.readyState == "complete") {
                     script.onreadystatechange = null;
-                    if (typeof callback == 'function') {
+                    if (typeof callback == "function") {
                         callback();
                     }
                 }
             };
         }
-        else { //Others
+        else {
+            //Others
             script.onload = function () {
-                if (typeof callback == 'function') {
+                if (typeof callback == "function") {
                     callback();
                 }
             };
@@ -3157,9 +3241,15 @@ var reCaptcha = {
      */
     start: function () {
         reCaptcha.reCaptcha_buttons(true, function () {
-            reCaptcha.js('https://www.google.com/recaptcha/api.js?render=' + reCaptcha.key + '&render=explicit', function () {
+            reCaptcha.js("https://www.google.com/recaptcha/api.js?render=" +
+                reCaptcha.key +
+                "&render=explicit", function () {
                 grecaptcha.ready(function () {
-                    var msg = 'first_start_' + location.href.replace(/[^a-zA-Z0-9 ]/g, '_').replace(/\_{2,99}/g, '_').replace(/\_$/g, '');
+                    var msg = "first_start_" +
+                        location.href
+                            .replace(/[^a-zA-Z0-9 ]/g, "_")
+                            .replace(/\_{2,99}/g, "_")
+                            .replace(/\_$/g, "");
                     reCaptcha.exec(msg);
                 });
             });
@@ -3169,8 +3259,8 @@ var reCaptcha = {
      * Initialize Recaptcha by defining jquery
      */
     init: function () {
-        if (typeof jQuery == 'undefined' || typeof jQuery == 'undefined') {
-            reCaptcha.js('https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js', reCaptcha.start);
+        if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
+            reCaptcha.js("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", reCaptcha.start);
         }
         else {
             reCaptcha.start();
@@ -3182,41 +3272,42 @@ var reCaptcha = {
      */
     exec: function (action, retry, callback) {
         //console.log('gtag is ' + typeof gtag);
-        if (typeof gtag == 'function') {
-            gtag('event', 'recaptcha', {
-                'action': action
+        if (typeof gtag == "function") {
+            gtag("event", "recaptcha", {
+                action: action,
             });
         }
-        if (typeof grecaptcha == 'undefined' || typeof grecaptcha.execute != 'function') {
-            if (typeof toastr == 'undefined') {
-                console.error('recaptcha not loaded');
+        if (typeof grecaptcha == "undefined" ||
+            typeof grecaptcha.execute != "function") {
+            if (typeof toastr == "undefined") {
+                console.error("recaptcha not loaded");
             }
             else {
-                toastr.error('recaptcha not loaded, retrying...', 'captcha information');
+                toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
             for (var index_1 = 0; index_1 < 3; index_1++) {
                 reCaptcha.exec(action, true);
                 if (index_1 == 3 - 1) {
-                    toastr.error('recaptcha has reached limit', 'captcha information');
+                    toastr.error("recaptcha has reached limit", "captcha information");
                 }
             }
             return;
         }
         else if (retry) {
-            if (typeof toastr == 'undefined') {
-                console.info('recaptcha loaded successfully');
+            if (typeof toastr == "undefined") {
+                console.info("recaptcha loaded successfully");
             }
             else {
-                toastr.success('recaptcha loaded successfully', 'captcha information');
+                toastr.success("recaptcha loaded successfully", "captcha information");
             }
         }
         reCaptcha.gexec_count++;
         var execute = grecaptcha.execute(reCaptcha.key, {
-            'action': action || 'location.href'
+            action: action || "location.href",
         });
         if (!execute) {
-            if (typeof toastr != 'undefined') {
-                toastr.error('failed getting token');
+            if (typeof toastr != "undefined") {
+                toastr.error("failed getting token");
             }
             return;
         }
@@ -3231,7 +3322,7 @@ var reCaptcha = {
                 reCaptcha.reCaptcha_buttons(false, null);
                 //console.info(token);
                 reCaptcha.insert(token);
-                if (typeof callback == 'function') {
+                if (typeof callback == "function") {
                     callback(token);
                 }
             });
@@ -3242,10 +3333,10 @@ var reCaptcha = {
      * @param {String} token
      */
     insert: function (token) {
-        framework().sc('token', token, 1);
-        if (typeof jQuery == 'undefined') {
-            console.log('jQuery Not Loaded');
-            reCaptcha.js('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js', function () {
+        framework().sc("token", token, 1);
+        if (typeof jQuery == "undefined") {
+            console.log("jQuery Not Loaded");
+            reCaptcha.js("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", function () {
                 reCaptcha.distribute_token(token);
             });
         }
@@ -3258,12 +3349,14 @@ var reCaptcha = {
      * @param {String} token
      */
     distribute_token: function (token) {
-        var form = $('form');
+        var form = $("form");
         form.each(function (i, el) {
             var fg = $(this).find('[name="g-recaptcha-response"]');
             console.log(fg.length);
             if (!fg.length) {
-                $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo($(this));
+                $('<input type="hidden" readonly value="' +
+                    token +
+                    '" name="g-recaptcha-response">').appendTo($(this));
             }
             else {
                 fg.val(token);
@@ -3276,7 +3369,7 @@ var reCaptcha = {
     get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
-            var vr = gr[0].getAttribute('value');
+            var vr = gr[0].getAttribute("value");
             return vr;
         }
         return null;
@@ -3288,21 +3381,24 @@ var reCaptcha = {
      */
     reCaptcha_buttons: function (reCaptcha_disable, callback) {
         //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
-        $('button,[type="submit"],input').not('[data-recaptcha="no-action"]').not('[recaptcha-exclude]').each(function (i, e) {
-            if ($(this).attr('type') == 'radio') {
+        $('button,[type="submit"],input')
+            .not('[data-recaptcha="no-action"]')
+            .not("[recaptcha-exclude]")
+            .each(function (i, e) {
+            if ($(this).attr("type") == "radio") {
                 return;
             }
             if (reCaptcha_disable) {
                 if ($(this).is(":disabled")) {
-                    $(this).attr('recaptcha-exclude', makeid(5));
+                    $(this).attr("recaptcha-exclude", makeid(5));
                 }
             }
-            $(this).prop('disabled', reCaptcha_disable);
+            $(this).prop("disabled", reCaptcha_disable);
         });
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
             callback();
         }
-    }
+    },
 };
 /**
  * Hidden reCaptcha v3 object initializer
@@ -3314,13 +3410,12 @@ var requirejs_vendor = "/node_modules";
 var require_config = {
     paths: {
         app: "../require",
-        jquery: [
-            "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min",
-            requirejs_vendor + "/jquery/dist/jquery.min",
-        ],
+        jquery: requirejs_vendor + "/jquery/dist/jquery.min",
         "jquery-ui": "//code.jquery.com/ui/1.11.4/jquery-ui",
+        "jquery-migrate": "//code.jquery.com/jquery-migrate-git.min",
         //DataTables
         "datatables.net": requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
+        "datatables.net-bs4": requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
         "datatables.net-autofill": requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
         "datatables.net-editor": requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",
         "datatables.net-buttons": requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
@@ -3345,7 +3440,6 @@ var require_config = {
         },
         "datatables.net": {
             deps: ["jquery"],
-            exports: "$",
         },
     },
 };
@@ -3392,7 +3486,27 @@ function load_requirejs() {
         console.info("RequireJS already ignited");
     }
 }
-function load_module(name, callback) { }
+/**
+ * Load Modules From node_modules folder
+ * @param name
+ * @param callback
+ */
+function load_module(name, callback) {
+    if (typeof name == "string") {
+        name = [name];
+    }
+    var scripts_List = [];
+    for (var key in require_config.paths) {
+        if (require_config.paths.hasOwnProperty(key)) {
+            var element_1 = require_config.paths[key];
+            if (name.includes(key)) {
+                scripts_List.push(element_1 + ".js");
+            }
+        }
+    }
+    //console.log(scripts_List);
+    LoadScript(scripts_List, callback);
+}
 /**
  * Datatables loader
  * @param callback
@@ -3514,6 +3628,9 @@ function datatables_optimize(id, callback) {
         .add("#pkgList_wrapper .dataTables_filter")
         .find("label")
         .remove();
+    if (typeof callback == "function") {
+        callback();
+    }
 }
 /**
  * Scroll up after click pagination dt
@@ -4516,35 +4633,6 @@ if (!isnode()) {
             //w.focus();
         });
     }
-    /**
-     * open in new tab
-     */
-    $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
-        e.preventDefault();
-        var t = $(this);
-        if (t.attr("href")) {
-            if (t.data("newtab")) {
-                //data-newtab hide referrer
-                window
-                    .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-                    .focus();
-            }
-            else {
-                openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
-            }
-        }
-    });
-}
-/**
- * open in new tab
- * @param {string} url
- * @param {string} name
- */
-function openInNewTab(url, name) {
-    if (typeof url != "undefined" && typeof name != "undefined") {
-        var win = window.open(url, name);
-        win.focus();
-    }
 }
 /**
  * get currency symbol from navigator
@@ -4662,45 +4750,6 @@ function parse_proxy(str) {
         return px;
     });
     return array_shuffle(array_unique(px));
-}
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
-function array_rand(arrays, unique) {
-    if (unique) {
-        arrays = array_unique(arrays);
-    }
-    var index = Math.floor(Math.random() * arrays.length);
-    return {
-        index: index,
-        value: arrays[index],
-    };
-}
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-function array_unique(arrays) {
-    return arrays.filter(function (item, pos, self) {
-        return self.indexOf(item) == pos;
-    });
-}
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-function array_unset(arrayName, key) {
-    var x;
-    var tmpArray = new Array();
-    for (x in arrayName) {
-        if (x != key) {
-            tmpArray[x] = arrayName[x];
-        }
-    }
-    return tmpArray;
 }
 /**
  * Add class if not exists

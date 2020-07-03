@@ -504,4 +504,26 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
   return $ht;
 }
 
+/**
+ * Is valid email ?
+ *
+ * @param string $email
+ * @return boolean
+ */
+function is_email($email)
+{
+  return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+/**
+ * Is valid url ?
+ *
+ * @param string $url
+ * @return boolean
+ */
+function is_url($url)
+{
+  return filter_var($url, FILTER_VALIDATE_URL);
+}
+
 include __DIR__ . '/MVC/themes/assets/partial/fab.php';

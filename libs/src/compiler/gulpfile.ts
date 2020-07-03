@@ -16,6 +16,8 @@ import sourcemaps from "gulp-sourcemaps";
 import concat from "gulp-concat";
 import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
+import browserify from "browserify";
+import browserify_source from "vinyl-source-stream";
 localStorage.removeItem("compile");
 console.clear();
 
@@ -24,6 +26,19 @@ console.clear();
  * Minify Views Assets
  */
 gulp.task("build", function () {
+  try {
+    var packageJson = root + "/package.json";
+    if (fs.existsSync(packageJson)) {
+      var json = JSON.parse(fs.readFileSync(packageJson).toString());
+      for (const key in json.dependencies) {
+        if (json.dependencies.hasOwnProperty(key)) {
+          if (key.includes("@types")) {
+            json.devDependencies[key] = json.dependencies[key];
+          }
+        }
+      }
+    }
+  } catch (error) {}
   return createApp(false);
 });
 
@@ -132,6 +147,36 @@ gulp.task("composer", function () {
 
 gulp.task("default", gulp.series(["build", "watch"]));
 
+/**
+ * NodeJS to Browserify
+ * @param target source javascript
+ * @param destination destination folder
+ * @param rename want to rename file ? give name or using default basename of target
+ */
+function node2browser(target?: string, destination?: string, rename?: string) {
+  if (typeof rename != "string" || !rename || !rename.length) {
+    rename = path.basename(target);
+  }
+
+  log.log(
+    `Browserify ${log
+      .chalk()
+      .magentaBright(framework.filelog(target))} to ${log
+      .chalk()
+      .magentaBright(framework.filelog(destination))} renamed to ${log.success(
+      rename
+    )}`
+  );
+  return (
+    browserify()
+      .add(target) //"src/MVC/themes/assets/js/app.js"
+      .bundle()
+      //Pass desired output filename to vinyl-source-stream
+      .pipe(browserify_source(rename)) //"app.js"
+      // Start piping stream to tasks!
+      .pipe(gulp.dest(destination))
+  ); //"src/MVC/themes/assets/js/"
+}
 /**
  * minify assets
  * @param file
@@ -249,6 +294,7 @@ async function createApp(withoutView: boolean) {
       multiMinify(views());
     }
     localStorage.removeItem("compile");
+    node2browser(target, path.dirname(target));
   } else {
     log.log(
       log.error("Compiler lock process already exists ") +

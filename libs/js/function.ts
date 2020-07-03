@@ -81,27 +81,32 @@ function LoadScript(urls: string | string[], callback: null | Function) {
     console.error("LoadScript must be load an javascript url");
   }
   if (Array.isArray(urls)) {
+    if (!urls[0].endsWith(".js")) {
+      console.error(urls[0] + " not valid javascript file");
+      return;
+    }
     var lists = urls;
+    //console.log(`Script in queue ${lists.length}`);
+    const callthis = function (event?: Event) {
+      console.log(this.readyState, event);
+      loaded.push(true);
+      lists.shift();
+
+      if (!lists.length) {
+        callback();
+      }
+      if (lists.length) {
+        LoadScript(lists, callback);
+      }
+    };
+
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.src = urls[0];
-    console.info(`loading script(${script.src})`);
-    script.onload = script.onreadystatechange = function () {
-      if (
-        !this.readyState ||
-        this.readyState === "loaded" ||
-        this.readyState === "complete"
-      ) {
-        loaded.push(true);
-        lists.shift();
-        console.log(`Script in queue ${lists.length}`);
-        if (!lists.length) {
-          callback();
-        }
-
-        script.onload = script.onreadystatechange = null;
-      }
-    };
+    script.async = true;
+    script.defer = true;
+    //console.info(`loading script(${script.src})`);
+    script.onload = script.onreadystatechange = callthis;
 
     script.onerror = function () {
       loaded.push(false);
@@ -115,6 +120,7 @@ function LoadScript(urls: string | string[], callback: null | Function) {
       loaded.push(false);
       console.error(`error while loading ${script.src}`);
     };
+
     document.body.appendChild(script);
   }
 }

@@ -1,3 +1,241 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+exports.endianness = function () { return 'LE' };
+
+exports.hostname = function () {
+    if (typeof location !== 'undefined') {
+        return location.hostname
+    }
+    else return '';
+};
+
+exports.loadavg = function () { return [] };
+
+exports.uptime = function () { return 0 };
+
+exports.freemem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.totalmem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.cpus = function () { return [] };
+
+exports.type = function () { return 'Browser' };
+
+exports.release = function () {
+    if (typeof navigator !== 'undefined') {
+        return navigator.appVersion;
+    }
+    return '';
+};
+
+exports.networkInterfaces
+= exports.getNetworkInterfaces
+= function () { return {} };
+
+exports.arch = function () { return 'javascript' };
+
+exports.platform = function () { return 'browser' };
+
+exports.tmpdir = exports.tmpDir = function () {
+    return '/tmp';
+};
+
+exports.EOL = '\n';
+
+exports.homedir = function () {
+	return '/'
+};
+
+},{}],2:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],3:[function(require,module,exports){
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -100,6 +338,45 @@ function array_filter(array) {
     return array.filter(function (el) {
         return el != null;
     });
+}
+/**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+function array_rand(arrays, unique) {
+    if (unique) {
+        arrays = array_unique(arrays);
+    }
+    var index = Math.floor(Math.random() * arrays.length);
+    return {
+        index: index,
+        value: arrays[index],
+    };
+}
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+function array_unique(arrays) {
+    return arrays.filter(function (item, pos, self) {
+        return self.indexOf(item) == pos;
+    });
+}
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+function array_unset(arrayName, key) {
+    var x;
+    var tmpArray = new Array();
+    for (x in arrayName) {
+        if (x != key) {
+            tmpArray[x] = arrayName[x];
+        }
+    }
+    return tmpArray;
 }
 /**
  * CodeMirror loader
@@ -2064,11 +2341,49 @@ if (!isnode()) {
             const t = $(this);
             switch (t.data("trigger")) {
                 case "modal":
-                    $(t.data("target")).modal("show");
+                    var target = $(t.data("target"));
+                    console.log(`open modal ${t.data("target")}`);
+                    if (target.length) {
+                        target.modal("show");
+                    }
                     break;
             }
         });
+        //href hyperlink button
+        $(document).on("click", "button[href].btn-link", function (e) {
+            e.preventDefault();
+            location.href = $(this).attr("href");
+        });
+        /**
+         * open in new tab
+         */
+        $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
+            e.preventDefault();
+            const t = $(this);
+            if (t.attr("href")) {
+                if (t.data("newtab")) {
+                    //data-newtab hide referrer
+                    window
+                        .open("http://href.li/?" + $(this).data("newtab"), "newtab")
+                        .focus();
+                }
+                else {
+                    openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
+                }
+            }
+        });
     });
+}
+/**
+ * open in new tab
+ * @param url
+ * @param name
+ */
+function openInNewTab(url, name) {
+    if (typeof url != "undefined" && typeof name != "undefined") {
+        var win = window.open(url, name);
+        win.focus();
+    }
 }
 if (typeof module == "undefined" && typeof jQuery != "undefined") {
     if (typeof console != "undefined")
@@ -2391,24 +2706,30 @@ function LoadScript(urls, callback) {
         console.error("LoadScript must be load an javascript url");
     }
     if (Array.isArray(urls)) {
+        if (!urls[0].endsWith(".js")) {
+            console.error(urls[0] + " not valid javascript file");
+            return;
+        }
         var lists = urls;
+        //console.log(`Script in queue ${lists.length}`);
+        const callthis = function (event) {
+            console.log(this.readyState, event);
+            loaded.push(true);
+            lists.shift();
+            if (!lists.length) {
+                callback();
+            }
+            if (lists.length) {
+                LoadScript(lists, callback);
+            }
+        };
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.src = urls[0];
-        console.info(`loading script(${script.src})`);
-        script.onload = script.onreadystatechange = function () {
-            if (!this.readyState ||
-                this.readyState === "loaded" ||
-                this.readyState === "complete") {
-                loaded.push(true);
-                lists.shift();
-                console.log(`Script in queue ${lists.length}`);
-                if (!lists.length) {
-                    callback();
-                }
-                script.onload = script.onreadystatechange = null;
-            }
-        };
+        script.async = true;
+        script.defer = true;
+        //console.info(`loading script(${script.src})`);
+        script.onload = script.onreadystatechange = callthis;
         script.onerror = function () {
             loaded.push(false);
             console.error(`error while loading ${script.src}`);
@@ -3278,13 +3599,12 @@ const requirejs_vendor = "/node_modules";
 const require_config = {
     paths: {
         app: "../require",
-        jquery: [
-            "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min",
-            requirejs_vendor + "/jquery/dist/jquery.min",
-        ],
+        jquery: requirejs_vendor + "/jquery/dist/jquery.min",
         "jquery-ui": "//code.jquery.com/ui/1.11.4/jquery-ui",
+        "jquery-migrate": "//code.jquery.com/jquery-migrate-git.min",
         //DataTables
         "datatables.net": requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
+        "datatables.net-bs4": requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
         "datatables.net-autofill": requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
         "datatables.net-editor": requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",
         "datatables.net-buttons": requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
@@ -3309,7 +3629,6 @@ const require_config = {
         },
         "datatables.net": {
             deps: ["jquery"],
-            exports: "$",
         },
     },
 };
@@ -3356,7 +3675,27 @@ function load_requirejs() {
         console.info("RequireJS already ignited");
     }
 }
-function load_module(name, callback) { }
+/**
+ * Load Modules From node_modules folder
+ * @param name
+ * @param callback
+ */
+function load_module(name, callback) {
+    if (typeof name == "string") {
+        name = [name];
+    }
+    var scripts_List = [];
+    for (const key in require_config.paths) {
+        if (require_config.paths.hasOwnProperty(key)) {
+            const element = require_config.paths[key];
+            if (name.includes(key)) {
+                scripts_List.push(element + ".js");
+            }
+        }
+    }
+    //console.log(scripts_List);
+    LoadScript(scripts_List, callback);
+}
 /**
  * Datatables loader
  * @param callback
@@ -3478,6 +3817,9 @@ function datatables_optimize(id, callback) {
         .add("#pkgList_wrapper .dataTables_filter")
         .find("label")
         .remove();
+    if (typeof callback == "function") {
+        callback();
+    }
 }
 /**
  * Scroll up after click pagination dt
@@ -4481,35 +4823,6 @@ if (!isnode()) {
             //w.focus();
         });
     }
-    /**
-     * open in new tab
-     */
-    $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
-        e.preventDefault();
-        const t = $(this);
-        if (t.attr("href")) {
-            if (t.data("newtab")) {
-                //data-newtab hide referrer
-                window
-                    .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-                    .focus();
-            }
-            else {
-                openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
-            }
-        }
-    });
-}
-/**
- * open in new tab
- * @param {string} url
- * @param {string} name
- */
-function openInNewTab(url, name) {
-    if (typeof url != "undefined" && typeof name != "undefined") {
-        var win = window.open(url, name);
-        win.focus();
-    }
 }
 /**
  * get currency symbol from navigator
@@ -4627,45 +4940,6 @@ function parse_proxy(str) {
         return px;
     });
     return array_shuffle(array_unique(px));
-}
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
-function array_rand(arrays, unique) {
-    if (unique) {
-        arrays = array_unique(arrays);
-    }
-    var index = Math.floor(Math.random() * arrays.length);
-    return {
-        index: index,
-        value: arrays[index],
-    };
-}
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-function array_unique(arrays) {
-    return arrays.filter(function (item, pos, self) {
-        return self.indexOf(item) == pos;
-    });
-}
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-function array_unset(arrayName, key) {
-    var x;
-    var tmpArray = new Array();
-    for (x in arrayName) {
-        if (x != key) {
-            tmpArray[x] = arrayName[x];
-        }
-    }
-    return tmpArray;
 }
 /**
  * Add class if not exists
@@ -4840,4 +5114,5 @@ class ZLIB {
         return enc;
     }
 }
-//# sourceMappingURL=app.js.map
+
+},{"os":1,"process":2}]},{},[3]);

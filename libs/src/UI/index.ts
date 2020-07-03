@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as Process from "process";
 import * as http from "http";
-import { readFile, list_package, asset } from "./components/func";
+import { readFile, list_package, asset } from "../compiler/func";
 import app from "express";
 import io from "socket.io";
 import * as url_core from "url";

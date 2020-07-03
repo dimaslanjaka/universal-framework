@@ -2,15 +2,15 @@ const requirejs_vendor = "/node_modules";
 const require_config: RequireConfig = {
   paths: {
     app: "../require",
-    jquery: [
-      "//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min",
-      requirejs_vendor + "/jquery/dist/jquery.min",
-    ],
+    jquery: requirejs_vendor + "/jquery/dist/jquery.min",
     "jquery-ui": "//code.jquery.com/ui/1.11.4/jquery-ui",
+    "jquery-migrate": "//code.jquery.com/jquery-migrate-git.min",
 
     //DataTables
     "datatables.net":
       requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
+    "datatables.net-bs4":
+      requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
     "datatables.net-autofill":
       requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
     "datatables.net-editor":
@@ -46,7 +46,6 @@ const require_config: RequireConfig = {
     },
     "datatables.net": {
       deps: ["jquery"],
-      exports: "$",
     },
   },
 };
@@ -96,7 +95,28 @@ function load_requirejs() {
   }
 }
 
-function load_module(name: string, callback: Function) {}
+/**
+ * Load Modules From node_modules folder
+ * @param name
+ * @param callback
+ */
+function load_module(name: string | string[], callback: Function) {
+  if (typeof name == "string") {
+    name = [name];
+  }
+  var scripts_List = [];
+
+  for (const key in require_config.paths) {
+    if (require_config.paths.hasOwnProperty(key)) {
+      const element = require_config.paths[key];
+      if (name.includes(key)) {
+        scripts_List.push(element + ".js");
+      }
+    }
+  }
+  //console.log(scripts_List);
+  LoadScript(scripts_List, callback);
+}
 
 /**
  * Datatables loader
@@ -225,6 +245,9 @@ function datatables_optimize(id: string, callback?: Function) {
     .add("#pkgList_wrapper .dataTables_filter")
     .find("label")
     .remove();
+  if (typeof callback == "function") {
+    callback();
+  }
 }
 
 /**

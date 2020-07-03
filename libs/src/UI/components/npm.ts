@@ -1,4 +1,4 @@
-import { execute } from "./func";
+import { execute } from "../../compiler/func";
 export class npm {
   static args = [];
   /**

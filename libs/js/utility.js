@@ -334,43 +334,6 @@ if (!isnode()) {
       //w.focus();
     });
   }
-
-  /**
-   * open in new tab
-   */
-  $(document.body).on(
-    "click",
-    'a[id="newtab"],[newtab],[data-newtab]',
-    function (e) {
-      e.preventDefault();
-      const t = $(this);
-      if (t.attr("href")) {
-        if (t.data("newtab")) {
-          //data-newtab hide referrer
-          window
-            .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-            .focus();
-        } else {
-          openInNewTab(
-            t.attr("href"),
-            t.data("name") ? t.data("name") : "_blank"
-          );
-        }
-      }
-    }
-  );
-}
-
-/**
- * open in new tab
- * @param {string} url
- * @param {string} name
- */
-function openInNewTab(url, name) {
-  if (typeof url != "undefined" && typeof name != "undefined") {
-    var win = window.open(url, name);
-    win.focus();
-  }
 }
 
 /**
@@ -499,47 +462,6 @@ function parse_proxy(str) {
   });
 
   return array_shuffle(array_unique(px));
-}
-
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
-function array_rand(arrays, unique) {
-  if (unique) {
-    arrays = array_unique(arrays);
-  }
-  var index = Math.floor(Math.random() * arrays.length);
-  return {
-    index: index,
-    value: arrays[index],
-  };
-}
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-function array_unique(arrays) {
-  return arrays.filter(function (item, pos, self) {
-    return self.indexOf(item) == pos;
-  });
-}
-
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-function array_unset(arrayName, key) {
-  var x;
-  var tmpArray = new Array();
-  for (x in arrayName) {
-    if (x != key) {
-      tmpArray[x] = arrayName[x];
-    }
-  }
-  return tmpArray;
 }
 
 /**

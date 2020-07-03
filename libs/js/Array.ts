@@ -23,6 +23,7 @@ function inArray(needle: any, haystack: Array<any>) {
   }
   return false;
 }
+
 /**
  * in_array PHP equivalent
  * @param needle string etc
@@ -31,6 +32,7 @@ function inArray(needle: any, haystack: Array<any>) {
 function in_array(needle: any, haystack: Array<any>) {
   return inArray(needle, haystack);
 }
+
 /**
  * get all keys
  * @param haystack string etc
@@ -44,7 +46,7 @@ function array_keys(haystack: any) {
  * @param a items An array containing the items.
  */
 function array_shuffle(a: Array<any>) {
-  var j, x, i;
+  var j: number, x: any, i: number;
   for (i = a.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
     x = a[i];
@@ -68,7 +70,10 @@ Array.prototype.unique = function () {
 if (!Array.prototype.every) {
   Array.prototype.every = function (fun /*, thisp */) {
     "use strict";
-    var t, len, i, thisp;
+    var t: { [x: string]: any; length: number },
+      len: number,
+      i: string | number,
+      thisp: any;
 
     if (this == null) {
       throw new TypeError();
@@ -95,4 +100,46 @@ function array_filter(array: []) {
   return array.filter(function (el) {
     return el != null;
   });
+}
+
+/**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+function array_rand(arrays: any[], unique: any) {
+  if (unique) {
+    arrays = array_unique(arrays);
+  }
+  var index = Math.floor(Math.random() * arrays.length);
+  return {
+    index: index,
+    value: arrays[index],
+  };
+}
+
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+function array_unique(arrays: any[]) {
+  return arrays.filter(function (item: any, pos: any, self: string | any[]) {
+    return self.indexOf(item) == pos;
+  });
+}
+
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+function array_unset(arrayName: { [x: string]: any }, key: any) {
+  var x: string | number;
+  var tmpArray = new Array();
+  for (x in arrayName) {
+    if (x != key) {
+      tmpArray[x] = arrayName[x];
+    }
+  }
+  return tmpArray;
 }

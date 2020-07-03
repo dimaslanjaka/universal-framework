@@ -30,6 +30,28 @@ declare function array_keys(haystack: any): string[];
 declare function array_shuffle(a: Array<any>): any[];
 declare function array_filter(array: []): never[];
 /**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+declare function array_rand(arrays: any[], unique: any): {
+    index: number;
+    value: any;
+};
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+declare function array_unique(arrays: any[]): any[];
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+declare function array_unset(arrayName: {
+    [x: string]: any;
+}, key: any): any[];
+/**
  * CodeMirror loader
  * @param id
  * @param mode
@@ -618,6 +640,12 @@ declare function base64_encode(str: string): string;
 declare function base64_decode(str: string): string;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
+/**
+ * open in new tab
+ * @param url
+ * @param name
+ */
+declare function openInNewTab(url: string, name: string): void;
 interface Console {
     olog: {
         (...data: any[]): void;
@@ -881,7 +909,12 @@ declare var requirejs_ignited: boolean;
  * Load requirejs
  */
 declare function load_requirejs(): Promise<unknown>;
-declare function load_module(name: string, callback: Function): void;
+/**
+ * Load Modules From node_modules folder
+ * @param name
+ * @param callback
+ */
+declare function load_module(name: string | string[], callback: Function): void;
 /**
  * Datatables loader
  * @param callback
@@ -1080,12 +1113,6 @@ declare function geToken(): string;
  */
 declare function JavaScriptCaller(url: string, callback: Function): void;
 /**
- * open in new tab
- * @param {string} url
- * @param {string} name
- */
-declare function openInNewTab(url: string, name: string): void;
-/**
  * get currency symbol from navigator
  */
 declare function get_currency_symbol(): string;
@@ -1116,26 +1143,6 @@ __call.call(o, "target", "Hello");
  * @return {Array<any>} proxy list filtered
  */
 declare function parse_proxy(str: string): Array<any>;
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
-declare function array_rand(arrays: Array<any>, unique: boolean): {
-    index: number;
-    value: any;
-};
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-declare function array_unique(arrays: Array<any>): any[];
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-declare function array_unset(arrayName: Array<any>, key: string | number): any[];
 /**
  * Add class if not exists
  * @param {Element} element element from DOM
