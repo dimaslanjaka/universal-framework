@@ -22,6 +22,7 @@ before_install:
         export MAKE=mingw32-make  # so that Autotools can find it
         ;;
     esac
+
 before_cache:
 - |-
     case $TRAVIS_OS_NAME in
@@ -35,6 +36,9 @@ cache:
     directories:
     - $HOME/AppData/Local/Temp/chocolatey
     - /C/tools/msys64
+
+env:
+  - CXX=g++-4.8
 
 before_script:
   - npm install -g gulp typescript grunt eslint tslint
