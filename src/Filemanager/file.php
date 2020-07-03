@@ -162,6 +162,7 @@ class file
 
   public static function get(string $file, bool $parse_json = false)
   {
+    resolve_dir(dirname($file));
     //self::cleanDump($file, realpath($file), file_exists($file), is_writable($file));
     $ret = null;
     if (realpath($file)) {

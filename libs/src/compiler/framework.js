@@ -3653,7 +3653,9 @@ function pagination_up(target) {
  * @param exclude
  */
 function datatables_colums_options(data, exclude) {
-    if (!data.hasOwnProperty("defaultContent")) {
+    if (!data.hasOwnProperty("defaultContent") &&
+        exclude &&
+        !exclude.includes("defaultContent")) {
         data.defaultContent = "<i>Not set</i>";
     }
     if (!data.hasOwnProperty("render") &&

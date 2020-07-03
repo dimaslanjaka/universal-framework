@@ -88,11 +88,15 @@ class user
 
   /**
    * Get PDO Instance
-   *
+   * @param \DB\pdo $pdo set new instance
    * @return \DB\pdo
    */
-  public function pdo_instance()
+  public function pdo_instance(\DB\pdo $pdo = null)
   {
+    if ($pdo) {
+      $this->pdo = $pdo;
+      //$this->db['use'] = $pdo->getDa
+    }
     return $this->pdo;
   }
 

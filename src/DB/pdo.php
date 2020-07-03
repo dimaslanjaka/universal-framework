@@ -695,6 +695,12 @@ class pdo
     return $string;
   }
 
+  /**
+   * Get result as array
+   *
+   * @param boolean $value
+   * @return array
+   */
   public function row_array($value = false)
   {
     $exec = $this->SQL_MultiFetch($this->trim($this->query), $value);

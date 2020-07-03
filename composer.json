@@ -63,7 +63,7 @@
     "psr-4": {
       "AGC\\": "src/AGC/",
       "img\\": "src/img/",
-      "Inventory\\": "src/Inventory/",
+      "Office\\": "src/Office/",
       "Telkomsel\\": "src/Telkomsel/",
       "Indosat\\": "src/Indosat/",
       "simplehtmldom\\": "src/simplehtmldom/",
