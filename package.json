@@ -372,8 +372,7 @@
   "scripts": {
     "postinstall": "",
     "preinstall": "",
-    "start": "node index.js",
-    "dev-start": "gulp build & node index.js"
+    "start": "gulp watch"
   },
   "version": "3.0.0"
 }

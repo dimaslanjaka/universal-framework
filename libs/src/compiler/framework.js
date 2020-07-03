@@ -3653,25 +3653,25 @@ function pagination_up(target) {
  * @param exclude
  */
 function datatables_colums_options(data, exclude) {
+    if (!data.hasOwnProperty("defaultContent")) {
+        data.defaultContent = "<i>Not set</i>";
+    }
     if (!data.hasOwnProperty("render") &&
         exclude &&
         !exclude.includes("render")) {
         data.render = function (data, type, row, meta) {
             if (["string", "number"].includes(typeof data) || Array.isArray(data)) {
                 if (!data.length) {
-                    return this.defaultContent;
+                    return data.defaultContent;
                 }
             }
             if (!data) {
-                return this.defaultContent;
+                return data.defaultContent;
             }
             else {
                 return data;
             }
         };
-    }
-    if (!data.hasOwnProperty("defaultContent")) {
-        data.defaultContent = "<i>Not set</i>";
     }
 }
 /// <reference path="./Object.d.ts"/>

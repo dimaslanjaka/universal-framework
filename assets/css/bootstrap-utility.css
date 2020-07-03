@@ -2,31 +2,38 @@
   border-radius: 50%;
 }
 
-/*
+.card-label {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  color: #fff !important;
+  background-color: #4285f4 !important;
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
 
-  COLORS
-  Better default colors for the web
+.alert-top {
+  position: fixed;
+  top: 50px;
+  left: 2%;
+  width: 96%;
+  z-index: 3000;
+}
 
-*/
-/*
+.alert-bottom {
+  position: fixed;
+  bottom: 5px;
+  left: 2%;
+  width: 96%;
+  z-index: 3000;
+}
 
-   VARIABLES
-
-   - Cool
-   - Warm
-   - Gray Scale
-
-*/
-/*
-
-   SKINS
-   - Backgrounds
-   - Colors
-   - Border colors
-   - SVG fills
-   - SVG Strokes
-
-*/
 /* Backgrounds */
 .bg-navy {
   background-color: #001f3f;

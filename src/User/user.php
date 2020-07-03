@@ -6,8 +6,16 @@ use Crypto\crypt;
 use DB\pdo;
 use JSON\json;
 
+$GLOBALS['user_instance'] = null;
+
+/**
+ * Universal Framework User Management
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 class user
 {
+  public $admin_pattern = '/^superadmin$/s';
+  private static $_instance = null;
   public $dbname = 'userdata';
   private $id;
   private $username;
@@ -35,6 +43,19 @@ class user
       $this->pdo = new \DB\pdo($user, $pass, $db, $host, $charset);
       $this->pdo->connect($user, $pass, $db, $host, $charset);
     }
+    if (!$GLOBALS['user_instance']) {
+      $GLOBALS['user_instance'] = $this;
+    }
+  }
+
+  /**
+   * Current instance
+   *
+   * @return user
+   */
+  static function instance()
+  {
+    return $GLOBALS['user_instance'];
   }
 
   public function db($data)
@@ -44,6 +65,11 @@ class user
     }
   }
 
+  /**
+   * Get All Users
+   *
+   * @return void
+   */
   public function getUsers()
   {
     if (!$this->pdo) {
@@ -60,16 +86,18 @@ class user
     return $result;
   }
 
+  /**
+   * Get PDO Instance
+   *
+   * @return \DB\pdo
+   */
   public function pdo_instance()
   {
     return $this->pdo;
   }
 
-  public $admin_pattern = '/^superadmin$/s';
-  private static $_instance = null;
-
   /**
-   * Chain.
+   * Static Chain.
    *
    * @return $this
    */
@@ -107,6 +135,11 @@ class user
     }
   }
 
+  /**
+   * Get Current user role
+   *
+   * @return string
+   */
   public function get_role()
   {
     return isset($_SESSION['login']['role']) ? $_SESSION['login']['role'] : 'UNAUTHORIZED';
