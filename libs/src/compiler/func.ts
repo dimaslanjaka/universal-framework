@@ -215,10 +215,11 @@ export function random_rgba() {
  * Fix dependencies and devDependencies
  * @param pkg
  */
-export function fixDeps(pkg: packagejson) {
+export async function fixDeps(pkg: packagejson) {
+  const ori = pkg;
   if (!pkg.hasOwnProperty("dependencies")) {
     console.error("package.json does not have dependencies");
-    return pkg;
+    throw pkg;
   }
   for (const key in pkg.dependencies) {
     if (pkg.dependencies.hasOwnProperty(key)) {
@@ -235,7 +236,10 @@ export function fixDeps(pkg: packagejson) {
       }
     }
   }
-  return pkg;
+  if (typeof pkg == "object" && Object.keys(pkg).length) {
+    return pkg;
+  }
+  return ori;
 }
 
 var execute_is_running = false;

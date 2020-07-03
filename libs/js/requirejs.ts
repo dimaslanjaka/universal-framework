@@ -13,8 +13,7 @@ const require_config: RequireConfig = {
       requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
     "datatables.net-autofill":
       requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
-    "datatables.net-editor":
-      requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",
+
     "datatables.net-buttons":
       requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
     "datatables.net-buttons-html5":
@@ -36,6 +35,10 @@ const require_config: RequireConfig = {
     "datatables.net-responsive":
       requirejs_vendor +
       "/datatables.net-responsive/js/dataTables.responsive.min",
+    "datatables.net-editor":
+      "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
+    /*"datatables.net-editor":
+      requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",*/
   },
   shim: {
     /**
@@ -270,4 +273,36 @@ function pagination_up(target: JQuery) {
 
     $("thead tr th:first-child").focus().blur();
   });
+}
+
+/**
+ * Optimize Datatables Columns Options
+ * @param data
+ * @param exclude
+ */
+function datatables_colums_options(
+  data?: DataTables.ColumnSettings,
+  exclude?: string[]
+) {
+  if (
+    !data.hasOwnProperty("render") &&
+    exclude &&
+    !exclude.includes("render")
+  ) {
+    data.render = function (data, type, row, meta) {
+      if (["string", "number"].includes(typeof data) || Array.isArray(data)) {
+        if (!data.length) {
+          return this.defaultContent;
+        }
+      }
+      if (!data) {
+        return this.defaultContent;
+      } else {
+        return data;
+      }
+    };
+  }
+  if (!data.hasOwnProperty("defaultContent")) {
+    data.defaultContent = "<i>Not set</i>";
+  }
 }

@@ -27,20 +27,35 @@ console.clear();
  * Minify Views Assets
  */
 gulp.task("build", function () {
+  return build();
+});
+
+gulp.task("build-clear", function () {
+  return build(true);
+});
+
+/**
+ * Build Project
+ * @param withoutApp
+ */
+function build(withoutApp?: boolean) {
   try {
     var packageJson = root + "/package.json";
     if (fs.existsSync(packageJson)) {
-      var json = JSON.parse(fs.readFileSync(packageJson).toString());
-      json = fixDeps(json);
-      if (typeof json == "object" && Object.keys(json).length) {
-        fs.writeFileSync(root + "/package.json", JSON.stringify(json, null, 2), {
-          encoding: "utf-8",
-        });
-      }
+      var json_pkg = JSON.parse(fs.readFileSync(packageJson).toString());
+      fixDeps(json_pkg).then(function (json) {
+        fs.writeFileSync(
+          root + "/package.json",
+          JSON.stringify(json, null, 2),
+          {
+            encoding: "utf-8",
+          }
+        );
+      });
     }
   } catch (error) {}
-  return createApp(false);
-});
+  return createApp(withoutApp ? true : false);
+}
 
 // watch libs/js/**/* and views
 gulp.task("watch", function () {
@@ -287,7 +302,7 @@ export async function createApp(withoutView: boolean) {
       multiMinify(views());
     }
     localStorage.removeItem("compile");
-    node2browser(target, path.dirname(target));
+    //node2browser(target, path.dirname(target));
   } else {
     log.log(
       log.error("Compiler lock process already exists ") +

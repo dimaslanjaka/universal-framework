@@ -3417,7 +3417,6 @@ var require_config = {
         "datatables.net": requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
         "datatables.net-bs4": requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
         "datatables.net-autofill": requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
-        "datatables.net-editor": requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",
         "datatables.net-buttons": requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
         "datatables.net-buttons-html5": requirejs_vendor + "/datatables.net-buttons/js/buttons.html5.min",
         "datatables.net-buttons-flash": requirejs_vendor + "/datatables.net-buttons/js/buttons.flash.min",
@@ -3430,6 +3429,7 @@ var require_config = {
         "datatables.net-select": requirejs_vendor + "/datatables.net-select/js/dataTables.select.min",
         "datatables.net-responsive": requirejs_vendor +
             "/datatables.net-responsive/js/dataTables.responsive.min",
+        "datatables.net-editor": "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
     },
     shim: {
         /**
@@ -3646,6 +3646,33 @@ function pagination_up(target) {
         }, "slow");
         $("thead tr th:first-child").focus().blur();
     });
+}
+/**
+ * Optimize Datatables Columns Options
+ * @param data
+ * @param exclude
+ */
+function datatables_colums_options(data, exclude) {
+    if (!data.hasOwnProperty("render") &&
+        exclude &&
+        !exclude.includes("render")) {
+        data.render = function (data, type, row, meta) {
+            if (["string", "number"].includes(typeof data) || Array.isArray(data)) {
+                if (!data.length) {
+                    return this.defaultContent;
+                }
+            }
+            if (!data) {
+                return this.defaultContent;
+            }
+            else {
+                return data;
+            }
+        };
+    }
+    if (!data.hasOwnProperty("defaultContent")) {
+        data.defaultContent = "<i>Not set</i>";
+    }
 }
 /// <reference path="./Object.d.ts"/>
 /// <reference path="./globals.d.ts"/>

@@ -5,6 +5,7 @@
 /// <reference types="react" />
 /// <reference types="jquery" />
 /// <reference types="requirejs" />
+/// <reference types="datatables.net" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
  * in_array PHP equivalent
@@ -939,6 +940,12 @@ declare function datatables_optimize(id: string, callback?: Function): void;
  * @param target
  */
 declare function pagination_up(target: JQuery): void;
+/**
+ * Optimize Datatables Columns Options
+ * @param data
+ * @param exclude
+ */
+declare function datatables_colums_options(data?: DataTables.ColumnSettings, exclude?: string[]): void;
 /**
  * Set all forms to be smart
  * @todo save input fields into browser for reusable form
