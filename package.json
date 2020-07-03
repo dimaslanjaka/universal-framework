@@ -374,7 +374,7 @@
     "preinstall": "",
     "start": "gulp watch",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": ""
   },
   "version": "3.0.0"
 }
