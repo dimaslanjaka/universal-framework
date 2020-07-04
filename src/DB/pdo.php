@@ -361,7 +361,7 @@ class pdo
    * Automated Executor
    *
    * @param array $value
-   * @return void
+   * @return array
    */
   public function exec(array $value = [])
   {

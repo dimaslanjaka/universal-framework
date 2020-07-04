@@ -17,6 +17,12 @@ class loader
    */
   public $user;
   /**
+   * User meta instance
+   *
+   * @var \User\meta
+   */
+  public $usermeta;
+  /**
    * Warehouse instance
    *
    * @var inventory\warehouse\index
@@ -32,6 +38,7 @@ class loader
   {
     $this->pdo = $pdo;
     $this->user = new user($pdo);
+    $this->usermeta = $this->user->usermeta;
     $this->warehouse = new inventory\warehouse\index($pdo);
   }
   /**

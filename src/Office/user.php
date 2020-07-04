@@ -10,13 +10,16 @@ class user extends \User\user
    * @var \DB\pdo
    */
   private $pdo;
+  /**
+   * User meta instance
+   *
+   * @var \User\meta
+   */
+  public $usermeta;
   function __construct(\DB\pdo $pdo)
   {
     $this->pdo = $pdo;
-  }
-
-  function set_instance(\User\user $user)
-  {
-    //$this = $user;
+    $this->pdo_instance($pdo);
+    $this->usermeta = new \User\meta($pdo);
   }
 }

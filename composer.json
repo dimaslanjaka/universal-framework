@@ -57,7 +57,8 @@
     "sebastian/comparator": "*",
     "mikey179/vfsstream": "*",
     "paragonie/random_compat": "*",
-    "nikic/php-parser": "~1@dev"
+    "nikic/php-parser": "~1@dev",
+    "phpdocumentor/phpdocumentor": "2.*"
   },
   "autoload": {
     "psr-4": {

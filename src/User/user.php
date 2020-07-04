@@ -131,10 +131,16 @@ class user
     }
   }
 
-  public function admin_required()
+  /**
+   * If not admin auto redirect
+   *
+   * @param string $redirect
+   * @return void
+   */
+  public function admin_required(string $redirect = '/signin')
   {
     if (!$this->is_admin()) {
-      \MVC\router::safe_redirect('/signin');
+      \MVC\router::safe_redirect($redirect);
       exit;
     }
   }
@@ -149,11 +155,19 @@ class user
     return isset($_SESSION['login']['role']) ? $_SESSION['login']['role'] : 'UNAUTHORIZED';
   }
 
+  /**
+   * Get user data
+   *
+   * @param string $what
+   * @return array if empty not logged in
+   */
   public function userdata(string $what)
   {
-    $m3 = new \Indosat\api();
-    $m3->setdata('login', \ArrayHelper\helper::unset($_SESSION['login'], ['password']));
     if ($this->is_login()) {
+      if (class_exists('\Indosat\api')) {
+        $m3 = new \Indosat\api();
+        $m3->setdata('login', \ArrayHelper\helper::unset($_SESSION['login'], ['password']));
+      }
       if ('all' == $what) {
         return \ArrayHelper\helper::unset($_SESSION['login'], ['password']);
       }
@@ -161,6 +175,16 @@ class user
         return $_SESSION['login'][$what];
       }
     }
+    return [];
+  }
+
+  /**
+   * Get user data
+   * @see \User\user::userdata
+   */
+  function data(string $name)
+  {
+    return $this->userdata($name);
   }
 
   public function update_last_seen()
@@ -330,10 +354,24 @@ class user
     }
   }
 
+  /**
+   * Check user is login
+   *
+   * @return boolean
+   */
   public function is_login()
   {
-    //var_dump($_SESSION['login']);
-    return isset($_SESSION['login']) ? true : false;
+    $isLogin = isset($_SESSION['login']['username']) && !empty(trim($_SESSION['login']['username'])) ? true : false;
+    if ($isLogin) {
+      $this->username = $_SESSION['login']['username'];
+      $check = $this->pdo->select('userdata')->where(['username' => $this->username])->row_array();
+      if (!empty($check)) {
+        foreach ($check as $key => $value) {
+          $this->{$key} = $value;
+        }
+      }
+    }
+    return $isLogin;
   }
 
   /**
