@@ -44,6 +44,7 @@
   ],
   "include": [
     //"./libs/src/compiler/**/*",
-    "./libs/index.ts"
+    "./libs/index.ts",
+    "./libs/compiler/sftp.ts"
   ]
 }

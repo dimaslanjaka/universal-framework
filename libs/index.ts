@@ -11,7 +11,6 @@ import * as Process from "process";
 //import { spawn } from "child_process";
 import filemanager from "./src/compiler/filemanager";
 import { minify } from "./src/compiler/gulpfile";
-import {} from "./src/syncs/sync";
 import {
   config_builder,
   fixDeps,

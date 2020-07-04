@@ -1,4 +1,14 @@
 #!/usr/bin/env node
 const path = require("path");
-const log = require("./../../dist/src/compiler/log");
-const sftp = require("../../dist/src/compiler/sftp");
+const fs = require("fs");
+if (fs.lstatSync(path.resolve("./dist")).isDirectory()) {
+  console.log(
+    fs.lstatSync(path.resolve("./dist/src/compiler/sftp.js")).isFile()
+  );
+  //const Sync = require("./dist/src/compiler/sftp");
+} else if (fs.lstatSync(path.resolve("../../dist")).isDirectory()) {
+  const sftp = require("../../dist/src/compiler/sftp");
+}
+
+//const log = require("../../dist/src/compiler/log");
+//const sftp = require("../../dist/src/compiler/sftp");
