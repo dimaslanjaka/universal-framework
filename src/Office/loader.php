@@ -2,6 +2,10 @@
 
 namespace Office;
 
+/**
+ * Office Module Loader
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 class loader
 {
   /**
