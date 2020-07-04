@@ -1,13 +1,10 @@
 # Ignore major trash
-package-lock.json
 src/Indosat/otp/
 src/Telkomsel/otp/
 src/Extender/otp/
 src/Sessions/sessions/
-composer.lock
 config-tsel.php
 config-m3.php
-yarn.lock
 /etc
 /processed
 /config-tsel.php
