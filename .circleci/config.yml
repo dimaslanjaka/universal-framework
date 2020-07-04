@@ -22,7 +22,7 @@ jobs:
       - checkout
       #- run: sudo add-apt-repository ppa:ondrej/php
       - run: sudo apt update
-      - run: sudo apt-get install -y nodejs software-properties-common zlib1g-dev libsqlite3-dev php7.4 php7.4-gd php7.4-soap php7.4-curl
+      - run: sudo apt-get install -y nodejs software-properties-common zlib1g-dev libsqlite3-dev php7.4
       - run: sudo apt-get install 7.4
       - run: sudo docker-php-ext-install zip
 
