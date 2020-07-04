@@ -1,15 +1,13 @@
 os:
   - linux
-dist: xenial
-
-language:
-  - node_js
-  - php
-
-node_js:
-  - "10"
+sudo: required
+#dist: trusty
+language: php
 php:
+  - 7
+  - hhvm
   - nightly
+dist: xenial
 
 cache:
   directories:
@@ -17,11 +15,18 @@ cache:
     - vendor
     - tmp
 
+matrix:
+  allow_failures:
+    - php: hhvm
+
 env:
+  - NODE_RELEASE=6.x
+  - NOTE_RELEASE=7.x
   - TOXENV=py27
 
-before_script:
-  - npm install -g gulp typescript grunt eslint tslint
+before_install:
+  - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | sudo -E bash -
+  - sudo apt-get install -y nodejs
 
 install:
   - npm install
@@ -30,8 +35,11 @@ install:
   - tsc -p tsconfig.compiler.json
   - composer install
 
+before_script:
+  - npm install -g gulp typescript grunt eslint tslint snyk
+
 script:
-  - gulp build
+  - npm run test
 
 branches:
   only:

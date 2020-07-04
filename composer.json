@@ -92,7 +92,6 @@
   },
   "require-dev": {
     "ext-gd": "*",
-    "ext-pcntl": "*",
     "mikey179/vfsstream": "*",
     "nikic/php-parser": "~1@dev",
     "paragonie/random_compat": "*",

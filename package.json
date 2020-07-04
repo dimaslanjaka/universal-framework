@@ -375,7 +375,8 @@
     "preinstall": "",
     "start": "gulp watch",
     "snyk-protect": "snyk protect",
-    "prepublish": ""
+    "prepublish": "",
+    "test": "echo \"Test\";"
   },
   "version": "3.0.0"
 }
