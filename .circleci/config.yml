@@ -40,10 +40,12 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
+
       - restore_cache:
           keys:
             - node-v1-{{ checksum "package.json" }}
-            - node-v1-
+            paths:
+            - node_modules
       #- run: yarn install
       - run: sudo npm install -g gulp typescript grunt eslint tslint snyk
       - run: npm install
