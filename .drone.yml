@@ -1,15 +1,14 @@
----
-kind: pipeline
-type: docker
-name: default
+clone:
+  git:
+    image: plugins/git
+    depth: 5
 
-steps:
-  - name: backend
-    image: php
+pipeline:
+  phpunit:
+    image: php:7.4
     commands:
-      - composer install
-
-  - name: frontend
+      - composer install -q --prefer-dist
+  nodejs:
     image: node
     commands:
       - npm install
