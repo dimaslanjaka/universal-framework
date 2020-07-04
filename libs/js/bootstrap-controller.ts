@@ -45,9 +45,16 @@ if (!isnode()) {
 
     $(document).on("click", "[data-dismiss]", function (e) {
       const dataDismiss = $(this).data("dismiss");
+      const dataCallback = $(this).data("callback");
       if (dataDismiss == "badge") {
         e.preventDefault();
-        console.log($(this).parents(".badge"));
+        var parent1 = $(this).parents(".badge");
+        if (parent1.length) {
+          parent1.remove();
+          if (dataCallback) {
+            ___call(dataCallback);
+          }
+        }
       }
     });
 

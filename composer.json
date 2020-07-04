@@ -17,6 +17,7 @@
     "ext-json": "*",
     "ext-curl": "*",
     "ext-mbstring": "*",
+    "psr/log": "^1.0",
     "google/apiclient": "^2.5",
     "cboden/ratchet": "^0.4.2",
     "phpseclib/mcrypt_compat": "^1.0",

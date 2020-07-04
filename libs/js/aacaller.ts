@@ -2,13 +2,44 @@
  * call_user_func
  * @param functionName function name
  */
-function ___call(functionName: string, context: Window, args: any) {
+function ___call(functionName: string, context?: Window /*, args?: any*/) {
   var args = Array.prototype.slice.call(arguments, 2);
   var namespaces = functionName.split(".");
   var func = namespaces.pop();
   if (typeof window[func] != "undefined") {
-    window[func](arguments);
+    window[func](args);
+  } else if (context && context instanceof Window) {
+    if (typeof context[func] != "undefined") {
+      context[func](args);
+    }
+  } else {
+    try {
+      eval(functionName);
+    } catch (error) {
+      console.error(error);
+      console.error(functionName + " is not function");
+    }
   }
+}
+
+/**
+ * call_user_func
+ * @param functionName
+ * @param context
+ * @param args
+ */
+function call_user_func(
+  functionName: string,
+  context: Window & typeof globalThis,
+  args: any
+) {
+  var args = Array.prototype.slice.call(arguments, 2);
+  var namespaces = functionName.split(".");
+  var func = namespaces.pop();
+  for (var i = 0; i < namespaces.length; i++) {
+    context = context[namespaces[i]];
+  }
+  return context[func].apply(context, args);
 }
 
 if (isnode()) {

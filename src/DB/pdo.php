@@ -98,8 +98,9 @@ class pdo
       GlobalPDO::ATTR_EMULATE_PREPARES => false,
       GlobalPDO::ATTR_CASE => GlobalPDO::CASE_NATURAL,
       GlobalPDO::ATTR_ORACLE_NULLS => GlobalPDO::NULL_EMPTY_STRING,
-      GlobalPDO::ATTR_STATEMENT_CLASS => ['\DB\statement', []],
+      GlobalPDO::ATTR_STATEMENT_CLASS => ['\DB\EPDOStatement', []],
     ];
+
     $pdo = null;
     try {
       $pdo = new GlobalPDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass, $options);
@@ -281,6 +282,11 @@ class pdo
     return $this;
   }
 
+  /**
+   * PDO Instance
+   *
+   * @return GlobalPDO
+   */
   public function pdo()
   {
     return $this->pdo;
@@ -375,7 +381,7 @@ class pdo
   {
     $result = ['error' => true];
     /**
-     * @var statement
+     * @var EPDOStatement
      */
     $stmt = $this->pdo->prepare($this->query);
     $bind = [];

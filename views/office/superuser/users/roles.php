@@ -11,12 +11,13 @@ $roles = \DB\schema::get_enumset_values(pdo(), 'userdata', 'role');
             <div class="md-form">
               <?php
               foreach ($roles as $role) {
-                echo "<span class='badge rand-bg-color mr-3'>$role <span class='vertical-line'><i class='fad fa-times link' data-dismiss='badge'></i></span></span>";
+                echo "<span class='badge bg-purple mr-3'>$role <span class='vertical-line'><i class='fad fa-times link' data-dismiss='badge'></i></span> <input type='hidden' name='userdata[role][]' value='$role' id='hrole-$role'></span>";
               }
               ?>
-              <select name="userdata[role]" id="" class="form-control">
-
-              </select>
+              <div class="input-group">
+                <input type="text" class="form-control" name="userdata[role][]" placeholder="Add New Role">
+                <button class="btn bg-success" id="role-add" type="submit"><i class="fad fa-plus"></i></button>
+              </div>
             </div>
           </div>
         </div>
