@@ -376,7 +376,7 @@
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "",
-    "test": "depcheck ./libs"
+    "test": "depcheck ./"
   },
   "version": "3.0.0"
 }
