@@ -30,6 +30,7 @@ before_install:
   - nvm use 12
   - npm install -g gulp typescript grunt eslint tslint snyk
   - composer self-update
+  - npm -v node -v
 
 install:
   - npm install
