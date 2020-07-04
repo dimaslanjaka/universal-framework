@@ -8,7 +8,7 @@ jobs:
     docker:
       # Specify the version you desire here
       - image: circleci/php:latest
-      - image: circleci/node:latest
+      - image: circleci/node:10.0.0
 
     steps:
       - run:
@@ -21,6 +21,7 @@ jobs:
           command: |
             sudo docker-php-ext-configure gd
             sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
+            sudo npm install -g npm@latest
       - run:
           name: Update Composer
           command: sudo composer self-update
