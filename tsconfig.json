@@ -47,6 +47,7 @@
     "./src",
     "./vendor",
     "./tmp",
+    "./dist",
     "./assets/js",
     "**.min.js",
     "**/*.min.js",
