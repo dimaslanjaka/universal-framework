@@ -502,17 +502,16 @@ class pdo
     if (!empty($is_equals)) {
       $i = count($is_equals);
       foreach ($is_equals as $key => $value) {
-        --$i;
         if ('NULL' == $value || null === $value) {
           $this->query .= " `$key` IS NULL ";
-          if ($i > 0) { // if condition more than zero, add AND command
-            $this->query .= ' AND ';
-          }
-          continue;
         } elseif ($value) {
-          $value = "'$value'";
+          //$value = "'$value'";
+          $this->query .= " `$key` = '$value' ";
         }
-        $this->query .= " `$key` = $value ";
+        if ($i > 1) { // if condition more than 1, add AND command
+          $this->query .= ' AND ';
+        }
+        --$i;
       }
     }
 

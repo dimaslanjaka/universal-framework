@@ -42,7 +42,19 @@ if (!isnode()) {
         }
       }
     );
+
+    const randbg = $(".rand-bg-color");
+    if (randbg.length) {
+      randbg.css({
+        background: "#" + randomHex(),
+        color: "#ffffff",
+      });
+    }
   });
+}
+
+function randomHex() {
+  return Math.floor(Math.random() * 16777215).toString(16);
 }
 
 /**

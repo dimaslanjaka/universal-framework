@@ -3,56 +3,58 @@
 namespace Office;
 
 /**
- * Office Module Loader
+ * Office Module Loader.
+ *
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class loader
 {
   /**
-   * PDO instance
+   * PDO instance.
    *
    * @var \DB\pdo
    */
   private $pdo;
   /**
-   * User instance
+   * User instance.
    *
    * @var user
    */
   public $user;
   /**
-   * User meta instance
+   * User meta instance.
    *
    * @var \User\meta
    */
   public $usermeta;
   /**
-   * Warehouse instance
+   * Warehouse instance.
    *
    * @var inventory\warehouse\index
    */
   public $warehouse;
   /**
-   * Config instance
+   * Config instance.
    *
    * @var config
    */
   public $config;
-  function __construct(\DB\pdo $pdo)
+
+  public function __construct(\DB\pdo $pdo)
   {
     $this->pdo = $pdo;
     $this->user = new user($pdo);
     $this->usermeta = $this->user->usermeta;
     $this->warehouse = new inventory\warehouse\index($pdo);
   }
+
   /**
-   * Set Config warehouse
+   * Set Config warehouse.
    *
-   * @param string $warehouseName
    * @return void
    */
-  function config(string $warehouseName)
+  public function config(string $officeName)
   {
-    $this->config = new config($warehouseName);
+    $this->config = new config($officeName);
   }
 }

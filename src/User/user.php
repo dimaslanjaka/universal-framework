@@ -159,7 +159,7 @@ class user
    * Get user data
    *
    * @param string $what
-   * @return array if empty not logged in
+   * @return array|int|string|null if empty not logged in
    */
   public function userdata(string $what)
   {
@@ -175,7 +175,7 @@ class user
         return $_SESSION['login'][$what];
       }
     }
-    return [];
+    return null;
   }
 
   /**

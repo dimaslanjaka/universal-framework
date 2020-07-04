@@ -641,6 +641,7 @@ declare function base64_encode(str: string): string;
 declare function base64_decode(str: string): string;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
+declare function randomHex(): string;
 /**
  * open in new tab
  * @param url

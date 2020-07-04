@@ -113,6 +113,18 @@ if (!(typeof module !== "undefined" && module.exports)) {
       }
     };
 
+    $.arrive = function (target, callback) {
+      if (target) {
+        $(target).bind("DOMNodeInserted", callback);
+      } else {
+        if (typeof callback == "function") {
+          $(document).bind("DOMNodeInserted", callback);
+        } else if (typeof target == "function") {
+          $(document).bind("DOMNodeInserted", target);
+        }
+      }
+    };
+
     // bind to new elements
     $(document).bind("DOMNodeInserted", function () {
       var t = $(this);

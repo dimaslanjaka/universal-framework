@@ -10,6 +10,7 @@ interface JQuery extends jQuery {
    * Material bootstrap select. (only works on MDB template)
    */
   materialSelect(): any;
+
   /**
    * Tooltip
    * @param action show hide
@@ -93,6 +94,23 @@ declare namespace JQuery {
 }
 
 interface JQueryStatic {
+  /**
+   * ```js
+   * // listen on spesific wrapper
+   * $.arrive('#container', function(){
+   * console.log($(this));
+   * });
+   * // listen on all elements wrapper
+   * $.arrive(function(){
+   * console.log($(this));
+   * });
+   * ```
+   * Add event to added element on dom
+   * @todo listen new dom element added
+   * @param target pseudo selector
+   * @param callback callback function
+   */
+  arrive(target?: string | any, callback: any): any;
   /**
    * User framework
    * @copyright Universal PHPJS Framework

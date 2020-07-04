@@ -2134,7 +2134,17 @@ if (!isnode()) {
                 }
             }
         });
+        const randbg = $(".rand-bg-color");
+        if (randbg.length) {
+            randbg.css({
+                background: "#" + randomHex(),
+                color: "#ffffff",
+            });
+        }
     });
+}
+function randomHex() {
+    return Math.floor(Math.random() * 16777215).toString(16);
 }
 /**
  * open in new tab
@@ -3733,6 +3743,19 @@ if (!(typeof module !== "undefined" && module.exports)) {
                     $(this).val(item);
                 }
                 //console.log('load', type, key, item);
+            }
+        };
+        $.arrive = function (target, callback) {
+            if (target) {
+                $(target).bind("DOMNodeInserted", callback);
+            }
+            else {
+                if (typeof callback == "function") {
+                    $(document).bind("DOMNodeInserted", callback);
+                }
+                else if (typeof target == "function") {
+                    $(document).bind("DOMNodeInserted", target);
+                }
             }
         };
         // bind to new elements
