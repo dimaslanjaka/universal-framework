@@ -2,42 +2,45 @@ os:
   - linux
 dist: xenial
 
+language:
+  - node_js
+  - php
+
+node_js:
+  - "10"
+php:
+  - nightly
+
 cache:
   directories:
     - node_modules
     - vendor
     - tmp
 
-branches:
-  only:
-    - master
 env:
   - TOXENV=py27
 
-matrix:
+before_script:
+  - npm install -g gulp typescript grunt eslint tslint
+
+install:
+  - npm install
+  - tsc -p tsconfig.build.json
+  - tsc -p tsconfig.precompiler.json
+  - tsc -p tsconfig.compiler.json
+  - composer install
+
+script:
+  - gulp build
+
+branches:
+  only:
+    - master
+
+jobs:
+  allow_failures:
+    - os: linux
   include:
-    - language: php
-      php:
-        - nightly
-      install:
-        - composer install
-    - language: node_js
-      node_js:
-        - "10"
-      jobs:
-        allow_failures:
-          - os: linux
-        include:
-          - os: linux
-            python: 2.7
-            env: TOXENV=py27
-        before_script:
-          - npm install -g gulp typescript grunt eslint tslint
-        install:
-          - npm install
-          - tsc -p tsconfig.build.json
-          - tsc -p tsconfig.precompiler.json
-          - tsc -p tsconfig.compiler.json
-        script:
-          - gulp build
-        fast_finish: true
+    - os: linux
+      python: 2.7
+      env: TOXENV=py27
