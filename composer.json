@@ -88,7 +88,8 @@
     "symfony/event-dispatcher": "~2.5",
     "symfony/polyfill-mbstring": "^1.11",
     "symfony/yaml": "~2.5",
-    "windwalker/framework": "~3.0"
+    "windwalker/framework": "~3.0",
+    "codeception/codeception": "^4.0"
   },
   "require-dev": {
     "ext-gd": "*",
