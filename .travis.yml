@@ -1,5 +1,6 @@
 os:
   - linux
+dist: xenial
 
 language: node_js
 node_js:
@@ -19,6 +20,9 @@ before_script:
 
 install:
   - npm install
+  - tsc -p tsconfig.build.json
+  - tsc -p tsconfig.precompiler.json
+  - tsc -p tsconfig.compiler.json
 
 script:
   - gulp build
