@@ -20,7 +20,7 @@ jobs:
           name: Install PHP Extensions
           command: |
             sudo docker-php-ext-configure gd
-            sudo docker-php-ext-install -j$(nproc) iconv mcrypt gd zip pdo_mysql pdo_sqlite
+            sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
       - run:
           name: Update Composer
           command: sudo composer self-update
