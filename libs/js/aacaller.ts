@@ -2,7 +2,7 @@
  * call_user_func
  * @param functionName function name
  */
-function ___call(functionName: string, context?: Window /*, args?: any*/) {
+function ___call(functionName: string, context?: Window, args?: any) {
   var args = Array.prototype.slice.call(arguments, 2);
   var namespaces = functionName.split(".");
   var func = namespaces.pop();
