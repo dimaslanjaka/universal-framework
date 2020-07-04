@@ -31,11 +31,9 @@ install:
   - tsc -p tsconfig.build.json
   - composer install
 
-before_script:
-  - npm install -g gulp typescript grunt eslint tslint snyk
-
 script:
-  - npm run test
+  - npm install -g gulp typescript grunt eslint tslint snyk
+    - npm run test
 
 branches:
   only:
