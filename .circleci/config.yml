@@ -58,7 +58,7 @@ jobs:
       #- run: ./vendor/bin/phpunit
       #- run: ./vendor/bin/codecept build
       #- run: ./vendor/bin/codecept run
-      - run: nvm install 12
-      - run: nvm use 12
+      #- run: nvm install 12
+      #- run: nvm use 12
       - run: npm install -g gulp typescript grunt eslint tslint snyk
       - run: npm install
