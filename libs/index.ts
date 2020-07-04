@@ -90,9 +90,6 @@ if (typeof args[0] != "undefined") {
       execute("tsc -p tsconfig.compiler.json", function (success, message) {
         console.log(message);
       });
-      execute("tsc -p tsconfig.main.json", function (success, message) {
-        console.log(message);
-      });
       break;
   }
 } else {
