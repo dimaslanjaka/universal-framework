@@ -30,8 +30,6 @@ before_install:
 install:
   - npm install
   - tsc -p tsconfig.build.json
-  - tsc -p tsconfig.precompiler.json
-  - tsc -p tsconfig.compiler.json
   - composer install
 
 before_script:
