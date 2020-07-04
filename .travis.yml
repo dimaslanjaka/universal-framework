@@ -26,6 +26,7 @@ before_install:
   - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | sudo -E bash -
   - sudo apt-get install -y nodejs
   - nvm install 10.2.0
+  - nvm install 12
   - nvm use 12
   - npm install -g gulp typescript grunt eslint tslint snyk
   - composer self-update
