@@ -24,7 +24,7 @@ before_install:
     esac
 
 before_cache:
-- |-
+  - |-
     case $TRAVIS_OS_NAME in
       windows)
         # https://unix.stackexchange.com/a/137322/107554
@@ -33,9 +33,10 @@ before_cache:
     esac
 
 cache:
-    directories:
+  directories:
     - $HOME/AppData/Local/Temp/chocolatey
     - /C/tools/msys64
+    - node_modules
 
 env:
   - CXX=g++-4.8
@@ -49,13 +50,8 @@ install:
 script:
   - gulp build
 
-cache:
-  directories:
-    - node_modules
-
 branches:
   only:
     - master
-
-deploy:
-  skip_cleanup: true
+#deploy:
+#skip_cleanup: true
