@@ -25,6 +25,8 @@ jobs:
           - MYSQL_PASSWORD=ubuntu
           - MYSQL_DATABASE=circle_test
 
+      - image: circleci/node:10
+
     steps:
       - run:
           name: Install System Dependencies
