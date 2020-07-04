@@ -8,9 +8,7 @@ import * as fs from "fs";
 import { serve } from "./src/UI/index";
 import * as path from "path";
 import * as Process from "process";
-//import { spawn } from "child_process";
 import filemanager from "./src/compiler/filemanager";
-import { minify } from "./src/compiler/gulpfile";
 import {
   config_builder,
   fixDeps,

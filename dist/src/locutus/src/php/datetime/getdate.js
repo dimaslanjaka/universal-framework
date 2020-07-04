@@ -1,0 +1,52 @@
+module.exports = function getdate(timestamp) {
+    //  discuss at: https://locutus.io/php/getdate/
+    // original by: Paulo Freitas
+    //    input by: Alex
+    // bugfixed by: Brett Zamir (https://brett-zamir.me)
+    //   example 1: getdate(1055901520)
+    //   returns 1: {'seconds': 40, 'minutes': 58, 'hours': 1, 'mday': 18, 'wday': 3, 'mon': 6, 'year': 2003, 'yday': 168, 'weekday': 'Wednesday', 'month': 'June', '0': 1055901520}
+    var _w = [
+        'Sun',
+        'Mon',
+        'Tues',
+        'Wednes',
+        'Thurs',
+        'Fri',
+        'Satur'
+    ];
+    var _m = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ];
+    var d = ((typeof timestamp === 'undefined') ? new Date()
+        : (timestamp instanceof Date) ? new Date(timestamp) // Not provided
+            : new Date(timestamp * 1000) // Javascript Date() // UNIX timestamp (auto-convert to int)
+    );
+    var w = d.getDay();
+    var m = d.getMonth();
+    var y = d.getFullYear();
+    var r = {};
+    r.seconds = d.getSeconds();
+    r.minutes = d.getMinutes();
+    r.hours = d.getHours();
+    r.mday = d.getDate();
+    r.wday = w;
+    r.mon = m + 1;
+    r.year = y;
+    r.yday = Math.floor((d - (new Date(y, 0, 1))) / 86400000);
+    r.weekday = _w[w] + 'day';
+    r.month = _m[m];
+    r['0'] = parseInt(d.getTime() / 1000, 10);
+    return r;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2V0ZGF0ZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uL2xpYnMvc3JjL2xvY3V0dXMvc3JjL3BocC9kYXRldGltZS9nZXRkYXRlLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBQyxPQUFPLEdBQUcsU0FBUyxPQUFPLENBQUUsU0FBUztJQUMxQywrQ0FBK0M7SUFDL0MsNkJBQTZCO0lBQzdCLG9CQUFvQjtJQUNwQixvREFBb0Q7SUFDcEQsbUNBQW1DO0lBQ25DLGdMQUFnTDtJQUVoTCxJQUFJLEVBQUUsR0FBRztRQUNQLEtBQUs7UUFDTCxLQUFLO1FBQ0wsTUFBTTtRQUNOLFFBQVE7UUFDUixPQUFPO1FBQ1AsS0FBSztRQUNMLE9BQU87S0FDUixDQUFBO0lBQ0QsSUFBSSxFQUFFLEdBQUc7UUFDUCxTQUFTO1FBQ1QsVUFBVTtRQUNWLE9BQU87UUFDUCxPQUFPO1FBQ1AsS0FBSztRQUNMLE1BQU07UUFDTixNQUFNO1FBQ04sUUFBUTtRQUNSLFdBQVc7UUFDWCxTQUFTO1FBQ1QsVUFBVTtRQUNWLFVBQVU7S0FDWCxDQUFBO0lBQ0QsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLE9BQU8sU0FBUyxLQUFLLFdBQVcsQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLElBQUksRUFBRTtRQUN0RCxDQUFDLENBQUMsQ0FBQyxTQUFTLFlBQVksSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLElBQUksSUFBSSxDQUFDLFNBQVMsQ0FBQyxDQUFFLGVBQWU7WUFDcEUsQ0FBQyxDQUFDLElBQUksSUFBSSxDQUFDLFNBQVMsR0FBRyxJQUFJLENBQUMsQ0FBQyw0REFBNEQ7S0FDMUYsQ0FBQTtJQUNELElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQyxNQUFNLEVBQUUsQ0FBQTtJQUNsQixJQUFJLENBQUMsR0FBRyxDQUFDLENBQUMsUUFBUSxFQUFFLENBQUE7SUFDcEIsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDLFdBQVcsRUFBRSxDQUFBO0lBQ3ZCLElBQUksQ0FBQyxHQUFHLEVBQUUsQ0FBQTtJQUVWLENBQUMsQ0FBQyxPQUFPLEdBQUcsQ0FBQyxDQUFDLFVBQVUsRUFBRSxDQUFBO0lBQzFCLENBQUMsQ0FBQyxPQUFPLEdBQUcsQ0FBQyxDQUFDLFVBQVUsRUFBRSxDQUFBO0lBQzFCLENBQUMsQ0FBQyxLQUFLLEdBQUcsQ0FBQyxDQUFDLFFBQVEsRUFBRSxDQUFBO0lBQ3RCLENBQUMsQ0FBQyxJQUFJLEdBQUcsQ0FBQyxDQUFDLE9BQU8sRUFBRSxDQUFBO0lBQ3BCLENBQUMsQ0FBQyxJQUFJLEdBQUcsQ0FBQyxDQUFBO0lBQ1YsQ0FBQyxDQUFDLEdBQUcsR0FBRyxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBQ2IsQ0FBQyxDQUFDLElBQUksR0FBRyxDQUFDLENBQUE7SUFDVixDQUFDLENBQUMsSUFBSSxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLEdBQUcsQ0FBQyxJQUFJLElBQUksQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsR0FBRyxRQUFRLENBQUMsQ0FBQTtJQUN6RCxDQUFDLENBQUMsT0FBTyxHQUFHLEVBQUUsQ0FBQyxDQUFDLENBQUMsR0FBRyxLQUFLLENBQUE7SUFDekIsQ0FBQyxDQUFDLEtBQUssR0FBRyxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUE7SUFDZixDQUFDLENBQUMsR0FBRyxDQUFDLEdBQUcsUUFBUSxDQUFDLENBQUMsQ0FBQyxPQUFPLEVBQUUsR0FBRyxJQUFJLEVBQUUsRUFBRSxDQUFDLENBQUE7SUFFekMsT0FBTyxDQUFDLENBQUE7QUFDVixDQUFDLENBQUEifQ==

@@ -1,0 +1,90 @@
+module.exports = function str_ireplace(search, replace, subject, countObj) {
+    //  discuss at: https://locutus.io/php/str_ireplace/
+    // original by: Glen Arason (https://CanadianDomainRegistry.ca)
+    //      note 1: Case-insensitive version of str_replace()
+    //      note 1: Compliant with PHP 5.0 str_ireplace() Full details at:
+    //      note 1: https://ca3.php.net/manual/en/function.str-ireplace.php
+    //      note 2: The countObj parameter (optional) if used must be passed in as a
+    //      note 2: object. The count will then be written by reference into it's `value` property
+    //   example 1: str_ireplace('M', 'e', 'name')
+    //   returns 1: 'naee'
+    //   example 2: var $countObj = {}
+    //   example 2: str_ireplace('M', 'e', 'name', $countObj)
+    //   example 2: var $result = $countObj.value
+    //   returns 2: 1
+    var i = 0;
+    var j = 0;
+    var temp = '';
+    var repl = '';
+    var sl = 0;
+    var fl = 0;
+    var f = '';
+    var r = '';
+    var s = '';
+    var ra = '';
+    var otemp = '';
+    var oi = '';
+    var ofjl = '';
+    var os = subject;
+    var osa = Object.prototype.toString.call(os) === '[object Array]';
+    // var sa = ''
+    if (typeof (search) === 'object') {
+        temp = search;
+        search = [];
+        for (i = 0; i < temp.length; i += 1) {
+            search[i] = temp[i].toLowerCase();
+        }
+    }
+    else {
+        search = search.toLowerCase();
+    }
+    if (typeof (subject) === 'object') {
+        temp = subject;
+        subject = [];
+        for (i = 0; i < temp.length; i += 1) {
+            subject[i] = temp[i].toLowerCase();
+        }
+    }
+    else {
+        subject = subject.toLowerCase();
+    }
+    if (typeof (search) === 'object' && typeof (replace) === 'string') {
+        temp = replace;
+        replace = [];
+        for (i = 0; i < search.length; i += 1) {
+            replace[i] = temp;
+        }
+    }
+    temp = '';
+    f = [].concat(search);
+    r = [].concat(replace);
+    ra = Object.prototype.toString.call(r) === '[object Array]';
+    s = subject;
+    // sa = Object.prototype.toString.call(s) === '[object Array]'
+    s = [].concat(s);
+    os = [].concat(os);
+    if (countObj) {
+        countObj.value = 0;
+    }
+    for (i = 0, sl = s.length; i < sl; i++) {
+        if (s[i] === '') {
+            continue;
+        }
+        for (j = 0, fl = f.length; j < fl; j++) {
+            temp = s[i] + '';
+            repl = ra ? (r[j] !== undefined ? r[j] : '') : r[0];
+            s[i] = (temp).split(f[j]).join(repl);
+            otemp = os[i] + '';
+            oi = temp.indexOf(f[j]);
+            ofjl = f[j].length;
+            if (oi >= 0) {
+                os[i] = (otemp).split(otemp.substr(oi, ofjl)).join(repl);
+            }
+            if (countObj) {
+                countObj.value += ((temp.split(f[j])).length - 1);
+            }
+        }
+    }
+    return osa ? os : os[0];
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3RyX2lyZXBsYWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vbGlicy9zcmMvbG9jdXR1cy9zcmMvcGhwL3N0cmluZ3Mvc3RyX2lyZXBsYWNlLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBQyxPQUFPLEdBQUcsU0FBUyxZQUFZLENBQUUsTUFBTSxFQUFFLE9BQU8sRUFBRSxPQUFPLEVBQUUsUUFBUTtJQUN4RSxvREFBb0Q7SUFDcEQsK0RBQStEO0lBQy9ELHlEQUF5RDtJQUN6RCxzRUFBc0U7SUFDdEUsdUVBQXVFO0lBQ3ZFLGdGQUFnRjtJQUNoRiw4RkFBOEY7SUFDOUYsOENBQThDO0lBQzlDLHNCQUFzQjtJQUN0QixrQ0FBa0M7SUFDbEMseURBQXlEO0lBQ3pELDZDQUE2QztJQUM3QyxpQkFBaUI7SUFFakIsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBQ1QsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFBO0lBQ1QsSUFBSSxJQUFJLEdBQUcsRUFBRSxDQUFBO0lBQ2IsSUFBSSxJQUFJLEdBQUcsRUFBRSxDQUFBO0lBQ2IsSUFBSSxFQUFFLEdBQUcsQ0FBQyxDQUFBO0lBQ1YsSUFBSSxFQUFFLEdBQUcsQ0FBQyxDQUFBO0lBQ1YsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFBO0lBQ1YsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFBO0lBQ1YsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFBO0lBQ1YsSUFBSSxFQUFFLEdBQUcsRUFBRSxDQUFBO0lBQ1gsSUFBSSxLQUFLLEdBQUcsRUFBRSxDQUFBO0lBQ2QsSUFBSSxFQUFFLEdBQUcsRUFBRSxDQUFBO0lBQ1gsSUFBSSxJQUFJLEdBQUcsRUFBRSxDQUFBO0lBQ2IsSUFBSSxFQUFFLEdBQUcsT0FBTyxDQUFBO0lBQ2hCLElBQUksR0FBRyxHQUFHLE1BQU0sQ0FBQyxTQUFTLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxFQUFFLENBQUMsS0FBSyxn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
