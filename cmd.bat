@@ -20,7 +20,7 @@ set DIR=%~dp0
 set python_posix=%PYTHON:\=/%/python.exe
 set npm_config_devdir=%~dp0/tmp/.gyp
 set VCINSTALLDIR=C:\Program Files (x86)\MSBuild
-rem npm config set python %PYTHON:\=/%/python.exe 
+rem npm config set python %PYTHON:\=/%/python.exe
 
 :BEGIN
 echo Select Terminal:
@@ -28,7 +28,8 @@ echo 1 - CMD
 echo 2 - POWERSHELL
 echo 3 - PING
 echo 4 - Re-build Compiler
-choice /n /c:1234 /M "Choose an option "
+echo 5 - Travis Log Clear
+choice /n /c:1234567 /M "Choose an option "
 GOTO LABEL-%ERRORLEVEL%
 
 :LABEL-1 CMD
@@ -50,6 +51,16 @@ GOTO LABEL-%ERRORLEVEL%
 
 :LABEL-4 Rebuild
   cmd.exe /k "@echo OFF & cls & tsc -p tsconfig.build.json & tsc -p tsconfig.precompiler.json & tsc -p tsconfig.compiler.json"
+  goto END
+
+:LABEL-5 TravisLog
+  @echo OFF
+  setlocal EnableDelayedExpansion
+  set /p LoopCount="How many log: "
+  for /L %%A in (1,1,%LoopCount%) do (
+      travis logs %%A --delete --force
+  )
+  pause
   goto END
 
 :END
