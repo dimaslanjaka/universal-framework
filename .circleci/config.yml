@@ -24,7 +24,8 @@ jobs:
       - run: sudo apt update
       - run: sudo apt-get install -y nodejs software-properties-common zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
-      - run: sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev && sudo docker-php-ext-install -j$(nproc) iconv mcrypt && sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && sudo docker-php-ext-install -j$(nproc) gd pdo_mysql
+      - run: sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && sudo docker-php-ext-install -j$(nproc) gd pdo_mysql
+      #- run: sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev && sudo docker-php-ext-install -j$(nproc) iconv mcrypt && sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && sudo docker-php-ext-install -j$(nproc) gd pdo_mysql
 
       # Download and cache dependencies
       - restore_cache:
