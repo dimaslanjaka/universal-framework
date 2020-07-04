@@ -1,7 +1,14 @@
 .btn-round {
   border-radius: 50%;
 }
-
+.vertical-line {
+  border-left: 1px solid #ffffff;
+  height: 100%;
+  padding-left: 3px;
+}
+.link {
+  cursor: pointer;
+}
 .card-label {
   position: absolute;
   top: 5px;

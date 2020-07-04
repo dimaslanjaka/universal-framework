@@ -2134,11 +2134,20 @@ if (!isnode()) {
                 }
             }
         });
+        $(document).on("click", "[data-dismiss]", function (e) {
+            const dataDismiss = $(this).data("dismiss");
+            if (dataDismiss == "badge") {
+                e.preventDefault();
+                console.log($(this).parents(".badge"));
+            }
+        });
         const randbg = $(".rand-bg-color");
         if (randbg.length) {
-            randbg.css({
-                background: "#" + randomHex(),
-                color: "#ffffff",
+            randbg.each(function () {
+                $(this).css({
+                    background: "#" + randomHex(),
+                    color: "#ffffff",
+                });
             });
         }
     });

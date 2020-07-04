@@ -2169,11 +2169,20 @@ if (!isnode()) {
                 }
             }
         });
+        $(document).on("click", "[data-dismiss]", function (e) {
+            var dataDismiss = $(this).data("dismiss");
+            if (dataDismiss == "badge") {
+                e.preventDefault();
+                console.log($(this).parents(".badge"));
+            }
+        });
         var randbg = $(".rand-bg-color");
         if (randbg.length) {
-            randbg.css({
-                background: "#" + randomHex(),
-                color: "#ffffff",
+            randbg.each(function () {
+                $(this).css({
+                    background: "#" + randomHex(),
+                    color: "#ffffff",
+                });
             });
         }
     });
