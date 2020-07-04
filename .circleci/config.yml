@@ -22,7 +22,7 @@ jobs:
       - checkout
       #- run: sudo add-apt-repository ppa:ondrej/php
       - run: sudo apt update
-      - run: sudo apt-get install -y nodejs
+      - run: sudo apt-get install -y nodejs libpng-dev zlib1g-dev
       - run: sudo docker-php-ext-install zip pdo_mysql
       - run: sudo -E docker-php-ext-install -j$(nproc) gd
 
