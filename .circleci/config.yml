@@ -44,8 +44,8 @@ jobs:
       - restore_cache:
           keys:
             - node-v1-{{ checksum "package.json" }}
-            paths:
-              - node_modules
+          paths:
+            - node_modules
       #- run: yarn install
       - run: sudo npm install -g gulp typescript grunt eslint tslint snyk
       - run: sudo npm install
