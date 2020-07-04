@@ -835,7 +835,7 @@ var Timer = /** @class */ (function () {
  * call_user_func
  * @param functionName function name
  */
-function ___call(functionName, context /*, args?: any*/) {
+function ___call(functionName, context, args) {
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split(".");
     var func = namespaces.pop();

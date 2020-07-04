@@ -227,7 +227,7 @@ declare class Timer {
  * call_user_func
  * @param functionName function name
  */
-declare function ___call(functionName: string, context?: Window): void;
+declare function ___call(functionName: string, context?: Window, args?: any): void;
 /**
  * call_user_func
  * @param functionName
