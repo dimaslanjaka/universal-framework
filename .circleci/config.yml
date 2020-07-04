@@ -45,7 +45,7 @@ jobs:
           keys:
             - node-v1-{{ checksum "package.json" }}
             paths:
-            - node_modules
+              - node_modules
       #- run: yarn install
       - run: sudo npm install -g gulp typescript grunt eslint tslint snyk
       - run: sudo npm install
