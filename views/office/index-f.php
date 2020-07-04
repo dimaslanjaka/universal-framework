@@ -1,6 +1,4 @@
 <?php
 
 $office = office();
-$list = $office->user->getOffices();
-
-//e($list);
+$office->user->login_required('user/login');

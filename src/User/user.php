@@ -235,10 +235,10 @@ class user
     $this->pdo->SQL_Exec($q, ['id' => $id]);
   }
 
-  public function login_required()
+  public function login_required(string $redirect = '/signin')
   {
     if (!$this->is_login()) {
-      \MVC\router::safe_redirect('/signin');
+      \MVC\router::safe_redirect($redirect);
     }
   }
 

@@ -33,6 +33,10 @@ class user extends \User\user
    */
   public function getOffices()
   {
-    return $this->usermeta->get($this->userdata('id'), 'office');
+    $meta = $this->usermeta->get($this->userdata('id'), 'office');
+    if (isset($meta['value'])) {
+      return $meta['value'];
+    }
+    return [];
   }
 }
