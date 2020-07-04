@@ -1,0 +1,16 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: backend
+    image: php
+    commands:
+      - composer install
+
+  - name: frontend
+    image: node
+    commands:
+      - npm install
+      - npm run test
