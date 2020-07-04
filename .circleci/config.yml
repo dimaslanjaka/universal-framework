@@ -17,11 +17,12 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev nodejs
       - run:
-          name: Install PHP Extensions
+          name: Install PHP Extensions And Node.JS Global Modules
           command: |
             sudo docker-php-ext-configure gd
             sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
             sudo npm install -g npm@latest
+            sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
       - run:
           name: Update Composer
           command: sudo composer self-update
@@ -49,7 +50,6 @@ jobs:
           command: |
             node --version
             npm --version
-            sudo npm install -g gulp typescript grunt eslint tslint snyk
             npm install
 
       - save_cache:
