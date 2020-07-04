@@ -21,7 +21,6 @@ matrix:
 
 env:
   - NODE_RELEASE=10.x
-  - TOXENV=py27
 
 before_install:
   - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | sudo -E bash -
