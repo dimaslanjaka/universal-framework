@@ -15,6 +15,18 @@ cache:
     - vendor
     - tmp
 
+branches:
+  only:
+    - master
+
+jobs:
+  allow_failures:
+    - os: linux
+  include:
+    - os: linux
+      python: 2.7
+      env: TOXENV=py27
+
 matrix:
   allow_failures:
     - php: hhvm
@@ -39,15 +51,3 @@ install:
 
 script:
   - npm test
-
-branches:
-  only:
-    - master
-
-jobs:
-  allow_failures:
-    - os: linux
-  include:
-    - os: linux
-      python: 2.7
-      env: TOXENV=py27
