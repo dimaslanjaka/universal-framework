@@ -54,6 +54,7 @@
     "./libs/compiler/**/*",
     "./libs/src/compiler/framework.js",
     "./libs/compiler/framework.js",
-    "**/framework.js"
+    "**/framework.js",
+    "./libs/src/observatory/lib/**/*"
   ]
 }

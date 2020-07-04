@@ -3,7 +3,7 @@ import * as upath from "upath";
 import * as fs from "fs";
 import * as process from "process";
 import chokidar from "chokidar";
-import observatory from "../observatory/lib/observatory";
+import observatory from "../observatory/ts/observatory";
 import { Client } from "scp2";
 import { readFileSync } from "fs";
 import sftp from "./sftp";
