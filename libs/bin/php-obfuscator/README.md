@@ -1,4 +1,4 @@
-# PHP Obfuscator
+# PHP Obfuscator https://github.com/naneau/php-obfuscator
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/naneau/php-obfuscator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/naneau/php-obfuscator/?branch=master)
 
