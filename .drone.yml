@@ -5,7 +5,7 @@ clone:
 
 pipeline:
   phpunit:
-    image: php:7.4
+    image: composer
     commands:
       - composer install -q --prefer-dist
   nodejs:
