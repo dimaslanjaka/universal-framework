@@ -21,7 +21,6 @@ jobs:
           command: |
             sudo docker-php-ext-configure gd
             sudo docker-php-ext-install -j$(nproc) iconv mcrypt gd zip pdo_mysql pdo_sqlite
-            sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - run:
           name: Update Composer
           command: sudo composer self-update
