@@ -23,6 +23,7 @@ jobs:
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo apt-get install -y nodejs
 
       # Download and cache dependencies
       - restore_cache:
@@ -56,3 +57,7 @@ jobs:
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run
+      - run: nvm install 12
+      - run: nvm use 12
+      - run: npm install -g gulp typescript grunt eslint tslint snyk
+      - run: npm install
