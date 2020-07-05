@@ -37,13 +37,14 @@ if (in_array($_SERVER['HTTP_HOST'], ['dev.ns.webmanajemen.com']) || LOCAL) {
   $env = 'development';
   $debug_pdo = 3;
 }
-
+// set framework environtment
 $router->environtment($env);
-
 define('ENVIRONMENT', $router->get_env());
-
-//show_error();
-
+// force debug when development mode
+if (ENVIRONMENT == 'development') {
+  show_error();
+}
+// set PDO Debug
 if (!defined('PDO_DEBUG')) {
   define('PDO_DEBUG', (string) $debug_pdo);
 }
@@ -59,7 +60,11 @@ define('CONFIG', $config);
 // ====== helper
 
 $GLOBALS['config'] = $config;
-
+/**
+ * Get config as array from config.json
+ *
+ * @return array
+ */
 function get_conf()
 {
   if (!$GLOBALS['config']) {
@@ -68,25 +73,24 @@ function get_conf()
 
   return $GLOBALS['config'];
 }
-
+/**
+ * Save array of config to config.json
+ *
+ * @param array $newdata
+ * @return void
+ */
 function save_conf(array $newdata)
 {
   \Filemanager\file::file(__DIR__ . '/config.json', array_replace(get_conf(), $newdata), true);
 }
-
+/**
+ * Get config database
+ *
+ * @return array
+ */
 function get_db()
 {
   return $GLOBALS['config']['database'];
-}
-
-/**
- * Fastest Unique ID Generator.
- *
- * @param int $length default 5
- */
-function uid(int $length = 5)
-{
-  return bin2hex(openssl_random_pseudo_bytes($length / 2));
 }
 
 //======== begin conf [DO NOT EDIT]
@@ -137,106 +141,6 @@ function useGoogle()
 $user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
 $pdo = $user->pdo_instance();
 
-function getLimit(int $id_user = 0)
-{
-  global $user;
-
-  if (!$user) {
-    $user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
-  }
-  if (0 == $id_user) {
-    $id_user = $user->userdata('id');
-  }
-  $limit = [];
-  if ($user->is_login()) {
-    $limit = pdo()->select('limitation')->where([
-      'user_id' => $id_user,
-    ])->row_array();
-    if (empty($limit)) {
-      pdo()->insert_not_exists('limitation', [
-        'user_id' => $id_user,
-      ])->exec();
-
-      return getLimit();
-    }
-  }
-
-  return $limit;
-}
-
-function getLimitRemaining()
-{
-  $limit = (array) getLimit();
-
-  if (isset($limit['max']) && isset($limit['success'])) {
-    $max = (int) $limit['max'];
-    $suc = (int) $limit['success'];
-    $remaining = (int) ($max - $suc);
-    //var_dump($max, $suc, ($max - $suc));
-    return $remaining;
-  }
-
-  return 0;
-}
-function getLimitSuccess()
-{
-  $limit = (array) getLimit();
-  if (isset($limit['success']) && isset($limit['success'])) {
-    $max = (int) $limit['success'];
-
-    return $max;
-  }
-
-  return 0;
-}
-function getLimitMax()
-{
-  $limit = (array) getLimit();
-  if (isset($limit['max']) && isset($limit['success'])) {
-    $max = (int) $limit['max'];
-
-    return $max;
-  }
-
-  return 0;
-}
-
-function getLimitBanned()
-{
-  //var_dump(getLimitRemaining());
-  if (user()->is_login()) {
-    return getLimitRemaining() <= 0;
-  }
-}
-
-function addLimitSuccess(int $id_user = 0)
-{
-  global $user;
-  if (0 == $id_user) {
-    $id_user = $user->userdata('id');
-  }
-
-  return pdo()->sum('limitation', [
-    'success' => 1,
-  ], [
-    'user_id' => $id_user,
-  ])->exec();
-}
-
-function addLimitMax(int $id_user = 0, int $value)
-{
-  global $user;
-  if (0 == $id_user) {
-    $id_user = $user->userdata('id');
-  }
-
-  return pdo()->update('limitation', [
-    'max' => $value,
-  ], [
-    'user_id' => $id_user,
-  ])->exec();
-}
-
 /**
  * user instance.
  *
@@ -248,6 +152,7 @@ function user()
 
   return $user;
 }
+
 $GLOBALS['office_instance'] = null;
 /**
  * Office instance.
@@ -333,37 +238,12 @@ function filemanager()
   return new \Filemanager\file();
 }
 
-function ev()
-{
-  $args = func_get_args();
-  if (1 == count($args)) {
-    $args = $args[0];
-  }
-  if (!headers_sent()) {
-    header('Content-Type: text/plain; charset=utf-8');
-  }
-  exit(var_dump($args));
-}
-
 function vd($a, $_ = null)
 {
   if (!headers_sent()) {
     header('Content-Type: text/plain; charset=utf-8');
   }
   var_dump($a, $_);
-}
-
-function evj(...$a)
-{
-  \JSON\json::json($a);
-  exit;
-}
-
-function clean_string($string)
-{
-  $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-
-  return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
 
 function get_env()
@@ -453,4 +333,109 @@ function precom(...$str)
 function req($opt)
 {
   return \Extender\request::static_request($opt);
+}
+
+/**
+ *  Limitation start.
+ */
+function getLimit(int $id_user = 0)
+{
+  global $user;
+
+  if (!$user) {
+    $user = new \User\user(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
+  }
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+  $limit = [];
+  if ($user->is_login()) {
+    $limit = pdo()->select('limitation')->where([
+      'user_id' => $id_user,
+    ])->row_array();
+    if (empty($limit)) {
+      pdo()->insert_not_exists('limitation', [
+        'user_id' => $id_user,
+      ])->exec();
+
+      return getLimit();
+    }
+  }
+
+  return $limit;
+}
+
+function getLimitRemaining()
+{
+  $limit = (array) getLimit();
+
+  if (isset($limit['max']) && isset($limit['success'])) {
+    $max = (int) $limit['max'];
+    $suc = (int) $limit['success'];
+    $remaining = (int) ($max - $suc);
+    //var_dump($max, $suc, ($max - $suc));
+    return $remaining;
+  }
+
+  return 0;
+}
+
+function getLimitSuccess()
+{
+  $limit = (array) getLimit();
+  if (isset($limit['success']) && isset($limit['success'])) {
+    $max = (int) $limit['success'];
+
+    return $max;
+  }
+
+  return 0;
+}
+
+function getLimitMax()
+{
+  $limit = (array) getLimit();
+  if (isset($limit['max']) && isset($limit['success'])) {
+    $max = (int) $limit['max'];
+
+    return $max;
+  }
+
+  return 0;
+}
+
+function getLimitBanned()
+{
+  //var_dump(getLimitRemaining());
+  if (user()->is_login()) {
+    return getLimitRemaining() <= 0;
+  }
+}
+
+function addLimitSuccess(int $id_user = 0)
+{
+  global $user;
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+
+  return pdo()->sum('limitation', [
+    'success' => 1,
+  ], [
+    'user_id' => $id_user,
+  ])->exec();
+}
+
+function addLimitMax(int $id_user = 0, int $value)
+{
+  global $user;
+  if (0 == $id_user) {
+    $id_user = $user->userdata('id');
+  }
+
+  return pdo()->update('limitation', [
+    'max' => $value,
+  ], [
+    'user_id' => $id_user,
+  ])->exec();
 }

@@ -3,7 +3,7 @@ setlocal DISABLEDELAYEDEXPANSION
 cd /d %~dp0
 
 IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) ELSE (set processor=x86)
-SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
+SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer;%~dp0vendor\bin
 rem cygwin detector
 IF NOT EXIST "C:\Cygwin\bin" (
   IF NOT EXIST "D:\cygwin64\bin" (

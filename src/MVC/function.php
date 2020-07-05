@@ -10,7 +10,11 @@ function maintenance()
 	include __DIR__ . '/maintenance.php';
 	exit;
 }
-
+/**
+ * Debug Error
+ *
+ * @return void
+ */
 function show_error()
 {
 	error_reporting(E_ALL);

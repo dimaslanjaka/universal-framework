@@ -37,12 +37,32 @@ new \DDOS\runner();
 // start theme
 $theme = new themes();
 
-// set theme material bootstrap pro + font awesome pro 5
-//$theme->set('mdb-dashboard');
-$theme->setThemeByZones(['mdb-dashboard' => ['telkomsel', 'coupon', 'im3', 'tools', 'superuser']], 'adminlte');
-//$theme->setThemeByZones(['puskesmas' => ['puskesmas']]);
+////// build template start
 
-$theme_manager = 'theme-manager';
+/**
+ * Template configuration
+ */
+$template = get_conf()['app']['theme'];
+/**
+ * Template stack builder
+ * @todo exclude default template from scopes
+ */
+$template_stack = [];
+foreach ($template as $key => $value) {
+  if ($key == 'default') {
+    continue;
+  }
+  $template_stack[$key] = $value;
+}
+// Set template by zone divider
+$theme->setThemeByZones(
+  $template_stack,
+  get_conf()['app']['theme']['default']
+);
+
+////// build template end
+
+
 $application_folder = empty(CONFIG['app']['root']) ? __DIR__ : ROOT;
 $view_folder = CONFIG['app']['views'];
 $view_folder = "{$application_folder}/{$view_folder}/";
@@ -67,10 +87,8 @@ if (!realpath($view)) {
   http_response_code(400);
 
   $basename = basename($view, '.php');
-  if ($basename == $theme_manager) {
-    $theme->admin();
-    exit;
-  } elseif ('load-asset' == $basename) {
+  if ('load-asset' == $basename) {
+    // load static asset by ?src=
     $parse = helper::parse_url2(helper::geturl());
     if (isset($parse['query']['src'])) {
       helper::load_asset($parse['query']['src']);

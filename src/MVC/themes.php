@@ -171,14 +171,11 @@ class themes
   }
 
   /**
-   * Set theme.
-   *
-   * @param string $theme
-   * @param bool   $useTheme
+   * Set theme default.
    *
    * @return $this
    */
-  public function set($theme, $useTheme = true)
+  public function set(string $theme, bool $useTheme = true)
   {
     $this->theme = $theme;
     $this->root_theme = helper::platformSlashes($this->root_theme . '/' . $theme);
@@ -193,10 +190,11 @@ class themes
 
   /**
    * ```php
-   * setThemeByZones(['theme-name'=>['zone1', 'zone2'], 'another-theme'=>['zone3','zone4']])
+   * setThemeByZones([ 'theme-name'=>['zone1', 'zone2'], 'another-theme'=>['zone3','zone4'], 'default-template'])
    * ```
    * Set theme by zone divider.
-   *
+   * if not exists in zone divider, will using default template.
+   * @throws Exception
    * @return $this
    */
   public function setThemeByZones(array $config, string $default)
@@ -318,7 +316,7 @@ class themes
     }
   }
 
-  public function admin()
+  /*public function admin()
   {
     http_response_code(200);
     $this->root_theme = realpath(__DIR__ . '/themes');
@@ -330,7 +328,7 @@ class themes
     $this->view($view);
     //var_dump($this);
     $this->render();
-  }
+  }*/
 
   /**
    * Include passed variable.

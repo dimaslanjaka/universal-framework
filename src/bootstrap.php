@@ -30,6 +30,60 @@ function sort_iterable(array $arrayObj)
 }
 
 /**
+ * Exit var_dump with text/plain header.
+ *
+ * @return void
+ */
+function ev()
+{
+  $args = func_get_args();
+  if (1 == count($args)) {
+    $args = $args[0];
+  }
+  if (!headers_sent()) {
+    header('Content-Type: text/plain; charset=utf-8');
+  }
+  exit(var_dump($args));
+}
+
+/**
+ * Exit var_dump with JSON header.
+ *
+ * @param [type] ...$a
+ *
+ * @return void
+ */
+function evj(...$a)
+{
+  \JSON\json::json($a);
+  exit;
+}
+
+/**
+ * Fastest Unique ID Generator.
+ *
+ * @param int $length default 5
+ */
+function uid(int $length = 5)
+{
+  return bin2hex(openssl_random_pseudo_bytes($length / 2));
+}
+
+/**
+ * Clean string from multiple whitespaces.
+ *
+ * @param string $string
+ *
+ * @return string
+ */
+function clean_string($string)
+{
+  $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+
+  return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+}
+
+/**
  * Local path to url path conversion.
  *
  * @param string|array $locations
@@ -508,7 +562,8 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
  * Is valid email ?
  *
  * @param string $email
- * @return boolean
+ *
+ * @return bool
  */
 function is_email($email)
 {
@@ -519,7 +574,8 @@ function is_email($email)
  * Is valid url ?
  *
  * @param string $url
- * @return boolean
+ *
+ * @return bool
  */
 function is_url($url)
 {
