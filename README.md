@@ -1,6 +1,14 @@
 # Universal Framework (Under Development)
 
-[![Build Status](https://travis-ci.org/dimaslanjaka/universal-framework.png?branch=master)](https://travis-ci.org/dimaslanjaka/universal-framework) [![Known Vulnerabilities](https://snyk.io/test/github/dimaslanjaka/universal-framework/badge.svg)](https://snyk.io/test/github/dimaslanjaka/universal-framework) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework?ref=badge_shield) [![CircleCI](https://circleci.com/gh/dimaslanjaka/universal-framework.svg?style=shield)](https://circleci.com/gh/dimaslanjaka/universal-framework) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/dimaslanjaka/universal-framework/graphs/commit-activity) [![GitHub release](https://img.shields.io/github/release/dimaslanjaka/universal-framework.svg)](https://GitHub.com/dimaslanjaka/universal-framework/releases/) [![Github all releases](https://img.shields.io/github/downloads/dimaslanjaka/universal-framework/total.svg)](https://GitHub.com/dimaslanjaka/universal-framework/releases/)
+[![Build Status](https://travis-ci.org/dimaslanjaka/universal-framework.png?branch=master)](https://travis-ci.org/dimaslanjaka/universal-framework)
+[![Known Vulnerabilities](https://snyk.io/test/github/dimaslanjaka/universal-framework/badge.svg)](https://snyk.io/test/github/dimaslanjaka/universal-framework)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework?ref=badge_shield)
+[![CircleCI](https://circleci.com/gh/dimaslanjaka/universal-framework.svg?style=shield)](https://circleci.com/gh/dimaslanjaka/universal-framework)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/dimaslanjaka/universal-framework/graphs/commit-activity)
+[![GitHub license](https://img.shields.io/github/release/dimaslanjaka/universal-framework.svg)](https://GitHub.com/dimaslanjaka/universal-framework/releases/) [![Github all releases](https://img.shields.io/github/downloads/dimaslanjaka/universal-framework/total.svg)](https://GitHub.com/dimaslanjaka/universal-framework/releases/)
+[![MIT](https://img.shields.io/github/license/dimaslanjaka/universal-framework?color=%23435df6&logo=PHPJS&logoColor=%23543et5)](https://GitHub.com/dimaslanjaka/universal-framework)
+[![Packagist](https://img.shields.io/packagist/dt/dimaslanjaka/universal-framework.svg)](https://packagist.org/packages/dimaslanjaka/universal-framework)
+![GitHub tag](https://img.shields.io/github/tag/dimaslanjaka/universal-framework.svg)
 
 # PHP framework with powerful functions
 
