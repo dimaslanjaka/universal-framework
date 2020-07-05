@@ -14,7 +14,7 @@ resolve_dir(ROOT . '/src/Session/sessions');
 define('CORS', \MVC\helper::cors());
 
 // define localhost detector
-define('LOCAL', \MVC\helper::isLocal());
+define('LOCAL', \MVC\helper::isLocal('/\.io$/s'));
 
 // define PAGE UNIQUE ID
 $uri = \MVC\helper::get_clean_uri();
@@ -33,10 +33,12 @@ $router->session = $session;
 $env = 'production';
 $debug_pdo = 1;
 
+// this dimaslanjaka's localhost
 if (in_array($_SERVER['HTTP_HOST'], ['dev.ns.webmanajemen.com']) || LOCAL) {
   $env = 'development';
   $debug_pdo = 3;
 }
+
 // set framework environtment
 $router->environtment($env);
 define('ENVIRONMENT', $router->get_env());
@@ -52,6 +54,8 @@ if (!defined('PDO_DEBUG')) {
 $config = \Filemanager\file::get(__DIR__ . '/config.json', true);
 
 if (!CORS) {
+  // extends cache key for cache revisioning
+  // [cache][ext] for development mode to disable browser caching without damaging interface or other
   $config['cache']['key'] .= $config['cache']['ext'];
 }
 
@@ -61,7 +65,7 @@ define('CONFIG', $config);
 
 $GLOBALS['config'] = $config;
 /**
- * Get config as array from config.json
+ * Get config as array from config.json.
  *
  * @return array
  */
@@ -74,9 +78,8 @@ function get_conf()
   return $GLOBALS['config'];
 }
 /**
- * Save array of config to config.json
+ * Save array of config to config.json.
  *
- * @param array $newdata
  * @return void
  */
 function save_conf(array $newdata)
@@ -84,7 +87,7 @@ function save_conf(array $newdata)
   \Filemanager\file::file(__DIR__ . '/config.json', array_replace(get_conf(), $newdata), true);
 }
 /**
- * Get config database
+ * Get config database.
  *
  * @return array
  */

@@ -131,6 +131,17 @@ class coupon extends user
   }
 
   /**
+   * Is localhost ?
+   */
+  public function is_local()
+  {
+    if (defined('LOCAL')) {
+      return LOCAL;
+    }
+    return \MVC\helper::isLocal();
+  }
+
+  /**
    * Validate coupon token with current session zone divisor.
    *
    * @param callable $callback return callback(true|false, $result)
@@ -141,7 +152,7 @@ class coupon extends user
   {
     $this->pdo_required();
     $result = ['title' => 'Coupon validate', 'error' => true];
-    if ($this->is_admin() || \MVC\helper::isLocal()) {
+    if ($this->is_admin() || $this->is_local()) {
       $result['session'] = \Session\session::all();
     }
     if ($this->is_login()) {

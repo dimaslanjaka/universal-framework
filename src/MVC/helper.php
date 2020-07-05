@@ -479,11 +479,11 @@ class helper
    *
    * @return bool
    */
-  public static function isLocal(string $regex = '/\.io$/s')
+  public static function isLocal(string $regex = null)
   {
     $match = preg_match('/127\.0\.0\.0\.1|localhost|^192\.168/s', $_SERVER['HTTP_HOST']) ? true : false;
     if ($regex) {
-      $match = preg_match($regex, $_SERVER['HTTP_HOST']) ? true : false;
+      $match = $match || preg_match($regex, $_SERVER['HTTP_HOST']) ? true : false;
     }
 
     return $match;
