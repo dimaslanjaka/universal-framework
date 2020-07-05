@@ -16,13 +16,13 @@
 
     <div class="card">
       <!-- set a width on the image otherwise it will expand to full width       -->
-      <img class="card-img-top img-fluid" src="https://dummyimage.com/400x200/563d7c/ffffff&text=.card-img-topfff&text=User" alt="Card image cap" width="400">
+      <img class="card-img-top img-fluid" src="https://dummyimage.com/400x200/563d7c/ffffff&text=.card-img-topfff&text=Users" alt="Card image cap" width="400">
       <div class="card-body">
         <h4 class="card-title">Users</h4>
         <p class="card-text">User Management</p>
       </div>
       <div class="card-footer">
-        <a href="user" class="btn btn-round rand-bg-color"><i class="fad fa-arrow-right"></i></a>
+        <a href="users" class="btn btn-round rand-bg-color"><i class="fad fa-arrow-right"></i></a>
       </div>
     </div>
 

@@ -31,7 +31,7 @@ if (!defined('ENVIRONMENT')) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="full-height" manifest="framework.appcache" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
+<html lang="en" class="full-height" manifest="" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
 <html>
 
 <head>

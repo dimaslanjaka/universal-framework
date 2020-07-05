@@ -9,7 +9,8 @@ use JSON\json;
 $GLOBALS['user_instance'] = null;
 
 /**
- * Universal Framework User Management
+ * Universal Framework User Management.
+ *
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class user
@@ -49,11 +50,11 @@ class user
   }
 
   /**
-   * Current instance
+   * Current instance.
    *
    * @return user
    */
-  static function instance()
+  public static function instance()
   {
     return $GLOBALS['user_instance'];
   }
@@ -66,7 +67,7 @@ class user
   }
 
   /**
-   * Get All Users
+   * Get All Users.
    *
    * @return void
    */
@@ -87,8 +88,10 @@ class user
   }
 
   /**
-   * Get PDO Instance
+   * Get PDO Instance.
+   *
    * @param \DB\pdo $pdo set new instance
+   *
    * @return \DB\pdo
    */
   public function pdo_instance(\DB\pdo $pdo = null)
@@ -97,6 +100,7 @@ class user
       $this->pdo = $pdo;
       //$this->db['use'] = $pdo->getDa
     }
+
     return $this->pdo;
   }
 
@@ -112,6 +116,53 @@ class user
     }
 
     return self::$_instance;
+  }
+  /**
+   * Meta instance
+   *
+   * @var \User\meta
+   */
+  private $meta_instance;
+  /**
+   * Get \User\meta instance
+   *
+   * @return meta
+   */
+  public function meta()
+  {
+    $this->pdo_required();
+    if (!$this->meta_instance) {
+      $this->meta_instance = new meta($this->pdo);
+    }
+    return $this->meta_instance;
+  }
+
+  /**
+   * Check user can do something
+   *
+   * @param string $what
+   * @return boolean
+   */
+  function can(string $what)
+  {
+    if ($this->is_login()) {
+      $check = $this->meta()->get($this->userdata('id'), 'can');
+      if (!empty($check)) {
+        return $check;
+      }
+    }
+  }
+
+  /**
+   * Check pdo active.
+   * @throws \MVC\Exception
+   * @return void
+   */
+  public function pdo_required()
+  {
+    if (!$this->pdo) {
+      throw new \MVC\Exception('Active PDO Required');
+    }
   }
 
   public static function get_admin_pattern()
@@ -132,9 +183,8 @@ class user
   }
 
   /**
-   * If not admin auto redirect
+   * If not admin auto redirect.
    *
-   * @param string $redirect
    * @return void
    */
   public function admin_required(string $redirect = '/signin')
@@ -146,7 +196,7 @@ class user
   }
 
   /**
-   * Get Current user role
+   * Get Current user role.
    *
    * @return string
    */
@@ -156,9 +206,8 @@ class user
   }
 
   /**
-   * Get user data
+   * Get user data.
    *
-   * @param string $what
    * @return array|int|string|null if empty not logged in
    */
   public function userdata(string $what)
@@ -175,14 +224,16 @@ class user
         return $_SESSION['login'][$what];
       }
     }
+
     return null;
   }
 
   /**
-   * Get user data
+   * Get user data.
+   *
    * @see \User\user::userdata
    */
-  function data(string $name)
+  public function data(string $name)
   {
     return $this->userdata($name);
   }
@@ -355,9 +406,9 @@ class user
   }
 
   /**
-   * Check user is login
+   * Check user is login.
    *
-   * @return boolean
+   * @return bool
    */
   public function is_login()
   {
@@ -371,6 +422,7 @@ class user
         }
       }
     }
+
     return $isLogin;
   }
 

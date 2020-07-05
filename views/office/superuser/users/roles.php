@@ -1,5 +1,8 @@
 <?php
-$roles = \DB\schema::get_enumset_values(pdo(), 'userdata', 'role');
+$roles = [];
+if (user()->is_admin()) {
+  $roles = \DB\schema::get_enumset_values(pdo(), 'userdata', 'role');
+}
 ?>
 <section>
   <div class="card">
