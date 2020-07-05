@@ -29,22 +29,17 @@ class schema
 
   /**
    * Modify ENUM or SET values.
-   *
+   * @see https://stackoverflow.com/questions/1501958/how-do-i-add-more-members-to-my-enum-type-column-in-mysql
    * @return array
    */
   public static function modify_enumset_values(\DB\pdo $pdo, string $table, string $field, array $newData)
   {
-    //$sql = "ALTER TABLE `$table` MODIFY COLUMN `$field` SET(:value) NOT NULL";
-    $sql = "SELECT table_name FROM information_schema.tables
-    WHERE table_schema = 'userdata';";
-    $prepare = $pdo->pdo()->prepare($sql);
-    foreach ($newData as $data) {
-      //$prepare->bindValue('value', $data, GlobalPDO::PARAM_STR);
+    for ($i = 0; $i < count($newData); $i++) {
+      $newData[$i] = "'$newData[$i]'";
     }
-    $prepare->bindValue('value', 'dataeee', GlobalPDO::PARAM_STR);
-    return $prepare;
-    //implode(', ', $newData)
-    //return $pdo->query($sql)->exec();
+    $data = implode(', ', $newData);
+    $sql = "ALTER TABLE `$table` MODIFY COLUMN `$field` SET($data) NOT NULL";
+    return $pdo->query($sql)->exec();
   }
 
   /**

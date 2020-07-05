@@ -39,13 +39,11 @@ class meta
   }
 
   /**
-   * Get user meta
+   * Get user meta.
    *
-   * @param integer $userid
-   * @param string $key
    * @return void
    */
-  function get(int $userid, string $key)
+  public function get(int $userid, string $key)
   {
     $get = $this->pdo->select('usermeta')->where(['uid' => $userid, 'key' => $key])->row_array();
     if (\ArrayHelper\helper::isAssoc($get)) {
@@ -60,6 +58,7 @@ class meta
         }
       }
     }
+
     return $get;
   }
 }

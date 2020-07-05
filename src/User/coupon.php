@@ -68,7 +68,7 @@ class coupon extends user
       if ($limit < 1) {
         $result['error'] = true;
         $result['message'] = 'Coupon was reached limit';
-        //$this->logout();
+      //$this->logout();
       } else {
         $result['error'] = false;
         $result['message'] = 'Coupon login successfully';
@@ -138,6 +138,7 @@ class coupon extends user
     if (defined('LOCAL')) {
       return LOCAL;
     }
+
     return \MVC\helper::isLocal();
   }
 
@@ -190,8 +191,6 @@ class coupon extends user
 
   /**
    * Add Success 1 to database.
-   *
-   * @param string $coupon_code
    *
    * @return void
    */
@@ -271,8 +270,6 @@ class coupon extends user
 
   /**
    * Generate token.
-   *
-   * @param int $length
    *
    * @return string
    */

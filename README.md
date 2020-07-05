@@ -14,13 +14,33 @@
 
 # Requirements
 
-| Programs                            | Links                                                         |
-| ----------------------------------- | ------------------------------------------------------------- |
-| NodeJS                              | [download](https://nodejs.org/en/blog/release/v10.16.0/) v10^ |
-| vscode                              | powerfull syntax highlight and usage command helper           |
-| python 2.7                          | ./libs/Windows/x64/python2.7 or download from official site   |
-| php intelephense (vscode extension) | latest                                                        |
-| PHP                                 | 7.1^                                                          |
+| Programs                            | Links / Description                                               |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| NodeJS 10++                         | [download](https://nodejs.org/en/blog/release/v10.16.0/)          |
+| vscode                              | Code editor                                                       |
+| python 2.7                          | [download](https://www.python.org/downloads/release/python-2718/) |
+| php intelephense (vscode extension) | For Powerful PHP Intelisense (required)                           |
+| php docblocker (vscode extension)   | For PHP DocBlock Support (optional)                               |
+| PHP                                 | 7.3^ (7.4 Recommended)                                            |
+| php-gd php-curl php-ext             | PHP Extension                                                     |
+
+### How to update XAMPP php version windows
+
+- [Download PHP](https://windows.php.net/download/) select version you're desired
+- stop XAMPP apache
+- backup your current XAMPP PHP (C:\xampp\php)
+- extract the zip (php.exe, etc) from the zip php your'e downloaded before into (C:\xampp\php)
+- start XAMPP apache
+
+#### How to view current XAMPP PHP version
+
+- create file info.php, insert <?php phpinfo(); ?>
+- access it through your localhost, you'll see your php version and other configuration there
+
+### How to install php extension on windows
+
+- access C:\xampp\php\ext, there is installed php extensions folder
+- basically, xampp have all php extensions except experimental extensions
 
 # Support
 
@@ -39,6 +59,7 @@
 
 - PHP - JS integrated function
 - Windows - PHP integrated function
+- PHP - Older php function shimmer
 
 ### Tested Working Development On:
 
@@ -48,25 +69,27 @@
 ### Tips
 
 - always use --prefer-offline for install npm packages to improving installer speed
+- always use --prefer-source for install composer package faster
 
 # Install Windows
 
-- Install NodeJS
-- Open current folder with Command Prompt
+- Install ALL Requirements before running these steps
+- Open cmd.bat
+- select Terminal you're desired
+- type below code into terminal:
 
-```bat
-if "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) else (set processor=x86)
-SET PATH=%PATH%;%~dp0libs\bin\composer;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer
-set PYTHON=%~dp0libs\Windows\%processor%\python2.7
-set PYTHONPATH=%~dp0libs\Windows\%processor%\python2.7
-set DIR=%~dp0
-set python_posix=%PYTHON:\=/%/python.exe
-npm config set python %python_posix%
-rem npm config set msvs_version 2015
-rem npm config set msvs_version 2015 --global
-rem npm -g install node-gyp
-rem node-gyp configure --msvs_version=2015
-rem node-gyp --python %PYTHON:\=/%/python.exe
-rem node-gyp build
-npm install -g typescript gulp
+```sh
+composer install --prefer-source
+npm install --prefer-offline
+npm install typescript gulp depcheck -g --prefer-offline
+tsc -p tsconfig.build.json
+tsc -p tsconfig.precompiler.json
+tsc -p tsconfig.compiler.json
+```
+
+- now you can run development on your device
+
+```sh
+gulp build #for building components all at once
+gulp watch #for watching file on change and automatically run job based on changed files
 ```

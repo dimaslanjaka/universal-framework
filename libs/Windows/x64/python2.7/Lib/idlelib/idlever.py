@@ -1,1 +1,0 @@
-IDLE_VERSION = "2.7.10rc1"

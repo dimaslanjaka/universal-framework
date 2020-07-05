@@ -3,7 +3,13 @@ setlocal DISABLEDELAYEDEXPANSION
 cd /d %~dp0
 
 IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (set processor=x64) ELSE (set processor=x86)
-SET EXTEND=%~dp0libs\bin\composer;%~dp0libs\bin;%~dp0libs\bin\syncjs\bin;%~dp0node_modules\.bin;%~dp0libs\bin\php-cs-fixer;%~dp0vendor\bin
+SET EXTEND=%~dp0node_modules\.bin;%~dp0vendor\bin
+
+IF EXIST "%~dp0libs\bin" (SET EXTEND=%EXTEND%;%~dp0libs\bin)
+IF EXIST "%~dp0libs\bin\composer" (SET EXTEND=%EXTEND%;%~dp0libs\bin\composer)
+IF EXIST "%~dp0libs\bin\syncjs\bin" (SET EXTEND=%EXTEND%;%~dp0libs\bin\syncjs\bin)
+IF EXIST "%~dp0libs\bin\php-cs-fixer" (SET EXTEND=%EXTEND%;%~dp0libs\bin\php-cs-fixer)
+
 rem cygwin detector
 IF NOT EXIST "C:\Cygwin\bin" (
   IF NOT EXIST "D:\cygwin64\bin" (
@@ -13,9 +19,12 @@ IF NOT EXIST "C:\Cygwin\bin" (
   ) ELSE (SET EXTEND=%EXTEND%;D:\cygwin64\bin)
 ) ELSE (SET EXTEND=%EXTEND%;C:\Cygwin\bin)
 
+IF EXIST "C:\Python27" (
+  set PYTHON=C:\Python27
+  set PYTHONPATH=C:\Python27
+)
+
 SET PATH=%PATH%;%EXTEND%
-set PYTHON=%~dp0libs\Windows\%processor%\python2.7
-set PYTHONPATH=%~dp0libs\Windows\%processor%\python2.7
 set DIR=%~dp0
 set python_posix=%PYTHON:\=/%/python.exe
 set npm_config_devdir=%~dp0/tmp/.gyp

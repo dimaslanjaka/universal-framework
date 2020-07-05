@@ -117,14 +117,16 @@ class user
 
     return self::$_instance;
   }
+
   /**
-   * Meta instance
+   * Meta instance.
    *
    * @var \User\meta
    */
   private $meta_instance;
+
   /**
-   * Get \User\meta instance
+   * Get \User\meta instance.
    *
    * @return meta
    */
@@ -134,16 +136,16 @@ class user
     if (!$this->meta_instance) {
       $this->meta_instance = new meta($this->pdo);
     }
+
     return $this->meta_instance;
   }
 
   /**
-   * Check user can do something
+   * Check user can do something.
    *
-   * @param string $what
-   * @return boolean
+   * @return bool
    */
-  function can(string $what)
+  public function can(string $what)
   {
     if ($this->is_login()) {
       $check = $this->meta()->get($this->userdata('id'), 'can');
@@ -155,7 +157,9 @@ class user
 
   /**
    * Check pdo active.
+   *
    * @throws \MVC\Exception
+   *
    * @return void
    */
   public function pdo_required()

@@ -1,7 +1,7 @@
 <?php
 $roles = [];
 if (user()->is_admin()) {
-  $roles = \DB\schema::get_enumset_values(pdo(), 'userdata', 'role');
+  $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
 }
 ?>
 <section>

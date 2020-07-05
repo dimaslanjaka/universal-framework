@@ -4,9 +4,13 @@ namespace JSON;
 
 use DomainException;
 use MVC\Exception;
+use stdClass;
 
 class json
 {
+  public $result;
+  private $file;
+
   public static function headerJSON()
   {
     return self::json([], true, false);
@@ -28,14 +32,8 @@ class json
     return self::$static;
   }
 
-  public $result;
-  private $file;
-
   /**
    * Load JSON.
-   *
-   * @param string $file
-   * @param bool   $assoc
    */
   public function load(string $file, bool $assoc = false)
   {
@@ -47,15 +45,27 @@ class json
     return $this;
   }
 
+  /**
+   * Save JSON from `load(string $file, bool $assoc = false)`.
+   *
+   * @return json
+   */
   public function save()
   {
     if ($this->file && file_exists($this->file)) {
-      file_put_contents($this->file, json_encode($this->result));
+      file_put_contents($this->file, json_encode($this->result, JSON_PRETTY_PRINT));
     }
 
     return $this;
   }
 
+  /**
+   * Force Assoc.
+   *
+   * @param object|array $arr
+   *
+   * @return json_decode
+   */
   public static function assoc($arr)
   {
     $str = json_encode($arr);
@@ -88,9 +98,16 @@ class json
     }
   }
 
+  /**
+   * beautify JSON.
+   *
+   * @param string|array|object|stdClass $data
+   *
+   * @return string
+   */
   public static function beautify($data)
   {
-    if (ctype_alnum($data)) {
+    if (ctype_alnum($data) && is_string($data)) {
       $is_json = self::is_json($data);
       if ($is_json) {
         $data = json_decode($data);
@@ -104,8 +121,6 @@ class json
 
   /**
    * Validate json string.
-   *
-   * @param string $string
    *
    * @return bool
    */
@@ -169,8 +184,7 @@ class json
   /**
    * json_decode default assoc.
    *
-   * @param string $str
-   * @param bool   $assoc
+   * @param bool $assoc
    *
    * @return \json_decode
    */
