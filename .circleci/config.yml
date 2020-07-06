@@ -36,7 +36,7 @@ jobs:
             - composer-v1-
       - run:
           name: Install Composer Dependencies
-          command: composer install -n --ignore-platform-reqs --prefer-dist
+          command: composer install -n --prefer-dist --ignore-platform-reqs --optimize-autoloader
       - save_cache:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
