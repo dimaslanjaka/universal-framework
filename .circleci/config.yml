@@ -1,12 +1,11 @@
 # PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
+
 version: 2.1
 jobs:
   php:
     docker:
       - image: circleci/php:latest
+    working_directory: ~/htdocs
     steps:
       - run:
           name: Install Requirements
@@ -35,7 +34,7 @@ jobs:
   node:
     docker:
       - image: circleci/node:10.0.0
-
+    working_directory: ~/htdocs
     steps:
       - run:
           name: Install Requirements
@@ -44,7 +43,7 @@ jobs:
             sudo apt-get install -y nodejs dh-autoreconf
             sudo npm install -g npm@latest
             sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
-
+      - checkout
       - restore_cache:
           keys:
             - node-v1-{{ checksum "package.json" }}
