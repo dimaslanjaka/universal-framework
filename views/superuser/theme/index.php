@@ -24,7 +24,8 @@
             Latest File
           </div>
           <div class="col">
-            <span class="badge text-white purple" id="latest" onload="latest(this)"></span>
+            <span class="badge text-white bg-purple" id="lfile"></span>
+            <span class="badge text-white bg-orange" id="ltime"></span>
           </div>
         </div>
 
@@ -36,7 +37,7 @@
             <input type="hidden" name="save_config">
             <div class="input-group">
               <input type="text" id="keyCache" class="form-control" name="cache[ext]" value="<?= get_conf()['cache']['ext'] ?>">
-              <button class="btn btn-warning" onclick="genCacheKey"><i class="fab fa-sync"></i></button>
+              <button class="btn btn-warning" type="button" onclick="genCacheKey()"><i class="fad fa-sync"></i></button>
             </div>
           </div>
         </div>

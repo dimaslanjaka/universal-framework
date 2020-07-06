@@ -2118,6 +2118,21 @@ function b64DecodeUnicode(str) {
 }
 if (!isnode()) {
     $(document).ready(function (e) {
+        // element with onload
+        $("[onload]").each(function (i, el) {
+            eval(el.getAttribute("onload"));
+        });
+        $(document).on("click", 'button[id="ajax"][src]', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr("src"),
+                method: "POST",
+                success: function (res) {
+                    console.log(res);
+                },
+            });
+        });
+        // apply on element has attribute data-trigger
         $(document).on("click", "[data-trigger]", function (e) {
             e.preventDefault();
             const t = $(this);

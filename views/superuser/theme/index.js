@@ -1,24 +1,4 @@
 $(document).ready(function () {
-  $("[onload]").each(function (i, el) {
-    eval(el.getAttribute("onload"));
-  });
-  $(document).on("click", 'button[id="ajax"][src]', function (e) {
-    e.preventDefault();
-    $.ajax({
-      url: $(this).attr("src"),
-      method: "POST",
-      success: function (res) {
-        console.log(res);
-      },
-    });
-  });
-});
-
-/**
- * latest file
- * @param {HTMLElement} element
- */
-function latest(element) {
   $.ajax({
     url: "clean",
     method: "POST",
@@ -28,13 +8,14 @@ function latest(element) {
     success: function (res) {
       if (typeof res == "object") {
         if (res.hasOwnProperty("result")) {
-          element.innerHTML = res.result;
+          $("#lfile").html(res.result[0]);
+          $("#ltime").html(res.result[1]);
         }
       }
     },
   });
-}
+});
 
 function genCacheKey() {
-  $("#keyCache").val(guid());
+  $("#keyCache").val(uuidv4());
 }
