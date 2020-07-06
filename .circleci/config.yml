@@ -5,57 +5,35 @@
 orbs: # declare what orbs we are going to use
   node: circleci/node@2.0.2 # the node orb provides common node-related configuration
 
-version: 2.1 # using 2.1 provides access to orbs and other features
+workflows:
+  version: 2.1 # using 2.1 provides access to orbs and other features
+  jobs:
+    build:
+      working_directory: ~/attraction-wars-server
+      docker:
+        - image: circleci/php:latest
+      steps:
+        - run:
+            name: Install Requirements
+            command: |
+              sudo apt-get update
+              sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev
+              sudo docker-php-ext-configure gd
+              sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
+        - run:
+            name: Update Composer
+            command: sudo composer self-update
 
-jobs:
-  build:
-    working_directory: ~/attraction-wars-server
-    docker:
-      # Specify the version you desire here
-      - image: misterio92/ci-php-node
-      - image: circleci/php:latest
-      - image: circleci/node:10.0.0
+        - checkout
 
-    steps:
-      - run:
-          name: Install Requirements
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev nodejs dh-autoreconf
-            sudo docker-php-ext-configure gd
-            sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
-            #sudo npm install -g npm@latest
-            #sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
-      - run:
-          name: Update Composer
-          command: sudo composer self-update
-
-      - checkout
-
-      - restore_cache:
-          keys:
-            - composer-v1-{{ checksum "composer.lock" }}
-            - composer-v1-
-      - run:
-          name: Install Composer Dependencies
-          command: composer install -n --prefer-dist --ignore-platform-reqs --optimize-autoloader
-      - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
-          paths:
-            - vendor
-
-      - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
-      - run:
-          name: Install Node Dependencies
-          command: |
-            node --version
-            npm --version
-            npm install
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+        - restore_cache:
+            keys:
+              - composer-v1-{{ checksum "composer.lock" }}
+              - composer-v1-
+        - run:
+            name: Install Composer Dependencies
+            command: composer install -n --prefer-dist --ignore-platform-reqs --optimize-autoloader
+        - save_cache:
+            key: composer-v1-{{ checksum "composer.lock" }}
+            paths:
+              - vendor

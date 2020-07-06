@@ -57,8 +57,6 @@ backup() {
     tar --exclude='./htdocs/tmp' --exclude='./htdocs/src/Session/sessions' --exclude='./htdocs/vendor' --exclude='./htdocs/node_modules' --exclude='./htdocs/processed' -zcvf backup-$DATE.tgz /root/htdocs
 }
 
-- image: misterio92/ci-php-node
-
 reset_iptables() {
     iptables -P INPUT ACCEPT
     iptables -P OUTPUT ACCEPT
