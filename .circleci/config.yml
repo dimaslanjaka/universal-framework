@@ -2,10 +2,7 @@
 #
 # Check https://circleci.com/docs/2.0/language-php/ for more details
 #
-orbs: # declare what orbs we are going to use
-  node: circleci/node@latest
-version: 2.1 # using 2.1 provides access to orbs and other features
-
+version: 2.1
 jobs:
   php:
     docker:
