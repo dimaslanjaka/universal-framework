@@ -37,19 +37,27 @@ new \DDOS\runner();
 // start theme
 $theme = new themes();
 
+////// Zone Shutdown Start
+$shut = get_conf()['app']['shutdown'];
+if (!LOCAL) { // do shutdown if not localhost
+  $theme->shutdown($shut);
+}
+////// Zone Shutdown End
+
 ////// build template start
 
 /**
- * Template configuration
+ * Template configuration.
  */
 $template = get_conf()['app']['theme'];
 /**
- * Template stack builder
+ * Template stack builder.
+ *
  * @todo exclude default template from scopes
  */
 $template_stack = [];
 foreach ($template as $key => $value) {
-  if ($key == 'default') {
+  if ('default' == $key) {
     continue;
   }
   $template_stack[$key] = $value;
@@ -61,7 +69,6 @@ $theme->setThemeByZones(
 );
 
 ////// build template end
-
 
 $application_folder = empty(CONFIG['app']['root']) ? __DIR__ : ROOT;
 $view_folder = CONFIG['app']['views'];

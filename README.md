@@ -10,7 +10,7 @@
 [![Packagist](https://img.shields.io/packagist/dt/dimaslanjaka/universal-framework.svg)](https://packagist.org/packages/dimaslanjaka/universal-framework)
 ![GitHub tag](https://img.shields.io/github/tag/dimaslanjaka/universal-framework.svg)
 
-# PHP framework with powerful functions
+PHP framework with powerful functions
 
 # Requirements
 
@@ -51,9 +51,7 @@
 
 # Built-in Command
 
-| Programs   | Path                                    |
-| ---------- | --------------------------------------- |
-| Python 2.7 | ./libs/Windows/x64/python2.7/python.exe |
+### Docs coming soon
 
 # Feature
 

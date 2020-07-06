@@ -123,17 +123,24 @@ class themes
   /**
    * Turn zone into maintenance mode (Maintenance page).
    *
-   * @param string $zone if empty, will turn into maintenance mode in all zone
+   * @param string|array $zone if empty, will turn into maintenance mode in all zone
    *
    * @return \MVC\themes
    */
-  public function shutdown(string $zone)
+  public function shutdown($zone)
   {
     $current = get_zone();
 
-    if ($current == $zone) {
-      maintenance();
-    } elseif (empty($zone)) {
+    if (is_string($zone)) {
+      if ($current == $zone) {
+        maintenance();
+      }
+    } elseif (is_array($zone)) {
+      if (in_array($current, $zone)) {
+        maintenance();
+      }
+    }
+    if (empty($zone)) {
       maintenance();
     }
 
@@ -194,7 +201,9 @@ class themes
    * ```
    * Set theme by zone divider.
    * if not exists in zone divider, will using default template.
+   *
    * @throws Exception
+   *
    * @return $this
    */
   public function setThemeByZones(array $config, string $default)

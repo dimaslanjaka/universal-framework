@@ -57,9 +57,20 @@ backup() {
     tar --exclude='./htdocs/tmp' --exclude='./htdocs/src/Session/sessions' --exclude='./htdocs/vendor' --exclude='./htdocs/node_modules' --exclude='./htdocs/processed' -zcvf backup-$DATE.tgz /root/htdocs
 }
 
+reset_iptables() {
+    iptables -P INPUT ACCEPT
+    iptables -P OUTPUT ACCEPT
+    iptables -P FORWARD ACCEPT
+    iptables -F INPUT
+    iptables -F OUTPUT
+    iptables -F FORWARD
+    iptables -F
+}
+
 install() {
-    npmi install
-    composeri install
+    apt-get install dh-autoreconf -y
+    npm install --ignore-scripts
+    composer install
 }
 
 refresh() {
@@ -87,7 +98,7 @@ show_menus() {
     echo "   Library builder   "
     echo "~~~~~~~~~~~~~~~~~~~~~"
     echo "1. Single compiler"
-    echo "2. clean git commit history (Required Big Internet Data)"
+    echo "2. Install Production"
     echo "3. refresh (linux)"
     echo "0. Exit"
 }
