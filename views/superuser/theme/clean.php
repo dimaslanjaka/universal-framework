@@ -10,7 +10,7 @@ if (user()->is_admin() || LOCAL) {
   }
 
   if (isset($_REQUEST['latest'])) {
-    $latest = '';
+    $latest = $latestFileName = '';
     /*
     $latestFileName = latestFile([ROOT . '/src/MVC/', ROOT . '/libs/', ROOT . '/views/'], false);
     $latestFile = filectime($latestFileName);
