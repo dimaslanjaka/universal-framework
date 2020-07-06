@@ -53,7 +53,7 @@ jobs:
           command: |
             node --version
             npm --version
-            sudo npm install
+            sudo npm install --ignore-scripts
 
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}
