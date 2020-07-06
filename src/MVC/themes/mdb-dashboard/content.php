@@ -45,7 +45,7 @@ if (!defined('ENVIRONMENT')) {
   <link href="/assets/mdb-dashboard/css/mdb.min.css" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link rel="stylesheet" href="<?= \MVC\helper::get_url_path(__DIR__ . '/css/style.min.css', true); ?>">
-  <link rel="stylesheet" href="/assets/css/bootstrap-utility.css">
+  <link rel="stylesheet" href="/assets/css/bootstrap-utility.css?v=<?= CONFIG['cache']['key'] ?>">
 </head>
 
 <body class="fixed-sn mdb-skin">

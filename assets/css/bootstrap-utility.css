@@ -25,6 +25,12 @@
   vertical-align: baseline;
 }
 
+[aria-disabled="true"],
+[disabled] {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
 .alert-top {
   position: fixed;
   top: 50px;

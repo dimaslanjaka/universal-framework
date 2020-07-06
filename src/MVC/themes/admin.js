@@ -1,6 +1,6 @@
 var divToolBox = document.createElement("div");
 divToolBox.innerHTML = "Display admin toolbox in corner";
-$('.fab-wrapper').hide();
+$(".fab-wrapper").hide();
 
 swal({
   title: "Show toolbox",
@@ -8,7 +8,7 @@ swal({
   timer: 5000,
   buttons: {
     cancel: true,
-    confirm: true, 
+    confirm: true,
   },
 }).then(
   /**
@@ -27,6 +27,7 @@ $.ajax({
   silent: true,
   indicator: false,
 });
+
 var admt = $("form#adminToolbox");
 if (admt.length) {
   admt.submit(function (e) {
@@ -57,7 +58,7 @@ function preview_thumb(t) {
  * Show admin toolbox
  */
 function show_toolbox() {
-  $('.fab-wrapper').fadeIn();
+  $(".fab-wrapper").fadeIn();
   /*$("body")
     .append(`<div class="fixed-action-btn smooth-scroll" style="bottom: 5px; right: 5px;">
   <a href="#meta-editor" class="btn-floating btn-large red" data-toggle="modal" data-target="#MetaEditorModal">

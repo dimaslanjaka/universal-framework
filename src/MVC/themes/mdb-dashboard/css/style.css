@@ -62,12 +62,6 @@ pre:before:not(.CodeMirror-line) {
   white-space: pre;
 }
 
-[aria-disabled=true],
-[disabled] {
-  pointer-events: none;
-  opacity: 0.4;
-}
-
 .absolute {
   position: absolute;
 }
@@ -92,22 +86,6 @@ pre:before:not(.CodeMirror-line) {
   bottom: 0;
 }
 
-.card-label {
-  position: absolute;
-  top: 5px;
-  right: 0;
-  color: #fff !important;
-  background-color: #4285f4 !important;
-  display: inline-block;
-  padding: 0.25em 0.4em;
-  font-size: 75%;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-}
-
 .capital {
   text-transform: capitalize;
 }
@@ -115,22 +93,6 @@ pre:before:not(.CodeMirror-line) {
 .md-form input.form-control[type=datetime-local] ~ label {
   transform: translateY(-50%);
   font-size: 0.8rem;
-}
-
-.alert-top {
-  position: fixed;
-  top: 50px;
-  left: 2%;
-  width: 96%;
-  z-index: 3000;
-}
-
-.alert-bottom {
-  position: fixed;
-  bottom: 5px;
-  left: 2%;
-  width: 96%;
-  z-index: 3000;
 }
 
 div.fullscreen {
