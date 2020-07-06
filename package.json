@@ -222,7 +222,8 @@
     "ws": "^7.3.0",
     "yargs": "^15.4.0",
     "youtube-mp3-downloader": "^0.6.8",
-    "ytdl-core": "*"
+    "ytdl-core": "*",
+    "snyk": "^1.360.0"
   },
   "description": "Universal framework php javascript",
   "devDependencies": {
@@ -377,7 +378,9 @@
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "",
-    "test": "depcheck ./"
+    "test": "depcheck ./",
+    "prepare": "npm run snyk-protect"
   },
-  "version": "3.0.0"
+  "version": "3.0.0",
+  "snyk": true
 }
