@@ -34,7 +34,12 @@ PHP framework with powerful functions
 
 #### How to view current XAMPP PHP version
 
-- create file info.php, insert <?php phpinfo(); ?>
+- create file info.php, insert
+
+```php
+<?php phpinfo(); ?>
+```
+
 - access it through your localhost, you'll see your php version and other configuration there
 
 ### How to install php extension on windows
