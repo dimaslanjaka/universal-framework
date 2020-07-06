@@ -2122,6 +2122,7 @@ if (!isnode()) {
         $("[onload]").each(function (i, el) {
             eval(el.getAttribute("onload"));
         });
+        // button ajax
         $(document).on("click", 'button[id="ajax"][src]', function (e) {
             e.preventDefault();
             $.ajax({
