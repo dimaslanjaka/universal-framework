@@ -70,7 +70,7 @@ reset_iptables() {
 install() {
     apt-get install dh-autoreconf -y
     npm install --ignore-scripts
-    composer install
+    composer install --no-scripts
 }
 
 refresh() {

@@ -91,3 +91,11 @@ tsc -p tsconfig.compiler.json
 gulp build #for building components all at once
 gulp watch #for watching file on change and automatically run job based on changed files
 ```
+
+# Install on production
+
+```sh
+# no additional runner in production
+npm install --ignore-scripts
+composer install --no-scripts
+```
