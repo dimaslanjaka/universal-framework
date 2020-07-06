@@ -4,6 +4,7 @@
 #
 orbs: # declare what orbs we are going to use
   node: circleci/node@latest
+version: 2.1 # using 2.1 provides access to orbs and other features
 
 jobs:
   php:
@@ -36,7 +37,7 @@ jobs:
             - vendor
 
 workflows:
-  version: 2.1 # using 2.1 provides access to orbs and other features
+  version: 2.1
   build:
     jobs:
       - php
