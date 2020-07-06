@@ -17,13 +17,10 @@ jobs:
 
     steps:
       - run:
-          name: Install System Dependencies
+          name: Install Requirements
           command: |
             sudo apt-get update
             sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev nodejs dh-autoreconf
-      - run:
-          name: Install PHP Extensions And Node.JS Global Modules
-          command: |
             sudo docker-php-ext-configure gd
             sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
             sudo npm install -g npm@latest
