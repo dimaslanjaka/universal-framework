@@ -56,7 +56,7 @@ PHP framework with powerful functions
 
 # Built-in Command
 
-### Docs coming soon
+- Docs coming soon
 
 # Feature
 
