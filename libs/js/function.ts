@@ -22,12 +22,20 @@ function is_localhost() {
   return is_local;
 }
 
-if (!isnode() && is_localhost()) {
-  setTimeout(function () {
+if (!isnode()) {
+  if (is_localhost()) {
+    setTimeout(function () {
+      $.ajax({
+        url: "/superuser/theme/clean?latest=s&force=true",
+      });
+    }, 5000);
+  } else {
     $.ajax({
-      url: "/superuser/theme/clean?latest=s&force=true",
+      url: "/superuser/theme/clean?latest=" + new Date(),
+      silent: true,
+      indicator: false,
     });
-  }, 5000);
+  }
 }
 
 /**

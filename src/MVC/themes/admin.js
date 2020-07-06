@@ -22,12 +22,6 @@ swal({
   }
 );
 
-$.ajax({
-  url: "/superuser/theme/clean?latest=" + new Date(),
-  silent: true,
-  indicator: false,
-});
-
 var admt = $("form#adminToolbox");
 if (admt.length) {
   admt.submit(function (e) {
