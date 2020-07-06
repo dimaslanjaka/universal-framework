@@ -34,7 +34,10 @@
           </div>
           <div class="col">
             <input type="hidden" name="save_config">
-            <input type="text" class="form-control" name="cache[ext]" value="<?= get_conf()['cache']['ext'] ?>">
+            <div class="input-group">
+              <input type="text" id="keyCache" class="form-control" name="cache[ext]" value="<?= get_conf()['cache']['ext'] ?>">
+              <button class="btn btn-warning" onclick="genCacheKey"><i class="fab fa-sync"></i></button>
+            </div>
           </div>
         </div>
 

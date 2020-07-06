@@ -15,8 +15,7 @@
   },
   "[markdown]": {
     "editor.wordWrap": "on",
-    "editor.quickSuggestions": false,
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    "editor.quickSuggestions": false
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -49,6 +48,8 @@
     ".vscode": false,
     "**/node_modules": true,
     "**/tmp": true,
+    "**/*.min.js": true,
+    "**/*.min.css": true,
     "out": false
   },
   "files.maxMemoryForLargeFilesMB": 100,

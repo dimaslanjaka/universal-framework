@@ -19,7 +19,7 @@ use MVC\helper;
 use MVC\router;
 use MVC\themes;
 
-// force redirect
+// force redirect, this is our project, you can remove this
 if ('103.146.203.101' == $_SERVER['HTTP_HOST'] && !LOCAL) {
   header('Location: https://ns.webmanajemen.com' . $_SERVER['REQUEST_URI']);
   // force https
@@ -40,8 +40,13 @@ $theme = new themes();
 ////// Custom maintenance start
 //@todo disable maintenance mode for admin
 //this maintenance applied on production mode (NON LOCALHOST)
-if (!LOCAL && !isset($_REQUEST['release'])) { //change this
-  maintenance();
+if (!LOCAL) { //change this
+  if (isset($_REQUEST['release'])) {
+    \Cookie\helper::hours('release-maintenance', 'true', 1);
+  }
+  if (!isset($_COOKIE['release-maintenance'])) {
+    //maintenance(); //uncomment this to enable
+  }
 }
 ////// Custom maintenance end
 

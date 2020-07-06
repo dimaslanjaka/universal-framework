@@ -86,6 +86,7 @@ function save_conf(array $newdata)
 {
   \Filemanager\file::file(__DIR__ . '/config.json', array_replace(get_conf(), $newdata), true);
 }
+
 /**
  * Get config database.
  *

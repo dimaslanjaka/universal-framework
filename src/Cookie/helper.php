@@ -206,7 +206,7 @@ class helper
    *
    * @see \Cookie\helper::set() automatically set expire time to hours format
    */
-  public static function hours(string $name, $value = true, int $expire, string $path = '/', $domain = '', $secure = false, $httponly = false)
+  public static function hours(string $name, $value = true, int $expire = 1, string $path = '/', $domain = '', $secure = false, $httponly = false)
   {
     return self::set($name, $value, time() + (60 * 60 * $expire), $path, $domain, $secure, $httponly);
   }
