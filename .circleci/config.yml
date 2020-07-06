@@ -7,59 +7,57 @@ orbs: # declare what orbs we are going to use
 
 version: 2.1 # using 2.1 provides access to orbs and other features
 
-workflows:
-  matrix-tests:
-    jobs:
-      build:
-        working_directory: ~/attraction-wars-server
-        docker:
-          # Specify the version you desire here
-          - image: circleci/php:latest
-          - image: circleci/node:10.0.0
+jobs:
+  build:
+    working_directory: ~/attraction-wars-server
+    docker:
+      # Specify the version you desire here
+      - image: circleci/php:latest
+      - image: circleci/node:10.0.0
 
-        steps:
-          - run:
-              name: Install System Dependencies
-              command: |
-                sudo apt-get update
-                sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev nodejs dh-autoreconf
-          - run:
-              name: Install PHP Extensions And Node.JS Global Modules
-              command: |
-                sudo docker-php-ext-configure gd
-                sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
-                sudo npm install -g npm@latest
-                sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
-          - run:
-              name: Update Composer
-              command: sudo composer self-update
+    steps:
+      - run:
+          name: Install System Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev nodejs dh-autoreconf
+      - run:
+          name: Install PHP Extensions And Node.JS Global Modules
+          command: |
+            sudo docker-php-ext-configure gd
+            sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
+            sudo npm install -g npm@latest
+            sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
+      - run:
+          name: Update Composer
+          command: sudo composer self-update
 
-          - checkout
+      - checkout
 
-          - restore_cache:
-              keys:
-                - composer-v1-{{ checksum "composer.lock" }}
-                - composer-v1-
-          - run:
-              name: Install Composer Dependencies
-              command: composer install -n --ignore-platform-reqs --prefer-dist
-          - save_cache:
-              key: composer-v1-{{ checksum "composer.lock" }}
-              paths:
-                - vendor
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
+      - run:
+          name: Install Composer Dependencies
+          command: composer install -n --ignore-platform-reqs --prefer-dist
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
 
-          - restore_cache:
-              keys:
-                - node-v1-{{ checksum "package.json" }}
-                - node-v1-
-          - run:
-              name: Install Node Dependencies
-              command: |
-                node --version
-                npm --version
-                npm install
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+      - run:
+          name: Install Node Dependencies
+          command: |
+            node --version
+            npm --version
+            npm install
 
-          - save_cache:
-              key: node-v1-{{ checksum "package.json" }}
-              paths:
-                - node_modules
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}
+          paths:
+            - node_modules
