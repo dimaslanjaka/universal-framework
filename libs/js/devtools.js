@@ -119,7 +119,7 @@ function restrict_mode(restrict) {
 
 if (!(typeof module !== "undefined" && module.exports)) {
   var restrict = !isMobile();
-  //restrict = true;
+  restrict = false;
   restrict = restrict && !is_localhost() && !is_development();
   //console.log('is restricted mode : ' + restrict);
   restrict_mode(restrict);

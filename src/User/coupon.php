@@ -68,7 +68,7 @@ class coupon extends user
       if ($limit < 1) {
         $result['error'] = true;
         $result['message'] = 'Coupon was reached limit';
-      //$this->logout();
+        //$this->logout();
       } else {
         $result['error'] = false;
         $result['message'] = 'Coupon login successfully';
@@ -116,13 +116,6 @@ class coupon extends user
   public function is_admin()
   {
     return \Cookie\helper::has(str_rot13('coupon_admin'), false);
-  }
-
-  public function admin_required()
-  {
-    if (!$this->is_admin()) {
-      exit(\JSON\json::json(['error' => true, 'message' => 'admin required']));
-    }
   }
 
   public function set_admin($data, int $expire = 15, string $cookie_path)

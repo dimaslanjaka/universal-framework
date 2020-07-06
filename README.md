@@ -98,4 +98,7 @@ gulp watch #for watching file on change and automatically run job based on chang
 # no additional runner in production
 npm install --ignore-scripts
 composer install --no-scripts
+# for updating
+npm update --ignore-scripts
+composer update --no-scripts
 ```

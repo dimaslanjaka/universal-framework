@@ -37,6 +37,14 @@ new \DDOS\runner();
 // start theme
 $theme = new themes();
 
+////// Custom maintenance start
+//@todo disable maintenance mode for admin
+//this maintenance applied on production mode (NON LOCALHOST)
+if (!LOCAL && !isset($_REQUEST['release'])) { //change this
+  maintenance();
+}
+////// Custom maintenance end
+
 ////// Zone Shutdown Start
 $shut = get_conf()['app']['shutdown'];
 if (!LOCAL) { // do shutdown if not localhost
