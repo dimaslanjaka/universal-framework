@@ -66,7 +66,7 @@ reset_iptables() {
     iptables -F FORWARD
     iptables -F
 }
-
+#snyk test --file=package.json --exclude=src,tmp,vendor,node_modules
 install() {
     apt-get install dh-autoreconf -y
     npm install --ignore-scripts
