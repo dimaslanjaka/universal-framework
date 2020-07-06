@@ -32,9 +32,38 @@ jobs:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
+  node:
+    docker:
+      - image: circleci/node:10.0.0
+
+    steps:
+      - run:
+          name: Install Requirements
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y nodejs dh-autoreconf
+            sudo npm install -g npm@latest
+            sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
+
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+      - run:
+          name: Install Node Dependencies
+          command: |
+            node --version
+            npm --version
+            npm install
+
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}
+          paths:
+            - node_modules
 
 workflows:
   version: 2.1
   build:
     jobs:
       - php
+      - node
