@@ -383,7 +383,8 @@
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "",
-    "check": "depcheck ./"
+    "check": "depcheck ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "version": "3.0.0",
   "snyk": true
