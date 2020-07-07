@@ -2,6 +2,8 @@
 
 namespace User;
 
+use PDO;
+
 class meta
 {
   /**
@@ -14,6 +16,11 @@ class meta
   public function __construct(\DB\pdo $pdo)
   {
     $this->pdo = $pdo;
+    $check = $pdo->check_table('usermeta');
+    if (!$check) {
+      $sql = \Filemanager\file::get(__DIR__ . '/meta.sql');
+      $this->pdo->query($sql)->exec();
+    }
   }
 
   /**

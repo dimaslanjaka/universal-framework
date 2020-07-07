@@ -212,6 +212,19 @@ if (!realpath($view)) {
   }
 }
 
+
+
+/**
+ * Get current theme instance
+ *
+ * @return \MVC\themes
+ */
+function theme()
+{
+  global $theme;
+  return $theme;
+}
+
 function showAlert($position)
 {
   return '<div class="alert-' . $position . ' alert alert-danger">

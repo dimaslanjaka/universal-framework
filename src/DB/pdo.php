@@ -2,8 +2,8 @@
 
 namespace DB;
 
-use MVC\Exception;
 use JSON\json;
+use MVC\Exception;
 use PDO as GlobalPDO;
 use PDOException;
 
@@ -67,10 +67,28 @@ class pdo
     }
   }
 
-  public function setTimezone()
+  /**
+   * Check table exists.
+   *
+   * @return bool
+   */
+  public function check_table(string $table)
   {
-    return $this->query("SET GLOBAL time_zone = '+7:00';
-    SET SESSION time_zone = '+7:00';
+    $check = $this->query("SHOW TABLES LIKE '$table';")->row_array();
+
+    return !empty($check);
+  }
+
+  /**
+   * Set MySQL Timezone
+   * @requires superuser access
+   * @param string $gmt
+   * @return array
+   */
+  public function setTimezone(string $gmt = '+7:00')
+  {
+    return $this->query("SET GLOBAL time_zone = '$gmt';
+    SET SESSION time_zone = '$gmt';
     SELECT @@GLOBAL.time_zone, @@SESSION.time_zone;")->exec();
   }
 
@@ -115,8 +133,8 @@ class pdo
 
   /**
    * Switch database.
+   *
    * @todo Switch between databases
-   * @param string $dbname
    *
    * @return $this
    */
@@ -148,9 +166,6 @@ class pdo
 
   /**
    * Get where parameter is equals.
-   *
-   * @param string $tbl
-   * @param array  $param
    *
    * @return $this
    */
@@ -195,8 +210,6 @@ class pdo
 
   /**
    * Search database by row and keyword.
-   *
-   * @param array $data
    */
   public function search(array $data, string $separated = 'OR')
   {
@@ -283,7 +296,7 @@ class pdo
   }
 
   /**
-   * PDO Instance
+   * PDO Instance.
    *
    * @return GlobalPDO
    */
@@ -360,13 +373,13 @@ class pdo
     if ($exec) {
       $result['error'] = false;
     }
+
     return $result;
   }
 
   /**
-   * Automated Executor
+   * Automated Executor.
    *
-   * @param array $value
    * @return array
    */
   public function exec(array $value = [])
@@ -459,7 +472,6 @@ class pdo
   /**
    * Order by row [ASC=ascending or DESC=descending].
    *
-   * @param array  $by
    * @param string $order
    *
    * @return $this
@@ -500,8 +512,6 @@ class pdo
 
   /**
    * If array data is equals.
-   *
-   * @param array $is_equals
    */
   public function equals(array $is_equals)
   {
@@ -525,10 +535,12 @@ class pdo
   }
 
   /**
-   * Get query result
+   * Get query result.
+   *
    * @todo check before execution
-   * @param array $data_value
+   *
    * @return array
+   *
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */
   public function getQuery(array $data_value = [])
@@ -640,9 +652,6 @@ class pdo
    * Check before insert
    * * always equals validation.
    *
-   * @param string $tbl
-   * @param array  $data
-   *
    * @return $this
    */
   public function insert_not_exists(string $tbl, array $data, array $where = null)
@@ -701,9 +710,10 @@ class pdo
   }
 
   /**
-   * Get result as array
+   * Get result as array.
    *
-   * @param boolean $value
+   * @param bool $value
+   *
    * @return array
    */
   public function row_array($value = false)
@@ -717,7 +727,6 @@ class pdo
   /**
    * Multi fetch pdo.
    *
-   * @param string     $query
    * @param bool|array $values
    * @param bool       $assoc  always association array return
    *

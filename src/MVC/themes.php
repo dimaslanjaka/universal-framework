@@ -108,6 +108,7 @@ class themes
       'robot' => 'noindex, nofollow',
       'obfuscate' => false,
       'cache' => false,
+      'label' => 'default',
     ];
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');
@@ -170,6 +171,18 @@ class themes
     }
 
     return date($format, $time);
+  }
+
+  /**
+   * Set Label Router.
+   *
+   * @return themes
+   */
+  public function label(string $label = 'default')
+  {
+    $this->meta['label'] = $label;
+
+    return $this;
   }
 
   /**

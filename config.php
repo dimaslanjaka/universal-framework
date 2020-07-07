@@ -242,6 +242,13 @@ function filemanager()
   return new \Filemanager\file();
 }
 
+/**
+ * Var Dump with text/plain content-type header
+ *
+ * @param mixed $a
+ * @param mixed $_
+ * @return void
+ */
 function vd($a, $_ = null)
 {
   if (!headers_sent()) {
@@ -250,6 +257,11 @@ function vd($a, $_ = null)
   var_dump($a, $_);
 }
 
+/**
+ * Get current environtment
+ *
+ * @return string
+ */
 function get_env()
 {
   global $router;
@@ -257,10 +269,14 @@ function get_env()
   return $router->get_env();
 }
 
+/**
+ * Get current router instance
+ *
+ * @return \MVC\router
+ */
 function router()
 {
   global $router;
-
   return $router;
 }
 
