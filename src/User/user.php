@@ -210,6 +210,21 @@ class user
   }
 
   /**
+   * Get All Available Roles.
+   *
+   * @return array
+   */
+  public function get_roles()
+  {
+    if (!$this->pdo) {
+      throw new \MVC\Exception('PDO instance required', 1);
+    }
+    $list = \DB\schema::get_enumset_values($this->pdo, $this->dbname, 'role');
+
+    return $list;
+  }
+
+  /**
    * Get user data.
    *
    * @return array|int|string|null if empty not logged in
@@ -256,8 +271,9 @@ class user
   }
 
   /**
-   * Change password
-   * @param int $id user id want to update
+   * Change password.
+   *
+   * @param int    $id   user id want to update
    * @param string $pass new password
    */
   public function update_password($id, $pass)

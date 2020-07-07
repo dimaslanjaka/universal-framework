@@ -1,7 +1,7 @@
 <?php
 
 if (!user()->is_admin()) {
-  redirect('/signin');
+  redirect('/user/login');
 }
 
 if (isset($_POST['config'])) {

@@ -14,17 +14,18 @@ class schema
   public static function get_enumset_values(\DB\pdo $pdo, string $table, string $field)
   {
     $type = $pdo->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")->row_array()['Type'];
+    $result = [];
     if (preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches)) {
       $enum = explode("','", $matches[1]);
 
-      return $enum;
+      $result = $enum;
     } elseif (preg_match("/^set\(\'(.*)\'\)$/", $type, $matches)) {
       $set = explode("','", $matches[1]);
 
-      return $set;
+      $result = $set;
     }
 
-    return [];
+    return array_values(array_unique($result));
   }
 
   /**
@@ -37,7 +38,7 @@ class schema
     for ($i = 0; $i < count($newData); $i++) {
       $newData[$i] = "'$newData[$i]'";
     }
-    $data = implode(', ', $newData);
+    $data = implode(', ', array_values(array_unique($newData)));
     $sql = "ALTER TABLE `$table` MODIFY COLUMN `$field` SET($data) NOT NULL";
     return $pdo->query($sql)->exec();
   }

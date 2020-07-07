@@ -8,3 +8,5 @@
 !.gitignore
 !auth/
 !auth/**/*
+!user/
+!user/**/*
