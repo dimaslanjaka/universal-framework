@@ -142,12 +142,14 @@ function loadCSS(href: string | string[], callback?: any) {
   if (typeof href == "string") {
     href = [href];
   }
+  var htm = document.querySelector("html");
+  var cache = htm.getAttribute("cache").toString().trim();
   if (Array.isArray(href)) {
     var hrefs = href;
     const link = document.createElement("link");
     link.media = "print";
     link.rel = "stylesheet";
-    link.href = hrefs[0];
+    link.href = cache.length ? hrefs[0] + "?cache=" + cache : hrefs[0];
     link.onload = function () {
       link.media = "all";
       hrefs.shift();

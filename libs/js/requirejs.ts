@@ -114,12 +114,14 @@ function load_module(name: string | string[], callback: Function) {
   }
   var scripts_List = [];
   var style_List = [];
-
+  var htm = document.querySelector("html");
+  var cache = htm.getAttribute("cache").toString().trim();
+  cache = cache.length ? "?cache=" + cache : "";
   for (const key in require_config.paths) {
     if (require_config.paths.hasOwnProperty(key)) {
       const element = require_config.paths[key];
       if (name.includes(key)) {
-        scripts_List.push(element + ".js");
+        scripts_List.push(element + ".js" + cache);
         if (require_config.css.hasOwnProperty(key)) {
           style_List.push(require_config.css[key] + ".css");
         }

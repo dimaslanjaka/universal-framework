@@ -2622,12 +2622,14 @@ function loadCSS(href, callback) {
     if (typeof href == "string") {
         href = [href];
     }
+    var htm = document.querySelector("html");
+    var cache = htm.getAttribute("cache").toString().trim();
     if (Array.isArray(href)) {
         var hrefs = href;
         var link_1 = document.createElement("link");
         link_1.media = "print";
         link_1.rel = "stylesheet";
-        link_1.href = hrefs[0];
+        link_1.href = cache.length ? hrefs[0] + "?cache=" + cache : hrefs[0];
         link_1.onload = function () {
             link_1.media = "all";
             hrefs.shift();
@@ -3573,11 +3575,14 @@ function load_module(name, callback) {
     }
     var scripts_List = [];
     var style_List = [];
+    var htm = document.querySelector("html");
+    var cache = htm.getAttribute("cache").toString().trim();
+    cache = cache.length ? "?cache=" + cache : "";
     for (var key in require_config.paths) {
         if (require_config.paths.hasOwnProperty(key)) {
             var element_1 = require_config.paths[key];
             if (name.includes(key)) {
-                scripts_List.push(element_1 + ".js");
+                scripts_List.push(element_1 + ".js" + cache);
                 if (require_config.css.hasOwnProperty(key)) {
                     style_List.push(require_config.css[key] + ".css");
                 }

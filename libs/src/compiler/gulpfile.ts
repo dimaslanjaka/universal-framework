@@ -135,6 +135,26 @@ gulp.task("watch", function () {
   return run_watch;
 });
 
+gulp.task("assets-compile", function () {
+  function filter(views: any[]) {
+    return views
+      .filter(function (item) {
+        return (
+          /\.(js|scss|css|sass|less)$/.test(item) &&
+          !/\.min\.(js|css)$/.test(item) &&
+          !/\-ori|\-original|\-backup|\.bak/s.test(item)
+        );
+      })
+      .map(function (asset) {
+        return framework.normalize(asset);
+      });
+  }
+  var css = framework.readdir(root + "/assets/css");
+  css = filter(css);
+  var js = framework.readdir(root + "/assets/js");
+  js = filter(js);
+});
+
 gulp.task("default", gulp.series(["build", "watch"]));
 
 /**
@@ -167,6 +187,7 @@ function node2browser(target?: string, destination?: string, rename?: string) {
       .pipe(gulp.dest(destination))
   ); //"src/MVC/themes/assets/js/"
 }
+
 /**
  * minify assets
  * @param file
@@ -226,21 +247,6 @@ export function minify(item: string | Buffer) {
  */
 export function views() {
   var views = framework.readdir(root + `/${config.app.views}`);
-  return views
-    .filter(function (item) {
-      return (
-        /\.(js|scss|css|sass|less)$/.test(item) &&
-        !/\.min\.(js|css)$/.test(item) &&
-        !/\-ori|\-original|\-backup|\.bak/s.test(item)
-      );
-    })
-    .map(function (asset) {
-      return framework.normalize(asset);
-    });
-}
-
-export function assets_folder() {
-  var views = framework.readdir(root + "/assets");
   return views
     .filter(function (item) {
       return (
