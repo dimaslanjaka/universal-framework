@@ -121,7 +121,7 @@ function load_module(name: string | string[], callback: Function) {
       if (name.includes(key)) {
         scripts_List.push(element + ".js");
         if (require_config.css.hasOwnProperty(key)) {
-          style_List.push(require_config.css[key]);
+          style_List.push(require_config.css[key] + ".css");
         }
       }
     }

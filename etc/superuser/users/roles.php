@@ -32,9 +32,11 @@ if (user()->is_admin()) {
 
 <?php $accessList = user()->access()->getAccess();
 $managedAccess = user()->access()->get_managed_access();
-$select = '<select name="" id="" class="form-control">';
-$select .= '</select>';
 ?>
+
+<script>
+  const selectOptions = <?= json_encode($managedAccess) ?>;
+</script>
 
 <section>
   <div class="card">
@@ -54,7 +56,8 @@ $select .= '</select>';
               <div class="md-form mt-0">
                 <?php
                 foreach ($value as $path) {
-                  echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
+                  //echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
+                  echo '<select name="' . $key . '" data-key="' . $path . '" id="select-' . md5($key . $path) . '" class="select2"><option></option></select>';
                 }
                 ?>
               </div>
