@@ -67,6 +67,16 @@ class user
   }
 
   /**
+   * Access Management
+   *
+   * @return access
+   */
+  public function access()
+  {
+    return new access($this);
+  }
+
+  /**
    * Get All Users.
    *
    * @return void

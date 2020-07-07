@@ -3452,6 +3452,8 @@ const require_config = {
         "datatables.net-responsive": requirejs_vendor +
             "/datatables.net-responsive/js/dataTables.responsive.min",
         "datatables.net-editor": "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
+        //select2
+        select2: requirejs_vendor + "/select2/dist/js/select2.full.min",
     },
     shim: {
         /**
@@ -3463,6 +3465,9 @@ const require_config = {
         "datatables.net": {
             deps: ["jquery"],
         },
+    },
+    css: {
+        select2: requirejs_vendor + "/select2/dist/css/select2.min",
     },
 };
 const dtpackage = function () {
@@ -3518,16 +3523,27 @@ function load_module(name, callback) {
         name = [name];
     }
     var scripts_List = [];
+    var style_List = [];
     for (const key in require_config.paths) {
         if (require_config.paths.hasOwnProperty(key)) {
             const element = require_config.paths[key];
             if (name.includes(key)) {
                 scripts_List.push(element + ".js");
+                if (require_config.css.hasOwnProperty(key)) {
+                    style_List.push(require_config.css[key]);
+                }
             }
         }
     }
     //console.log(scripts_List);
-    LoadScript(scripts_List, callback);
+    if (!style_List.length) {
+        LoadScript(scripts_List, callback);
+    }
+    else {
+        LoadScript(scripts_List, function () {
+            loadCSS(style_List, callback);
+        });
+    }
 }
 /**
  * Datatables loader

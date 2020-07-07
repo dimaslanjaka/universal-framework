@@ -7,6 +7,7 @@
     "url": "https://github.com/dimaslanjaka/universal-framework/issues"
   },
   "dependencies": {
+    "@types/select2": "^4.0.49",
     "ajv": "^6.12.2",
     "amd-loader": "*",
     "analytics-node": "^3.3.0",
@@ -176,10 +177,12 @@
     "run-sequence": "^2.2.1",
     "sass": "*",
     "scp2": "^0.5.0",
+    "select2": "^4.0.13",
     "sequelize": "^6.2.4",
     "serve": "^11.3.2",
     "shelljs": "*",
     "slash": "*",
+    "snyk": "^1.360.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
     "standard": "*",
@@ -222,8 +225,7 @@
     "ws": "^7.3.0",
     "yargs": "^15.4.0",
     "youtube-mp3-downloader": "^0.6.8",
-    "ytdl-core": "*",
-    "snyk": "^1.360.0"
+    "ytdl-core": "*"
   },
   "description": "Universal framework php javascript",
   "devDependencies": {

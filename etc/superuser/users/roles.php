@@ -7,7 +7,7 @@ if (user()->is_admin()) {
   $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
 }
 ?>
-<section>
+<section class="mb-3">
   <div class="card">
     <div class="card-body">
       <form action="roles" method="post" enctype="application/json">
@@ -25,6 +25,45 @@ if (user()->is_admin()) {
             </div>
           </div>
         </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<?php $accessList = user()->access()->getAccess();
+$managedAccess = user()->access()->get_managed_access();
+$select = '<select name="" id="" class="form-control">';
+$select .= '</select>';
+?>
+
+<section>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-2">
+        <div class="card-label">Access Control</div>
+      </div>
+      <form action="roles" method="post">
+        <?php
+        foreach ($accessList as $key => $value) {
+        ?>
+          <!-- Grid row -->
+          <div class="form-group row">
+            <!-- Material input -->
+            <label for="input<?= $key ?>MD" class="col-sm-2 col-form-label"><?= $key ?></label>
+            <div class="col-sm-10">
+              <div class="md-form mt-0">
+                <?php
+                foreach ($value as $path) {
+                  echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
+                }
+                ?>
+              </div>
+            </div>
+          </div>
+          <!-- Grid row -->
+        <?php
+        }
+        ?>
       </form>
     </div>
   </div>

@@ -141,17 +141,43 @@ function include_asset($fn, $fn2 = null, $callback = null)
 /**
  * Create <pre/> element from array.
  *
- * @param variadic ...$obj
+ * @return void
+ */
+function pre()
+{
+  $obj = func_get_args();
+  echo '<pre style="word-wrap: break-word;">';
+  if (count($obj) > 1) {
+    foreach ($obj as $objek) {
+      \JSON\json::json($objek, false, true);
+    }
+  } else {
+    \JSON\json::json($obj[0], false, true);
+  }
+  echo '</pre>';
+}
+
+/**
+ * Exit JSON.
+ *
+ * @param mixed $result
  *
  * @return void
  */
-function pre(...$obj)
+function e()
 {
-  echo '<pre style="word-wrap: break-word;">';
-  foreach ($obj as $objek) {
-    \JSON\json::json($objek, false, true);
+  $results = func_get_args();
+  if (count($results) > 1) {
+    foreach ($results as $check) {
+      if (is_string($check) && \JSON\json::is_json($check)) {
+        $check = json_decode($check);
+      }
+    }
+  } else {
+    $results = $results[0];
   }
-  echo '</pre>';
+  \JSON\json::json($results);
+  exit;
 }
 
 if (!function_exists('is_json')) {

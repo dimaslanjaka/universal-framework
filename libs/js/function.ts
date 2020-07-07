@@ -138,7 +138,7 @@ function LoadScript(urls: string | string[], callback: null | Function) {
  * @param href
  * @param callback
  */
-function loadCSS(href: string | string[], callback: any) {
+function loadCSS(href: string | string[], callback?: any) {
   if (typeof href == "string") {
     href = [href];
   }

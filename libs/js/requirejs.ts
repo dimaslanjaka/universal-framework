@@ -13,7 +13,6 @@ const require_config: RequireConfig = {
       requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
     "datatables.net-autofill":
       requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
-
     "datatables.net-buttons":
       requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
     "datatables.net-buttons-html5":
@@ -37,8 +36,9 @@ const require_config: RequireConfig = {
       "/datatables.net-responsive/js/dataTables.responsive.min",
     "datatables.net-editor":
       "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
-    /*"datatables.net-editor":
-      requirejs_vendor + "/datatables.net-editor/js/dataTables.editor.min",*/
+
+    //select2
+    select2: requirejs_vendor + "/select2/dist/js/select2.full.min",
   },
   shim: {
     /**
@@ -51,8 +51,13 @@ const require_config: RequireConfig = {
       deps: ["jquery"],
     },
   },
+  css: {
+    select2: requirejs_vendor + "/select2/dist/css/select2.min",
+  },
 };
-
+interface RequireConfig {
+  css: object;
+}
 const dtpackage = function () {
   return [
     "datatables.net",
@@ -108,17 +113,27 @@ function load_module(name: string | string[], callback: Function) {
     name = [name];
   }
   var scripts_List = [];
+  var style_List = [];
 
   for (const key in require_config.paths) {
     if (require_config.paths.hasOwnProperty(key)) {
       const element = require_config.paths[key];
       if (name.includes(key)) {
         scripts_List.push(element + ".js");
+        if (require_config.css.hasOwnProperty(key)) {
+          style_List.push(require_config.css[key]);
+        }
       }
     }
   }
   //console.log(scripts_List);
-  LoadScript(scripts_List, callback);
+  if (!style_List.length) {
+    LoadScript(scripts_List, callback);
+  } else {
+    LoadScript(scripts_List, function () {
+      loadCSS(style_List, callback);
+    });
+  }
 }
 
 /**

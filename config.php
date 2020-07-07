@@ -210,28 +210,7 @@ function base(string $path)
   return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $path;
 }
 
-/**
- * Exit JSON.
- *
- * @param mixed $result
- *
- * @return void
- */
-function e()
-{
-  $results = func_get_args();
-  if (count($results) > 1) {
-    foreach ($results as $check) {
-      if (is_string($check) && \JSON\json::is_json($check)) {
-        $check = json_decode($check);
-      }
-    }
-  } else {
-    $results = $results[0];
-  }
-  \JSON\json::json($results);
-  exit;
-}
+
 /**
  * Filemanager Instance.
  *

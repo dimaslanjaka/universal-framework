@@ -21,13 +21,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
   }
 }
-
-/*
-$read = \Filemanager\scan::scandir(ROOT . '/views');
-$flist = [];
-foreach ($read as $files) {
-  $flist[] = \MVC\helper::get_url_path($files['path']);
-}
-
-e($flist);
-*/

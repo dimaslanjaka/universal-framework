@@ -4,7 +4,6 @@
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="jquery" />
-/// <reference types="requirejs" />
 /// <reference types="datatables.net" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
@@ -749,7 +748,7 @@ declare function LoadScript(urls: string | string[], callback: null | Function):
  * @param href
  * @param callback
  */
-declare function loadCSS(href: string | string[], callback: any): void;
+declare function loadCSS(href: string | string[], callback?: any): void;
 declare const guxid: string;
 /**
  * Get current unique global page user id
@@ -912,6 +911,9 @@ declare var reCaptcha: {
 };
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
+interface RequireConfig {
+    css: object;
+}
 declare const dtpackage: () => string[];
 declare var requirejs_ignited: boolean;
 /**
