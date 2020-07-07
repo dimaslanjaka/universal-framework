@@ -255,10 +255,18 @@ class user
     }
   }
 
+  /**
+   * Change password
+   * @param int $id user id want to update
+   * @param string $pass new password
+   */
   public function update_password($id, $pass)
   {
     if (!$this->pdo) {
       throw new \MVC\Exception('Database not properly configured', 1);
+    }
+    if (!is_numeric($id)) {
+      throw new \MVC\Exception('User ID must be instance of integer', 1);
     }
     $db = $this->dbname;
     $crypt = new crypt();
