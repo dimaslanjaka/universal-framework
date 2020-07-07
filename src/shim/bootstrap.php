@@ -582,4 +582,4 @@ function is_url($url)
   return filter_var($url, FILTER_VALIDATE_URL);
 }
 
-include __DIR__ . '/MVC/themes/assets/partial/fab.php';
+include __DIR__ . '/../MVC/themes/assets/partial/fab.php';

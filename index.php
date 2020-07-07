@@ -85,11 +85,25 @@ $theme->setThemeByZones(
 
 $application_folder = empty(CONFIG['app']['root']) ? __DIR__ : ROOT;
 $view_folder = CONFIG['app']['views'];
+// special access
+switch (get_zone()) {
+  case 'load-asset':
+    // load static asset by ?src=
+    $parse = helper::parse_url2(helper::geturl());
+    if (isset($parse['query']['src'])) {
+      helper::load_asset($parse['query']['src']);
+      exit;
+    }
+    break;
+  case 'superuser':
+    //superuser area
+    $view_folder = 'etc';
+    break;
+}
 $view_folder = "{$application_folder}/{$view_folder}/";
 define('VIEWPATH', $view_folder);
 
 $rc = new router();
-
 $view = helper::fixSlash(VIEWPATH . $rc->findRoute() . '.php');
 
 // glype proxy
@@ -105,17 +119,7 @@ ob_start();
 if (!realpath($view)) {
   // if file not exists return 400 bad request
   http_response_code(400);
-
   $basename = basename($view, '.php');
-  if ('load-asset' == $basename) {
-    // load static asset by ?src=
-    $parse = helper::parse_url2(helper::geturl());
-    if (isset($parse['query']['src'])) {
-      helper::load_asset($parse['query']['src']);
-      exit;
-    }
-  }
-
   /**
    * next index finder.
    */

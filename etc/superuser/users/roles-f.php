@@ -1,5 +1,6 @@
 <?php
-user()->admin_required('../../user/login');
+user()->admin_required('/user/login');
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (user()->is_admin()) {
     if (isset($_POST['userdata'])) {

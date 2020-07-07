@@ -1,4 +1,7 @@
-<?php include __DIR__ . '/../breadcrumb.php'; ?>
+<?php
+include __DIR__ . '/../breadcrumb.php';
+include __DIR__ . '/breadcrumbs.php';
+?>
 <section>
   <div class="row">
     <div class="col-md-12 mb-3">

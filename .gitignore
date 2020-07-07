@@ -5,7 +5,6 @@ src/Extender/otp/
 src/Sessions/sessions/
 config-tsel.php
 config-m3.php
-/etc
 /processed
 /config-tsel.php
 /config-m3.php

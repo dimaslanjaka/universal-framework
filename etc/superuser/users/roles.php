@@ -1,4 +1,7 @@
-<?php include __DIR__ . '/../breadcrumb.php';
+<?php
+include __DIR__ . '/../breadcrumb.php';
+include __DIR__ . '/breadcrumbs.php';
+
 $roles = [];
 if (user()->is_admin()) {
   $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
