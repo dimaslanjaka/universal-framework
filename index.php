@@ -127,12 +127,16 @@ if (!realpath($view)) {
   if ($check_next_index = realpath($check_next_index)) {
     $check_next_index = \MVC\helper::fixSlash($check_next_index);
     $check_next_index = preg_replace('/\.php$/s', '', $check_next_index);
-    $check_next_index = substr($check_next_index, strpos($check_next_index, '/views') + strlen('/views'));
-    exit($router->redirect($check_next_index));
+    if ($pos_views = strpos($check_next_index, '/views')) {
+      $check_next_index = substr($check_next_index, strpos($check_next_index, "/views") + strlen('/views'));
+    } else if ($pos_views = strpos($check_next_index, '/etc')) {
+      $check_next_index = substr($check_next_index, strpos($check_next_index, "/etc") + strlen('/etc'));
+    }
+    die($router->redirect($check_next_index));
   }
 
   ////// if router ended with slash (/) below codes will find next index.php or previous file php
-  ////// dashboard/ maybe to dashboard/index or dashboard.php
+  ////// dashboard/ maybe to dashboard/index or dashboard.php if exists
 
   /**
    * Previous index finder.
@@ -141,10 +145,13 @@ if (!realpath($view)) {
   if ($check_prev_index = realpath($check_prev_index)) {
     $check_prev_index = \MVC\helper::fixSlash($check_prev_index);
     $check_prev_index = preg_replace('/\.php$/s', '', $check_prev_index);
-    $check_prev_index = substr($check_prev_index, strpos($check_prev_index, '/views') + strlen('/views'));
-    exit($router->redirect($check_prev_index));
+    if ($pos_views = strpos($check_prev_index, '/views')) {
+      $check_prev_index = substr($check_prev_index, strpos($check_prev_index, "/views") + strlen('/views'));
+    } else if ($pos_views = strpos($check_prev_index, '/etc')) {
+      $check_prev_index = substr($check_prev_index, strpos($check_prev_index, "/etc") + strlen('/etc'));
+    }
+    die($router->redirect($check_prev_index));
   }
-  //e([$check_prev_index, $view]);
 
   // exit now
   if ('development' != get_env()) {
