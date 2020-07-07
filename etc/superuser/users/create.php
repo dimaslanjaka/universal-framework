@@ -49,20 +49,25 @@ include __DIR__ . '/breadcrumbs.php';
           <div class="text-center">
             <small>Role</small>
           </div>
-          <div class="d-flex justify-content-center">
-            <?php
-            $roles = user()->get_roles();
-            for ($i = 0; $i < count($roles); $i++) {
-              $role = $roles[$i];
-              echo '
-              <div class="">
+
+          <div class="form-row">
+            <div class="d-block">
+              <?php
+              $roles = user()->get_roles();
+              for ($i = 0; $i < count($roles); $i++) {
+                $role = $roles[$i];
+                echo '
+              <div class="mr-2 ml-2 float-left">
                 <div class="form-check">
                   <input type="radio" value="admin" class="form-check-input" id="roleGroup' . $i . '" name="role" required>
-                  <label class="form-check-label" for="roleGroup' . $i . '">' . $role . '</label>
+                  <label class="form-check-label" for="roleGroup' . $i . '">
+                  <span class="badge badge-primary">' . $role . '</span>
+                  </label>
                 </div>
               </div>';
-            }
-            ?>
+              }
+              ?>
+            </div>
           </div>
 
           <!-- Sign up button -->

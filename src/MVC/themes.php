@@ -17,8 +17,6 @@ class themes
   public $title = '';
   public $config;
   public $config_folder;
-  protected $admin_user = 'admin';
-  protected $admin_pass = 'admin';
   /**
    * Session instances.
    *
@@ -115,9 +113,6 @@ class themes
     $this->root_theme = realpath(__DIR__ . '/themes');
     $this->view = helper::platformSlashes($this->root . '/view');
     $this->config_folder = helper::platformSlashes(__DIR__ . '/config');
-    $config_theme = json_decode(file_get_contents($this->config_folder . '/theme-admin.json'), true);
-    $this->admin_user = $config_theme['user'];
-    $this->admin_pass = $config_theme['pass'];
   }
 
   /**

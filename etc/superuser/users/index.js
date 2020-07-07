@@ -114,53 +114,55 @@ if ($('a[href="#delete"]').length) {
 // datatables
 if ($("#dtMaterial").length) {
   $(document).ready(function () {
-    $("#dtMaterial").DataTable({
-      destroy: true,
-      dom: "Bfrtip",
-      processing: false,
-      serverSide: false,
-      stateSave: false,
-      autoWidth: false,
-      responsive: true,
-      deferRender: true,
-      paging: true,
-      lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
-      buttons: ["refresh"],
+    datatables_init().then(function () {
+      $("#dtMaterial").DataTable({
+        destroy: true,
+        dom: "Bfrtip",
+        processing: false,
+        serverSide: false,
+        stateSave: false,
+        autoWidth: false,
+        responsive: true,
+        deferRender: true,
+        paging: true,
+        lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
+        buttons: ["refresh"],
+      });
+      $("#dtMaterial_wrapper")
+        .add("#pkgList_wrapper")
+        .find("label")
+        .each(function () {
+          $(this).parent().append($(this).children());
+        });
+      $("#dtMaterial_wrapper .dataTables_filter")
+        .add("#pkgList_wrapper .dataTables_filter")
+        .find("input")
+        .each(function () {
+          const $this = $(this);
+          $this.attr("placeholder", "Search");
+          $this.removeClass("form-control-sm");
+        });
+      $("#dtMaterial_wrapper .dataTables_length")
+        .add("#pkgList_wrapper .dataTables_length")
+        .addClass("d-flex flex-row");
+      $("#dtMaterial_wrapper .dataTables_filter")
+        .add("#pkgList_wrapper .dataTables_filter")
+        .addClass("md-form");
+      $("#dtMaterial_wrapper select")
+        .add("#pkgList_wrapper select")
+        .removeClass(
+          "custom-select custom-select-sm form-control form-control-sm"
+        );
+      $("#dtMaterial_wrapper select")
+        .add("#pkgList_wrapper select")
+        .addClass("mdb-select");
+      $("#dtMaterial_wrapper .mdb-select")
+        .add("#pkgList_wrapper .mdb-select")
+        .materialSelect();
+      $("#dtMaterial_wrapper .dataTables_filter")
+        .add("#pkgList_wrapper .dataTables_filter")
+        .find("label")
+        .remove();
     });
-    $("#dtMaterial_wrapper")
-      .add("#pkgList_wrapper")
-      .find("label")
-      .each(function () {
-        $(this).parent().append($(this).children());
-      });
-    $("#dtMaterial_wrapper .dataTables_filter")
-      .add("#pkgList_wrapper .dataTables_filter")
-      .find("input")
-      .each(function () {
-        const $this = $(this);
-        $this.attr("placeholder", "Search");
-        $this.removeClass("form-control-sm");
-      });
-    $("#dtMaterial_wrapper .dataTables_length")
-      .add("#pkgList_wrapper .dataTables_length")
-      .addClass("d-flex flex-row");
-    $("#dtMaterial_wrapper .dataTables_filter")
-      .add("#pkgList_wrapper .dataTables_filter")
-      .addClass("md-form");
-    $("#dtMaterial_wrapper select")
-      .add("#pkgList_wrapper select")
-      .removeClass(
-        "custom-select custom-select-sm form-control form-control-sm"
-      );
-    $("#dtMaterial_wrapper select")
-      .add("#pkgList_wrapper select")
-      .addClass("mdb-select");
-    $("#dtMaterial_wrapper .mdb-select")
-      .add("#pkgList_wrapper .mdb-select")
-      .materialSelect();
-    $("#dtMaterial_wrapper .dataTables_filter")
-      .add("#pkgList_wrapper .dataTables_filter")
-      .find("label")
-      .remove();
   });
 }

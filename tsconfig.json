@@ -36,6 +36,7 @@
   "include": [
     "./libs/src/**/*",
     "./libs/js/**/*",
+    "./etc/**/*",
     "./views/**/*",
     "./views/inventory/warehouses/**/*",
     "./src/MVC/themes/**/*",

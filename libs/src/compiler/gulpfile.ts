@@ -64,6 +64,7 @@ gulp.task("watch", function () {
     "./libs/js/**/*",
     "./libs/src/**/*",
     "./src/MVC/**/*",
+    "./etc/**/*",
     "./" + config.app.views + "/**/*",
   ];
   log.log(
