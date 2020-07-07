@@ -583,4 +583,3 @@ function is_url($url)
 }
 
 include __DIR__ . '/MVC/themes/assets/partial/fab.php';
-include __DIR__ . '/shim/mysql.php';

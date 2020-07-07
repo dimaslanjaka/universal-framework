@@ -9,12 +9,7 @@
   ],
   "autoload": {
     "files": [
-      "src/JSLikeHTMLElement.php",
-      "src/SmartDOMDocument.php",
-      "src/SmartDOMXpath.php",
-      "src/ZLIB.php",
-      "src/bootstrap.php",
-      "src/globals.php"
+      "src/shim/autoload.php"
     ],
     "psr-4": {
       "Accounting\\": "src/Accounting/",
