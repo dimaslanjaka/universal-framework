@@ -135,30 +135,6 @@ gulp.task("watch", function () {
   return run_watch;
 });
 
-gulp.task("composer", function () {
-  return framework.async(function () {
-    var today = new Date().toLocaleDateString();
-    var yesterday = new Date(
-      new Date().setDate(new Date().getDate() - 1)
-    ).toLocaleDateString();
-    if (
-      !framework.localStorage().getItem("composer") ||
-      framework.localStorage().getItem("composer") == yesterday
-    ) {
-      framework.composer(framework.root(), "update");
-      framework.localStorage().setItem("composer", today);
-    } else {
-      today = new Date(today).toString();
-      yesterday = new Date(
-        framework.localStorage().getItem("composer")
-      ).toString();
-      log.log("Composer already updated at " + yesterday);
-      log.log("Today " + today);
-      //log.log("Is Older " + today.getTime() > yesterday.getTime());
-    }
-  });
-});
-
 gulp.task("default", gulp.series(["build", "watch"]));
 
 /**
@@ -316,7 +292,6 @@ export async function createApp(withoutView: boolean) {
     minify(target);
     if (!withoutView) {
       multiMinify(views());
-      multiMinify(assets_folder());
     }
     localStorage.removeItem("compile");
     //node2browser(target, path.dirname(target));
