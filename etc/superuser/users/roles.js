@@ -11,7 +11,7 @@ jQuery(document).ready(function () {
      */
     var dataIntangible = selectOptions;
     dataIntangible.forEach(function (data, index) {
-      dataSource.push({ text: data, id: index });
+      dataSource.push({ text: data, id: data });
     });
     //console.log(dataSource);
     jQuery('[id^="select-"]').each(function (index, value) {
@@ -20,6 +20,14 @@ jQuery(document).ready(function () {
         theme: "material",
         placeholder: "Select a route",
         allowClear: true,
+        templateSelection: function (data) {
+          if (data.id === "") {
+            // adjust for custom placeholder values
+            return "Custom styled placeholder text";
+          }
+
+          return data.text;
+        },
       });
       var val = jQuery(this).data("key");
       console.log(val);

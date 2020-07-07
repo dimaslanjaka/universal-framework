@@ -263,6 +263,21 @@ export function views() {
     });
 }
 
+export function assets_folder() {
+  var views = framework.readdir(root + "/assets");
+  return views
+    .filter(function (item) {
+      return (
+        /\.(js|scss|css|sass|less)$/.test(item) &&
+        !/\.min\.(js|css)$/.test(item) &&
+        !/\-ori|\-original|\-backup|\.bak/s.test(item)
+      );
+    })
+    .map(function (asset) {
+      return framework.normalize(asset);
+    });
+}
+
 /**
  * minify multiple assets
  * @param assets
@@ -301,6 +316,7 @@ export async function createApp(withoutView: boolean) {
     minify(target);
     if (!withoutView) {
       multiMinify(views());
+      multiMinify(assets_folder());
     }
     localStorage.removeItem("compile");
     //node2browser(target, path.dirname(target));

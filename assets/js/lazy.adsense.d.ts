@@ -1,1 +1,0 @@
-declare var lazyadsense: boolean;
