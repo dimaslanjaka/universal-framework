@@ -2,10 +2,9 @@
 include __DIR__ . '/../breadcrumb.php';
 include __DIR__ . '/breadcrumbs.php';
 
-$roles = [];
-if (user()->is_admin()) {
-  $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
-}
+$roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
+$element = new HTML\element();
+
 ?>
 <section class="mb-3">
   <div class="card">
@@ -30,13 +29,9 @@ if (user()->is_admin()) {
   </div>
 </section>
 
-<?php $accessList = user()->access()->getAccess();
-$managedAccess = user()->access()->get_managed_access();
+<?php
+$accessList = user()->access()->getAccess();
 ?>
-
-<script>
-  const selectOptions = <?= json_encode($managedAccess) ?>;
-</script>
 
 <section>
   <div class="card">
@@ -50,10 +45,14 @@ $managedAccess = user()->access()->get_managed_access();
         ?>
           <!-- Grid row -->
           <div class="form-group row">
-            <!-- Material input -->
-            <label for="input<?= $key ?>MD" class="col-sm-2 col-form-label"><?= $key ?></label>
+            <div class="col">
+              <div class="md-form">
+                <!--<input type="text" name="access" value="<?= $key ?>" class="form-control" data-target="#group-<?= $key ?>" required>-->
+                <?= $element->array2el()->select($roles, ['class' => 'select2'], ['selected' => $key]) ?>
+              </div>
+            </div>
             <div class="col-sm-10">
-              <div class="md-form mt-0" id="group-<?= $key ?>" data-key="<?= $key ?>">
+              <div class="md-form" id="group-<?= $key ?>" data-key="<?= $key ?>">
                 <?php
                 foreach ($value as $path) {
                   //echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
@@ -61,10 +60,10 @@ $managedAccess = user()->access()->get_managed_access();
                 }
                 //echo '<select name="access[' . $key . '][]" data-key="" id="select-" class="select2"><option></option></select>';
                 ?>
-                <div class="mt-2">
-                  <div class="d-block">
-                    <button class="btn btn-success" data-key="<?= $key ?>" data-target="group-<?= $key ?>" id="add-select-<?= $key ?>" role="button" type="button"><i class="fad fa-plus"></i></button>
-                  </div>
+              </div>
+              <div class="mt-2">
+                <div class="d-block">
+                  <button class="btn btn-success float-right" data-key="<?= $key ?>" data-target="#group-<?= $key ?>" id="add-select-<?= $key ?>" role="button" type="button"><i class="fad fa-plus"></i></button>
                 </div>
               </div>
             </div>

@@ -1,6 +1,12 @@
 <?php
 user()->admin_required('/user/login');
 
+if (CORS) {
+  if (isset($_REQUEST['getAccess'])) {
+    e(user()->access()->get_managed_access());
+  }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (user()->is_admin()) {
     if (isset($_POST['userdata'])) {
@@ -20,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       }
     }
     if (isset($_POST['access'])) {
+      e($_POST);
       $save = user()->access()->save($_POST['access']);
       $return = ['title' => 'Access Management', 'error' => !$save];
       if ($save) {

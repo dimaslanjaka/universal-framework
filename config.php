@@ -221,20 +221,7 @@ function filemanager()
   return new \Filemanager\file();
 }
 
-/**
- * Var Dump with text/plain content-type header
- *
- * @param mixed $a
- * @param mixed $_
- * @return void
- */
-function vd($a, $_ = null)
-{
-  if (!headers_sent()) {
-    header('Content-Type: text/plain; charset=utf-8');
-  }
-  var_dump($a, $_);
-}
+
 
 /**
  * Get current environtment

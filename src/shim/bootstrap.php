@@ -47,6 +47,24 @@ function ev()
 }
 
 /**
+ * Var Dump with removing all previous obstacles.
+ *
+ * @return void
+ */
+function vd()
+{
+  $args = func_get_args();
+  if (1 == count($args)) {
+    $args = $args[0];
+  }
+  if (ob_get_level()) {
+    ob_end_clean();
+  }
+  var_dump($args);
+  exit;
+}
+
+/**
  * Exit var_dump with JSON header.
  *
  * @param [type] ...$a
@@ -153,6 +171,24 @@ function pre()
     }
   } else {
     \JSON\json::json($obj[0], false, true);
+  }
+  echo '</pre>';
+}
+/**
+ * var_dump in <pre/>.
+ *
+ * @return void
+ */
+function predump()
+{
+  $obj = func_get_args();
+  echo '<pre style="word-wrap: break-word;">';
+  if (count($obj) > 1) {
+    foreach ($obj as $objek) {
+      var_dump($objek);
+    }
+  } else {
+    var_dump($obj[0]);
   }
   echo '</pre>';
 }

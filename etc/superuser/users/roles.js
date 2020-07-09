@@ -6,15 +6,20 @@ var dataSource = [];
 jQuery(document).ready(function () {
   load_module(["select2"], function () {
     loadCSS("/assets/css/select2.min.css", function () {
-      /**
-       * @type {string[]}
-       */
-      var dataIntangible = selectOptions;
-      dataIntangible.forEach(function (data, index) {
-        dataSource.push({ text: data, id: data });
+      $.ajax({
+        url: "",
+        method: "post",
+        data: {
+          getAccess: guid(),
+        },
+        success: function (selectOptions) {
+          selectOptions.forEach(function (data, index) {
+            dataSource.push({ text: data, id: data });
+          });
+          //console.log(dataSource);
+          initializeSelect2(dataSource);
+        },
       });
-      //console.log(dataSource);
-      initializeSelect2(dataSource);
     });
   });
 
@@ -24,7 +29,7 @@ jQuery(document).ready(function () {
 });
 
 function initializeSelect2(dataSource) {
-  jQuery('[id^="select-"]').each(function (index, value) {
+  jQuery('[id^="select-"],select.select2').each(function (index, value) {
     var t = jQuery(this);
     if (t.data("select2")) {
       console.error("select2 already initialized on " + t.attr("id"));

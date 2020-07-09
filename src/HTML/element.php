@@ -28,6 +28,16 @@ class element
     self::$static = new DOMDocument($version, $encoding);
   }
 
+  /**
+   * Array to element
+   *
+   * @return \HTML\array2element
+   */
+  public function array2el()
+  {
+    return new array2element();
+  }
+
   public function pre($content, $options = ['echo' => true])
   {
     if ($this->isArrObj($content)) {
@@ -113,7 +123,6 @@ class element
   /**
    * Proxy CSS.
    *
-   * @param array  $source
    * @param bool   $html
    * @param bool   $print
    * @param string $rel

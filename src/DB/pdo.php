@@ -80,9 +80,10 @@ class pdo
   }
 
   /**
-   * Set MySQL Timezone
+   * Set MySQL Timezone.
+   *
    * @requires superuser access
-   * @param string $gmt
+   *
    * @return array
    */
   public function setTimezone(string $gmt = '+7:00')
@@ -712,16 +713,35 @@ class pdo
   /**
    * Get result as array.
    *
-   * @param bool $value
+   * @param mixed   $value
+   * @param string $filter filter array by key
    *
-   * @return array
+   * @return array|null
    */
-  public function row_array($value = false)
+  public function row_array($value = false, $filter = null, bool $unique_filter = false)
   {
     $exec = $this->SQL_MultiFetch($this->trim($this->query), $value);
     $this->query = '';
+    if ($filter) {
+      if (!empty($exec) && is_array($exec)) {
+        $filtered = array_map(function ($data) use ($filter) {
+          if (isset($data[$filter])) {
+            return $data[$filter];
+          }
 
-    return $exec;
+          return $data;
+        }, $exec);
+        if ($unique_filter) {
+          return array_unique($filtered);
+        }
+
+        return $filtered;
+      }
+    }
+
+    if (!empty($exec) && is_array($exec)) {
+      return $exec;
+    }
   }
 
   /**
