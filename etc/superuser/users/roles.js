@@ -2,35 +2,44 @@ function deleteRole(role) {
   console.log(getFuncName(), role);
 }
 AjaxForm();
-
+var dataSource = [];
 jQuery(document).ready(function () {
   load_module(["select2"], function () {
-    var dataSource = [];
-    /**
-     * @type {string[]}
-     */
-    var dataIntangible = selectOptions;
-    dataIntangible.forEach(function (data, index) {
-      dataSource.push({ text: data, id: data });
-    });
-    //console.log(dataSource);
-    jQuery('[id^="select-"]').each(function (index, value) {
-      jQuery(this).select2({
-        data: dataSource,
-        theme: "material",
-        placeholder: "Select a route",
-        allowClear: true,
-        templateSelection: function (data) {
-          if (data.id === "") {
-            // adjust for custom placeholder values
-            return "Custom styled placeholder text";
-          }
-
-          return data.text;
-        },
+    loadCSS("/assets/css/select2.min.css", function () {
+      /**
+       * @type {string[]}
+       */
+      var dataIntangible = selectOptions;
+      dataIntangible.forEach(function (data, index) {
+        dataSource.push({ text: data, id: data });
       });
-      var val = jQuery(this).data("key");
-      console.log(val);
+      //console.log(dataSource);
+      initializeSelect2(dataSource);
     });
   });
+
+  $('[id^="add-select-"]').click(function (e) {
+    e.preventDefault();
+  });
 });
+
+function initializeSelect2(dataSource) {
+  jQuery('[id^="select-"]').each(function (index, value) {
+    var t = jQuery(this);
+    if (t.data("select2")) {
+      console.error("select2 already initialized on " + t.attr("id"));
+      return;
+    }
+    t.select2({
+      data: dataSource,
+      theme: "material",
+      placeholder: "Select a route",
+      allowClear: true,
+    });
+    var val = jQuery(this).data("key");
+    if (val && val.length) {
+      t.val(val).trigger("change");
+    }
+    //console.log(val);
+  });
+}

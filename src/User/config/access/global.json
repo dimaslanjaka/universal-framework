@@ -1,4 +1,5 @@
 {
-  "superuser": ["*"],
-  "guess": ["*", "!superuser"]
+    "guess": [
+        "/views/office/index"
+    ]
 }

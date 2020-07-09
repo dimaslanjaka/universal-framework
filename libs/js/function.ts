@@ -89,10 +89,6 @@ function LoadScript(urls: string | string[], callback: null | Function) {
     console.error("LoadScript must be load an javascript url");
   }
   if (Array.isArray(urls)) {
-    if (!urls[0].endsWith(".js")) {
-      console.error(urls[0] + " not valid javascript file");
-      return;
-    }
     var lists = urls;
     //console.log(`Script in queue ${lists.length}`);
     const callthis = function (event?: Event) {

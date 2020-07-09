@@ -19,5 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         e($modify);
       }
     }
+    if (isset($_POST['access'])) {
+      $save = user()->access()->save($_POST['access']);
+      $return = ['title' => 'Access Management', 'error' => !$save];
+      if ($save) {
+        $return['message'] = 'Access configuration saved successfully';
+      } else {
+        $return['message'] = 'Access configuration save failed';
+      }
+      e($return);
+    }
   }
 }

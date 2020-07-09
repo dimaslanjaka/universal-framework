@@ -18,7 +18,7 @@ class access
     $this->user = $user;
   }
 
-  function check()
+  public function check()
   {
   }
 
@@ -92,5 +92,18 @@ class access
     }
 
     return $this->managedAccess;
+  }
+
+  /**
+   * Save new configuration.
+   *
+   * @return bool
+   */
+  public function save(array $newData)
+  {
+    $config = $this->getAccess();
+    $merge = array_replace($config, $newData);
+
+    return !empty(trim(\Filemanager\file::file($this->config, $merge, true)));
   }
 }
