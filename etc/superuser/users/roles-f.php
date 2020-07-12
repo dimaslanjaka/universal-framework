@@ -1,14 +1,12 @@
 <?php
 user()->admin_required('/user/login');
 
-if (CORS) {
+if (user()->is_admin()) {
   if (isset($_REQUEST['getAccess'])) {
     e(user()->access()->get_managed_access());
   }
-}
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (user()->is_admin()) {
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['userdata'])) {
       if (isset($_POST['userdata']['role'])) {
         $Roles = array_merge(['superadmin'], array_values(array_filter($_POST['userdata']['role'])));

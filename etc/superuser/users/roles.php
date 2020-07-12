@@ -31,6 +31,7 @@ $element = new HTML\element();
 
 <?php
 $accessList = user()->access()->getAccess();
+pre($accessList);
 ?>
 
 <section>
