@@ -1,6 +1,6 @@
 <?php
 include __DIR__ . '/../breadcrumb.php';
-include __DIR__ . '/breadcrumbs.php';
+include __DIR__ . '/breadcrumb.php';
 ?>
 <section class="pt-3">
   <div class="card card-cascade narrower">

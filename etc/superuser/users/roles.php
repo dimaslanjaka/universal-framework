@@ -1,6 +1,6 @@
 <?php
 include __DIR__ . '/../breadcrumb.php';
-include __DIR__ . '/breadcrumbs.php';
+include __DIR__ . '/breadcrumb.php';
 
 $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
 $element = new HTML\element();
