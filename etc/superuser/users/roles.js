@@ -2,6 +2,9 @@ function deleteRole(role) {
   console.log(getFuncName(), role);
 }
 AjaxForm();
+/**
+ * Initialize global data source
+ */
 var dataSource = [];
 jQuery(document).ready(function () {
   load_module(["select2"], function () {
@@ -13,11 +16,13 @@ jQuery(document).ready(function () {
           getAccess: guid(),
         },
         success: function (selectOptions) {
-          selectOptions.forEach(function (data, index) {
-            dataSource.push({ text: data, id: data });
-          });
+          if (selectOptions && Array.isArray(selectOptions)) {
+            selectOptions.forEach(function (data, index) {
+              dataSource.push({ text: data, id: data });
+            });
+          }
           //console.log(dataSource);
-          initializeSelect2(dataSource);
+          initializeSelect2();
         },
       });
     });
@@ -28,7 +33,7 @@ jQuery(document).ready(function () {
   });
 });
 
-function initializeSelect2(dataSource) {
+function initializeSelect2() {
   jQuery('[id^="select-"],select.select2').each(function (index, value) {
     var t = jQuery(this);
     if (t.data("select2")) {
@@ -36,7 +41,7 @@ function initializeSelect2(dataSource) {
       return;
     }
     t.select2({
-      data: dataSource,
+      data: dataSource.filter(onlyUnique),
       theme: "material",
       placeholder: "Select a route",
       allowClear: true,
@@ -47,4 +52,15 @@ function initializeSelect2(dataSource) {
     }
     //console.log(val);
   });
+}
+
+/**
+ * Get unique array
+ * @param {any} value
+ * @param {any} index
+ * @param {any[]} self
+ * @example dataArray.filter(onlyUnique)
+ */
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
 }

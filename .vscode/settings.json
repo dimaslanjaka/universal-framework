@@ -67,7 +67,6 @@
   "git.countBadge": "all",
   "git.enableSmartCommit": true,
   "git.enableStatusBarSync": true,
-  "git.enabled": true,
   "git.ignoreLimitWarning": true,
   "git.smartCommitChanges": "all",
   "git.supportCancellation": false,

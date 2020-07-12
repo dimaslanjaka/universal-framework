@@ -95,8 +95,9 @@ switch (get_zone()) {
       exit;
     }
     break;
-  case 'superuser':
-    //superuser area
+  case 'superuser': // superuser framework
+  case 'server': //server framework
+    //set folder etc for root views
     $view_folder = 'etc';
     break;
 }
@@ -211,8 +212,6 @@ if (!realpath($view)) {
     return load_cache(page_cache());
   }
 }
-
-
 
 /**
  * Get current theme instance
