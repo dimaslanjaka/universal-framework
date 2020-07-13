@@ -1,11 +1,12 @@
 {
     "guess": [
-        "/views/office/index"
-    ],
-    "client": [
+        "/views/office/index",
         "/views/office/inventory/warehouses/add"
     ],
-    "temporary": [
-        "/views/office/inventory/warehouses/add"
+    "kepala gudang": [
+        "/views/office/inventory/warehouses/add",
+        "/views/office/inventory/index",
+        "/views/office/inventory/warehouses/list",
+        "/views/office/inventory/warehouses/index"
     ]
 }

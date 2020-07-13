@@ -273,6 +273,7 @@
     "@types/rimraf": "^3.0.0",
     "@types/run-sequence": "0.0.30",
     "@types/sass": "*",
+    "@types/select2": "^4.0.49",
     "@types/sequelize": "*",
     "@types/supertest": "^2.0.10",
     "@types/swfobject": "^2.2.27",
@@ -337,8 +338,7 @@
     "tslint-react": "^5.0.0",
     "typescript": "^3.9.6",
     "webpack-dashboard": "^3.2.0",
-    "webpack-dev-server": "^3.11.0",
-    "@types/select2": "^4.0.49"
+    "webpack-dev-server": "^3.11.0"
   },
   "displayName": "UNIVERSAL FRAMEWORK [PHPJS]",
   "homepage": "https://github.com/dimaslanjaka/universal-framework#readme",

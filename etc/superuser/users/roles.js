@@ -36,7 +36,7 @@ jQuery(document).ready(function () {
 
   jQuery(document).on(
     "change",
-    'select[id^="Roles-"],select[id^="Access-"]',
+    "select.select2", //select[id^="Roles-"],select[id^="Access-"]
     buildData
   );
 
@@ -65,34 +65,50 @@ jQuery(document).ready(function () {
 });
 
 function initializeSelect2() {
-  jQuery('[id^="select-"],select.select2').each(function (index, value) {
+  jQuery("select.select2").each(function (index, value) {
+    //[id^="select-"],
     var t = jQuery(this);
+    if (!t.attr("id")) {
+      t.attr("id", uniqid("select-"));
+    }
     if (t.data("select2")) {
-      console.error("select2 already initialized on " + t.attr("id"));
+      //console.error("select2 already initialized on " + t.attr("id"));
       return;
     }
-    t.select2({
-      data: dataSource.filter(onlyUnique),
-      theme: "material",
-      placeholder: "Select a route",
-      allowClear: true,
-    });
     var val = jQuery(this).data("key");
-    if (val && val.length) {
-      t.val(val).trigger("change");
+
+    if (t.find("option").length == 1) {
+      t.select2({
+        data: dataSource.filter(onlyUnique),
+        theme: "material",
+        placeholder: "Select a route",
+        allowClear: true,
+      });
+      if (val && val.length && !t.val()) {
+        t.val(val).trigger("change");
+      }
+    } else {
+      t.select2({
+        theme: "material",
+        placeholder: "Select a role",
+        allowClear: true,
+      });
     }
+
     //console.log(val);
   });
 }
 
 function uinitializeSelect2() {
-  jQuery('[id^="select-"],select.select2').each(function (index, value) {
+  jQuery("select.select2").each(function (index, value) {
+    //[id^="select-"],
     var t = jQuery(this);
     if (t.data("select2")) t.select2("destroy");
   });
 }
 
 function buildData(e) {
+  uinitializeSelect2();
   var wrapselgrab = $("form#access-management").find("div[id^=Roles-]");
   if (wrapselgrab.length) {
     wrapselgrab.each(function (index, el) {
@@ -100,12 +116,14 @@ function buildData(e) {
       if (selgrab.length) {
         for (let index = 1; index < selgrab.length; index++) {
           var element = selgrab[index];
+          $(element).attr("name", `access[${selgrab[0].value}][]`);
           element.setAttribute("name", `access[${selgrab[0].value}][]`);
           //console.log(selgrab[index].getAttribute("name"));
         }
       }
     });
   }
+  initializeSelect2();
 }
 
 /**

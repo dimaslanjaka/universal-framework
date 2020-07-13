@@ -102,8 +102,8 @@ class access
   public function save(array $newData)
   {
     $config = $this->getAccess();
-    $merge = array_replace($config, $newData);
+    //$merge = array_replace($config, $newData);
 
-    return !empty(trim(\Filemanager\file::file($this->config, $merge, true)));
+    return !empty(trim(\Filemanager\file::file($this->config, $newData, true)));
   }
 }
