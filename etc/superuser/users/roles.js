@@ -30,10 +30,20 @@ jQuery(document).ready(function () {
     });
   });
 
-  $('[id^="add-select-"]').click(function (e) {
+  // add access router selector
+  $('[id^="select-add-"]').click(function (e) {
     e.preventDefault();
+    uinitializeSelect2();
+    var parent = $(this).parents("[id^='select-group-']");
+    var selectFirst = parent.find("select");
+    if (selectFirst.length) {
+      var cloneSelect = selectFirst[0].cloneNode(true);
+      console.log(cloneSelect);
+    }
+    initializeSelect2();
   });
 
+  //build postdata
   jQuery(document).on(
     "change",
     "select.select2", //select[id^="Roles-"],select[id^="Access-"]

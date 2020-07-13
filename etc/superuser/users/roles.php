@@ -67,18 +67,20 @@ $accessList = user()->access()->getAccess();
                 </div>
               </div>
               <div class="col">
-                <div class="md-form" id="group-<?= $key; ?>" data-key="<?= $key; ?>">
+                <div class="md-form" id="select-group-<?= uniqid($key); ?>" data-key="<?= $key; ?>">
                   <?php
                   foreach ($value as $path) {
                     //echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
-                    echo '<div class="row"><div class="col"><select data-key="' . $path . '" id="Access-' . uniqid($path) . '" class="select2 form-control"><option></option></select></div><div class="col-md-2 p-0 m-0"><button class="btn btn-danger" role="button" type="button"><i class="fad fa-trash"></i></button></div></div>';
+                    echo '<div class="form-row"><div class="col"><select data-key="' . $path . '" id="Access-' . uniqid($path) . '" class="select2 form-control"><option></option></select></div>
+                    <div class="col-md-1 p-0 m-0">
+                    <button id="select-remove-' . uniqid() . '" class="btn btn-danger" role="button" type="button"><i class="fad fa-trash"></i></button>
+                    </div>
+                    </div>';
                   }
                   //echo '<select name="access[' . $key . '][]" data-key="" id="select-" class="select2"><option></option></select>';
                   ?>
-                </div>
-                <div class="mt-2">
-                  <div class="d-block">
-                    <button class="btn btn-success float-right" data-key="<?= $key; ?>" data-target="#group-<?= $key; ?>" id="add-select-<?= $key; ?>" role="button" type="button"><i class="fad fa-plus"></i></button>
+                  <div class="mt-1">
+                    <button id="select-add-<?= uniqid() ?>" class="btn btn-success btn-block" role="button" type="button"><i class="fad fa-plus"></i></button>
                   </div>
                 </div>
               </div>
