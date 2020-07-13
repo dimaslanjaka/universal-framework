@@ -25,6 +25,10 @@ class cache
       self::$api = new \Extender\request('https://unsplash.it');
     }
     self::$url = $url;
+    self::$api->setCookieFile(self::$cache_dir . '/cookies.txt');
+    self::$api->setCookieJar(self::$cache_dir . '/cookies.txt');
+    self::$api->setReferrer($url);
+    self::$api->setUserAgent($_SERVER['HTTP_USER_AGENT']);
     $saved = resolve_file(self::$cache_dir . '/saved.json', '{}');
     self::$saved = $saved;
     $res = read_file($saved, []);
