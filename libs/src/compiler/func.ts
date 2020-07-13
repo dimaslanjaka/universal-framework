@@ -253,7 +253,7 @@ var execute_dump = [];
 export function execute(
   cmd: string | null,
   callback: (arg0: boolean, arg1: string | Error) => any = null
-) {
+): any {
   if (typeof cmd != "string") {
     console.log(typeof cmd + " not string");
     return;

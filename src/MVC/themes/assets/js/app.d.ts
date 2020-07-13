@@ -1,9 +1,9 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference path="../../../../../libs/js/globals.d.ts" />
+/// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
-/// <reference types="jquery" />
 /// <reference types="datatables.net" />
 declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
@@ -222,6 +222,13 @@ declare class Timer {
     constructor(callback: Function, time: number);
     clear(): void;
 }
+declare var isNode: boolean;
+declare var root: any;
+declare var global: any;
+/**
+ * Is Node ?
+ */
+declare function isnode(): boolean;
 /**
  * call_user_func
  * @param functionName function name
@@ -234,10 +241,6 @@ declare function ___call(functionName: string, context?: Window, args?: any): vo
  * @param args
  */
 declare function call_user_func(functionName: string, context: Window & typeof globalThis, args: any): any;
-/**
- * Is Node ?
- */
-declare function isnode(): boolean;
 /**
  * Make function async
  * @param callback
@@ -257,6 +260,16 @@ declare function empty(str: string | null | undefined | number | boolean): boole
  * Get current function name
  */
 declare function getFuncName(): string;
+/**
+ * Is Development Mode
+ */
+declare function is_development(): boolean;
+/**
+ * Create uniqueid with prefix or suffix
+ * @param prefix
+ * @param suffix
+ */
+declare function uniqid(prefix: any, suffix: any): string;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
 /**
@@ -265,6 +278,24 @@ declare const randstr: (length?: number) => string;
  * @description check validate json
  */
 declare function isJSON(str: string): boolean;
+declare function processAjaxForm(xhr: JQueryXHR, callback: string | Function): void;
+/**
+ * Custom ajax
+ * @param settings ajax settings object
+ */
+declare function ajx(settings: JQueryAjaxSettings, success: null | Function, failed: null | Function, complete: null | Function): JQuery.jqXHR<any>;
+/**
+ * Handling form with ajax
+ * @requires data-success success function name
+ * @requires data-error error function name
+ * @requires data-complete complete function name
+ */
+declare function AjaxForm(): void;
+/**
+ * process page asynchronously
+ * @param source_cache url
+ */
+declare function async_process(source_cache: string): void;
 declare var AjaxSchedulerInit: NodeJS.Timer;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -724,10 +755,6 @@ declare function http_build_query(obj: Object): string;
  * Check current framework running at localhost
  */
 declare function is_localhost(): RegExpMatchArray;
-/**
- * Is Development Mode
- */
-declare function is_development(): boolean;
 /**
  * Force HTTPS
  */

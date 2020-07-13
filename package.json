@@ -379,7 +379,7 @@
   },
   "scripts": {
     "postinstall": "",
-    "preinstall": "npm i gulp typescript depcheck -g --prefer-offline",
+    "preinstall": "npm i gulp typescript depcheck browserify -g --prefer-offline",
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "",

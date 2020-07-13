@@ -1,3 +1,35 @@
+var isNode = false;
+var root: any;
+declare var global: any;
+
+(function () {
+  if (typeof global == "undefined" || (global && !global)) {
+    global = this;
+  }
+  // Establish the root object, `window` in the browser, or `global` on the server.
+  root = this;
+
+  // Export the Underscore object for **CommonJS**, with backwards-compatibility
+  // for the old `require()` API. If we're not in CommonJS, add `_` to the
+  // global object.
+  if (typeof module !== "undefined" && module.exports) {
+    isNode = true;
+  }
+})();
+
+/**
+ * Is Node ?
+ */
+function isnode() {
+  return isNode;
+}
+
+if (isnode()) {
+  module.exports.isnode = isnode;
+} else {
+  global.isnode = isnode;
+}
+
 /**
  * call_user_func
  * @param functionName function name
@@ -22,6 +54,12 @@ function ___call(functionName: string, context?: Window, args?: any) {
   }
 }
 
+if (isnode()) {
+  module.exports.___call = ___call;
+} else {
+  global.___call = ___call;
+}
+
 /**
  * call_user_func
  * @param functionName
@@ -43,20 +81,9 @@ function call_user_func(
 }
 
 if (isnode()) {
-  module.exports.___call = ___call;
-}
-
-/**
- * Is Node ?
- */
-function isnode() {
-  if (typeof module !== "undefined" && module.exports) {
-    return true;
-  }
-}
-
-if (isnode()) {
-  module.exports.isnode = isnode;
+  module.exports.call_user_func = call_user_func;
+} else {
+  global.call_user_func = call_user_func;
 }
 
 /**
@@ -74,12 +101,24 @@ function async_this(callback: Function): Promise<any> {
   });
 }
 
+if (isnode()) {
+  module.exports.async_this = async_this;
+} else {
+  global.async_this = async_this;
+}
+
 /**
  * call_user_func
  * @param func function name
  */
 function __call(func: string) {
   this[func].apply(this, Array.prototype.slice.call(arguments, 1));
+}
+
+if (isnode()) {
+  module.exports.__call = __call;
+} else {
+  global.__call = __call;
 }
 
 /**
@@ -104,6 +143,8 @@ function empty(str: string | null | undefined | number | boolean) {
 
 if (isnode()) {
   module.exports.empty = empty;
+} else {
+  global.empty = empty;
 }
 
 /**
@@ -115,4 +156,51 @@ function getFuncName() {
 
 if (isnode()) {
   module.exports.getFuncName = getFuncName;
+} else {
+  global.getFuncName = getFuncName;
+}
+
+/**
+ * Is Development Mode
+ */
+function is_development() {
+  return (
+    document.getElementsByTagName("html")[0].getAttribute("environtment") ==
+    "development"
+  );
+}
+
+if (isnode()) {
+  module.exports.is_development = is_development;
+} else {
+  global.is_development = is_development;
+}
+
+/**
+ * Create uniqueid with prefix or suffix
+ * @param prefix
+ * @param suffix
+ */
+function uniqid(prefix: any, suffix: any) {
+  var n = Math.floor(Math.random() * 11);
+  var k = Math.floor(Math.random() * 1000000);
+  var m = String.fromCharCode(n) + k;
+  return (prefix ? prefix : "") + m + (suffix ? suffix : "");
+}
+
+if (isnode()) {
+  module.exports.uniqid = uniqid;
+} else {
+  global.uniqid = uniqid;
+}
+
+if (typeof now == "undefined") {
+  function now() {
+    return Date.now();
+  }
+  if (isnode()) {
+    module.exports.now = now;
+  } else {
+    global.now = now;
+  }
 }

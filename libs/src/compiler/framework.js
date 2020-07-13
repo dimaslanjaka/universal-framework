@@ -831,6 +831,33 @@ var Timer = /** @class */ (function () {
     };
     return Timer;
 }());
+var isNode = false;
+var root;
+(function () {
+    if (typeof global == "undefined" || (global && !global)) {
+        global = this;
+    }
+    // Establish the root object, `window` in the browser, or `global` on the server.
+    root = this;
+    // Export the Underscore object for **CommonJS**, with backwards-compatibility
+    // for the old `require()` API. If we're not in CommonJS, add `_` to the
+    // global object.
+    if (typeof module !== "undefined" && module.exports) {
+        isNode = true;
+    }
+})();
+/**
+ * Is Node ?
+ */
+function isnode() {
+    return isNode;
+}
+if (isnode()) {
+    module.exports.isnode = isnode;
+}
+else {
+    global.isnode = isnode;
+}
 /**
  * call_user_func
  * @param functionName function name
@@ -857,6 +884,12 @@ function ___call(functionName, context, args) {
         }
     }
 }
+if (isnode()) {
+    module.exports.___call = ___call;
+}
+else {
+    global.___call = ___call;
+}
 /**
  * call_user_func
  * @param functionName
@@ -873,18 +906,10 @@ function call_user_func(functionName, context, args) {
     return context[func].apply(context, args);
 }
 if (isnode()) {
-    module.exports.___call = ___call;
+    module.exports.call_user_func = call_user_func;
 }
-/**
- * Is Node ?
- */
-function isnode() {
-    if (typeof module !== "undefined" && module.exports) {
-        return true;
-    }
-}
-if (isnode()) {
-    module.exports.isnode = isnode;
+else {
+    global.call_user_func = call_user_func;
 }
 /**
  * Make function async
@@ -901,12 +926,24 @@ function async_this(callback) {
         }
     });
 }
+if (isnode()) {
+    module.exports.async_this = async_this;
+}
+else {
+    global.async_this = async_this;
+}
 /**
  * call_user_func
  * @param func function name
  */
 function __call(func) {
     this[func].apply(this, Array.prototype.slice.call(arguments, 1));
+}
+if (isnode()) {
+    module.exports.__call = __call;
+}
+else {
+    global.__call = __call;
 }
 /**
  * check empty
@@ -930,6 +967,9 @@ function empty(str) {
 if (isnode()) {
     module.exports.empty = empty;
 }
+else {
+    global.empty = empty;
+}
 /**
  * Get current function name
  */
@@ -938,6 +978,50 @@ function getFuncName() {
 }
 if (isnode()) {
     module.exports.getFuncName = getFuncName;
+}
+else {
+    global.getFuncName = getFuncName;
+}
+/**
+ * Is Development Mode
+ */
+function is_development() {
+    return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
+        "development");
+}
+if (isnode()) {
+    module.exports.is_development = is_development;
+}
+else {
+    global.is_development = is_development;
+}
+/**
+ * Create uniqueid with prefix or suffix
+ * @param prefix
+ * @param suffix
+ */
+function uniqid(prefix, suffix) {
+    var n = Math.floor(Math.random() * 11);
+    var k = Math.floor(Math.random() * 1000000);
+    var m = String.fromCharCode(n) + k;
+    return (prefix ? prefix : "") + m + (suffix ? suffix : "");
+}
+if (isnode()) {
+    module.exports.uniqid = uniqid;
+}
+else {
+    global.uniqid = uniqid;
+}
+if (typeof now == "undefined") {
+    function now() {
+        return Date.now();
+    }
+    if (isnode()) {
+        module.exports.now = now;
+    }
+    else {
+        global.now = now;
+    }
 }
 /**
  * Begin global toastr options
@@ -1150,115 +1234,115 @@ if (!isnode()) {
     }
   });
   */
-    function processAjaxForm(xhr, callback) {
-        //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
-        console.log(getFuncName(), callback);
-        var res;
-        if (xhr.hasOwnProperty("responseJSON")) {
-            res = xhr.responseJSON;
-        }
-        else if (xhr.hasOwnProperty("responseText")) {
-            res = xhr.responseText;
-            if (typeof res == "string" && !empty(res)) {
-                //begin decode json
-                if (isJSON(res)) {
-                    res = JSON.parse(res);
-                }
-            }
-        }
-        if (callback) {
-            if (typeof callback == "function") {
-                callback(res);
-            }
-            else if (typeof callback == "string") {
-                call_user_func(callback, window, res);
-            }
-            else {
-                console.error("2nd parameters must be callback function, instead of " +
-                    typeof callback);
+}
+function processAjaxForm(xhr, callback) {
+    //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
+    console.log(getFuncName(), callback);
+    var res;
+    if (xhr.hasOwnProperty("responseJSON")) {
+        res = xhr.responseJSON;
+    }
+    else if (xhr.hasOwnProperty("responseText")) {
+        res = xhr.responseText;
+        if (typeof res == "string" && !empty(res)) {
+            //begin decode json
+            if (isJSON(res)) {
+                res = JSON.parse(res);
             }
         }
     }
-    /**
-     * Custom ajax
-     * @param settings ajax settings object
-     */
-    function ajx(settings, success, failed, complete) {
-        settings.headers = {
-            "unique-id": getUID(),
-        };
-        if (!settings.hasOwnProperty("indicator")) {
-            settings.indicator = true;
+    if (callback) {
+        if (typeof callback == "function") {
+            callback(res);
         }
-        if (!settings.hasOwnProperty("method")) {
-            settings.method = "POST";
+        else if (typeof callback == "string") {
+            call_user_func(callback, window, res);
         }
-        return $.ajax(settings)
-            .done(function (data, textStatus, jqXHR) {
-            processAjaxForm(jqXHR, success);
-        })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-            processAjaxForm(jqXHR, failed);
-        })
-            .always(function (jqXHR, textStatus, errorThrown) {
-            processAjaxForm(jqXHR, complete);
-        });
+        else {
+            console.error("2nd parameters must be callback function, instead of " +
+                typeof callback);
+        }
     }
-    /**
-     * Handling form with ajax
-     * @requires data-success success function name
-     * @requires data-error error function name
-     * @requires data-complete complete function name
-     */
-    function AjaxForm() {
-        $(document).on("submit", "form", function (e) {
-            e.preventDefault();
-            var t = $(this);
-            var sukses = t.data("success");
-            var err = t.data("error");
-            var complete = t.data("complete");
-            var targetURL = t.attr("action");
-            //console.log(targetURL, sukses, err, complete);
-            if (!targetURL) {
-                console.error("Target url of this form not exists");
-                return;
-            }
-            ajx({
-                url: targetURL,
-                method: t.attr("method") || "POST",
-                data: t.serialize(),
-                headers: {
-                    Accept: "application/json",
-                    guid: guid(),
-                },
-            }, sukses, err, complete);
-        });
+}
+/**
+ * Custom ajax
+ * @param settings ajax settings object
+ */
+function ajx(settings, success, failed, complete) {
+    settings.headers = {
+        "unique-id": getUID(),
+    };
+    if (!settings.hasOwnProperty("indicator")) {
+        settings.indicator = true;
     }
-    /**
-     * process page asynchronously
-     * @param source_cache url
-     */
-    function async_process(source_cache) {
-        var xhr = new XMLHttpRequest();
-        $.ajax({
-            url: source_cache,
-            method: "POST",
-            silent: true,
-            indicator: false,
-            xhr: function () {
-                return xhr;
-            },
+    if (!settings.hasOwnProperty("method")) {
+        settings.method = "POST";
+    }
+    return $.ajax(settings)
+        .done(function (data, textStatus, jqXHR) {
+        processAjaxForm(jqXHR, success);
+    })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+        processAjaxForm(jqXHR, failed);
+    })
+        .always(function (jqXHR, textStatus, errorThrown) {
+        processAjaxForm(jqXHR, complete);
+    });
+}
+/**
+ * Handling form with ajax
+ * @requires data-success success function name
+ * @requires data-error error function name
+ * @requires data-complete complete function name
+ */
+function AjaxForm() {
+    $(document).on("submit", "form", function (e) {
+        e.preventDefault();
+        var t = $(this);
+        var sukses = t.data("success");
+        var err = t.data("error");
+        var complete = t.data("complete");
+        var targetURL = t.attr("action");
+        //console.log(targetURL, sukses, err, complete);
+        if (!targetURL) {
+            console.error("Target url of this form not exists");
+            return;
+        }
+        ajx({
+            url: targetURL,
+            method: t.attr("method") || "POST",
+            data: t.serialize(),
             headers: {
-                Pragma: "no-cache",
-                "Cache-Control": "no-cache",
-                "Refresh-Cache": "true",
+                Accept: "application/json",
+                guid: guid(),
             },
-            success: function (response) {
-                $("html").html($("html", response).html());
-                console.log(xhr.responseURL);
-            },
-        });
-    }
+        }, sukses, err, complete);
+    });
+}
+/**
+ * process page asynchronously
+ * @param source_cache url
+ */
+function async_process(source_cache) {
+    var xhr = new XMLHttpRequest();
+    $.ajax({
+        url: source_cache,
+        method: "POST",
+        silent: true,
+        indicator: false,
+        xhr: function () {
+            return xhr;
+        },
+        headers: {
+            Pragma: "no-cache",
+            "Cache-Control": "no-cache",
+            "Refresh-Cache": "true",
+        },
+        success: function (response) {
+            $("html").html($("html", response).html());
+            console.log(xhr.responseURL);
+        },
+    });
 }
 var AjaxSchedulerInit = null;
 var AjaxSchedulerRequests = [];
@@ -2529,13 +2613,6 @@ if (!isnode()) {
             indicator: false,
         });
     }
-}
-/**
- * Is Development Mode
- */
-function is_development() {
-    return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
-        "development");
 }
 /**
  * Force HTTPS

@@ -18,7 +18,7 @@ import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
 import browserify from "browserify";
 import browserify_source from "vinyl-source-stream";
-import { fixDeps } from "./func";
+import { fixDeps, execute } from "./func";
 localStorage.removeItem("compile");
 console.clear();
 
@@ -192,7 +192,7 @@ function node2browser(target?: string, destination?: string, rename?: string) {
  * minify assets
  * @param file
  */
-export function minify(item: string | Buffer) {
+export function minify(item: string | Buffer): any {
   const exists = fs.existsSync(item);
   if (exists) {
     item = item.toString();
@@ -264,7 +264,7 @@ export function views() {
  * minify multiple assets
  * @param assets
  */
-export function multiMinify(assets: any[]) {
+export function multiMinify(assets: any[]): any {
   assets.map(minify);
 }
 
@@ -295,12 +295,15 @@ export async function createApp(withoutView: boolean) {
         log.log(log.error(err));
       }
     );
-    minify(target);
+    //await node2browser(target, path.dirname(target));
+    await minify(target);
     if (!withoutView) {
-      multiMinify(views());
+      await multiMinify(views());
     }
     localStorage.removeItem("compile");
-    //node2browser(target, path.dirname(target));
+    /*execute(
+      "browserify --standalone Bundle ./src/MVC/themes/assets/js/app.js -o ./src/MVC/themes/assets/js/app.min.js && browserify --standalone Bundle ./src/MVC/themes/assets/js/app.js -o ./src/MVC/themes/assets/js/app.js"
+    );*/
   } else {
     log.log(
       log.error("Compiler lock process already exists ") +

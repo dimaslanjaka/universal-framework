@@ -6,6 +6,8 @@ AjaxForm();
  * Initialize global data source
  */
 var dataSource = [];
+var clonedCol = null;
+
 jQuery(document).ready(function () {
   load_module(["select2"], function () {
     loadCSS("/assets/css/select2.min.css", function () {
@@ -31,6 +33,12 @@ jQuery(document).ready(function () {
   $('[id^="add-select-"]').click(function (e) {
     e.preventDefault();
   });
+
+  jQuery(document).on(
+    "change",
+    'select[id^="Roles-"],select[id^="Access-"]',
+    buildData
+  );
 });
 
 function initializeSelect2() {
@@ -52,6 +60,22 @@ function initializeSelect2() {
     }
     //console.log(val);
   });
+}
+
+function buildData(e) {
+  var wrapselgrab = $("form#access-management").find("div[id^=Roles-]");
+  if (wrapselgrab.length) {
+    wrapselgrab.each(function (index, el) {
+      var selgrab = $(this).find("select");
+      if (selgrab.length) {
+        for (let index = 1; index < selgrab.length; index++) {
+          var element = selgrab[index];
+          element.setAttribute("name", `access[${selgrab[0].value}][]`);
+          //console.log(selgrab[index].getAttribute("name"));
+        }
+      }
+    });
+  }
 }
 
 /**

@@ -14,6 +14,13 @@ class array2element
     }
     $select = $dom->createElement('select');
     foreach ($attributes as $key => $val) {
+      if (is_callable($val)) {
+        if (isset($options[$val])) { //arguments
+          $select->setAttribute($key, call_user_func($val, $options[$val]));
+          continue; //break here
+        }
+      }
+      // otherwise call default actions
       $select->setAttribute($key, $val);
     }
     foreach ($data as $opt) {

@@ -39,16 +39,6 @@ if (!isnode()) {
 }
 
 /**
- * Is Development Mode
- */
-function is_development() {
-  return (
-    document.getElementsByTagName("html")[0].getAttribute("environtment") ==
-    "development"
-  );
-}
-
-/**
  * Force HTTPS
  */
 function forceSSL() {

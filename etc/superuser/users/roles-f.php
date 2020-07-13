@@ -24,15 +24,16 @@ if (user()->is_admin()) {
       }
     }
     if (isset($_POST['access'])) {
-      e($_POST);
-      $save = user()->access()->save($_POST['access']);
-      $return = ['title' => 'Access Management', 'error' => !$save];
-      if ($save) {
-        $return['message'] = 'Access configuration saved successfully';
-      } else {
-        $return['message'] = 'Access configuration save failed';
+      if (!empty($_POST['access'])) {
+        $save = user()->access()->save($_POST['access']);
+        $return = ['title' => 'Access Management', 'error' => !$save];
+        if ($save) {
+          $return['message'] = 'Access configuration saved successfully';
+        } else {
+          $return['message'] = 'Access configuration save failed';
+        }
+        e($return);
       }
-      e($return);
     }
   }
 }

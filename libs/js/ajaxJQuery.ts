@@ -181,129 +181,129 @@ jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
   }
 });
 */
+}
 
-  function processAjaxForm(xhr: JQueryXHR, callback: string | Function) {
-    //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
-    console.log(getFuncName(), callback);
-    var res: string | number | boolean;
-    if (xhr.hasOwnProperty("responseJSON")) {
-      res = xhr.responseJSON;
-    } else if (xhr.hasOwnProperty("responseText")) {
-      res = xhr.responseText;
-      if (typeof res == "string" && !empty(res)) {
-        //begin decode json
-        if (isJSON(res)) {
-          res = JSON.parse(res);
-        }
-      }
-    }
-
-    if (callback) {
-      if (typeof callback == "function") {
-        callback(res);
-      } else if (typeof callback == "string") {
-        call_user_func(callback, window, res);
-      } else {
-        console.error(
-          "2nd parameters must be callback function, instead of " +
-            typeof callback
-        );
+function processAjaxForm(xhr: JQueryXHR, callback: string | Function) {
+  //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
+  console.log(getFuncName(), callback);
+  var res: string | number | boolean;
+  if (xhr.hasOwnProperty("responseJSON")) {
+    res = xhr.responseJSON;
+  } else if (xhr.hasOwnProperty("responseText")) {
+    res = xhr.responseText;
+    if (typeof res == "string" && !empty(res)) {
+      //begin decode json
+      if (isJSON(res)) {
+        res = JSON.parse(res);
       }
     }
   }
 
-  /**
-   * Custom ajax
-   * @param settings ajax settings object
-   */
-  function ajx(
-    settings: JQueryAjaxSettings,
-    success: null | Function,
-    failed: null | Function,
-    complete: null | Function
-  ) {
-    settings.headers = {
-      "unique-id": getUID(),
-    };
-    if (!settings.hasOwnProperty("indicator")) {
-      settings.indicator = true;
-    }
-    if (!settings.hasOwnProperty("method")) {
-      settings.method = "POST";
-    }
-
-    return $.ajax(settings)
-      .done(function (data, textStatus, jqXHR) {
-        processAjaxForm(jqXHR, success);
-      })
-      .fail(function (jqXHR, textStatus, errorThrown) {
-        processAjaxForm(jqXHR, failed);
-      })
-      .always(function (jqXHR, textStatus, errorThrown) {
-        processAjaxForm(jqXHR, complete);
-      });
-  }
-
-  /**
-   * Handling form with ajax
-   * @requires data-success success function name
-   * @requires data-error error function name
-   * @requires data-complete complete function name
-   */
-  function AjaxForm() {
-    $(document).on("submit", "form", function (e) {
-      e.preventDefault();
-      var t = $(this);
-      var sukses = t.data("success");
-      var err = t.data("error");
-      var complete = t.data("complete");
-      var targetURL = t.attr("action");
-      //console.log(targetURL, sukses, err, complete);
-      if (!targetURL) {
-        console.error("Target url of this form not exists");
-        return;
-      }
-
-      ajx(
-        {
-          url: targetURL,
-          method: t.attr("method") || "POST",
-          data: t.serialize(),
-          headers: {
-            Accept: "application/json",
-            guid: guid(),
-          },
-        },
-        sukses,
-        err,
-        complete
+  if (callback) {
+    if (typeof callback == "function") {
+      callback(res);
+    } else if (typeof callback == "string") {
+      call_user_func(callback, window, res);
+    } else {
+      console.error(
+        "2nd parameters must be callback function, instead of " +
+          typeof callback
       );
-    });
+    }
+  }
+}
+
+/**
+ * Custom ajax
+ * @param settings ajax settings object
+ */
+function ajx(
+  settings: JQueryAjaxSettings,
+  success: null | Function,
+  failed: null | Function,
+  complete: null | Function
+) {
+  settings.headers = {
+    "unique-id": getUID(),
+  };
+  if (!settings.hasOwnProperty("indicator")) {
+    settings.indicator = true;
+  }
+  if (!settings.hasOwnProperty("method")) {
+    settings.method = "POST";
   }
 
-  /**
-   * process page asynchronously
-   * @param source_cache url
-   */
-  function async_process(source_cache: string) {
-    var xhr = new XMLHttpRequest();
-    $.ajax({
-      url: source_cache,
-      method: "POST",
-      silent: true,
-      indicator: false,
-      xhr: function () {
-        return xhr;
-      },
-      headers: {
-        Pragma: "no-cache",
-        "Cache-Control": "no-cache",
-        "Refresh-Cache": "true",
-      },
-      success: function (response) {
-        $("html").html($("html", response).html());
-        console.log(xhr.responseURL);
-      },
+  return $.ajax(settings)
+    .done(function (data, textStatus, jqXHR) {
+      processAjaxForm(jqXHR, success);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      processAjaxForm(jqXHR, failed);
+    })
+    .always(function (jqXHR, textStatus, errorThrown) {
+      processAjaxForm(jqXHR, complete);
     });
-  }
+}
+
+/**
+ * Handling form with ajax
+ * @requires data-success success function name
+ * @requires data-error error function name
+ * @requires data-complete complete function name
+ */
+function AjaxForm() {
+  $(document).on("submit", "form", function (e) {
+    e.preventDefault();
+    var t = $(this);
+    var sukses = t.data("success");
+    var err = t.data("error");
+    var complete = t.data("complete");
+    var targetURL = t.attr("action");
+    //console.log(targetURL, sukses, err, complete);
+    if (!targetURL) {
+      console.error("Target url of this form not exists");
+      return;
+    }
+
+    ajx(
+      {
+        url: targetURL,
+        method: t.attr("method") || "POST",
+        data: t.serialize(),
+        headers: {
+          Accept: "application/json",
+          guid: guid(),
+        },
+      },
+      sukses,
+      err,
+      complete
+    );
+  });
+}
+
+/**
+ * process page asynchronously
+ * @param source_cache url
+ */
+function async_process(source_cache: string) {
+  var xhr = new XMLHttpRequest();
+  $.ajax({
+    url: source_cache,
+    method: "POST",
+    silent: true,
+    indicator: false,
+    xhr: function () {
+      return xhr;
+    },
+    headers: {
+      Pragma: "no-cache",
+      "Cache-Control": "no-cache",
+      "Refresh-Cache": "true",
+    },
+    success: function (response) {
+      $("html").html($("html", response).html());
+      console.log(xhr.responseURL);
+    },
+  });
 }
