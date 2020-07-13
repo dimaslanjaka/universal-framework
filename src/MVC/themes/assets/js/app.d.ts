@@ -52,6 +52,15 @@ declare function array_unset(arrayName: {
     [x: string]: any;
 }, key: any): any[];
 /**
+ * PHP shuffle array equivalent
+ * @param array
+ * @example
+ * var arr = [2, 11, 37, 42];
+ * shuffle(arr);
+ * console.log(arr); //return random
+ */
+declare function shuffle(array: Array<any>): any[];
+/**
  * CodeMirror loader
  * @param id
  * @param mode

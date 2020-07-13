@@ -57,26 +57,31 @@ $(document).ready(function () {
   }, 670);
 
   var $img = [
-    "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
-    "https://coolbackgrounds.io/images/backgrounds/index/sea-edge-79ab30e2.png",
-    "https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png",
     "https://csshint.com/wp-content/uploads/2020/01/CSS-Animated-Backgrounds-2.gif",
     "https://images.squarespace-cdn.com/content/v1/57e38eac46c3c4b30fb01f60/1540770673639-40TXHKSVXKBUX2GB65EF/ke17ZwdGBToddI8pDm48kNvT88LknE-K9M4pGNO0Iqd7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1USOFn4xF8vTWDNAUBm5ducQhX-V3oVjSmr829Rco4W2Uo49ZdOtO_QXox0_W7i2zEA/maxresdefault.jpg?format=2500w",
-    "https://media.boingboing.net/wp-content/uploads/2018/05/cool-background1.png",
+    "https://thumbs.gfycat.com/FlatFancyBufflehead-size_restricted.gif",
+    "https://thumbs.gfycat.com/DisguisedTangibleArmyant-max-1mb.gif",
+    "https://thumbs.gfycat.com/FortunatePoliticalBluetonguelizard-size_restricted.gif",
   ];
+
   if (typeof fetch == "function") {
     fetch(`https://source.unsplash.com/1600x900/?beach`).then((response) => {
       $img.push(response.url);
     });
   }
-  var random = Math.floor(Math.random() * 6) + 0;
+  shuffle($img);
+  var random = Math.floor(Math.random() * $img.length);
   var src = $img[random];
-  if (is_development()) {
-    $(".dynamic-bg").css("background-image", "url(" + src + ")");
-    $(".dynamic-bg").each(function (index, elem) {
-      elem.style.backgroundImage = src;
-    });
-  }
+  $(".dynamic-bg").css({
+    "background-image": "url(" + src + ")",
+    "-moz-background-size": "cover",
+    "-webkit-background-size": "cover",
+    "-o-background-size": "cover",
+    "background-size": "cover",
+  });
+  $(".dynamic-bg").each(function (index, elem) {
+    elem.style.backgroundImage = src;
+  });
   console.log(`background set ${src}`);
 });
 

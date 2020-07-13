@@ -1,7 +1,10 @@
 <?php
-
+include __DIR__ . '/../breadcrumb.php';
 $settings = \Filemanager\file::get(ROOT . '/.vscode/settings.json', true);
-
+if (!is_array($settings)) {
+    echo 'Cannot parsing settings.json';
+    return;
+}
 $settings = sort_iterable($settings);
 ?>
 

@@ -31,14 +31,32 @@ jQuery(document).ready(function () {
   });
 
   // add access router selector
-  $('[id^="select-add-"]').click(function (e) {
+  $(document).on("click", '[id^="select-add-"]', function (e) {
     e.preventDefault();
     uinitializeSelect2();
     var parent = $(this).parents("[id^='select-group-']");
-    var selectFirst = parent.find("select");
-    if (selectFirst.length) {
-      var cloneSelect = selectFirst[0].cloneNode(true);
-      console.log(cloneSelect);
+    var selectWrapperFirst = parent.find("[id^='select-access-']");
+    if (selectWrapperFirst.length) {
+      var cloneWrapper = selectWrapperFirst[0].cloneNode(true);
+      var cloneSelect = cloneWrapper.querySelector("select");
+      cloneSelect.removeAttribute("data-key");
+      cloneSelect.removeAttribute("name");
+      cloneSelect.setAttribute("id", uniqid("Access-"));
+      cloneSelect.selectedIndex = null;
+      var cloneButton = cloneWrapper.querySelector("button");
+      cloneButton.setAttribute("id", uniqid("select-remove-"));
+      parent.prepend(cloneWrapper);
+    }
+    initializeSelect2();
+  });
+
+  // remove access router selector
+  $(document).on("click", '[id^="select-remove-"]', function (e) {
+    e.preventDefault();
+    uinitializeSelect2();
+    var parent = $(this).parents("[id^='select-access-']");
+    if (parent.length) {
+      parent.remove();
     }
     initializeSelect2();
   });
@@ -60,10 +78,19 @@ jQuery(document).ready(function () {
       clone.setAttribute("id", uniqid("Roles-"));
       $(clone)
         .find("select, button")
+        .not('[id^="select-remove-"]')
+        .not('[id^="select-add-"]')
         .each(function () {
-          $(this).attr("id", uniqid("Roles-"));
-          if ($(this).attr("value")) {
-            $(this).val("");
+          var id = $(this).attr("id").toString().trim();
+          if (id) {
+            if (id.includes("Access")) {
+              $(this).attr("id", uniqid("Access-"));
+            } else {
+              $(this).attr("id", uniqid("Roles-"));
+            }
+          }
+          if ($(this).prop("tagName") == "SELECT") {
+            $(this).prop("selectedIndex", 0).trigger("change");
           }
         });
       //console.log(clone);

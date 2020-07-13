@@ -71,7 +71,7 @@ $accessList = user()->access()->getAccess();
                   <?php
                   foreach ($value as $path) {
                     //echo '<input type="' . $key . '" class="form-control" id="input' . $key . 'MD" placeholder="' . ucwords($key) . '" value="' . $path . '">';
-                    echo '<div class="form-row"><div class="col"><select data-key="' . $path . '" id="Access-' . uniqid($path) . '" class="select2 form-control"><option></option></select></div>
+                    echo '<div class="form-row" id="select-access-' . uniqid($path) . '"><div class="col"><select data-key="' . $path . '" id="Access-' . uniqid($path) . '" class="select2 form-control"><option></option></select></div>
                     <div class="col-md-1 p-0 m-0">
                     <button id="select-remove-' . uniqid() . '" class="btn btn-danger" role="button" type="button"><i class="fad fa-trash"></i></button>
                     </div>
