@@ -1,5 +1,11 @@
 {
     "guess": [
         "/views/office/index"
+    ],
+    "client": [
+        "/views/office/inventory/warehouses/add"
+    ],
+    "temporary": [
+        "/views/office/inventory/warehouses/add"
     ]
 }

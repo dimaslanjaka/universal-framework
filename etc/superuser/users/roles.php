@@ -3,6 +3,7 @@ include __DIR__ . '/../breadcrumb.php';
 include __DIR__ . '/breadcrumb.php';
 
 $roles = array_unique(\DB\schema::get_enumset_values(pdo(), 'userdata', 'role'));
+$rolesList = $roles;
 $element = new HTML\element();
 
 ?>
@@ -31,7 +32,7 @@ $element = new HTML\element();
 
 <?php
 $accessList = user()->access()->getAccess();
-pre($accessList);
+//pre($accessList);
 ?>
 
 <section>
@@ -51,7 +52,7 @@ pre($accessList);
               <div class="col">
                 <div class="md-form">
                   <!--<input type="text" name="access" value="<?= $key ?>" class="form-control" data-target="#group-<?= $key ?>" required>-->
-                  <?= $element->array2el()->select($roles, ['class' => 'select2', 'id' => $identifier], ['selected' => $key]) ?>
+                  <?= $element->array2el()->select($rolesList, ['class' => 'select2', 'id' => $identifier], ['selected' => $key]) ?>
                 </div>
               </div>
               <div class="col-sm-10">

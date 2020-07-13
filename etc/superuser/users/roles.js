@@ -40,6 +40,7 @@ jQuery(document).ready(function () {
     buildData
   );
 
+  // add new form access
   jQuery("#addAccess").click(function (e) {
     e.preventDefault();
     uinitializeSelect2();
@@ -55,7 +56,7 @@ jQuery(document).ready(function () {
             $(this).val("");
           }
         });
-      console.log(clone);
+      //console.log(clone);
       $("#access-wrapper")[0].appendChild(clone);
     }
 

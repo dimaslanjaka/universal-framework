@@ -15,10 +15,11 @@
       "./libs/js"
     ],
     "types": [
-      "core-js",
+      "datatables.net",
       "jquery",
       "requirejs",
-      "node"
+      "node",
+      "select2"
     ],
     "target": "ES5",
     "lib": [
