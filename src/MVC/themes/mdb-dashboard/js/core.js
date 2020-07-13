@@ -62,6 +62,8 @@ $(document).ready(function () {
     "https://thumbs.gfycat.com/FlatFancyBufflehead-size_restricted.gif",
     "https://thumbs.gfycat.com/DisguisedTangibleArmyant-max-1mb.gif",
     "https://thumbs.gfycat.com/FortunatePoliticalBluetonguelizard-size_restricted.gif",
+    "https://media.giphy.com/media/h6mBh5GMSfAvPec7Of/giphy.gif",
+    "https://i.makeagif.com/media/1-17-2017/py-b7X.gif",
   ];
 
   if (typeof fetch == "function") {
@@ -78,10 +80,11 @@ $(document).ready(function () {
     "-webkit-background-size": "cover",
     "-o-background-size": "cover",
     "background-size": "cover",
+    "background-repeat": "no-repeat",
   });
-  $(".dynamic-bg").each(function (index, elem) {
+  /*$(".dynamic-bg").each(function (index, elem) {
     elem.style.backgroundImage = src;
-  });
+  });*/
   console.log(`background set ${src}`);
 });
 

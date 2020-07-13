@@ -8,19 +8,20 @@ class cache
   public static $url;
   public static $api;
   public static $cache;
+  public static $cache_dir = ROOT . '/tmp/img/';
 
   public function __construct()
   {
     self::$api = new \Extender\request('https://unsplash.it');
   }
 
-  public static function imageCache(string $url)
+  public static function imageCache(string $url, bool $rewrite = false)
   {
     if (!self::$api) {
       self::$api = new \Extender\request('https://unsplash.it');
     }
     self::$url = $url;
-    $saved = ROOT . '/tmp/img/saved.json';
+    $saved = self::$cache_dir . '/img/saved.json';
     self::$saved = $saved;
     $res = read_file($saved, []);
     if (is_string($res)) {
@@ -29,7 +30,7 @@ class cache
 
     self::$api->setUrl($url);
     $url = self::$api->url;
-    $cache = ROOT . '/tmp/img/' . md5($url);
+    $cache = self::$cache_dir . '/' . md5($url);
     self::$cache = $cache;
     if (file_exists($cache) && !headers_sent()) {
       header_remove('x-powered-by');
@@ -40,14 +41,14 @@ class cache
       /*
        * Send fallback headers
        */
-      header('Content-type: image/jpeg');
+      //header('Content-type: image/jpeg');
       header('ETag: ' . md5_file($cache));
       header("Last-Modified: $lastModified");
       // 1 day expires
       header('Expires: ' . gmdate('D, d M Y H:i:s', ((60 * 60 * 24 * 1) + strtotime($lastModified))));
     }
 
-    if (!isset($res[$url])) {
+    if (!isset($res[$url]) || (is_bool($rewrite) && $rewrite)) {
       self::$api->set_method('get');
       self::$api->exec();
       for ($i = 0; $i < 2; ++$i) {
@@ -64,7 +65,12 @@ class cache
       echo self::$api->response;
     } elseif (file_exists($cache)) {
       header('Content-Type: ' . mime_content_type($cache), true);
-      echo read_file($cache);
+      $read = read_file($cache);
+      if (!empty($read)) {
+        echo $read;
+      } else {
+        return self::{__FUNCTION__}($url, true);
+      }
     } else {
       self::$api->set_url($res[$url])->set_method('get')->exec();
       self::writeCache();
