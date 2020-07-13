@@ -409,6 +409,13 @@ function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
   }
 }
 
+/**
+ * Resolve file. (create if not exists)
+ *
+ * @param string $file
+ * @param string $content
+ * @return string
+ */
 function resolve_file(string $file, string $content = '')
 {
   if (!is_dir(dirname($file))) {

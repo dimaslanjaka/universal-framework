@@ -73,7 +73,7 @@ $(document).ready(function () {
   }
   shuffle($img);
   var random = Math.floor(Math.random() * $img.length);
-  var src = $img[random];
+  var src = "/server/img/?url=" + $img[random];
   $(".dynamic-bg").css({
     "background-image": "url(" + src + ")",
     "-moz-background-size": "cover",

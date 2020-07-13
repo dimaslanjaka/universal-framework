@@ -2,6 +2,9 @@
 
 namespace img;
 
+/**
+ * Image Cache Engine
+ */
 class cache
 {
   public static $saved;
@@ -17,14 +20,15 @@ class cache
 
   public static function imageCache(string $url, bool $rewrite = false)
   {
+    resolve_file(self::$cache_dir . '/.htaccess', 'deny from all');
     if (!self::$api) {
       self::$api = new \Extender\request('https://unsplash.it');
     }
     self::$url = $url;
-    $saved = self::$cache_dir . '/img/saved.json';
+    $saved = resolve_file(self::$cache_dir . '/saved.json', '{}');
     self::$saved = $saved;
     $res = read_file($saved, []);
-    if (is_string($res)) {
+    if (is_string($res) && is_json($res)) {
       $res = json_decode($res, true);
     }
 
