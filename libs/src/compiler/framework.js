@@ -996,15 +996,29 @@ else {
     global.is_development = is_development;
 }
 /**
+ * Generate random string with length
+ * @param length length to generate
+ * @see https://dev.to/oyetoket/fastest-way-to-generate-random-strings-in-javascript-2k5a
+ */
+var generateRandomString = function (length) {
+    if (length === void 0) { length = 6; }
+    return Math.random().toString(20).substr(2, length);
+};
+if (isnode()) {
+    module.exports.generateRandomString = generateRandomString;
+}
+else {
+    global.generateRandomString = generateRandomString;
+}
+/**
  * Create uniqueid with prefix or suffix
  * @param prefix
  * @param suffix
  */
 function uniqid(prefix, suffix) {
-    var n = Math.floor(Math.random() * 11);
-    var k = Math.floor(Math.random() * 1000000);
-    var m = String.fromCharCode(n) + k;
-    return (prefix ? prefix : "") + m + (suffix ? suffix : "");
+    return ((prefix ? prefix : "") +
+        generateRandomString() +
+        (suffix ? suffix : "")).toString();
 }
 if (isnode()) {
     module.exports.uniqid = uniqid;

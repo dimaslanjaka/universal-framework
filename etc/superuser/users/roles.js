@@ -39,6 +39,28 @@ jQuery(document).ready(function () {
     'select[id^="Roles-"],select[id^="Access-"]',
     buildData
   );
+
+  jQuery("#addAccess").click(function (e) {
+    e.preventDefault();
+    uinitializeSelect2();
+    var first = jQuery('div[id^="Roles-"]');
+    if (first.length) {
+      var clone = first[0].cloneNode(true);
+      clone.setAttribute("id", uniqid("Roles-"));
+      $(clone)
+        .find("select, button")
+        .each(function () {
+          $(this).attr("id", uniqid("Roles-"));
+          if ($(this).attr("value")) {
+            $(this).val("");
+          }
+        });
+      console.log(clone);
+      $("#access-wrapper")[0].appendChild(clone);
+    }
+
+    initializeSelect2();
+  });
 });
 
 function initializeSelect2() {
@@ -59,6 +81,13 @@ function initializeSelect2() {
       t.val(val).trigger("change");
     }
     //console.log(val);
+  });
+}
+
+function uinitializeSelect2() {
+  jQuery('[id^="select-"],select.select2').each(function (index, value) {
+    var t = jQuery(this);
+    if (t.data("select2")) t.select2("destroy");
   });
 }
 

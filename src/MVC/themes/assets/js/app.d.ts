@@ -265,6 +265,12 @@ declare function getFuncName(): string;
  */
 declare function is_development(): boolean;
 /**
+ * Generate random string with length
+ * @param length length to generate
+ * @see https://dev.to/oyetoket/fastest-way-to-generate-random-strings-in-javascript-2k5a
+ */
+declare const generateRandomString: (length?: number) => string;
+/**
  * Create uniqueid with prefix or suffix
  * @param prefix
  * @param suffix
