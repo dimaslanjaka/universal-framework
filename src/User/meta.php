@@ -53,7 +53,7 @@ class meta
   public function get(int $userid, string $key)
   {
     $get = $this->pdo->select('usermeta')->where(['uid' => $userid, 'key' => $key])->row_array();
-    if (\ArrayHelper\helper::isAssoc($get)) {
+    if ($get && !empty($get) && \ArrayHelper\helper::isAssoc($get)) {
       if (isset($get['value'])) {
         if (is_json($get['value'])) {
           $get['value'] = json_decode($get['value'], true);

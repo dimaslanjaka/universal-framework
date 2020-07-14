@@ -1,10 +1,16 @@
 Options -Indexes
 
 RewriteEngine on
+
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-l
 RewriteRule ^(.*)$ index.php/$1
+
+#RewriteCond %{HTTP_HOST} ^blog\.webmanajemen\.com [NC]
+#RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
+#RewriteCond %{HTTP_HOST} ^blog\.php\.io [NC]
+#RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
 
 <IfModule mod_headers.c>
   <FilesMatch "\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map|ttf|otf|eot|svg)$">
@@ -30,7 +36,7 @@ RewriteRule ^(.*)$ index.php/$1
   </If>
 </ifmodule>
 
-<FilesMatch "index[0-9]?\.php$">
+<FilesMatch "index\.php$">
   Order Allow,Deny
   Allow from all
 </FilesMatch>

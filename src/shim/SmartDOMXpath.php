@@ -26,6 +26,14 @@ class SmartDOMXpath extends DOMXpath
   }
 }
 
+/**
+ * Typehinting VSCode Support
+ * @requires PHP Intelephense VSCode Extension
+ * @method bool hasAttribute(string $attribute_name) check if dom element has Attribute
+ * @method string|null getAttribute(string $attribute_name) get attribute from dom element
+ * @method void setAttribute(string $attribute_name, string $attribute_value) set attribute from dom element
+ * @method void removeAttribute(string $attribute_name) remove attribute from dom element
+ */
 class DOMXpathTypehint
 {
   /**

@@ -18,6 +18,11 @@ class cache
     self::$api = new \Extender\request('https://unsplash.it');
   }
 
+  function clean()
+  {
+    $folder = self::$cache_dir;
+  }
+
   public static function imageCache(string $url, bool $rewrite = false)
   {
     resolve_file(self::$cache_dir . '/.htaccess', 'deny from all');
