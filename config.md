@@ -1,3 +1,9 @@
+# Config Example (config.json)
+
+- create config.json
+- insert below configuration like
+
+```json
 {
   "database": {
     "user": "User database",
@@ -83,3 +89,4 @@
   "root": "",
   "$schema": "./config-schema.json"
 }
+```
