@@ -21,7 +21,7 @@ use MVC\themes;
 
 // force redirect, this is our project, you can remove this
 if ('103.146.203.101' == $_SERVER['HTTP_HOST'] && !LOCAL) {
-  header('Location: https://ns.webmanajemen.com' . $_SERVER['REQUEST_URI']);
+  header('Location: http://ns.webmanajemen.com' . $_SERVER['REQUEST_URI']);
   // force https
   if (isset($_SERVER['HTTPS']) && 'on' != $_SERVER['HTTPS']) {
     header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -203,10 +203,12 @@ if (!realpath($view)) {
     //echo showAlert('bottom');
   }
   if ($no_cache || $cors || $refreshCache || $is_hard_reload || $cache_expired) {
+    // disabled cache mode
     header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    return render();
+    return render($theme);
   } else {
+    // enabled cache mode
     header('Cache-Status: true(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
     return load_cache(page_cache());
@@ -250,23 +252,36 @@ function cache_expired(int $hour = 24)
   }
 }
 
-function render()
+/**
+ * Render theme
+ *
+ * @param \MVC\themes $theme
+ * @return void
+ */
+function render(\MVC\themes $theme)
 {
-  global $theme;
+  //global $theme;
   // render view in theme
   $theme->render();
 
   if (!CORS && $theme->meta['theme']) {
-    process_page($theme->meta['obfuscate']);
+    process_page($theme->meta['obfuscate'], $theme);
     if ('development' == get_env() && $theme->meta['theme']) {
       echo '<!--' . get_includes() . '-->';
     }
   }
 }
 
-function process_page(bool $obfuscatejs)
+/**
+ * Process page to using obfuscate mode or not
+ *
+ * @param boolean $obfuscatejs
+ * @param \MVC\themes $theme
+ * @return void
+ */
+function process_page(bool $obfuscatejs, \MVC\themes $theme)
 {
-  global $theme;
+  //global $theme;
   $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
   $dom->preserveWhiteSpace = true;
   $dom->formatOutput = true;
@@ -339,6 +354,12 @@ function process_page(bool $obfuscatejs)
 }
 
 $syntaxHighlighter = null;
+/**
+ * Fix <pre/> syntax highlight
+ *
+ * @param string $c
+ * @return string
+ */
 function prefilter(string $c)
 {
   global $syntaxHighlighter;
@@ -388,11 +409,21 @@ function prefilter(string $c)
   return $dom->saveHTML();
 }
 
+/**
+ * Get page identifier
+ *
+ * @return string
+ */
 function identifier()
 {
   return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
 }
 
+/**
+ * Get page cache
+ *
+ * @return string
+ */
 function page_cache()
 {
   $path = ROOT . '/tmp/html/';
@@ -404,6 +435,12 @@ function page_cache()
   return $path;
 }
 
+/**
+ * Minify HTML
+ *
+ * @param string $ori
+ * @return string
+ */
 function htmlmin(string $ori)
 {
   //return preg_replace('/<!--.*?-->|\s+/s', ' ', $ori);
@@ -414,6 +451,11 @@ function htmlmin(string $ori)
   return $between_tags;
 }
 
+/**
+ * Get All included files
+ *
+ * @return string|false|void
+ */
 function get_includes()
 {
   $included = array_values(array_filter(array_map(function ($arr) {
@@ -431,6 +473,12 @@ function get_includes()
   return $inc;
 }
 
+/**
+ * Load page cached
+ *
+ * @param string $page_cache
+ * @return void
+ */
 function load_cache(string $page_cache)
 {
   global $theme, $alert;
@@ -446,6 +494,12 @@ function load_cache(string $page_cache)
   echo '</html>';
 }
 
+/**
+ * Minify inline css from buffer
+ *
+ * @param string $css
+ * @return string
+ */
 function mincss($css)
 {
   $css = preg_replace('/\/\*[^*]*\*+([^\/][^*]*\*+)*\//m', '', $css); // remove comments in beautify css

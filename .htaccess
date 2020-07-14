@@ -7,10 +7,11 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-l
 RewriteRule ^(.*)$ index.php/$1
 
+# custom domain for blog
 #RewriteCond %{HTTP_HOST} ^blog\.webmanajemen\.com [NC]
 #RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
-#RewriteCond %{HTTP_HOST} ^blog\.php\.io [NC]
-#RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
+RewriteCond %{HTTP_HOST} ^blog\.php\.io [NC]
+RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
 
 <IfModule mod_headers.c>
   <FilesMatch "\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map|ttf|otf|eot|svg)$">
