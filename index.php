@@ -211,7 +211,7 @@ if (!realpath($view)) {
     // enabled cache mode
     header('Cache-Status: true(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    return load_cache(page_cache());
+    return load_cache(page_cache(), $theme);
   }
 }
 
@@ -479,9 +479,9 @@ function get_includes()
  * @param string $page_cache
  * @return void
  */
-function load_cache(string $page_cache)
+function load_cache(string $page_cache, \MVC\themes $theme)
 {
-  global $theme, $alert;
+  //global $theme, $alert;
   $optimized_buffer = \Filemanager\file::get($page_cache);
   $add = trim('<script>async_process(location.href);</script>');
   /**
