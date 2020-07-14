@@ -258,7 +258,7 @@ function AjaxForm() {
     var sukses = t.data("success");
     var err = t.data("error");
     var complete = t.data("complete");
-    var targetURL = t.attr("action");
+    var targetURL = t.attr("action") || location.href; //fallback to current url
     //console.log(targetURL, sukses, err, complete);
     if (!targetURL) {
       console.error("Target url of this form not exists");

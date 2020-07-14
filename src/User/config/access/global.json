@@ -1,9 +1,9 @@
 {
-    "guess": [
+    "client": [
         "/views/office/index",
-        "/views/office/inventory/warehouses/add"
+        "/views/office/inventory/index"
     ],
-    "kepala gudang": [
+    "admin": [
         "/views/office/inventory/warehouses/add",
         "/views/office/inventory/index",
         "/views/office/inventory/warehouses/list",

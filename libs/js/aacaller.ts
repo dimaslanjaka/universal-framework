@@ -220,3 +220,14 @@ if (typeof now == "undefined") {
     global.now = now;
   }
 }
+
+/**
+ * Get unique array
+ * @param {any} value
+ * @param {any} index
+ * @param {any[]} self
+ * @example dataArray.filter(onlyUnique)
+ */
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}

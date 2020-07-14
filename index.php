@@ -234,6 +234,12 @@ function showAlert($position)
   </div>';
 }
 
+/**
+ * Identify cached page by hour
+ *
+ * @param integer $hour
+ * @return bool
+ */
 function cache_expired(int $hour = 24)
 {
   $file_indicator = normalize_path(page_cache());

@@ -285,6 +285,14 @@ declare const generateRandomString: (length?: number) => string;
  * @param suffix
  */
 declare function uniqid(prefix: any, suffix: any): string;
+/**
+ * Get unique array
+ * @param {any} value
+ * @param {any} index
+ * @param {any[]} self
+ * @example dataArray.filter(onlyUnique)
+ */
+declare function onlyUnique(value: any, index: any, self: any): boolean;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
 /**
