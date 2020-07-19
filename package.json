@@ -10,7 +10,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
-    "ajv": "^6.12.2",
+    "ajv": "^6.12.3",
     "amd-loader": "*",
     "analytics-node": "^3.3.0",
     "animate.css": "^4.1.0",
