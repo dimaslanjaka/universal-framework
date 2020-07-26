@@ -204,7 +204,7 @@
     "tmp": "0.2.1",
     "toastr": "^2.1.4",
     "ts-npm-lint": "^0.1.0",
-    "tsd": "^0.12.1",
+    "tsd": "^0.13.1",
     "tsify": "^4.0.2",
     "typeahead.js": "^0.11.1",
     "typescript-closure-compiler": "^1.8.11",
