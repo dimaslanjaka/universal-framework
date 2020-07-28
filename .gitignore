@@ -8,6 +8,7 @@ config-m3.php
 /processed
 /config-tsel.php
 /config-m3.php
+darkit.sql
 
 # Ignore trash from hashing
 hash_*
