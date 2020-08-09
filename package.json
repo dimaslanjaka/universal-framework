@@ -226,7 +226,7 @@
     "worker-loader": "^2.0.0",
     "ws": "^7.3.1",
     "yargs": "^15.4.1",
-    "youtube-mp3-downloader": "^0.6.8",
+    "youtube-mp3-downloader": "^0.7.0",
     "ytdl-core": "^3.1.2"
   },
   "description": "Universal framework php javascript",
