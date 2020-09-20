@@ -210,7 +210,7 @@
     "typescript-closure-compiler": "^1.8.11",
     "typescript-tslint-plugin": "^0.5.5",
     "typings-for-css-modules-loader": "^1.7.0",
-    "ua-parser-js": "^0.7.21",
+    "ua-parser-js": "^0.7.22",
     "uglifycss": "*",
     "upath": "^1.2.0",
     "url-loader": "^4.1.0",
