@@ -34,7 +34,7 @@ $env = 'production';
 $debug_pdo = 1;
 
 // this dimaslanjaka's localhost
-if (in_array($_SERVER['HTTP_HOST'], ['dev.ns.webmanajemen.com']) || LOCAL) {
+if (in_array($_SERVER['HTTP_HOST'], ['dev.ns.webmanajemen.com', 'localhost']) || LOCAL) {
   $env = 'development';
   $debug_pdo = 3;
 }
@@ -220,8 +220,6 @@ function filemanager()
 {
   return new \Filemanager\file();
 }
-
-
 
 /**
  * Get current environtment
