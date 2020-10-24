@@ -1,7 +1,9 @@
+```php
+//index.php
 <?php
 //This is where I'm making sure the class is importet, by making the page fail to load if the file is not there
     //since it is required
-require_once("Parse.php");
+require_once("templateParse.php");
 
 //Here I'm making the class.
 //Since it throws an exeption if it cannot find the file, I made it catch it to display the error and stop the rest from going through.
@@ -34,3 +36,4 @@ try {
 
 //Here I'm printing the finished result.
 echo $templateParse->display();
+```
