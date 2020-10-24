@@ -31,6 +31,10 @@ if (file_exists($main)) {
   $tags['content'] = __DIR__ . '/views/404.php';
 }
 
+if (file_exists($control)) {
+  include $control;
+}
+
 try {
   $templateParse = new templateParse(__DIR__ . '/theme/template.html');
   $templateParse->ParseTemplate($tags);

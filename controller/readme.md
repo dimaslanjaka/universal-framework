@@ -5,4 +5,16 @@
 - CRUD cookie
 - AJAX receiver
 
-## All inside this folder is receiver based on url path
+<p>
+All inside this folder is receiver based on url path
+</p>
+
+## Some tutorial
+
+- return json for api rest
+```php
+header("Content-Type: application/json")
+$json = json_encode(['hello'=>'world']);
+echo $json;
+exit;
+```
