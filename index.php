@@ -10,6 +10,8 @@ if ($path == '/') {
 
 $main = __DIR__ . '/views/' . $path . '.php';
 $css = __DIR__ . '/views/' . $path . '.css';
+$sass = __DIR__ . '/views/' . $path . '.sass';
+$less = __DIR__ . '/views/' . $path . '.less';
 $js = __DIR__ . '/views/' . $path . '.js';
 $control = __DIR__ . '/controller/' . $path . '.php';
 $meta = __DIR__ . '/meta/' . $path . '.json';
