@@ -3,7 +3,7 @@
 namespace DB;
 
 use ArrayAccess;
-use MVC\Exception;
+use Exception;
 use PDO;
 
 /**
@@ -128,7 +128,7 @@ class DB
       if (is_numeric($id)) {
         $this->sql .= ' WHERE `id` = ?';
         $this->bindValues[] = $id;
-      // if there is an Array
+        // if there is an Array
       } elseif (is_array($id)) {
         $arr = $id;
         $count_arr = count($arr);
@@ -213,7 +213,7 @@ class DB
       if (is_numeric($id)) {
         $this->sql .= ' WHERE `id` = ?';
         $this->bindValues[] = $id;
-      // if there is an Array
+        // if there is an Array
       } elseif (is_array($id)) {
         $arr = $id;
         $count_arr = count($arr);

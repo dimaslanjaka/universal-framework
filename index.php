@@ -10,8 +10,6 @@ if ($path == '/') {
 
 $main = __DIR__ . '/views/' . $path . '.php';
 $css = __DIR__ . '/views/' . $path . '.css';
-$sass = __DIR__ . '/views/' . $path . '.sass';
-$less = __DIR__ . '/views/' . $path . '.less';
 $js = __DIR__ . '/views/' . $path . '.js';
 $control = __DIR__ . '/controller/' . $path . '.php';
 $meta = __DIR__ . '/meta/' . $path . '.json';
@@ -37,6 +35,13 @@ if (file_exists($main)) {
 
 if (file_exists($control)) {
   include $control;
+}
+
+if (file_exists($js)) {
+  $tags['js'] = $js;
+}
+if (file_exists($css)) {
+  $tags['css'] = $css;
 }
 
 try {

@@ -42,7 +42,15 @@ class templateParse
         if (count($tags) > 0) {
             foreach ($tags as $tags => $data) {
                 $data = (file_exists($data)) ? $this->parseFile($data) : $data;
-                $this->output = str_replace('{' . $tags . '}', $data, $this->output);
+                if (strpos($this->output, "{$tags}") !== false) {
+                    $this->output = str_replace('{' . $tags . '}', $data, $this->output);
+                }
+                if (strpos($this->output, "<!--$tags-->") !== false) {
+                    $this->output = str_replace("<!--$tags-->", $data, $this->output);
+                }
+                if (strpos($this->output, "/*$tags*/") !== false) {
+                    $this->output = str_replace("/*$tags*/", $data, $this->output);
+                }
             }
         } else {
             throw new Exception('Error: No tags were provided for replacement');
