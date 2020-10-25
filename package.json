@@ -1,0 +1,14 @@
+{
+  "name": "Apotek",
+  "version": "1.0.0",
+  "description": "Apotek project",
+  "main": "index.js",
+  "repository": "https://github.com/dimaslanjaka/universal-framework",
+  "author": "Dimas Lanjaka <dimaslanjaka@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@node-minify/cli": "^6.1.0",
+    "@node-minify/uglify-js": "^6.1.0"
+  }
+}
