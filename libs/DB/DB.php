@@ -42,6 +42,10 @@ class DB
     }
   }
 
+  /**
+   * @param array $config
+   * @return DB
+   */
   public static function getInstance($config = ['host' => '', 'database' => '', 'username' => '', 'password' => ''])
   {
     if (!self::$instance) {
