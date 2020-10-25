@@ -1,0 +1,10 @@
+@import url(bootstrap.css);
+@import url(all.css);
+@import url(compiled.style.css);
+@import url(compiled.waves.css);
+@import url(compiled.animate.css);
+@import url(compiled.pickadate.css);
+@import url(compiled.clockpicker.css);
+[href^='https://www.000webhost.com'],[src^='https://www.000webhost.com']{
+  display: none !important;
+}

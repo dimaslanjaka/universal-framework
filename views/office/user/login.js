@@ -1,0 +1,2 @@
+AjaxForm();
+smartform();

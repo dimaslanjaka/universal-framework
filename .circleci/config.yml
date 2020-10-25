@@ -1,0 +1,68 @@
+# PHP CircleCI 2.0 configuration file
+
+version: 2.1
+jobs:
+  php:
+    docker:
+      - image: circleci/php:latest
+    working_directory: ~/htdocs
+    steps:
+      - run:
+          name: Install Requirements
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev zlib1g-dev
+            sudo docker-php-ext-configure gd
+            sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite
+      - run:
+          name: Update Composer
+          command: sudo composer self-update
+
+      - checkout
+
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
+      - run:
+          name: Install Composer Dependencies
+          command: composer install -n --prefer-dist --ignore-platform-reqs --optimize-autoloader
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
+  node:
+    docker:
+      - image: circleci/node:10.0.0
+    working_directory: ~/htdocs
+    steps:
+      - run:
+          name: Install Requirements
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y nodejs dh-autoreconf
+            sudo npm install -g npm@latest
+            sudo npm install -g gulp typescript grunt eslint tslint snyk depcheck
+      - checkout
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+      - run:
+          name: Install Node Dependencies
+          command: |
+            node --version
+            npm --version
+            sudo npm install --ignore-scripts
+
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - php
+      - node
