@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Wrapping function By Dimas Lanjaka
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
+
+/**
  *  An example CORS-compliant method.  It will allow any GET, POST, or OPTIONS requests from any origin.
  *
  *  In a production environment, you probably want to be more restrictive, but this gives you the general idea of what is involved.  For the nitty-gritty low-down, read:
@@ -77,5 +82,62 @@ function endsWith($haystack, $needle)
  */
 function path2url($file, $Protocol = 'http://')
 {
-  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
+  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', fixurl($file));
+}
+
+/**
+ * Fix url
+ *
+ * @param string $url
+ * @return string fixed url
+ */
+function fixurl(string $url)
+{
+  return preg_replace('/(\/+)/', '/', $url);
+}
+
+/**
+ * Fix path separator
+ *
+ * @param string $subject
+ * @return string
+ */
+function fixpath(string $subject)
+{
+  $replace = (DIRECTORY_SEPARATOR === '\\')
+    ? str_replace('/', '\\', $subject)
+    : str_replace('\\', '/', $subject);
+  return preg_replace('/[\/\\\\]{2,100}/m', DIRECTORY_SEPARATOR, $replace);
+}
+
+/**
+ * Write to file
+ *
+ * @param string $file
+ * @param string $content
+ * @param boolean $append
+ * @return void
+ */
+function write($file, $content, bool $append = false)
+{
+  if (!file_exists(dirname($file))) {
+    mkdir(dirname($file));
+  }
+  if (file_exists($file)) delete($file);
+  file_put_contents($file, $content, ($append ? FILE_APPEND : 0));
+}
+
+/**
+ * Delete file or directory.
+ * Unset array or object.
+ * @param mixed $object
+ * @return void
+ */
+function delete($object)
+{
+  if (is_file($object) || is_dir($object)) {
+    unlink($object);
+  } else if (is_array($object) || is_object($object)) {
+    unset($object);
+  }
 }
