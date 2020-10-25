@@ -8,6 +8,12 @@ if ($path == '/') {
   $path = '/index';
 }
 
+$rgx_endslash = "/\/{1,99}$/s";
+if (preg_match($rgx_endslash, $path)) {
+  $path = preg_replace($rgx_endslash, "", $path);
+}
+
+$dir = __DIR__ . '/views/' . $path;
 $main = __DIR__ . '/views/' . $path . '.php';
 $css = __DIR__ . '/views/' . $path . '.css';
 $js = __DIR__ . '/views/' . $path . '.js';
@@ -16,18 +22,23 @@ $meta = __DIR__ . '/meta/' . $path . '.json';
 $tags = [];
 
 if (file_exists($main)) {
-  $tags['content'] = $main;
-  $metaArr  = [
-    'title' => basename($main),
-    'description' => basename($main)
-  ];
-  if (!file_exists($meta)) {
-    file_put_contents($meta, json_encode($metaArr));
-    $tags = array_merge($tags, $metaArr);
-  } else {
-    $parse = json_decode(file_get_contents($meta), true);
-    $tags = array_merge($tags, $parse);
+  if (is_file($main)) {
+    $tags['content'] = $main;
+    $metaArr  = [
+      'title' => basename($main),
+      'description' => basename($main)
+    ];
+    if (!file_exists($meta)) {
+      file_put_contents($meta, json_encode($metaArr));
+      $tags = array_merge($tags, $metaArr);
+    } else {
+      $parse = json_decode(file_get_contents($meta), true);
+      $tags = array_merge($tags, $parse);
+    }
   }
+} else if (is_dir($dir)) {
+  $dir .= "/index";
+  die("Location: $dir");
 } else {
   $tags['title'] = "404";
   $tags['content'] = __DIR__ . '/views/404.php';

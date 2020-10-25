@@ -8,13 +8,19 @@
         <form>
           <!-- to error: add class "has-danger" -->
           <div class="form-group">
+            <label for="selectOffice">Login For</label>
+            <select id="selectOffice" class="form-control form-control-sm" required>
+              <option value="pusat">Pusat</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="inputUsername">Username</label>
-            <input type="text" class="form-control form-control-sm" id="inputUsername">
+            <input type="text" class="form-control form-control-sm" id="inputUsername" required>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
             <a href="/user/forgot" style="float:right;font-size:12px;">Forgot password?</a>
-            <input type="password" class="form-control form-control-sm" id="exampleInputPassword1">
+            <input type="password" class="form-control form-control-sm" id="exampleInputPassword1" required>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Sign in</button>
 

@@ -67,3 +67,15 @@ function endsWith($haystack, $needle)
   }
   return substr($haystack, -$length) === $needle;
 }
+
+/**
+ * Convert path to url
+ *
+ * @param string $file
+ * @param string $Protocol
+ * @return void
+ */
+function path2url($file, $Protocol = 'http://')
+{
+  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', $file);
+}
