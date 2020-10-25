@@ -9,6 +9,8 @@ if ($path == '/') {
 }
 
 $main = __DIR__ . '/views/' . $path . '.php';
+$css = __DIR__ . '/views/' . $path . '.css';
+$js = __DIR__ . '/views/' . $path . '.js';
 $control = __DIR__ . '/controller/' . $path . '.php';
 $meta = __DIR__ . '/meta/' . $path . '.json';
 $tags = [];
@@ -36,7 +38,7 @@ if (file_exists($control)) {
 }
 
 try {
-  $templateParse = new templateParse(__DIR__ . '/theme/template.html');
+  $templateParse = new templateParse(__DIR__ . '/theme/bootstrap/template.html');
   $templateParse->ParseTemplate($tags);
 } catch (Exception $ex) {
   echo $ex->getMessage();

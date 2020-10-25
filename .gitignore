@@ -1,1 +1,5 @@
 /vendor/
+composer.lock
+package-lock.json
+yarn.lo*
+node_modules
