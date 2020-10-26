@@ -142,3 +142,25 @@ function delete($object)
     unset($object);
   }
 }
+
+/**
+ * Get All included files
+ *
+ * @return string|false|void
+ */
+function get_includes()
+{
+  $included = array_values(array_filter(array_map(function ($arr) {
+    if (is_string($arr)) {
+      if (strpos($arr, 'vendor')) {
+        return '';
+      }
+    }
+
+    return $arr;
+  }, get_included_files())));
+  $included[] = 'total included files: ' . count(get_included_files());
+  $inc = \JSON\json::json($included, false, false);
+
+  return $inc;
+}

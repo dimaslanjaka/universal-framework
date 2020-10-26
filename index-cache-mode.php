@@ -205,9 +205,65 @@ if (!realpath($view)) {
   if (!CORS) {
     //echo showAlert('bottom');
   }
+  if ($no_cache || $cors || $refreshCache || $is_hard_reload || $cache_expired) {
+    // disabled cache mode
+    header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-  // No Cache Mode
-  header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
+    return render($theme);
+  } else {
+    // enabled cache mode
+    header('Cache-Status: true(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-  return render($theme);
+    return load_cache(page_cache(), $theme);
+  }
+}
+
+/**
+ * Get current theme instance
+ *
+ * @return \MVC\themes
+ */
+function theme()
+{
+  global $theme;
+  return $theme;
+}
+
+function showAlert($position)
+{
+  return '<div class="alert-' . $position . ' alert alert-danger">
+	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	<strong>Sorry!</strong> Jika anda melihat tulisan ini, kami sedang melakukan pemeliharaan sistem. Jangan melakukan transaksi apapun sebelum tulisan ini <b>menghilang</b>. Agar tidak terjadi hal yang tidak diinginkan
+  </div>';
+}
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Load page cached
+ *
+ * @param string $page_cache
+ * @return void
+ */
+function load_cache(string $page_cache, \MVC\themes $theme)
+{
+  //global $theme, $alert;
+  $optimized_buffer = \Filemanager\file::get($page_cache);
+  $add = trim('<script>async_process(location.href);</script>');
+  /**
+   * @var string Load admin toolbox
+   */
+  $optimized_buffer = str_replace('</html>', $add, $optimized_buffer);
+  echo $optimized_buffer;
+  $theme->load_admin_tools();
+
+  echo '</html>';
 }

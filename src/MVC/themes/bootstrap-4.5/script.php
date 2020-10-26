@@ -1,9 +1,21 @@
+<script src='<?= path2url(__DIR__ . '/src/ajax.js') ?>'></script>
 <script src='/node_modules/sweetalert/dist/sweetalert.min.js'></script>
 <script src='/node_modules/toastr/build/toastr.min.js'></script>
 <link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
 
 <?php
+
+// application javascript
+echo $element->js([
+  /*
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
+  ]))
+  */
+  path2url(__DIR__ . '/../assets/js/app.js')
+]);
+
 // process view content css
 if (isset($content) && file_exists($content)) {
   $contentCSS = preg_replace('/\.php$/s', '.css', $content);
