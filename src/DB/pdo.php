@@ -6,9 +6,10 @@ use JSON\json;
 use MVC\Exception;
 use PDO as GlobalPDO;
 use PDOException;
+use mysqli;
 
 /*
- function SQL_Connect    ($user, $pass, $db, $host = "localhost", $charset = "utf8mb4");
+ function SQL_Connect    ($user, $pass, $dbname, $host = "localhost", $charset = "utf8mb4");
  function SQL_Exec       ($pdo, $query, $values = false);
  function SQL_Fetch      ($pdo, $query, $values = false);
  function SQL_MultiFetch ($pdo, $query, $values = false);
@@ -52,16 +53,22 @@ class pdo
   protected $hostdb;
   protected $charsetdb;
   /**
+   * MYSQLI Instance
+   *
+   * @var mysqli
+   */
+  protected $mysqli;
+  /**
    * PDO instance.
    *
    * @var GlobalPDO
    */
   protected $pdo;
 
-  public function __construct($user = null, $pass = null, $db = null, $host = 'localhost', $charset = 'utf8mb4')
+  public function __construct($user = null, $pass = null, $dbname = null, $host = 'localhost', $charset = 'utf8mb4')
   {
-    if (!empty($user) && !empty($db)) {
-      $this->connect($user, $pass, $db, $host, $charset);
+    if (!empty($user) && !empty($dbname)) {
+      $this->connect($user, $pass, $dbname, $host, $charset);
     } else {
       exit('Database wrong ' . json_encode(func_get_args()));
     }
@@ -77,6 +84,16 @@ class pdo
     $check = $this->query("SHOW TABLES LIKE '$table';")->row_array();
 
     return !empty($check);
+  }
+
+  /**
+   * Get mysqli instances
+   *
+   * @return mysqli
+   */
+  public function mysqli()
+  {
+    return $this->mysqli;
   }
 
   /**
@@ -96,19 +113,19 @@ class pdo
   /**
    * Connect PDO.
    *
-   * @param string $user
-   * @param string $pass
-   * @param string $db
-   * @param string $host
-   * @param string $charset
+   * @param string $user database user
+   * @param string $pass database password
+   * @param string $dbname database name
+   * @param string $host database host
+   * @param string $charset database charset
    *
    * @return \PDO
    */
-  public function connect($user, $pass, $db, $host = 'localhost', $charset = 'utf8mb4')
+  public function connect($user, $pass, $dbname, $host = 'localhost', $charset = 'utf8mb4')
   {
     $this->userdb = $user;
     $this->passdb = $pass;
-    $this->namedb = $db;
+    $this->namedb = $dbname;
     $this->hostdb = $host;
     $this->charsetdb = $charset;
     $options = [
@@ -122,7 +139,8 @@ class pdo
 
     $pdo = null;
     try {
-      $pdo = new GlobalPDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass, $options);
+      $pdo = new GlobalPDO("mysql:host=$host;dbname=$dbname;charset=$charset", $user, $pass, $options);
+      $this->mysqli = new mysqli($host, $user, $pass, $dbname);
     } catch (PDOException $e) {
       exit($e->getMessage());
       $this->SQL_Error($e);
