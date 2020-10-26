@@ -9,15 +9,18 @@
   });
   */
 })();
-require.config({
+const requireJquery = require.config({
+  context: "jquery",
+  baseUrl: "/node_modules/jquery",
   paths: {
-    jquery: "node_modules/jquery/src",
-    sizzle: "node_modules/jquery/src/sizzle/dist/sizzle",
+    jquery: "/node_modules/jquery/src",
+    sizzle: "/node_modules/jquery/external/sizzle/dist/sizzle",
   },
 });
-require(["jquery/ajax", "jquery/ajax/xhr"], function ($) {
+
+requireJquery(["jquery/ajax", "jquery/ajax/xhr"], function ($) {
   $.ajax({
-    url: "https://api.github.com/repos/telerik/kendo-ui-core/commits",
+    url: "https://httpbin.org/anything",
     global: false,
   });
 });

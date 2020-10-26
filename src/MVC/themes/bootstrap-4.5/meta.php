@@ -23,14 +23,14 @@
 <link rel="manifest" href="/assets/img/metador/manifest.json">
 <meta name="description" content="<?= $desc; ?>" />
 <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-<link rel="canonical" href="<?= $canonical; ?>" />
+<link rel="canonical" href="<?= (isset($canonical) ? $canonical : "/"); ?>" />
 <meta property="og:type" content="website" />
 <meta content='182383652179465' property='fb:app_id' />
 <meta content='100001995776790' property='fb:admins' />
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content="<?= $title; ?> - WMI" />
 <meta property="og:description" content="<?= $desc; ?>" />
-<meta property="og:url" content="<?= $canonical; ?>" />
+<meta property="og:url" content="<?= (isset($canonical) ? $canonical : "/"); ?>" />
 <meta property="og:site_name" content="WMI GitLabs" />
 <meta property="og:image" content="<?= $thumbnail; ?>" />
 <meta property="og:image:secure_url" content="<?= $thumbnail; ?>" />
@@ -62,7 +62,7 @@
     "@context": "http://schema.org",
     "@type": "Website",
     "name": "<?= $title; ?> - WMI GitLabs",
-    "url": "<?= $canonical; ?>",
+    "url": "<?= (isset($canonical) ? $canonical : "/"); ?>",
     "sameAs": [
       "https://www.facebook.com/dimaslanjaka1",
       "https://twitter.com/WManajemen",
@@ -83,7 +83,7 @@
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "<?= $canonical; ?>"
+      "@id": "<?= (isset($canonical) ? $canonical : "/"); ?>"
     },
     "headline": "<?= $title; ?>",
     "description": "<?= $desc; ?>",
@@ -136,7 +136,7 @@
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "<?= $canonical; ?>",
+          "@id": "<?= (isset($canonical) ? $canonical : "/"); ?>",
           "name": "<?= $title; ?>"
         }
       }
