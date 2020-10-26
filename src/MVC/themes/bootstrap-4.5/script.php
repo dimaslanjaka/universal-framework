@@ -1,8 +1,9 @@
-<script src='<?= path2url(__DIR__ . '/src/ajax.js') ?>'></script>
+<!--<script src='<?= path2url(__DIR__ . '/src/ajax.min.js') ?>'></script>-->
 <script src='/node_modules/sweetalert/dist/sweetalert.min.js'></script>
 <script src='/node_modules/toastr/build/toastr.min.js'></script>
 <link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
+<script src='/node_modules/requirejs/require.js'></script>
 
 <?php
 
