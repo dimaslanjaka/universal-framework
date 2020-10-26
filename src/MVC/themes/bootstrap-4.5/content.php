@@ -1,16 +1,20 @@
+<?php
+function get_current_file_url($Protocol = 'http://')
+{
+  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath(__DIR__));
+}
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
   <?php include __DIR__ . '/meta.php'; ?>
-
-  <title>{title}</title>
-
   <!-- Icons for this template -->
-  <link href="/theme/bootstrap/dist/assets/fonts/font-awesome/css/all.min.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="<?= path2url(__DIR__ . '/favicon.ico') ?>">
+  <link href="<?= path2url(__DIR__ . '/dist/assets/fonts/font-awesome/css/all.min.css') ?>" rel="stylesheet" type="text/css">
   <!-- Stylesheet -->
   <!-- build:css -->
-  <link href="/theme/bootstrap/assets/css/app.css" rel="stylesheet">
+  <link href="<?= path2url(__DIR__ . '/assets/css/app.css') ?>" rel="stylesheet">
   <!-- endbuild -->
   <style>
     /*css*/
@@ -34,20 +38,27 @@
   </nav>
 
   <main role="main" class="container">
-    {content}
+    <?php
+    if (isset($content) && file_exists($content)) {
+      include $content;
+    } else {
+      echo '404';
+    }
+    ?>
   </main>
 
   <!-- Bootstrap core JavaScript
 ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="/theme/bootstrap/dist/assets/js/vendor/jquery.slim.min.js"></script>
-  <script src="/theme/bootstrap/dist/assets/js/vendor/popper.min.js"></script>
-  <script src="/theme/bootstrap/assets/js/vendor/bootstrap.min.js"></script>
+  <script src="<?= path2url(__DIR__ . '/dist/assets/js/vendor/jquery.slim.min.js') ?>"></script>
+  <script src="<?= path2url(__DIR__ . '/dist/assets/js/vendor/popper.min.js') ?>"></script>
+  <script src="<?= path2url(__DIR__ . '/assets/js/vendor/bootstrap.min.js') ?>"></script>
   <!-- build:js -->
-  <script src="/theme/bootstrap/assets/js/app.js"></script>
+  <script src="<?= path2url(__DIR__ . '/assets/js/app.js') ?>"></script>
   <!-- endbuild -->
   <script>
-    /*js*/
+    /*<?= $_SERVER['DOCUMENT_ROOT'] ?>*/
+    /*<?= str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath(realpath(__DIR__))); ?>*/
   </script>
 </body>
 

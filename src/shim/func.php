@@ -82,7 +82,7 @@ function endsWith($haystack, $needle)
  */
 function path2url($file, $Protocol = 'http://')
 {
-  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', fixurl($file));
+  return $Protocol . $_SERVER['HTTP_HOST'] . fixurl(str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath($file)));
 }
 
 /**
@@ -93,7 +93,8 @@ function path2url($file, $Protocol = 'http://')
  */
 function fixurl(string $url)
 {
-  return preg_replace('/(\/+)/', '/', $url);
+  $remove_backslash = preg_replace('/[\/\\\\]{2,100}/m', '/', $url);
+  return str_replace("\\", "/", $remove_backslash);
 }
 
 /**
