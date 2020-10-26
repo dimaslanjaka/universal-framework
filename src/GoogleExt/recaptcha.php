@@ -1,6 +1,6 @@
 <?php
 
-namespace Google;
+namespace GoogleExt;
 
 use Extender\request;
 use JSON\json;

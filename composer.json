@@ -22,7 +22,7 @@
       "Extender\\": "src/Extender/",
       "Facebook\\": "src/Facebook/",
       "Filemanager\\": "src/Filemanager/",
-      "Google\\": "src/Google/",
+      "GoogleExt\\": "src/Google/",
       "HTML\\": "src/HTML/",
       "IMEI\\": "src/IMEI/",
       "img\\": "src/img/",
@@ -52,7 +52,6 @@
     "ext-json": "*",
     "ext-mbstring": "*",
     "friendsofphp/php-cs-fixer": "*",
-    "google/apiclient": "^2.5",
     "guzzlehttp/guzzle": "^6.5",
     "paquettg/php-html-parser": "^2.1",
     "pear/mail": "^1.4",
@@ -66,7 +65,8 @@
     "psr/log": "^1.0",
     "scssphp/scssphp": "^1.1",
     "stichoza/google-translate-php": "^4.0",
-    "codeception/codeception": "^4.0"
+    "codeception/codeception": "^4.0",
+    "google/apiclient": "^2.7"
   },
   "require-dev": {
     "ext-gd": "*",

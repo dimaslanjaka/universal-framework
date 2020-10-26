@@ -76,7 +76,7 @@
   "intelephense.format.braces": "psr12",
   "intelephense.maxMemory": 1500,
   "intelephense.telemetry.enabled": false,
-  "intelephense.trace.server": "off",
+  "intelephense.trace.server": "messages",
   "jake.autoDetect": "off",
   "javascript.implicitProjectConfig.experimentalDecorators": true,
   "javascript.suggest.completeFunctionCalls": true,
