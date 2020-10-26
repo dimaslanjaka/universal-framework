@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\shell\Fast Delete]
+
+[HKEY_CLASSES_ROOT\Directory\shell\Fast Delete\command]
+@="cmd /c \"cd %1 && fastdelete.bat\""
+"Extended"=-
+"Icon"="fastdelete.jpg"
+"NoWorkingDirectory"=""
+"ShowBasedOnVelocityId"=dword:00639bc8

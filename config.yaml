@@ -1,0 +1,13 @@
+parameters:
+
+    # Ignore variable names
+    obfuscator.scramble_variable.ignore:
+        - foo
+        - bar
+        - baz
+
+    # Ignore certain methods names
+    obfuscator.scramble_private_method.ignore:
+        - foo
+        - bar
+        - baz

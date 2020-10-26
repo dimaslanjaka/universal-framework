@@ -1,0 +1,22 @@
+.table-loader {
+  visibility: hidden;
+}
+
+.table-loader:before {
+  visibility: visible;
+  display: table-caption;
+  content: " ";
+  width: 100%;
+  height: 600px;
+  background-image: linear-gradient(#ebebeb 1px, transparent 0), linear-gradient(90deg, #ebebeb 1px, transparent 0), linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 15%, rgba(255, 255, 255, 0) 30%), linear-gradient(#f0f0f2 35px, transparent 0);
+  background-repeat: repeat;
+  background-size: 1px 35px, calc(100% * 0.1666666666) 1px, 30% 100%, 2px 70px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  animation: shine 0.5s infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 0 0, 0 0, 40% 0, 0 0;
+  }
+}

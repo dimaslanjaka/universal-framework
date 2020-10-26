@@ -1,2 +1,2 @@
 @echo off
-phpdoc -d ./libs -t ./docs
+phpdoc -d ./src -t ./docs

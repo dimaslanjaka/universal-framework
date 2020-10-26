@@ -1,0 +1,38 @@
+module.exports = function inet_ntop(a) {
+    //  discuss at: https://locutus.io/php/inet_ntop/
+    // original by: Theriault (https://github.com/Theriault)
+    //   example 1: inet_ntop('\x7F\x00\x00\x01')
+    //   returns 1: '127.0.0.1'
+    //   _example 2: inet_ntop('\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\1')
+    //   _returns 2: '::1'
+    var i = 0;
+    var m = '';
+    var c = [];
+    a += '';
+    if (a.length === 4) {
+        // IPv4
+        return [
+            a.charCodeAt(0),
+            a.charCodeAt(1),
+            a.charCodeAt(2),
+            a.charCodeAt(3)
+        ].join('.');
+    }
+    else if (a.length === 16) {
+        // IPv6
+        for (i = 0; i < 16; i++) {
+            c.push(((a.charCodeAt(i++) << 8) + a.charCodeAt(i)).toString(16));
+        }
+        return c.join(':')
+            .replace(/((^|:)0(?=:|$))+:?/g, function (t) {
+            m = (t.length > m.length) ? t : m;
+            return t;
+        })
+            .replace(m || ' ', '::');
+    }
+    else {
+        // Invalid length
+        return false;
+    }
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5ldF9udG9wLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vbGlicy9zcmMvbG9jdXR1cy9zcmMvcGhwL25ldHdvcmsvaW5ldF9udG9wLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE1BQU0sQ0FBQyxPQUFPLEdBQUcsU0FBUyxTQUFTLENBQUUsQ0FBQztJQUNwQyxpREFBaUQ7SUFDakQsd0RBQXdEO0lBQ3hELDZDQUE2QztJQUM3QywyQkFBMkI7SUFDM0IsOERBQThEO0lBQzlELHNCQUFzQjtJQUV0QixJQUFJLENBQUMsR0FBRyxDQUFDLENBQUE7SUFDVCxJQUFJLENBQUMsR0FBRyxFQUFFLENBQUE7SUFDVixJQUFJLENBQUMsR0FBRyxFQUFFLENBQUE7SUFFVixDQUFDLElBQUksRUFBRSxDQUFBO0lBQ1AsSUFBSSxDQUFDLENBQUMsTUFBTSxLQUFLLENBQUMsRUFBRTtRQUNsQixPQUFPO1FBQ1AsT0FBTztZQUNMLENBQUMsQ0FBQyxVQUFVLENBQUMsQ0FBQyxDQUFDO1lBQ2YsQ0FBQyxDQUFDLFVBQVUsQ0FBQyxDQUFDLENBQUM7WUFDZixDQUFDLENBQUMsVUFBVSxDQUFDLENBQUMsQ0FBQztZQUNmLENBQUMsQ0FBQyxVQUFVLENBQUMsQ0FBQyxDQUFDO1NBQ2hCLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFBO0tBQ1o7U0FBTSxJQUFJLENBQUMsQ0FBQyxNQUFNLEtBQUssRUFBRSxFQUFFO1FBQzFCLE9BQU87UUFDUCxLQUFLLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLEVBQUUsRUFBRSxDQUFDLEVBQUUsRUFBRTtZQUN2QixDQUFDLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsVUFBVSxDQUFDLENBQUMsRUFBRSxDQUFDLElBQUksQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLFVBQVUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLFFBQVEsQ0FBQyxFQUFFLENBQUMsQ0FBQyxDQUFBO1NBQ2xFO1FBQ0QsT0FBTyxDQUFDLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQzthQUNmLE9BQU8sQ0FBQyxxQkFBcUIsRUFBRSxVQUFVLENBQUM7WUFDekMsQ0FBQyxHQUFHLENBQUMsQ0FBQyxDQUFDLE1BQU0sR0FBRyxDQUFDLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFBO1lBQ2pDLE9BQU8sQ0FBQyxDQUFBO1FBQ1YsQ0FBQyxDQUFDO2FBQ0QsT0FBTyxDQUFDLENBQUMsSUFBSSxHQUFHLEVBQUUsSUFBSSxDQUFDLENBQUE7S0FDM0I7U0FBTTtRQUNMLGlCQUFpQjtRQUNqQixPQUFPLEtBQUssQ0FBQTtLQUNiO0FBQ0gsQ0FBQyxDQUFBIn0=
