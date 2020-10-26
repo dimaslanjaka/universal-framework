@@ -27,7 +27,7 @@ jobs:
           command: sudo docker-php-ext-install zip
       - run:
           name: Install GD library
-          command: sudo apt-get update && sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && sudo docker-php-ext-configure gd --with-freetype --with-jpeg && sudo docker-php-ext-install -j$(nproc) gd
+          command: sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && sudo docker-php-ext-configure gd --with-freetype --with-jpeg && sudo docker-php-ext-install -j$(nproc) gd
 
       # Download and cache dependencies
       - restore_cache:
