@@ -2,11 +2,14 @@
 !test.php
 !superuser/
 !superuser/**/*
-!office/
-!office/**/*
+#!office/
+#!office/**/*
 !.htaccess
 !.gitignore
 !auth/
 !auth/**/*
 !user/
 !user/**/*
+
+# for current branch
+!index.php

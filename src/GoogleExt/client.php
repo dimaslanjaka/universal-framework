@@ -4,7 +4,7 @@ namespace GoogleExt;
 
 use Filemanager\file;
 //use Google_Client;
-use \Google\Client as Google_Client;
+use Google\Client as Google_Client;
 
 class client extends Google_Client
 {

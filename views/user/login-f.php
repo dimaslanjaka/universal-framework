@@ -3,9 +3,7 @@
 if (isset($_REQUEST['user']) && isset($_REQUEST['pass'])) {
   $username = $_REQUEST['user'];
   $password = $_REQUEST['pass'];
-  Google\recaptcha::verifyCaptcha(function () use ($username, $password) {
-    dologin($username, $password);
-  });
+  dologin($username, $password);
 }
 
 if (isset($_REQUEST['check'])) {

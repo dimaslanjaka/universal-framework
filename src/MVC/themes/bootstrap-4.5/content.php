@@ -57,8 +57,7 @@ function get_current_file_url($Protocol = 'http://')
   <script src="<?= path2url(__DIR__ . '/assets/js/app.js') ?>"></script>
   <!-- endbuild -->
   <script>
-    /*<?= $_SERVER['DOCUMENT_ROOT'] ?>*/
-    /*<?= str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath(realpath(__DIR__))); ?>*/
+
   </script>
 </body>
 

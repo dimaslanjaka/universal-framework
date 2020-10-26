@@ -26,7 +26,7 @@ class recaptcha
     $this->secret = $key;
   }
 
-  public static function setSecret($key)
+  public function setSecret($key)
   {
     $this->set_secret($key);
   }
@@ -64,7 +64,9 @@ class recaptcha
       //return call_user_func($callback, true);
     }
     if (!isset($_POST['g-recaptcha-response'])) {
-      if (ob_get_level()) ob_end_clean();
+      if (ob_get_level()) {
+        ob_end_clean();
+      }
       \JSON\json::json(['error' => true, 'message' => 'Recaptcha token required']);
       exit;
     }
