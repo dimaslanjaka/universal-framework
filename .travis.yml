@@ -1,0 +1,51 @@
+os:
+  - linux
+sudo: required
+#dist: trusty
+language: php
+php:
+  - 7.4
+
+dist: xenial
+
+cache:
+  directories:
+    - node_modules
+    - vendor
+    - tmp
+
+branches:
+  only:
+    - master
+
+jobs:
+  allow_failures:
+    - os: linux
+  include:
+    - os: linux
+      python: 2.7
+      env: TOXENV=py27
+
+matrix:
+  allow_failures:
+    - php: 7.4
+
+env:
+  - NODE_RELEASE=10.x
+
+before_install:
+  - sudo rm -rf ~/.nvm - curl -sL "https://deb.nodesource.com/setup_${NODE_RELEASE}" | sudo -E bash -
+  - sudo apt-get install -y nodejs
+  - nvm install 12
+  - nvm use 12
+  - npm install -g gulp typescript grunt eslint tslint snyk
+  - composer self-update
+  - npm -v node -v
+
+install:
+  - npm install
+  - tsc -p tsconfig.build.json
+  - composer install
+
+script:
+  - npm test

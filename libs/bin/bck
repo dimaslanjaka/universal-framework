@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+const { backup } = require("./../../dist/src/archiver/backup");
+backup();

@@ -1,0 +1,15 @@
+clone:
+  git:
+    image: plugins/git
+    depth: 5
+
+pipeline:
+  phpunit:
+    image: composer
+    commands:
+      - composer install
+  nodejs:
+    image: node
+    commands:
+      - npm install
+      - npm run test

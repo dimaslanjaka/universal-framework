@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+//@ts-check
+const log = require("./../compiler/log");
+const path = require("path");
+const process = require("process");
+var _prompt = require("prompt");
+const { exec } = require("child_process");
+const argv = process.argv.slice(2);
+
+argv.forEach(function (args) {
+  if (!args.includes("@types")) {
+    //argv.push(`@types/${args}`);
+  }
+});
+
+var args = argv.join(" ").replace(/\s+/gm, " ");
+var allowed = true;
+args.split(" ").map(function (value) {
+  if (!/^(?:@([^\/]+?)[\/])?([^\/]+?)$/is.test(value)) {
+    allowed = false;
+  }
+  return value;
+});
+
+if (args.length && allowed) {
+  //validate package name
+  execute(`npm i ${args} --prefer-offline`);
+} else if (!args.length) {
+  // user confirmation required!
+  _prompt.start();
+  // disable prefix message & colors
+  _prompt.message = "";
+  _prompt.delimiter = "";
+  _prompt.colors = true;
+  // wait for user confirmation
+  _prompt.get(
+    {
+      properties: {
+        // setup the dialog
+        confirm: {
+          // allow yes, no, y, n, YES, NO, Y, N as answer
+          pattern: /^(yes|no|y|n)$/gi,
+          description:
+            "Do you really want to install this project (npm install) ?",
+          message: "Type yes/no y/n",
+          required: true,
+          default: "no",
+        },
+      },
+    },
+    function (err, result) {
+      if (!err) {
+        // transform to lower case
+        var c = result.confirm.toLowerCase();
+        // yes or y typed ? otherwise abort
+        if (c != "y" && c != "yes") {
+          log.log(log.error("Installation Aborted"));
+          return;
+        }
+
+        // Install
+        execute(`npm install --prefer-offline`);
+      } else {
+        log.log(log.error(`Command Line Argument Prompt Error`));
+      }
+    }
+  );
+} else {
+  log.log(log.error(`cannot install ${args}`));
+}
+
+function execute(cmd) {
+  return exec(cmd, (err, stdout, stderr) => {
+    if (err) {
+      log.log(log.error("node couldn't execute the command"));
+      return;
+    }
+
+    log.log(log.success(`>>>\n${stdout}`));
+    log.log(log.error(`>>>\n${stderr}`));
+  });
+}
