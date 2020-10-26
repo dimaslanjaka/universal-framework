@@ -21,12 +21,5 @@ function dologin($username, $password)
     }
   }
 
-  if (getLimitBanned() && $result) {
-    $result = [
-      'error' => true,
-      'message' => 'Limit reached',
-      'title' => 'Limitation',
-    ];
-  }
   e($result);
 }

@@ -1,3 +1,6 @@
+//import * as bootstrap from "bootstrap";
+//import $ from "jquery";
+
 if (!isnode()) {
   $(document).ready(function (e) {
     // element with onload
@@ -24,7 +27,7 @@ if (!isnode()) {
           var target = $(t.data("target"));
           console.log(`open modal ${t.data("target")}`);
           if (target.length) {
-            target.modal("show");
+            (<any>target).modal("show");
           }
           break;
       }

@@ -62,17 +62,18 @@
   },
   "homepage": "https://github.com/dimaslanjaka/universal-framework#readme",
   "devDependencies": {
-    "typescript": "^3.9.5",
-    "which": "*",
-    "@types/npm": "*",
-    "standard": "*",
-    "@types/fancy-log": "^1.3.1",
-    "@types/mysql": "^2.15.14",
-    "@types/sass": "^1.16.0",
-    "@types/uglifycss": "*",
     "@types/datatables.net": "^1.10.19",
+    "@types/fancy-log": "^1.3.1",
     "@types/jquery": "^3.3.38",
-    "@types/toastr": "^2.1.38"
+    "@types/mysql": "^2.15.14",
+    "@types/npm": "*",
+    "@types/sass": "^1.16.0",
+    "@types/toastr": "^2.1.38",
+    "@types/uglifycss": "*",
+    "@types/vinyl-source-stream": "0.0.30",
+    "standard": "*",
+    "typescript": "^3.9.5",
+    "which": "*"
   },
   "maintainers": [
     {

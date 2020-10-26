@@ -2245,6 +2245,8 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+//import * as bootstrap from "bootstrap";
+//import $ from "jquery";
 if (!isnode()) {
     $(document).ready(function (e) {
         // element with onload

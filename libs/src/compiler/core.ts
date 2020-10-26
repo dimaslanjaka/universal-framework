@@ -7,7 +7,7 @@ import log from "./log";
 import * as uglifycss from "uglifycss";
 import * as sass from "sass";
 import { exec } from "child_process";
-const LocalStorage = require("node-localstorage").LocalStorage;
+import { LocalStorage } from "../node-localstorage/index";
 import configuration from "./config";
 import * as framework from "./framework";
 import filemanager from "./filemanager";

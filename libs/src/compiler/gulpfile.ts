@@ -1,6 +1,5 @@
 import * as gulp from "gulp";
 import ts from "gulp-typescript";
-import rename from "gulp-rename";
 import * as fs from "fs";
 import config from "../compiler/config";
 import upath from "upath";
@@ -8,17 +7,10 @@ import path from "path";
 import framework from "../compiler/index";
 import log from "../compiler/log";
 import process from "../compiler/process";
-import core from "./core";
 const root = process.root;
-import sass from "sass"; // or require('node-sass');
 import { exec, ExecException } from "child_process";
-import sourcemaps from "gulp-sourcemaps";
-import concat from "gulp-concat";
-import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
-import browserify from "browserify";
-import browserify_source from "vinyl-source-stream";
-import { fixDeps, execute } from "./func";
+import { fixDeps } from "./func";
 localStorage.removeItem("compile");
 console.clear();
 
@@ -157,36 +149,6 @@ gulp.task("assets-compile", function () {
 
 gulp.task("default", gulp.series(["build", "watch"]));
 
-/**
- * NodeJS to Browserify
- * @param target source javascript
- * @param destination destination folder
- * @param rename want to rename file ? give name or using default basename of target
- */
-function node2browser(target?: string, destination?: string, rename?: string) {
-  if (typeof rename != "string" || !rename || !rename.length) {
-    rename = path.basename(target);
-  }
-
-  log.log(
-    `Browserify ${log
-      .chalk()
-      .magentaBright(framework.filelog(target))} to ${log
-      .chalk()
-      .magentaBright(framework.filelog(destination))} renamed to ${log.success(
-      rename
-    )}`
-  );
-  return (
-    browserify()
-      .add(target) //"src/MVC/themes/assets/js/app.js"
-      .bundle()
-      //Pass desired output filename to vinyl-source-stream
-      .pipe(browserify_source(rename)) //"app.js"
-      // Start piping stream to tasks!
-      .pipe(gulp.dest(destination))
-  ); //"src/MVC/themes/assets/js/"
-}
 
 /**
  * minify assets
@@ -325,7 +287,6 @@ export function single_tsCompile(target: string) {
     return;
   }
   var dest = path.dirname(target);
-  var filename = path.basename(target);
   log.log(
     `${targetlog} > ${log
       .chalk()

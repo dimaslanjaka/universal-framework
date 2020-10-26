@@ -111,7 +111,7 @@ declare class Cookies {
  * @param {string} passphrase
  * @param {string} salt
  */
-declare function getKey(passphrase: string, salt: string): CryptoJS.WordArray;
+declare function getKey(passphrase: string, salt: string): CryptoJS.lib.WordArray;
 /**
  * Encrypt function
  * @param {string} passphrase
@@ -129,7 +129,7 @@ declare function userJSDecrypt(passphrase: string, encryptedText: string): strin
  * @param {String} passphrase
  * @param {String} salt
  */
-declare function CryptoK(passphrase: string, salt: string): CryptoJS.WordArray;
+declare function CryptoK(passphrase: string, salt: string): CryptoJS.lib.WordArray;
 /**
  * Crypto encrypt
  * @param {String} passphrase

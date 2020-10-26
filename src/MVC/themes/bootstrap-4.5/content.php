@@ -1,8 +1,5 @@
 <?php
-function get_current_file_url($Protocol = 'http://')
-{
-  return $Protocol . $_SERVER['HTTP_HOST'] . str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath(__DIR__));
-}
+$element = new HTML\element();
 ?>
 <!doctype html>
 <html lang="en">
@@ -56,9 +53,9 @@ function get_current_file_url($Protocol = 'http://')
   <!-- build:js -->
   <script src="<?= path2url(__DIR__ . '/assets/js/app.js') ?>"></script>
   <!-- endbuild -->
-  <script>
-
-  </script>
+  <?php
+  include __DIR__ . '/script.php';
+  ?>
 </body>
 
 </html>
