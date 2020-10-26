@@ -74,6 +74,33 @@ function endsWith($haystack, $needle)
 }
 
 /**
+ * Convert string or number or float to number/float value
+ *
+ * @param int|float|string $val
+ * @return int|float|null
+ */
+function toNumber($val)
+{
+  if (is_string($val)) {
+    if (preg_match('/^\d*\.?\d*$/m', $val, $matches)) {
+      $val = $matches[0];
+    } else if (preg_match('/^\d*\.?\d*/m', $val, $matches)) {
+      $val = $matches[0];
+    }
+  }
+  if (is_numeric($val)) {
+    $int = (int)$val;
+    $float = (float)$val;
+
+    $val = ($int == $float) ? $int : $float;
+    return $val;
+  } else {
+    trigger_error("Cannot cast $val to a number", E_USER_WARNING);
+    return null;
+  }
+}
+
+/**
  * Convert path to url
  *
  * @param string $file

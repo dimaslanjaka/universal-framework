@@ -1390,6 +1390,25 @@ function async_process(source_cache) {
         },
     });
 }
+/**
+ * default ajax jquery request with unique ID
+ * @param settings Jquery ajax settings
+ */
+function jAjax(settings) {
+    var defaultSet = {
+        headers: {
+            "Request-Date": new Date().getTime(),
+            "Request-Id": Math.floor(Math.random() * 99999999 + 1),
+        },
+        xhrFields: {
+            withCredentials: true,
+        },
+    };
+    Object.keys(defaultSet).forEach(function (key) {
+        settings[key] = defaultSet[key];
+    });
+    return $.ajax(settings);
+}
 var AjaxSchedulerInit = null;
 var AjaxSchedulerRequests = [];
 var AjaxSchedulerRunning = false;

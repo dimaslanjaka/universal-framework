@@ -2,6 +2,15 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   header("Content-type: application/json");
-  echo json_encode($_SERVER, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-  exit;
+  $server = [];
+  if (function_exists('apache_request_headers')) {
+    $headers = apache_request_headers();
+    foreach ($headers as $header => $value) {
+      //echo "$header: $value <br />\n";
+      $server[$header] = $value;
+    }
+  } else {
+    $server = $_SERVER;
+  }
+  exit(json_encode($server, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }

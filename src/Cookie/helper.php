@@ -57,7 +57,7 @@ class helper
    *
    * @param string    $name
    * @param mixed     $value
-   * @param int|float $expire
+   * @param int|float|string $expire 1m/1h/1d/1y
    * @param string    $path
    * @param string    $domain   default $_SERVER['HTTP_HOST']
    * @param bool      $secure
@@ -72,6 +72,18 @@ class helper
     }
     if (empty($path)) {
       $path = '/';
+    }
+
+    if (is_string($expire)) {
+      if (endsWith($expire, "h")) {
+        $expire = time() + (toNumber($expire) * 3600);
+      } else if (endsWith($expire, "d")) {
+        $expire = time() + (toNumber($expire) * 86400);
+      } else if (endsWith($expire, "m")) {
+        $expire = time() + (toNumber($expire) * 60);
+      } else if (endsWith($expire, "y")) {
+        $expire = time() + (toNumber($expire) * 31556926); // where 31556926 is total seconds for a year.
+      }
     }
 
     try {

@@ -319,6 +319,11 @@ declare function AjaxForm(): void;
  * @param source_cache url
  */
 declare function async_process(source_cache: string): void;
+/**
+ * default ajax jquery request with unique ID
+ * @param settings Jquery ajax settings
+ */
+declare function jAjax(settings: JQueryAjaxSettings): JQuery.jqXHR<any>;
 declare var AjaxSchedulerInit: NodeJS.Timer;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
