@@ -26,12 +26,10 @@
 
 // application javascript
 echo $element->js([
-  /*
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
     __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
   ]))
-  */
-  path2url(__DIR__ . '/../assets/js/app.js')
+  //path2url(__DIR__ . '/../assets/js/app.js')
 ]);
 
 // process view content css
