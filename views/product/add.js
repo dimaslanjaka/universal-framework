@@ -29,6 +29,7 @@
     readURL(this);
   });
 
+  // TODO: transform image url to base64
   $("#urlImage").on("input, change, keyup", function (e) {
     e.preventDefault();
     var imageUrl = $(this).val();
@@ -40,6 +41,67 @@
         }
       });
     }
+  });
+
+  $(".select2-brands").select2({
+    placeholder: "Select a brand",
+    width: null,
+    ajax: {
+      url: "/brand/fetch?only-enabled",
+      dataType: "json",
+      data: function (params) {
+        return {
+          search: params.term,
+        };
+      },
+      processResults: function (data, params) {
+        //console.log(data);
+        var dataprocess = $.map(data, function (obj) {
+          if (obj.hasOwnProperty("brand_id")) {
+            obj.text = `${obj.brand_name} (${obj.brand_generic})`;
+            obj.id = obj.brand_id;
+          }
+
+          return obj;
+        });
+
+        return {
+          results: dataprocess,
+        };
+      },
+    },
+  });
+
+  $(".select2-categories").select2({
+    placeholder: "Select a category",
+    width: null,
+    ajax: {
+      url: "/categories/fetch?only-enabled",
+      dataType: "json",
+      data: function (params) {
+        return {
+          search: params.term,
+        };
+      },
+      processResults: function (data, params) {
+        //console.log(data);
+        var dataprocess = $.map(data, function (obj) {
+          if (obj.hasOwnProperty("brand_id")) {
+            obj.text = `${obj.brand_name} (${obj.brand_generic})`;
+            obj.id = obj.brand_id;
+          } else if (obj.hasOwnProperty("categories_id")) {
+            obj.text = obj.categories_name;
+            obj.id = obj.categories_id;
+          }
+
+          return obj;
+        });
+
+        return {
+          results: dataprocess,
+        };
+      },
+    },
   });
 
   setTimeout(generateGenericNames, 2500);

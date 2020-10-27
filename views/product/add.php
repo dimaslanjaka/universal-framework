@@ -31,7 +31,15 @@
       <small><i>preview: <span id="generic-name" class=""></span></i></small>
     </div>
 
-    <div class="form-group"></div>
+    <div class="input-group select2-bootstrap-operator mb-2">
+      <select class="form-control select2-brands" tabindex="-1" aria-hidden="true">
+      </select>
+    </div>
+
+    <div class="input-group select2-bootstrap-operator mb-2">
+      <select class="form-control select2-categories" tabindex="-1" aria-hidden="true">
+      </select>
+    </div>
 
     <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i> Save</button>
   </form>

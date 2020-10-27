@@ -7,9 +7,10 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js'></script>
+
+<!-- datatables -->
 <script src='https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
-
 <!-- Buttons bootstrap4 -->
 <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css'>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js'></script>
@@ -20,6 +21,7 @@
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js'></script>
+<!-- /datatables -->
 
 <!-- select2 -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
@@ -28,26 +30,7 @@
 </script>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.7/select2-bootstrap.min.css'>
-
-<style>
-  .input-group.select2-bootstrap-operator .select2-hidden-accessible:first-child+.select2-container--bootstrap .select2-selection {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .input-group.select2-bootstrap-operator .select2-hidden-accessible:first-child+.select2-container--bootstrap+.input-group-addon {
-    border-left: 0;
-  }
-
-  .input-group.select2-bootstrap-operator .input-group-addon+.select2-hidden-accessible+.select2-container--bootstrap {
-    margin-left: -1px;
-  }
-
-  .input-group.select2-bootstrap-operator .input-group-addon+.select2-hidden-accessible+.select2-container--bootstrap .select2-selection {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-</style>
+<!-- /select2 -->
 
 <?php
 
