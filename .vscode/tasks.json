@@ -6,7 +6,7 @@
       "type": "shell",
       "isBackground": true,
       "options": {},
-      "detail": "${defaultBuildTask}",
+      "detail": "Build And Watch JS/CSS Files",
       "group": "build",
       "dependsOn": [
         {

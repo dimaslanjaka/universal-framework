@@ -11,6 +11,8 @@ const root = process.root;
 import { exec, ExecException } from "child_process";
 import { localStorage } from "../node-localstorage/index";
 import { fixDeps } from "./func";
+import gulpless from "gulp-less";
+
 localStorage.removeItem("compile");
 console.clear();
 
@@ -149,7 +151,6 @@ gulp.task("assets-compile", function () {
 
 gulp.task("default", gulp.series(["build", "watch"]));
 
-
 /**
  * minify assets
  * @param file
@@ -170,7 +171,10 @@ export function minify(item: string | Buffer): any {
     if (fs.existsSync(config)) {
       config = require(config);
     }
-    if (item.endsWith(".scss") && !item.endsWith(".min.scss")) {
+
+    if (item.endsWith(".less") && !item.endsWith(".min.less")) {
+      framework.less(item);
+    } else if (item.endsWith(".scss") && !item.endsWith(".min.scss")) {
       framework.scss(item);
     } else if (item.endsWith(".css") && !item.endsWith(".min.css")) {
       framework.minCSS(item);
