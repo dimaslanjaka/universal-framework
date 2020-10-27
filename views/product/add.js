@@ -24,6 +24,8 @@
     "#inputProductName,#aliasInput",
     generateGenericNames
   );
+
+  setTimeout(generateGenericNames, 2500);
 })();
 
 /**
