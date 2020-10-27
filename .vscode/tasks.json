@@ -6,7 +6,7 @@
       "type": "shell",
       "isBackground": true,
       "options": {},
-      "detail": "Build And Watch JS/CSS Files",
+      "detail": "Build And Watch JS/CSS/SCSS/LESS Files",
       "group": "build",
       "dependsOn": [
         {

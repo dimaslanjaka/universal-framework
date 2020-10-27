@@ -3939,9 +3939,14 @@ if (!(typeof module !== "undefined" && module.exports)) {
             var key = t.getIDName().toString();
             var type = $(this).attr("type");
             // begin restoration
-            if (key) {
+            if (key != null && key != "null" && key.length > 0) {
+                if (type == "file") {
+                    item = localStorage.getItem(key);
+                    console.log(item);
+                    return;
+                }
                 // checkbox input button
-                if (type === "checkbox") {
+                else if (type === "checkbox") {
                     item = JSON.parse(localStorage.getItem(key));
                     if (item === null) {
                         return;

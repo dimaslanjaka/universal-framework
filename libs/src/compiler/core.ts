@@ -11,11 +11,7 @@ import { LocalStorage } from "../node-localstorage/index";
 import configuration from "./config";
 import * as framework from "./framework";
 import filemanager from "./filemanager";
-import gulp from "gulp";
-import gulpless from "gulp-less";
-import gulpautoprefixer from "gulp-autoprefixer";
 import less from "less";
-import { URL } from "url";
 
 /**
  * @class Core compiler
@@ -44,7 +40,7 @@ class core {
    * @param callback
    */
   static async(callback: Function) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       if (typeof callback == "function") {
         callback();
       }
@@ -90,7 +86,7 @@ class core {
    * @return
    */
   static readdir(
-    dir: string | Buffer,
+    dir: string,
     filelist: string[] = null,
     exclude: Array<string | RegExp> = null
   ): Array<any> {
@@ -155,7 +151,7 @@ class core {
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
-  static scss(filename: string | Buffer) {
+  static scss(filename: string) {
     const self = this;
     const exists = fs.existsSync(filename);
     if (exists) {
@@ -206,13 +202,36 @@ class core {
     return fs.existsSync(filename);
   }
 
-  static less(filename: string | Buffer) {
+  static less(filename: string) {
     const self = this;
     const exists = fs.existsSync(filename);
     if (exists) {
-      var output = filename.toString().replace(/\.less/s, ".css");
-      var outputcss = output;
-      console.log(filename, outputcss);
+      var outputcss = filename.toString().replace(/\.less/s, ".css");
+      var source = fs.readFileSync(filename).toString();
+      less
+        .render(source, { sourceMap: { sourceMapFileInline: true } })
+        .then(function (output) {
+          fs.writeFileSync(outputcss, output.css, { encoding: "utf-8" });
+          console.log(
+            `${log
+              .chalk()
+              .hex("#1d365d")
+              .bgWhite(self.filelog(filename))} > ${log
+              .chalk()
+              .blueBright(self.filelog(outputcss))} ${log.success("success")}`
+          );
+        })
+        .catch(function (e) {
+          console.log(
+            `${log.chalk().hex("#1d365d")(
+              self.filelog(filename)
+            )} > ${log
+              .chalk()
+              .blueBright(self.filelog(outputcss))} ${log
+              .chalk()
+              .redBright("failed")}`
+          );
+        });
     }
   }
 
@@ -222,30 +241,12 @@ class core {
    * @param to to css path file
    * @example compileLESS('src/test.less', 'dist/test.css')
    */
-  compileLESS(from: string, to: string) {
+  static compileLESS(from: string, to: string) {
     from = path.join(__dirname, from);
     to = path.join(__dirname, to);
+    var self = this;
     fs.readFile(from, function (err, data) {
       if (err) return;
-
-      less
-        .render(data.toString(), { sourceMap: { sourceMapFileInline: true } })
-        .then(function (output) {
-          // output.css = string of css \n /*# sourceMappingURL=data:application/json;base64,eyJ2ZXJ..= */
-          // output.map = undefined
-          fs.writeFileSync(to, output.css);
-        });
-      /*
-      less.render(
-        data.toString(),
-        { compress: true, paths: [__dirname] },
-        function (e, css) {
-          if (!e) {
-            //fs.writeFileSync(to, css);
-          }
-        }
-      );
-      */
     });
   }
 

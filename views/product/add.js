@@ -25,6 +25,10 @@
     generateGenericNames
   );
 
+  $("#imageUpload").change(function () {
+    readURL(this);
+  });
+
   setTimeout(generateGenericNames, 2500);
 })();
 
@@ -36,4 +40,19 @@ function generateGenericNames(e) {
   $("#generic-name").text(
     `${$("#inputProductName").val()} (${$("#aliasInput").val()})`
   );
+}
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $("#imagePreview").css(
+        "background-image",
+        "url(" + e.target.result + ")"
+      );
+      $("#imagePreview").hide();
+      $("#imagePreview").fadeIn(650);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 }

@@ -3,11 +3,11 @@
 
     <div class="avatar-upload">
       <div class="avatar-edit">
-        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+        <input type='file' id="imageUpload" name="image" accept="image/*" />
         <label for="imageUpload"></label>
       </div>
       <div class="avatar-preview">
-        <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+        <div id="imagePreview" style="background-image: url(/assets/img/upload-your-logo-here.png);">
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <?php
 $valid['success'] = ['success' => false, 'messages' => []];
 
-if (!empty($_POST)) {
+if (isset($_POST['description'], $_POST['name'])) {
   $categoriesName = $_POST['name'];
   $categoriesGeneric = $_POST['description'];
 
