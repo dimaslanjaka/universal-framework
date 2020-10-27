@@ -164,7 +164,8 @@ export function reload_gulp() {
   if (proc.env.process_restarting) {
     delete proc.env.process_restarting;
     // Give old process one second to shut down before continuing ...
-    setTimeout(reload_gulp, 1000);
+    //setTimeout(reload_gulp, 1000);
+    reload_gulp();
     proc.exit();
     return;
   }

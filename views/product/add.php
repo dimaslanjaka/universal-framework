@@ -1,18 +1,21 @@
 <div class="container">
   <form action="" method="post">
-
+    <input type="hidden" name="image" id="image2up" placeholder="this is real image uploader">
     <div class="avatar-upload">
       <div class="avatar-edit">
-        <input type='file' id="imageUpload" name="image" accept="image/*" />
+        <input type='file' id="imageUpload" accept="image/*" />
         <label for="imageUpload"></label>
       </div>
       <div class="avatar-preview">
         <div id="imagePreview" style="background-image: url(/assets/img/upload-your-logo-here.png);">
         </div>
       </div>
+      <div>
+        <input type="url" id="urlImage" class="mt-2 form-control" placeholder="Images from url">
+      </div>
     </div>
 
-    <div class="form-group mb-2">
+    <div class="form-group">
       <label for="inputProductName">Product Name</label>
       <input type="text" class="form-control" id="inputProductName" aria-describedby="categoryHelp" name="name" placeholder="Enter category name">
       <small id="categoryHelp" class="form-text text-muted">Insert Product Name. Ex: DOCOSANOL - TOPICAL</small>
@@ -24,9 +27,11 @@
       <small id="aliasHelp" class="form-text text-muted">Product alias name. Ex: doe-COE-sah-noll</small>
     </div>
 
-    <div class="m-2">
-      <i>Generated Generic Names: <span id="generic-name" class=""></span></i>
+    <div class="text-muted mb-2">
+      <small><i>preview: <span id="generic-name" class=""></span></i></small>
     </div>
+
+    <div class="form-group"></div>
 
     <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i> Save</button>
   </form>

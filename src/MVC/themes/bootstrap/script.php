@@ -21,6 +21,33 @@
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js'></script>
 
+<!-- select2 -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+<script>
+  $.fn.select2.defaults.set("theme", "bootstrap");
+</script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.7/select2-bootstrap.min.css'>
+
+<style>
+  .input-group.select2-bootstrap-operator .select2-hidden-accessible:first-child+.select2-container--bootstrap .select2-selection {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .input-group.select2-bootstrap-operator .select2-hidden-accessible:first-child+.select2-container--bootstrap+.input-group-addon {
+    border-left: 0;
+  }
+
+  .input-group.select2-bootstrap-operator .input-group-addon+.select2-hidden-accessible+.select2-container--bootstrap {
+    margin-left: -1px;
+  }
+
+  .input-group.select2-bootstrap-operator .input-group-addon+.select2-hidden-accessible+.select2-container--bootstrap .select2-selection {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+</style>
 
 <?php
 

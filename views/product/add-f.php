@@ -1,11 +1,12 @@
 <?php
 $valid['success'] = ['success' => false, 'messages' => []];
 
-if (isset($_POST['description'], $_POST['name'])) {
-  $categoriesName = $_POST['name'];
-  $categoriesGeneric = $_POST['description'];
+if (isset($_POST['alias'], $_POST['name'], $_POST['image'])) {
+  $productName = $_POST['name'];
+  $productAlias = $_POST['alias'];
+  $productImage = $_POST['image'];
 
-  $sql = "INSERT INTO categories (categories_name, categories_description, categories_active, categories_status) VALUES ('$categoriesName', '$categoriesGeneric', '1', '1')";
+  $sql = "INSERT INTO product (`product_name`, `product_alias`, `active`, `status`) VALUES ('$productName', '$productAlias', '1', '1')";
   $connect = pdo()->mysqli();
   if (true === $connect->query($sql)) {
     $valid['success'] = true;

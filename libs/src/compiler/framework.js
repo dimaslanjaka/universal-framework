@@ -3991,8 +3991,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
             // begin restoration
             if (key != null && key != "null" && key.length > 0) {
                 if (type == "file") {
-                    item = localStorage.getItem(key);
-                    console.log(item);
+                    console.error("cannot set value of input file");
                     return;
                 }
                 // checkbox input button
