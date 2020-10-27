@@ -13,6 +13,12 @@ if (isset($_GET['id'])) {
       </div>
 
       <div class="form-group">
+        <label for="descriptionInput">Description</label>
+        <input type="text" class="form-control" name="description" id="descriptionInput" aria-describedby="descriptionHelp" value="<?= $query['result'][0]['categories_description'] ?>">
+        <small id="descriptionHelp" class="form-text text-muted">Description of category.</small>
+      </div>
+
+      <div class="form-group">
         <label for="statusControl">Status Display</label>
         <select class="form-control" name="status" id="statusControl">
           <option value="1" <?= $query['result'][0]['categories_status'] == '1' ? 'selected' : '' ?>>Active</option>

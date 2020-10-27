@@ -13,6 +13,12 @@ if (isset($_GET['id'])) {
       </div>
 
       <div class="form-group">
+        <label for="genericInput">Generic Name</label>
+        <input type="text" class="form-control" name="generic" id="genericInput" aria-describedby="genericHelp" value="<?= $query['result'][0]['brand_generic'] ?>">
+        <small id="genericHelp" class="form-text text-muted">Generic name of brand.</small>
+      </div>
+
+      <div class="form-group">
         <label for="statusControl">Status Display</label>
         <select class="form-control" name="status" id="statusControl">
           <option value="1" <?= $query['result'][0]['brand_status'] == '1' ? 'selected' : '' ?>>Active</option>

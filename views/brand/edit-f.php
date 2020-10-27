@@ -7,8 +7,9 @@ if (!empty($_POST)) {
   $brandActive = $_POST['active'];
   $brandId = $_POST['id'];
   $brandStatus = $_POST['status'];
+  $brandGeneric = $_POST['generic'];
 
-  $sql = "UPDATE brands SET brand_name = '$brandName', brand_active = '$brandActive', brand_status = '$brandStatus' WHERE brand_id = '$brandId'";
+  $sql = "UPDATE brands SET brand_name = '$brandName', brand_active = '$brandActive', brand_status = '$brandStatus', brand_generic = '$brandGeneric' WHERE brand_id = '$brandId'";
   $connect = pdo()->mysqli();
   if (true === $connect->query($sql)) {
     $valid['success'] = true;

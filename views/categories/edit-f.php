@@ -3,12 +3,13 @@
 $valid['success'] = ['success' => false, 'messages' => []];
 
 if (!empty($_POST)) {
-  $brandName = $_POST['name'];
-  $brandActive = $_POST['active'];
-  $brandId = $_POST['id'];
-  $brandStatus = $_POST['status'];
+  $categoriesName = $_POST['name'];
+  $categoriesActive = $_POST['active'];
+  $categoriesId = $_POST['id'];
+  $categoriesStatus = $_POST['status'];
+  $categoriesDescription = $_POST['description'];
 
-  $sql = "UPDATE brands SET brand_name = '$brandName', brand_active = '$brandActive', brand_status = '$brandStatus' WHERE brand_id = '$brandId'";
+  $sql = "UPDATE categories SET categories_name = '$categoriesName', categories_active = '$categoriesActive', categories_status = '$categoriesStatus', categories_description = '$categoriesDescription' WHERE categories_id = '$categoriesId'";
   $connect = pdo()->mysqli();
   if (true === $connect->query($sql)) {
     $valid['success'] = true;

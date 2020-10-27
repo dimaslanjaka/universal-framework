@@ -8,8 +8,12 @@
     }
   ],
   "autoload": {
+    "classmap": [
+      "src/bulletproof/src/"
+    ],
     "files": [
-      "src/shim/autoload.php"
+      "src/shim/autoload.php",
+      "src/bulletproof/src/bulletproof.php"
     ],
     "psr-4": {
       "Accounting\\": "src/Accounting/",
@@ -47,11 +51,14 @@
   "license": "MIT",
   "name": "dimaslanjaka/universal-framework",
   "require": {
+    "codeception/codeception": "^4.0",
     "composer/xdebug-handler": "^1.2",
     "ext-curl": "*",
+    "ext-exif": "*",
     "ext-json": "*",
     "ext-mbstring": "*",
     "friendsofphp/php-cs-fixer": "*",
+    "google/apiclient": "^2.7",
     "guzzlehttp/guzzle": "^6.5",
     "paquettg/php-html-parser": "^2.1",
     "pear/mail": "^1.4",
@@ -64,9 +71,7 @@
     "phpseclib/phpseclib": "~2.0",
     "psr/log": "^1.0",
     "scssphp/scssphp": "^1.1",
-    "stichoza/google-translate-php": "^4.0",
-    "codeception/codeception": "^4.0",
-    "google/apiclient": "^2.7"
+    "stichoza/google-translate-php": "^4.0"
   },
   "require-dev": {
     "ext-gd": "*",

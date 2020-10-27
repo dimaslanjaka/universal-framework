@@ -120,7 +120,7 @@
     order: [],
     columns: [
       { data: "categories_name", title: "Name" },
-      //{ data: "categories_generic", title: "Generic Name" },
+      { data: "categories_description", title: "Description" },
       {
         data: "categories_active",
         title: "Status",

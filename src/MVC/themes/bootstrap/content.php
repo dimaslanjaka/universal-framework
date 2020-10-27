@@ -28,6 +28,9 @@ $element = new HTML\element();
         <li class="nav-item">
           <a class="nav-link" href="/categories">Categories</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/product">Product</a>
+        </li>
       </ul>
     </div>
   </nav>

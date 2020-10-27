@@ -8,10 +8,17 @@ $(document).on("submit", "form", function (e) {
       console.log(res);
       if (res.success) {
         toastr.success("Update Successful", "Success");
-        location.href = "/categories";
+        location.href = "/product";
       } else {
         toastr.error("Update Failed", "Failed");
       }
     },
   });
+});
+
+$(document).on("keydown", "#inputProductName,#aliasInput", function (e) {
+  e.preventDefault();
+  $("#generic-name").text(
+    `${$("#inputProductName").val()} (${$("#aliasInput").val()})`
+  );
 });
