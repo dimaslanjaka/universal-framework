@@ -157,7 +157,7 @@ function include_asset($fn, $fn2 = null, $callback = null)
 }
 
 /**
- * Create <pre/> element from array.
+ * Create <pre/> element from func_get_args().
  *
  * @return void
  */
@@ -174,6 +174,30 @@ function pre()
   }
   echo '</pre>';
 }
+
+/**
+ * Create <pre/> element from arguments
+ *
+ * @param mixed $obj
+ * @return void
+ */
+function pretext($obj)
+{
+  echo '<pre style="word-wrap: break-word;">';
+  if (is_countable($obj)) {
+    if (count($obj) > 1) {
+      foreach ($obj as $objek) {
+        \JSON\json::json($objek, false, true);
+      }
+    } else {
+      \JSON\json::json($obj[0], false, true);
+    }
+  } else {
+    \JSON\json::json($obj, false, true);
+  }
+  echo '</pre>';
+}
+
 /**
  * var_dump in <pre/>.
  *

@@ -1,5 +1,5 @@
 (function () {
-  var manageBrandTable = $("#manageBrandTable").DataTable({
+  var manageCategoriesTable = $("#manageCategoriesTable").DataTable({
     paging: true,
     lengthChange: true,
     searching: true,
@@ -26,10 +26,10 @@
         {
           text: '<i class="fa fa-plus"></i>Add',
           title: "Add",
-          titleAttr: "Add Brand",
+          titleAttr: "Add Category",
           className: "btn btn-app export add",
           action: function (e, dt, node, config) {
-            location.href = "/brand/add";
+            location.href = "/categories/add";
           },
         },
         {
@@ -114,19 +114,19 @@
       ],
     },
     ajax: {
-      url: "/brand/fetch",
+      url: "/categories/fetch",
       dataSrc: "",
     },
     order: [],
     columns: [
-      { data: "brand_name", title: "Name" },
-      { data: "brand_generic", title: "Generic Name" },
+      { data: "categories_name", title: "Name" },
+      //{ data: "categories_generic", title: "Generic Name" },
       {
-        data: "brand_active",
+        data: "categories_active",
         title: "Status",
         render: function (data, type, row, meta) {
           var activeStatus = "";
-          if (row.brand_status == 1) {
+          if (row.categories_status == 1) {
             activeStatus =
               data == "1"
                 ? `<span class="badge badge-success">Active</span> <span class="badge badge-success">Enabled</span>`
@@ -141,20 +141,20 @@
         },
       },
       {
-        data: "brand_id",
+        data: "categories_id",
         render: function (data) {
-          return `<div class="btn-group"><a href="/brand/edit?id=${data}" class="btn btn-sm"><i class="fas fa-pen"></i></a><a class="btn btn-sm" id="delete-brand-${data}" data-id="${data}" title="Disable"><i class="fas fa-ban"></i></a></div>`;
+          return `<div class="btn-group"><a href="/categories/edit?id=${data}" class="btn btn-sm"><i class="fas fa-pen"></i></a><a class="btn btn-sm" id="delete-categories-${data}" data-id="${data}" title="Disable"><i class="fas fa-ban"></i></a></div>`;
         },
         title: "Actions",
       },
     ],
   });
 
-  $(document).on("click", "[id^=delete-brand-]", function (e) {
+  $(document).on("click", "[id^=delete-categories-]", function (e) {
     e.preventDefault();
     var id = $(this).data("id");
     jAjax({
-      url: "/brand/delete",
+      url: "/categories/delete",
       method: "POST",
       data: {
         id: id,
