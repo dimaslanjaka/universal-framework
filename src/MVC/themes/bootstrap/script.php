@@ -21,6 +21,10 @@
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js'></script>
 <script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js'></script>
+<script>
+  // disable alert warning
+  $.fn.dataTable.ext.errMode = 'none';
+</script>
 <!-- /datatables -->
 
 <!-- select2 -->
