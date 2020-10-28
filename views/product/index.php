@@ -5,12 +5,10 @@
         <tr>
           <th style="width:10%;">Photo</th>
           <th>Product Name</th>
-          <th>Rate</th>
           <th>Quantity</th>
           <th>Brand</th>
           <th>Category</th>
           <th>Status</th>
-          <th style="width:15%;">Options</th>
         </tr>
       </thead>
     </table>

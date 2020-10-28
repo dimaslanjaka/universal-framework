@@ -16,7 +16,7 @@
     </div>
 
     <div class="form-group">
-      <label for="inputProductName">Product Name</label>
+      <label for="inputProductName">Product Name <small class="text-muted"><i>| <span id="generic-name" class=""></span></i></small></label>
       <input type="text" class="form-control" id="inputProductName" aria-describedby="categoryHelp" name="name" placeholder="Enter category name">
       <small id="categoryHelp" class="form-text text-muted">Insert Product Name. Ex: DOCOSANOL - TOPICAL</small>
     </div>
@@ -27,17 +27,15 @@
       <small id="aliasHelp" class="form-text text-muted">Product alias name. Ex: doe-COE-sah-noll</small>
     </div>
 
-    <div class="text-muted mb-2">
-      <small><i>preview: <span id="generic-name" class=""></span></i></small>
-    </div>
-
     <div class="input-group select2-bootstrap-operator mb-2">
-      <select class="form-control select2-brands" tabindex="-1" aria-hidden="true">
+      <label for="">Select Brand</label>
+      <select class="form-control select2-brands" tabindex="-1" aria-hidden="true" name="brand">
       </select>
     </div>
 
     <div class="input-group select2-bootstrap-operator mb-2">
-      <select class="form-control select2-categories" tabindex="-1" aria-hidden="true">
+      <label for="">Select Category</label>
+      <select class="form-control select2-categories" tabindex="-1" aria-hidden="true" name="category">
       </select>
     </div>
 

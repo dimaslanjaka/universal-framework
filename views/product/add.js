@@ -11,7 +11,7 @@
         console.log(res);
         if (res.success) {
           toastr.success("Update Successful", "Success");
-          location.href = "/product";
+          //location.href = "/product";
         } else {
           toastr.error("Update Failed", "Failed");
         }
@@ -37,7 +37,6 @@
       url2base64(imageUrl, function (b64) {
         if (b64.startsWith("data:image/")) {
           preview(b64); // myBase64 is the base64 string
-          $("#image2up").val(b64);
         }
       });
     }
@@ -117,10 +116,11 @@ function generateGenericNames(e) {
   );
 }
 
-function preview(image) {
-  $("#imagePreview").css("background-image", "url(" + image + ")");
+function preview(imageb64) {
+  $("#imagePreview").css("background-image", "url(" + imageb64 + ")");
   $("#imagePreview").hide();
   $("#imagePreview").fadeIn(650);
+  $("#image2up").val(imageb64);
 }
 
 function readURL(input) {

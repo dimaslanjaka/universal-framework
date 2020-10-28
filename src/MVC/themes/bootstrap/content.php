@@ -11,6 +11,37 @@ $element = new HTML\element();
   <link href="<?= path2url(__DIR__ . '/fontawesome-5/css/all.css') ?>" rel="stylesheet" type="text/css">
   <!-- Stylesheet -->
   <link href="<?= path2url(__DIR__ . '/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
+  <style>
+    main {
+      min-height: 30rem;
+    }
+
+    .mini-footer {
+      text-align: center;
+      padding: 32px 0
+    }
+
+    .mini-footer p {
+      margin: 0;
+      line-height: 26px;
+      font-size: 15px;
+      color: #999
+    }
+
+    .mini-footer p a {
+      color: #5867dd
+    }
+
+    .mini-footer p a:hover {
+      color: #34bfa3
+    }
+
+    [disabled] {
+      pointer-events: none;
+      color: #c0c0c0;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body>
@@ -31,6 +62,12 @@ $element = new HTML\element();
         <li class="nav-item">
           <a class="nav-link" href="/product">Product</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/producer">Producer</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/consumer">Consumer</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -44,6 +81,27 @@ $element = new HTML\element();
     }
     ?>
   </main>
+
+  <footer class="mt-4 navbar-dark bg-dark">
+    <div class="mini-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="copyright-text">
+              <p>© <?= date('Y') ?>
+                <a href="#">Apotek</a>. All rights reserved. Created by
+                <a href="https://web-manajemen.blogspot.com">Dimas Lanjaka</a>
+              </p>
+            </div>
+
+            <div class="go_top">
+              <span class="icon-arrow-up"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <!-- Bootstrap core JavaScript
 ================================================== -->
