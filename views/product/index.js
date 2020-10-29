@@ -126,6 +126,7 @@
           return `<img id="ImgBase64${row.product_id}" src="${data}" class="img-thumbnail" width="50px" height="50px" onclick="fbox('${row.product_name}','${data}')" />`;
         },
       },
+      { data: "code", title: "Code" },
       { data: "product_name", title: "Name" },
       { data: "product_alias", title: "Alias" },
       { data: "brand_name", title: "Brand" },

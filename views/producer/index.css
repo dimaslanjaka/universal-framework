@@ -1,0 +1,108 @@
+.dataTables_wrapper {
+  /*
+  Esto es opcional pero sirve para que todos los botones de exportacion se distribuyan de manera equitativa usando flexbox
+
+  .flexcontent {
+    display: flex;
+    justify-content: space-around;
+  }
+  */
+}
+.dataTables_wrapper :after,
+.dataTables_wrapper :before {
+  box-sizing: border-box;
+}
+.dataTables_wrapper a {
+  color: #337ab7;
+  text-decoration: none;
+}
+.dataTables_wrapper i {
+  margin-bottom: 4px;
+}
+.dataTables_wrapper .btn {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.dataTables_wrapper .btn-app {
+  color: white;
+  box-shadow: none;
+  border-radius: 3px;
+  position: relative;
+  padding: 10px 15px;
+  margin: 0;
+  min-width: 60px;
+  max-width: 80px;
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+  font-size: 12px;
+  transition: all 0.2s;
+  background-color: steelblue !important;
+}
+.dataTables_wrapper .btn-app > .fa,
+.dataTables_wrapper .btn-app > .glyphicon,
+.dataTables_wrapper .btn-app > .ion {
+  font-size: 30px;
+  display: block;
+}
+.dataTables_wrapper .btn-app:hover {
+  border-color: #aaa;
+  transform: scale(1.1);
+}
+.dataTables_wrapper .pdf {
+  background-color: #dc2f2f !important;
+}
+.dataTables_wrapper .excel {
+  background-color: #3ca23c !important;
+}
+.dataTables_wrapper .csv {
+  background-color: #e86c3a !important;
+}
+.dataTables_wrapper .imprimir {
+  background-color: #8766b1 !important;
+}
+.dataTables_wrapper .visibility {
+  background-color: #0ea584 !important;
+}
+.dataTables_wrapper .add {
+  background-color: #27a50e !important;
+}
+.dataTables_wrapper .selectTable {
+  height: 40px;
+  float: right;
+}
+.dataTables_wrapper div.dataTables_wrapper div.dataTables_filter {
+  text-align: left;
+  margin-top: 15px;
+}
+.dataTables_wrapper .btn-secondary {
+  color: #fff;
+  background-color: #4682b4;
+  border-color: #4682b4;
+}
+.dataTables_wrapper .btn-secondary:hover {
+  color: #fff;
+  background-color: #315f86;
+  border-color: #545b62;
+}
+.dataTables_wrapper .titulo-tabla {
+  color: #606263;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.dataTables_wrapper .inline {
+  display: inline-block;
+  padding: 0;
+}

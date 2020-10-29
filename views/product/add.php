@@ -1,6 +1,7 @@
 <div class="container">
   <form action="" method="post">
     <input type="hidden" name="image" id="image2up" placeholder="this is real image uploader">
+
     <div class="avatar-upload">
       <div class="avatar-edit">
         <input type='file' id="imageUpload" accept="image/*" />
