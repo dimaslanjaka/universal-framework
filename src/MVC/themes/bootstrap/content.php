@@ -12,6 +12,10 @@ $element = new HTML\element();
   <!-- Stylesheet -->
   <link href="<?= path2url(__DIR__ . '/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
   <style>
+    img:hover {
+      opacity: 0.7;
+    }
+
     main {
       min-height: 30rem;
     }

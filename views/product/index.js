@@ -119,12 +119,20 @@
     },
     order: [],
     columns: [
+      {
+        data: "product_image",
+        title: "Photo",
+        render: function (data, type, row) {
+          return `<img id="ImgBase64${row.product_id}" src="${data}" class="img-thumbnail" width="50px" height="50px" onclick="fbox('${row.product_name}','${data}')" />`;
+        },
+      },
       { data: "product_name", title: "Name" },
       { data: "product_alias", title: "Alias" },
       { data: "brand_name", title: "Brand" },
       { data: "categories_name", title: "Category" },
+      { data: "quantity", title: "Quantity" },
       {
-        data: "status",
+        data: "active",
         title: "Status",
         render: function (data, type, row, meta) {
           var activeStatus = "";
@@ -152,3 +160,27 @@
     ],
   });
 })();
+
+function fbox(caption, img) {
+  $.fancybox.open(
+    [
+      {
+        src: img,
+        opts: {
+          caption: caption,
+          thumb: img,
+        },
+      } /*,
+      {
+        src: "2_b.jpg",
+        opts: {
+          caption: "Second caption",
+          thumb: "2_s.jpg",
+        },
+      }, */,
+    ],
+    {
+      loop: false,
+    }
+  );
+}

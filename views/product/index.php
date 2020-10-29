@@ -9,6 +9,8 @@
           <th>Brand</th>
           <th>Category</th>
           <th>Status</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
     </table>
