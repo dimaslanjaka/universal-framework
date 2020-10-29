@@ -1,4 +1,5 @@
 <?php
+user()->login_required('/user/login');
 
 $sql = 'SELECT * FROM brands';
 if (isset($_REQUEST['search'])) {

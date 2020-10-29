@@ -1,4 +1,6 @@
 <?php
+user()->login_required('/user/login');
+
 $valid['success'] = ['success' => false, 'error' => true, 'messages' => []];
 if (isset($_POST['id'])) {
   $brandId = $_POST['id'];

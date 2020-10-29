@@ -1,4 +1,5 @@
 <?php
+user()->login_required('/user/login');
 
 if (!isset($_COOKIE['check_brands'])) {
   if (!pdo()->check_table("brands")) {

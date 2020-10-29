@@ -1,4 +1,6 @@
 <?php
+user()->login_required('/user/login');
+
 $valid['success'] = ['success' => false, 'messages' => []];
 
 if (isset($_POST['alias'], $_POST['name'], $_POST['image'])) {

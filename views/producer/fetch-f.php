@@ -1,4 +1,5 @@
 <?php
+user()->login_required('/user/login');
 
 $sql = 'SELECT * FROM producer'; // WHERE categories_status = 1
 if (isset($_REQUEST['search'])) {

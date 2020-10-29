@@ -114,7 +114,7 @@
       ],
     },
     ajax: {
-      url: "/product/fetch-product",
+      url: "/product/fetch",
       dataSrc: "",
     },
     order: [],

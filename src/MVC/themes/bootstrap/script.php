@@ -28,8 +28,9 @@
 <!-- /datatables -->
 
 <!-- select2 -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js'></script>
 <script>
+  // set default theme to bootstrap
   $.fn.select2.defaults.set("theme", "bootstrap");
 </script>
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'>
