@@ -243,7 +243,8 @@ class user
   {
     if ($this->is_login()) {
       if (class_exists('\Indosat\api')) {
-        $m3 = new \Indosat\api();
+        $class = '\Indosat\api';
+        $m3 = new $class();
         $m3->setdata('login', \ArrayHelper\helper::unset($_SESSION['login'], ['password']));
       }
       if ('all' == $what) {

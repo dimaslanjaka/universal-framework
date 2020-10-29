@@ -1,16 +1,20 @@
 <?php
 
+namespace User;
+
 $json = [];
-if (file_exists(__DIR__ . '/roles.json')) {
-  $json = json_decode(file_get_contents(__DIR__ . '/roles/json'), true);
+$configPath = __DIR__ . '/config/roles.json';
+
+if (file_exists($configPath)) {
+  $json = json_decode(file_get_contents($configPath), true);
 }
 if (empty($json)) {
-  $json['master'] = '*';
-  $json['manager'] = '*';
+  $json['superadmin'] = ['*'];
+  $json['manager'] = ['*'];
 }
 
 $json_string = json_encode($json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-file_put_contents(__DIR__ . '/roles.json', $json_string);
+file_put_contents($configPath, $json_string);
 
 
 class roles
