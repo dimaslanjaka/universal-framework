@@ -12,39 +12,7 @@ $element = new HTML\element();
   <!-- Stylesheet -->
   <link href="<?= path2url(__DIR__ . '/bootstrap/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
   <style>
-    img:hover {
-      opacity: 0.7;
-    }
-
-    main {
-      min-height: 30rem;
-    }
-
-    .mini-footer {
-      text-align: center;
-      padding: 32px 0
-    }
-
-    .mini-footer p {
-      margin: 0;
-      line-height: 26px;
-      font-size: 15px;
-      color: #999
-    }
-
-    .mini-footer p a {
-      color: #5867dd
-    }
-
-    .mini-footer p a:hover {
-      color: #34bfa3
-    }
-
-    [disabled] {
-      pointer-events: none;
-      color: #c0c0c0;
-      cursor: not-allowed;
-    }
+    <?php include __DIR__ . '/custom/custom.min.css' ?>
   </style>
 </head>
 
@@ -55,16 +23,31 @@ $element = new HTML\element();
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/brand">Brand</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Warehouses
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/warehouses">Main</a>
+            <a class="dropdown-item" href="/warehouses/login">Login</a>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/categories">Categories</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/product">Product</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Product</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/product">Main Products</a>
+            <a class="dropdown-item" href="/product/items">Product Items</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/product/in">Product In</a>
+            <a class="dropdown-item" href="/product/out">Product Out</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/categories">Product Categories</a>
+            <a class="dropdown-item" href="/brands">Product Brands</a>
+          </div>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/producer">Producer</a>

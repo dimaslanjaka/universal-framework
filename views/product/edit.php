@@ -6,7 +6,7 @@ if (isset($_GET['id'])) {
   <div class="container">
     <form action="#save" method="post">
       <input type="hidden" name="id" value="<?= $query['result'][0]['product_id'] ?>">
-      <input type="hidden" name="image" id="image2up" placeholder="this is real image uploader">
+      <input type="hidden" name="image" id="image2up" placeholder="this is real image uploader" value="<?= $query['result'][0]['product_image'] ?>">
 
       <div class="avatar-upload">
         <div class="avatar-edit">
