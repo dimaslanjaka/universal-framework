@@ -64,3 +64,15 @@ jobs:
 
       - run: cp config-backup.json config.json
       - run: npm run build
+      - run:
+          name: "What branch am I on now?"
+          command: echo $CIRCLE_BRANCH
+      - run:
+          name: "What was my custom environment variable?"
+          command: echo ${MY_ENV_VAR}
+      - run:
+          name: "Print an env var stored in the Project"
+          command: echo ${PROJECT_ENV_VAR}
+      - run:
+          name: "Print an env var stored in a Context"
+          command: echo ${CONTEXT_ENV_VAR}
