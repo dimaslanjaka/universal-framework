@@ -61,5 +61,4 @@ jobs:
           paths:
             - node_modules
 
-      - run: yarn add global typescript gulp
-      - run: gulp build
+      - run: npm run build
