@@ -16,6 +16,28 @@ const config = {
 
 const ftpClient = new FtpClient();
 
+ftpClient.on("ready", () => {
+  // Get an array of all files and directories
+  // in the given base path and send them to the
+  // `handlePath()` function to decide if a
+  // directory is created on the server or the
+  // file is uploaded.
+  glob.sync(`${basePath}/**/*`).forEach(handlePath);
+});
+
+ftpClient.connect(config);
+
+const EXPIRATION_DATE_IN_DAYS = 7;
+
+function isExpired(date) {
+  const oneDayInMilliseconds = 86400000;
+  const timestamp = new Date(date).getTime();
+  const expirationTimestamp =
+    Date.now() - oneDayInMilliseconds * EXPIRATION_DATE_IN_DAYS;
+
+  return timestamp < expirationTimestamp;
+}
+
 function createDirectory(destination) {
   return ftpClient.mkdir(destination, true, (error) => {
     if (error) throw error;
@@ -47,14 +69,3 @@ function handlePath(path) {
 
   return uploadFile(path, destination);
 }
-
-ftpClient.on("ready", () => {
-  // Get an array of all files and directories
-  // in the given base path and send them to the
-  // `handlePath()` function to decide if a
-  // directory is created on the server or the
-  // file is uploaded.
-  glob.sync(`${basePath}/**/*`).forEach(handlePath);
-});
-
-ftpClient.connect(config);
