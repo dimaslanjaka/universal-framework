@@ -1,10 +1,7 @@
 import fs from "fs";
-import upath from "upath";
 import log from "./log";
-import filemanager from "./filemanager";
 //shared packages.json
 
-import axios from "axios";
 const { exec } = require("child_process");
 
 const root_pkg: {
@@ -17,10 +14,8 @@ Object.assign(packages, root_pkg.dependencies, root_pkg.devDependencies);
 var TypesLists = [];
 var types = [];
 var already = [];
-var exclude = ["animate.css"];
 for (const key in packages) {
   if (packages.hasOwnProperty(key)) {
-    const version = packages[key];
     if (!key.includes("@types")) {
       TypesLists.push(key);
       types.push(`@types/${key}`);

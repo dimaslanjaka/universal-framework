@@ -243,7 +243,8 @@ class user
   {
     if ($this->is_login()) {
       if (class_exists('\Indosat\api')) {
-        $m3 = new \Indosat\api();
+        $class = '\Indosat\api';
+        $m3 = new $class();
         $m3->setdata('login', \ArrayHelper\helper::unset($_SESSION['login'], ['password']));
       }
       if ('all' == $what) {
@@ -324,6 +325,12 @@ class user
     $this->pdo->SQL_Exec($q, ['id' => $id]);
   }
 
+  /**
+   * Check user is logged in or redirect them
+   *
+   * @param string $redirect
+   * @return void
+   */
   public function login_required(string $redirect = '/signin')
   {
     if (!$this->is_login()) {
@@ -339,6 +346,12 @@ class user
   public function get_dbname()
   {
     return $this->pdo->query('select database()')->row_array();
+  }
+
+  public function generate_password($password)
+  {
+    $crypt = new crypt();
+    return $crypt->encrypt('dimaslanjaka', $password);
   }
 
   public function login($username, $password)

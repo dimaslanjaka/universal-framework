@@ -6,9 +6,10 @@ use JSON\json;
 use MVC\Exception;
 use PDO as GlobalPDO;
 use PDOException;
+use mysqli;
 
 /*
- function SQL_Connect    ($user, $pass, $db, $host = "localhost", $charset = "utf8mb4");
+ function SQL_Connect    ($user, $pass, $dbname, $host = "localhost", $charset = "utf8mb4");
  function SQL_Exec       ($pdo, $query, $values = false);
  function SQL_Fetch      ($pdo, $query, $values = false);
  function SQL_MultiFetch ($pdo, $query, $values = false);
@@ -52,19 +53,102 @@ class pdo
   protected $hostdb;
   protected $charsetdb;
   /**
+   * MYSQLI Instance
+   *
+   * @var mysqli
+   */
+  protected $mysqli;
+  /**
+   * Shimmer MySQL
+   *
+   * @var \UniversalFramework\MySQL
+   */
+  protected $shimmer;
+  /**
    * PDO instance.
    *
    * @var GlobalPDO
    */
   protected $pdo;
 
-  public function __construct($user = null, $pass = null, $db = null, $host = 'localhost', $charset = 'utf8mb4')
+  public function __construct($user = null, $pass = null, $dbname = null, $host = 'localhost', $charset = 'utf8mb4')
   {
-    if (!empty($user) && !empty($db)) {
-      $this->connect($user, $pass, $db, $host, $charset);
+    if (!empty($user) && !empty($dbname)) {
+      $this->connect($user, $pass, $dbname, $host, $charset);
     } else {
       exit('Database wrong ' . json_encode(func_get_args()));
     }
+  }
+
+  /**
+   * Get enum or set value as associative arrays
+   *
+   * @param string $table
+   * @param string $field
+   * @return array
+   */
+  public function get_enum_set_values($table, $field)
+  {
+    $type = $this->pdo
+      ->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")->fetch();
+    if (isset($type['Type'])) {
+      preg_match("/^(enum|set)\(\'(.*)\'\)$/", $type['Type'], $matches);
+      if (isset($matches[2])) {
+        $enum = explode("','", $matches[2]);
+        return $enum;
+      }
+    }
+    return [];
+  }
+  //UPDATE `roles` SET `allow` = 'edit-categories,edit-user,add-user' WHERE `roles`.`id` = 1;
+  public function set_multiple_value(string $table, string $field, array $values, string $where)
+  {
+    $combine = implode(',', $values);
+
+    $sql = "UPDATE `$table` SET `$field` = '$combine' $where;";
+  }
+
+  /**
+   * Add value to SET field
+   *
+   * @param string $table
+   * @param string $field
+   * @param string $new_value
+   * @return array
+   */
+  public function add_set_value(string $table, string $field, $new_value)
+  {
+    $sets = ["'$new_value'"];
+    foreach ($this->get_enum_set_values($table, $field) as $value) {
+      $sets[] = "'$value'";
+    }
+    ksort($sets);
+    $combine = implode(',', array_unique($sets));
+    $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+    return $this->query($sql)->exec();
+  }
+
+  /**
+   * Remove value from SET field
+   *
+   * @param string $table
+   * @param string $field
+   * @param string $old_value
+   * @return array
+   */
+  public function remove_set_value(string $table, string $field, $old_value)
+  {
+    $sets = [];
+    foreach ($this->get_enum_set_values($table, $field) as $value) {
+      $sets[] = "'$value'";
+    }
+    if (isset($sets[$old_value])) {
+      unset($set[$old_value]);
+    }
+    ksort($sets);
+    $combine = implode(',', array_unique($sets));
+    $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+    return $this->query($sql)->exec();
   }
 
   /**
@@ -77,6 +161,16 @@ class pdo
     $check = $this->query("SHOW TABLES LIKE '$table';")->row_array();
 
     return !empty($check);
+  }
+
+  /**
+   * Get mysqli instances
+   *
+   * @return mysqli
+   */
+  public function mysqli()
+  {
+    return $this->mysqli;
   }
 
   /**
@@ -96,19 +190,19 @@ class pdo
   /**
    * Connect PDO.
    *
-   * @param string $user
-   * @param string $pass
-   * @param string $db
-   * @param string $host
-   * @param string $charset
+   * @param string $user database user
+   * @param string $pass database password
+   * @param string $dbname database name
+   * @param string $host database host
+   * @param string $charset database charset
    *
    * @return \PDO
    */
-  public function connect($user, $pass, $db, $host = 'localhost', $charset = 'utf8mb4')
+  public function connect($user, $pass, $dbname, $host = 'localhost', $charset = 'utf8mb4')
   {
     $this->userdb = $user;
     $this->passdb = $pass;
-    $this->namedb = $db;
+    $this->namedb = $dbname;
     $this->hostdb = $host;
     $this->charsetdb = $charset;
     $options = [
@@ -122,7 +216,9 @@ class pdo
 
     $pdo = null;
     try {
-      $pdo = new GlobalPDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass, $options);
+      $pdo = new GlobalPDO("mysql:host=$host;dbname=$dbname;charset=$charset", $user, $pass, $options);
+      $this->mysqli = new mysqli($host, $user, $pass, $dbname);
+      $this->shimmer = new \UniversalFramework\MySQL($this->mysqli);
     } catch (PDOException $e) {
       exit($e->getMessage());
       $this->SQL_Error($e);
@@ -130,6 +226,16 @@ class pdo
     $this->pdo = $pdo;
 
     return $pdo;
+  }
+
+  /**
+   * Get mysql shimmer instances
+   *
+   * @return \UniversalFramework\MySQL
+   */
+  function shimmer()
+  {
+    return $this->shimmer;
   }
 
   /**
@@ -361,6 +467,24 @@ class pdo
     }
 
     return $this;
+  }
+
+  /**
+   * Fetch from Queries ($this->query)
+   *
+   * @return array $var['result'] for result
+   */
+  public function fetch()
+  {
+    $result = ['query' => $this->query, 'error' => true];
+    /**
+     * @var statement
+     */
+    $stmt = $this->pdo->prepare($this->query);
+    $result['error'] = !$stmt->execute();
+    $result['result'] = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    return $result;
   }
 
   public function execute(array $value = [])
@@ -647,6 +771,21 @@ class pdo
       //var_dump('error true');
       $this->SQL_Error($e, $query);
     }
+  }
+
+  /**
+   * Reset auto increment value for max id from it's table
+   *
+   * @param string $tablename
+   * @return void
+   */
+  public function resetAutoIncrement(string $tablename)
+  {
+    $sql = "SELECT @max := MAX(ID)+ 1 FROM $tablename;
+    PREPARE stmt FROM 'ALTER TABLE $tablename AUTO_INCREMENT = ?';
+    EXECUTE stmt USING @max;
+    DEALLOCATE PREPARE stmt;";
+    $this->query($sql)->exec();
   }
 
   /**

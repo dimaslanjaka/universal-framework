@@ -8,3 +8,4 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   }
 }
 module.exports.localStorage = localStorage;
+module.exports.LocalStorage = this.LocalStorage;

@@ -1,9 +1,10 @@
 <?php
 
-namespace Google;
+namespace GoogleExt;
 
 use Filemanager\file;
-use Google_Client;
+//use Google_Client;
+use Google\Client as Google_Client;
 
 class client extends Google_Client
 {
@@ -158,9 +159,8 @@ class client extends Google_Client
    */
   public function check_subscriber(string $cid = 'UCGNaoefvJRfd15fo-LQ0zvg', bool $only_get_url = false)
   {
-    $client = $this;
     if (!$only_get_url) {
-      $service = new \Google_Service_YouTube($client);
+      $service = new \Google_Service_YouTube($this);
       $response = $service->subscriptions->listSubscriptions(
         'snippet,contentDetails',
         array_filter(['forChannelId' => $cid, 'mine' => true])

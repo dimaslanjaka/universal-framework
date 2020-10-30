@@ -9,6 +9,7 @@ config-m3.php
 /config-tsel.php
 /config-m3.php
 darkit.sql
+/exclude
 
 # Ignore trash from hashing
 hash_*

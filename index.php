@@ -69,12 +69,15 @@ $template = get_conf()['app']['theme'];
  * @todo exclude default template from scopes
  */
 $template_stack = [];
-foreach ($template as $key => $value) {
-  if ('default' == $key) {
-    continue;
+if (!empty($template)) {
+  foreach ($template as $key => $value) {
+    if ('default' == $key) {
+      continue;
+    }
+    $template_stack[$key] = $value;
   }
-  $template_stack[$key] = $value;
 }
+
 // Set template by zone divider
 $theme->setThemeByZones(
   $template_stack,
@@ -121,6 +124,7 @@ if (!realpath($view)) {
   // if file not exists return 400 bad request
   http_response_code(400);
   $basename = basename($view, '.php');
+
   /**
    * next index finder.
    */
@@ -152,6 +156,14 @@ if (!realpath($view)) {
       $check_prev_index = substr($check_prev_index, $pos_views + strlen('/etc'));
     }
     die($router->redirect($check_prev_index));
+  }
+
+  // check if form controller is exist, then include them without rendering template
+  $form_c = substr($view, 0, -4) . '-f.php';
+  if (file_exists($form_c)) {
+    http_response_code(200);
+    include $form_c;
+    die();
   }
 
   // exit now
@@ -202,324 +214,9 @@ if (!realpath($view)) {
   if (!CORS) {
     //echo showAlert('bottom');
   }
-  if ($no_cache || $cors || $refreshCache || $is_hard_reload || $cache_expired) {
-    // disabled cache mode
-    header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    return render($theme);
-  } else {
-    // enabled cache mode
-    header('Cache-Status: true(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
+  // No Cache Mode
+  header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    return load_cache(page_cache(), $theme);
-  }
-}
-
-/**
- * Get current theme instance
- *
- * @return \MVC\themes
- */
-function theme()
-{
-  global $theme;
-  return $theme;
-}
-
-function showAlert($position)
-{
-  return '<div class="alert-' . $position . ' alert alert-danger">
-	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	<strong>Sorry!</strong> Jika anda melihat tulisan ini, kami sedang melakukan pemeliharaan sistem. Jangan melakukan transaksi apapun sebelum tulisan ini <b>menghilang</b>. Agar tidak terjadi hal yang tidak diinginkan
-  </div>';
-}
-
-/**
- * Identify cached page by hour
- *
- * @param integer $hour
- * @return bool
- */
-function cache_expired(int $hour = 24)
-{
-  $file_indicator = normalize_path(page_cache());
-
-  if (file_exists($file_indicator)) {
-    $is_24hours = time() - filemtime($file_indicator) > $hour * 3600;
-    if ($is_24hours) {
-      \Filemanager\file::delete($file_indicator);
-
-      return true;
-    } else {
-      return false; // cache valid
-    }
-  } else {
-    return true;
-  }
-}
-
-/**
- * Render theme
- *
- * @param \MVC\themes $theme
- * @return void
- */
-function render(\MVC\themes $theme)
-{
-  //global $theme;
-  // render view in theme
-  $theme->render();
-
-  if (!CORS && $theme->meta['theme']) {
-    process_page($theme->meta['obfuscate'], $theme);
-    if ('development' == get_env() && $theme->meta['theme']) {
-      echo '<!--' . get_includes() . '-->';
-    }
-  }
-}
-
-/**
- * Process page to using obfuscate mode or not
- *
- * @param boolean $obfuscatejs
- * @param \MVC\themes $theme
- * @return void
- */
-function process_page(bool $obfuscatejs, \MVC\themes $theme)
-{
-  //global $theme;
-  $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
-  $dom->preserveWhiteSpace = true;
-  $dom->formatOutput = true;
-
-  $c = ob_get();
-
-  if (!$dom->loadHTML($c)) {
-    \HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
-    echo $c;
-
-    return;
-  }
-
-  $xpath = new SmartDOMXpath($dom);
-  $title = getTitle($dom);
-
-  $scripts = $xpath->query('//script');
-  if (!empty($scripts)) {
-    foreach ($scripts as $script) {
-      if ($script->hasAttribute('type') && 'application/ld+json' == $script->getAttribute('type')) {
-        $script->innerHTML = json_encode(json_decode(innerHTML($script)));
-      }
-    }
-  }
-
-  $imgs = $xpath->query('//img');
-  if (!empty($imgs)) {
-    foreach ($imgs as $img) {
-      if (!$img->hasAttribute('title')) {
-        $img->setAttribute('title', $title);
-      }
-      if (!$img->hasAttribute('alt')) {
-        $img->setAttribute('alt', $title);
-      }
-      if (!$img->hasAttribute('rel')) {
-        $img->setAttribute('rel', 'image');
-      }
-    }
-  }
-
-  $styles = $xpath->query('//style');
-  if (!empty($styles)) {
-    foreach ($styles as $style) {
-      $style->innerHTML = trim(mincss(innerHTML($style)));
-    }
-  }
-
-  $textareas = $xpath->query('//textarea');
-  if (!empty($textareas)) {
-    foreach ($textareas as $area) {
-      $inner = trim(html_entity_decode($area->innerHTML));
-      if (is_json(trim($inner))) {
-        $area->setAttribute('innerhtml', base64_encode(\JSON\json::json($inner, false, false)));
-      }
-    }
-  }
-
-  $result = $dom->saveHTML();
-  $result = prefilter(htmlmin($result));
-  resolve_dir(dirname(page_cache()));
-  \Filemanager\file::file(page_cache(), $result, true);
-  /**
-   * @var string Load admin toolbox
-   */
-  $result = str_replace('</html>', '', $result);
-  echo $result;
-  $theme->load_admin_tools();
-
-  echo '</html>';
-}
-
-$syntaxHighlighter = null;
-/**
- * Fix <pre/> syntax highlight
- *
- * @param string $c
- * @return string
- */
-function prefilter(string $c)
-{
-  global $syntaxHighlighter;
-  $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
-  $dom->preserveWhiteSpace = true;
-  $dom->formatOutput = false;
-
-  if (!$dom->loadHTML($c)) {
-    \HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
-    echo $c;
-
-    return;
-  }
-
-  $xpath = new SmartDOMXpath($dom);
-
-  $title = getTitle($dom);
-  $pres = $xpath->query('//pre');
-  if (!empty($pres)) {
-    foreach ($pres as $pre) {
-      if (is_json($pre->innerHTML)) {
-        $pre->innerHTML = \JSON\json::beautify(json_decode($pre->innerHTML));
-        if (!$syntaxHighlighter) {
-          $syntaxHighlighter = true;
-          insertBodyFirst($xpath, createScript($dom, ['src' => '/assets/highlight.js/loader.js', 'cache' => 'true']));
-        }
-        if (empty(trim($pre->getAttribute('class')))) {
-          $pre->setAttribute('class', 'json');
-        }
-      }
-      if (empty(trim($pre->getAttribute('title')))) {
-        $pre->setAttribute('title', $title);
-      }
-    }
-  }
-
-  $textareas = $xpath->query('//textarea');
-  if (!empty($textareas)) {
-    foreach ($textareas as $area) {
-      if ($area->hasAttribute('innerhtml')) {
-        $area->innerHTML = base64_decode($area->getAttribute('innerhtml'));
-        $area->removeAttribute('innerhtml');
-      }
-    }
-  }
-
-  return $dom->saveHTML();
-}
-
-/**
- * Get page identifier
- *
- * @return string
- */
-function identifier()
-{
-  return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
-}
-
-/**
- * Get page cache
- *
- * @return string
- */
-function page_cache()
-{
-  $path = ROOT . '/tmp/html/';
-  $path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
-  $path .= '/' . identifier();
-  $path .= '.html';
-  $path = normalize_path($path);
-
-  return $path;
-}
-
-/**
- * Minify HTML
- *
- * @param string $ori
- * @return string
- */
-function htmlmin(string $ori)
-{
-  //return preg_replace('/<!--.*?-->|\s+/s', ' ', $ori);
-  $no_tab = preg_replace('/\n|\t|\n+|\t+/m', '', $ori);
-  $no_comments = preg_replace('/<!--.*?-->/m', '', $no_tab);
-  $between_tags = preg_replace('/\>\s+\</', '><', $no_comments);
-
-  return $between_tags;
-}
-
-/**
- * Get All included files
- *
- * @return string|false|void
- */
-function get_includes()
-{
-  $included = array_values(array_filter(array_map(function ($arr) {
-    if (is_string($arr)) {
-      if (strpos($arr, 'vendor')) {
-        return '';
-      }
-    }
-
-    return $arr;
-  }, get_included_files())));
-  $included[] = 'total included files: ' . count(get_included_files());
-  $inc = \JSON\json::json($included, false, false);
-
-  return $inc;
-}
-
-/**
- * Load page cached
- *
- * @param string $page_cache
- * @return void
- */
-function load_cache(string $page_cache, \MVC\themes $theme)
-{
-  //global $theme, $alert;
-  $optimized_buffer = \Filemanager\file::get($page_cache);
-  $add = trim('<script>async_process(location.href);</script>');
-  /**
-   * @var string Load admin toolbox
-   */
-  $optimized_buffer = str_replace('</html>', $add, $optimized_buffer);
-  echo $optimized_buffer;
-  $theme->load_admin_tools();
-
-  echo '</html>';
-}
-
-/**
- * Minify inline css from buffer
- *
- * @param string $css
- * @return string
- */
-function mincss($css)
-{
-  $css = preg_replace('/\/\*[^*]*\*+([^\/][^*]*\*+)*\//m', '', $css); // remove comments in beautify css
-  $css = preg_replace('/\/\*((?!\*\/).)*\*\//', '', $css); // negative look ahead
-  $css = preg_replace('/\s{2,}/', ' ', $css);
-  $css = preg_replace('/\s*([:;{}])\s*/', '$1', $css);
-  $css = preg_replace('/;}/', '}', $css);
-  // clean whitespaces
-  /*$css = preg_replace(
-  "/(\t|\n|\v|\f|\r| |\xC2\x85|\xc2\xa0|\xe1\xa0\x8e|\xe2\x80[\x80-\x8D]|\xe2\x80\xa8|\xe2\x80\xa9|\xe2\x80\xaF|\xe2\x81\x9f|\xe2\x81\xa0|\xe3\x80\x80|\xef\xbb\xbf)+/",
-  "",
-  $css
-  );*/
-  $css = preg_replace('/\s+/m', ' ', $css);
-
-  return $css;
+  return render($theme);
 }

@@ -2,6 +2,13 @@
 <script src='/node_modules/toastr/build/toastr.min.js'></script>
 <link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
 <?php
 $element = new HTML\element();
 // datatables is defined

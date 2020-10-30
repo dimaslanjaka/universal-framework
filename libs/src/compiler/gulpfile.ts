@@ -1,6 +1,5 @@
 import * as gulp from "gulp";
 import ts from "gulp-typescript";
-import rename from "gulp-rename";
 import * as fs from "fs";
 import config from "../compiler/config";
 import upath from "upath";
@@ -8,17 +7,16 @@ import path from "path";
 import framework from "../compiler/index";
 import log from "../compiler/log";
 import process from "../compiler/process";
-import core from "./core";
 const root = process.root;
-import sass from "sass"; // or require('node-sass');
 import { exec, ExecException } from "child_process";
-import sourcemaps from "gulp-sourcemaps";
-import concat from "gulp-concat";
-import uglify from "gulp-uglify";
 import { localStorage } from "../node-localstorage/index";
-import browserify from "browserify";
-import browserify_source from "vinyl-source-stream";
-import { fixDeps, execute } from "./func";
+import { fixDeps } from "./func";
+//const spawn = require("child_process").spawn;
+//const argv = require("yargs").argv;
+import { argv } from "yargs";
+import { spawn } from "child_process";
+import * as proc from "process";
+
 localStorage.removeItem("compile");
 console.clear();
 
@@ -58,7 +56,7 @@ function build(withoutApp?: boolean) {
 }
 
 // watch libs/js/**/* and views
-gulp.task("watch", function () {
+gulp.task("watch", async function () {
   console.clear();
   const files = [
     "./libs/js/**/*",
@@ -113,18 +111,20 @@ gulp.task("watch", function () {
             }, 5000);
           }
         } else {
-          if (/\.(js|scss|css)$/s.test(file)) {
+          if (/\.(js|scss|css|less)$/s.test(file)) {
             if (!/\.min\.(js|css)$/s.test(file)) {
-              minify(file);
+              compileAssets(file);
             }
           } else if (file.endsWith(".ts") && !file.endsWith(".d.ts")) {
             if (!/libs\/|libs\\/s.test(file)) {
               single_tsCompile(file);
             }
           } else {
-            var reason = log.error(undefined);
-            if (/\.(php|log|txt|htaccess)$/s.test(filename_log)) {
-              reason = log.random("excluded");
+            var reason = log.error("undefined");
+            if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
+              reason = log.random("Excluded");
+            } else if (/\.(d\.ts)$/s.test(filename_log)) {
+              reason = log.random("Typehint");
             }
             log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
           }
@@ -157,42 +157,31 @@ gulp.task("assets-compile", function () {
 
 gulp.task("default", gulp.series(["build", "watch"]));
 
-/**
- * NodeJS to Browserify
- * @param target source javascript
- * @param destination destination folder
- * @param rename want to rename file ? give name or using default basename of target
- */
-function node2browser(target?: string, destination?: string, rename?: string) {
-  if (typeof rename != "string" || !rename || !rename.length) {
-    rename = path.basename(target);
+export function reload_gulp() {
+  //spawn("gulp", ["watch"], { stdio: "inherit" });
+  //proc.exit();
+
+  if (proc.env.process_restarting) {
+    delete proc.env.process_restarting;
+    // Give old process one second to shut down before continuing ...
+    //setTimeout(reload_gulp, 1000);
+    reload_gulp();
+    proc.exit();
+    return;
   }
 
-  log.log(
-    `Browserify ${log
-      .chalk()
-      .magentaBright(framework.filelog(target))} to ${log
-      .chalk()
-      .magentaBright(framework.filelog(destination))} renamed to ${log.success(
-      rename
-    )}`
-  );
-  return (
-    browserify()
-      .add(target) //"src/MVC/themes/assets/js/app.js"
-      .bundle()
-      //Pass desired output filename to vinyl-source-stream
-      .pipe(browserify_source(rename)) //"app.js"
-      // Start piping stream to tasks!
-      .pipe(gulp.dest(destination))
-  ); //"src/MVC/themes/assets/js/"
+  // Restart process ...
+  spawn(proc.argv[0], proc.argv.slice(1), {
+    env: { process_restarting: "1" },
+    stdio: "ignore",
+  }).unref();
 }
 
 /**
- * minify assets
- * @param file
+ * compile and minify assets
+ * @param item file full path
  */
-export function minify(item: string | Buffer): any {
+export function compileAssets(item: string | Buffer): any {
   const exists = fs.existsSync(item);
   if (exists) {
     item = item.toString();
@@ -208,17 +197,25 @@ export function minify(item: string | Buffer): any {
     if (fs.existsSync(config)) {
       config = require(config);
     }
-    if (item.endsWith(".scss") && !item.endsWith(".min.scss")) {
+
+    if (item.endsWith(".less") && !item.endsWith(".min.less")) {
+      //console.log(`Compiling LESS ${framework.filelog(item)}`);
+      framework.less(item);
+    } else if (item.endsWith(".scss") && !item.endsWith(".min.scss")) {
+      //console.log(`Compiling SCSS ${framework.filelog(item)}`);
       framework.scss(item);
     } else if (item.endsWith(".css") && !item.endsWith(".min.css")) {
+      //console.log(`Minify CSS ${framework.filelog(item)}`);
       framework.minCSS(item);
     } else if (item.endsWith(".js") && !item.endsWith(".min.js")) {
       if (!item.endsWith(".babel.js")) {
+        //console.log(`Minify JS ${framework.filelog(item)}`);
         framework.minJS(item);
         var deleteObfuscated = false;
         if (typeof config == "object") {
           if (config.hasOwnProperty("obfuscate")) {
             if (config.obfuscate) {
+              //console.log(`Obfuscating JS ${framework.filelog(item)}`);
               framework.obfuscate(item);
             } else {
               deleteObfuscated = true;
@@ -261,14 +258,16 @@ export function views() {
 }
 
 /**
- * minify multiple assets
+ * compileAssets multiple assets
  * @param assets
  */
 export function multiMinify(assets: any[]): any {
-  assets.map(minify);
+  assets.map(compileAssets);
 }
 
 localStorage.removeItem("compile");
+
+var isFirstExecute = true;
 /**
  * Create App.js
  * @param withoutView false to not compile views javascripts
@@ -296,7 +295,7 @@ export async function createApp(withoutView: boolean) {
       }
     );
     //await node2browser(target, path.dirname(target));
-    await minify(target);
+    await compileAssets(target);
     if (!withoutView) {
       await multiMinify(views());
     }
@@ -304,6 +303,12 @@ export async function createApp(withoutView: boolean) {
     /*execute(
       "browserify --standalone Bundle ./src/MVC/themes/assets/js/app.js -o ./src/MVC/themes/assets/js/app.min.js && browserify --standalone Bundle ./src/MVC/themes/assets/js/app.js -o ./src/MVC/themes/assets/js/app.js"
     );*/
+
+    if (!isFirstExecute) {
+      // reload gulp
+      reload_gulp();
+    }
+    isFirstExecute = false;
   } else {
     log.log(
       log.error("Compiler lock process already exists ") +
@@ -325,7 +330,6 @@ export function single_tsCompile(target: string) {
     return;
   }
   var dest = path.dirname(target);
-  var filename = path.basename(target);
   log.log(
     `${targetlog} > ${log
       .chalk()

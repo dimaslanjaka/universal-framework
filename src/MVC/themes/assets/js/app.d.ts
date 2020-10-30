@@ -111,7 +111,7 @@ declare class Cookies {
  * @param {string} passphrase
  * @param {string} salt
  */
-declare function getKey(passphrase: string, salt: string): CryptoJS.WordArray;
+declare function getKey(passphrase: string, salt: string): CryptoJS.lib.WordArray;
 /**
  * Encrypt function
  * @param {string} passphrase
@@ -129,7 +129,7 @@ declare function userJSDecrypt(passphrase: string, encryptedText: string): strin
  * @param {String} passphrase
  * @param {String} salt
  */
-declare function CryptoK(passphrase: string, salt: string): CryptoJS.WordArray;
+declare function CryptoK(passphrase: string, salt: string): CryptoJS.lib.WordArray;
 /**
  * Crypto encrypt
  * @param {String} passphrase
@@ -319,6 +319,11 @@ declare function AjaxForm(): void;
  * @param source_cache url
  */
 declare function async_process(source_cache: string): void;
+/**
+ * default ajax jquery request with unique ID
+ * @param settings Jquery ajax settings
+ */
+declare function jAjax(settings: JQueryAjaxSettings): JQuery.jqXHR<any>;
 declare var AjaxSchedulerInit: NodeJS.Timer;
 declare var AjaxSchedulerRequests: Array<any>;
 declare var AjaxSchedulerRunning: Boolean;
@@ -757,17 +762,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
+    "160": string;
+    "161": string;
+    "162": string;
+    "163": string;
+    "164": string;
+    "165": string;
+    "166": string;
+    "167": string;
+    "168": string;
+    "169": string;
+    "8364": string;
 };
 /**
  * php equivalent http_build_query
@@ -908,57 +913,20 @@ declare function recaptcha(): {
      */
     reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
 };
-declare var reCaptcha: {
-    /**
-     * @type {Number} counter executions
-     */
-    gexec_count: number;
-    key: string;
-    /**
-     * Javascript caller
-     * @param {String} url
-     * @param {Function} callback
-     */
-    js: (url: string, callback: Function) => void;
-    /**
-     * Set recaptcha site key
-     * @param {String} key
-     */
-    set_key: (key: string) => void;
-    /**
-     * Start recaptcha
-     */
-    start: () => void;
-    /**
-     * Initialize Recaptcha by defining jquery
-     */
-    init: () => void;
-    retry_count: number;
-    /**
-     * load or refreshing google recaptcha
-     */
-    exec: (action: any, retry: any, callback: any) => void;
-    /**
-     * Insert reCaptcha Token
-     * @param {String} token
-     */
-    insert: (token: string) => void;
-    /**
-     * Distribute reCaptcha Token
-     * @param {String} token
-     */
-    distribute_token: (token: string) => void;
-    /**
-     * Get token recaptcha
-     */
-    get: () => string;
-    /**
-     * Button Controller
-     * @param {Boolean} reCaptcha_disable
-     * @param {Function} callback
-     */
-    reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
-};
+declare namespace reCaptcha {
+    const gexec_count: number;
+    const key: string;
+    function js(url: string, callback: Function): void;
+    function set_key(key: string): void;
+    function start(): void;
+    function init(): void;
+    const retry_count: number;
+    function exec(action: any, retry: any, callback: any): void;
+    function insert(token: string): void;
+    function distribute_token(token: string): void;
+    function get(): string;
+    function reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function): void;
+}
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 interface RequireConfig {
@@ -1029,7 +997,7 @@ declare function storage(): {
      * @param {String} key
      * @param {String|Array|Object} value
      */
-    set: (key: string, value: string | Array | any) => void;
+    set: (key: string, value: string | any[] | any) => void;
     /**
      * Check localstorage key exists
      * @param {String} key
@@ -1047,35 +1015,13 @@ declare function storage(): {
      */
     remove: (key: string) => void;
 };
-declare var STORAGE: {
-    /**
-     * get localstorage by key
-     * @param {String} key
-     */
-    get: (key: string) => any;
-    /**
-     * Set localstorage key value
-     * @param {String} key
-     * @param {String|Array|Object} value
-     */
-    set: (key: string, value: string | Array | any) => void;
-    /**
-     * Check localstorage key exists
-     * @param {String} key
-     */
-    has: (key: string) => boolean;
-    /**
-     * Extend or set localstorage key
-     * @param {String} key
-     * @param {String} value
-     */
-    extend: (key: string, value: string) => void;
-    /**
-     * Remove localstorage key
-     * @param {String} key
-     */
-    remove: (key: string) => void;
-};
+declare namespace STORAGE {
+    function get(key: string): any;
+    function set(key: string, value: any): void;
+    function has(key: string): boolean;
+    function extend(key: string, value: string): void;
+    function remove(key: string): void;
+}
 declare class ctable {
     private can_edit;
     private instance;

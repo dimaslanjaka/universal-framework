@@ -307,3 +307,25 @@ function async_process(source_cache: string) {
     },
   });
 }
+
+/**
+ * default ajax jquery request with unique ID
+ * @param settings Jquery ajax settings
+ */
+function jAjax(settings: JQueryAjaxSettings) {
+  var defaultSet = {
+    headers: {
+      "Request-Date": new Date().getTime(),
+      "Request-Id": Math.floor(Math.random() * 99999999 + 1),
+    },
+    xhrFields: {
+      withCredentials: true,
+    },
+  };
+
+  Object.keys(defaultSet).forEach(function (key) {
+    settings[key] = defaultSet[key];
+  });
+
+  return $.ajax(settings);
+}

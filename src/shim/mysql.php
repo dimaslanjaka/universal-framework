@@ -665,14 +665,29 @@ namespace {
 
 namespace UniversalFramework {
 
+  use mysqli;
+
   class MySQL
   {
     public static $last_connection = null;
     public static $connections = array();
 
+    function __construct(mysqli $sql)
+    {
+      static::$last_connection = $sql;
+    }
+
+    /**
+     * Get mysqli intances
+     *
+     * @param mysqli $link
+     * @param function $func
+     * @return false|mysqli
+     */
     public static function getConnection($link = null, $func = null)
     {
       if ($link !== null) {
+        static::$last_connection = $link;
         return $link;
       }
 

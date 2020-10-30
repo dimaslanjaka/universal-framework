@@ -1390,6 +1390,25 @@ function async_process(source_cache) {
         },
     });
 }
+/**
+ * default ajax jquery request with unique ID
+ * @param settings Jquery ajax settings
+ */
+function jAjax(settings) {
+    var defaultSet = {
+        headers: {
+            "Request-Date": new Date().getTime(),
+            "Request-Id": Math.floor(Math.random() * 99999999 + 1),
+        },
+        xhrFields: {
+            withCredentials: true,
+        },
+    };
+    Object.keys(defaultSet).forEach(function (key) {
+        settings[key] = defaultSet[key];
+    });
+    return $.ajax(settings);
+}
 var AjaxSchedulerInit = null;
 var AjaxSchedulerRequests = [];
 var AjaxSchedulerRunning = false;
@@ -2281,6 +2300,8 @@ function b64DecodeUnicode(str) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
+//import * as bootstrap from "bootstrap";
+//import $ from "jquery";
 if (!isnode()) {
     $(document).ready(function (e) {
         // element with onload
@@ -3968,9 +3989,13 @@ if (!(typeof module !== "undefined" && module.exports)) {
             var key = t.getIDName().toString();
             var type = $(this).attr("type");
             // begin restoration
-            if (key) {
+            if (key != null && key != "null" && key.length > 0) {
+                if (type == "file") {
+                    console.error("cannot set value of input file");
+                    return;
+                }
                 // checkbox input button
-                if (type === "checkbox") {
+                else if (type === "checkbox") {
                     item = JSON.parse(localStorage.getItem(key));
                     if (item === null) {
                         return;
