@@ -59,6 +59,12 @@ class pdo
    */
   protected $mysqli;
   /**
+   * Shimmer MySQL
+   *
+   * @var \UniversalFramework\MySQL
+   */
+  protected $shimmer;
+  /**
    * PDO instance.
    *
    * @var GlobalPDO
@@ -72,6 +78,77 @@ class pdo
     } else {
       exit('Database wrong ' . json_encode(func_get_args()));
     }
+  }
+
+  /**
+   * Get enum or set value as associative arrays
+   *
+   * @param string $table
+   * @param string $field
+   * @return array
+   */
+  public function get_enum_set_values($table, $field)
+  {
+    $type = $this->pdo
+      ->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")->fetch();
+    if (isset($type['Type'])) {
+      preg_match("/^(enum|set)\(\'(.*)\'\)$/", $type['Type'], $matches);
+      if (isset($matches[2])) {
+        $enum = explode("','", $matches[2]);
+        return $enum;
+      }
+    }
+    return [];
+  }
+  //UPDATE `roles` SET `allow` = 'edit-categories,edit-user,add-user' WHERE `roles`.`id` = 1;
+  public function set_multiple_value(string $table, string $field, array $values, string $where)
+  {
+    $combine = implode(',', $values);
+
+    $sql = "UPDATE `$table` SET `$field` = '$combine' $where;";
+  }
+
+  /**
+   * Add value to SET field
+   *
+   * @param string $table
+   * @param string $field
+   * @param string $new_value
+   * @return array
+   */
+  public function add_set_value(string $table, string $field, $new_value)
+  {
+    $sets = ["'$new_value'"];
+    foreach ($this->get_enum_set_values($table, $field) as $value) {
+      $sets[] = "'$value'";
+    }
+    ksort($sets);
+    $combine = implode(',', array_unique($sets));
+    $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+    return $this->query($sql)->exec();
+  }
+
+  /**
+   * Remove value from SET field
+   *
+   * @param string $table
+   * @param string $field
+   * @param string $old_value
+   * @return array
+   */
+  public function remove_set_value(string $table, string $field, $old_value)
+  {
+    $sets = [];
+    foreach ($this->get_enum_set_values($table, $field) as $value) {
+      $sets[] = "'$value'";
+    }
+    if (isset($sets[$old_value])) {
+      unset($set[$old_value]);
+    }
+    ksort($sets);
+    $combine = implode(',', array_unique($sets));
+    $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+    return $this->query($sql)->exec();
   }
 
   /**
@@ -141,6 +218,7 @@ class pdo
     try {
       $pdo = new GlobalPDO("mysql:host=$host;dbname=$dbname;charset=$charset", $user, $pass, $options);
       $this->mysqli = new mysqli($host, $user, $pass, $dbname);
+      $this->shimmer = new \UniversalFramework\MySQL($this->mysqli);
     } catch (PDOException $e) {
       exit($e->getMessage());
       $this->SQL_Error($e);
@@ -148,6 +226,16 @@ class pdo
     $this->pdo = $pdo;
 
     return $pdo;
+  }
+
+  /**
+   * Get mysql shimmer instances
+   *
+   * @return \UniversalFramework\MySQL
+   */
+  function shimmer()
+  {
+    return $this->shimmer;
   }
 
   /**
@@ -682,6 +770,21 @@ class pdo
       //var_dump('error true');
       $this->SQL_Error($e, $query);
     }
+  }
+
+  /**
+   * Reset auto increment value for max id from it's table
+   *
+   * @param string $tablename
+   * @return void
+   */
+  public function resetAutoIncrement(string $tablename)
+  {
+    $sql = "SELECT @max := MAX(ID)+ 1 FROM $tablename;
+    PREPARE stmt FROM 'ALTER TABLE $tablename AUTO_INCREMENT = ?';
+    EXECUTE stmt USING @max;
+    DEALLOCATE PREPARE stmt;";
+    $this->query($sql)->exec();
   }
 
   /**
