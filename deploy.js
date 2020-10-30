@@ -10,7 +10,7 @@ const config = {
   // our FTP server as environemnt
   // variables for security reasons.
   host: process.env.FTP_HOST,
-  password: process.env.FTP_PASSWORD,
+  password: process.env.FTP_PASS,
   user: process.env.FTP_USER,
 };
 

@@ -5,6 +5,7 @@
 version: 2
 jobs:
   build:
+    context: General
     docker:
       # Specify the version you desire here
       - image: circleci/php:7.4-node-browsers
