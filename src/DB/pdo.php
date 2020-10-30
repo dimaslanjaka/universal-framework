@@ -481,8 +481,9 @@ class pdo
      * @var statement
      */
     $stmt = $this->pdo->prepare($this->query);
-    $stmt->execute();
+    $result['error'] = !$stmt->execute();
     $result['result'] = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
     return $result;
   }
 
