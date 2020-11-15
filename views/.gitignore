@@ -1,5 +1,5 @@
 *
-!test.php
+!test/
 !superuser/
 !superuser/**/*
 !office/
