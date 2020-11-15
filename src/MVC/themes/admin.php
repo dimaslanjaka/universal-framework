@@ -1,5 +1,5 @@
 <?php
-$user = new \User\user();
+$user = user();
 if (!$user->is_admin() || !isset($Config)) {
   return;
 }

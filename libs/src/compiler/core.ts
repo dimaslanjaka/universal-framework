@@ -148,6 +148,24 @@ class core {
   }
 
   /**
+   * transform *.browserify to .js
+   * @param filename filepath
+   */
+  static browserify(filename: string) {
+    const self = this;
+    const exists = fs.existsSync(filename);
+    if (exists) {
+      const output = filename.toString().replace(/\.browserify/s, ".js");
+      exec(`browserify ${filename} -o ${output}`);
+      log.log(
+        `${self.filelog(filename.toString())} > ${self.filelog(
+          output.toString()
+        )} ${log.success("success")}`
+      );
+    }
+  }
+
+  /**
    * Compile filename.scss to filename.css and filename.min.css
    * @param filename
    */
@@ -212,7 +230,7 @@ class core {
         .render(source, { sourceMap: { sourceMapFileInline: true } })
         .then(function (output) {
           fs.writeFileSync(outputcss, output.css, { encoding: "utf-8" });
-          console.log(
+          log.log(
             `${log
               .chalk()
               .hex("#1d365d")

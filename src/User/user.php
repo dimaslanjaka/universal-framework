@@ -31,7 +31,7 @@ class user
   private $pdo = null;
   private $db = ['user', 'pass', 'dbname', 'host', 'charset'];
 
-  public function __construct($user = 'root', $pass = '', $db = 'darkit', $host = 'localhost', $charset = 'utf8mb4')
+  public function __construct($user = 'root', $pass = '', $db, $host = 'localhost', $charset = 'utf8mb4')
   {
     if (!empty($user) && !empty($db)) {
       $this->db = [
@@ -47,6 +47,7 @@ class user
     if (!$GLOBALS['user_instance']) {
       $GLOBALS['user_instance'] = $this;
     }
+    user::$_instance = $this;
   }
 
   /**
@@ -108,7 +109,7 @@ class user
   {
     if ($pdo) {
       $this->pdo = $pdo;
-      //$this->db['use'] = $pdo->getDa
+      self::$_instance = $this;
     }
 
     return $this->pdo;
@@ -122,10 +123,19 @@ class user
   public static function getInstance()
   {
     if (null === self::$_instance) {
-      self::$_instance = new self();
+      if (defined('CONFIG')) {
+        self::$_instance = new self(CONFIG['database']['user'], CONFIG['database']['pass'], CONFIG['database']['dbname'], CONFIG['database']['host']);
+      } else {
+        self::$_instance = new self(null, null, null, null, null);
+      }
     }
 
     return self::$_instance;
+  }
+
+  public static function setInstance(\User\user $user)
+  {
+    self::$_instance = $user;
   }
 
   /**
@@ -329,13 +339,14 @@ class user
    * Check user is logged in or redirect them
    *
    * @param string $redirect
-   * @return void
+   * @return $this
    */
   public function login_required(string $redirect = '/signin')
   {
     if (!$this->is_login()) {
       \MVC\router::safe_redirect($redirect);
     }
+    return $this;
   }
 
   /**

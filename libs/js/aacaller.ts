@@ -1,4 +1,4 @@
-var isNode = false;
+var isNode = typeof process === "object" && typeof window === "undefined";
 var root: any;
 declare var global: any;
 
@@ -22,6 +22,27 @@ declare var global: any;
  */
 function isnode() {
   return isNode;
+}
+
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+function getNativeClass(obj: any) {
+  if (typeof obj === "undefined") return "undefined";
+  if (obj === null) return "null";
+  return Object.prototype.toString.call(obj).match(/^\[object\s(.*)\]$/)[1];
+}
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+function getAnyClass(obj: any) {
+  if (typeof obj === "undefined") return "undefined";
+  if (obj === null) return "null";
+  return obj.constructor.name;
 }
 
 if (isnode()) {
@@ -125,19 +146,18 @@ if (isnode()) {
  * check empty
  * @param str
  */
-function empty(str: string | null | undefined | number | boolean) {
+function empty(
+  str: string | object | Array<any> | boolean | null | undefined | number
+) {
   var type = typeof str;
-  if (type == "string" || type == "number") {
-    str = str.toString().trim();
-  }
-  switch (str) {
-    case "":
-    case null:
-    case false:
-    case type == "undefined": //typeof (str) == "undefined"
-      return true;
-    default:
-      return false;
+  if (typeof str == "boolean" || typeof str == "undefined" || str == null) {
+    return true;
+  } else if (typeof str == "object") {
+    return str.length != 0;
+  } else if (type == "string" || type == "number") {
+    return str.toString().trim().length != 0;
+  } else if (Array.isArray(str)) {
+    return str.length;
   }
 }
 
@@ -228,6 +248,28 @@ if (typeof now == "undefined") {
  * @param {any[]} self
  * @example dataArray.filter(onlyUnique)
  */
-function onlyUnique(value, index, self) {
+function onlyUnique(value: any, index: any, self: any[]) {
   return self.indexOf(value) === index;
+}
+
+/**
+ * Parse string to float/number
+ * @param total_amount_string string including numbers
+ */
+function parseNumber(total_amount_string: string) {
+  var total_amount_int: string = "";
+  if (
+    typeof total_amount_string != "undefined" ||
+    total_amount_string != null
+  ) {
+    total_amount_int = parseFloat(
+      total_amount_string.replace(/,/g, ".")
+    ).toFixed(2);
+  }
+  return parseFloat(total_amount_int);
+}
+
+function typedKeys<T>(o: T): (keyof T)[] {
+  // type cast should be safe because that's what really Object.keys() does
+  return Object.keys(o) as (keyof T)[];
 }

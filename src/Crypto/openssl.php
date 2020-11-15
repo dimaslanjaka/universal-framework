@@ -35,9 +35,8 @@ class openssl
   }
 
   /**
-   * encrypt plaintext string
+   * encrypt plaintext string.
    *
-   * @param string $data
    * @return string
    */
   public function encrypt(string $data)
@@ -48,9 +47,8 @@ class openssl
   }
 
   /**
-   * decrypt encrypted string
+   * decrypt encrypted string.
    *
-   * @param string $data
    * @return string|false
    */
   public function decrypt(string $data)
@@ -68,15 +66,15 @@ class openssl
 
   public static $static_key = 'CKXH2U9RPY3EFD70TLS1ZG4N8WQBOVI6AMJ5';
   private static $_instance = null;
+
   /**
-   * static instances
+   * static instances.
    *
-   * @param boolean $restart
    * @return $this
    */
   public static function instance(bool $restart = false)
   {
-    if (self::$_instance === null || $restart) {
+    if (null === self::$_instance || $restart) {
       self::$_instance = new self(self::$static_key);
     }
 

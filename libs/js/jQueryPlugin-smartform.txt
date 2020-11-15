@@ -1,0 +1,93 @@
+/**
+     * @todo Adding attribute id if not have id
+     */
+    if (!elem.attr("id") || elem.attr("id") == "") {
+      try {
+        if (!(Count in formField)) {
+          /**
+           * @todo ID generator 6 digit alphanumerics
+           */
+          var id: string = Math.random().toString(20).substr(2, 6);
+          elem.attr("id", id);
+          (<any>formField)[Count] = id;
+          localStorage.setItem(
+            storageKey.toString(),
+            JSON.stringify(formField)
+          );
+        } else {
+          elem.attr("id", (<any>formField)[Count]);
+        }
+      } catch (error) {
+        console.error(error);
+        console.log(formField, typeof formField);
+      }
+      /**
+       * Increase index offset
+       */
+      Count++;
+    }
+    if (elem.attr("aria-autovalue")) {
+      elem.val(uniqueid);
+    }
+    return (
+      "[" +
+        location.pathname.replace(/\/$/, "") +
+        "/" +
+        elem.prop("tagName") +
+        "/" +
+        elem.attr("id") +
+        "/" +
+        elem.attr("name") || "empty" + "]"
+    );
+
+
+
+    $.fn.smartForm = function () {
+      Count++;
+      //console.log(`${Count} ${$(this).hasAttr("no-save")}`);
+      if ($(this).hasAttr("no-save")) {
+        console.error(
+          `${$(this).get_unique_identifier().toString()} attribute no save exists`
+        );
+        return;
+      }
+      var t = $(this);
+      //set indicator
+      t.attr("aria-smartform", uniqueid);
+      var item: string | number | boolean | symbol | object;
+      var key = t.get_unique_identifier().toString();
+      var type = $(this).attr("type");
+
+      // begin restoration
+      if (key != null && key != "null" && key.length > 0) {
+        if (type == "file") {
+          console.error("cannot set value of input file");
+          return;
+        }
+        // checkbox input button
+        else if (type === "checkbox") {
+          item = JSON.parse(localStorage.getItem(key));
+          if (item === null) {
+            return;
+          }
+          $(this).prop("checked", item);
+          return;
+        }
+        // radio input button
+        else if (type === "radio") {
+          item = localStorage.getItem(key) === "on";
+          $(this).prop("checked", item);
+          return;
+        }
+        // input text number, textarea, or select
+        else {
+          item = localStorage.getItem(key);
+
+          if (item === null || !item.toString().length) {
+            return;
+          }
+          $(this).val(item);
+        }
+        //console.log('load', type, key, item);
+      }
+    };

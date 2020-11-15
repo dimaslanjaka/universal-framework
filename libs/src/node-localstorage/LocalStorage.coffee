@@ -1,4 +1,5 @@
 path = require('path')
+dirname = path.dirname
 fs = require('fs')
 events = require('events')
 writeSync = require('write-file-atomic').sync
@@ -9,6 +10,8 @@ _emptyDirectory = (target) ->
   _rm(path.join(target, p)) for p in fs.readdirSync(target)
 
 _rm = (target) ->
+  if !fs.existsSync(dirname(target))
+    fs.mkdirSync dirname(target)
   if fs.statSync(target).isDirectory()
     _emptyDirectory(target)
     fs.rmdirSync(target)

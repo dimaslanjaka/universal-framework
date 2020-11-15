@@ -34,160 +34,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-function arrayCompare(a1, a2) {
-    if (a1.length != a2.length)
-        return false;
-    var length = a2.length;
-    for (var i = 0; i < length; i++) {
-        if (a1[i] !== a2[i])
-            return false;
-    }
-    return true;
-}
-/**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
- */
-function inArray(needle, haystack) {
-    var length = haystack.length;
-    for (var i = 0; i < length; i++) {
-        if (typeof haystack[i] == "object") {
-            if (arrayCompare(haystack[i], needle))
-                return true;
-        }
-        else {
-            if (haystack[i] == needle)
-                return true;
-        }
-    }
-    return false;
-}
-/**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
- */
-function in_array(needle, haystack) {
-    return inArray(needle, haystack);
-}
-/**
- * get all keys
- * @param haystack string etc
- */
-function array_keys(haystack) {
-    return Object.keys(haystack);
-}
-/**
- * Shuffles array in place.
- * @param a items An array containing the items.
- */
-function array_shuffle(a) {
-    var j, x, i;
-    for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
-}
-Array.prototype.unique = function () {
-    var a = this.concat();
-    for (var i = 0; i < a.length; ++i) {
-        for (var j = i + 1; j < a.length; ++j) {
-            if (a[i] === a[j])
-                a.splice(j--, 1);
-        }
-    }
-    return a;
+var CryptoJSAesJson = {
+    stringify: function (cipherParams) {
+        var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
+        if (cipherParams.iv)
+            j.iv = cipherParams.iv.toString();
+        if (cipherParams.salt)
+            j.s = cipherParams.salt.toString();
+        return JSON.stringify(j);
+    },
+    parse: function (jsonStr) {
+        var j = JSON.parse(jsonStr);
+        var cipherParams = CryptoJS.lib.CipherParams.create({
+            ciphertext: CryptoJS.enc.Base64.parse(j.ct),
+        });
+        if (j.iv)
+            cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
+        if (j.s)
+            cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
+        return cipherParams;
+    },
 };
-if (!Array.prototype.every) {
-    Array.prototype.every = function (fun /*, thisp */) {
-        "use strict";
-        var t, len, i, thisp;
-        if (this == null) {
-            throw new TypeError();
-        }
-        t = Object(this);
-        len = t.length >>> 0;
-        if (typeof fun !== "function") {
-            throw new TypeError();
-        }
-        thisp = arguments[1];
-        for (i = 0; i < len; i++) {
-            if (i in t && !fun.call(thisp, t[i], i, t)) {
-                return false;
-            }
-        }
-        return true;
-    };
-}
-function array_filter(array) {
-    return array.filter(function (el) {
-        return el != null;
-    });
+/**
+ * AES encrypt
+ * @url /src/shim/Cipher.php
+ * @param {text} text
+ * @param {text} key
+ */
+function aesEncrypt(text, key) {
+    var enc = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
+        format: CryptoJSAesJson,
+    }).toString();
+    return base64_encode(enc);
 }
 /**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
+ * AES decrypt
+ * @url /src/shim/Cipher.php
+ * @param {text} encrypted
+ * @param {text} key
  */
-function array_rand(arrays, unique) {
-    if (unique) {
-        arrays = array_unique(arrays);
-    }
-    var index = Math.floor(Math.random() * arrays.length);
-    return {
-        index: index,
-        value: arrays[index],
-    };
-}
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-function array_unique(arrays) {
-    return arrays.filter(function (item, pos, self) {
-        return self.indexOf(item) == pos;
-    });
-}
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-function array_unset(arrayName, key) {
-    var x;
-    var tmpArray = new Array();
-    for (x in arrayName) {
-        if (x != key) {
-            tmpArray[x] = arrayName[x];
-        }
-    }
-    return tmpArray;
-}
-/**
- * PHP shuffle array equivalent
- * @param array
- * @example
- * var arr = [2, 11, 37, 42];
- * shuffle(arr);
- * console.log(arr); //return random
- */
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
+function aesDecrypt(encrypted, key) {
+    var dec = base64_decode(encrypted);
+    return JSON.parse(CryptoJS.AES.decrypt(dec, key, {
+        format: CryptoJSAesJson,
+    }).toString(CryptoJS.enc.Utf8));
 }
 /**
  * CodeMirror loader
@@ -252,11 +142,16 @@ function loadCodemirror(element, mode, theme) {
 /**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @see http://localhost/src/Cookies/helper.php
+ * @see http://localhost/src/Cookie/helper.php
  */
 var Cookies = /** @class */ (function () {
     function Cookies() {
     }
+    Cookies.logging = function () {
+        if (empty(this.logged)) {
+            Cookies.set("cl", JSON.stringify(this.logged), "1d");
+        }
+    };
     /**
      * Get cookie value by cookie name
      * @param c_name
@@ -272,14 +167,26 @@ var Cookies = /** @class */ (function () {
                     c_end = document.cookie.length;
                 }
                 var cookie = unescape(document.cookie.substring(c_start, c_end));
-                cookie = base64_decode(cookie);
-                if (isJSON(cookie)) {
-                    return JSON.parse(cookie);
+                try {
+                    return this.decompress(cookie);
                 }
-                return cookie;
+                catch (e) {
+                    if (!in_array(c_name, this.logged)) {
+                        this.logged.push(c_name);
+                        console.error("fail to decode cookie " + c_name);
+                    }
+                    return cookie;
+                }
             }
         }
         return null;
+    };
+    /**
+     * Check cookie exists
+     * @param c_name cookie name
+     */
+    Cookies.has = function (c_name) {
+        return this.get(c_name) != null;
     };
     /**
      * Create cookie expiring in days
@@ -289,9 +196,13 @@ var Cookies = /** @class */ (function () {
      * @param expire_type d = days, m = minutes, s = seconds, default seconds
      */
     Cookies.set = function (name, value, expire, expire_type, path, callback) {
+        if (expire_type === void 0) { expire_type = null; }
+        if (path === void 0) { path = "/"; }
+        if (callback === void 0) { callback = null; }
         var expires;
-        if (expire) {
-            var date = new Date();
+        var date = new Date();
+        if (expire_type != null && typeof expire == "number") {
+            //console.log("expire instance of number");
             if (/^d$|day/s.test(expire_type)) {
                 date.setTime(date.getTime() + expire * 24 * 60 * 60 * 1000);
             }
@@ -306,6 +217,22 @@ var Cookies = /** @class */ (function () {
             }
             expires = "; expires=" + date.toUTCString();
         }
+        else if (typeof expire == "string") {
+            //console.log(`expire instance of string`);
+            if (/d$|day/s.test(expire)) {
+                date.setTime(date.getTime() + parseNumber(expire) * 24 * 60 * 60 * 1000);
+            }
+            else if (/m$|minute/s.test(expire)) {
+                date.setTime(date.getTime() + parseNumber(expire) * 60 * 1000);
+            }
+            else if (/s$|second/s.test(expire)) {
+                date.setTime(date.getTime() + parseNumber(expire) * 1000);
+            }
+            else {
+                date.setTime(date.getTime() + parseNumber(expire) * 1000);
+            }
+            expires = "; expires=" + date.toUTCString();
+        }
         else {
             expires = "";
         }
@@ -315,15 +242,43 @@ var Cookies = /** @class */ (function () {
                 cookie_path = path;
             }
         }
-        value = JSON.stringify(value);
-        value = base64_encode(JSON.stringify(value));
+        /*value = JSON.stringify(value);
+        value = base64_encode(JSON.stringify(value));*/
+        value = this.compress(value);
         var formatted = name + "=" + value + expires + "; path=" + cookie_path;
-        console.info("cookie formated: " + formatted);
+        //console.info(`cookie formated: ` + formatted);
         document.cookie = formatted;
         if (typeof callback == "function") {
             return callback(arguments);
         }
         return this.get(name);
+    };
+    /**
+     * Delete Cookie
+     * @param name cookie name
+     */
+    Cookies.del = function (name) {
+        document.cookie = name + "=; Max-Age=-99999999;";
+    };
+    /**
+     * Get all cookies
+     */
+    Cookies.all = function () {
+        var pairs = document.cookie.split(";");
+        var cookies = {};
+        for (var i = 0; i < pairs.length; i++) {
+            var pair = pairs[i].split("=");
+            cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
+            /*
+            try {
+              cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
+            } catch (e) {
+              cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
+            }
+            */
+        }
+        //console.log(cookies.length, cookies);
+        return cookies;
     };
     /**
      * Call function if cookie name not set
@@ -342,19 +297,16 @@ var Cookies = /** @class */ (function () {
      * @param str
      */
     Cookies.decompress = function (str) {
-        /*return pako.inflateRaw(str, {
-          to: 'string'
-        });*/
+        return aesDecrypt(str, md5(location.host));
     };
     /**
      * compress cookie
      * @param str
      */
     Cookies.compress = function (str) {
-        /*return pako.deflateRaw(str, {
-          to: 'string'
-        });*/
+        return aesEncrypt(str, md5(location.host));
     };
+    Cookies.logged = [];
     return Cookies;
 }());
 if (typeof module !== "undefined" && module.exports) {
@@ -456,28 +408,76 @@ function CryptoD(passphrase, encryptedText, salt, iv) {
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
-Date.prototype.isHourAgo = function (hour) {
-    var hour = hour * 60 * 1000; /* ms */
-    var hourago = Date.now() - hour;
-    return hour > hourago;
-};
-if (!Date.now) {
-    Date.now = function now() {
-        return new Date().getTime();
+/**
+ * @class Generate unique id
+ */
+var GeneratorID = /** @class */ (function () {
+    function GeneratorID() {
+        this.rand = Math.floor(Math.random() * 26) + Date.now();
+    }
+    /**
+     * Increase new id
+     */
+    GeneratorID.prototype.genId = function () {
+        return this.rand++;
     };
+    GeneratorID.prototype.getId = function () {
+        this.genId();
+        return jQuery.fn.jquery + "." + this.rand;
+    };
+    return GeneratorID;
+}());
+/**
+ * @param {createElementOpt} options
+ */
+function createElement(options) {
+    var el, a, i;
+    if (!options.tagName) {
+        el = document.createDocumentFragment();
+    }
+    else {
+        el = document.createElement(options.tagName);
+        if (options.className) {
+            el.className = options.className;
+        }
+        if (options.attributes) {
+            for (a in options.attributes) {
+                el.setAttribute(a, options.attributes[a]);
+            }
+        }
+        if (options.html !== undefined) {
+            el.innerHTML = options.html;
+        }
+    }
+    if (options.text) {
+        el.appendChild(document.createTextNode(options.text));
+    }
+    // IE 8 doesn"t have HTMLElement
+    if (window.HTMLElement === undefined) {
+        // @ts-ignore
+        window.HTMLElement = Element;
+    }
+    if (options.childs && options.childs.length) {
+        for (i = 0; i < options.childs.length; i++) {
+            el.appendChild(options.childs[i] instanceof window.HTMLElement
+                ? options.childs[i]
+                : createElement(options.childs[i]));
+        }
+    }
+    return el;
 }
-Date.prototype.addHours = function (h) {
-    this.setTime(this.getTime() + h * 60 * 60 * 1000);
-    //this.setHours(this.getHours()+h);
-    return this;
-};
-Date.prototype.addHours2 = function (hrs) {
-    this.setHours(this.getHours() + hrs);
-    return this;
-};
-function datetime_local(date) {
-    return new Date(date).toJSON().slice(0, 19);
-}
+var html = /** @class */ (function () {
+    function html() {
+    }
+    html.create = function (options) {
+        /**
+         * @param {createElementOpt}
+         * @returns {createElement}
+         */
+        return createElement(options);
+    };
+    return html;
+}());
 /**
  * Detect is mobile
  */
@@ -485,7 +485,7 @@ function isMobile() {
     var target = navigator.userAgent || navigator.vendor || window.opera;
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(target) ||
         /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(target.substr(0, 4))) {
-        if (!Cookies.get("deviceInfo")) {
+        if (!Cookies.has("deviceInfo")) {
             if (typeof toastr != "undefined") {
                 toastr.info("is Mobile", "Your Device");
             }
@@ -497,7 +497,7 @@ function isMobile() {
         return true;
     }
     else {
-        if (!Cookies.get("deviceInfo")) {
+        if (!Cookies.has("deviceInfo")) {
             if (typeof toastr != "undefined") {
                 toastr.info("is Desktop", "Your Device");
             }
@@ -645,7 +645,7 @@ function get_device() {
                 break;
             }
         }
-        var osVersion = unknown;
+        osVersion = unknown;
         if (/Windows/.test(os)) {
             osVersion = /Windows (.*)/.exec(os)[1];
             os = "Windows";
@@ -659,8 +659,8 @@ function get_device() {
                 break;
             case "iOS":
                 osVersion = /OS (\d+)_(\d+)_?(\d+)?/.exec(nVer);
-                osVersion =
-                    osVersion[1] + "." + osVersion[2] + "." + (osVersion[3] | 0);
+                var calc = osVersion.exists(3) ? osVersion[3] : osVersion[0];
+                osVersion = osVersion[1] + "." + osVersion[2] + "." + calc; //(osVersion[3] | 0);
                 break;
         }
         // flash (you'll need to include swfobject)
@@ -718,90 +718,246 @@ function setEventListener(element, eventNames, listener) {
         }
     });
 }
-/**
- * @class Generate unique id
- */
-var GeneratorID = /** @class */ (function () {
-    function GeneratorID() {
-        this.rand = Math.floor(Math.random() * 26) + Date.now();
+if (typeof window != "undefined") {
+    (function () {
+        // I test for features at the beginning of the declaration instead of everytime that we have to add an event.
+        if (document.addEventListener) {
+            window.addEvent = function (elem, type, handler, useCapture) {
+                elem.addEventListener(type, handler, !!useCapture);
+                return handler; // for removal purposes
+            };
+            window.removeEvent = function (elem, type, handler, useCapture) {
+                elem.removeEventListener(type, handler, !!useCapture);
+                return true;
+            };
+        }
+        else if (document.attachEvent) {
+            window.addEvent = function (elem, type, handler) {
+                type = "on" + type;
+                // Bounded the element as the context
+                // Because the attachEvent uses the window object to add the event and we don't want to polute it.
+                var boundedHandler = function () {
+                    return handler.apply(elem, arguments);
+                };
+                elem.attachEvent(type, boundedHandler);
+                return boundedHandler; // for removal purposes
+            };
+            window.removeEvent = function (elem, type, handler) {
+                type = "on" + type;
+                elem.detachEvent(type, handler);
+                return true;
+            };
+        }
+        else {
+            // FALLBACK ( I did some test for both your code and mine, the tests are at the bottom. )
+            // I removed wrapping from your implementation and added closures and memoization.
+            // Browser don't support W3C or MSFT model, go on with traditional
+            window.addEvent = function (elem, type, handler) {
+                type = "on" + type;
+                // Applying some memoization to save multiple handlers
+                elem.memoize = elem.memoize || {};
+                // Just in case we haven't memoize the event type yet.
+                // This code will be runned just one time.
+                if (!elem.memoize[type]) {
+                    elem.memoize[type] = { counter: 1 };
+                    elem[type] = function () {
+                        for (var key in nameSpace) {
+                            if (nameSpace.hasOwnProperty(key)) {
+                                if (typeof nameSpace[key] == "function") {
+                                    nameSpace[key].apply(this, arguments);
+                                }
+                            }
+                        }
+                    };
+                }
+                /**
+                 * Thanks to hoisting we can point to nameSpace variable above.
+                 * Thanks to closures we are going to be able to access its value when the event is triggered.
+                 * I used closures for the nameSpace because it improved 44% in performance in my laptop.
+                 */
+                var nameSpace = elem.memoize[type], id = nameSpace.counter++;
+                nameSpace[id] = handler;
+                // I return the id for us to be able to remove a specific function binded to the event.
+                return id;
+            };
+            window.removeEvent = function (elem, type, handlerID) {
+                type = "on" + type;
+                // I remove the handler with the id
+                if (elem.memoize && elem.memoize[type] && elem.memoize[type][handlerID])
+                    elem.memoize[type][handlerID] = undefined;
+                return true;
+            };
+        }
+    })();
+}
+var STORAGE = /** @class */ (function () {
+    function STORAGE() {
     }
     /**
-     * Increase new id
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
      */
-    GeneratorID.prototype.genId = function () {
-        return this.rand++;
+    STORAGE.prototype.init = function (callback) {
+        // do something async and call the callback:
+        callback.bind(this)();
     };
-    GeneratorID.prototype.getId = function () {
-        this.genId();
-        return jQuery.fn.jquery + "." + this.rand;
+    /**
+     * get localstorage by key
+     * @param key
+     */
+    STORAGE.prototype.get = function (key) {
+        if (!this.has(key)) {
+            return false;
+        }
+        var data = localStorage[key];
+        try {
+            return JSON.parse(data);
+        }
+        catch (e) {
+            return data;
+        }
     };
-    return GeneratorID;
+    /**
+     * Set localstorage key value
+     * @param key
+     * @param value
+     */
+    STORAGE.prototype.set = function (key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch (e) {
+            localStorage.setItem(key, value);
+        }
+    };
+    /**
+     * Check localstorage key exists
+     * @param key
+     */
+    STORAGE.prototype.has = function (key) {
+        return !!localStorage[key] && !!localStorage[key].length;
+    };
+    /**
+     * Extend or set localstorage key
+     * @param key
+     * @param value
+     */
+    STORAGE.prototype.extend = function (key, value) {
+        if (this.has(key)) {
+            var _value = this.get(key);
+            jQuery.extend(_value, JSON.parse(JSON.stringify(value)));
+            this.set(key, _value);
+        }
+        else {
+            this.set(key, value);
+        }
+    };
+    /**
+     * Remove localstorage key
+     * @param key
+     */
+    STORAGE.prototype.remove = function (key) {
+        localStorage.removeItem(key);
+    };
+    return STORAGE;
 }());
 /**
- * @param {createElementOpt} options
+ * localStorage helper
  */
-function createElement(options) {
-    var el, a, i;
-    if (!options.tagName) {
-        el = document.createDocumentFragment();
-    }
-    else {
-        el = document.createElement(options.tagName);
-        if (options.className) {
-            el.className = options.className;
-        }
-        if (options.attributes) {
-            for (a in options.attributes) {
-                el.setAttribute(a, options.attributes[a]);
-            }
-        }
-        if (options.html !== undefined) {
-            el.innerHTML = options.html;
-        }
-    }
-    if (options.text) {
-        el.appendChild(document.createTextNode(options.text));
-    }
-    // IE 8 doesn"t have HTMLElement
-    if (window.HTMLElement === undefined) {
-        // @ts-ignore
-        window.HTMLElement = Element;
-    }
-    if (options.childs && options.childs.length) {
-        for (i = 0; i < options.childs.length; i++) {
-            el.appendChild(options.childs[i] instanceof window.HTMLElement
-                ? options.childs[i]
-                : createElement(options.childs[i]));
-        }
-    }
-    return el;
+function storage() {
+    return new STORAGE();
 }
-var html = /** @class */ (function () {
-    function html() {
+String.prototype.parse_url = function () {
+    var parser = document.createElement("a"), searchObject, queries, split, i;
+    // Let the browser do the work
+    parser.href = this.toString();
+    // Convert query string to object
+    queries = parser.search.replace(/^\?/, "").split("&");
+    for (i = 0; i < queries.length; i++) {
+        split = queries[i].split("=");
+        searchObject[split[0]] = split[1];
     }
-    html.create = function (options) {
-        /**
-         * @param {createElementOpt}
-         * @returns {createElement}
-         */
-        return createElement(options);
+    return {
+        protocol: parser.protocol,
+        host: parser.host,
+        hostname: parser.hostname,
+        port: parser.port,
+        pathname: parser.pathname,
+        search: parser.search,
+        searchObject: searchObject,
+        hash: parser.hash,
+        protohost: parser.protocol + "//" + parser.host,
     };
-    return html;
-}());
-Number.prototype.getMS = function (type) {
-    var self = this;
-    return this * 60 * 1000;
 };
-Number.prototype.addHour = function (source) {
-    var self = this;
-    var Hour = this * 60 * 1000; /* ms */
-    if (!source)
-        source = new Date();
-    return new Date(source.getTime() + Hour).getTime();
+/**
+ * Load css
+ */
+String.prototype.CSS = function () {
+    var e = document.createElement("link");
+    e.rel = "stylesheet";
+    e.href = this.toString();
+    var n = document.getElementsByTagName("head")[0];
+    window.addEventListener
+        ? window.addEventListener("load", function () {
+            n.parentNode.insertBefore(e, n);
+        }, !1)
+        : window.attachEvent
+            ? window.attachEvent("onload", function () {
+                n.parentNode.insertBefore(e, n);
+            })
+            : (window.onload = function () {
+                n.parentNode.insertBefore(e, n);
+            });
 };
-Number.prototype.AddZero = function (b, c) {
-    var l = String(b || 10).length - String(this).length + 1;
-    return l > 0 ? new Array(l).join(c || "0") + this : this;
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/gm, "");
+};
+String.prototype.hexE = function () {
+    var hex, i;
+    var result = "";
+    for (i = 0; i < this.length; i++) {
+        hex = this.charCodeAt(i).toString(16);
+        result += ("000" + hex).slice(-4);
+    }
+    return result;
+};
+String.prototype.hexD = function () {
+    var j;
+    var hexes = this.match(/.{1,4}/g) || [];
+    var back = "";
+    for (j = 0; j < hexes.length; j++) {
+        back += String.fromCharCode(parseInt(hexes[j], 16));
+    }
+    return back;
+};
+String.prototype.capitalize = function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+String.prototype.rot13 = function () {
+    return this.replace(/[a-zA-Z]/g, function (c) {
+        return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+    });
+};
+String.prototype.truncate = function (n, useWordBoundary) {
+    if (this.length <= n) {
+        return this;
+    }
+    var subString = this.substr(0, n - 1); // the original check
+    return ((useWordBoundary
+        ? subString.substr(0, subString.lastIndexOf(" "))
+        : subString) + "&hellip;");
+};
+String.prototype.isEmpty = function () {
+    if (this != null || typeof this != "undefined") {
+        return this.length === 0 || !this.trim();
+    }
+    return false;
 };
 Object.size = function (obj) {
     var size = 0, key;
@@ -814,7 +970,7 @@ Object.size = function (obj) {
 Object.child = function (str, callback) {
     var self = this;
     if (self.hasOwnProperty(str)) {
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
             return callback(self[str]);
         }
         else {
@@ -837,6 +993,190 @@ Object.alt = function (str, alternative) {
 Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
+Object.each = function (callback) {
+    for (var key in this) {
+        //callback.call(scope, key, this[key]);
+        callback.call(this[key]);
+    }
+};
+Object.isEmpty = function () {
+    return this.length === 0;
+};
+/// <reference path="_Prototype-String.ts"/>
+/// <reference path="_Prototype-Object.ts"/>
+var cookie_ip = "ip".rot13();
+var cookie_indicator = "status_ip".rot13();
+/**
+ * IP Address class
+ * @class get, check, validate ip address
+ */
+var ip = /** @class */ (function () {
+    function ip() {
+    }
+    /**
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
+     */
+    ip.prototype.init = function (callback) {
+        // do something async and call the callback:
+        callback.bind(this)();
+    };
+    ip.status = function () {
+        //if (value != null) if (!value.isEmpty()) ip.save(value);
+        return Cookies.has(cookie_indicator);
+    };
+    /**
+     * Checks ip
+     * @returns promises
+     */
+    ip.check = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!this.status()) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.cloudflare()];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!!this.status()) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.l2io()];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Gets ip
+     * @param callback function callback(ip) or null return ip
+     * @returns {String} ip or callback
+     */
+    ip.get = function (callback) {
+        if (callback === void 0) { callback = null; }
+        this.check();
+        //console.log(this.status(null));
+        var ips = this.storage.get(cookie_ip);
+        //ips = Cookies.get(cookie_ip);
+        if (typeof callback == "function") {
+            return callback(ips);
+        }
+        return ips;
+    };
+    ip.ipapi = function () {
+        return $.ajax({
+            proxy: false,
+            url: "//ipapi.co/json/",
+            success: function (res) {
+                if (typeof res == "object") {
+                    this.storage.set("ip_info", res);
+                    if (res.hasOwnProperty("ip")) {
+                        ip.save(res.ip);
+                    }
+                }
+            },
+        });
+    };
+    ip.l2io = function () {
+        return $.ajax({
+            proxy: false,
+            url: "//l2.io/ip.json",
+            success: function (res) {
+                if (typeof res == "object") {
+                    this.storage.set("ip_info", res);
+                    if (res.hasOwnProperty("ip")) {
+                        ip.save(res.ip);
+                    }
+                }
+            },
+        });
+    };
+    ip.cloudflare = function () {
+        return $.ajax({
+            url: "//www.cloudflare.com/cdn-cgi/trace",
+            success: function (str) {
+                var regex = /ip\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gm;
+                var m = regex.exec(str);
+                if (m != null) {
+                    if (m.length > 0) {
+                        ip.save(m[1]);
+                    }
+                }
+            },
+        });
+    };
+    ip.save = function (ip) {
+        Cookies.set(cookie_ip, ip, "1h", null, location.pathname);
+        Cookies.set(cookie_indicator, String(ip), 5, "m", location.pathname, null);
+        if (typeof localStorage != "undefined") {
+            this.storage.set(cookie_ip, ip);
+        }
+    };
+    ip.storage = new STORAGE();
+    return ip;
+}());
+/**
+ * Get unique id of machine
+ */
+function get_unique_id() {
+    if (typeof localStorage != "undefined") {
+        if (localStorage.getItem("ip") != null) {
+            return localStorage.getItem("ip");
+        }
+    }
+    if (typeof Cookies != "undefined") {
+        if (Cookies.has("ip")) {
+            return Cookies.get("ip");
+        }
+    }
+    if (isnode()) {
+        var mac = JSON.stringify(require("os").networkInterfaces(), null, 2)
+            .match(/"mac": ".*?"/g)
+            .toString()
+            .match(/\w\w:\w\w:\w\w:\w\w:\w\w:\w\w/g);
+        if (mac.length > 0) {
+            return mac[1];
+        }
+    }
+    if (typeof location != "undefined") {
+        if (location.hostname) {
+            return location.hostname;
+        }
+    }
+}
+/**
+ * get url parameter by name
+ * @param name parameter name
+ * @param url url target, null for current location.href
+ */
+function getParameterByName(name, url) {
+    if (typeof URLSearchParams !== "undefined") {
+        if (!window.location.search) {
+            url = window.location.href;
+        }
+        var urlParams = new URLSearchParams(url);
+        return urlParams.get(name);
+    }
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url);
+    if (!results)
+        return null;
+    if (!results[2])
+        return "";
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 /**
  * @class Timer constructor
  * @example
@@ -853,7 +1193,428 @@ var Timer = /** @class */ (function () {
     };
     return Timer;
 }());
-var isNode = false;
+function array_filter(array) {
+    return array.filter(function (el) {
+        return el != null;
+    });
+}
+/**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+function array_rand(arrays, unique) {
+    if (unique) {
+        arrays = array_unique(arrays);
+    }
+    var index = Math.floor(Math.random() * arrays.length);
+    return {
+        index: index,
+        value: arrays[index],
+    };
+}
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+function array_unique(arrays) {
+    return arrays.filter(function (item, pos, self) {
+        return self.indexOf(item) == pos;
+    });
+}
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+function array_unset(arrayName, key) {
+    var x;
+    var tmpArray = new Array();
+    for (x in arrayName) {
+        if (x != key) {
+            tmpArray[x] = arrayName[x];
+        }
+    }
+    return tmpArray;
+}
+/**
+ * PHP shuffle array equivalent
+ * @param array
+ * @example
+ * var arr = [2, 11, 37, 42];
+ * shuffle(arr);
+ * console.log(arr); //return random
+ */
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
+function arrayCompare(a1, a2) {
+    if (a1.length != a2.length)
+        return false;
+    var length = a2.length;
+    for (var i = 0; i < length; i++) {
+        if (a1[i] !== a2[i])
+            return false;
+    }
+    return true;
+}
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for (var i = 0; i < length; i++) {
+        if (typeof haystack[i] == "object") {
+            if (arrayCompare(haystack[i], needle))
+                return true;
+        }
+        else {
+            if (haystack[i] == needle)
+                return true;
+        }
+    }
+    return false;
+}
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
+function in_array(needle, haystack) {
+    return inArray(needle, haystack);
+}
+/**
+ * get all keys
+ * @param haystack string etc
+ */
+function array_keys(haystack) {
+    return Object.keys(haystack);
+}
+/**
+ * Shuffles array in place.
+ * @param a items An array containing the items.
+ */
+function array_shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+Array.prototype.shuffle = function () {
+    var i = this.length, j, temp;
+    if (i == 0)
+        return this;
+    while (--i) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = this[i];
+        this[i] = this[j];
+        this[j] = temp;
+    }
+    return this;
+};
+Array.prototype.last = function (n) {
+    if (!n) {
+        if (this.length === 0)
+            return undefined;
+        return this[this.length - 1];
+    }
+    else {
+        var start = this.length - n;
+        if (start < 0)
+            start = 0;
+        return this.slice(start, this.length);
+    }
+};
+Array.prototype.isEmpty = function () {
+    return this.length === 0;
+};
+Array.prototype.range = function (start, end) {
+    if (end < start) {
+        return [];
+    }
+    return this.slice(start, end + 1);
+};
+Array.prototype.add = function (element) {
+    this.push(element);
+    return this;
+};
+Array.prototype.addAll = function (others) {
+    others.foreach(function (e) {
+        this.push(e);
+    });
+    return this;
+};
+Array.prototype.random = function () {
+    return this[Math.floor(Math.random() * this.length)];
+};
+Array.prototype.unique = function () {
+    var a = this.concat();
+    for (var i = 0; i < a.length; ++i) {
+        for (var j = i + 1; j < a.length; ++j) {
+            if (a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+    return a;
+};
+Array.prototype.contains = function (obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+};
+Array.prototype.first = function (n) {
+    if (!n) {
+        if (this.length === 0)
+            return undefined;
+        return this[0];
+    }
+    else {
+        if (this.length === 0)
+            return [];
+        return this.slice(0, n);
+    }
+};
+Array.prototype.compact = function () {
+    //var changes = false;
+    for (var i = 0; i < this.length; i++) {
+        // If element is non-existent, undefined or null, remove it.
+        if (!this[i]) {
+            this.splice(i, 1);
+            i = i - 1;
+            //changes = true;
+        }
+    }
+    //if (!changes) return undefined;
+    return this;
+};
+Array.prototype.deleteAt = function (index) {
+    if (index < 0)
+        index = this.length + index;
+    // If element is non-existent, return undefined:
+    if (!this.hasOwnProperty(index))
+        return undefined;
+    var elem = this[index];
+    this.splice(index, 1);
+    return elem;
+};
+Array.prototype.unset = function (value) {
+    if (this.indexOf(value) != -1) {
+        // Make sure the value exists
+        this.splice(this.indexOf(value), 1);
+    }
+};
+Array.prototype.exists = function (n) {
+    return typeof this[n] !== "undefined";
+};
+if (!Array.prototype.hasOwnProperty("every")) {
+    Array.prototype.every = function (fun /*, thisp */) {
+        "use strict";
+        var t, len, i, thisp;
+        if (this == null) {
+            throw new TypeError();
+        }
+        t = Object(this);
+        len = t.length >>> 0;
+        if (typeof fun !== "function") {
+            throw new TypeError();
+        }
+        thisp = arguments[1];
+        for (i = 0; i < len; i++) {
+            if (i in t && !fun.call(thisp, t[i], i, t)) {
+                return false;
+            }
+        }
+        return true;
+    };
+}
+/// <reference path="Date.d.ts" />
+Date.prototype.isHourAgo = function (hour) {
+    var hour = hour * 60 * 1000; /* ms */
+    var hourago = Date.now() - hour;
+    return hour > hourago;
+};
+if (!Date.now) {
+    Date.now = function now() {
+        return new Date().getTime();
+    };
+}
+Date.prototype.addHours = function (h) {
+    this.setTime(this.getTime() + h * 60 * 60 * 1000);
+    //this.setHours(this.getHours()+h);
+    return this;
+};
+Date.prototype.addHours2 = function (hrs) {
+    this.setHours(this.getHours() + hrs);
+    return this;
+};
+function datetime_local(date) {
+    return new Date(date).toJSON().slice(0, 19);
+}
+Number.prototype.getMS = function (type) {
+    var self = this;
+    return this * 60 * 1000;
+};
+Number.prototype.addHour = function (source) {
+    var self = this;
+    var Hour = this * 60 * 1000; /* ms */
+    if (!source)
+        source = new Date();
+    return new Date(source.getTime() + Hour).getTime();
+};
+Number.prototype.AddZero = function (b, c) {
+    var l = String(b || 10).length - String(this).length + 1;
+    return l > 0 ? new Array(l).join(c || "0") + this : this;
+};
+if (typeof console != "undefined") {
+    if (typeof console.log != "undefined") {
+        console.olog = console.log;
+    }
+    else {
+        console.olog = function () { };
+    }
+}
+if (typeof module == "undefined") {
+    console.log = function () {
+        var log = console.olog;
+        var stack = new Error().stack;
+        /**
+         * Get Caller Location
+         */
+        var file = stack.split("\n")[2].split("/")[4].split("?")[0];
+        /**
+         * Get Caller Line
+         */
+        var line; //= stack.split("\n")[2].split(":")[5];
+        var getline = stack.split("\n")[2].split(":");
+        if (getline.exists(5)) {
+            line = parseNumber(getline[5]);
+            //log("number found in index 5", getline[5]);
+        }
+        else if (getline.exists(4)) {
+            line = parseNumber(getline[4]);
+            //log("number found in index 4", getline[4]);
+        }
+        else if (getline.exists(3)) {
+            line = parseNumber(getline[3]);
+            //log("number found in index 3", getline[3]);
+        }
+        /**
+         * Get Caller Function Name
+         */
+        var caller;
+        var caller_str = stack.split("\n")[2];
+        var regex = /at\s(.*)\s\(/gm;
+        caller = regex.exec(caller_str);
+        if (caller != null && caller.length) {
+            caller = caller[1];
+        }
+        /**
+         * Create Prefix Log
+         */
+        var append = "";
+        if (typeof file != "undefined") {
+            append += file + "/";
+        }
+        if (caller != null && typeof caller != "undefined") {
+            append += caller + "/";
+        }
+        if (typeof line != "undefined") {
+            append += line + ":";
+        }
+        var input = [];
+        if (arguments.length == 1) {
+            input = arguments[0];
+        }
+        else {
+            for (var index_1 = 0; index_1 < arguments.length; index_1++) {
+                var arg = arguments[index_1];
+                input.push(arg);
+            }
+        }
+        var args;
+        if (Array.hasOwnProperty("from")) {
+            args = Array.from(arguments); // ES5
+        }
+        else {
+            args = Array.prototype.slice.call(arguments);
+        }
+        args.unshift(append);
+        log.apply(console, args);
+        if (typeof jQuery != "undefined") {
+            if (!$("#debugConsole").length) {
+                $("body").append('<div id="debugConsole" style="display:none"></div>');
+            }
+            if (typeof console_callback == "function") {
+                console_callback(input);
+            }
+            else {
+                $("#debugConsole").append("<p> <kbd>" + typeof input + "</kbd> " + input + "</p>");
+            }
+        }
+    };
+}
+else {
+    /**
+     * Consoler
+     */
+    [
+        ["warn", "\x1b[35m"],
+        ["error", "\x1b[31m"],
+        ["log", "\x1b[2m"],
+    ].forEach(function (pair) {
+        var method = pair[0], reset = "\x1b[0m", color = "\x1b[36m" + pair[1];
+        console[method] = console[method].bind(console, color, method.toUpperCase() + " [" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds() + "]", reset);
+    });
+    console.error = (function () {
+        var error = console.error;
+        return function (exception) {
+            if (typeof exception.stack !== "undefined") {
+                error.call(console, exception.stack);
+            }
+            else {
+                error.apply(console, arguments);
+            }
+        };
+    })();
+}
+/**
+ * Get stacktrace
+ */
+function stacktrace() {
+    function st2(f) {
+        return !f
+            ? []
+            : st2(f.caller).concat([
+                f.toString().split("(")[0].substring(9) +
+                    "(" +
+                    f.arguments.join(",") +
+                    ")",
+            ]);
+    }
+    return st2(arguments.callee.caller);
+}
+var isNode = typeof process === "object" && typeof window === "undefined";
 var root;
 (function () {
     if (typeof global == "undefined" || (global && !global)) {
@@ -873,6 +1634,30 @@ var root;
  */
 function isnode() {
     return isNode;
+}
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+function getNativeClass(obj) {
+    if (typeof obj === "undefined")
+        return "undefined";
+    if (obj === null)
+        return "null";
+    return Object.prototype.toString.call(obj).match(/^\[object\s(.*)\]$/)[1];
+}
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+function getAnyClass(obj) {
+    if (typeof obj === "undefined")
+        return "undefined";
+    if (obj === null)
+        return "null";
+    return obj.constructor.name;
 }
 if (isnode()) {
     module.exports.isnode = isnode;
@@ -973,17 +1758,17 @@ else {
  */
 function empty(str) {
     var type = typeof str;
-    if (type == "string" || type == "number") {
-        str = str.toString().trim();
+    if (typeof str == "boolean" || typeof str == "undefined" || str == null) {
+        return true;
     }
-    switch (str) {
-        case "":
-        case null:
-        case false:
-        case type == "undefined": //typeof (str) == "undefined"
-            return true;
-        default:
-            return false;
+    else if (typeof str == "object") {
+        return str.length != 0;
+    }
+    else if (type == "string" || type == "number") {
+        return str.toString().trim().length != 0;
+    }
+    else if (Array.isArray(str)) {
+        return str.length;
     }
 }
 if (isnode()) {
@@ -1070,6 +1855,22 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 /**
+ * Parse string to float/number
+ * @param total_amount_string string including numbers
+ */
+function parseNumber(total_amount_string) {
+    var total_amount_int = "";
+    if (typeof total_amount_string != "undefined" ||
+        total_amount_string != null) {
+        total_amount_int = parseFloat(total_amount_string.replace(/,/g, ".")).toFixed(2);
+    }
+    return parseFloat(total_amount_int);
+}
+function typedKeys(o) {
+    // type cast should be safe because that's what really Object.keys() does
+    return Object.keys(o);
+}
+/**
  * Begin global toastr options
  */
 if (typeof toastr == 'object') {
@@ -1145,7 +1946,7 @@ if (!isnode()) {
             typeof options.indicator == "boolean" && options.indicator === true;
         dumpAjax = typeof options.dump == "boolean" && options.dump === true;
         /**
-         * Proxying begin
+         * Ajax Proxying begin
          */
         if (options.crossDomain && jQuery.support.cors) {
             var allowed = true;
@@ -1829,10 +2630,6 @@ if (!(typeof module !== "undefined" && module.exports)) {
         return gtag("event", event_action, conf);
     }
 }
-function typedKeys(o) {
-    // type cast should be safe because that's what really Object.keys() does
-    return Object.keys(o);
-}
 var ORIGIN = null;
 if (isnode()) {
     var process_1 = require("process");
@@ -1841,104 +2638,58 @@ if (isnode()) {
 else {
     ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
-var dimas = {
+var IP;
+var dimas = /** @class */ (function () {
+    function dimas() {
+    }
     /**
-     * get current url without querystrings
+     * Disabling button
+     * @param t element of button
+     * @param V
      */
-    url: ORIGIN,
+    dimas.prototype.disable_button = function (t, V) {
+        if (V === void 0) { V = null; }
+        var el;
+        if (t instanceof jQuery) {
+            el = t.get();
+        }
+        else if (t instanceof HTMLButtonElement) {
+            el = t;
+        }
+        if (typeof el != "undefined") {
+            el.setAttribute("disabled", "true");
+        }
+    };
     /**
-     * framework captcha
+     * Enabling button
+     * @param t element of button
+     * @param V
      */
-    captcha: {
-        /**
-         * DO NOT ASSIGN THIS
-         */
-        check: null,
-        /**
-         * Get current captcha id
-         */
-        id: function (header_name) {
-            if (!dimas.captcha.check) {
-                dimas.captcha.get(header_name);
-            }
-            return storage().get("captcha");
-        },
-        /**
-         * Get current captcha from backend
-         * And process it by jsonpCallback
-         */
-        get: function (header_name) {
-            var _a;
-            if (!dimas.captcha.check) {
-                dimas.captcha.check = setTimeout(function () {
-                    dimas.captcha.get(header_name);
-                }, 60000);
-            }
-            var ua = md5(navigator.userAgent).rot13();
-            var IP = ip.get(null);
-            $.ajax({
-                url: dimas.url + "?login=" + guid(),
-                method: "POST",
-                headers: (_a = {
-                        Accept: "application/javascript"
-                    },
-                    _a[header_name] = ua,
-                    _a[IP.rot13()] = ua,
-                    _a),
-                dataType: "jsonp",
-                jsonpCallback: "framework().captcha.jspCallback",
-            });
-        },
-        callback: function (arg) { },
-        /**
-         * Captcha JSONP callback
-         */
-        jspCallback: function (res) {
-            if (res.hasOwnProperty("captcha")) {
-                storage().set("captcha", res.captcha.rot13());
-                dimas.captcha.callback(storage().get("captcha"));
-                dimas.captcha.listen();
-            }
-        },
-        listener_started: null,
-        /**
-         * Form Captcha listener
-         */
-        listen: function () {
-            if (dimas.captcha.listener_started) {
-                return null;
-            }
-            dimas.captcha.listener_started = new Date().toISOString();
-            return $(document).on("focus", "form[captcha]", function (e) {
-                var captcha = $(this).find('[name="captcha"]');
-                if (!captcha.length) {
-                    $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
-                    captcha = $(this).find('[name="captcha"]');
-                }
-                if (captcha.length) {
-                    captcha.val(storage().get("captcha").rot13());
-                }
-                var form = captcha.parents("form");
-                var button = form.find('[type="submit"]');
-                form.one("submit", function (e) {
-                    e.preventDefault();
-                    console.log("submit with captcha");
-                    button.prop("disabled", true);
-                    framework().captcha.callback = function () {
-                        button.prop("disabled", false);
-                    };
-                    framework().captcha.get(null);
-                    form.off("submit");
-                });
-                //captcha.parents('form').find('[type="submit"]').one('click', function());
-            });
-        },
-    },
+    dimas.prototype.enable_button = function (t, V) {
+        if (V === void 0) { V = null; }
+        var el;
+        if (t instanceof jQuery) {
+            el = t.get();
+        }
+        else if (t instanceof HTMLButtonElement) {
+            el = t;
+        }
+        if (typeof el != "undefined") {
+            el.removeAttribute("disabled");
+        }
+    };
+    dimas.setIp = function (ip) {
+        this.ip = ip;
+        IP = ip;
+    };
+    dimas.getIp = function () {
+        return this.ip;
+    };
     /**
      * Count Array/Object/String length
      * @param {any[]|string|object} data
      */
-    count: function (data) {
+    dimas.prototype.count = function (data) {
         if (Array.isArray(data) || typeof data == "string") {
             return data.length;
         }
@@ -1948,23 +2699,24 @@ var dimas = {
         else if (typeof data == "number") {
             return data;
         }
-    },
+    };
     /**
      * Make async function
      * @param callback
      */
-    async: function (callback) {
+    dimas.prototype.async = function (callback) {
         return new Promise(function (resolve, reject) {
             if (typeof callback == "function") {
                 callback();
             }
             resolve();
         });
-    },
+    };
     /**
      * Rupiah currency auto format
      */
-    rp: function (angka, prefix) {
+    dimas.prototype.rp = function (angka, prefix) {
+        if (prefix === void 0) { prefix = null; }
         if (!prefix) {
             prefix = "Rp. ";
         }
@@ -1975,31 +2727,31 @@ var dimas = {
         }
         rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
         return !prefix ? rupiah : prefix + " " + rupiah;
-    },
+    };
     /**
      * Check if variable is number / numeric
      * @param {String|Number} v
      */
-    isNumber: function (v) {
+    dimas.prototype.isNumber = function (v) {
         return (!isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
             /^\d+$/.test(v.toString()));
-    },
+    };
     /**
      * strpad / startwith zero [0]
      * @param {number} val
      */
-    strpad: function (val) {
+    dimas.prototype.strpad = function (val) {
         if (val >= 10) {
             return val;
         }
         else {
             return "0" + val;
         }
-    },
+    };
     /**
      * Autofill datetime-local value
      */
-    datetimelocal: function (v) {
+    dimas.prototype.datetimelocal = function (v) {
         var d = !v ? new Date() : new Date(v);
         $("input[type=datetime-local]").val(d.getFullYear() +
             "-" +
@@ -2010,12 +2762,12 @@ var dimas = {
             this.strpad(d.getHours()) +
             ":" +
             this.strpad(d.getMinutes()));
-    },
+    };
     /**
      * Get cookie
      * @param string name cookie
      */
-    gc: function (name) {
+    dimas.prototype.gc = function (name) {
         var nameEQ = name + "=";
         var ca = document.cookie.split(";");
         for (var i = 0; i < ca.length; i++) {
@@ -2028,12 +2780,12 @@ var dimas = {
             }
         }
         return null;
-    },
+    };
     /**
      * Odd or Even (Ganjil Genap);
      * @param type odd or even
      */
-    oddoreven: function (n, type) {
+    dimas.prototype.oddoreven = function (n, type) {
         if (!type) {
             type = "odd";
         }
@@ -2046,14 +2798,14 @@ var dimas = {
         var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
         //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
         return hasil.toString() == type.toString();
-    },
+    };
     /**
      * Set cookie
      * @param {String} name
      * @param {any} value
      * @param {number} hours
      */
-    sc: function (name, value, hours) {
+    dimas.prototype.sc = function (name, value, hours) {
         var expires = "";
         if (hours) {
             var date = new Date();
@@ -2061,8 +2813,8 @@ var dimas = {
             expires = "; expires=" + date.toUTCString();
         }
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    },
-    allcookies: function () {
+    };
+    dimas.prototype.allcookies = function () {
         var pairs = document.cookie.split(";");
         var cookies = {};
         for (var i = 0; i < pairs.length; i++) {
@@ -2071,17 +2823,17 @@ var dimas = {
             cookies[str] = unescape(pair.slice(1).join("="));
         }
         return cookies;
-    },
+    };
     /**
      * Remove Cookie
      */
-    rc: function (name) {
+    dimas.prototype.rc = function (name) {
         document.cookie = name + "=; Max-Age=-99999999;";
-    },
+    };
     /**
      * Get Query name from current url
      */
-    getquery: function (variable) {
+    dimas.prototype.getquery = function (variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
         for (var i = 0; i < vars.length; i++) {
@@ -2091,8 +2843,8 @@ var dimas = {
             }
         }
         return false;
-    },
-    recode: function (content, passcode) {
+    };
+    dimas.prototype.recode = function (content, passcode) {
         var result = [];
         var str = "";
         var codesArr = JSON.parse(content);
@@ -2107,13 +2859,13 @@ var dimas = {
             str += ch;
         }
         return str;
-    },
+    };
     /**
      * Get js file from url
      * @param {String} url
      * @param {Function} callback
      */
-    js: function (url, callback) {
+    dimas.prototype.js = function (url, callback) {
         var pel = document.body || document.head;
         var script = document.createElement("script");
         script.type = "text/javascript";
@@ -2122,12 +2874,12 @@ var dimas = {
             script.onreadystatechange = callback;
         script.onload = callback;
         pel.appendChild(script);
-    },
+    };
     /**
      * Countdown trigger
      * @param {JQuery} elm
      */
-    pctdRUN: function (elm) {
+    dimas.prototype.pctdRUN = function (elm) {
         var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
             warningThreshold: 5,
             timeLimit: tl,
@@ -2166,12 +2918,12 @@ var dimas = {
             autoStart: true,
         });
         return countdown;
-    },
+    };
     /**
      * Progress Countdown
      * @param {JQuery} elm
      */
-    pctd: function (elm) {
+    dimas.prototype.pctd = function (elm) {
         var t = this;
         if (typeof progressBarTimer == "undefined") {
             this.js("https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js", function () {
@@ -2180,14 +2932,14 @@ var dimas = {
         }
         else {
             window.onload = function (params) {
-                dimas.pctdRUN(elm);
+                this.pctdRUN(elm);
             };
         }
-    },
+    };
     /**
      * Parseurl just like as parse_url at php
      */
-    parseurl: function (url) {
+    dimas.prototype.parseurl = function (url) {
         var parser = document.createElement("a"), searchObject = {}, queries, split, i;
         // Let the browser do the work
         parser.href = url;
@@ -2208,13 +2960,107 @@ var dimas = {
             hash: parser.hash,
             protohost: parser.protocol + "//" + parser.host,
         };
-    },
-};
+    };
+    /**
+     * get current url without querystrings
+     */
+    dimas.url = ORIGIN;
+    dimas.ip = null;
+    /**
+     * framework captcha
+     */
+    dimas.captcha = {
+        /**
+         * DO NOT ASSIGN THIS
+         */
+        check: null,
+        /**
+         * Get current captcha id
+         */
+        id: function (header_name) {
+            if (!this.captcha.check) {
+                this.captcha.get(header_name);
+            }
+            return storage().get("captcha");
+        },
+        /**
+         * Get current captcha from backend
+         * And process it by jsonpCallback
+         */
+        get: function (header_name) {
+            var _a;
+            var _this = this;
+            if (!this.captcha.check) {
+                this.captcha.check = setTimeout(function () {
+                    _this.captcha.get(header_name);
+                }, 60000);
+            }
+            var ua = md5(navigator.userAgent).rot13();
+            $.ajax({
+                url: this.url + "?login=" + guid(),
+                method: "POST",
+                headers: (_a = {
+                        Accept: "application/javascript"
+                    },
+                    _a[header_name] = ua,
+                    _a[IP.rot13()] = ua,
+                    _a),
+                dataType: "jsonp",
+                jsonpCallback: "framework().captcha.jspCallback",
+            });
+        },
+        callback: function (arg) { },
+        /**
+         * Captcha JSONP callback
+         */
+        jspCallback: function (res) {
+            if (res.hasOwnProperty("captcha")) {
+                storage().set("captcha", res.captcha.rot13());
+                this.captcha.callback(storage().get("captcha"));
+                this.captcha.listen();
+            }
+        },
+        listener_started: null,
+        /**
+         * Form Captcha listener
+         */
+        listen: function () {
+            if (this.captcha.listener_started) {
+                return null;
+            }
+            this.captcha.listener_started = new Date().toISOString();
+            return $(document).on("focus", "form[captcha]", function (e) {
+                var captcha = $(this).find('[name="captcha"]');
+                if (!captcha.length) {
+                    $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
+                    captcha = $(this).find('[name="captcha"]');
+                }
+                if (captcha.length) {
+                    captcha.val(storage().get("captcha").rot13());
+                }
+                var form = captcha.parents("form");
+                var button = form.find('[type="submit"]');
+                form.one("submit", function (e) {
+                    e.preventDefault();
+                    console.log("submit with captcha");
+                    button.prop("disabled", true);
+                    this.captcha.callback = function () {
+                        button.prop("disabled", false);
+                    };
+                    this.captcha.get(null);
+                    form.off("submit");
+                });
+                //captcha.parents('form').find('[type="submit"]').one('click', function());
+            });
+        },
+    };
+    return dimas;
+}());
 /**
  * Framework object initializer
  */
 function framework() {
-    return dimas;
+    return new dimas();
 }
 var app = /** @class */ (function () {
     function app() {
@@ -2230,9 +3076,9 @@ var app = /** @class */ (function () {
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
         var lastsrc = last.getAttribute("src");
-        var parsed = dimas.parseurl(lastsrc);
+        var parsed = framework().parseurl(lastsrc);
         args.forEach(function (src) {
-            dimas.js("" + app.base + src + parsed.search, function () {
+            this.js("" + app.base + src + parsed.search, function () {
                 console.log(src + " engine inbound");
             });
         });
@@ -2245,7 +3091,7 @@ var app = /** @class */ (function () {
         var scripts = document.querySelectorAll("script[src]");
         var last = scripts[scripts.length - 1];
         var lastsrc = last.getAttribute("src");
-        var parsed = dimas.parseurl(lastsrc);
+        var parsed = framework().parseurl(lastsrc);
         args.forEach(function (key, index) {
             console.log(key, app.base);
             var src = "";
@@ -2256,7 +3102,7 @@ var app = /** @class */ (function () {
                 src = "ajaxVanilla.js";
             }
             if (src != "") {
-                dimas.js("" + app.base + src + parsed.search, function () {
+                this.js("" + app.base + src + parsed.search, function () {
                     console.log(src + " engine inbound");
                 });
             }
@@ -2271,14 +3117,141 @@ if (typeof module !== "undefined" && module.exports) {
 }
 //app.direct('Array.js', 'Object.js', 'saver.js', 'user.js');
 /**
+ *
+ *  Base64 encode / decode
+ *  @see http://www.webtoolkit.info/
+ *
+ **/
+var Base64 = {
+    // private property
+    _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+    // public method for encoding
+    encode: function (input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+        input = Base64._utf8_encode(input);
+        while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            }
+            else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output =
+                output +
+                    this._keyStr.charAt(enc1) +
+                    this._keyStr.charAt(enc2) +
+                    this._keyStr.charAt(enc3) +
+                    this._keyStr.charAt(enc4);
+        }
+        return output;
+    },
+    // public method for decoding
+    decode: function (input) {
+        var output = "";
+        var chr1, chr2, chr3;
+        var enc1, enc2, enc3, enc4;
+        var i = 0;
+        input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+        while (i < input.length) {
+            enc1 = this._keyStr.indexOf(input.charAt(i++));
+            enc2 = this._keyStr.indexOf(input.charAt(i++));
+            enc3 = this._keyStr.indexOf(input.charAt(i++));
+            enc4 = this._keyStr.indexOf(input.charAt(i++));
+            chr1 = (enc1 << 2) | (enc2 >> 4);
+            chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+            chr3 = ((enc3 & 3) << 6) | enc4;
+            output = output + String.fromCharCode(chr1);
+            if (enc3 != 64) {
+                output = output + String.fromCharCode(chr2);
+            }
+            if (enc4 != 64) {
+                output = output + String.fromCharCode(chr3);
+            }
+        }
+        output = Base64._utf8_decode(output);
+        return output;
+    },
+    // private method for UTF-8 encoding
+    _utf8_encode: function (string) {
+        string = string.replace(/\r\n/g, "\n");
+        var utftext = "";
+        for (var n = 0; n < string.length; n++) {
+            var c = string.charCodeAt(n);
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if (c > 127 && c < 2048) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+        }
+        return utftext;
+    },
+    // private method for UTF-8 decoding
+    _utf8_decode: function (utftext) {
+        var string = "";
+        var i = 0;
+        var c = (c1 = c2 = 0);
+        while (i < utftext.length) {
+            c = utftext.charCodeAt(i);
+            if (c < 128) {
+                string += String.fromCharCode(c);
+                i++;
+            }
+            else if (c > 191 && c < 224) {
+                c2 = utftext.charCodeAt(i + 1);
+                string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                i += 2;
+            }
+            else {
+                c2 = utftext.charCodeAt(i + 1);
+                c3 = utftext.charCodeAt(i + 2);
+                string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                i += 3;
+            }
+        }
+        return string;
+    },
+};
+/**
  * base64 encoding
  * @param {string} str string raw
  */
 function base64_encode(str) {
     // PROCESS
-    var encodedWord = CryptoJS.enc.Utf8.parse(str); // encodedWord Array object
-    var encoded = CryptoJS.enc.Base64.stringify(encodedWord); // string: 'NzUzMjI1NDE='
+    //const encodedWord = CryptoJS.enc.Utf8.parse(str); // encodedWord Array object
+    //const encoded = CryptoJS.enc.Base64.stringify(encodedWord); // string: 'NzUzMjI1NDE='
+    var encoded = Base64.encode(str);
     return encoded;
+}
+/**
+ * Check if base64 is valid
+ * @param {string} str
+ */
+function base64_valid(str) {
+    if (str == "" || str.trim() == "") {
+        return false;
+    }
+    try {
+        return btoa(atob(str)) == str;
+    }
+    catch (err) {
+        return false;
+    }
 }
 /**
  * base64 decoding
@@ -2286,8 +3259,9 @@ function base64_encode(str) {
  */
 function base64_decode(str) {
     // PROCESS
-    var encodedWord = CryptoJS.enc.Base64.parse(str); // encodedWord via Base64.parse()
-    var decoded = CryptoJS.enc.Utf8.stringify(encodedWord); // decode encodedWord via Utf8.stringify() '75322541'
+    //const encodedWord = CryptoJS.enc.Base64.parse(str); // encodedWord via Base64.parse()
+    //const decoded = CryptoJS.enc.Utf8.stringify(encodedWord); // decode encodedWord via Utf8.stringify() '75322541'
+    var decoded = Base64.decode(str);
     return decoded;
 }
 function b64EncodeUnicode(str) {
@@ -2296,9 +3270,11 @@ function b64EncodeUnicode(str) {
     }));
 }
 function b64DecodeUnicode(str) {
-    return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    return decodeURIComponent(Array.prototype.map
+        .call(atob(str), function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+    })
+        .join(""));
 }
 //import * as bootstrap from "bootstrap";
 //import $ from "jquery";
@@ -2394,27 +3370,6 @@ function openInNewTab(url, name) {
         var win = window.open(url, name);
         win.focus();
     }
-}
-if (typeof module == "undefined" && typeof jQuery != "undefined") {
-    if (typeof console != "undefined")
-        if (typeof console.log != "undefined") {
-            console.olog = console.log;
-        }
-        else {
-            console.olog = function () { };
-        }
-    console.log = function (message) {
-        console.olog(message);
-        if (!$("#debugConsole").length) {
-            $("body").append('<div id="debugConsole" style="display:none"></div>');
-        }
-        if (typeof console_callback == "function") {
-            console_callback(message);
-        }
-        else {
-            $("#debugConsole").append("<p> <kbd>" + typeof message + "</kbd> " + message + "</p>");
-        }
-    };
 }
 var debug_run = null;
 /**
@@ -2662,20 +3617,20 @@ function http_build_query(obj) {
  * Check current framework running at localhost
  */
 function is_localhost() {
-    var is_local = location.host.match(/^localhost|^127|\.io$/s);
+    var is_local = location.host.match(/^localhost|^127|(apotek|php|git).io$/s);
     return is_local;
 }
 if (!isnode()) {
     if (is_localhost()) {
         setTimeout(function () {
             $.ajax({
-                url: "/superuser/theme/clean?latest=s&force=true",
+                url: "/server/clean?latest=s&force=true",
             });
         }, 5000);
     }
     else {
         $.ajax({
-            url: "/superuser/theme/clean?latest=" + new Date(),
+            url: "/server/clean?latest=" + new Date(),
             silent: true,
             indicator: false,
         });
@@ -2888,10 +3843,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
     if (inputrp.length) {
         inputrp.on("keyup keydown change", function (e) {
             var t = $(this);
-            var v = t.val();
+            var v = t.val().toString();
             var n = t.next(".form-text, #rupiah");
             if (framework().isNumber(v.toString())) {
-                var V = framework().rp(v);
+                var V = framework().rp(parseNumber(v));
                 t.css("border-color", "green");
                 framework().enable_button(t, V);
             }
@@ -2909,297 +3864,731 @@ if (!(typeof module !== "undefined" && module.exports)) {
         });
     }
 }
-var ip = /** @class */ (function () {
-    function ip() {
+function autoHeight_(element) {
+    if (element instanceof HTMLTextAreaElement ||
+        element instanceof HTMLElement) {
+        if (typeof jQuery != "undefined") {
+            return jQuery(element)
+                .css({ height: "auto", "overflow-y": "hidden" })
+                .height(element.scrollHeight);
+        }
     }
-    ip.status = function (value) {
-        if (value === true) {
-            Cookies.set('status_ip'.rot13(), String(value), 5, 'm', location.pathname, null);
-        }
-        return Cookies.get('status_ip'.rot13());
-    };
-    ;
-    /**
-     * Checks ip
-     * @returns promises
-     */
-    ip.check = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.ipapi()];
-                    case 1:
-                        _a.sent();
-                        if (!!this.status(null)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.l2io()];
-                    case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
-                        if (this.status(null)) {
-                            console.log(this.get(null));
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
-     * Gets ip
-     * @param callback function callback(ip) or null return ip
-     * @returns {String} ip or callback
-     */
-    ip.get = function (callback) {
-        if (!this.status(null)) {
-            this.check();
-        }
-        console.log(this.status(null));
-        var ips = storage().get('ip');
-        if (typeof callback == 'function') {
-            return callback(ips);
-        }
-        return ips;
-    };
-    ip.ipapi = function () {
-        var self = this;
-        return $.ajax({
-            proxy: false,
-            url: 'https://ipapi.co/json/',
-            success: function (res) {
-                if (typeof res == 'object') {
-                    storage().set('ip_info', res);
-                    if (res.hasOwnProperty('ip')) {
-                        storage().set('ip', res.ip);
-                        self.status(true);
-                    }
-                }
-            }
-        });
-    };
-    ip.l2io = function () {
-        var self = this;
-        return $.ajax({
-            proxy: false,
-            url: 'https://l2.io/ip.json',
-            success: function (res) {
-                if (typeof res == 'object') {
-                    storage().set('ip_info', res);
-                    if (res.hasOwnProperty('ip')) {
-                        storage().set('ip', res.ip);
-                        self.status(true);
-                    }
-                }
-            }
-        });
-    };
-    return ip;
-}());
-function md5(string) {
-    function RotateLeft(lValue, iShiftBits) {
-        return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
+}
+/**
+ * jQuery plugin only works on browser language
+ */
+if (!(typeof module !== "undefined" && module.exports)) {
+    if (typeof jQuery != "undefined") {
+        (function ($) {
+            $.fn.hasAttr = function (name) {
+                var attr = $(this).attr(name);
+                return typeof attr !== typeof undefined && attr != null;
+            };
+            /**
+             * @see https://mdbootstrap.com/support/general/text-area-auto-grow/
+             */
+            $.fn.autoHeight = function () {
+                return this.each(function () {
+                    autoHeight_(this).on("input", function () {
+                        autoHeight_(this);
+                    });
+                });
+            };
+        })(jQuery);
     }
-    function AddUnsigned(lX, lY) {
-        var lX4, lY4, lX8, lY8, lResult;
-        lX8 = lX & 0x80000000;
-        lY8 = lY & 0x80000000;
-        lX4 = lX & 0x40000000;
-        lY4 = lY & 0x40000000;
-        lResult = (lX & 0x3fffffff) + (lY & 0x3fffffff);
-        if (lX4 & lY4) {
-            return lResult ^ 0x80000000 ^ lX8 ^ lY8;
-        }
-        if (lX4 | lY4) {
-            if (lResult & 0x40000000) {
-                return lResult ^ 0xc0000000 ^ lX8 ^ lY8;
+}
+/// <reference path="./Object.d.ts"/>
+/// <reference path="./globals.d.ts"/>
+/**
+ * SMARTFORM
+ * @todo save form user input
+ */
+/**
+ * Element Counter
+ */
+var Count = -1;
+/**
+ * Local Storage key
+ */
+var storageKey = "";
+if (typeof location != "undefined") {
+    location.pathname.replace(/\/$/s, "") + "/formField";
+}
+/**
+ * Element Indexer
+ */
+var formField;
+var formSaved = localStorage.getItem(storageKey.toString());
+if (!formSaved) {
+    formField = [];
+}
+else {
+    formField = JSON.parse(formSaved);
+}
+var uniqueid = guid();
+/**
+ * Get unique identifier of elements
+ * @param elem jQuery<HTMLElement> or HTMLElement
+ * @return string of unique identifier
+ */
+function get_unique_id_element(elem, encrypted) {
+    if (encrypted === void 0) { encrypted = false; }
+    var element = null;
+    if (elem instanceof jQuery) {
+        element = elem.get(0);
+    }
+    else if (elem instanceof HTMLElement) {
+        element = elem;
+    }
+    if (element != null && !(element instanceof HTMLDocument)) {
+        if (element instanceof HTMLInputElement ||
+            element instanceof HTMLSelectElement ||
+            element instanceof HTMLTextAreaElement) {
+            if (!element.hasAttribute("id") || element.getAttribute("id") == "") {
+                if (!(Count in formField)) {
+                    /**
+                     * @todo ID generator 6 digit alphanumerics
+                     */
+                    var id = Math.random().toString(20).substr(2, 6);
+                    element.setAttribute("id", id);
+                    /**
+                     * Save to localstorage
+                     */
+                    formField[Count] = id;
+                    localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
+                }
+                else {
+                    element.setAttribute("id", formField[Count]);
+                }
+                /**
+                 * Increase indexer
+                 */
+                Count++;
             }
-            else {
-                return lResult ^ 0x40000000 ^ lX8 ^ lY8;
+            if (element.hasAttribute("aria-autovalue")) {
+                element.setAttribute("value", uniqueid);
             }
+            var combined = "[" +
+                location.pathname.replace(/\/$/, "") +
+                "/" +
+                element.tagName +
+                "/" +
+                element.getAttribute("id") +
+                "/" +
+                (element.hasAttribute("name")
+                    ? element.getAttribute("name")
+                    : "empty") +
+                "]";
+            if (encrypted)
+                return md5(combined);
+            return combined;
         }
         else {
-            return lResult ^ lX8 ^ lY8;
+            console.log("element " + element);
         }
     }
-    function F(x, y, z) {
-        return (x & y) | (~x & z);
-    }
-    function G(x, y, z) {
-        return (x & z) | (y & ~z);
-    }
-    function H(x, y, z) {
-        return x ^ y ^ z;
-    }
-    function I(x, y, z) {
-        return y ^ (x | ~z);
-    }
-    function FF(a, b, c, d, x, s, ac) {
-        a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
-        return AddUnsigned(RotateLeft(a, s), b);
-    }
-    function GG(a, b, c, d, x, s, ac) {
-        a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
-        return AddUnsigned(RotateLeft(a, s), b);
-    }
-    function HH(a, b, c, d, x, s, ac) {
-        a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
-        return AddUnsigned(RotateLeft(a, s), b);
-    }
-    function II(a, b, c, d, x, s, ac) {
-        a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
-        return AddUnsigned(RotateLeft(a, s), b);
-    }
-    function ConvertToWordArray(string) {
-        var lWordCount;
-        var lMessageLength = string.length;
-        var lNumberOfWords_temp1 = lMessageLength + 8;
-        var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-        var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
-        var lWordArray = Array(lNumberOfWords - 1);
-        var lBytePosition = 0;
-        var lByteCount = 0;
-        while (lByteCount < lMessageLength) {
-            lWordCount = (lByteCount - (lByteCount % 4)) / 4;
-            lBytePosition = (lByteCount % 4) * 8;
-            lWordArray[lWordCount] =
-                lWordArray[lWordCount] |
-                    (string.charCodeAt(lByteCount) << lBytePosition);
-            lByteCount++;
-        }
-        lWordCount = (lByteCount - (lByteCount % 4)) / 4;
-        lBytePosition = (lByteCount % 4) * 8;
-        lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80 << lBytePosition);
-        lWordArray[lNumberOfWords - 2] = lMessageLength << 3;
-        lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
-        return lWordArray;
-    }
-    function WordToHex(lValue) {
-        var WordToHexValue = "", WordToHexValue_temp = "", lByte, lCount;
-        for (lCount = 0; lCount <= 3; lCount++) {
-            lByte = (lValue >>> (lCount * 8)) & 255;
-            WordToHexValue_temp = "0" + lByte.toString(16);
-            WordToHexValue =
-                WordToHexValue +
-                    WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
-        }
-        return WordToHexValue;
-    }
-    function Utf8Encode(string) {
-        string = string.replace(/\r\n/g, "\n");
-        var utftext = "";
-        for (var n = 0; n < string.length; n++) {
-            var c = string.charCodeAt(n);
-            if (c < 128) {
-                utftext += String.fromCharCode(c);
-            }
-            else if (c > 127 && c < 2048) {
-                utftext += String.fromCharCode((c >> 6) | 192);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-            else {
-                utftext += String.fromCharCode((c >> 12) | 224);
-                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-        }
-        return utftext;
-    }
-    var x = Array();
-    var k, AA, BB, CC, DD, a, b, c, d;
-    var S11 = 7, S12 = 12, S13 = 17, S14 = 22;
-    var S21 = 5, S22 = 9, S23 = 14, S24 = 20;
-    var S31 = 4, S32 = 11, S33 = 16, S34 = 23;
-    var S41 = 6, S42 = 10, S43 = 15, S44 = 21;
-    string = Utf8Encode(string);
-    x = ConvertToWordArray(string);
-    a = 0x67452301;
-    b = 0xefcdab89;
-    c = 0x98badcfe;
-    d = 0x10325476;
-    for (k = 0; k < x.length; k += 16) {
-        AA = a;
-        BB = b;
-        CC = c;
-        DD = d;
-        a = FF(a, b, c, d, x[k + 0], S11, 0xd76aa478);
-        d = FF(d, a, b, c, x[k + 1], S12, 0xe8c7b756);
-        c = FF(c, d, a, b, x[k + 2], S13, 0x242070db);
-        b = FF(b, c, d, a, x[k + 3], S14, 0xc1bdceee);
-        a = FF(a, b, c, d, x[k + 4], S11, 0xf57c0faf);
-        d = FF(d, a, b, c, x[k + 5], S12, 0x4787c62a);
-        c = FF(c, d, a, b, x[k + 6], S13, 0xa8304613);
-        b = FF(b, c, d, a, x[k + 7], S14, 0xfd469501);
-        a = FF(a, b, c, d, x[k + 8], S11, 0x698098d8);
-        d = FF(d, a, b, c, x[k + 9], S12, 0x8b44f7af);
-        c = FF(c, d, a, b, x[k + 10], S13, 0xffff5bb1);
-        b = FF(b, c, d, a, x[k + 11], S14, 0x895cd7be);
-        a = FF(a, b, c, d, x[k + 12], S11, 0x6b901122);
-        d = FF(d, a, b, c, x[k + 13], S12, 0xfd987193);
-        c = FF(c, d, a, b, x[k + 14], S13, 0xa679438e);
-        b = FF(b, c, d, a, x[k + 15], S14, 0x49b40821);
-        a = GG(a, b, c, d, x[k + 1], S21, 0xf61e2562);
-        d = GG(d, a, b, c, x[k + 6], S22, 0xc040b340);
-        c = GG(c, d, a, b, x[k + 11], S23, 0x265e5a51);
-        b = GG(b, c, d, a, x[k + 0], S24, 0xe9b6c7aa);
-        a = GG(a, b, c, d, x[k + 5], S21, 0xd62f105d);
-        d = GG(d, a, b, c, x[k + 10], S22, 0x2441453);
-        c = GG(c, d, a, b, x[k + 15], S23, 0xd8a1e681);
-        b = GG(b, c, d, a, x[k + 4], S24, 0xe7d3fbc8);
-        a = GG(a, b, c, d, x[k + 9], S21, 0x21e1cde6);
-        d = GG(d, a, b, c, x[k + 14], S22, 0xc33707d6);
-        c = GG(c, d, a, b, x[k + 3], S23, 0xf4d50d87);
-        b = GG(b, c, d, a, x[k + 8], S24, 0x455a14ed);
-        a = GG(a, b, c, d, x[k + 13], S21, 0xa9e3e905);
-        d = GG(d, a, b, c, x[k + 2], S22, 0xfcefa3f8);
-        c = GG(c, d, a, b, x[k + 7], S23, 0x676f02d9);
-        b = GG(b, c, d, a, x[k + 12], S24, 0x8d2a4c8a);
-        a = HH(a, b, c, d, x[k + 5], S31, 0xfffa3942);
-        d = HH(d, a, b, c, x[k + 8], S32, 0x8771f681);
-        c = HH(c, d, a, b, x[k + 11], S33, 0x6d9d6122);
-        b = HH(b, c, d, a, x[k + 14], S34, 0xfde5380c);
-        a = HH(a, b, c, d, x[k + 1], S31, 0xa4beea44);
-        d = HH(d, a, b, c, x[k + 4], S32, 0x4bdecfa9);
-        c = HH(c, d, a, b, x[k + 7], S33, 0xf6bb4b60);
-        b = HH(b, c, d, a, x[k + 10], S34, 0xbebfbc70);
-        a = HH(a, b, c, d, x[k + 13], S31, 0x289b7ec6);
-        d = HH(d, a, b, c, x[k + 0], S32, 0xeaa127fa);
-        c = HH(c, d, a, b, x[k + 3], S33, 0xd4ef3085);
-        b = HH(b, c, d, a, x[k + 6], S34, 0x4881d05);
-        a = HH(a, b, c, d, x[k + 9], S31, 0xd9d4d039);
-        d = HH(d, a, b, c, x[k + 12], S32, 0xe6db99e5);
-        c = HH(c, d, a, b, x[k + 15], S33, 0x1fa27cf8);
-        b = HH(b, c, d, a, x[k + 2], S34, 0xc4ac5665);
-        a = II(a, b, c, d, x[k + 0], S41, 0xf4292244);
-        d = II(d, a, b, c, x[k + 7], S42, 0x432aff97);
-        c = II(c, d, a, b, x[k + 14], S43, 0xab9423a7);
-        b = II(b, c, d, a, x[k + 5], S44, 0xfc93a039);
-        a = II(a, b, c, d, x[k + 12], S41, 0x655b59c3);
-        d = II(d, a, b, c, x[k + 3], S42, 0x8f0ccc92);
-        c = II(c, d, a, b, x[k + 10], S43, 0xffeff47d);
-        b = II(b, c, d, a, x[k + 1], S44, 0x85845dd1);
-        a = II(a, b, c, d, x[k + 8], S41, 0x6fa87e4f);
-        d = II(d, a, b, c, x[k + 15], S42, 0xfe2ce6e0);
-        c = II(c, d, a, b, x[k + 6], S43, 0xa3014314);
-        b = II(b, c, d, a, x[k + 13], S44, 0x4e0811a1);
-        a = II(a, b, c, d, x[k + 4], S41, 0xf7537e82);
-        d = II(d, a, b, c, x[k + 11], S42, 0xbd3af235);
-        c = II(c, d, a, b, x[k + 2], S43, 0x2ad7d2bb);
-        b = II(b, c, d, a, x[k + 9], S44, 0xeb86d391);
-        a = AddUnsigned(a, AA);
-        b = AddUnsigned(b, BB);
-        c = AddUnsigned(c, CC);
-        d = AddUnsigned(d, DD);
-    }
-    var temp = WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
-    return temp.toLowerCase();
+    return "";
 }
-var MD5 = md5;
 /**
- * Get gravatar url by email
- * @param {string} email
+ * Restore saved values of fields
+ * @param elem
  */
-function gravatar(email) {
-    return "https://www.gravatar.com/avatar/" + md5(email.trim().toLowerCase());
+function restore_form_fields(elem) {
+    Count++;
+    var element = null;
+    if (elem instanceof jQuery) {
+        element = elem.get(0);
+    }
+    else if (elem instanceof HTMLElement) {
+        element = elem;
+    }
+    if (element != null && !(element instanceof HTMLDocument)) {
+        if (element instanceof HTMLInputElement ||
+            element instanceof HTMLSelectElement ||
+            element instanceof HTMLTextAreaElement) {
+            if (element.hasAttribute("no-save")) {
+                return;
+            }
+            // set indicator
+            element.setAttribute("aria-smartform", uniqueid);
+            var item;
+            var key = get_unique_id_element(element);
+            var type = element.getAttribute("type");
+            // begin restoration
+            if (key != null && key != "null" && key.length > 0) {
+                if (type == "file") {
+                    console.error("cannot set value of input file");
+                    return;
+                }
+                // checkbox input button
+                else if (type === "checkbox") {
+                    item = JSON.parse(localStorage.getItem(key));
+                    if (item === null) {
+                        return;
+                    }
+                    element.setAttribute("checked", item.toString());
+                    element.checked = item;
+                    return;
+                }
+                // radio input button
+                else if (type === "radio") {
+                    item = localStorage.getItem(key) === "on";
+                    element.setAttribute("checked", item.toString());
+                    element.checked = item;
+                    return;
+                }
+                // input text number, textarea, or select
+                else {
+                    item = localStorage.getItem(key);
+                    if (item === null || !item.toString().length) {
+                        return;
+                    }
+                    element.setAttribute("value", item);
+                    element.value = item;
+                }
+            }
+        }
+    }
 }
+/**
+ * Save textarea values
+ * @param elem
+ */
+function save_fields(elem) {
+    var element = null;
+    if (elem instanceof jQuery) {
+        element = elem.get(0);
+    }
+    else if (elem instanceof HTMLElement) {
+        element = elem;
+    }
+    if (element != null && !(element instanceof HTMLDocument)) {
+        if (element instanceof HTMLInputElement ||
+            element instanceof HTMLSelectElement ||
+            element instanceof HTMLTextAreaElement) {
+            get_unique_id_element(element);
+            var aria = element.getAttribute("aria-smartform");
+            if (aria && aria != uniqueid) {
+                if (typeof jQuery != "undefined") {
+                    $(element).smartForm();
+                    $(element).attr("aria-smartform", uniqueid);
+                }
+            }
+        }
+    }
+}
+if (!(typeof module !== "undefined" && module.exports)) {
+    if (typeof jQuery != "undefined") {
+        (function ($) {
+            $.fn.smartform_config = {
+                console_log: false,
+            };
+            $.fn.get_unique_identifier = function () {
+                return get_unique_id_element($(this));
+            };
+            $.fn.smartForm = function () {
+                restore_form_fields($(this));
+            };
+            $.arrive = function (target, callback) {
+                if (target) {
+                    $(target).bind("DOMNodeInserted", callback);
+                }
+                else {
+                    if (typeof callback == "function") {
+                        $(document).bind("DOMNodeInserted", callback);
+                    }
+                    else if (typeof target == "function") {
+                        $(document).bind("DOMNodeInserted", target);
+                    }
+                }
+            };
+            // bind to new elements
+            $(document).bind("DOMNodeInserted", function () {
+                var t = $(this);
+                var val = localStorage.getItem(t.get_unique_identifier().toString());
+                var tag = t.prop("tagName");
+                var allowed = !t.hasAttr("no-save") &&
+                    t.hasAttr("aria-smartform") &&
+                    typeof tag != "undefined";
+                if (allowed && val) {
+                    console.log(tag, allowed && val);
+                    switch (t.prop("tagName")) {
+                        case "SELECT":
+                        case "INPUT":
+                        case "TEXTAREA":
+                            t.val(val);
+                            break;
+                    }
+                }
+            });
+            // detach from removed elements
+            $(document).bind("DOMNodeRemoved", function () {
+                var t = $(this);
+                var allowed = !t.hasAttr("no-save") && t.hasAttr("aria-smartform");
+                if (allowed) {
+                    switch (t.prop("tagName")) {
+                        case "SELECT":
+                        case "INPUT":
+                        case "TEXTAREA":
+                            t.off("change");
+                            break;
+                    }
+                }
+            });
+            //save value to localstorage
+            $(document).on("change", "select, input, textarea", function (e) {
+                var _this = this;
+                var t = $(this);
+                var key = t.get_unique_identifier().toString();
+                var item = t.val();
+                var allowed = !t.hasAttr("no-save") && t.hasAttr("aria-smartform");
+                if (key && item !== "" && allowed) {
+                    if (t.attr("type") == "checkbox") {
+                        localStorage.setItem(key, t.is(":checked").toString());
+                        console.log("save checkbox button ", $(this).offset());
+                        return;
+                    }
+                    if (t.attr("type") == "radio" && t.attr("id")) {
+                        $('[name="' + t.attr("name") + '"]').each(function (i, e) {
+                            localStorage.setItem($(this).get_unique_identifier().toString(), "off");
+                        });
+                        setTimeout(function () {
+                            localStorage.setItem(key, item.toString());
+                            console.log("save radio button ", $(_this).offset());
+                        }, 500);
+                        return;
+                    }
+                    localStorage.setItem(key, item.toString());
+                    //console.log('save', key, localStorage.getItem(key));
+                }
+            });
+            $(document).on("focus", "input,textarea,select", function () {
+                save_fields($(this));
+            });
+        })(jQuery);
+    }
+}
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+function smartform() {
+    //set value from localstorage
+    var setglobal = function () {
+        jQuery("input,textarea,select").each(function (i, el) {
+            $(this).smartForm();
+        });
+    };
+    if (typeof jQuery != "undefined")
+        setglobal();
+    //setInterval(function () { }, 500);
+}
+/**
+ * Copy to clipboard
+ */
+function copyToClipboard(text, el) {
+    var copyTest = document.queryCommandSupported("copy");
+    var elOriginalText = el.attr("data-original-title");
+    if (copyTest === true) {
+        var copyTextArea = document.createElement("textarea");
+        copyTextArea.value = text;
+        document.body.appendChild(copyTextArea);
+        copyTextArea.select();
+        try {
+            var successful = document.execCommand("copy");
+            var msg = successful ? "Copied!" : "Whoops, not copied!";
+            el.attr("data-original-title", msg);
+            el.tooltip("show");
+        }
+        catch (err) {
+            console.log("Oops, unable to copy");
+        }
+        document.body.removeChild(copyTextArea);
+        el.attr("data-original-title", elOriginalText);
+    }
+    else {
+        // Fallback if browser doesn't support .execCommand('copy')
+        window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+    }
+}
+/*
+ * JavaScript MD5
+ * https://github.com/blueimp/JavaScript-MD5
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ *
+ * Based on
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+/* global define */
+/* eslint-disable strict */
+/**
+ * Add integers, wrapping at 2^32.
+ * This uses 16-bit operations internally to work around bugs in interpreters.
+ *
+ * @param {number} x First integer
+ * @param {number} y Second integer
+ * @returns {number} Sum
+ */
+function safeAdd(x, y) {
+    var lsw = (x & 0xffff) + (y & 0xffff);
+    var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    return (msw << 16) | (lsw & 0xffff);
+}
+/**
+ * Bitwise rotate a 32-bit number to the left.
+ *
+ * @param {number} num 32-bit number
+ * @param {number} cnt Rotation count
+ * @returns {number} Rotated number
+ */
+function bitRotateLeft(num, cnt) {
+    return (num << cnt) | (num >>> (32 - cnt));
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} q q
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5cmn(q, a, b, x, s, t) {
+    return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5ff(a, b, c, d, x, s, t) {
+    return md5cmn((b & c) | (~b & d), a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5gg(a, b, c, d, x, s, t) {
+    return md5cmn((b & d) | (c & ~d), a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5hh(a, b, c, d, x, s, t) {
+    return md5cmn(b ^ c ^ d, a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5ii(a, b, c, d, x, s, t) {
+    return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+}
+/**
+ * Calculate the MD5 of an array of little-endian words, and a bit length.
+ *
+ * @param {Array} x Array of little-endian words
+ * @param {number} len Bit length
+ * @returns {Array<number>} MD5 Array
+ */
+function binlMD5(x, len) {
+    /* append padding */
+    x[len >> 5] |= 0x80 << len % 32;
+    x[(((len + 64) >>> 9) << 4) + 14] = len;
+    var i;
+    var olda;
+    var oldb;
+    var oldc;
+    var oldd;
+    var a = 1732584193;
+    var b = -271733879;
+    var c = -1732584194;
+    var d = 271733878;
+    for (i = 0; i < x.length; i += 16) {
+        olda = a;
+        oldb = b;
+        oldc = c;
+        oldd = d;
+        a = md5ff(a, b, c, d, x[i], 7, -680876936);
+        d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+        c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+        b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+        a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+        d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+        c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+        b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+        a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+        d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+        c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+        b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+        a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+        d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+        c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+        b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+        a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+        d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+        c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+        b = md5gg(b, c, d, a, x[i], 20, -373897302);
+        a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+        d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+        c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+        b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+        a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+        d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+        c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+        b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+        a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+        d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+        c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+        b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+        a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+        d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+        c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+        b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+        a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+        d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+        c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+        b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+        a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+        d = md5hh(d, a, b, c, x[i], 11, -358537222);
+        c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+        b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+        a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+        d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+        c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+        b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+        a = md5ii(a, b, c, d, x[i], 6, -198630844);
+        d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+        c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+        b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+        a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+        d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+        c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+        b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+        a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+        d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+        c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+        b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+        a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+        d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+        c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+        b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+        a = safeAdd(a, olda);
+        b = safeAdd(b, oldb);
+        c = safeAdd(c, oldc);
+        d = safeAdd(d, oldd);
+    }
+    return [a, b, c, d];
+}
+/**
+ * Convert an array of little-endian words to a string
+ *
+ * @param {Array<number>} input MD5 Array
+ * @returns {string} MD5 string
+ */
+function binl2rstr(input) {
+    var i;
+    var output = "";
+    var length32 = input.length * 32;
+    for (i = 0; i < length32; i += 8) {
+        output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
+    }
+    return output;
+}
+/**
+ * Convert a raw string to an array of little-endian words
+ * Characters >255 have their high-byte silently ignored.
+ *
+ * @param {string} input Raw input string
+ * @returns {Array<number>} Array of little-endian words
+ */
+function rstr2binl(input) {
+    var i;
+    var output = [];
+    output[(input.length >> 2) - 1] = undefined;
+    for (i = 0; i < output.length; i += 1) {
+        output[i] = 0;
+    }
+    var length8 = input.length * 8;
+    for (i = 0; i < length8; i += 8) {
+        output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
+    }
+    return output;
+}
+/**
+ * Calculate the MD5 of a raw string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+function rstrMD5(s) {
+    return binl2rstr(binlMD5(rstr2binl(s), s.length * 8));
+}
+/**
+ * Calculates the HMAC-MD5 of a key and some data (raw strings)
+ *
+ * @param {string} key HMAC key
+ * @param {string} data Raw input string
+ * @returns {string} Raw MD5 string
+ */
+function rstrHMACMD5(key, data) {
+    var i;
+    var bkey = rstr2binl(key);
+    var ipad = [];
+    var opad = [];
+    var hash;
+    ipad[15] = opad[15] = undefined;
+    if (bkey.length > 16) {
+        bkey = binlMD5(bkey, key.length * 8);
+    }
+    for (i = 0; i < 16; i += 1) {
+        ipad[i] = bkey[i] ^ 0x36363636;
+        opad[i] = bkey[i] ^ 0x5c5c5c5c;
+    }
+    hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+    return binl2rstr(binlMD5(opad.concat(hash), 512 + 128));
+}
+/**
+ * Convert a raw string to a hex string
+ *
+ * @param {string} input Raw input string
+ * @returns {string} Hex encoded string
+ */
+function rstr2hex(input) {
+    var hexTab = "0123456789abcdef";
+    var output = "";
+    var x;
+    var i;
+    for (i = 0; i < input.length; i += 1) {
+        x = input.charCodeAt(i);
+        output += hexTab.charAt((x >>> 4) & 0x0f) + hexTab.charAt(x & 0x0f);
+    }
+    return output;
+}
+/**
+ * Encode a string as UTF-8
+ *
+ * @param {string} input Input string
+ * @returns {string} UTF8 string
+ */
+function str2rstrUTF8(input) {
+    return unescape(encodeURIComponent(input));
+}
+/**
+ * Encodes input string as raw MD5 string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+function rawMD5(s) {
+    return rstrMD5(str2rstrUTF8(s));
+}
+/**
+ * Encodes input string as Hex encoded string
+ *
+ * @param {string} s Input string
+ * @returns {string} Hex encoded string
+ */
+function hexMD5(s) {
+    return rstr2hex(rawMD5(s));
+}
+/**
+ * Calculates the raw HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+function rawHMACMD5(k, d) {
+    return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d));
+}
+/**
+ * Calculates the Hex encoded HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+function hexHMACMD5(k, d) {
+    return rstr2hex(rawHMACMD5(k, d));
+}
+/**
+ * Calculates MD5 value for a given string.
+ * If a key is provided, calculates the HMAC-MD5 value.
+ * Returns a Hex encoded string unless the raw argument is given.
+ *
+ * @param {string} string Input string
+ * @param {string} [key] HMAC key
+ * @param {boolean} [raw] Raw output switch
+ * @returns {string} MD5 output
+ */
+function md5(string, key, raw) {
+    if (!key) {
+        if (!raw) {
+            return hexMD5(string);
+        }
+        return rawMD5(string);
+    }
+    if (!raw) {
+        return hexHMACMD5(key, string);
+    }
+    return rawHMACMD5(key, string);
+}
+/*
+  if (typeof define === "function" && define.amd) {
+    define(function () {
+      return md5;
+    });
+  } else if (typeof module === "object" && module.exports) {
+    module.exports = md5;
+  } else {
+    $.md5 = md5;
+  }
+*/
 /// <reference path="./globals.d.ts"/>
 if (!isnode()) {
     /*
@@ -3498,9 +4887,9 @@ var reCaptcha = {
             else {
                 toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
-            for (var index_1 = 0; index_1 < 3; index_1++) {
+            for (var index_2 = 0; index_2 < 3; index_2++) {
                 reCaptcha.exec(action, true);
-                if (index_1 == 3 - 1) {
+                if (index_2 == 3 - 1) {
                     toastr.error("recaptcha has reached limit", "captcha information");
                 }
             }
@@ -3908,381 +5297,6 @@ function datatables_colums_options(data, exclude) {
         };
     }
 }
-/// <reference path="./Object.d.ts"/>
-/// <reference path="./globals.d.ts"/>
-/**
- * SMARTFORM
- * @todo save form user input
- */
-if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * Element Counter
-     */
-    var Count = -1;
-    /**
-     * Local Storage key
-     */
-    var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
-    /**
-     * Element Indexer
-     */
-    var formField;
-    var formSaved = localStorage.getItem(storageKey.toString());
-    if (!formSaved) {
-        formField = [];
-    }
-    else {
-        formField = JSON.parse(formSaved);
-    }
-    var uniqueid = guid();
-    (function ($) {
-        $.fn.getIDName = function () {
-            //var native: HTMLElement = this;
-            /**
-             * @todo Adding attribute id if not have id
-             */
-            if (!$(this).attr("id") || $(this).attr("id") == "") {
-                try {
-                    if (!(Count in formField)) {
-                        /**
-                         * @todo ID generator 6 digit alphanumerics
-                         */
-                        var id = Math.random().toString(20).substr(2, 6);
-                        $(this).attr("id", id);
-                        formField[Count] = id;
-                        localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
-                    }
-                    else {
-                        $(this).attr("id", formField[Count]);
-                    }
-                }
-                catch (error) {
-                    console.error(error);
-                    console.log(formField, typeof formField);
-                }
-                /**
-                 * Increase index offset
-                 */
-                Count++;
-            }
-            if ($(this).attr("aria-autovalue")) {
-                $(this).val(uniqueid);
-            }
-            return ("[" +
-                location.pathname.replace(/\/$/, "") +
-                "/" +
-                $(this).prop("tagName") +
-                "/" +
-                $(this).attr("id") +
-                "/" +
-                $(this).attr("name") || "empty" + "]");
-        };
-        $.fn.smartForm = function () {
-            Count++;
-            if ($(this).attr("no-save")) {
-                return;
-            }
-            var t = $(this);
-            //set indicator
-            t.attr("aria-smartform", uniqueid);
-            var item;
-            var key = t.getIDName().toString();
-            var type = $(this).attr("type");
-            // begin restoration
-            if (key != null && key != "null" && key.length > 0) {
-                if (type == "file") {
-                    console.error("cannot set value of input file");
-                    return;
-                }
-                // checkbox input button
-                else if (type === "checkbox") {
-                    item = JSON.parse(localStorage.getItem(key));
-                    if (item === null) {
-                        return;
-                    }
-                    $(this).prop("checked", item);
-                    return;
-                }
-                // radio input button
-                else if (type === "radio") {
-                    item = localStorage.getItem(key) === "on";
-                    $(this).prop("checked", item);
-                    return;
-                }
-                // input text number, textarea, or select
-                else {
-                    item = localStorage.getItem(key);
-                    if (item === null || !item.toString().length) {
-                        return;
-                    }
-                    $(this).val(item);
-                }
-                //console.log('load', type, key, item);
-            }
-        };
-        $.arrive = function (target, callback) {
-            if (target) {
-                $(target).bind("DOMNodeInserted", callback);
-            }
-            else {
-                if (typeof callback == "function") {
-                    $(document).bind("DOMNodeInserted", callback);
-                }
-                else if (typeof target == "function") {
-                    $(document).bind("DOMNodeInserted", target);
-                }
-            }
-        };
-        // bind to new elements
-        $(document).bind("DOMNodeInserted", function () {
-            var t = $(this);
-            var val = localStorage.getItem(t.getIDName().toString());
-            var tag = t.prop("tagName");
-            var allowed = !t.attr("no-save") &&
-                t.attr("aria-smartform") &&
-                typeof tag != "undefined";
-            if (allowed && val) {
-                console.log(tag, allowed && val);
-                switch (t.prop("tagName")) {
-                    case "SELECT":
-                    case "INPUT":
-                    case "TEXTAREA":
-                        t.val(val);
-                        break;
-                }
-            }
-        });
-        // detach from removed elements
-        $(document).bind("DOMNodeRemoved", function () {
-            var t = $(this);
-            var allowed = !t.attr("no-save") && t.attr("aria-smartform");
-            if (allowed) {
-                switch (t.prop("tagName")) {
-                    case "SELECT":
-                    case "INPUT":
-                    case "TEXTAREA":
-                        t.off("change");
-                        break;
-                }
-            }
-        });
-        //save value to localstorage
-        $(document).on("change", "select, input, textarea", function (e) {
-            var _this = this;
-            var t = $(this);
-            var key = t.getIDName().toString();
-            var item = t.val();
-            var allowed = !t.attr("no-save") && t.attr("aria-smartform");
-            if (key && item !== "" && allowed) {
-                if (t.attr("type") == "checkbox") {
-                    localStorage.setItem(key, t.is(":checked").toString());
-                    console.log("save checkbox button ", $(this).offset());
-                    return;
-                }
-                if (t.attr("type") == "radio" && t.attr("id")) {
-                    $('[name="' + t.attr("name") + '"]').each(function (i, e) {
-                        localStorage.setItem($(this).getIDName().toString(), "off");
-                    });
-                    setTimeout(function () {
-                        localStorage.setItem(key, item.toString());
-                        console.log("save radio button ", $(_this).offset());
-                    }, 500);
-                    return;
-                }
-                localStorage.setItem(key, item.toString());
-                //console.log('save', key, localStorage.getItem(key));
-            }
-        });
-        $(document).on("focus", "input,textarea,select", function () {
-            var t = $(this);
-            t.getIDName();
-            var aria = t.attr("aria-smartform");
-            if (aria && aria != uniqueid) {
-                t.smartForm();
-                t.attr("aria-smartform", uniqueid);
-            }
-        });
-    })(jQuery);
-}
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-function smartform() {
-    //set value from localstorage
-    var setglobal = function () {
-        jQuery("input,textarea,select").each(function (i, el) {
-            $(this).smartForm();
-        });
-    };
-    setglobal();
-    //setInterval(function () { }, 500);
-}
-/**
- * Copy to clipboard
- */
-function copyToClipboard(text, el) {
-    var copyTest = document.queryCommandSupported("copy");
-    var elOriginalText = el.attr("data-original-title");
-    if (copyTest === true) {
-        var copyTextArea = document.createElement("textarea");
-        copyTextArea.value = text;
-        document.body.appendChild(copyTextArea);
-        copyTextArea.select();
-        try {
-            var successful = document.execCommand("copy");
-            var msg = successful ? "Copied!" : "Whoops, not copied!";
-            el.attr("data-original-title", msg);
-            el.tooltip("show");
-        }
-        catch (err) {
-            console.log("Oops, unable to copy");
-        }
-        document.body.removeChild(copyTextArea);
-        el.attr("data-original-title", elOriginalText);
-    }
-    else {
-        // Fallback if browser doesn't support .execCommand('copy')
-        window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
-    }
-}
-var STORAGE = {
-    /**
-     * get localstorage by key
-     * @param {String} key
-     */
-    get: function (key) {
-        if (!this.has(key)) {
-            return false;
-        }
-        var data = localStorage[key];
-        try {
-            return JSON.parse(data);
-        }
-        catch (e) {
-            return data;
-        }
-    },
-    /**
-     * Set localstorage key value
-     * @param {String} key
-     * @param {String|Array|Object} value
-     */
-    set: function (key, value) {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
-        catch (e) {
-            localStorage.setItem(key, value);
-        }
-    },
-    /**
-     * Check localstorage key exists
-     * @param {String} key
-     */
-    has: function (key) {
-        return !!localStorage[key] && !!localStorage[key].length;
-    },
-    /**
-     * Extend or set localstorage key
-     * @param {String} key
-     * @param {String} value
-     */
-    extend: function (key, value) {
-        if (this.has(key)) {
-            var _value = this.get(key);
-            jQuery.extend(_value, JSON.parse(JSON.stringify(value)));
-            this.set(key, _value);
-        }
-        else {
-            this.set(key, value);
-        }
-    },
-    /**
-     * Remove localstorage key
-     * @param {String} key
-     */
-    remove: function (key) {
-        localStorage.removeItem(key);
-    }
-};
-/**
- * localStorage helper
- */
-function storage() {
-    return STORAGE;
-}
-String.prototype.parse_url = function () {
-    var parser = document.createElement("a"), searchObject, queries, split, i;
-    // Let the browser do the work
-    parser.href = this.toString();
-    // Convert query string to object
-    queries = parser.search.replace(/^\?/, "").split("&");
-    for (i = 0; i < queries.length; i++) {
-        split = queries[i].split("=");
-        searchObject[split[0]] = split[1];
-    }
-    return {
-        protocol: parser.protocol,
-        host: parser.host,
-        hostname: parser.hostname,
-        port: parser.port,
-        pathname: parser.pathname,
-        search: parser.search,
-        searchObject: searchObject,
-        hash: parser.hash,
-        protohost: parser.protocol + "//" + parser.host,
-    };
-};
-/**
- * Load css
- */
-String.prototype.CSS = function () {
-    var e = document.createElement("link");
-    e.rel = "stylesheet";
-    e.href = this.toString();
-    var n = document.getElementsByTagName("head")[0];
-    window.addEventListener
-        ? window.addEventListener("load", function () {
-            n.parentNode.insertBefore(e, n);
-        }, !1)
-        : window.attachEvent
-            ? window.attachEvent("onload", function () {
-                n.parentNode.insertBefore(e, n);
-            })
-            : (window.onload = function () {
-                n.parentNode.insertBefore(e, n);
-            });
-};
-String.prototype.trim = function () {
-    return this.replace(/^\s+|\s+$/gm, "");
-};
-String.prototype.hexE = function () {
-    var hex, i;
-    var result = "";
-    for (i = 0; i < this.length; i++) {
-        hex = this.charCodeAt(i).toString(16);
-        result += ("000" + hex).slice(-4);
-    }
-    return result;
-};
-String.prototype.hexD = function () {
-    var j;
-    var hexes = this.match(/.{1,4}/g) || [];
-    var back = "";
-    for (j = 0; j < hexes.length; j++) {
-        back += String.fromCharCode(parseInt(hexes[j], 16));
-    }
-    return back;
-};
-String.prototype.capitalize = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-};
-String.prototype.rot13 = function () {
-    return this.replace(/[a-zA-Z]/g, function (c) {
-        return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
-    });
-};
 var ctable = /** @class */ (function () {
     function ctable(config) {
         this.can_edit = null;
@@ -4365,23 +5379,6 @@ var ctable = /** @class */ (function () {
     };
     return ctable;
 }());
-if (!(typeof module !== "undefined" && module.exports)) {
-    /**
-     * @see https://mdbootstrap.com/support/general/text-area-auto-grow/
-     */
-    jQuery.fn.autoHeight = function () {
-        function autoHeight_(element) {
-            return jQuery(element)
-                .css({ height: "auto", "overflow-y": "hidden" })
-                .height(element.scrollHeight);
-        }
-        return this.each(function () {
-            autoHeight_(this).on("input", function () {
-                autoHeight_(this);
-            });
-        });
-    };
-}
 if (!isnode()) {
     if (typeof jQuery != "undefined") {
         var target = $(location).attr("hash");
@@ -4514,30 +5511,6 @@ function saveUID(data) {
     }
 }
 /**
- * get url parameter by name
- * @param name parameter name
- * @param url url target, null for current location.href
- */
-function getParameterByName(name, url) {
-    if (typeof URLSearchParams !== 'undefined') {
-        if (!window.location.search) {
-            url = window.location.href;
-        }
-        var urlParams = new URLSearchParams(url);
-        return urlParams.get(name);
-    }
-    if (!url) {
-        url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex.exec(url);
-    if (!results)
-        return null;
-    if (!results[2])
-        return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-/**
  * User framework
  */
 var user = /** @class */ (function () {
@@ -4614,10 +5587,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
      * @typedef {user} userc
      */
     var userc = new user();
-    if (typeof window.user === "undefined") {
+    if (typeof window != "undefined" && typeof window.user === "undefined") {
         window.user = userc;
     }
-    jQuery.user = userc;
+    if (typeof jQuery != "undefined") {
+        jQuery.user = userc;
+    }
 }
 if (!(typeof module !== "undefined" && module.exports)) {
     /**
@@ -4727,7 +5702,7 @@ function tafocus(id, placeholder) {
  * @param {String} placeholder
  */
 function formatNewLines(placeholder) {
-    for (var index_2 = 0; index_2 < 1000; index_2++) {
+    for (var index_3 = 0; index_3 < 1000; index_3++) {
         if (!placeholder)
             break;
         placeholder = placeholder.replace("\\n", "\n");
@@ -5158,6 +6133,11 @@ function socket_stop() {
 }
 function socket_check() {
     return socket;
+}
+if (typeof window != "undefined") {
+    ip.storage = new STORAGE();
+    dimas.setIp(ip.get());
+    //console.log(`ip ${dimas.ip}`);
 }
 /**
  * ZLIB packer

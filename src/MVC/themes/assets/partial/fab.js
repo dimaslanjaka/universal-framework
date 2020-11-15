@@ -1,8 +1,6 @@
 (function () {
-  const jquery_loaded = typeof jQuery != "undefined";
-  console.info("jQuery is " + (jquery_loaded === true ? "loaded" : "missing"));
-  if (typeof id_fab == "string" && typeof id_fab_checkbox == "string") {
-    if (jquery_loaded) {
+  if (typeof jQuery != "undefined") {
+    if (typeof id_fab == "string" && typeof id_fab_checkbox == "string") {
       return fab_set_listener($(`#${id_fab}`));
     } else {
       return fab_set_listener(document.getElementById(id_fab));

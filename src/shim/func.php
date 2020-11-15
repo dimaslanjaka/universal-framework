@@ -109,6 +109,8 @@ function toNumber($val)
  */
 function path2url($file, $Protocol = 'http://')
 {
+  $file = realpath($file);
+  //var_dump($file);
   return $Protocol . $_SERVER['HTTP_HOST'] . fixurl(str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath($file)));
 }
 

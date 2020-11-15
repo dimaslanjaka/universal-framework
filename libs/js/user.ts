@@ -73,8 +73,10 @@ if (!(typeof module !== "undefined" && module.exports)) {
    * @typedef {user} userc
    */
   const userc = new user();
-  if (typeof window.user === "undefined") {
+  if (typeof window != "undefined" && typeof window.user === "undefined") {
     window.user = userc;
   }
-  jQuery.user = userc;
+  if (typeof jQuery != "undefined") {
+    jQuery.user = userc;
+  }
 }
