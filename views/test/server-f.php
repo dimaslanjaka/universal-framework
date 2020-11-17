@@ -1,7 +1,7 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  header("Content-type: application/json");
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+  header('Content-type: application/json');
   $server = [];
   if (function_exists('apache_request_headers')) {
     $headers = apache_request_headers();

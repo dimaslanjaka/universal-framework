@@ -1,6 +1,5 @@
-/**
- * Consoler
- */
+/*
+migrated to libs\js\console.ts
 [
   ["warn", "\x1b[35m"],
   ["error", "\x1b[31m"],
@@ -28,3 +27,4 @@ console.error = (function () {
     }
   };
 })();
+ */

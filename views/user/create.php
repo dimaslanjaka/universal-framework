@@ -19,13 +19,13 @@
 
       <div class="form-group">
         <label for="">Password</label>
-        <input type="password" name="password" id="" class="form-control">
+        <input type="password" name="password" id="pw" class="form-control">
         <small class="form-text text-muted">password for login</small>
       </div>
 
       <div class="form-group">
         <label for="">Role</label>
-        <select name="role" id="" class="form-control select2-roles"></select>
+        <select name="role" id="role" class="form-control select2-roles"></select>
       </div>
     </form>
   </div>

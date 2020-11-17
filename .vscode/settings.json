@@ -41,8 +41,7 @@
   "files.associations": {
     "*.extension": "language"
   },
-  "files.autoSave": "off",
-  "files.autoSaveDelay": 18000,
+  "files.autoSave": "afterDelay",
   "files.encoding": "utf8",
   "files.exclude": {
     ".vscode": false,
@@ -65,6 +64,7 @@
   "git.autofetchPeriod": 18000,
   "git.autorefresh": true,
   "git.countBadge": "all",
+  "git.enabled": true,
   "git.enableSmartCommit": true,
   "git.enableStatusBarSync": true,
   "git.ignoreLimitWarning": true,

@@ -482,8 +482,20 @@ class helper
   public static function isLocal(string $regex = null)
   {
     $match = preg_match('/127\.0\.0\.0\.1|localhost|^192\.168/s', $_SERVER['HTTP_HOST']) ? true : false;
-    if ($regex) {
-      $match = $match || preg_match($regex, $_SERVER['HTTP_HOST']) ? true : false;
+
+    $whitelist = array(
+      '127.0.0.1',
+      '::1'
+    );
+
+    if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
+      $match = false;
+    } else {
+      if ($regex) {
+        $match = $match || preg_match($regex, $_SERVER['HTTP_HOST']) ? true : false;
+      } else {
+        $match = true;
+      }
     }
 
     return $match;

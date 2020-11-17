@@ -1,65 +1,29 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
+/// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference path="../../../../../libs/js/globals.d.ts" />
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="datatables.net" />
-declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
 /**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
+ * AES encrypt
+ * @url /src/shim/Cipher.php
+ * @param {text} text
+ * @param {text} key
  */
-declare function inArray(needle: any, haystack: Array<any>): boolean;
+declare function aesEncrypt(text: any, key: any): string;
 /**
- * in_array PHP equivalent
- * @param needle string etc
- * @param haystack
+ * AES decrypt
+ * @url /src/shim/Cipher.php
+ * @param {text} encrypted
+ * @param {text} key
  */
-declare function in_array(needle: any, haystack: Array<any>): boolean;
-/**
- * get all keys
- * @param haystack string etc
- */
-declare function array_keys(haystack: any): string[];
-/**
- * Shuffles array in place.
- * @param a items An array containing the items.
- */
-declare function array_shuffle(a: Array<any>): any[];
-declare function array_filter(array: []): never[];
-/**
- * pick random from array
- * @param {Array<any>} arrays
- * @param {boolean} unique Unique the arrays
- */
-declare function array_rand(arrays: any[], unique: any): {
-    index: number;
-    value: any;
-};
-/**
- * Array unique
- * @param {Array<any>} arrays
- */
-declare function array_unique(arrays: any[]): any[];
-/**
- *
- * @param {Array<any>} arrayName
- * @param {String|number} key
- */
-declare function array_unset(arrayName: {
-    [x: string]: any;
-}, key: any): any[];
-/**
- * PHP shuffle array equivalent
- * @param array
- * @example
- * var arr = [2, 11, 37, 42];
- * shuffle(arr);
- * console.log(arr); //return random
- */
-declare function shuffle(array: Array<any>): any[];
+declare function aesDecrypt(encrypted: any, key: any): any;
+declare namespace CryptoJSAesJson {
+    function stringify(cipherParams: any): string;
+    function parse(jsonStr: any): CryptoJS.lib.CipherParams;
+}
 /**
  * CodeMirror loader
  * @param id
@@ -70,9 +34,11 @@ declare function loadCodemirror(element: HTMLTextAreaElement, mode: string | str
 /**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @see http://localhost/src/Cookies/helper.php
+ * @see http://localhost/src/Cookie/helper.php
  */
 declare class Cookies {
+    private static logged;
+    private static logging;
     /**
      * Get cookie value by cookie name
      * @param c_name
@@ -80,13 +46,27 @@ declare class Cookies {
      */
     static get(c_name: string): string | Object | null;
     /**
+     * Check cookie exists
+     * @param c_name cookie name
+     */
+    static has(c_name: string): boolean;
+    /**
      * Create cookie expiring in days
      * @param name cookie name
      * @param value cookie value
      * @param days days to expire
      * @param expire_type d = days, m = minutes, s = seconds, default seconds
      */
-    static set(name: string, value: any, expire: number, expire_type: string, path: string | any, callback: any | Function): any;
+    static set(name: string, value: any, expire: number | string, expire_type?: string | null, path?: string | any | null, callback?: any | Function | null): any;
+    /**
+     * Delete Cookie
+     * @param name cookie name
+     */
+    static del(name: string): void;
+    /**
+     * Get all cookies
+     */
+    static all(): {};
     /**
      * Call function if cookie name not set
      * @param name
@@ -99,12 +79,12 @@ declare class Cookies {
      * decompress cookie
      * @param str
      */
-    static decompress(str: string): void;
+    private static decompress;
     /**
      * compress cookie
      * @param str
      */
-    static compress(str: string): void;
+    private static compress;
 }
 /**
  * Get key
@@ -153,28 +133,6 @@ declare function CryptoD(passphrase: string, encryptedText: string, salt: string
 declare var salt: string;
 declare var iv: string;
 declare var iterations: string;
-declare function datetime_local(date: any): string;
-/**
- * Detect is mobile
- */
-declare function isMobile(): boolean;
-declare function get_device(): {
-    screen: any;
-    browser: any;
-    browserVersion: any;
-    browserMajorVersion: any;
-    mobile: any;
-    os: any;
-    osVersion: any;
-    cookies: any;
-    flashVersion: string;
-};
-/** Add one or more listeners to an element
- * @param element - DOM element to add listeners to
- * @param eventNames - space separated list of event names, e.g. 'click change'
- * @param listener - function to attach for each event as a listener
- */
-declare function setEventListener(element: HTMLElement, eventNames: "click" | "mouseover" | "submit" | "change", listener: EventListenerObject | Function | any): void;
 /**
  * @class Generate unique id
  */
@@ -195,6 +153,303 @@ declare function createElement(params: createElementOpt): any;
 declare class html {
     static create(options: any): any;
 }
+/**
+ * Detect is mobile
+ */
+declare function isMobile(): boolean;
+declare function get_device(): {
+    screen: string;
+    browser: string;
+    browserVersion: string;
+    browserMajorVersion: number;
+    mobile: boolean;
+    os: string;
+    osVersion: string | RegExpExecArray | number[];
+    cookies: boolean;
+    flashVersion: string;
+};
+/** Add one or more listeners to an element
+ * @param element - DOM element to add listeners to
+ * @param eventNames - space separated list of event names, e.g. 'click change'
+ * @param listener - function to attach for each event as a listener
+ */
+declare function setEventListener(element: HTMLElement, eventNames: "click" | "mouseover" | "submit" | "change", listener: EventListenerOrEventListenerObject): void;
+declare class STORAGE {
+    /**
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
+     */
+    init(callback: Function): void;
+    /**
+     * get localstorage by key
+     * @param key
+     */
+    get(key: string): any;
+    /**
+     * Set localstorage key value
+     * @param key
+     * @param value
+     */
+    set(key: string, value: any): void;
+    /**
+     * Check localstorage key exists
+     * @param key
+     */
+    has(key: string): boolean;
+    /**
+     * Extend or set localstorage key
+     * @param key
+     * @param value
+     */
+    extend(key: string, value: string): void;
+    /**
+     * Remove localstorage key
+     * @param key
+     */
+    remove(key: string): void;
+}
+/**
+ * localStorage helper
+ */
+declare function storage(): STORAGE;
+interface String {
+    /**
+     * Matches a string an object that supports being matched against, and returns an array containing the results of that search.
+     * @param matcher An object that supports being matched against.
+     */
+    match(matcher: {
+        [Symbol.match](string: string): RegExpMatchArray | null;
+    }): RegExpMatchArray | null;
+    /**
+     * Replaces text in a string, using an object that supports replacement within a string.
+     * @param searchValue A object can search for and replace matches within a string.
+     * @param replaceValue A string containing the text to replace for every successful match of searchValue in this string.
+     */
+    replace(searchValue: {
+        [Symbol.replace](string: string, replaceValue: string): string;
+    }, replaceValue: string): string;
+    /**
+     * Replaces text in a string, using an object that supports replacement within a string.
+     * @param searchValue A object can search for and replace matches within a string.
+     * @param replacer A function that returns the replacement text.
+     */
+    replace(searchValue: {
+        [Symbol.replace](string: string, replacer: (substring: string, ...args: any[]) => string): string;
+    }, replacer: (substring: string, ...args: any[]) => string): string;
+    /**
+     * Finds the first substring match in a regular expression search.
+     * @param searcher An object which supports searching within a string.
+     */
+    search(searcher: {
+        [Symbol.search](string: string): number;
+    }): number;
+    /**
+     * Split a string into substrings using the specified separator and return them as an array.
+     * @param splitter An object that can split a string.
+     * @param limit A value used to limit the number of elements returned in the array.
+     */
+    split(splitter: {
+        [Symbol.split](string: string, limit?: number): string[];
+    }, limit?: number): string[];
+    /**
+     * Parse url into part object
+     */
+    parse_url(): {
+        protocol: string;
+        host: string;
+        hostname: string;
+        port: string;
+        pathname: string;
+        search: string;
+        searchObject: {};
+        hash: string;
+        protohost: string;
+    };
+    /**
+     * Call css from url/path
+     */
+    CSS(): void;
+    /**
+     * Hex encrypt
+     */
+    hexE(): string;
+    /**
+     * Hex Decrypt
+     */
+    hexD(): string;
+    /**
+     * Capitalize all first character string
+     * @example [PHP] ucwords($string)
+     */
+    capitalize(): string;
+    /**
+     * PHP str_rot13 equivalent
+     */
+    rot13(): string;
+    /**
+     * Truncate string
+     * @param n sequence number to cut the next sentence
+     * @param useWordBoundary true ? subString.substr(0, subString.lastIndexOf(" "))
+     * @see https://stackoverflow.com/questions/1199352/smart-way-to-truncate-long-strings
+     */
+    truncate: (n: number, useWordBoundary: boolean | null) => string;
+    /**
+     * Check if string empty or blank
+     */
+    isEmpty(): boolean;
+}
+/**
+ * Object management
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ * @todo easy object processing
+ */
+declare type NotFunction<T> = T extends Function ? never : T;
+interface ipapi_response {
+    ip: "114.4.83.195";
+    city: "Jakarta";
+    region: "Jakarta";
+    region_code: "JK";
+    country: "ID";
+    country_code: "ID";
+    country_code_iso3: "IDN";
+    country_capital: "Jakarta";
+    country_tld: ".id";
+    country_name: "Indonesia";
+    continent_code: "AS";
+    in_eu: false;
+    postal: null;
+    latitude: -6.1741;
+    longitude: 106.8296;
+    timezone: "Asia/Jakarta";
+    utc_offset: "+0700";
+    country_calling_code: "+62";
+    currency: "IDR";
+    currency_name: "Rupiah";
+    languages: "id,en,nl,jv";
+    country_area: 1919440.0;
+    country_population: 242968342.0;
+    asn: "AS4761";
+    org: "INDOSAT Internet Network Provider";
+}
+declare const cookie_ip: string;
+declare const cookie_indicator: string;
+/**
+ * IP Address class
+ * @class get, check, validate ip address
+ */
+declare class ip {
+    static storage: STORAGE;
+    /**
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
+     */
+    init(callback: Function): void;
+    private static status;
+    /**
+     * Checks ip
+     * @returns promises
+     */
+    private static check;
+    /**
+     * Gets ip
+     * @param callback function callback(ip) or null return ip
+     * @returns {String} ip or callback
+     */
+    static get(callback?: Function): string;
+    static ipapi(): JQuery.jqXHR<any>;
+    static l2io(): JQuery.jqXHR<any>;
+    static cloudflare(): JQuery.jqXHR<any>;
+    private static save;
+}
+/**
+ * Get unique id of machine
+ */
+declare function get_unique_id(): string | Object;
+/**
+ * get url parameter by name
+ * @param name parameter name
+ * @param url url target, null for current location.href
+ */
+declare function getParameterByName(name: string, url: string | null): string;
+/**
+ * @class Timer constructor
+ * @example
+ * const time = new Timer(() => console.log('hi'), 1000);
+ * console.log(time instanceof Timer); // true
+ */
+declare class Timer {
+    private timeId;
+    constructor(callback: Function, time: number);
+    clear(): void;
+}
+declare function array_filter(array: []): never[];
+/**
+ * pick random from array
+ * @param {Array<any>} arrays
+ * @param {boolean} unique Unique the arrays
+ */
+declare function array_rand(arrays: any[], unique: any): {
+    index: number;
+    value: any;
+};
+/**
+ * Array unique
+ * @param {Array<any>} arrays
+ */
+declare function array_unique(arrays: any[]): any[];
+/**
+ *
+ * @param {Array<any>} arrayName
+ * @param {String|number} key
+ */
+declare function array_unset(arrayName: {
+    [x: string]: any;
+}, key: any): any[];
+/**
+ * PHP shuffle array equivalent
+ * @param array
+ * @example
+ * var arr = [2, 11, 37, 42];
+ * shuffle(arr);
+ * console.log(arr); //return random
+ */
+declare function shuffle(array: Array<any>): any[];
+declare function arrayCompare(a1: Array<any>, a2: Array<any>): boolean;
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
+declare function inArray(needle: any, haystack: Array<any>): boolean;
+/**
+ * in_array PHP equivalent
+ * @param needle string etc
+ * @param haystack
+ */
+declare function in_array(needle: any, haystack: Array<any>): boolean;
+/**
+ * get all keys
+ * @param haystack string etc
+ */
+declare function array_keys(haystack: any): string[];
+/**
+ * Shuffles array in place.
+ * @param a items An array containing the items.
+ */
+declare function array_shuffle(a: Array<any>): any[];
+declare function datetime_local(date: any): string;
 declare interface Number {
     getMS(type: string): number;
     /**
@@ -214,23 +469,17 @@ declare interface Number {
      */
     AddZero(add: number, target: string): number;
 }
-/**
- * Object management
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @todo easy object processing
- */
-declare type NotFunction<T> = T extends Function ? never : T;
-/**
- * @class Timer constructor
- * @example
- * const time = new Timer(() => console.log('hi'), 1000);
- * console.log(time instanceof Timer); // true
- */
-declare class Timer {
-    private timeId;
-    constructor(callback: Function, time: number);
-    clear(): void;
+interface Console {
+    olog: {
+        (...data: any[]): void;
+        (message?: any, ...optionalParams: any[]): void;
+    };
 }
+declare var console_callback: any;
+/**
+ * Get stacktrace
+ */
+declare function stacktrace(): any;
 declare var isNode: boolean;
 declare var root: any;
 declare var global: any;
@@ -238,6 +487,18 @@ declare var global: any;
  * Is Node ?
  */
 declare function isnode(): boolean;
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+declare function getNativeClass(obj: any): any;
+/**
+ * Class reflection
+ * @see https://stackoverflow.com/a/1250766
+ * @param obj
+ */
+declare function getAnyClass(obj: any): any;
 /**
  * call_user_func
  * @param functionName function name
@@ -264,7 +525,7 @@ declare function __call(func: string): void;
  * check empty
  * @param str
  */
-declare function empty(str: string | null | undefined | number | boolean): boolean;
+declare function empty(str: string | object | Array<any> | boolean | null | undefined | number): number | boolean;
 /**
  * Get current function name
  */
@@ -292,7 +553,13 @@ declare function uniqid(prefix: any, suffix: any): string;
  * @param {any[]} self
  * @example dataArray.filter(onlyUnique)
  */
-declare function onlyUnique(value: any, index: any, self: any): boolean;
+declare function onlyUnique(value: any, index: any, self: any[]): boolean;
+/**
+ * Parse string to float/number
+ * @param total_amount_string string including numbers
+ */
+declare function parseNumber(total_amount_string: string): number;
+declare function typedKeys<T>(o: T): (keyof T)[];
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
 /**
@@ -433,17 +700,32 @@ declare function analys(event_action: string, event_label: string, event_categor
 declare var gtagID: string;
 declare var create_gtagscript: HTMLScriptElement;
 declare var gtag: any;
-declare function typedKeys<T>(o: T): (keyof T)[];
 declare var ORIGIN: any;
-declare var dimas: {
+declare var IP: string;
+declare class dimas {
+    /**
+     * Disabling button
+     * @param t element of button
+     * @param V
+     */
+    disable_button(t: JQuery<any> | HTMLButtonElement, V?: any): void;
+    /**
+     * Enabling button
+     * @param t element of button
+     * @param V
+     */
+    enable_button(t: JQuery<any> | HTMLButtonElement, V?: any): void;
     /**
      * get current url without querystrings
      */
-    url: any;
+    static url: any;
+    static ip: any;
+    static setIp(ip: any): void;
+    static getIp(): any;
     /**
      * framework captcha
      */
-    captcha: {
+    static captcha: {
         /**
          * DO NOT ASSIGN THIS
          */
@@ -451,24 +733,24 @@ declare var dimas: {
         /**
          * Get current captcha id
          */
-        id: (header_name: string | null) => string;
+        id(header_name: string | null): string;
         /**
          * Get current captcha from backend
          * And process it by jsonpCallback
          */
-        get: (header_name: null | string) => void;
-        callback: (arg?: any) => void;
+        get(header_name: null | string): void;
+        callback(arg?: any): void;
         /**
          * Captcha JSONP callback
          */
-        jspCallback: (res: {
+        jspCallback(res: {
             captcha: string;
-        }) => void;
+        }): void;
         listener_started: any;
         /**
          * Form Captcha listener
          */
-        listen: () => JQuery<Document>;
+        listen(): JQuery<Document>;
     };
     /**
      * Count Array/Object/String length
@@ -479,74 +761,74 @@ declare var dimas: {
      * Make async function
      * @param callback
      */
-    async: (callback: any) => Promise<unknown>;
+    async(callback: any): Promise<unknown>;
     /**
      * Rupiah currency auto format
      */
-    rp: (angka: number, prefix: string | any) => string;
+    rp(angka: number, prefix?: string | any): string;
     /**
      * Check if variable is number / numeric
      * @param {String|Number} v
      */
-    isNumber: (v: string | number) => boolean;
+    isNumber(v: string | number): boolean;
     /**
      * strpad / startwith zero [0]
      * @param {number} val
      */
-    strpad: (val: number) => string | number;
+    strpad(val: number): string | number;
     /**
      * Autofill datetime-local value
      */
-    datetimelocal: (v?: string | number) => void;
+    datetimelocal(v?: string | number): void;
     /**
      * Get cookie
      * @param string name cookie
      */
-    gc: (name: string) => string;
+    gc(name: string): string;
     /**
      * Odd or Even (Ganjil Genap);
      * @param type odd or even
      */
-    oddoreven: (n: string, type: string) => boolean;
+    oddoreven(n: string, type: string): boolean;
     /**
      * Set cookie
      * @param {String} name
      * @param {any} value
      * @param {number} hours
      */
-    sc: (name: string, value: any, hours: number) => void;
-    allcookies: () => {
+    sc(name: string, value: any, hours: number): void;
+    allcookies(): {
         [key: string]: any;
     };
     /**
      * Remove Cookie
      */
-    rc: (name: string) => void;
+    rc(name: string): void;
     /**
      * Get Query name from current url
      */
-    getquery: (variable: any) => string | false;
-    recode: (content: string, passcode: string) => string;
+    getquery(variable: any): string | false;
+    recode(content: string, passcode: string): string;
     /**
      * Get js file from url
      * @param {String} url
      * @param {Function} callback
      */
-    js: (url: string, callback: Function | any) => void;
+    js(url: string, callback: Function | any): void;
     /**
      * Countdown trigger
      * @param {JQuery} elm
      */
-    pctdRUN: (elm: JQuery) => any;
+    pctdRUN(elm: JQuery): any;
     /**
      * Progress Countdown
      * @param {JQuery} elm
      */
-    pctd: (elm: JQuery) => void;
+    pctd(elm: JQuery): void;
     /**
      * Parseurl just like as parse_url at php
      */
-    parseurl: (url: string) => {
+    parseurl(url: string): {
         protocol: string;
         host: string;
         hostname: string;
@@ -559,135 +841,11 @@ declare var dimas: {
         hash: string;
         protohost: string;
     };
-};
+}
 /**
  * Framework object initializer
  */
-declare function framework(): {
-    /**
-     * get current url without querystrings
-     */
-    url: any;
-    /**
-     * framework captcha
-     */
-    captcha: {
-        /**
-         * DO NOT ASSIGN THIS
-         */
-        check: NodeJS.Timer;
-        /**
-         * Get current captcha id
-         */
-        id: (header_name: string) => string;
-        /**
-         * Get current captcha from backend
-         * And process it by jsonpCallback
-         */
-        get: (header_name: string) => void;
-        callback: (arg?: any) => void;
-        /**
-         * Captcha JSONP callback
-         */
-        jspCallback: (res: {
-            captcha: string;
-        }) => void;
-        listener_started: any;
-        /**
-         * Form Captcha listener
-         */
-        listen: () => JQuery<Document>;
-    };
-    /**
-     * Count Array/Object/String length
-     * @param {any[]|string|object} data
-     */
-    count(data: string | object | any[]): number;
-    /**
-     * Make async function
-     * @param callback
-     */
-    async: (callback: any) => Promise<unknown>;
-    /**
-     * Rupiah currency auto format
-     */
-    rp: (angka: number, prefix: any) => string;
-    /**
-     * Check if variable is number / numeric
-     * @param {String|Number} v
-     */
-    isNumber: (v: string | number) => boolean;
-    /**
-     * strpad / startwith zero [0]
-     * @param {number} val
-     */
-    strpad: (val: number) => string | number;
-    /**
-     * Autofill datetime-local value
-     */
-    datetimelocal: (v?: string | number) => void;
-    /**
-     * Get cookie
-     * @param string name cookie
-     */
-    gc: (name: string) => string;
-    /**
-     * Odd or Even (Ganjil Genap);
-     * @param type odd or even
-     */
-    oddoreven: (n: string, type: string) => boolean;
-    /**
-     * Set cookie
-     * @param {String} name
-     * @param {any} value
-     * @param {number} hours
-     */
-    sc: (name: string, value: any, hours: number) => void;
-    allcookies: () => {
-        [key: string]: any;
-    };
-    /**
-     * Remove Cookie
-     */
-    rc: (name: string) => void;
-    /**
-     * Get Query name from current url
-     */
-    getquery: (variable: any) => string | false;
-    recode: (content: string, passcode: string) => string;
-    /**
-     * Get js file from url
-     * @param {String} url
-     * @param {Function} callback
-     */
-    js: (url: string, callback: any) => void;
-    /**
-     * Countdown trigger
-     * @param {JQuery} elm
-     */
-    pctdRUN: (elm: JQuery<HTMLElement>) => any;
-    /**
-     * Progress Countdown
-     * @param {JQuery} elm
-     */
-    pctd: (elm: JQuery<HTMLElement>) => void;
-    /**
-     * Parseurl just like as parse_url at php
-     */
-    parseurl: (url: string) => {
-        protocol: string;
-        host: string;
-        hostname: string;
-        port: string;
-        pathname: string;
-        search: string;
-        searchObject: {
-            [key: string]: any;
-        };
-        hash: string;
-        protohost: string;
-    };
-};
+declare function framework(): dimas;
 declare class app {
     static base: string;
     static setbase(path: string): void;
@@ -700,12 +858,24 @@ declare class app {
  */
 declare function base64_encode(str: string): string;
 /**
+ * Check if base64 is valid
+ * @param {string} str
+ */
+declare function base64_valid(str: string): boolean;
+/**
  * base64 decoding
  * @param {string} str base64 string
  */
 declare function base64_decode(str: string): string;
 declare function b64EncodeUnicode(str: any): string;
 declare function b64DecodeUnicode(str: any): string;
+declare namespace Base64 {
+    const _keyStr: string;
+    function encode(input: any): string;
+    function decode(input: any): string;
+    function _utf8_encode(string: any): string;
+    function _utf8_decode(utftext: any): string;
+}
 declare function randomHex(): string;
 /**
  * open in new tab
@@ -713,13 +883,6 @@ declare function randomHex(): string;
  * @param name
  */
 declare function openInNewTab(url: string, name: string): void;
-interface Console {
-    olog: {
-        (...data: any[]): void;
-        (message?: any, ...optionalParams: any[]): void;
-    };
-}
-declare var console_callback: any;
 /**
  * Disable debugger
  */
@@ -817,31 +980,224 @@ declare function setInputFilter(textbox: any, inputFilter: any): void;
 declare var INPT: NodeListOf<Element>;
 declare var index: number;
 declare var element: Element;
-/** Format Rupiah */
-declare var inputrp: JQuery<HTMLElement>;
-declare class ip {
-    private static status;
-    /**
-     * Checks ip
-     * @returns promises
-     */
-    static check(): Promise<void>;
-    /**
-     * Gets ip
-     * @param callback function callback(ip) or null return ip
-     * @returns {String} ip or callback
-     */
-    static get(callback: Function | null): string;
-    static ipapi(): JQuery.jqXHR<any>;
-    static l2io(): JQuery.jqXHR<any>;
-}
-declare function md5(string: any): string;
+declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
 /**
- * Get gravatar url by email
- * @param {string} email
+ * SMARTFORM
+ * @todo save form user input
  */
-declare function gravatar(email: string): string;
-declare function MD5(string: any): string;
+/**
+ * Element Counter
+ */
+declare var Count: number;
+/**
+ * Local Storage key
+ */
+declare var storageKey: String;
+/**
+ * Element Indexer
+ */
+declare var formField: object | Array<any>;
+declare var formSaved: string;
+declare var uniqueid: string;
+/**
+ * Get unique identifier of elements
+ * @param elem jQuery<HTMLElement> or HTMLElement
+ * @return string of unique identifier
+ */
+declare function get_unique_id_element(elem: HTMLElement | JQuery<HTMLElement>, encrypted?: boolean): string;
+/**
+ * Restore saved values of fields
+ * @param elem
+ */
+declare function restore_form_fields(elem: HTMLElement | JQuery<HTMLElement>): void;
+/**
+ * Save textarea values
+ * @param elem
+ */
+declare function save_fields(elem: HTMLElement | JQuery<HTMLElement>): void;
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+declare function smartform(): void;
+/**
+ * Copy to clipboard
+ */
+declare function copyToClipboard(text: string, el: JQuery): void;
+/**
+ * Add integers, wrapping at 2^32.
+ * This uses 16-bit operations internally to work around bugs in interpreters.
+ *
+ * @param {number} x First integer
+ * @param {number} y Second integer
+ * @returns {number} Sum
+ */
+declare function safeAdd(x: number, y: number): number;
+/**
+ * Bitwise rotate a 32-bit number to the left.
+ *
+ * @param {number} num 32-bit number
+ * @param {number} cnt Rotation count
+ * @returns {number} Rotated number
+ */
+declare function bitRotateLeft(num: number, cnt: number): number;
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} q q
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+declare function md5cmn(q: number, a: number, b: number, x: number, s: number, t: number): number;
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+declare function md5ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number;
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+declare function md5gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number;
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+declare function md5hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number;
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+declare function md5ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number;
+/**
+ * Calculate the MD5 of an array of little-endian words, and a bit length.
+ *
+ * @param {Array} x Array of little-endian words
+ * @param {number} len Bit length
+ * @returns {Array<number>} MD5 Array
+ */
+declare function binlMD5(x: any[], len: number): Array<number>;
+/**
+ * Convert an array of little-endian words to a string
+ *
+ * @param {Array<number>} input MD5 Array
+ * @returns {string} MD5 string
+ */
+declare function binl2rstr(input: Array<number>): string;
+/**
+ * Convert a raw string to an array of little-endian words
+ * Characters >255 have their high-byte silently ignored.
+ *
+ * @param {string} input Raw input string
+ * @returns {Array<number>} Array of little-endian words
+ */
+declare function rstr2binl(input: string): Array<number>;
+/**
+ * Calculate the MD5 of a raw string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+declare function rstrMD5(s: string): string;
+/**
+ * Calculates the HMAC-MD5 of a key and some data (raw strings)
+ *
+ * @param {string} key HMAC key
+ * @param {string} data Raw input string
+ * @returns {string} Raw MD5 string
+ */
+declare function rstrHMACMD5(key: string, data: string): string;
+/**
+ * Convert a raw string to a hex string
+ *
+ * @param {string} input Raw input string
+ * @returns {string} Hex encoded string
+ */
+declare function rstr2hex(input: string): string;
+/**
+ * Encode a string as UTF-8
+ *
+ * @param {string} input Input string
+ * @returns {string} UTF8 string
+ */
+declare function str2rstrUTF8(input: string): string;
+/**
+ * Encodes input string as raw MD5 string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+declare function rawMD5(s: string): string;
+/**
+ * Encodes input string as Hex encoded string
+ *
+ * @param {string} s Input string
+ * @returns {string} Hex encoded string
+ */
+declare function hexMD5(s: string): string;
+/**
+ * Calculates the raw HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+declare function rawHMACMD5(k: string, d: string): string;
+/**
+ * Calculates the Hex encoded HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+declare function hexHMACMD5(k: string, d: string): string;
+/**
+ * Calculates MD5 value for a given string.
+ * If a key is provided, calculates the HMAC-MD5 value.
+ * Returns a Hex encoded string unless the raw argument is given.
+ *
+ * @param {string} string Input string
+ * @param {string} [key] HMAC key
+ * @param {boolean} [raw] Raw output switch
+ * @returns {string} MD5 output
+ */
+declare function md5(string: string, key?: string, raw?: boolean): string;
 interface progressBarTimer {
     warningThreshold: number;
 }
@@ -974,54 +1330,6 @@ declare function pagination_up(target: JQuery): void;
  * @param exclude
  */
 declare function datatables_colums_options(data?: DataTables.ColumnSettings, exclude?: string[]): void;
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-declare function smartform(): void;
-/**
- * Copy to clipboard
- */
-declare function copyToClipboard(text: string, el: JQuery): void;
-/**
- * localStorage helper
- */
-declare function storage(): {
-    /**
-     * get localstorage by key
-     * @param {String} key
-     */
-    get: (key: string) => any;
-    /**
-     * Set localstorage key value
-     * @param {String} key
-     * @param {String|Array|Object} value
-     */
-    set: (key: string, value: string | any[] | any) => void;
-    /**
-     * Check localstorage key exists
-     * @param {String} key
-     */
-    has: (key: string) => boolean;
-    /**
-     * Extend or set localstorage key
-     * @param {String} key
-     * @param {String} value
-     */
-    extend: (key: string, value: string) => void;
-    /**
-     * Remove localstorage key
-     * @param {String} key
-     */
-    remove: (key: string) => void;
-};
-declare namespace STORAGE {
-    function get(key: string): any;
-    function set(key: string, value: any): void;
-    function has(key: string): boolean;
-    function extend(key: string, value: string): void;
-    function remove(key: string): void;
-}
 declare class ctable {
     private can_edit;
     private instance;
@@ -1060,12 +1368,6 @@ declare function genUID(): string;
 declare function saveUID(data: any): void;
 declare var UIDvalue: string;
 declare var UIDcalled: boolean;
-/**
- * get url parameter by name
- * @param name parameter name
- * @param url url target, null for current location.href
- */
-declare function getParameterByName(name: string, url: string | null): string;
 /**
  * User framework
  */
@@ -1223,3 +1525,4 @@ declare class ZLIB {
     static decompress(str: any): string;
     static compress(str: any): any;
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

@@ -22,6 +22,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
       return false;
     }
   });
+
   /**
    * @todo Textarea placeholders
    */

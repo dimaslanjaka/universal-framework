@@ -1,9 +1,14 @@
 <?php
 
+//user()->login_required('/user/login')->can('get-roles');
+
 $result = [];
 if (isset($_REQUEST['allow'])) {
   $result = pdo()->get_enum_set_values('roles', 'allow');
 } else {
+  /**
+   * Automatic defining roles from userdata
+   */
   $allow = pdo()->get_enum_set_values('roles', 'allow');
   $get = pdo()->get_enum_set_values('userdata', 'role');
   foreach ($get as $role) {
@@ -27,9 +32,19 @@ if (isset($_REQUEST['allow'])) {
       }
     }
   }
+  /**
+   * Fetch the roles
+   */
+  if (!isset($_REQUEST['only-roles'])) {
+    $fetch = pdo()->select('roles')->fetch();
+    $result = $fetch['result'];
+  } else {
+    $fetch = pdo()->select('roles')->fetch();
+    foreach ($fetch['result'] as $role) {
+      $result[] = $role['name'];
+    }
+  }
 }
-
-
 
 \JSON\json::json($result);
 exit;

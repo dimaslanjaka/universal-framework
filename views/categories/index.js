@@ -27,7 +27,7 @@
           text: '<i class="fa fa-plus"></i>Add',
           title: "Add",
           titleAttr: "Add Category",
-          className: "btn btn-app export add",
+          className: "btn btn-app export notranslate add",
           action: function (e, dt, node, config) {
             location.href = "/categories/add";
           },
@@ -37,7 +37,7 @@
           text: '<i class="fa fa-clipboard"></i>Copy',
           title: "Copy table to clipboard",
           titleAttr: "Copy",
-          className: "btn btn-app export barras",
+          className: "btn btn-app export notranslate barras",
           exportOptions: {
             columns: [0, 1],
           },
@@ -47,7 +47,7 @@
           text: '<i class="fa fa-file-pdf"></i>PDF',
           title: "Export table to PDF",
           titleAttr: "PDF",
-          className: "btn btn-app export pdf",
+          className: "btn btn-app export notranslate pdf",
           exportOptions: {
             columns: [0, 1],
           },
@@ -74,7 +74,7 @@
           text: '<i class="fa fa-file-excel"></i>Excel',
           title: "Export table to excel",
           titleAttr: "Excel",
-          className: "btn btn-app export excel",
+          className: "btn btn-app export notranslate excel",
           exportOptions: {
             columns: [0, 1],
           },
@@ -84,7 +84,7 @@
           text: '<i class="fa fa-file-csv"></i>CSV',
           title: "Export table to CSV",
           titleAttr: "CSV",
-          className: "btn btn-app export csv",
+          className: "btn btn-app export notranslate csv",
           exportOptions: {
             columns: [0, 1],
           },
@@ -94,7 +94,7 @@
           text: '<i class="fa fa-print"></i>Print',
           title: "Print table",
           titleAttr: "Imprimir",
-          className: "btn btn-app export imprimir",
+          className: "btn btn-app export notranslate imprimir",
           exportOptions: {
             columns: [0, 1],
           },
@@ -104,12 +104,12 @@
           text: '<i class="fa fa-eye"></i>Toggle',
           title: "Toggle visibility",
           titleAttr: "toggle",
-          className: "btn btn-app export visibility",
+          className: "btn btn-app export notranslate visibility",
         },
         {
           extend: "pageLength",
           titleAttr: "Registros a mostrar",
-          className: "selectTable",
+          className: "selectTable notranslate",
         },
       ],
     },

@@ -10,10 +10,13 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
+    "@skavinvarnan/cryptlib": "^1.0.3",
+    "animate.css": "^4.1.1",
     "ansi-escapes": "^4.3.1",
     "archiver": "^5.0.2",
     "axios": "^0.21.0",
     "basscss": "^8.1.0",
+    "bl": "^4.0.3",
     "chalk": "^4.1.0",
     "crypto-js": "^4.0.0",
     "datatables.net": "^1.10.21",
@@ -55,6 +58,8 @@
     "ftp": "^0.3.10",
     "javascript-obfuscator": "^2.6.2",
     "jsonplus": "^1.2.1",
+    "ngrok": "^3.3.0",
+    "open": "^7.3.0",
     "requirejs": "^2.3.6",
     "scp2": "^0.5.0",
     "socket.io": "^2.3.0",
@@ -96,7 +101,7 @@
     "@types/gulp-less": "^0.0.31",
     "@types/gulp-typescript": "2.13.0",
     "@types/inquirer": "^6.5.0",
-    "@types/jquery": "^3.5.3",
+    "@types/jquery": "^3.5.4",
     "@types/less": "^3.0.1",
     "@types/merge-stream": "^1.1.2",
     "@types/minimist": "^1.2.0",
@@ -124,6 +129,7 @@
     "@types/uglifycss": "*",
     "@types/ws": "^7.2.6",
     "@types/yargs": "^15.0.9",
+    "better-docs": "^2.3.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
@@ -133,6 +139,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-image": "^6.2.1",
     "gulp-inject": "^5.0.5",
+    "gulp-jsdoc3": "^3.0.0",
     "gulp-less": "^4.0.1",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^2.0.0",
@@ -141,6 +148,8 @@
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^2.0.0",
     "jquery": "^3.5.1",
+    "jsdoc": "^3.6.6",
+    "jsdoc-mermaid": "^1.0.0",
     "less": "^3.12.2",
     "lodash": "^4.17.19"
   },
@@ -188,7 +197,8 @@
     "prepublish": "",
     "check": "depcheck ./",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp build"
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
+    "dev": "gulp watch"
   },
   "version": "3.0.0",
   "snyk": true

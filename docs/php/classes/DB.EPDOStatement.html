@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src').replace( /\\/g, '/');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Accounting.html">\Accounting</a></li>
+                                                        <li><a href="../namespaces/AGC.html">\AGC</a></li>
+                                                        <li><a href="../namespaces/Bulletproof.html">\Bulletproof</a></li>
+                                                        <li><a href="../namespaces/Cookie.html">\Cookie</a></li>
+                                                        <li><a href="../namespaces/Crypto.html">\Crypto</a></li>
+                                                        <li><a href="../namespaces/DB.html">\DB</a></li>
+                                                        <li><a href="../namespaces/DDOS.html">\DDOS</a></li>
+                                                        <li><a href="../namespaces/Extender.html">\Extender</a></li>
+                                                        <li><a href="../namespaces/Facebook.html">\Facebook</a></li>
+                                                        <li><a href="../namespaces/Filemanager.html">\Filemanager</a></li>
+                                                        <li><a href="../namespaces/GoogleExt.html">\GoogleExt</a></li>
+                                                        <li><a href="../namespaces/HTML.html">\HTML</a></li>
+                                                        <li><a href="../namespaces/IMEI.html">\IMEI</a></li>
+                                                        <li><a href="../namespaces/img.html">\img</a></li>
+                                                        <li><a href="../namespaces/Indosat.html">\Indosat</a></li>
+                                                        <li><a href="../namespaces/JSON.html">\JSON</a></li>
+                                                        <li><a href="../namespaces/MrShan0.html">\MrShan0</a></li>
+                                                        <li><a href="../namespaces/MVC.html">\MVC</a></li>
+                                                        <li><a href="../namespaces/Naneau.html">\Naneau</a></li>
+                                                        <li><a href="../namespaces/Netscape.html">\Netscape</a></li>
+                                                        <li><a href="../namespaces/Office.html">\Office</a></li>
+                                                        <li><a href="../namespaces/PHPWee.html">\PHPWee</a></li>
+                                                        <li><a href="../namespaces/Proxy.html">\Proxy</a></li>
+                                                        <li><a href="../namespaces/Session.html">\Session</a></li>
+                                                        <li><a href="../namespaces/simplehtmldom.html">\simplehtmldom</a></li>
+                                                        <li><a href="../namespaces/Telkomsel.html">\Telkomsel</a></li>
+                                                        <li><a href="../namespaces/TestBootstrap.html">\TestBootstrap</a></li>
+                                                        <li><a href="../namespaces/Typehint.html">\Typehint</a></li>
+                                                        <li><a href="../namespaces/UniversalFramework.html">\UniversalFramework</a></li>
+                                                        <li><a href="../namespaces/User.html">\User</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">1433</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">5</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1504366690"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1504366690" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1510501432"></a>
+                                <a href="../namespaces/Accounting.html" style="margin-left: 30px; padding-left: 0">Accounting</a>
+            </div>
+            <div id="namespace-1510501432" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Accounting.money.html">money</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1134605687"></a>
+                                <a href="../namespaces/AGC.html" style="margin-left: 30px; padding-left: 0">AGC</a>
+            </div>
+            <div id="namespace-1134605687" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AGC.test.html">test</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1897102770"></a>
+                                <a href="../namespaces/Bulletproof.html" style="margin-left: 30px; padding-left: 0">Bulletproof</a>
+            </div>
+            <div id="namespace-1897102770" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                <a href="../namespaces/Bulletproof.Utils.html" style="margin-left: 30px; padding-left: 0">Utils</a>
+            </div>
+            <div id="namespace-18463148" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Bulletproof.Image.html">Image</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-156867191"></a>
+                                <a href="../namespaces/Cookie.html" style="margin-left: 30px; padding-left: 0">Cookie</a>
+            </div>
+            <div id="namespace-156867191" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Cookie.helper.html">helper</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1641063148"></a>
+                                <a href="../namespaces/Crypto.html" style="margin-left: 30px; padding-left: 0">Crypto</a>
+            </div>
+            <div id="namespace-1641063148" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Crypto.crypt.html">crypt</a></li>
+                                                    <li class="class"><a href="../classes/Crypto.Encryption.html">Encryption</a></li>
+                                                    <li class="class"><a href="../classes/Crypto.openssl.html">openssl</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-971833623"></a>
+                                <a href="../namespaces/DB.html" style="margin-left: 30px; padding-left: 0">DB</a>
+            </div>
+            <div id="namespace-971833623" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/DB.backup.html">backup</a></li>
+                                                    <li class="class"><a href="../classes/DB.EPDOStatement.html">EPDOStatement</a></li>
+                                                    <li class="class"><a href="../classes/DB.manager.html">manager</a></li>
+                                                    <li class="class"><a href="../classes/DB.schema.html">schema</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1788449307"></a>
+                                <a href="../namespaces/DDOS.html" style="margin-left: 30px; padding-left: 0">DDOS</a>
+            </div>
+            <div id="namespace-1788449307" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/DDOS.runner.html">runner</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-604890594"></a>
+                                <a href="../namespaces/Extender.html" style="margin-left: 30px; padding-left: 0">Extender</a>
+            </div>
+            <div id="namespace-604890594" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Extender.request.html">request</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1293064265"></a>
+                                <a href="../namespaces/Facebook.html" style="margin-left: 30px; padding-left: 0">Facebook</a>
+            </div>
+            <div id="namespace-1293064265" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Facebook.test.html">test</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2037000183"></a>
+                                <a href="../namespaces/Filemanager.html" style="margin-left: 30px; padding-left: 0">Filemanager</a>
+            </div>
+            <div id="namespace-2037000183" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Filemanager.scan.html">scan</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1665019918"></a>
+                                <a href="../namespaces/GoogleExt.html" style="margin-left: 30px; padding-left: 0">GoogleExt</a>
+            </div>
+            <div id="namespace-1665019918" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/GoogleExt.recaptcha.html">recaptcha</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-818590354"></a>
+                                <a href="../namespaces/HTML.html" style="margin-left: 30px; padding-left: 0">HTML</a>
+            </div>
+            <div id="namespace-818590354" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-427755447"></a>
+                                <a href="../namespaces/HTML.minify.html" style="margin-left: 30px; padding-left: 0">minify</a>
+            </div>
+            <div id="namespace-427755447" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-530048964"></a>
+                                <a href="../namespaces/HTML.minify.css.html" style="margin-left: 30px; padding-left: 0">css</a>
+            </div>
+            <div id="namespace-530048964" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/HTML.minify.css.MinificationSequenceFinder.html">MinificationSequenceFinder</a></li>
+                                                    <li class="class"><a href="../classes/HTML.minify.css.minifyCSS.html">minifyCSS</a></li>
+                                                    <li class="class"><a href="../classes/HTML.minify.css.QuoteSequenceFinder.html">QuoteSequenceFinder</a></li>
+                                                    <li class="class"><a href="../classes/HTML.minify.css.StringSequenceFinder.html">StringSequenceFinder</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/HTML.array2element.html">array2element</a></li>
+                                                    <li class="class"><a href="../classes/HTML.minify.html">minify</a></li>
+                                                    <li class="class"><a href="../classes/HTML.XDOMDocument.html">XDOMDocument</a></li>
+                                                    <li class="class"><a href="../classes/HTML.XDOMElement.html">XDOMElement</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1552943104"></a>
+                                <a href="../namespaces/IMEI.html" style="margin-left: 30px; padding-left: 0">IMEI</a>
+            </div>
+            <div id="namespace-1552943104" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/IMEI.imei.html">imei</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1995530914"></a>
+                                <a href="../namespaces/img.html" style="margin-left: 30px; padding-left: 0">img</a>
+            </div>
+            <div id="namespace-1995530914" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/img.cache.html">cache</a></li>
+                                                    <li class="class"><a href="../classes/img.cdn.html">cdn</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1100641531"></a>
+                                <a href="../namespaces/Indosat.html" style="margin-left: 30px; padding-left: 0">Indosat</a>
+            </div>
+            <div id="namespace-1100641531" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Indosat.test.html">test</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2137788079"></a>
+                                <a href="../namespaces/JSON.html" style="margin-left: 30px; padding-left: 0">JSON</a>
+            </div>
+            <div id="namespace-2137788079" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/JSON.json.html">json</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-218240567"></a>
+                                <a href="../namespaces/MrShan0.html" style="margin-left: 30px; padding-left: 0">MrShan0</a>
+            </div>
+            <div id="namespace-218240567" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2018786947"></a>
+                                <a href="../namespaces/MrShan0.CryptoLib.html" style="margin-left: 30px; padding-left: 0">CryptoLib</a>
+            </div>
+            <div id="namespace-2018786947" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-446360759"></a>
+                                <a href="../namespaces/MrShan0.CryptoLib.Exceptions.html" style="margin-left: 30px; padding-left: 0">Exceptions</a>
+            </div>
+            <div id="namespace-446360759" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/MrShan0.CryptoLib.Exceptions.NotSecureIVGenerated.html">NotSecureIVGenerated</a></li>
+                                                    <li class="class"><a href="../classes/MrShan0.CryptoLib.Exceptions.UnableToDecrypt.html">UnableToDecrypt</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/MrShan0.CryptoLib.CryptoLib.html">CryptoLib</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-559834690"></a>
+                                <a href="../namespaces/MVC.html" style="margin-left: 30px; padding-left: 0">MVC</a>
+            </div>
+            <div id="namespace-559834690" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/MVC.captcha.html">captcha</a></li>
+                                                    <li class="class"><a href="../classes/MVC.Exception.html">Exception</a></li>
+                                                    <li class="class"><a href="../classes/MVC.helper.html">helper</a></li>
+                                                    <li class="class"><a href="../classes/MVC.router.html">router</a></li>
+                                                    <li class="class"><a href="../classes/MVC.themes.html">themes</a></li>
+                                                    <li class="class"><a href="../classes/MVC.uid.html">uid</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-719101972"></a>
+                                <a href="../namespaces/Naneau.html" style="margin-left: 30px; padding-left: 0">Naneau</a>
+            </div>
+            <div id="namespace-719101972" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1015312840"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.html" style="margin-left: 30px; padding-left: 0">Obfuscator</a>
+            </div>
+            <div id="namespace-1015312840" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1946148445"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Console.html" style="margin-left: 30px; padding-left: 0">Console</a>
+            </div>
+            <div id="namespace-1946148445" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1734982965"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Console.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+            </div>
+            <div id="namespace-1734982965" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Console.Command.ObfuscateCommand.html">ObfuscateCommand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1695106722"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Node.html" style="margin-left: 30px; padding-left: 0">Node</a>
+            </div>
+            <div id="namespace-1695106722" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1097160785"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Node.Visitor.html" style="margin-left: 30px; padding-left: 0">Visitor</a>
+            </div>
+            <div id="namespace-1097160785" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                            <li class="trait"><a href="../classes/Naneau.Obfuscator.Node.Visitor.SkipTrait.html">SkipTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Naneau.Obfuscator.Node.Visitor.TrackingRenamerTrait.html">TrackingRenamerTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Naneau.Obfuscator.Node.Visitor.ScramblePrivateMethod.html">ScramblePrivateMethod</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Node.Visitor.ScramblePrivateProperty.html">ScramblePrivateProperty</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Node.Visitor.Scrambler.html">Scrambler</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Node.Visitor.ScrambleUse.html">ScrambleUse</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Node.Visitor.ScrambleVariable.html">ScrambleVariable</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2092385388"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Obfuscator.html" style="margin-left: 30px; padding-left: 0">Obfuscator</a>
+            </div>
+            <div id="namespace-2092385388" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-454680482"></a>
+                                <a href="../namespaces/Naneau.Obfuscator.Obfuscator.Event.html" style="margin-left: 30px; padding-left: 0">Event</a>
+            </div>
+            <div id="namespace-454680482" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Obfuscator.Event.File.html">File</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Obfuscator.Event.FileError.html">FileError</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.Obfuscator.html">Obfuscator</a></li>
+                                                    <li class="class"><a href="../classes/Naneau.Obfuscator.StringScrambler.html">StringScrambler</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-877715171"></a>
+                                <a href="../namespaces/Netscape.html" style="margin-left: 30px; padding-left: 0">Netscape</a>
+            </div>
+            <div id="namespace-877715171" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Netscape.parser.html">parser</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-396516824"></a>
+                                <a href="../namespaces/Office.html" style="margin-left: 30px; padding-left: 0">Office</a>
+            </div>
+            <div id="namespace-396516824" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2073798921"></a>
+                                <a href="../namespaces/Office.inventory.html" style="margin-left: 30px; padding-left: 0">inventory</a>
+            </div>
+            <div id="namespace-2073798921" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-26084468"></a>
+                                <a href="../namespaces/Office.inventory.warehouse.html" style="margin-left: 30px; padding-left: 0">warehouse</a>
+            </div>
+            <div id="namespace-26084468" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Office.inventory.warehouse.config.html">config</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Office.config.html">config</a></li>
+                                                    <li class="class"><a href="../classes/Office.loader.html">loader</a></li>
+                                                    <li class="class"><a href="../classes/Office.user.html">user</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1892824132"></a>
+                                <a href="../namespaces/PHPWee.html" style="margin-left: 30px; padding-left: 0">PHPWee</a>
+            </div>
+            <div id="namespace-1892824132" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/PHPWee.aCssAtBlockEndToken.html">aCssAtBlockEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssAtBlockStartToken.html">aCssAtBlockStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssDeclarationToken.html">aCssDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssFormatter.html">aCssFormatter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssMinifierFilter.html">aCssMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssMinifierPlugin.html">aCssMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssParserPlugin.html">aCssParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssRulesetEndToken.html">aCssRulesetEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssRulesetStartToken.html">aCssRulesetStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.aCssToken.html">aCssToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtCharsetParserPlugin.html">CssAtCharsetParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtCharsetToken.html">CssAtCharsetToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtFontFaceDeclarationToken.html">CssAtFontFaceDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtFontFaceEndToken.html">CssAtFontFaceEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtFontFaceParserPlugin.html">CssAtFontFaceParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtFontFaceStartToken.html">CssAtFontFaceStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtImportParserPlugin.html">CssAtImportParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtImportToken.html">CssAtImportToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesEndToken.html">CssAtKeyframesEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesParserPlugin.html">CssAtKeyframesParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesRulesetDeclarationToken.html">CssAtKeyframesRulesetDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesRulesetEndToken.html">CssAtKeyframesRulesetEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesRulesetStartToken.html">CssAtKeyframesRulesetStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtKeyframesStartToken.html">CssAtKeyframesStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtMediaEndToken.html">CssAtMediaEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtMediaParserPlugin.html">CssAtMediaParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtMediaStartToken.html">CssAtMediaStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtPageDeclarationToken.html">CssAtPageDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtPageEndToken.html">CssAtPageEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtPageParserPlugin.html">CssAtPageParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtPageStartToken.html">CssAtPageStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtVariablesDeclarationToken.html">CssAtVariablesDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtVariablesEndToken.html">CssAtVariablesEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtVariablesParserPlugin.html">CssAtVariablesParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssAtVariablesStartToken.html">CssAtVariablesStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssCommentParserPlugin.html">CssCommentParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssCommentToken.html">CssCommentToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssCompressColorValuesMinifierPlugin.html">CssCompressColorValuesMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssCompressExpressionValuesMinifierPlugin.html">CssCompressExpressionValuesMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssCompressUnitValuesMinifierPlugin.html">CssCompressUnitValuesMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertFontWeightMinifierPlugin.html">CssConvertFontWeightMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertHslColorsMinifierPlugin.html">CssConvertHslColorsMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertLevel3AtKeyframesMinifierFilter.html">CssConvertLevel3AtKeyframesMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertLevel3PropertiesMinifierFilter.html">CssConvertLevel3PropertiesMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertNamedColorsMinifierPlugin.html">CssConvertNamedColorsMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssConvertRgbColorsMinifierPlugin.html">CssConvertRgbColorsMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssError.html">CssError</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssExpressionParserPlugin.html">CssExpressionParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssImportImportsMinifierFilter.html">CssImportImportsMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssMin.html">CssMin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssMinifier.html">CssMinifier</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssNullToken.html">CssNullToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssOtbsFormatter.html">CssOtbsFormatter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssParser.html">CssParser</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRemoveCommentsMinifierFilter.html">CssRemoveCommentsMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRemoveEmptyAtBlocksMinifierFilter.html">CssRemoveEmptyAtBlocksMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRemoveEmptyRulesetsMinifierFilter.html">CssRemoveEmptyRulesetsMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRemoveLastDelarationSemiColonMinifierFilter.html">CssRemoveLastDelarationSemiColonMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRulesetDeclarationToken.html">CssRulesetDeclarationToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRulesetEndToken.html">CssRulesetEndToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRulesetParserPlugin.html">CssRulesetParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssRulesetStartToken.html">CssRulesetStartToken</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssSortRulesetPropertiesMinifierFilter.html">CssSortRulesetPropertiesMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssStringParserPlugin.html">CssStringParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssUrlParserPlugin.html">CssUrlParserPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssVariablesMinifierFilter.html">CssVariablesMinifierFilter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssVariablesMinifierPlugin.html">CssVariablesMinifierPlugin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.CssWhitesmithsFormatter.html">CssWhitesmithsFormatter</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.HtmlMin.html">HtmlMin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.JSMin.html">JSMin</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.JSMin_UnterminatedCommentException.html">JSMin_UnterminatedCommentException</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.JSMin_UnterminatedRegExpException.html">JSMin_UnterminatedRegExpException</a></li>
+                                                    <li class="class"><a href="../classes/PHPWee.JSMin_UnterminatedStringException.html">JSMin_UnterminatedStringException</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1710548552"></a>
+                                <a href="../namespaces/Proxy.html" style="margin-left: 30px; padding-left: 0">Proxy</a>
+            </div>
+            <div id="namespace-1710548552" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Proxy.checker.html">checker</a></li>
+                                                    <li class="class"><a href="../classes/Proxy.db.html">db</a></li>
+                                                    <li class="class"><a href="../classes/Proxy.gate.html">gate</a></li>
+                                                    <li class="class"><a href="../classes/Proxy.grab.html">grab</a></li>
+                                                    <li class="class"><a href="../classes/Proxy.parser.html">parser</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-361503022"></a>
+                                <a href="../namespaces/Session.html" style="margin-left: 30px; padding-left: 0">Session</a>
+            </div>
+            <div id="namespace-361503022" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Session.FileSessionHandler.html">FileSessionHandler</a></li>
+                                                    <li class="class"><a href="../classes/Session.session.html">session</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1591784060"></a>
+                                <a href="../namespaces/simplehtmldom.html" style="margin-left: 30px; padding-left: 0">simplehtmldom</a>
+            </div>
+            <div id="namespace-1591784060" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/simplehtmldom.Debug.html">Debug</a></li>
+                                                    <li class="class"><a href="../classes/simplehtmldom.helper.html">helper</a></li>
+                                                    <li class="class"><a href="../classes/simplehtmldom.HtmlDocument.html">HtmlDocument</a></li>
+                                                    <li class="class"><a href="../classes/simplehtmldom.HtmlNode.html">HtmlNode</a></li>
+                                                    <li class="class"><a href="../classes/simplehtmldom.HtmlWeb.html">HtmlWeb</a></li>
+                                                    <li class="class"><a href="../classes/simplehtmldom.simple_html_dom.html">simple_html_dom</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-493506552"></a>
+                                <a href="../namespaces/Telkomsel.html" style="margin-left: 30px; padding-left: 0">Telkomsel</a>
+            </div>
+            <div id="namespace-493506552" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Telkomsel.test.html">test</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-178924301"></a>
+                                <a href="../namespaces/TestBootstrap.html" style="margin-left: 30px; padding-left: 0">TestBootstrap</a>
+            </div>
+            <div id="namespace-178924301" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/TestBootstrap.BulletproofTest.html">BulletproofTest</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-974539371"></a>
+                                <a href="../namespaces/Typehint.html" style="margin-left: 30px; padding-left: 0">Typehint</a>
+            </div>
+            <div id="namespace-974539371" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Typehint.stringint.html">stringint</a></li>
+                                                    <li class="class"><a href="../classes/Typehint.Typehint.html">Typehint</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1997152463"></a>
+                                <a href="../namespaces/UniversalFramework.html" style="margin-left: 30px; padding-left: 0">UniversalFramework</a>
+            </div>
+            <div id="namespace-1997152463" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniversalFramework.MySQL.html">MySQL</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-556258134"></a>
+                                <a href="../namespaces/User.html" style="margin-left: 30px; padding-left: 0">User</a>
+            </div>
+            <div id="namespace-556258134" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/User.access.html">access</a></li>
+                                                    <li class="class"><a href="../classes/User.config.html">config</a></li>
+                                                    <li class="class"><a href="../classes/User.coupon.html">coupon</a></li>
+                                                    <li class="class"><a href="../classes/User.meta.html">meta</a></li>
+                                                    <li class="class"><a href="../classes/User.roles.html">roles</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Backup_Database.html">Backup_Database</a></li>
+                                                    <li class="class"><a href="../classes/globals.html">globals</a></li>
+                                                    <li class="class"><a href="../classes/JSLikeHTMLElement.html">JSLikeHTMLElement</a></li>
+                                                    <li class="class"><a href="../classes/SmartDOMDocument.html">SmartDOMDocument</a></li>
+                                                    <li class="class"><a href="../classes/templateParse.html">templateParse</a></li>
+                                                    <li class="class"><a href="../classes/uploadTest.html">uploadTest</a></li>
+                                                    <li class="class"><a href="../classes/ZLIB.html">ZLIB</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/DB.html">\DB</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\DB</small>EPDOStatement</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_setLogger" class="">setLogger()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_bindParam" class="">bindParam()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_bindValue" class="">bindValue()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_interpolateQuery" class="">interpolateQuery()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_execute" class="">execute()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method__debugQuery" class="">_debugQuery()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#property_fullQuery" class="">$fullQuery</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#constant_WARNING_USING_ADDSLASHES" class="">WARNING_USING_ADDSLASHES</a><br />
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method__debugReplace" class="">_debugReplace()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#property__pdo" class="">$_pdo</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#property_boundParams" class="">$boundParams</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#property__debugValues" class="">$_debugValues</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_replaceMarker" class="">replaceMarker()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_prepareValue" class="">prepareValue()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_debug" class="">debug()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_warn" class="">warn()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_error" class="">error()</a><br />
+                                                                    <a href="../classes/DB.EPDOStatement.html#method_info" class="">info()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/DB.EPDOStatement.html#property_logger" class="">$logger</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/DB.EPDOStatement.html"><div class="path-wrapper">DB\EPDOStatement.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\PDOStatement</div>
+                                                                                                    <div class="namespace-wrapper">\DB\EPDOStatement</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href=""><div class="namespace-wrapper"></div></a></dd>
+                        
+                        
+                        
+                                                
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                                    <a id="constants" name="constants"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Constants</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="constant_WARNING_USING_ADDSLASHES" name="constant_WARNING_USING_ADDSLASHES" class="anchor"></a>
+            <article id="constant_WARNING_USING_ADDSLASHES" class="constant">
+                <h3 class="">WARNING_USING_ADDSLASHES</h3>
+                <pre class="signature">WARNING_USING_ADDSLASHES = &#039;addslashes is not suitable for production logging, etc. Please consider updating your processes to provide a valid PDO object that can perform the necessary translations and can be updated with your e.g. package management, etc.&#039;</pre>
+                <p><em></em></p>
+                
+            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_fullQuery" name="property_fullQuery" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$fullQuery</h3>
+                <pre class="signature">$fullQuery : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; - will be populated with the interpolated db query string                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__pdo" name="property__pdo" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_pdo</h3>
+                <pre class="signature">$_pdo : \PDO</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \PDO
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_boundParams" name="property_boundParams" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$boundParams</h3>
+                <pre class="signature">$boundParams : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; - array of arrays containing values that have been bound to the query as parameters                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__debugValues" name="property__debugValues" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_debugValues</h3>
+                <pre class="signature">$_debugValues : </pre>
+                <p><em>Migrate from \DB\statement.</em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_logger" name="property_logger" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$logger</h3>
+                <pre class="signature">$logger : \Psr\Log\LoggerInterface</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \Psr\Log\LoggerInterface
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setLogger" name="method_setLogger" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setLogger()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setLogger(\Psr\Log\LoggerInterface  <span class="argument">$logger</span>) </pre>
+                <p><em>{@inheritdoc}</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Psr\Log\LoggerInterface</td>
+                                <td>$logger </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bindParam" name="method_bindParam" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">bindParam()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bindParam(string  <span class="argument">$param</span>, mixed  <span class="argument">$value</span>, integer  <span class="argument">$datatype = \PDO::PARAM_STR</span>, integer  <span class="argument">$length</span>, mixed  <span class="argument">$driverOptions = false</span>) : boolean</pre>
+                <p><em>Overrides the default \PDOStatement method to add the named parameter and it&#039;s reference to the array of bound
+parameters - then accesses and returns parent::bindParam method.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$param </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$datatype </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$length </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$driverOptions </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <ul>
+<li>default of \PDOStatement::bindParam()</li>
+</ul>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bindValue" name="method_bindValue" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">bindValue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bindValue(string  <span class="argument">$param</span>, mixed  <span class="argument">$value</span>, integer  <span class="argument">$datatype = \PDO::PARAM_STR</span>) : boolean</pre>
+                <p><em>Overrides the default \PDOStatement method to add the named parameter and it&#039;s value to the array of bound values
+- then accesses and returns parent::bindValue method.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$param </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$datatype </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <ul>
+<li>default of \PDOStatement::bindValue()</li>
+</ul>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_interpolateQuery" name="method_interpolateQuery" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">interpolateQuery()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">interpolateQuery(array  <span class="argument">$inputParams = null</span>) : string</pre>
+                <p><em>Copies $this-&gt;queryString then replaces bound markers with associated values ($this-&gt;queryString is not modified
+but the resulting query string is assigned to $this-&gt;fullQuery).</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$inputParams </td>
+                                <td><ul>
+<li>array of values to replace ? marked parameters in the query string</li>
+</ul></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>$testQuery - interpolated db query string</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_execute" name="method_execute" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">execute()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">execute(array  <span class="argument">$inputParams = array()</span>) : boolean</pre>
+                <p><em>Overrides the default \PDOStatement method to generate the full query string - then accesses and returns
+parent::execute method.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$inputParams </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <ul>
+<li>default of \PDOStatement::execute()</li>
+</ul>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__debugQuery" name="method__debugQuery" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">_debugQuery()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_debugQuery(  <span class="argument">$replaced = true</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$replaced </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\PDO  <span class="argument">$pdo = null</span>) </pre>
+                <p><em>The first argument passed in should be an instance of the PDO object. If so, we&#039;ll cache it&#039;s reference locally
+to allow for the best escaping possible later when interpolating our query. Other parameters can be added if
+needed.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\PDO</td>
+                                <td>$pdo </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__debugReplace" name="method__debugReplace" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">_debugReplace()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_debugReplace(  <span class="argument">$m</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$m </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_replaceMarker" name="method_replaceMarker" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">replaceMarker()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">replaceMarker(  <span class="argument">$queryString</span>,   <span class="argument">$marker</span>,   <span class="argument">$replValue</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$queryString </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$marker </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$replValue </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepareValue" name="method_prepareValue" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">prepareValue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepareValue(array  <span class="argument">$value</span>) : string</pre>
+                <p><em>Prepares values for insertion into the resultant query string - if $this-&gt;_pdo is a valid PDO object, we&#039;ll use
+that PDO driver&#039;s quote method to prepare the query value. Otherwise:.</em></p>
+                <p>addslashes is not suitable for production logging, etc. You can update this method to perform the necessary
+escaping translations for your database driver. Please consider updating your processes to provide a valid
+PDO object that can perform the necessary translations and can be updated with your e.g. package management,
+etc.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$value </td>
+                                <td><ul>
+<li>an array representing the value to be prepared for injection as a value in the query string
+with it's associated datatype:
+['datatype' =&gt; PDO::PARAM_STR, 'value' =&gt; 'something']</li>
+</ul></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>$value - prepared $value</p>
+                                    
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_debug" name="method_debug" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">debug()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">debug(string  <span class="argument">$message</span>, array  <span class="argument">$context = array()</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$message </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$context </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_warn" name="method_warn" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">warn()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">warn(string  <span class="argument">$message</span>, array  <span class="argument">$context = array()</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$message </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$context </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_error" name="method_error" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">error()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">error(string  <span class="argument">$message</span>, array  <span class="argument">$context = array()</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$message </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$context </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_info" name="method_info" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">info()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">info(  <span class="argument">$message</span>,   <span class="argument">$context = array()</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$message </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$context </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+Warning: count(): Parameter must be an array or an object that implements Countable in phar://D:/Workspaces/PHP/php-html/phpdoc.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 1275
+
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/DB.EPDOStatement.html"><div class="path-wrapper">\DB\EPDOStatement</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">EPDOStatement.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/DB\EPDOStatement.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Accounting.html">\Accounting</a></li>
+                                                                            <li><a href="../namespaces/AGC.html">\AGC</a></li>
+                                                                            <li><a href="../namespaces/Bulletproof.html">\Bulletproof</a></li>
+                                                                            <li><a href="../namespaces/Cookie.html">\Cookie</a></li>
+                                                                            <li><a href="../namespaces/Crypto.html">\Crypto</a></li>
+                                                                            <li><a href="../namespaces/DB.html">\DB</a></li>
+                                                                            <li><a href="../namespaces/DDOS.html">\DDOS</a></li>
+                                                                            <li><a href="../namespaces/Extender.html">\Extender</a></li>
+                                                                            <li><a href="../namespaces/Facebook.html">\Facebook</a></li>
+                                                                            <li><a href="../namespaces/Filemanager.html">\Filemanager</a></li>
+                                                                            <li><a href="../namespaces/GoogleExt.html">\GoogleExt</a></li>
+                                                                            <li><a href="../namespaces/HTML.html">\HTML</a></li>
+                                                                            <li><a href="../namespaces/IMEI.html">\IMEI</a></li>
+                                                                            <li><a href="../namespaces/img.html">\img</a></li>
+                                                                            <li><a href="../namespaces/Indosat.html">\Indosat</a></li>
+                                                                            <li><a href="../namespaces/JSON.html">\JSON</a></li>
+                                                                            <li><a href="../namespaces/MrShan0.html">\MrShan0</a></li>
+                                                                            <li><a href="../namespaces/MVC.html">\MVC</a></li>
+                                                                            <li><a href="../namespaces/Naneau.html">\Naneau</a></li>
+                                                                            <li><a href="../namespaces/Netscape.html">\Netscape</a></li>
+                                                                            <li><a href="../namespaces/Office.html">\Office</a></li>
+                                                                            <li><a href="../namespaces/PHPWee.html">\PHPWee</a></li>
+                                                                            <li><a href="../namespaces/Proxy.html">\Proxy</a></li>
+                                                                            <li><a href="../namespaces/Session.html">\Session</a></li>
+                                                                            <li><a href="../namespaces/simplehtmldom.html">\simplehtmldom</a></li>
+                                                                            <li><a href="../namespaces/Telkomsel.html">\Telkomsel</a></li>
+                                                                            <li><a href="../namespaces/TestBootstrap.html">\TestBootstrap</a></li>
+                                                                            <li><a href="../namespaces/Typehint.html">\Typehint</a></li>
+                                                                            <li><a href="../namespaces/UniversalFramework.html">\UniversalFramework</a></li>
+                                                                            <li><a href="../namespaces/User.html">\User</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on October 31st, 2020 at 19:30.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

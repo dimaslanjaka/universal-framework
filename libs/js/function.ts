@@ -18,7 +18,7 @@ function http_build_query(obj: Object) {
  * Check current framework running at localhost
  */
 function is_localhost() {
-  var is_local = location.host.match(/^localhost|^127|\.io$/s);
+  var is_local = location.host.match(/^localhost|^127|(apotek|php|git).io$/s);
   return is_local;
 }
 
@@ -26,12 +26,12 @@ if (!isnode()) {
   if (is_localhost()) {
     setTimeout(function () {
       $.ajax({
-        url: "/superuser/theme/clean?latest=s&force=true",
+        url: "/server/clean?latest=s&force=true",
       });
     }, 5000);
   } else {
     $.ajax({
-      url: "/superuser/theme/clean?latest=" + new Date(),
+      url: "/server/clean?latest=" + new Date(),
       silent: true,
       indicator: false,
     });

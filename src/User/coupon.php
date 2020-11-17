@@ -6,7 +6,7 @@ class coupon extends user
 {
   public $coupon = null;
 
-  public function __construct($user = 'root', $pass = '', $db = 'darkit', $host = 'localhost', $charset = 'utf8mb4')
+  public function __construct($user = 'root', $pass = '', $db, $host = 'localhost', $charset = 'utf8mb4')
   {
     parent::__construct($user, $pass, $db, $host, $charset);
   }

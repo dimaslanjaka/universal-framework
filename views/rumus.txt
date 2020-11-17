@@ -1,0 +1,2 @@
+persediaan = stock awal + penerimaan.
+pemakaian = data dari produk keluar

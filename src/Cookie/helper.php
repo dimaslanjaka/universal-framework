@@ -88,7 +88,8 @@ class helper
 
     try {
       //$value = gzdeflate(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 9);
-      $value = base64_encode(json_encode($value));
+      //$value = base64_encode(json_encode($value));
+      $value = aesEncrypt($value, md5($_SERVER['HTTP_HOST']));
     } catch (\MVC\Exception $E) {
       $value = $value;
     }
@@ -115,7 +116,8 @@ class helper
     }
     if ($ret) {
       //$ret = json_decode(gzinflate($ret), true);
-      $ret = json_decode(base64_decode($ret), true);
+      //$ret = json_decode(base64_decode($ret), true);
+      $ret = aesDecrypt($ret, md5($_SERVER['HTTP_HOST']));
     }
     if (!$AllowEmpty && empty($ret)) {
       $ret = null;

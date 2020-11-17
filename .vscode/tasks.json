@@ -22,7 +22,7 @@
         "showReuseMessage": true,
         "clear": false
       },
-      "command": "npm run start",
+      "command": "npm run build && gulp build && npm run dev",
       "runOptions": {
         "instanceLimit": 1,
         "reevaluateOnRerun": true,

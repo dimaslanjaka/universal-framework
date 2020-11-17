@@ -1,0 +1,148 @@
+pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+/* Word wrapping */
+* {
+  word-wrap: break-word;
+}
+
+body {
+  width: 100%;
+}
+/* /Word wrapping */
+
+/* Google translate */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+.goog-te-menu-frame {
+  max-width: 100% !important;
+}
+#goog-gt-tt {
+  display: none !important;
+  top: 0px !important;
+}
+.goog-tooltip skiptranslate {
+  display: none !important;
+  top: 0px !important;
+}
+.activity-root {
+  display: hide !important;
+}
+.status-message {
+  display: hide !important;
+}
+.started-activity-container {
+  display: hide !important;
+}
+.goog-logo-link {
+  pointer-events: none;
+}
+body {
+  top: 0px !important;
+}
+/* /Google translate */
+
+/** Navbar dropdown on hover */
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+/* image on hover */
+img:hover {
+  opacity: 0.7;
+}
+
+main {
+  min-height: 30rem;
+}
+
+/* Footer */
+.mini-footer {
+  text-align: center;
+  padding: 32px 0;
+
+  p {
+    margin: 0;
+    line-height: 26px;
+    font-size: 15px;
+    color: #999;
+  }
+  p a {
+    color: #5867dd;
+  }
+  p a:hover {
+    color: #34bfa3;
+  }
+}
+
+/* Disable CSS */
+[disabled] {
+  pointer-events: none;
+  cursor: not-allowed;
+  /* for "disabled" effect */
+  opacity: 0.7;
+}
+
+/* Custom Element */
+red {
+  color: red;
+}
+green {
+  color: green;
+}
+t {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  ::after {
+    content: "tab";
+    color: rgb(110, 108, 105);
+    font-size: 10px;
+  }
+}
+
+/* Custom template select2 */
+.input-group.select2-bootstrap-operator
+  .select2-hidden-accessible:first-child
+  + .select2-container--bootstrap
+  .select2-selection {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group.select2-bootstrap-operator
+  .select2-hidden-accessible:first-child
+  + .select2-container--bootstrap
+  + .input-group-addon {
+  border-left: 0;
+}
+
+.input-group.select2-bootstrap-operator
+  .input-group-addon
+  + .select2-hidden-accessible
+  + .select2-container--bootstrap {
+  margin-left: -1px;
+}
+
+.input-group.select2-bootstrap-operator
+  .input-group-addon
+  + .select2-hidden-accessible
+  + .select2-container--bootstrap
+  .select2-selection {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Show hide element */
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}

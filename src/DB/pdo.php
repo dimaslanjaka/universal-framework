@@ -6,7 +6,7 @@ use JSON\json;
 use MVC\Exception;
 use PDO as GlobalPDO;
 use PDOException;
-use mysqli;
+use mysqli as MYSQLi;
 
 /*
  function SQL_Connect    ($user, $pass, $dbname, $host = "localhost", $charset = "utf8mb4");
@@ -174,6 +174,32 @@ class pdo
   }
 
   /**
+   * Escape query sql
+   *
+   * @param string $query
+   * @return string
+   */
+  public function escape(string $query = null)
+  {
+    $this->mysqli->query('SET NAMES utf8mb4;');
+    $new_data = $query != null ? $query : $this->query;
+    //$new_data = $this->mysqli->real_escape_string();
+    //$new_data = addcslashes($new_data, '%_$');
+    //$new_data = htmlspecialchars($new_data, ENT_NOQUOTES);
+    $new_data = preg_quote($new_data);
+    return $new_data;
+  }
+
+  public function descape(string $query = null)
+  {
+    $this->mysqli->query('SET NAMES utf8mb4;');
+    $new_data = $query != null ? $query : $this->query;
+    //$new_data = htmlspecialchars_decode($new_data);
+    $new_data = stripcslashes($new_data);
+    return $new_data;
+  }
+
+  /**
    * Set MySQL Timezone.
    *
    * @requires superuser access
@@ -217,7 +243,7 @@ class pdo
     $pdo = null;
     try {
       $pdo = new GlobalPDO("mysql:host=$host;dbname=$dbname;charset=$charset", $user, $pass, $options);
-      $this->mysqli = new mysqli($host, $user, $pass, $dbname);
+      $this->mysqli = new MYSQLi($host, $user, $pass, $dbname);
       $this->shimmer = new \UniversalFramework\MySQL($this->mysqli);
     } catch (PDOException $e) {
       exit($e->getMessage());
@@ -309,9 +335,21 @@ class pdo
    */
   public function select(string $tbl, string $row = '*')
   {
+    $this->clear();
     $this->from = $tbl;
     $this->query .= " SELECT $row FROM $tbl ";
 
+    return $this;
+  }
+
+  /**
+   * Clear last queries
+   *
+   * @return $this
+   */
+  function clear()
+  {
+    $this->query = '';
     return $this;
   }
 

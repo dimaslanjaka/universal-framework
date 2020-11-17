@@ -1,7 +1,3 @@
-function typedKeys<T>(o: T): (keyof T)[] {
-  // type cast should be safe because that's what really Object.keys() does
-  return Object.keys(o) as (keyof T)[];
-}
 var ORIGIN = null as any;
 if (isnode()) {
   const process = require("process");
@@ -9,16 +5,58 @@ if (isnode()) {
 } else {
   ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
+var IP: string;
 
-var dimas = {
+class dimas {
+  /**
+   * Disabling button
+   * @param t element of button
+   * @param V
+   */
+  disable_button(t: JQuery<any> | HTMLButtonElement, V: any = null) {
+    var el: HTMLButtonElement;
+    if (t instanceof jQuery) {
+      el = t.get();
+    } else if (t instanceof HTMLButtonElement) {
+      el = t;
+    }
+    if (typeof el != "undefined") {
+      el.setAttribute("disabled", "true");
+    }
+  }
+  /**
+   * Enabling button
+   * @param t element of button
+   * @param V
+   */
+  enable_button(t: JQuery<any> | HTMLButtonElement, V: any = null) {
+    var el: HTMLButtonElement;
+    if (t instanceof jQuery) {
+      el = t.get();
+    } else if (t instanceof HTMLButtonElement) {
+      el = t;
+    }
+    if (typeof el != "undefined") {
+      el.removeAttribute("disabled");
+    }
+  }
   /**
    * get current url without querystrings
    */
-  url: ORIGIN,
+  static url = ORIGIN;
+  static ip: any = null;
+  static setIp(ip: any) {
+    this.ip = ip;
+    IP = ip;
+  }
+  static getIp() {
+    return this.ip;
+  }
+
   /**
    * framework captcha
    */
-  captcha: {
+  static captcha = {
     /**
      * DO NOT ASSIGN THIS
      */
@@ -26,9 +64,9 @@ var dimas = {
     /**
      * Get current captcha id
      */
-    id: function (header_name: string | null): string {
-      if (!dimas.captcha.check) {
-        dimas.captcha.get(header_name);
+    id(header_name: string | null): string {
+      if (!this.captcha.check) {
+        this.captcha.get(header_name);
       }
       return storage().get("captcha");
     },
@@ -36,16 +74,16 @@ var dimas = {
      * Get current captcha from backend
      * And process it by jsonpCallback
      */
-    get: function (header_name: null | string): void {
-      if (!dimas.captcha.check) {
-        dimas.captcha.check = setTimeout(() => {
-          dimas.captcha.get(header_name);
+    get(header_name: null | string): void {
+      if (!this.captcha.check) {
+        this.captcha.check = setTimeout(() => {
+          this.captcha.get(header_name);
         }, 60000);
       }
       var ua = md5(navigator.userAgent).rot13();
-      var IP = ip.get(null);
+
       $.ajax({
-        url: dimas.url + "?login=" + guid(),
+        url: this.url + "?login=" + guid(),
         method: "POST",
         headers: {
           Accept: "application/javascript",
@@ -57,27 +95,27 @@ var dimas = {
       });
     },
 
-    callback: function (arg?: any) {},
+    callback(arg?: any) {},
 
     /**
      * Captcha JSONP callback
      */
-    jspCallback: function (res: { captcha: string }) {
+    jspCallback(res: { captcha: string }) {
       if (res.hasOwnProperty("captcha")) {
         storage().set("captcha", res.captcha.rot13());
-        dimas.captcha.callback(storage().get("captcha"));
-        dimas.captcha.listen();
+        this.captcha.callback(storage().get("captcha"));
+        this.captcha.listen();
       }
     },
     listener_started: null as any | string,
     /**
      * Form Captcha listener
      */
-    listen: function () {
-      if (dimas.captcha.listener_started) {
+    listen() {
+      if (this.captcha.listener_started) {
         return null;
       }
-      dimas.captcha.listener_started = new Date().toISOString();
+      this.captcha.listener_started = new Date().toISOString();
       return $(document).on("focus", "form[captcha]", function (e) {
         var captcha = $(this).find('[name="captcha"]');
         if (!captcha.length) {
@@ -95,16 +133,17 @@ var dimas = {
           e.preventDefault();
           console.log("submit with captcha");
           button.prop("disabled", true);
-          framework().captcha.callback = function () {
+          this.captcha.callback = function () {
             button.prop("disabled", false);
           };
-          framework().captcha.get(null);
+          this.captcha.get(null);
           form.off("submit");
         });
         //captcha.parents('form').find('[type="submit"]').one('click', function());
       });
     },
-  },
+  };
+
   /**
    * Count Array/Object/String length
    * @param {any[]|string|object} data
@@ -117,24 +156,25 @@ var dimas = {
     } else if (typeof data == "number") {
       return data;
     }
-  },
+  }
 
   /**
    * Make async function
    * @param callback
    */
-  async: function (callback: any) {
+  async(callback: any) {
     return new Promise(function (resolve, reject) {
       if (typeof callback == "function") {
         callback();
       }
       resolve();
     });
-  },
+  }
+
   /**
    * Rupiah currency auto format
    */
-  rp: function (angka: number, prefix: string | any) {
+  rp(angka: number, prefix: string | any = null) {
     if (!prefix) {
       prefix = "Rp. ";
     }
@@ -151,32 +191,35 @@ var dimas = {
 
     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
     return !prefix ? rupiah : prefix + " " + rupiah;
-  },
+  }
+
   /**
    * Check if variable is number / numeric
    * @param {String|Number} v
    */
-  isNumber: function (v: string | number) {
+  isNumber(v: string | number) {
     return (
       !isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
       /^\d+$/.test(v.toString())
     );
-  },
+  }
+
   /**
    * strpad / startwith zero [0]
    * @param {number} val
    */
-  strpad: function (val: number) {
+  strpad(val: number) {
     if (val >= 10) {
       return val;
     } else {
       return "0" + val;
     }
-  },
+  }
+
   /**
    * Autofill datetime-local value
    */
-  datetimelocal: function (v?: string | number) {
+  datetimelocal(v?: string | number) {
     var d = !v ? new Date() : new Date(v);
     $("input[type=datetime-local]").val(
       d.getFullYear() +
@@ -189,12 +232,13 @@ var dimas = {
         ":" +
         this.strpad(d.getMinutes())
     );
-  },
+  }
+
   /**
    * Get cookie
    * @param string name cookie
    */
-  gc: function (name: string) {
+  gc(name: string) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
@@ -208,13 +252,13 @@ var dimas = {
     }
 
     return null;
-  },
+  }
 
   /**
    * Odd or Even (Ganjil Genap);
    * @param type odd or even
    */
-  oddoreven: function (n: string, type: string) {
+  oddoreven(n: string, type: string) {
     if (!type) {
       type = "odd";
     }
@@ -231,7 +275,7 @@ var dimas = {
     //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
 
     return hasil.toString() == type.toString();
-  },
+  }
 
   /**
    * Set cookie
@@ -239,7 +283,7 @@ var dimas = {
    * @param {any} value
    * @param {number} hours
    */
-  sc: function (name: string, value: any, hours: number) {
+  sc(name: string, value: any, hours: number) {
     var expires = "";
     if (hours) {
       var date = new Date();
@@ -247,9 +291,9 @@ var dimas = {
       expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";
-  },
+  }
 
-  allcookies: function () {
+  allcookies() {
     var pairs = document.cookie.split(";");
     var cookies: { [key: string]: any } = {};
     for (var i = 0; i < pairs.length; i++) {
@@ -258,19 +302,19 @@ var dimas = {
       cookies[str] = unescape(pair.slice(1).join("="));
     }
     return cookies;
-  },
+  }
 
   /**
    * Remove Cookie
    */
-  rc: function (name: string): void {
+  rc(name: string): void {
     document.cookie = name + "=; Max-Age=-99999999;";
-  },
+  }
 
   /**
    * Get Query name from current url
    */
-  getquery: function (variable: any) {
+  getquery(variable: any) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
@@ -280,8 +324,9 @@ var dimas = {
       }
     }
     return false;
-  },
-  recode: function (content: string, passcode: string) {
+  }
+
+  recode(content: string, passcode: string) {
     var result = [];
     var str = "";
     var codesArr = JSON.parse(content);
@@ -296,13 +341,14 @@ var dimas = {
       str += ch;
     }
     return str;
-  },
+  }
+
   /**
    * Get js file from url
    * @param {String} url
    * @param {Function} callback
    */
-  js: function (url: string, callback: Function | any) {
+  js(url: string, callback: Function | any) {
     var pel = document.body || document.head;
     var script = document.createElement("script");
     script.type = "text/javascript";
@@ -311,12 +357,13 @@ var dimas = {
 
     script.onload = callback;
     pel.appendChild(script);
-  },
+  }
+
   /**
    * Countdown trigger
    * @param {JQuery} elm
    */
-  pctdRUN: function (elm: JQuery) {
+  pctdRUN(elm: JQuery) {
     var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5,
       bs = elm.data("base") ? elm.data("base") : "bg-info",
       bw = elm.data("warning") ? elm.data("warning") : "bg-danger",
@@ -346,7 +393,7 @@ var dimas = {
         // height of progress bar
         // 0 = default height
         height: 0,
-        onFinish: function () {
+        onFinish() {
           var callback = elm.data("callback");
           if (callback) {
             var xn = window[callback];
@@ -365,12 +412,13 @@ var dimas = {
         autoStart: true,
       });
     return countdown;
-  },
+  }
+
   /**
    * Progress Countdown
    * @param {JQuery} elm
    */
-  pctd: function (elm: JQuery) {
+  pctd(elm: JQuery) {
     var t = this;
 
     if (typeof progressBarTimer == "undefined") {
@@ -382,15 +430,15 @@ var dimas = {
       );
     } else {
       window.onload = function (params: any) {
-        dimas.pctdRUN(elm);
+        this.pctdRUN(elm);
       };
     }
-  },
+  }
 
   /**
    * Parseurl just like as parse_url at php
    */
-  parseurl: function (url: string) {
+  parseurl(url: string) {
     var parser = document.createElement("a"),
       searchObject: { [key: string]: any } = {},
       queries: string[],
@@ -415,14 +463,14 @@ var dimas = {
       hash: parser.hash,
       protohost: parser.protocol + "//" + parser.host,
     };
-  },
-};
+  }
+}
 
 /**
  * Framework object initializer
  */
 function framework() {
-  return dimas;
+  return new dimas();
 }
 
 class app {
@@ -430,22 +478,24 @@ class app {
   static setbase(path: string) {
     this.base = path;
   }
+
   static direct(...args: string[]) {
     var scripts = document.querySelectorAll("script[src]");
     var last = scripts[scripts.length - 1];
     var lastsrc = last.getAttribute("src");
-    var parsed = dimas.parseurl(lastsrc);
+    var parsed = framework().parseurl(lastsrc);
     args.forEach(function (src) {
-      dimas.js(`${app.base}${src}${parsed.search}`, function () {
+      this.js(`${app.base}${src}${parsed.search}`, function () {
         console.log(`${src} engine inbound`);
       });
     });
   }
+
   static load(...args: any[]) {
     var scripts = document.querySelectorAll("script[src]");
     var last = scripts[scripts.length - 1];
     var lastsrc = last.getAttribute("src");
-    var parsed = dimas.parseurl(lastsrc);
+    var parsed = framework().parseurl(lastsrc);
     args.forEach(function (key, index) {
       console.log(key, app.base);
       let src: string = "";
@@ -456,7 +506,7 @@ class app {
       }
 
       if (src != "") {
-        dimas.js(`${app.base}${src}${parsed.search}`, function () {
+        this.js(`${app.base}${src}${parsed.search}`, function () {
           console.log(`${src} engine inbound`);
         });
       }

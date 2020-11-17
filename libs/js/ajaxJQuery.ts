@@ -32,7 +32,7 @@ if (!isnode()) {
       typeof options.indicator == "boolean" && options.indicator === true;
     dumpAjax = typeof options.dump == "boolean" && options.dump === true;
     /**
-     * Proxying begin
+     * Ajax Proxying begin
      */
     if (options.crossDomain && jQuery.support.cors) {
       var allowed = true;
