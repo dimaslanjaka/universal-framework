@@ -70,7 +70,8 @@
     "uglifycss": "^0.0.29",
     "vinyl-source-stream": "^2.0.0",
     "write-file-atomic": "^3.0.3",
-    "yargs": "^16.1.0"
+    "yargs": "^16.1.0",
+    "snyk": "^1.426.0"
   },
   "description": "Universal framework php javascript",
   "devDependencies": {
@@ -194,7 +195,7 @@
     "postinstall": "",
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
-    "prepublish": "",
+    "prepublish": "npm run snyk-protect",
     "check": "depcheck ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
