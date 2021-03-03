@@ -853,9 +853,6 @@ instagram : https://instagram.com/ilman.sn
   <script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
 
 
-
-
-
   <script>
     var url = '<?= BASEURL; ?>'
 
