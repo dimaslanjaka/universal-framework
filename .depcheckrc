@@ -1,3 +1,0 @@
-ignores: ["eslint", "babel-*"]
-ignores-dir: ["src", "vendor", "dist", "coverage", "tmp", "assets", "views"]
-skip-missing: true
