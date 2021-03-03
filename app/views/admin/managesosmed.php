@@ -12,7 +12,7 @@
             <div class="col-12 mb-4">
                 <?php if (isset($_SESSION['hasil'])) : ?>
                     <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-0" role="alert">
-                        <?= $_SESSION['hasil']['pesan'] ?>
+                        <?= $_SESSION['hasil']['pesan']; ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -60,12 +60,12 @@
                                             <form action="<?= BASEURL; ?>admin/updateordersosmed" method="POST">
                                                 <input type="hidden" name="id" value="<?= $ordersosmed['oid']; ?>">
                                                 <select class="form-control" style="width: 150px;" name="status">
-                                                    <?php if ($ordersosmed['status'] == "Success") { ?>
+                                                    <?php if ('Success' == $ordersosmed['status']) { ?>
                                                         <option value="<?php echo $ordersosmed['status']; ?>" selected disabled><?php echo $ordersosmed['status']; ?></option>
                                                 </select>
                                             </form>
 
-                                        <?php } else if ($ordersosmed['status'] == 'Pending') { ?>
+                                        <?php } elseif ('Pending' == $ordersosmed['status']) { ?>
                                             <option value="<?php echo $ordersosmed['status']; ?>" selected disabled><?php echo $ordersosmed['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Error">Error</option>
@@ -73,8 +73,8 @@
                                             </select>
                                             <button type="submit" class="badge badge-success">Ubah status</button>
                                             </form>
-                                        <?php
-                                                    } else if ($ordersosmed['status'] == 'Error') { ?>
+                                        <?php
+                          } elseif ('Error' == $ordersosmed['status']) { ?>
                                             <option value="<?php echo $ordersosmed['status']; ?>" selected disabled><?php echo $ordersosmed['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Pending">Pending</option>
@@ -82,7 +82,7 @@
                                             </select>
                                             <button type="submit" class="badge badge-success">Ubah</button>
                                             </form>
-                                        <?php } else if ($ordersosmed['status'] == 'Processing') { ?>
+                                        <?php } elseif ('Processing' == $ordersosmed['status']) { ?>
                                             <option value="<?php echo $ordersosmed['status']; ?>" selected disabled><?php echo $ordersosmed['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Error">Error</option>

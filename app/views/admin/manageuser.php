@@ -1,7 +1,7 @@
 <!-- darurat, instal database -->
-<?php
-$db = new Database;
-$dbh = $db->connect();
+<?php
+$db = new Database();
+$dbh = $db->connect();
 ?>
 <main>
     <div class="container-fluid">
@@ -17,7 +17,7 @@ $dbh = $db->connect();
 
         <?php if (isset($_SESSION['hasil'])) : ?>
             <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-0" role="alert">
-                <?= $_SESSION['hasil']['pesan'] ?>
+                <?= $_SESSION['hasil']['pesan']; ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -43,7 +43,7 @@ $dbh = $db->connect();
                                 </tr>
                             </thead>
                             <tbody>
-                            <?php $no = 1;?>
+                            <?php $no = 1; ?>
                                 <?php foreach ($data['allusers'] as $user) : ?>
                                     <tr>
                                     <td><?= $no; ?></td>
@@ -67,7 +67,7 @@ $dbh = $db->connect();
                                         </td>
 
                                     </tr>
-<?php $no++; ?>
+<?php ++$no; ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>

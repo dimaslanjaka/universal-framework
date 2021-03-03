@@ -49,5 +49,5 @@ $time = date('H:i:s');
 define('DATE', $date);
 
 define('TIME', $time);
-
+$config = [];
 //error_reporting(0);

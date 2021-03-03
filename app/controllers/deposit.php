@@ -3,8 +3,7 @@
 class Deposit extends Controller
 {
   protected $username;
-  protected $db;
-  protected $dbh;
+
   public $date = DATE;
   public $time = TIME;
 
@@ -125,7 +124,10 @@ class Deposit extends Controller
       ];
       header('Location:' . BASEURL . 'deposit/invoice/' . $kode);
     }
-  }
+  }
+
+
+
 
   // riwayat deposit
   public function riwayatdeposit()
@@ -195,39 +197,59 @@ class Deposit extends Controller
             $this->model('Lainnya')->masuk_topdepo($username, $saldovoucher);
           }
           /// alert sukses
-          echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
-                    Berhail. Saldo telah di tambahkan ke akunmu
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
+          echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
+
+                    Berhail. Saldo telah di tambahkan ke akunmu
+
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                         <span aria-hidden="true">&times;</span>
+
+                     </button>
+
                  </div>';
 
-        // error 84
+          // error 84
         } else {
-          echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-                    Error (84) .Terjadi kesalahan, mohon hubungi admin!
-                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
+          echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+                    Error (84) .Terjadi kesalahan, mohon hubungi admin!
+
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                         <span aria-hidden="true">&times;</span>
+
+                     </button>
+
                  </div>';
         }
         // error 83
       } else {
-        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-               Error (83) .Terjadi kesalahan Saat menambah saldo, mohon hubungi admin!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+               Error (83) .Terjadi kesalahan Saat menambah saldo, mohon hubungi admin!
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
       }
     } else {
       // eror normal
       // $_SESSION['hasil']['pesan'] = 'Kode tersebut tidak di temukan/ sudah di reddem!';
-      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-               `Kode tersebut tidak di temukan/sudah di Pakai!`
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+               `Kode tersebut tidak di temukan/sudah di Pakai!`
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
     }
   }

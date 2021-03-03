@@ -14,8 +14,6 @@ function loadStyle(href, callback) {
     }
   }
 
-
-
   var head = document.getElementsByTagName("head")[0];
   var link = document.createElement("link");
   link.rel = "stylesheet";
@@ -40,7 +38,7 @@ function loadStyle(href, callback) {
     Dropzone.autoDiscover = false;
   }
 
-  var themeColorsDom = /*html*/`
+  var themeColorsDom = /*html*/ `
     <div class="theme-colors">
       <div class="p-4">
       <p class="text-muted mb-2">Light Theme</p>
@@ -102,7 +100,6 @@ function loadStyle(href, callback) {
 
   //$("body").append(themeColorsDom);
 
-
   /* Default Theme Color, Border Radius and  Direction */
   var theme = "dore.light.bluenavy.min.css";
   var direction = "ltr";
@@ -127,11 +124,15 @@ function loadStyle(href, callback) {
   }
 
   $(".theme-color[data-theme='" + theme + "']").addClass("active");
-  $(".direction-radio[data-direction='" + direction + "']").attr("checked", true);
+  $(".direction-radio[data-direction='" + direction + "']").attr(
+    "checked",
+    true
+  );
   $(".radius-radio[data-radius='" + radius + "']").attr("checked", true);
   $("#switchDark").attr("checked", theme.indexOf("dark") > 0 ? true : false);
 
-  loadStyle("css/" + theme, onStyleComplete);
+  //loadStyle("css/" + theme, onStyleComplete);
+  loadStyle("/public/css/" + theme, onStyleComplete);
   function onStyleComplete() {
     setTimeout(onStyleCompleteDelayed, 300);
   }
@@ -183,20 +184,14 @@ function loadStyle(href, callback) {
 
   $(".theme-button").on("click", function (event) {
     event.preventDefault();
-    $(this)
-      .parents(".theme-colors")
-      .toggleClass("shown");
+    $(this).parents(".theme-colors").toggleClass("shown");
   });
 
   $(document).on("click", function (event) {
     if (
       !(
-        $(event.target)
-          .parents()
-          .hasClass("theme-colors") ||
-        $(event.target)
-          .parents()
-          .hasClass("theme-button") ||
+        $(event.target).parents().hasClass("theme-colors") ||
+        $(event.target).parents().hasClass("theme-button") ||
         $(event.target).hasClass("theme-button") ||
         $(event.target).hasClass("theme-colors")
       )

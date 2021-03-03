@@ -1,6 +1,9 @@
 <?php
 
-class OVO
+use \Stelin\HTTP\Curl;
+use Stelin\OVOID;
+
+class OVO extends OVOID
 {
   public $nomor;
 
@@ -79,6 +82,42 @@ class OVO
     } else {
       return false;
     }
+  }
+
+  /**
+   * Get OVO Balance
+   *
+   * @return \Stelin\Response\FrontResponse
+   */
+  public function getBalance($token)
+  {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, 'https://api.ovo.id/v1.1/api/front/');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+    curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+      'Authorization: ' . $token,
+
+      'App-Version: 3.25.1',
+
+      'Os: Android',
+
+      'Host: api.ovo.id',
+
+      'User-Agent: okhttp/3.11.0',
+    ]);
+
+    $result = json_decode(curl_exec($ch), true);
+    $reshttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    return [
+      'response' => $reshttp,
+      'result' => $result
+    ];
   }
 
   public function konfirmasiSecurityCode($securityCode)

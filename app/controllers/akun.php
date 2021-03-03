@@ -3,8 +3,6 @@
 class Akun extends Controller
 {
   protected $username;
-  protected $db;
-  protected $dbh;
   public $date = DATE;
   public $time = TIME;
 
@@ -51,7 +49,8 @@ class Akun extends Controller
     $this->view('templates/header', $data);
     $this->view('akun/index', $data);
     $this->view('templates/footer');
-  }
+  }
+
 
   public function mutasi()
   {
@@ -75,18 +74,28 @@ class Akun extends Controller
     if ($this->dbh->rowCount() > 0) {
       $this->model('Lainnya')->tambahakt('Ubah Nama Depan', $username);
       $_SESSION['hasil']['pesan'] = 'berhasil diubah ';
-      echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
-                Nama depan ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $nama_depan . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
+
+                Nama depan ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $nama_depan . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
     } else {
-      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-            Gagal ubah!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+            Gagal ubah!
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                <span aria-hidden="true">&times;</span>
+
+            </button>
+
         </div>';
     }
   }
@@ -103,18 +112,28 @@ class Akun extends Controller
     if ($this->dbh->rowCount() > 0) {
       $this->model('Lainnya')->tambahakt('Ubah Nama Belakang ', $username);
       $_SESSION['hasil']['pesan'] = 'berhasil diubah ';
-      echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
-                Nama belakang ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $nama_belakang . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
+
+                Nama belakang ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $nama_belakang . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
     } else {
-      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-            Gagal ubah!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+            Gagal ubah!
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                <span aria-hidden="true">&times;</span>
+
+            </button>
+
         </div>';
     }
   }
@@ -131,11 +150,16 @@ class Akun extends Controller
 
     if ($cek_email > 0) {
       $_SESSION['hasil']['pesan'] = 'Sudah ada yang menggunakan';
-      echo ' <div class="alert alert-warning alert-dismissible fade show  mb-0" role="alert">
-                Email tersebut  ' . $_SESSION['hasil']['pesan'] . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-warning alert-dismissible fade show  mb-0" role="alert">
+
+                Email tersebut  ' . $_SESSION['hasil']['pesan'] . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
     } else {
       $this->dbh->query("UPDATE users SET email = :email WHERE username = '$username'");
@@ -144,18 +168,28 @@ class Akun extends Controller
       if ($this->dbh->rowCount() > 0) {
         $this->model('Lainnya')->tambahakt('Ubah Email', $username);
         $_SESSION['hasil']['pesan'] = 'berhasil diubah ';
-        echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
-                Email ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $email . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        echo ' <div class="alert alert-primary alert-dismissible fade show  mb-0" role="alert">
+
+                Email ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $email . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
       } else {
-        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-            Gagal ubah!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+            Gagal ubah!
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                <span aria-hidden="true">&times;</span>
+
+            </button>
+
         </div>';
       }
     }
@@ -172,11 +206,16 @@ class Akun extends Controller
 
     if ($cek_nomor > 0) {
       $_SESSION['hasil']['pesan'] = 'Sudah ada yang menggunakan';
-      echo ' <div class="alert alert-warning alert-dismissible fade show  mb-0" role="alert">
-                Nomor HP  ' . $_SESSION['hasil']['pesan'] . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-warning alert-dismissible fade show  mb-0" role="alert">
+
+                Nomor HP  ' . $_SESSION['hasil']['pesan'] . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
     } else {
       $this->dbh->query("UPDATE users SET no_hp  = '$no_hp'  WHERE username = '$username'");
@@ -184,18 +223,28 @@ class Akun extends Controller
       if ($this->dbh->rowCount() > 0) {
         $this->model('Lainnya')->tambahakt('Ubah Nomor HP', $username);
         $_SESSION['hasil']['pesan'] = 'berhasil diubah ';
-        echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
-                Nomor HP  ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $no_hp . '
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+        echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
+
+                Nomor HP  ' . $_SESSION['hasil']['pesan'] . ' menjadi ' . $no_hp . '
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
       } else {
-        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-            Gagal ubah!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+            Gagal ubah!
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                <span aria-hidden="true">&times;</span>
+
+            </button>
+
         </div>';
       }
     }
@@ -209,10 +258,12 @@ class Akun extends Controller
 
     $cek_sandi = password_verify($katasandi, $datauser['password']);
     if (true == $cek_sandi) {
-      echo '<small class="form-text text-success datahasil" data-hasil="success"><i class="simple-icon-check
+      echo '<small class="form-text text-success datahasil" data-hasil="success"><i class="simple-icon-check
+
             "></i>  Sip, Sandi benar!</small>';
     } else {
-      echo '<small class="form-text text-danger datahasil" data-hasil="gagal"><i class="simple-icon-exclamation
+      echo '<small class="form-text text-danger datahasil" data-hasil="gagal"><i class="simple-icon-exclamation
+
             "></i>  Kata Sandi Salah!</small>';
     }
   }
@@ -229,19 +280,29 @@ class Akun extends Controller
     if ($this->dbh->rowCount() > 0) {
       $this->model('Lainnya')->tambahakt('Ubah Kata Sandi', $username);
       $_SESSION['hasil']['pesan'] = 'Berhasil Diubah';
-      echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
-                Kata Sandi Berhasil Diubah
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+      echo ' <div class="alert alert-success alert-dismissible fade show  mb-0" role="alert">
+
+                Kata Sandi Berhasil Diubah
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
             </div>';
       unset($_SESSION['user']);
     } else {
-      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
-            Gagal ubah kata sandi!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+      echo ' <div class="alert alert-danger alert-dismissible fade show  mb-0" role="alert">
+
+            Gagal ubah kata sandi!
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                <span aria-hidden="true">&times;</span>
+
+            </button>
+
         </div>';
     }
   }
@@ -259,10 +320,12 @@ class Akun extends Controller
 
     if ($this->dbh->rowCount() > 0 && $update2->rowCount() > 0) {
       $this->model('Lainnya')->tambahakt('Ubah Api Key', $username);
-      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-api="' . $api_baru . '"><i class="simple-icon-check
+      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-api="' . $api_baru . '"><i class="simple-icon-check
+
             "></i> Api key berhasil di ubah</small>';
     } else {
-      echo '<small class="form-text text-success datahasilalert" data-hasil="success"><i class="simple-icon-check
+      echo '<small class="form-text text-success datahasilalert" data-hasil="success"><i class="simple-icon-check
+
             "></i> Api key berhasil di ubah</small>';
     }
   }
@@ -281,7 +344,7 @@ class Akun extends Controller
 
   public function ubahipkey()
   {
-    error_reporting(0);
+    //error_reporting(0);
     $username = $_SESSION['user']['username'];
     $key = $_POST['key'];
 
@@ -294,10 +357,12 @@ class Akun extends Controller
 
     if ($update > 0) {
       $this->model('Lainnya')->tambahakt('Ubah IP Key', $username);
-      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-IP="' . $ipnew . '"><i class="simple-icon-check
+      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-IP="' . $ipnew . '"><i class="simple-icon-check
+
             "></i> Alamat IP  berhasil di ubah</small>';
     } else {
-      echo '<small class="form-text text-danger datahasilalert" data-hasil="success"><i class="simple-icon-check
+      echo '<small class="form-text text-danger datahasilalert" data-hasil="success"><i class="simple-icon-check
+
             "></i> IP key Gagal di ubah</small>';
     }
   }
@@ -312,10 +377,12 @@ class Akun extends Controller
 
     if ($this->dbh->rowCount() > 0) {
       $this->model('Lainnya')->tambahakt('Ubah IP Key', $username);
-      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-IP="' . $newstatus . '"><i class="simple-icon-check
+      echo '<small class="form-text text-success datahasilalert" data-hasil="success" data-IP="' . $newstatus . '"><i class="simple-icon-check
+
             "></i> Status IP  berhasil di ubah</small>';
     } else {
-      echo '<small class="form-text text-danger datahasilalert" data-hasil="success"><i class="simple-icon-check
+      echo '<small class="form-text text-danger datahasilalert" data-hasil="success"><i class="simple-icon-check
+
             "></i> Status IP Gagal di ubah</small>';
     }
   }

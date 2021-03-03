@@ -2,8 +2,7 @@
 
 class Auth extends Controller
 {
-  protected $db;
-  protected $dbh;
+
 
   public function __construct()
   {

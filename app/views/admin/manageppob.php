@@ -12,7 +12,7 @@
             <div class="col-12 mb-4">
                 <?php if (isset($_SESSION['hasil'])) : ?>
                     <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-0" role="alert">
-                        <?= $_SESSION['hasil']['pesan'] ?>
+                        <?= $_SESSION['hasil']['pesan']; ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -40,11 +40,11 @@
 
                                 </tr>
                             </thead>
-                            <?php $no = 1;?>
+                            <?php $no = 1; ?>
                             <?php foreach ($data['arrayordersppob'] as $orderppob) : ?>
                                 <tbody>
                                     <tr>
-                                    <td><?= $no;?></td>
+                                    <td><?= $no; ?></td>
                                         <td><?= tanggal_indo($orderppob['date']); ?> <br> <?= $orderppob['time']; ?></td>
                                         <td><a onclick="detailorder('<?= $orderppob['oid']; ?>')" data-toggle="modal" data-target=".detailmodal">
                                                 <span class="badge badge-primary">
@@ -66,28 +66,28 @@
                                             <form action="<?= BASEURL; ?>admin/updateorderppob" method="POST">
                                                 <input type="hidden" name="id" value="<?= $orderppob['oid']; ?>">
                                                 <select class="form-control" style="width: 150px;" name="status">
-                                                    <?php if ($orderppob['status'] == "Success") { ?>
+                                                    <?php if ('Success' == $orderppob['status']) { ?>
                                                         <option value="<?php echo $orderppob['status']; ?>" selected disabled><?php echo $orderppob['status']; ?></option>
                                                 </select>
                                             </form>
 
-                                        <?php } else if ($orderppob['status'] == 'Pending') { ?>
+                                        <?php } elseif ('Pending' == $orderppob['status']) { ?>
                                             <option value="<?php echo $orderppob['status']; ?>" selected disabled><?php echo $orderppob['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Error">Error</option>
                                             </select>
                                             <button type="submit" class="badge badge-success">Ubah status</button>
                                             </form>
-                                        <?php
-                                                    } else if ($orderppob['status'] == 'Error') { ?>
+                                        <?php
+                          } elseif ('Error' == $orderppob['status']) { ?>
                                             <option value="<?php echo $orderppob['status']; ?>" selected disabled><?php echo $orderppob['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Pending">Pending</option>
                                             </select>
                                             <button type="submit" class="badge badge-success">Ubah</button>
                                             </form>
-                                        <?php }
-                                        ?>
+                                        <?php }
+                    ?>
                                         <a onclick="return confirm('yakin mau hapus?')" href="<?= BASEURL; ?>admin/deleteorderppob/<?= $orderppob['oid']; ?>">
                                             <span class="badge badge-danger">Delete</span>
                                         </a>
@@ -98,7 +98,7 @@
 
                                     </tr>
                                 </tbody>
-                                <?php $no++; ?>
+                                <?php ++$no; ?>
                             <?php endforeach; ?>
                         </table>
                     </div>

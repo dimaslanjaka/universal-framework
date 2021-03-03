@@ -4,8 +4,7 @@ header('Content-Type: application/json');
 
 class Api extends Controller
 {
-  protected $db;
-  protected $dbh;
+
   protected $apikey;
   protected $status;
   protected $username;
@@ -341,7 +340,8 @@ class Api extends Controller
       ];
     }
     echo json_encode($respon, JSON_PRETTY_PRINT);
-  }
+  }
+
 
   // api profile
 

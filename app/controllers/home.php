@@ -2,8 +2,6 @@
 
 class Home extends Controller
 {
-  protected $dbh;
-  protected $db;
   public $date = DATE;
   public $time = TIME;
 
@@ -36,9 +34,12 @@ class Home extends Controller
     $data = $this->db->resultSet();
 
     foreach ($data as $datanya) {
-      echo '<button type="button" class="btn btn-outline-info btn-block mb-1 mr-2 mt-3">
-            <input type="radio" value="' . $datanya['service_id'] . '" name="layanan"  required>' . $datanya['layanan'] . '<span class="text-danger text-small"><br>*' . $datanya['deskripsi'] . '</span><br>
-            <span class="text-dark">Harga RP : ' . $datanya['harga'] . '</span>
+      echo '<button type="button" class="btn btn-outline-info btn-block mb-1 mr-2 mt-3">
+
+            <input type="radio" value="' . $datanya['service_id'] . '" name="layanan"  required>' . $datanya['layanan'] . '<span class="text-danger text-small"><br>*' . $datanya['deskripsi'] . '</span><br>
+
+            <span class="text-dark">Harga RP : ' . $datanya['harga'] . '</span>
+
         </button>';
     }
   }
@@ -51,9 +52,12 @@ class Home extends Controller
     $this->db->execute();
     $data = $this->db->resultSet();
     foreach ($data as $datanya) {
-      echo '<button type="button" class="btn btn-outline-info btn-block mb-1 mr-2 mt-3">
-            <input type="radio" value="' . $datanya['service_id'] . '" name="layanan"  required>' . $datanya['layanan'] . '<span class="text-danger text-small"><br>*' . $datanya['deskripsi'] . '</span><br>
-            <span class="text-dark">Harga RP : ' . $datanya['harga'] . '</span>
+      echo '<button type="button" class="btn btn-outline-info btn-block mb-1 mr-2 mt-3">
+
+            <input type="radio" value="' . $datanya['service_id'] . '" name="layanan"  required>' . $datanya['layanan'] . '<span class="text-danger text-small"><br>*' . $datanya['deskripsi'] . '</span><br>
+
+            <span class="text-dark">Harga RP : ' . $datanya['harga'] . '</span>
+
         </button>';
     }
   }
@@ -65,8 +69,10 @@ class Home extends Controller
     $this->db->query("SELECT * FROM kategori_lainnya WHERE operator = '$operator' AND tipe ='$jenis'");
     $this->db->execute();
     $data = $this->db->resultSet();
-    echo '  
-        <option value="0">Pilih Kategori</option>
+    echo '
+
+        <option value="0">Pilih Kategori</option>
+
     ';
     foreach ($data as $datanya) {
       if ('Umum' == $datanya['kategori']) {
@@ -74,8 +80,10 @@ class Home extends Controller
       } else {
         $dataaa = $datanya['kategori'];
       }
-      echo '  
-            <option value="' . $datanya['kategori'] . '">' . $dataaa . '</option>
+      echo '
+
+            <option value="' . $datanya['kategori'] . '">' . $dataaa . '</option>
+
         ';
     }
   }
@@ -116,7 +124,8 @@ class Home extends Controller
     $data = $this->db->resultSet();
 
     echo json_encode($data);
-  }
+  }
+
 
   public function pesansosmed()
   {
@@ -215,20 +224,34 @@ class Home extends Controller
         $jumlahtf = number_format($harga, 0, ',', '.');
         $didapat = number_format($nominaldepo, 0, ',', '.');
         $msg =
-          '
-*Permintaan deposit anda kami terima #' . $kode . '*
-Hallo *' . $namalengkap . '*
-Silahkan transfer Dengan Nominal RP *' . $jumlahtf . '* 
-Ke ' . $data_metod['tujuan'] . ' ( ' . $data_metod['provider'] . ' )
-Saldo yang akan kamu terima sejumlah RP *' . $didapat . '*
-----------------------------------------
-Jika sudah di transfer maka otomatis deposit bisa
-di konfirmasi ( Maximal 10 Menit ) Dan jika dalam waktu 
-10 menit deposit belum bisa di konfirmasi silahkan hubungi *085350505161*
--------------------------------
-
-*Terima kasih telah menjadi bagian dari Chandra Pedia*
-
+          '
+
+*Permintaan deposit anda kami terima #' . $kode . '*
+
+Hallo *' . $namalengkap . '*
+
+Silahkan transfer Dengan Nominal RP *' . $jumlahtf . '*
+
+Ke ' . $data_metod['tujuan'] . ' ( ' . $data_metod['provider'] . ' )
+
+Saldo yang akan kamu terima sejumlah RP *' . $didapat . '*
+
+----------------------------------------
+
+Jika sudah di transfer maka otomatis deposit bisa
+
+di konfirmasi ( Maximal 10 Menit ) Dan jika dalam waktu
+
+10 menit deposit belum bisa di konfirmasi silahkan hubungi *085350505161*
+
+-------------------------------
+
+
+
+*Terima kasih telah menjadi bagian dari Chandra Pedia*
+
+
+
 ';
         // kirim wa
         $sendwa = new Menzwa();
@@ -244,7 +267,8 @@ di konfirmasi ( Maximal 10 Menit ) Dan jika dalam waktu
         echo 'deposit error';
       }
     }
-  }
+  }
+
 
   /// ini halaman tarik saldo
   public function tariksaldo()
@@ -281,33 +305,60 @@ di konfirmasi ( Maximal 10 Menit ) Dan jika dalam waktu
     } elseif ($pin != $pinuser) {
       echo '<div class="text-center text-danger">Mohon di cek kembali pin mu</div>';
     } else {
-      echo '
-                <div class="text-center">
-                <h1 class="text-center">ATAS NAMA TUJUAN : <br>' . $data . '</h1>
-                </div><br>
-                <form method="POST" action="' . BASEURL . 'home/submittariksaldo">
-                <div class="form-group">
-                    <label for="tujuanppob">No Rekening</label>
-                    <input type="number" class="form-control" name="tujuanbank" value="' . $norekening . '" id="tujuanppob" aria-describedby="emailHelp" placeholder="08xx" readonly>
-                </div>
-                <div class="form-group position-relative" style="display: none;">
-                    <input type="hidden" name="tipebank" value="' . $namabank . '">
-                </div>
-                <p class="alert alert-secondary deskripsippob" style="display:none"></p>
-                <div class="form-group">
-                    <label for="tujuanppob">JUMLAH</label>
-                    <input type="number" class="form-control" name="jumlah" id="pinppob" placeholder="123456" value="' . $nominal . '"  readonly>
-                </div>
-                <div class="form-group">
-                    <label for="tujuanppob">PAJAK</label>
-                    <input type="number" class="form-control" name="jumlah" id="pinppob" placeholder="123456" value="' . $pajak . '"  readonly>
-                </div>
-                </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Kembali</button>
-                <button type="submit" class="btn btn-info" id="buttonpesanppob">Lanjutkan</button>
-            </div>
-            </form>
+      echo '
+
+                <div class="text-center">
+
+                <h1 class="text-center">ATAS NAMA TUJUAN : <br>' . $data . '</h1>
+
+                </div><br>
+
+                <form method="POST" action="' . BASEURL . 'home/submittariksaldo">
+
+                <div class="form-group">
+
+                    <label for="tujuanppob">No Rekening</label>
+
+                    <input type="number" class="form-control" name="tujuanbank" value="' . $norekening . '" id="tujuanppob" aria-describedby="emailHelp" placeholder="08xx" readonly>
+
+                </div>
+
+                <div class="form-group position-relative" style="display: none;">
+
+                    <input type="hidden" name="tipebank" value="' . $namabank . '">
+
+                </div>
+
+                <p class="alert alert-secondary deskripsippob" style="display:none"></p>
+
+                <div class="form-group">
+
+                    <label for="tujuanppob">JUMLAH</label>
+
+                    <input type="number" class="form-control" name="jumlah" id="pinppob" placeholder="123456" value="' . $nominal . '"  readonly>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="tujuanppob">PAJAK</label>
+
+                    <input type="number" class="form-control" name="jumlah" id="pinppob" placeholder="123456" value="' . $pajak . '"  readonly>
+
+                </div>
+
+                </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Kembali</button>
+
+                <button type="submit" class="btn btn-info" id="buttonpesanppob">Lanjutkan</button>
+
+            </div>
+
+            </form>
+
         ';
     }
   }
@@ -362,50 +413,88 @@ di konfirmasi ( Maximal 10 Menit ) Dan jika dalam waktu
         $cek_layanan2->execute();
         $data_layanan = $cek_layanan2->fetch();
 
-        echo '<div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Minimal Pesan</label>
-                    <div class="col-lg-9 col-xl-6">
-                        <input type="text" name="min" class="form-control" placeholder="0" value="' . number_format($data_layanan['min'], 0, ',', '.') . '" readonly="">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Maksimal Pesan</label>
-                    <div class="col-lg-9 col-xl-6">
-                        <input type="text" name="max" class="form-control" placeholder="0" value="' . number_format($data_layanan['max'], 0, ',', '.') . '" readonly="">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Harga/1000</label>
-                    <div class="col-lg-9 col-xl-6">
-                        <div class="input-group">
-                            <div class="input-group-prepend"><span class="input-group-text text-primary">Rp</span></div>
-                            <input type="number" class="form-control" placeholder="0" id="jumlah" value="' . number_format($data_layanan['harga'], 0, ',', '.') . '" readonly="">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Keterangan</label>
-                    <div class="col-lg-9 col-xl-6">
-                        <textarea type="text" class="form-control" placeholder="' . $data_layanan['catatan'] . '" value="Keterangan" readonly=""></textarea>
-                    </div>
+        echo '<div class="form-group row">
+
+                    <label class="col-xl-3 col-lg-3 col-form-label">Minimal Pesan</label>
+
+                    <div class="col-lg-9 col-xl-6">
+
+                        <input type="text" name="min" class="form-control" placeholder="0" value="' . number_format($data_layanan['min'], 0, ',', '.') . '" readonly="">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-xl-3 col-lg-3 col-form-label">Maksimal Pesan</label>
+
+                    <div class="col-lg-9 col-xl-6">
+
+                        <input type="text" name="max" class="form-control" placeholder="0" value="' . number_format($data_layanan['max'], 0, ',', '.') . '" readonly="">
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-xl-3 col-lg-3 col-form-label">Harga/1000</label>
+
+                    <div class="col-lg-9 col-xl-6">
+
+                        <div class="input-group">
+
+                            <div class="input-group-prepend"><span class="input-group-text text-primary">Rp</span></div>
+
+                            <input type="number" class="form-control" placeholder="0" id="jumlah" value="' . number_format($data_layanan['harga'], 0, ',', '.') . '" readonly="">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label class="col-xl-3 col-lg-3 col-form-label">Keterangan</label>
+
+                    <div class="col-lg-9 col-xl-6">
+
+                        <textarea type="text" class="form-control" placeholder="' . $data_layanan['catatan'] . '" value="Keterangan" readonly=""></textarea>
+
+                    </div>
+
                 </div>';
       } else {
         echo
-        '<div class="alert alert-icon alert-danger alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <i class="mdi mdi-block-helper"></i>
-                    <b>Gagal :</b> Layanan Tidak Ditemukan
+        '<div class="alert alert-icon alert-danger alert-dismissible fade in" role="alert">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                        <span aria-hidden="true">&times;</span>
+
+                    </button>
+
+                    <i class="mdi mdi-block-helper"></i>
+
+                    <b>Gagal :</b> Layanan Tidak Ditemukan
+
                 </div>';
       }
     } else {
-      echo '  <div class="alert alert-icon alert-danger alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="mdi mdi-block-helper"></i>
-                <b>Gagal : </b> Terjadi Kesalahan, Silahkan Hubungi Admin.
+      echo '  <div class="alert alert-icon alert-danger alert-dismissible fade in" role="alert">
+
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+                    <span aria-hidden="true">&times;</span>
+
+                </button>
+
+                <i class="mdi mdi-block-helper"></i>
+
+                <b>Gagal : </b> Terjadi Kesalahan, Silahkan Hubungi Admin.
+
             </div>';
     }
   }

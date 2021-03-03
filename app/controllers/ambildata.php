@@ -368,7 +368,7 @@ class Ambildata extends Controller
     $json_result = json_decode($chresult, true);
     $result = json_decode($chresult);
     var_dump($result);
-  }
+  }
 
   public function statussosmed($provider)
   {
@@ -448,10 +448,14 @@ class Ambildata extends Controller
                 $sendwa = new Menzwa();
 
                 $msg =
-                  '
-*Pesanan anda dengan layanan ' . $layanan . ', Id #' . $o_oid . ' Telah sukses.*
-Tujuan :  ' . $tujuan . '
-Jumlah : ' . $data_order['jumlah'] . '
+                  '
+
+*Pesanan anda dengan layanan ' . $layanan . ', Id #' . $o_oid . ' Telah sukses.*
+
+Tujuan :  ' . $tujuan . '
+
+Jumlah : ' . $data_order['jumlah'] . '
+
 ';
                 $sendwa->sendMessage($nohp, $msg);
               }
@@ -532,24 +536,38 @@ Jumlah : ' . $data_order['jumlah'] . '
         $nohp = $datauser['no_hp'];
         if ('Sukses' == $ht_status) {
           $msg =
-            '
-    *PESANAN ANDA TELAH SUKSES*
-    ---------------------------
-    id order : *' . $o_oid . '*
-    Layanan : *' . $layanan . '*
-    Status : *' . $status . '*
-    No sn/keterangan : *' . $sn . '*
+            '
+
+    *PESANAN ANDA TELAH SUKSES*
+
+    ---------------------------
+
+    id order : *' . $o_oid . '*
+
+    Layanan : *' . $layanan . '*
+
+    Status : *' . $status . '*
+
+    No sn/keterangan : *' . $sn . '*
+
     ';
           $sendwa->sendMessage($nohp, $msg);
         } elseif ('Gagal' == $ht_status) {
           $msg =
-            '
-*Yah Pesananmu gagal:(*
----------------------------
-id order : *' . $o_oid . '*
-Layanan : *' . $layanan . '*
-Status : *' . $status . '*
-keterangan : *' . $sn . '*
+            '
+
+*Yah Pesananmu gagal:(*
+
+---------------------------
+
+id order : *' . $o_oid . '*
+
+Layanan : *' . $layanan . '*
+
+Status : *' . $status . '*
+
+keterangan : *' . $sn . '*
+
 ';
           $sendwa->sendMessage($nohp, $msg);
         }
@@ -620,24 +638,38 @@ keterangan : *' . $sn . '*
         // kirim wa
         if ('Success' == $status) {
           $msg =
-            '
-*PESANAN ANDA TELAH SUKSES*
----------------------------
-id order : *' . $o_oid . '*
-Layanan : *' . $layanan . '*
-Status : *' . $status . '*
-No sn/keterangan : *' . $note . '*
+            '
+
+*PESANAN ANDA TELAH SUKSES*
+
+---------------------------
+
+id order : *' . $o_oid . '*
+
+Layanan : *' . $layanan . '*
+
+Status : *' . $status . '*
+
+No sn/keterangan : *' . $note . '*
+
 ';
           $sendwa->sendMessage($nohp, $msg);
         } elseif ('Error' == $status) {
           $msg =
-            '
-*Yah Pesananmu gagal:(*
----------------------------
-id order : *' . $o_oid . '*
-Layanan : *' . $layanan . '*
-Status : *' . $status . '*
-keterangan : *' . $note . '*
+            '
+
+*Yah Pesananmu gagal:(*
+
+---------------------------
+
+id order : *' . $o_oid . '*
+
+Layanan : *' . $layanan . '*
+
+Status : *' . $status . '*
+
+keterangan : *' . $note . '*
+
 ';
           $sendwa->sendMessage($nohp, $msg);
         }
@@ -650,7 +682,7 @@ keterangan : *' . $note . '*
     } else {
       echo 'Access Denied!';
     }
-  }
+  }
 
   // mutasiiiii
 

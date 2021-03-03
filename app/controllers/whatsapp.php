@@ -32,16 +32,26 @@ class Whatsapp extends Controller
       $pemakaiansaldo = 'RP ' . number_format($allpemakaian, 0, ',', '.');
 
       return
-        '
-*DETAIL AKUN M PEDIA*
-*--------------------*
-*Halo : ' . $data['nama_depan'] . '' . $data['nama_belakang'] . '*
-*Jumlah Saldo : ' . $jumlahsaldo . '*
-*Belanja : *' . $belanja . 'x*
-*Pemakaian Saldo : *' . $pemakaiansaldo . '*
-*--------------------*
-*Terima Kasih telah menjadi bagian*
-*dari https://member.m-pedia.my.id*
+        '
+
+*DETAIL AKUN M PEDIA*
+
+*--------------------*
+
+*Halo : ' . $data['nama_depan'] . '' . $data['nama_belakang'] . '*
+
+*Jumlah Saldo : ' . $jumlahsaldo . '*
+
+*Belanja : *' . $belanja . 'x*
+
+*Pemakaian Saldo : *' . $pemakaiansaldo . '*
+
+*--------------------*
+
+*Terima Kasih telah menjadi bagian*
+
+*dari https://member.m-pedia.my.id*
+
 ';
     } else {
       return 'Nomor anda tidak kami kenali';
@@ -160,14 +170,22 @@ class Whatsapp extends Controller
             $jumlah2 = number_format($harga, 0, ',', '.');
 
             return
-              '
-*Sip, Pesanan Kamu Telah Kami Terima.*
-*ID order : ' . $order_id . '*
-*Layanan : ' . $namalayanan . '*
-*Harga : ' . $jumlah2 . '*
-*Tujuan : ' . $target . '*
-
-Terima kasih :) Untuk melihat status dan
+              '
+
+*Sip, Pesanan Kamu Telah Kami Terima.*
+
+*ID order : ' . $order_id . '*
+
+*Layanan : ' . $namalayanan . '*
+
+*Harga : ' . $jumlah2 . '*
+
+*Tujuan : ' . $target . '*
+
+
+
+Terima kasih :) Untuk melihat status dan
+
 detail pesanan gunakan keyword *STATUS.IDORDER*';
           } else {
             return 'Error 100(WA), System mengalami gangguan, mohon infokan ini ke admin';
@@ -267,14 +285,22 @@ detail pesanan gunakan keyword *STATUS.IDORDER*';
               $jumlah2 = number_format($harga, 0, ',', '.');
 
               return
-                '
-*Sip, Pesanan Kamu Telah Kami Terima.*
-*ID order : ' . $order_id . '*
-*Layanan : ' . $namalayanan . '*
-*Harga : ' . $jumlah2 . '*
-*Tujuan : ' . $target . '*
-
-Terima kasih :) Untuk melihat status dan
+                '
+
+*Sip, Pesanan Kamu Telah Kami Terima.*
+
+*ID order : ' . $order_id . '*
+
+*Layanan : ' . $namalayanan . '*
+
+*Harga : ' . $jumlah2 . '*
+
+*Tujuan : ' . $target . '*
+
+
+
+Terima kasih :) Untuk melihat status dan
+
 detail pesanan gunakan keyword *STATUS.IDORDER*';
             } else {
               return 'Error 100(WA), System mengalami gangguan, mohon infokan ini ke admin';
@@ -306,12 +332,18 @@ detail pesanan gunakan keyword *STATUS.IDORDER*';
         $data_order = $data_order->fetch();
 
         return
-          '
-*Berikut status dan keterangan Order #' . $id . '*
-*Layanan : ' . $data_order['layanan'] . '*
-*Tujuan : ' . $data_order['target'] . '*
-*Harga : ' . $data_order['harga'] . '*
-*Status : ' . $data_order['status'] . '*
+          '
+
+*Berikut status dan keterangan Order #' . $id . '*
+
+*Layanan : ' . $data_order['layanan'] . '*
+
+*Tujuan : ' . $data_order['target'] . '*
+
+*Harga : ' . $data_order['harga'] . '*
+
+*Status : ' . $data_order['status'] . '*
+
 *No sn/Ket : *' . $data_order['keterangan'] . '';
       } else {
         return 'ID order tidak di temukan';
@@ -324,24 +356,41 @@ detail pesanan gunakan keyword *STATUS.IDORDER*';
   public function keyword()
   {
     return
-      '
-Hallo sob, Berikut *keyboard* transaksi M Pedia
-- *INFO* => Untuk melihat informasi akun
-- *PULSA.[NOMOR].[JUMLAH]* => Untuk transaksi (Pulsa) instan.
-- *STATUS.IDORDER* => Untuk melihat detail transaksi
-- *PESAN.[IDLAYANAN].[TUJUAN]* => Untuk transaksi (PPOB) instan.
-  Id layanan bisa di cek di https://bit.ly/mpediaa
-
-Untuk *KEYWORD* Lainnya sedang masa development, kami akan infokan jika ada keyword baru.
-
-*Terimakasih telah menjadi bagian dari M PEDIA*
-
-*CS*
-082298859671
-*ADMIN*
-089522811620
+      '
+
+Hallo sob, Berikut *keyboard* transaksi M Pedia
+
+- *INFO* => Untuk melihat informasi akun
+
+- *PULSA.[NOMOR].[JUMLAH]* => Untuk transaksi (Pulsa) instan.
+
+- *STATUS.IDORDER* => Untuk melihat detail transaksi
+
+- *PESAN.[IDLAYANAN].[TUJUAN]* => Untuk transaksi (PPOB) instan.
+
+  Id layanan bisa di cek di https://bit.ly/mpediaa
+
+
+
+Untuk *KEYWORD* Lainnya sedang masa development, kami akan infokan jika ada keyword baru.
+
+
+
+*Terimakasih telah menjadi bagian dari M PEDIA*
+
+
+
+*CS*
+
+082298859671
+
+*ADMIN*
+
+089522811620
+
 ';
-  }
+  }
+
 
   public function bot()
   {

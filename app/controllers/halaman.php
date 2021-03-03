@@ -3,8 +3,6 @@
 header('Access-Control-Allow-Origin: *');
 class Halaman extends Controller
 {
-  protected $dbh;
-  protected $db;
   public $date = DATE;
   public $time = TIME;
 
@@ -74,14 +72,22 @@ class Halaman extends Controller
         $icon = 'simple-icon-close';
         $warna = 'danger';
       }
-      echo ' <tr>
-            <td class="text-center">' . $layanan['service_id'] . '</td>
-            <td class="text-center">' . $layanan['layanan'] . '</td>
-            <td class="text-center">' . $layanan['min'] . '</td>
-            <td class="text-center">' . $layanan['max'] . '</td>
-            <td class="text-center">' . $harga . '/K</td>
-            <td class="text-center">' . $hargaapi . '/K</td>
-            <td class="text-' . $warna . '"><i class="' . $icon . '"></i> ' . $layanan['status'] . '</td>
+      echo ' <tr>
+
+            <td class="text-center">' . $layanan['service_id'] . '</td>
+
+            <td class="text-center">' . $layanan['layanan'] . '</td>
+
+            <td class="text-center">' . $layanan['min'] . '</td>
+
+            <td class="text-center">' . $layanan['max'] . '</td>
+
+            <td class="text-center">' . $harga . '/K</td>
+
+            <td class="text-center">' . $hargaapi . '/K</td>
+
+            <td class="text-' . $warna . '"><i class="' . $icon . '"></i> ' . $layanan['status'] . '</td>
+
         </tr>';
     }
   }
@@ -117,17 +123,26 @@ class Halaman extends Controller
         $icon = 'simple-icon-close';
         $warna = 'danger';
       }
-      echo '
-           <tr>
-           <td class="text-center">' . $layanan['service_id'] . '</td>
-           <td class="text-center">' . $layanan['layanan'] . '</td>
-           <td class="text-center">' . $layanan['deskripsi'] . '</td>
-           <td class="text-center">' . $harga . '</td>
-           <td class="text-center">' . $hargaapi . '</td>
-           <td class="text-' . $warna . '"><i class="' . $icon . '"></i> ' . $layanan['status'] . '</td>
+      echo '
+
+           <tr>
+
+           <td class="text-center">' . $layanan['service_id'] . '</td>
+
+           <td class="text-center">' . $layanan['layanan'] . '</td>
+
+           <td class="text-center">' . $layanan['deskripsi'] . '</td>
+
+           <td class="text-center">' . $harga . '</td>
+
+           <td class="text-center">' . $hargaapi . '</td>
+
+           <td class="text-' . $warna . '"><i class="' . $icon . '"></i> ' . $layanan['status'] . '</td>
+
        </tr>';
     }
-  }
+  }
+
 
   /// halaman tiket
   public function tiket()
