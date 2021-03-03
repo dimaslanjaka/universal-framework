@@ -4,7 +4,7 @@ namespace Stelin\Response;
 
 class LogoutResponse
 {
-    public function __construct($data)
-    {
-    }
+  public function __construct($data)
+  {
+  }
 }

@@ -3,13 +3,13 @@
 namespace Stelin\Meta;
 
 /**
- * Action Mark
+ * Action Mark.
  *
  * Transfer OVO
  * Transfer Antar BANK
  */
 class ActionMark
 {
-    const TRANSFER_OVO = 'trf_ovo';
-    const TRANSFER_BANK = 'trf_other_bank';
+  const TRANSFER_OVO = 'trf_ovo';
+  const TRANSFER_BANK = 'trf_other_bank';
 }

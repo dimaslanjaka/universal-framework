@@ -1,16 +1,18 @@
 <?php
+
 namespace Stelin\Response;
 
 class PayCheckStatusResponse
 {
-    private $PayCheckStatusResponse;
-    public function __construct($data)
-    {
-        $this->PayCheckStatusResponse = $data;
-    }
+  private $PayCheckStatusResponse;
 
-    public function getPayCheckStatusResponse()
-    {
-        return $this->PayCheckStatusResponse;
-    }
+  public function __construct($data)
+  {
+    $this->PayCheckStatusResponse = $data;
+  }
+
+  public function getPayCheckStatusResponse()
+  {
+    return $this->PayCheckStatusResponse;
+  }
 }

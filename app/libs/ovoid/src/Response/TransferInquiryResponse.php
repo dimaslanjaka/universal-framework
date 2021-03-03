@@ -4,15 +4,15 @@ namespace Stelin\Response;
 
 class TransferInquiryResponse
 {
-    private $response;
+  private $response;
 
-    public function __construct($data)
-    {
-        $this->response = $data;
-    }
+  public function __construct($data)
+  {
+    $this->response = $data;
+  }
 
-    public function getTransferInquiryResponse()
-    {
-        return $this->response;
-    }
+  public function getTransferInquiryResponse()
+  {
+    return $this->response;
+  }
 }
