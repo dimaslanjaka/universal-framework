@@ -1,9 +1,6 @@
 <?php
 
-use \Stelin\HTTP\Curl;
-use Stelin\OVOID;
-
-class OVO extends OVOID
+class OVO
 {
   public $nomor;
 
@@ -85,15 +82,14 @@ class OVO extends OVOID
   }
 
   /**
-   * Get OVO Balance
+   * Get OVO Balance.
    *
-   * @return \Stelin\Response\FrontResponse
    */
   public function getBalance($token)
   {
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, 'https://api.ovo.id/v1.1/api/front/');
+    curl_setopt($ch, CURLOPT_URL, 'https://api.ovo.id/v1.0/api/front/');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
     curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
@@ -116,7 +112,7 @@ class OVO extends OVOID
 
     return [
       'response' => $reshttp,
-      'result' => $result
+      'result' => $result,
     ];
   }
 

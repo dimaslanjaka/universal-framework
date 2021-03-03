@@ -1,1 +1,2 @@
-[04-Mar-2021 05:19:25 Asia/jakarta] PHP Notice:  Undefined variable: data in D:\Workspaces\PHP\chandra-smm\test\ovo.php on line 10
+[04-Mar-2021 05:49:51 Asia/jakarta] PHP Notice:  Trying to get property '1' of non-object in D:\Workspaces\PHP\chandra-smm\app\views\admin\test\ovo.php on line 11
+[04-Mar-2021 06:23:46 Asia/jakarta] PHP Fatal error:  Access level to Akun_model::$db must be public (as in class Controller) in D:\Workspaces\PHP\chandra-smm\app\models\Akun_model.php on line 179

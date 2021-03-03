@@ -4,6 +4,7 @@ class Admin extends Controller
 {
   public $date = DATE;
   public $time = TIME;
+
   public function __construct()
   {
     $this->dbh = new Database();
@@ -2202,7 +2203,10 @@ class Admin extends Controller
     $this->view('templates/footer_admin');
   }
 
-  public function testovo()
+  /**
+   * get balance ovo as JSON header (no cache)
+   */
+  public function balanceovo()
   {
     $data['accountovo'] = $this->model('Admin_model')->accountovo();
     $data['mutasiovo'] = $this->model('Admin_model')->mutasiovo();
@@ -2210,9 +2214,7 @@ class Admin extends Controller
     $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
     $data['title'] = 'Kelola Metodedeposit';
     $data['allusers'] = $this->model('Admin_model')->allusers();
-    $this->view('templates/header_admin', $data);
-    $this->view('admin/test/ovo', $data);
-    $this->view('templates/footer_admin');
+    $this->view('admin/balanceovo', $data);
   }
 
   public function depositbca()

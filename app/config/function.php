@@ -163,3 +163,13 @@ function views_count($data)
 
   return $count;
 }
+
+/**
+ * Easy encoding JSON object
+ */
+function json($object)
+{
+  if (is_array($object) || is_object($object)) {
+    return json_encode($object, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  }
+}

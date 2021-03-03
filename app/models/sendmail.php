@@ -1,42 +1,42 @@
-<?php
-
-class Sendmail
-{
-
- public function kirimemail($subject,$email, $msg)
-    {
-
-        $mail = new PHPMailer;
-        $mail->IsSMTP();
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = "mail.m-pedia.my.id"; //host masing2 provider email
-        $mail->SMTPDebug = 3;
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-        $mail->Username = "support@m-pedia.my.id"; //user email
-        $mail->Password = "8Wcqqewsv%Jc"; //password email 
-        $mail->SetFrom("support@m-pedia.my.id", "Support@m-pedia.my.id"); //set email pengirim
-        $mail->Subject = $subject; //subyek email
-        $mail->AddAddress("$email", "");  //tujuan email
-        $mail->MsgHTML($msg);
-        return $mail->Send();
-    }
-    public function forgotpassword($namalengkap, $kode, $email)
-    {
-        $linkreset = BASEURL . 'auth/ubahpassreset/' . $kode;
-        $mail = new PHPMailer;
-        $mail->IsSMTP();
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = "mail.m-pedia.my.id"; //host masing2 provider email
-        $mail->SMTPDebug = 3;
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-        $mail->Username = "support@m-pedia.my.id"; //user email
-        $mail->Password = "8Wcqqewsv%Jc"; //password email 
-        $mail->SetFrom("support@m-pedia.my.id", "Support@m-pedia.my.id"); //set email pengirim
-        $mail->Subject = "Reset pasword"; //subyek email
-        $mail->AddAddress("$email", "");  //tujuan email
-        $mail->MsgHTML('<!doctype html>
+<?php
+
+class Sendmail
+{
+  public function kirimemail($subject, $email, $msg)
+  {
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPSecure = 'ssl';
+    $mail->Host = 'mail.m-pedia.my.id'; //host masing2 provider email
+    $mail->SMTPDebug = 3;
+    $mail->Port = 465;
+    $mail->SMTPAuth = true;
+    $mail->Username = 'support@m-pedia.my.id'; //user email
+    $mail->Password = '8Wcqqewsv%Jc'; //password email
+    $mail->SetFrom('support@m-pedia.my.id', 'Support@m-pedia.my.id'); //set email pengirim
+    $mail->Subject = $subject; //subyek email
+    $mail->AddAddress("$email", '');  //tujuan email
+    $mail->MsgHTML($msg);
+
+    return $mail->Send();
+  }
+
+  public function forgotpassword($namalengkap, $kode, $email)
+  {
+    $linkreset = BASEURL . 'auth/ubahpassreset/' . $kode;
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPSecure = 'ssl';
+    $mail->Host = 'mail.m-pedia.my.id'; //host masing2 provider email
+    $mail->SMTPDebug = 3;
+    $mail->Port = 465;
+    $mail->SMTPAuth = true;
+    $mail->Username = 'support@m-pedia.my.id'; //user email
+    $mail->Password = '8Wcqqewsv%Jc'; //password email
+    $mail->SetFrom('support@m-pedia.my.id', 'Support@m-pedia.my.id'); //set email pengirim
+    $mail->Subject = 'Reset pasword'; //subyek email
+    $mail->AddAddress("$email", '');  //tujuan email
+    $mail->MsgHTML('<!doctype html>
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
             xmlns:o="urn:schemas-microsoft-com:office:office">
         
@@ -529,25 +529,27 @@ class Sendmail
         
         </body>
         
-        </html>');
-        return $mail->send();
-    }
-    public function verif_akun($namalengkap, $kode, $email, $username)
-    {
-        $linkverif = BASEURL . 'auth/verifakun/' . $username . '/' . $kode;
-        $mail = new PHPMailer;
-        $mail->IsSMTP();
-        $mail->SMTPSecure = 'ssl';
-        $mail->Host = "mail.m-pedia.my.id"; //host masing2 provider email
-        $mail->SMTPDebug = 3;
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-        $mail->Username = "support@m-pedia.my.id"; //user email
-        $mail->Password = "8Wcqqewsv%Jc"; //password email 
-        $mail->SetFrom("support@m-pedia.my.id", "Support@m-Pedia.my.id"); //set email pengirim
-        $mail->Subject = "Verifikasi Akun"; //subyek email
-        $mail->AddAddress("$email", "");  //tujuan email
-        $mail->MsgHTML('<!doctype html>
+        </html>');
+
+    return $mail->send();
+  }
+
+  public function verif_akun($namalengkap, $kode, $email, $username)
+  {
+    $linkverif = BASEURL . 'auth/verifakun/' . $username . '/' . $kode;
+    $mail = new PHPMailer();
+    $mail->IsSMTP();
+    $mail->SMTPSecure = 'ssl';
+    $mail->Host = 'mail.m-pedia.my.id'; //host masing2 provider email
+    $mail->SMTPDebug = 3;
+    $mail->Port = 465;
+    $mail->SMTPAuth = true;
+    $mail->Username = 'support@m-pedia.my.id'; //user email
+    $mail->Password = '8Wcqqewsv%Jc'; //password email
+    $mail->SetFrom('support@m-pedia.my.id', 'Support@m-Pedia.my.id'); //set email pengirim
+    $mail->Subject = 'Verifikasi Akun'; //subyek email
+    $mail->AddAddress("$email", '');  //tujuan email
+    $mail->MsgHTML('<!doctype html>
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
             xmlns:o="urn:schemas-microsoft-com:office:office">
         
@@ -1036,7 +1038,8 @@ class Sendmail
         
         </body>
         
-        </html>');
-        return $mail->send();
-    }
-}
+        </html>');
+
+    return $mail->send();
+  }
+}

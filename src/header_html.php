@@ -70,3 +70,14 @@ function dumpJSON($jsonObject)
   }
   exit(); // for testing debug invalid update deposite
 }
+
+/**
+ * Disabling assets caching (browser caching) function
+ * @description prevent disturbing development mode
+ */
+function disableCache()
+{
+  header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+  header("Cache-Control: post-check=0, pre-check=0", false);
+  header("Pragma: no-cache");
+}

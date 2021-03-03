@@ -99,7 +99,7 @@ if (isset($_POST['cek'])) {
 
         </div>
 
-        <div class="row">
+        <div class="row mb-2">
 
             <div class="offset-lg-1 col-lg-10 card">
 
@@ -250,9 +250,9 @@ if (isset($_POST['cek'])) {
 
 
 
-        <div class="row mt-4">
+        <div class="row mb-2">
 
-            <div class="col-12 mb-4">
+            <div class="col-12">
 
                 <?php if (isset($_SESSION['hasil'])) : ?>
 
@@ -284,91 +284,111 @@ if (isset($_POST['cek'])) {
 
                 </div> -->
 
-                <div class="card">
-
-                    <div class="card-body">
-
-                        <table class="data-table data-table-feature table-responsive col-12">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>Tanggal & waktu</th>
-
-                                    <th>Pengguna</th>
-
-                                    <th>Kode</th>
-
-                                    <th>Invoice</th>
-
-                                    <th>Akun</th>
-
-                                    <th>Saldo</th>
-
-                                    <th>Deskripsi</th>
-
-                                    <th>Pengirim</th>
-
-                                    <th>Status</th>
-
-
-
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                <?php foreach ($data['mutasiovo'] as $data_layanan) : ?>
-
-                                    <?php if ('read' == $data_layanan['status']) {
-                                        $label = 'danger';
-                                    } elseif ('unread' == $data_layanan['status']) {
-                                        $label = 'success';
-                                    }
-                                    ?> <tr>
-
-
-
-                                        <td><?php echo $data_layanan['date']; ?></td>
-
-                                        <td><?php echo $data_layanan['user']; ?></td>
-
-                                        <td><?php echo $data_layanan['code']; ?></td>
-
-                                        <td><?php echo $data_layanan['invoice']; ?></td>
-
-                                        <td><span class="badge badge-primary"><?php echo $data_layanan['account']; ?></td>
-
-                                        <td><span class="badge badge-success">Rp <?php echo number_format($data_layanan['amount'], 0, ',', '.'); ?></td>
-
-                                        <td><?php echo $data_layanan['descript']; ?></td>
-
-                                        <td><span class="badge badge-warning"><?php echo $data_layanan['sender']; ?></td>
-
-                                        <td><label class="btn btn-sm btn-<?php echo $label; ?>"><?php if ('unread' == $data_layanan['status']) { ?>Aktif</i></span><?php } else { ?>Sudah Digunakan</span><?php } ?></label></td>
-
-                                    </tr>
-
-                                <?php endforeach; ?>
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
             </div>
 
         </div>
 
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ovo information summary</h5>
+                        <table class="table">
+                            <tbody id="summary-body">
+                                <tr>
+                                    <th scope="row">Saldo</th>
+                                    <td id="saldo">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="card">
+
+                <div class="card-body">
+
+                    <table class="data-table data-table-feature table-responsive col-12">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Tanggal & waktu</th>
+
+                                <th>Pengguna</th>
+
+                                <th>Kode</th>
+
+                                <th>Invoice</th>
+
+                                <th>Akun</th>
+
+                                <th>Saldo</th>
+
+                                <th>Deskripsi</th>
+
+                                <th>Pengirim</th>
+
+                                <th>Status</th>
+
+
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <?php foreach ($data['mutasiovo'] as $data_layanan) : ?>
+
+                                <?php if ('read' == $data_layanan['status']) {
+                                    $label = 'danger';
+                                } elseif ('unread' == $data_layanan['status']) {
+                                    $label = 'success';
+                                }
+                                ?> <tr>
+
+
+
+                                    <td><?php echo $data_layanan['date']; ?></td>
+
+                                    <td><?php echo $data_layanan['user']; ?></td>
+
+                                    <td><?php echo $data_layanan['code']; ?></td>
+
+                                    <td><?php echo $data_layanan['invoice']; ?></td>
+
+                                    <td><span class="badge badge-primary"><?php echo $data_layanan['account']; ?></td>
+
+                                    <td><span class="badge badge-success">Rp <?php echo number_format($data_layanan['amount'], 0, ',', '.'); ?></td>
+
+                                    <td><?php echo $data_layanan['descript']; ?></td>
+
+                                    <td><span class="badge badge-warning"><?php echo $data_layanan['sender']; ?></td>
+
+                                    <td><label class="btn btn-sm btn-<?php echo $label; ?>"><?php if ('unread' == $data_layanan['status']) { ?>Aktif</i></span><?php } else { ?>Sudah Digunakan</span><?php } ?></label></td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
-
-
-
-
-
 </main>
+
+
+<script>
+    <?= include __DIR__ . '/depositovo.js'; ?>
+</script>
