@@ -74,7 +74,7 @@
 
 
 
-                                </tr>$_SESSION['csrf_token'];
+                                </tr>
 
                             </thead>
 
@@ -101,7 +101,6 @@
                                             <a href="javascript:;" onclick="users('<?= BASEURL; ?>admin/editnews/<?= $news['id']; ?>')" class="btn btn-sm btn-warning"><i class="simple-icon-note" title="Ubah"></i></a>
 
                                             <a href="<?= BASEURL; ?>admin/deletenews/<?= $news['id']; ?>" class="btn btn-sm btn-danger"><i class="simple-icon-trash" title="Hapus"></i></a>
-                                            $_SESSION['csrf_token'];
                                         </td>
 
 

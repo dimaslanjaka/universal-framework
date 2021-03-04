@@ -89,7 +89,7 @@ $dbh = $db->connect();
 
                             </thead>
 
-                            <tbody>$_SESSION['csrf_token'];
+                            <tbody>
 
                                 <?php foreach ($data['allservicessosmed'] as $data_layanan) : ?>
 
@@ -214,18 +214,17 @@ $dbh = $db->connect();
                                     <option value="">Pilih Salah Satu...</option>
 
                                     <?php
-                  $cek_kategori = $dbh->prepare("SELECT * FROM kategori_layanan WHERE tipe = 'Sosial Media' ORDER BY nama ASC");
-                  $cek_kategori->execute(); ?>
+                                    $cek_kategori = $dbh->prepare("SELECT * FROM kategori_layanan WHERE tipe = 'Sosial Media' ORDER BY nama ASC");
+                                    $cek_kategori->execute(); ?>
 
 
 
                                     <?php foreach ($cek_kategori->fetchAll(PDO::FETCH_ASSOC) as $data_kategori) {
-                    ?>
+                                    ?>
 
                                         <option value="<?php echo $data_kategori['kode']; ?>"><?php echo $data_kategori['nama']; ?></option>
-                                        $_SESSION['csrf_token'];
                                     <?php
-                  } ?>
+                                    } ?>
 
                                 </select>
 
@@ -336,15 +335,15 @@ $dbh = $db->connect();
                                     <option value="">Pilih Salah Satu...</option>
 
                                     <?php
-                  $cek_provider = $dbh->prepare('SELECT * FROM provider ORDER BY id ASC');
-                  $cek_provider->execute();
-                  foreach ($cek_provider->fetchAll() as $data_provider) {
-                    ?>
+                                    $cek_provider = $dbh->prepare('SELECT * FROM provider ORDER BY id ASC');
+                                    $cek_provider->execute();
+                                    foreach ($cek_provider->fetchAll() as $data_provider) {
+                                    ?>
 
                                         <option value="<?php echo $data_provider['code']; ?>"><?php echo $data_provider['code']; ?></option>
 
                                     <?php
-                  } ?>
+                                    } ?>
 
                                 </select>
 

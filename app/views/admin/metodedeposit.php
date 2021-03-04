@@ -90,7 +90,7 @@
 
                                     <th>Tujuan Transfer</th>
 
-                                    <th>Minimal</th>$_SESSION['csrf_token'];
+                                    <th>Minimal</th>
 
                                     <th>Status</th>
 
@@ -115,7 +115,7 @@
                                         <td width="5%"><span class="badge badge-success"><?php echo $data_method['provider']; ?></span></td>
 
                                         <td><?php echo $data_method['catatan']; ?></td>
-                                        $_SESSION['csrf_token'];
+
                                         <td width="10%"><span class="badge badge-warning"><?php echo $data_method['rate']; ?></span></td>
 
                                         <td width="15%"><span class="badge badge-danger"><?php echo $data_method['nama_penerima']; ?></span></td>

@@ -72,7 +72,7 @@
 
 
 
-                                </tr>$_SESSION['csrf_token'];
+                                </tr>
 
                             </thead>
 
@@ -99,8 +99,6 @@
                                             <a href="<?= BASEURL; ?>admin/deletefaq/<?= $faqs['id']; ?>" class="btn btn-sm btn-danger"><i class="simple-icon-trash" title="Hapus"></i></a>
 
                                         </td>
-                                        $_SESSION['csrf_token'];
-
 
                                     </tr>
 

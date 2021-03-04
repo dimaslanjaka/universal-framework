@@ -19,6 +19,7 @@ class Home extends Controller
     $data['title'] = 'Dashboard';
     $data['pembelian'] = $this->model('Home_model')->pesananTerakhir($_SESSION['user']['username']);
     $data['metodedeposit'] = $this->model('Home_model')->metodedeposit();
+    dumpJSON($data);
     $this->view('templates/header', $data);
     $this->view('home/index', $data);
     $this->view('templates/footer');

@@ -45,7 +45,7 @@
                     <i class="simple-icon-info"> Ketika status mutasi diubah menjadi READ itu artinya deposit telah terbayar, dan deposit bisa di konfirmasi, ( Ubah menjadi read manual dilakukan ketika deposit otomatis sedang gangguan atau hal lainnya )</i>
 
                 </div>
-                $_SESSION['csrf_token'];
+
                 <div class="card">
 
                     <div class="card-body">
@@ -133,8 +133,8 @@
 
 
                                                     <?php
-                          }
-                          ?>
+                                                    }
+                                                    ?>
 
                                                 </select>
 

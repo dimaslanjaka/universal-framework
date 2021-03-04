@@ -627,11 +627,6 @@
                     </div>
 
                     <div class="modal-body body-pesansosmed">
-
-
-
-
-
                         <form class="form-horizontal" method="POST" action="<?= BASEURL; ?>order/sosmed">
 
                             <div class="form-group row">
@@ -645,9 +640,7 @@
                                         <option value="0" selected disabled>Pilih Salah satu</option>
 
                                         <?php foreach ($data['catsosmed'] as $cat) : ?>
-
                                             <option value="<?= $cat['kode']; ?>"><?= $cat['nama']; ?></option>
-
                                         <?php endforeach; ?>
 
 

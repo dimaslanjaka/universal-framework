@@ -96,7 +96,7 @@
 
                                             <td><input type="text" class="form-control" style="width: 200px;" name="kode" value="<?php echo $data_kategori['kode']; ?>"></td>
 
-                                            <td>$_SESSION['csrf_token'];
+                                            <td>
 
                                                 <select class="form-control" style="width: 200px;" name="server">
 
@@ -123,7 +123,7 @@
                                                 </select>
 
                                             </td>
-                                            $_SESSION['csrf_token'];
+
                                             <td>
 
                                                 <select class="form-control" style="width: 200px;" name="tipe">

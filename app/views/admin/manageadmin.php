@@ -78,7 +78,7 @@
 
                                 </tr>
 
-                            </thead>$_SESSION['csrf_token'];
+                            </thead>
 
                             <tbody>
 
@@ -105,7 +105,6 @@
                                         <td><?= $admins['link_ig']; ?></td>
 
                                         <td align="center">
-                                            $_SESSION['csrf_token'];
                                             <a href="javascript:;" onclick="users('<?= BASEURL; ?>admin/editadmin/<?= $admins['id']; ?>')" class="btn btn-sm btn-warning"><i class="iconsminds-folder-edit" title="Ubah"></i></a>
 
                                             <a onclick="return confirm('yakin?')" href="<?= BASEURL; ?>admin/deleteadmin/<?= $admins['id']; ?>" class="btn btn-sm btn-danger"><i class="simple-icon-trash" title="Hapus"></i></a>
