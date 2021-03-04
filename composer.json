@@ -1,0 +1,15 @@
+{
+    "name": "dimaslanjaka/library",
+    "description": "Universal Framework Integrator Helper",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dimas Lanjaka",
+            "email": "dimaslanjaka@gmail.com"
+        }
+    ],
+    "require": {
+        "php-curl-class/php-curl-class": "@dev"
+    }
+}
