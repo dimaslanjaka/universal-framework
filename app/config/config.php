@@ -1,29 +1,13 @@
 <?php
 
-/*
-
- OFFICIAL PANEL SMM PPOB SCRIPT BY MENZCREATE
-
- Creator:
-
-  - ILMAN SUNANUDDIN | FOUNDER M-PEDIA , M-CREATE
-
-  HTTPS://FACEBOOK.COM/ILMAN.SN
-
-  HTTPS://INSTAGRAM.COM/ILMAN.SN
-
-
-
- */
-
 date_default_timezone_set('Asia/jakarta');
 
 define('DB_HOST', 'localhost');
 
 if ('chandra.smm' != $_SERVER['HTTP_HOST']) {
-  $dbn = 'chandra_smm';
-  $dbs = 'chandra_smm';
-  $dbp = 'dX5d[)_8d*&?';
+  $dbn = 'chandrap_smm';
+  $dbs = 'chandrap_smm';
+  $dbp = 'chandrapedia';
   $base = 'https://chandrapedia.my.id/public/';
   $wname = 'Chandra Pedia';
 } else {
