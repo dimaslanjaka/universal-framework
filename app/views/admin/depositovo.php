@@ -7,63 +7,63 @@ $AndroidDeviceID = rand(111, 999) . 'ff' . rand(111, 999) . '-b7fc-3b' . rand(11
 $ovo = (!$data_ovo['nomor'] || !$data_ovo['device']) ? '' : new OVO($data_ovo['nomor'], $data_ovo['device']);
 
 if (isset($_POST['nomorlog'])) {
-    $post_nomor = trim(filter($_POST['nomor']));
-    $accept = $dbh->prepare("UPDATE ovo SET device = '$AndroidDeviceID', nomor = '$post_nomor' WHERE id = 'S1'");
-    $accept->execute();
-    if ($accept->rowCount() > 0) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Device ID Berhasil Didapatkan.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  $post_nomor = trim(filter($_POST['nomor']));
+  $accept = $dbh->prepare("UPDATE ovo SET device = '$AndroidDeviceID', nomor = '$post_nomor' WHERE id = 'S1'");
+  $accept->execute();
+  if ($accept->rowCount() > 0) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Device ID Berhasil Didapatkan.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 if (isset($_POST['devicidlog'])) {
-    $accept = $ovo->sendRequest2FA();
-    if (true == $accept) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, SMS Verifikasi Berhasil Dikirim.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  $accept = $ovo->sendRequest2FA();
+  if (true == $accept) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, SMS Verifikasi Berhasil Dikirim.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 if (isset($_POST['smslog'])) {
-    $post_sms = trim(filter($_POST['sms']));
-    $accept = $dbh->prepare("UPDATE ovo SET kode = '$post_sms' WHERE id = 'S1'");
-    $accept->execute();
-    $accept = $ovo->konfirmasiCode($post_sms);
-    //  print_r($accept);
-    if (true == $accept) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Login Akun OVO Berhasil, Masukan PIN Kamu.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  $post_sms = trim(filter($_POST['sms']));
+  $accept = $dbh->prepare("UPDATE ovo SET kode = '$post_sms' WHERE id = 'S1'");
+  $accept->execute();
+  $accept = $ovo->konfirmasiCode($post_sms);
+  //  print_r($accept);
+  if (true == $accept) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Login Akun OVO Berhasil, Masukan PIN Kamu.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 if (isset($_POST['pinlog'])) {
-    $post_pin = trim(filter($_POST['pin']));
-    $accept = $ovo->konfirmasiSecurityCode($post_pin);
-    $accepd = $accept['data'];
-    if (true == $accept['result']) {
-        $upd = $dbh->prepare("UPDATE ovo SET pin = '$post_pin', token = '$accepd' WHERE id = 'S1'");
-        $upd->execute();
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Autentikasi Berhasil.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan1' . $accepd];
-    }
+  $post_pin = trim(filter($_POST['pin']));
+  $accept = $ovo->konfirmasiSecurityCode($post_pin);
+  $accepd = $accept['data'];
+  if (true == $accept['result']) {
+    $upd = $dbh->prepare("UPDATE ovo SET pin = '$post_pin', token = '$accepd' WHERE id = 'S1'");
+    $upd->execute();
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Autentikasi Berhasil.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan1' . $accepd];
+  }
 }
 if (isset($_POST['reset'])) {
-    $accept = $dbh->prepare("UPDATE ovo SET nomor = '', device = '', kode = '0', pin = '0', token = '' WHERE id = 'S1'");
-    $accept->execute();
-    if ($accept->rowCount() > 0) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Direset.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  $accept = $dbh->prepare("UPDATE ovo SET nomor = '', device = '', kode = '0', pin = '0', token = '' WHERE id = 'S1'");
+  $accept->execute();
+  if ($accept->rowCount() > 0) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Direset.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 if (isset($_POST['cek'])) {
-    $acc = $ovo->seeMutation($data_ovo['token']);
-    if (true == $acc['result']) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Tidak Ada Error Yang Terdeteksi.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => $acc['data']];
-    }
+  $acc = $ovo->seeMutation($data_ovo['token']);
+  if (true == $acc['result']) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Tidak Ada Error Yang Terdeteksi.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => $acc['data']];
+  }
 }
 ?>
 
@@ -124,8 +124,8 @@ if (isset($_POST['cek'])) {
                     <div class="kt-portlet__body">
 
                         <?php
-                        if (isset($_SESSION['hasil'])) {
-                        ?>
+            if (isset($_SESSION['hasil'])) {
+              ?>
 
                             <div class="alert alert-<?php echo $_SESSION['hasil']['alert']; ?> alert-dismissible" role="alert">
 
@@ -136,9 +136,9 @@ if (isset($_POST['cek'])) {
                             </div>
 
                         <?php
-                            unset($_SESSION['hasil']);
-                        }
-                        ?>
+              unset($_SESSION['hasil']);
+            }
+            ?>
 
                         <form class="form-horizontal" method="POST">
 
@@ -292,7 +292,14 @@ if (isset($_POST['cek'])) {
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Ovo information summary</h5>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Ovo information summary</h5>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" title="refresh" id="summary-refresh"><i class="glyph-icon iconsminds-refresh"></i></button>
+                            </div>
+                        </div>
                         <table class="table">
                             <tbody id="summary-body">
                                 <tr>
@@ -346,11 +353,11 @@ if (isset($_POST['cek'])) {
                             <?php foreach ($data['mutasiovo'] as $data_layanan) : ?>
 
                                 <?php if ('read' == $data_layanan['status']) {
-                                    $label = 'danger';
-                                } elseif ('unread' == $data_layanan['status']) {
-                                    $label = 'success';
-                                }
-                                ?> <tr>
+              $label = 'danger';
+            } elseif ('unread' == $data_layanan['status']) {
+              $label = 'success';
+            }
+                ?> <tr>
 
 
 

@@ -8,19 +8,19 @@
                     </div>
                     <div class="form-side">
 
-                        <?php
-                        if (isset($_SESSION['hasil'])) {
-                        ?>
+                        <?php
+            if (isset($_SESSION['hasil'])) {
+              ?>
                             <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-0" role="alert">
                                 <?= $_SESSION['hasil']['pesan']; ?>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                        <?php
-                            unset($_SESSION['hasil']);
-                        }
-                        ?>
+                        <?php
+              unset($_SESSION['hasil']);
+            }
+            ?>
                         <h6 class="mb-4">Masuk</h6>
                         <form method="POST" action="<?= BASEURL; ?>auth/login">
                             <label class="form-group has-float-label mb-4">

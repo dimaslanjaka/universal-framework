@@ -139,7 +139,7 @@
                                             </form>
 
                                         <?php
-                                                    } elseif ('Error' == $deposit['status']) { ?>
+                          } elseif ('Error' == $deposit['status']) { ?>
 
                                             <option value="<?php echo $deposit['status']; ?>" selected disabled><?php echo $deposit['status']; ?></option>
 
@@ -154,7 +154,7 @@
                                             </form>
 
                                         <?php }
-                                        ?>
+                    ?>
 
                                         <a onclick="return confirm('yakin mau hapus?')" href="<?= BASEURL; ?>admin/deletedeposit/<?= $deposit['kode_deposit']; ?>">
 
@@ -269,5 +269,5 @@
 
 
 <script>
-    <?php include(__DIR__ . '/managedeposit.js'); ?>
+    <?php include __DIR__ . '/managedeposit.js'; ?>
 </script>

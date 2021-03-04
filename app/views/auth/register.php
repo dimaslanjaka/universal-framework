@@ -21,19 +21,19 @@
                     <div class="page-links">
                         <a href="<?= BASEURL; ?>auth">Login</a><a href="" class="active">Register</a>
                     </div>
-                    <?php
-                    if (isset($_SESSION['hasil'])) {
-                    ?>
+                    <?php
+          if (isset($_SESSION['hasil'])) {
+            ?>
                         <div class="alert alert-warning alert-dismissible fade show " role="alert">
                             <i class="simple-icon-exclamation"></i> <?= $_SESSION['hasil']['pesan']; ?>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    <?php
-                        unset($_SESSION['hasil']);
-                    }
-                    ?>
+                    <?php
+            unset($_SESSION['hasil']);
+          }
+          ?>
                     <form method="POST" action="<?= BASEURL; ?>auth/submitreg">
                         <input class="form-control" type="text" name="nama_depan" id="nama_depan" placeholder="Nama depan" required>
                         <input class="form-control" type="text" id="nama_belakang" name="nama_belakang" placeholder="Nama Belakang" required>

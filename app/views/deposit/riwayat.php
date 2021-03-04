@@ -38,17 +38,17 @@
                                         <td><?= $riwayat['tipe']; ?> - <?= $riwayat['provider']; ?></td>
                                         <td><?= $riwayat['jumlah_transfer']; ?></td>
                                         <td>
-                                            <?php
-                                            $status = $riwayat['status'];
-
-                                            if ($riwayat['status'] == 'Success') {
-                                                $badge = 'success';
-                                            } else if ($riwayat['status'] == 'Error') {
-                                                $badge = 'danger';
-                                            } else {
-                                                $badge == 'warning';
-                                            }
-                                            ?>
+                                            <?php
+                      $status = $riwayat['status'];
+
+                      if ('Success' == $riwayat['status']) {
+                        $badge = 'success';
+                      } elseif ('Error' == $riwayat['status']) {
+                        $badge = 'danger';
+                      } else {
+                        'warning' == $badge;
+                      }
+                      ?>
                                             <div class="badge badge-<?= $badge; ?>"><?= $riwayat['status']; ?></div>
                                         </td>
                                         <td>

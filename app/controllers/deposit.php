@@ -73,7 +73,14 @@ class Deposit extends Controller
     $time = $this->time;
     $ip = get_client_ip();
 
+    $dump = [];
+    $dump['saldo'] = $saldo;
+    $dump['date'] = $date;
+    $dump['time'] = $time;
+    $dump['ip'] = $ip;
     $datamutasi = $this->model('Deposit_model')->bacamutasi($kode, $nominal);
+    $dump['datamutasi'] = $datamutasi;
+    ///dumpJSON($dump);
     if ('UNREAD' == $datamutasi['status']) {
       $_SESSION['hasil'] = [
         'alert' => 'danger',
@@ -127,7 +134,17 @@ class Deposit extends Controller
   }
 
 
+  public function cekmutasi($kode = null, $nominal = null)
+  {
+    $data['accountovo'] = $this->model('Admin_model')->accountovo();
+    $data['mutasiovo'] = $this->model('Admin_model')->mutasiovo();
 
+    $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
+    $data['title'] = 'Kelola Metodedeposit';
+    $data['allusers'] = $this->model('Admin_model')->allusers();
+    $data['mutasi'] = $this->model('Deposit_model')->bacamutasi($kode, $nominal);
+    $this->view('deposit/ovo/cekmutasi', $data);
+  }
 
   // riwayat deposit
   public function riwayatdeposit()

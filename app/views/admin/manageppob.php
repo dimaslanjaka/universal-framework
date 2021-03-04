@@ -79,7 +79,7 @@
                                             <button type="submit" class="badge badge-success">Ubah status</button>
                                             </form>
                                         <?php
-                          } elseif ('Error' == $orderppob['status']) { ?>
+              } elseif ('Error' == $orderppob['status']) { ?>
                                             <option value="<?php echo $orderppob['status']; ?>" selected disabled><?php echo $orderppob['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Pending">Pending</option>
@@ -87,7 +87,7 @@
                                             <button type="submit" class="badge badge-success">Ubah</button>
                                             </form>
                                         <?php }
-                    ?>
+          ?>
                                         <a onclick="return confirm('yakin mau hapus?')" href="<?= BASEURL; ?>admin/deleteorderppob/<?= $orderppob['oid']; ?>">
                                             <span class="badge badge-danger">Delete</span>
                                         </a>

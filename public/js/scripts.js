@@ -201,4 +201,47 @@ function loadStyle(href, callback) {
       }
     }
   });
+
+  if (!checkCookie("ip")) {
+    $.get("https://www.cloudflare.com/cdn-cgi/trace", function (data) {
+      var datax = data.toString().split("\n");
+      datax.forEach((element) => {
+        var datasplit = element.toString().split("=");
+        if (datasplit[0].trim() == "ip") {
+          setCookie("ip", datasplit[1].trim(), 10);
+        }
+      });
+    });
+  }
 })(jQuery);
+
+function setCookie(cname, cvalue, exmins) {
+  var d = new Date();
+  d.setTime(d.getTime() + exmins * 60 * 1000);
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie(name) {
+  var user = getCookie(name);
+  if (user != "") {
+    return true;
+  } else {
+    return false;
+  }
+}

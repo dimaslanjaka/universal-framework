@@ -25,16 +25,16 @@
                             <tbody>
 
                                 <?php foreach ($data['semuaberita'] as $berita) : ?>
-                                    <?php
-                                    $tipeberita = $berita['tipe'];
-                                    if ($tipeberita == 'INFO') {
-                                        $alert = 'info';
-                                    } else if ($tipeberita == 'PENTING') {
-                                        $alert = 'danger';
-                                    } else {
-                                        $alert = 'warning';
-                                    }
-                                    ?>
+                                    <?php
+                  $tipeberita = $berita['tipe'];
+                  if ('INFO' == $tipeberita) {
+                    $alert = 'info';
+                  } elseif ('PENTING' == $tipeberita) {
+                    $alert = 'danger';
+                  } else {
+                    $alert = 'warning';
+                  }
+                  ?>
                                     <tr>
                                         <td>
                                             <p class="list-item-heading"><?= $berita['title']; ?></p>

@@ -1,22 +1,14 @@
 <?php
 
-
-
-$dbh = new Database;
+$dbh = new Database();
 
 $db = $dbh->connect();
 
-
-
-$cek_berita = $db->prepare("SELECT * FROM berita LIMIT 5");
+$cek_berita = $db->prepare('SELECT * FROM berita LIMIT 5');
 
 $cek_berita->execute();
 
 $cek_berita = $cek_berita->fetchAll();
-
-
-
-
 
 ?>
 
@@ -111,7 +103,7 @@ instagram : https://instagram.com/ilman.sn
 
 
     <script>
-        var url = '<?= BASEURL ?>'
+        var url = '<?= BASEURL; ?>'
     </script>
 
 
@@ -212,7 +204,7 @@ instagram : https://instagram.com/ilman.sn
 
                         <i class="simple-icon-bell"></i>
 
-                        <?php if ($data['user']['read_news']  == 1) : ?>
+                        <?php if (1 == $data['user']['read_news']) : ?>
 
                             <span class="count adaberita">!</span>
 
@@ -262,20 +254,17 @@ instagram : https://instagram.com/ilman.sn
 
                                 <?php
 
-                                $tipeberita = $berita['tipe'];
+                $tipeberita = $berita['tipe'];
 
-                                if ($tipeberita == 'INFO') {
+                if ('INFO' == $tipeberita) {
+                  $alert = 'info';
+                } elseif ('PENTING' == $tipeberita) {
+                  $alert = 'danger';
+                } else {
+                  $alert = 'warning';
+                }
 
-                                    $alert = 'info';
-                                } else if ($tipeberita == 'PENTING') {
-
-                                    $alert = 'danger';
-                                } else {
-
-                                    $alert = 'warning';
-                                }
-
-                                ?>
+                ?>
 
 
 
@@ -285,23 +274,19 @@ instagram : https://instagram.com/ilman.sn
 
                                 <?php
 
-                                $iconberita = $berita['icon'];
+                $iconberita = $berita['icon'];
 
-                                if ($iconberita == 'PENGGUNA') {
+                if ('PENGGUNA' == $iconberita) {
+                  $imgberita = 'simple-icon-people';
+                } elseif ('LAYANAN' == $iconberita) {
+                  $imgberita = 'iconsminds-gears';
+                } elseif ('PROMO' == $iconberita) {
+                  $imgberita = 'iconsminds-refinery';
+                } else {
+                  $imgberita = 'umum.jpg';
+                }
 
-                                    $imgberita = 'simple-icon-people';
-                                } else if ($iconberita == 'LAYANAN') {
-
-                                    $imgberita = 'iconsminds-gears';
-                                } else if ($iconberita == 'PROMO') {
-
-                                    $imgberita = 'iconsminds-refinery';
-                                } else {
-
-                                    $imgberita = 'umum.jpg';
-                                }
-
-                                ?>
+                ?>
 
                                 <!--  -->
 
@@ -317,7 +302,7 @@ instagram : https://instagram.com/ilman.sn
 
                                         <a href="<?= BASEURL; ?>berita/index/<?= $berita['id']; ?>">
 
-                                            <p class="font-weight-medium mb-1 text-<?= $alert ?>"><?= $berita['title']; ?> <i class="simple-icon-eye text-right"></i></p>
+                                            <p class="font-weight-medium mb-1 text-<?= $alert; ?>"><?= $berita['title']; ?> <i class="simple-icon-eye text-right"></i></p>
 
                                             <p><?= $berita['konten']; ?></p>
 
@@ -415,7 +400,7 @@ instagram : https://instagram.com/ilman.sn
 
 
 
-                    <?php if ($data['user']['level'] == "Developers") { ?>
+                    <?php if ('Developers' == $data['user']['level']) { ?>
 
                         <li>
 

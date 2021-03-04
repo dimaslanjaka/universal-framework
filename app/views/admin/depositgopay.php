@@ -148,8 +148,8 @@ if (isset($_POST['cek'])) {
           <div class="kt-portlet__body">
 
             <?php
-            if (isset($_SESSION['hasil'])) {
-            ?>
+      if (isset($_SESSION['hasil'])) {
+        ?>
 
               <div class="alert alert-<?php echo $_SESSION['hasil']['alert']; ?> alert-dismissible" role="alert">
 
@@ -160,9 +160,9 @@ if (isset($_POST['cek'])) {
               </div>
 
             <?php
-              unset($_SESSION['hasil']);
-            }
-            ?>
+        unset($_SESSION['hasil']);
+      }
+      ?>
 
             <form class="form-horizontal" method="POST">
 
@@ -349,11 +349,11 @@ if (isset($_POST['cek'])) {
                                 <?php foreach ($data['mutasigopay'] as $data_layanan) : ?>
 
                                     <?php if ('read' == $data_layanan['status']) {
-                                      $label = 'danger';
-                                    } elseif ('unread' == $data_layanan['status']) {
-                                      $label = 'success';
-                                    }
-                                    ?> <tr>
+        $label = 'danger';
+      } elseif ('unread' == $data_layanan['status']) {
+        $label = 'success';
+      }
+                  ?> <tr>
 
 
 

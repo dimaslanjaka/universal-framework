@@ -23,7 +23,7 @@
                                         <span class="badge badge-pill badge-secondary handle">
                                             <i class="simple-icon-cursor-move"></i>
                                         </span>
-                                        <span>Kamu <?= $aktifitas['aksi']; ?> pada <?= $aktifitas['date'] ?> | <?= $aktifitas['time']; ?></span>
+                                        <span>Kamu <?= $aktifitas['aksi']; ?> pada <?= $aktifitas['date']; ?> | <?= $aktifitas['time']; ?></span>
                                     </p>
                                 </li>
                             <?php endforeach; ?>

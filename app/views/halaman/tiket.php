@@ -1,5 +1,5 @@
-<?php
-$db = new Database;
+<?php
+$db = new Database();
 ?>
 <main>
     <div class="container-fluid">

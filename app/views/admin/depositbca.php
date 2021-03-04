@@ -11,31 +11,31 @@ $data_bca->execute();
 $data_bca = $data_bca->fetchAll();
 
 if (isset($_POST['login'])) {
-    $user_id = filter($_POST['user_id']);
+  $user_id = filter($_POST['user_id']);
 
-    $password = trim(filter($_POST['password']));
+  $password = trim(filter($_POST['password']));
 
-    $accept = $dbh->prepare("UPDATE bca SET user_id = '$user_id', password = '$password' WHERE id = 'S1'");
+  $accept = $dbh->prepare("UPDATE bca SET user_id = '$user_id', password = '$password' WHERE id = 'S1'");
 
-    $accept->execute();
+  $accept->execute();
 
-    if ($accept->rowCount() > 0) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Di Update.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  if ($accept->rowCount() > 0) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Di Update.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 
 if (isset($_POST['reset'])) {
-    $accept = $dbh->prepare("UPDATE bca SET user_id = '', password = '' WHERE id = 'S1'");
+  $accept = $dbh->prepare("UPDATE bca SET user_id = '', password = '' WHERE id = 'S1'");
 
-    $accept->execute();
+  $accept->execute();
 
-    if ($accept->rowCount() > 0) {
-        $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Direset.'];
-    } else {
-        $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
-    }
+  if ($accept->rowCount() > 0) {
+    $_SESSION['hasil'] = ['alert' => 'success', 'pesan' => 'Sip, Data Berhasil Direset.'];
+  } else {
+    $_SESSION['hasil'] = ['alert' => 'danger', 'pesan' => 'Ups, Gagal! Sistem Kami Sedang Mengalami Gangguan'];
+  }
 }
 
 ?>
@@ -98,8 +98,8 @@ if (isset($_POST['reset'])) {
 
                         <?php
 
-                        if (isset($_SESSION['hasil'])) {
-                        ?>
+            if (isset($_SESSION['hasil'])) {
+              ?>
 
                             <div class="alert alert-<?php echo $_SESSION['hasil']['alert']; ?> alert-dismissible" role="alert">
 
@@ -111,10 +111,10 @@ if (isset($_POST['reset'])) {
 
                         <?php
 
-                            unset($_SESSION['hasil']);
-                        }
+              unset($_SESSION['hasil']);
+            }
 
-                        ?>
+            ?>
 
                         <form class="form-horizontal" method="POST">
 
@@ -233,12 +233,12 @@ if (isset($_POST['reset'])) {
                                 <?php foreach ($data['mutasibca'] as $data_layanan) : ?>
 
                                     <?php if ('read' == $data_layanan['status']) {
-                                        $label = 'danger';
-                                    } elseif ('unread' == $data_layanan['status']) {
-                                        $label = 'success';
-                                    }
+              $label = 'danger';
+            } elseif ('unread' == $data_layanan['status']) {
+              $label = 'success';
+            }
 
-                                    ?> <tr>
+                  ?> <tr>
 
 
 

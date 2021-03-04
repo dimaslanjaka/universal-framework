@@ -86,9 +86,14 @@ function time_elapsed_string($datetime, $full = false)
 
   return $string ? implode(', ', $string) . ' Yang Lalu' : 'Baru Saja';
 }
-
+/**
+ * Powerful php function to get ip address of client
+ */
 function get_client_ip()
 {
+  if (isset($_COOKIE['ip']) && !empty($_COOKIE['ip'])) {
+    return trim($_COOKIE['ip']);
+  }
   $ipaddress = '';
   if (isset($_SERVER['HTTP_CLIENT_IP'])) {
     $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
@@ -103,7 +108,9 @@ function get_client_ip()
   } elseif (isset($_SERVER['REMOTE_ADDR'])) {
     $ipaddress = $_SERVER['REMOTE_ADDR'];
   } else {
-    $ipaddress = 'IP tidak dikenali';
+    if (!isset($_COOKIE['ip'])) {
+      $ipaddress = 'IP tidak dikenali';
+    }
   }
 
   return $ipaddress;

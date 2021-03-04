@@ -48,5 +48,5 @@
 
 </html>
 <?php
-debugIncludedFiles()
+debugIncludedFiles();
 ?>

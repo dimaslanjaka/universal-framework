@@ -16,7 +16,7 @@
             <div class="row">
                 <?php if (isset($_SESSION['hasil'])) : ?>
                     <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-0" role="alert">
-                        <?= $_SESSION['hasil']['pesan'] ?>
+                        <?= $_SESSION['hasil']['pesan']; ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

@@ -27,30 +27,30 @@
                                 <?php $i = 1; ?>
                                 <?php foreach ($data['mutasiakun'] as $mutasi) : ?>
 
-                                    <?php
-                                    $aksi = $mutasi['aksi'];
-                                    if ($aksi == 'Penambahan Saldo') {
-                                        $badge = 'primary';
-                                        $icon = 'simple-icon-plus';
-                                    } else {
-                                        $badge = 'danger';
-                                        $icon = 'simple-icon-minus';
-                                    }
-                                    ?>
+                                    <?php
+                  $aksi = $mutasi['aksi'];
+                  if ('Penambahan Saldo' == $aksi) {
+                    $badge = 'primary';
+                    $icon = 'simple-icon-plus';
+                  } else {
+                    $badge = 'danger';
+                    $icon = 'simple-icon-minus';
+                  }
+                  ?>
                                     <tr>
-                                        <td><?= $i ?></td>
-                                        <td><?= tanggal_indo($mutasi['date']) ?> - <?= $mutasi['time']; ?></td>
+                                        <td><?= $i; ?></td>
+                                        <td><?= tanggal_indo($mutasi['date']); ?> - <?= $mutasi['time']; ?></td>
                                         <td>
                                             <div class="badge badge-<?= $badge; ?>"><i class="<?= $icon; ?>"></i></div>
                                         </td>
                                         <td>
-                                            <div class="badge badge-<?= $badge; ?>"><?= $mutasi['aksi'];  ?></div>
+                                            <div class="badge badge-<?= $badge; ?>"><?= $mutasi['aksi']; ?></div>
                                         </td>
                                         <td><?= $mutasi['nominal']; ?></td>
                                         <td><?= $mutasi['pesan']; ?></td>
 
                                     </tr>
-                                    <?php $i++ ?>
+                                    <?php $i++; ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>

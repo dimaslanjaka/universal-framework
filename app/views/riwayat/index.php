@@ -11,7 +11,7 @@
 
                 <?php if (isset($_SESSION['hasil'])) : ?>
                     <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-3 col-12" role="alert">
-                        <?= $_SESSION['hasil']['pesan'] ?>
+                        <?= $_SESSION['hasil']['pesan']; ?>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -49,9 +49,8 @@
                                             </thead>
                                             <tbody>
 
-                                                <?php
-
-                                                foreach ($data['riwayatsemuapembelian'] as $semuapembelian) : ?>
+                                                <?php
+                        foreach ($data['riwayatsemuapembelian'] as $semuapembelian) : ?>
                                                     <tr>
                                                         <td>
                                                             <div class="badge badge-secondary">
@@ -69,23 +68,22 @@
                                                             <input type="text" readonly value="<?= $semuapembelian['target']; ?>">
                                                         </td>
                                                         <td>
-                                                            <?php
-                                                            // cek status 
-                                                            $statussemua = $semuapembelian['status'];
-                                                            if ($statussemua == 'Success') {
-
-                                                                $badge = 'success';
-                                                                $icon = 'simple-icon-check';
-                                                            } else if ($statussemua == 'Error') {
-                                                                $badge = 'danger';
-                                                                $icon = 'simple-icon-close';
-                                                            } else if ($statussemua == 'Pending') {
-                                                                $badge = 'warning';
-                                                                $icon = 'simple-icon-clock';
-                                                            } else {
-                                                                $badge = 'secondary';
-                                                            }
-                                                            ?>
+                                                            <?php
+                              // cek status
+                              $statussemua = $semuapembelian['status'];
+                              if ('Success' == $statussemua) {
+                                $badge = 'success';
+                                $icon = 'simple-icon-check';
+                              } elseif ('Error' == $statussemua) {
+                                $badge = 'danger';
+                                $icon = 'simple-icon-close';
+                              } elseif ('Pending' == $statussemua) {
+                                $badge = 'warning';
+                                $icon = 'simple-icon-clock';
+                              } else {
+                                $badge = 'secondary';
+                              }
+                              ?>
                                                             <div class="badge badge-<?= $badge; ?>">
                                                                 <i class="<?= $icon; ?>"></i>
                                                             </div>
@@ -121,8 +119,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                foreach ($data['riwayatpembelianppob'] as $pembelianppob) : ?>
+                                                <?php
+                        foreach ($data['riwayatpembelianppob'] as $pembelianppob) : ?>
                                                     <tr>
                                                         <td>
                                                             <div class="badge badge-secondary">
@@ -141,23 +139,22 @@
                                                             <input type="text" readonly value="<?= $pembelianppob['target']; ?>">
                                                         </td>
                                                         <td>
-                                                            <?php
-                                                            // cek status 
-                                                            $statusppob = $pembelianppob['status'];
-                                                            if ($statusppob == 'Success') {
-
-                                                                $badge = 'success';
-                                                                $icon = 'simple-icon-check';
-                                                            } else if ($statusppob == 'Error') {
-                                                                $badge = 'danger';
-                                                                $icon = 'simple-icon-close';
-                                                            } else if ($statusppob == 'Pending') {
-                                                                $badge = 'warning';
-                                                                $icon = 'simple-icon-clock';
-                                                            } else {
-                                                                $badge = 'secondary';
-                                                            }
-                                                            ?>
+                                                            <?php
+                              // cek status
+                              $statusppob = $pembelianppob['status'];
+                              if ('Success' == $statusppob) {
+                                $badge = 'success';
+                                $icon = 'simple-icon-check';
+                              } elseif ('Error' == $statusppob) {
+                                $badge = 'danger';
+                                $icon = 'simple-icon-close';
+                              } elseif ('Pending' == $statusppob) {
+                                $badge = 'warning';
+                                $icon = 'simple-icon-clock';
+                              } else {
+                                $badge = 'secondary';
+                              }
+                              ?>
                                                             <div class="badge badge-<?= $badge; ?>">
                                                                 <i class="<?= $icon; ?>"></i>
                                                             </div>
@@ -195,8 +192,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                foreach ($data['riwayatpembeliansosmed'] as $pembeliansosmed) : ?>
+                                                <?php
+                        foreach ($data['riwayatpembeliansosmed'] as $pembeliansosmed) : ?>
                                                     <tr>
                                                         <td>
                                                             <div class="badge badge-secondary">
@@ -214,23 +211,22 @@
                                                             <input type="text" readonly value="<?= $pembeliansosmed['target']; ?>">
                                                         </td>
                                                         <td>
-                                                            <?php
-                                                            // cek status 
-                                                            $statussosmed = $pembeliansosmed['status'];
-                                                            if ($statussosmed == 'Success') {
-
-                                                                $badge = 'success';
-                                                                $icon = 'simple-icon-check';
-                                                            } else if ($statussosmed == 'Error') {
-                                                                $badge = 'danger';
-                                                                $icon = 'simple-icon-close';
-                                                            } else if ($statussosmed == 'Pending') {
-                                                                $badge = 'warning';
-                                                                $icon = 'simple-icon-clock';
-                                                            } else {
-                                                                $badge = 'secondary';
-                                                            }
-                                                            ?>
+                                                            <?php
+                              // cek status
+                              $statussosmed = $pembeliansosmed['status'];
+                              if ('Success' == $statussosmed) {
+                                $badge = 'success';
+                                $icon = 'simple-icon-check';
+                              } elseif ('Error' == $statussosmed) {
+                                $badge = 'danger';
+                                $icon = 'simple-icon-close';
+                              } elseif ('Pending' == $statussosmed) {
+                                $badge = 'warning';
+                                $icon = 'simple-icon-clock';
+                              } else {
+                                $badge = 'secondary';
+                              }
+                              ?>
                                                             <div class="badge badge-<?= $badge; ?>">
                                                                 <i class="<?= $icon; ?>"></i>
                                                             </div>

@@ -19,19 +19,19 @@
                     <h3>Reset Password</h3>
                     <p></p>
 
-                    <?php
-                    if (isset($_SESSION['hasil'])) {
-                    ?>
+                    <?php
+          if (isset($_SESSION['hasil'])) {
+            ?>
                         <div class="alert alert-warning alert-dismissible fade show " role="alert">
                             <i class="simple-icon-exclamation"></i> <?= $_SESSION['hasil']['pesan']; ?>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    <?php
-                        unset($_SESSION['hasil']);
-                    }
-                    ?>
+                    <?php
+            unset($_SESSION['hasil']);
+          }
+          ?>
                     <form method="POST" action="<?= BASEURL; ?>auth/ubah_password">
                         <input class="form-control" type="hidden" name="username" value="<?= $data['username']; ?>" required readonly>
                         <input class="form-control" type="hidden" name="randomkode" value="<?= $data['randomkode']; ?>" required readonly>

@@ -74,7 +74,7 @@
                                             <button type="submit" class="badge badge-success">Ubah status</button>
                                             </form>
                                         <?php
-                          } elseif ('Error' == $ordersosmed['status']) { ?>
+              } elseif ('Error' == $ordersosmed['status']) { ?>
                                             <option value="<?php echo $ordersosmed['status']; ?>" selected disabled><?php echo $ordersosmed['status']; ?></option>
                                             <option value="Success">Success</option>
                                             <option value="Pending">Pending</option>

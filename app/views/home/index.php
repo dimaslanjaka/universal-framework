@@ -6,7 +6,7 @@
 
             <div class="col-12">
 
-                <h1>Dashboard <small class="text-small text-muted">Your ip : <?= get_client_ip() ?> </small></h1>
+                <h1>Dashboard <small class="text-small text-muted">Your ip : <?= get_client_ip(); ?> </small></h1>
 
                 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
 
@@ -48,7 +48,7 @@
 
                         <div class="alert alert-<?= $_SESSION['hasil']['alert']; ?> alert-dismissible fade show  mb-3 col-12" role="alert">
 
-                            <?= $_SESSION['hasil']['pesan'] ?>
+                            <?= $_SESSION['hasil']['pesan']; ?>
 
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 
@@ -346,7 +346,7 @@
 
                                     <tr>
 
-                                        <th scope="row"><?= $no ?></th>
+                                        <th scope="row"><?= $no; ?></th>
 
                                         <td>
 
@@ -354,7 +354,7 @@
 
                                         </td>
 
-                                        <td><?= tanggal_indo($pesanan['date']) ?></td>
+                                        <td><?= tanggal_indo($pesanan['date']); ?></td>
 
                                         <td><?= $pesanan['layanan']; ?></td>
 
@@ -364,30 +364,27 @@
 
                                         <?php
 
-                                        $status = $pesanan['status'];
+                    $status = $pesanan['status'];
 
-                                        if ($status == 'Success') {
+                    if ('Success' == $status) {
+                      $alert = 'primary';
+                    } elseif ('Error' == $status) {
+                      $alert = 'danger';
+                    } else {
+                      $alert = 'warning';
+                    }
 
-                                            $alert = 'primary';
-                                        } else if ($status == 'Error') {
-
-                                            $alert = 'danger';
-                                        } else {
-
-                                            $alert = 'warning';
-                                        }
-
-                                        ?>
+                    ?>
 
                                         <td>
 
-                                            <div class="badge badge-<?= $alert; ?>"><?= $status ?></div>
+                                            <div class="badge badge-<?= $alert; ?>"><?= $status; ?></div>
 
                                         </td>
 
                                     </tr>
 
-                                    <?php $no++ ?>
+                                    <?php $no++; ?>
 
                                 <?php endforeach; ?>
 

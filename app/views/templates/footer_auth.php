@@ -12,5 +12,5 @@
 
 </html>
 <?php
-debugIncludedFiles()
+debugIncludedFiles();
 ?>
