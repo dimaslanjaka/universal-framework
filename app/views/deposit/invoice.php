@@ -14,11 +14,11 @@
 
                         <li class="breadcrumb-item">
 
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
 
                         </li>
 
-                        <li class="breadcrumb-item">
+                        <li class="breadcrumb-item d-none">
 
                             <a href="#">Library</a>
 
@@ -310,6 +310,27 @@
                             </td>
 
                         </tr>
+
+                        <tr>
+
+                            <td colspan="2" style="width: 100%">
+
+                                <p href="#" style="font-size: 13px; text-decoration: none; line-height: 1.6; color:#909090; margin-top:0px; margin-bottom:0; text-align: right;">
+
+                                    Saldo : </p>
+
+                            </td>
+
+                            <td style="padding-top:0px; text-align: right;">
+
+                                <p style="font-size: 13px; line-height: 1.6; color:#303030; margin-bottom:0; margin-top:0; vertical-align:top; white-space:nowrap; margin-left:15px">
+
+                                    <?= convert_to_rupiah($data['user']['saldo_top_up']); ?></p>
+
+                            </td>
+
+                        </tr>
+
                         <tr>
 
                             <td colspan="2" style="width: 100%">
@@ -364,7 +385,7 @@
 
                         <a class="btn btn-danger" href="<?= BASEURL; ?>deposit/batalkandeposit/<?= $deposit['kode_deposit']; ?>">Batalkan</a>
 
-                        <a class="btn btn-success" href="<?= BASEURL; ?>deposit/konfirmasideposit/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>">Sudah Transfer</a>
+                        <a id="sdh-TF" class="btn btn-success" href="<?= BASEURL; ?>deposit/konfirmasideposit/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>">Sudah Transfer</a>
 
                     <?php endif; ?>
 
@@ -379,6 +400,8 @@
     </div>
 
 </main>
+
+
 <?php
 $branch = null;
 if (trim(strtolower($deposit['provider'])) == 'ovo') {
@@ -391,7 +414,7 @@ if (trim(strtolower($deposit['provider'])) == 'ovo') {
     <?php
     if ($branch != null) {
     ?>
-        const endpoint_cekmutasi = `<?= BASEURL; ?>deposit/<?= $branch ?>/cekmutasi/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>`;
+        const endpoint_cekmutasi = `<?= BASEURL; ?>deposit/cekmutasi<?= $branch ?>/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>`;
         <?= include __DIR__ . '/invoice.js'; ?>
     <?php
     }

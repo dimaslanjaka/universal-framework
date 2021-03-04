@@ -22,7 +22,11 @@ class Home_model
   {
     $this->dbh->query("SELECT * FROM users WHERE username ='$username'");
 
-    return $this->dbh->single();
+    $result = $this->dbh->single();
+    if (serialize($_SESSION['user']) != serialize($result)) {
+      $_SESSION['user'] = $result; // rewrite session if userdata different
+    }
+    return $result;
   }
 
   public function metodedeposit()

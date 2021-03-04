@@ -134,15 +134,17 @@ class Deposit extends Controller
   }
 
 
-  public function cekmutasi($kode = null, $nominal = null)
+  public function cekmutasiovo($kode = null, $nominal = null)
   {
     $data['accountovo'] = $this->model('Admin_model')->accountovo();
     $data['mutasiovo'] = $this->model('Admin_model')->mutasiovo();
 
     $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
-    $data['title'] = 'Kelola Metodedeposit';
+    $data['title'] = 'Cek Mutasi OVO';
     $data['allusers'] = $this->model('Admin_model')->allusers();
     $data['mutasi'] = $this->model('Deposit_model')->bacamutasi($kode, $nominal);
+    $data['cek_depo'] = $this->model('Ambildata_model')->cekdepositmutasi2($data['mutasi']['jumlah']);
+    $data['interface'] = $this;
     $this->view('deposit/ovo/cekmutasi', $data);
   }
 

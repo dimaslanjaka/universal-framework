@@ -254,17 +254,17 @@ instagram : https://instagram.com/ilman.sn
 
                                 <?php
 
-                $tipeberita = $berita['tipe'];
+                                $tipeberita = $berita['tipe'];
 
-                if ('INFO' == $tipeberita) {
-                  $alert = 'info';
-                } elseif ('PENTING' == $tipeberita) {
-                  $alert = 'danger';
-                } else {
-                  $alert = 'warning';
-                }
+                                if ('INFO' == $tipeberita) {
+                                    $alert = 'info';
+                                } elseif ('PENTING' == $tipeberita) {
+                                    $alert = 'danger';
+                                } else {
+                                    $alert = 'warning';
+                                }
 
-                ?>
+                                ?>
 
 
 
@@ -274,19 +274,19 @@ instagram : https://instagram.com/ilman.sn
 
                                 <?php
 
-                $iconberita = $berita['icon'];
+                                $iconberita = $berita['icon'];
 
-                if ('PENGGUNA' == $iconberita) {
-                  $imgberita = 'simple-icon-people';
-                } elseif ('LAYANAN' == $iconberita) {
-                  $imgberita = 'iconsminds-gears';
-                } elseif ('PROMO' == $iconberita) {
-                  $imgberita = 'iconsminds-refinery';
-                } else {
-                  $imgberita = 'umum.jpg';
-                }
+                                if ('PENGGUNA' == $iconberita) {
+                                    $imgberita = 'simple-icon-people';
+                                } elseif ('LAYANAN' == $iconberita) {
+                                    $imgberita = 'iconsminds-gears';
+                                } elseif ('PROMO' == $iconberita) {
+                                    $imgberita = 'iconsminds-refinery';
+                                } else {
+                                    $imgberita = 'umum.jpg';
+                                }
 
-                ?>
+                                ?>
 
                                 <!--  -->
 
@@ -705,3 +705,5 @@ instagram : https://instagram.com/ilman.sn
     </script>
 
     <!-- /GetButton.io widget -->
+
+    <?php include __DIR__ . '/header_util.php'; ?>

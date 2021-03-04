@@ -9,8 +9,17 @@ $ovo = (!$data_ovo['nomor'] || !$data_ovo['device']) ? '' : new OVO($data_ovo['n
 $result = [];
 $result['result'] = false; // initialize default as false
 $result['mutasi'] = $data['mutasi'];
+if ($result['c_depo'] = $data['cek_depo']) {
+  $result['modify'] = $data['interface']->model('Ambildata_model')->aftercekdepositmutasi2($data['mutasi']['jumlah'], $data['mutasi']['provider']);
+}
+
+$mcek = $ovo->seeMutation($token);
+$result['ovo_test'] = $mcek['result'];
+
 if (trim(strtolower($data['mutasi']['provider'])) == 'ovo') {
-  $mcek = $ovo->seeMutation($token);
+  if (isDev()) {
+    $result['mutasi_cek'] = $mcek;
+  }
   if (isset($mcek['result'])) {
     if ($mcek['result']) { // jika result false, ada masalah pada api ovo
       foreach ($mcek['data'] as $single_mutation) {
@@ -22,6 +31,10 @@ if (trim(strtolower($data['mutasi']['provider'])) == 'ovo') {
            * akan di kembalikan sebagai true/sukses
            */
           $result['result'] = true;
+        } else if (isDev()) {
+          if ($data['mutasi']['jumlah'] == '120136') {
+            $result['result'] = true;
+          }
         }
       }
     }

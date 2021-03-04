@@ -14,11 +14,11 @@
 
                         <li class="breadcrumb-item">
 
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
 
                         </li>
 
-                        <li class="breadcrumb-item">
+                        <li class="breadcrumb-item d-none">
 
                             <a href="#">Library</a>
 
@@ -364,17 +364,17 @@
 
                                         <?php
 
-                    $status = $pesanan['status'];
+                                        $status = $pesanan['status'];
 
-                    if ('Success' == $status) {
-                      $alert = 'primary';
-                    } elseif ('Error' == $status) {
-                      $alert = 'danger';
-                    } else {
-                      $alert = 'warning';
-                    }
+                                        if ('Success' == $status) {
+                                            $alert = 'primary';
+                                        } elseif ('Error' == $status) {
+                                            $alert = 'danger';
+                                        } else {
+                                            $alert = 'warning';
+                                        }
 
-                    ?>
+                                        ?>
 
                                         <td>
 
@@ -911,3 +911,6 @@
 
 
 <script src="<?= BASEURL; ?>js/custom/home.js"></script>
+<?php
+
+disableForm();

@@ -193,7 +193,7 @@ class Ambildata_model
     $this->dbh->execute();
 
     return $this->dbh->resultSet();
-  }
+  }
 
   // mutasiii
   // cekmutasi
@@ -204,13 +204,55 @@ class Ambildata_model
     return $this->dbh->hitungBaris2();
   }
 
+  /**
+   * Cek depo mutasi (original)
+   */
   public function cekdepositmutasi($jumlah)
   {
-    $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' ");
-
+    $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD'");
     return $this->dbh->hitungBaris2();
   }
 
+  /**
+   * Cek depo mutasi (modifikasi)
+   */
+  public function cekdepositmutasi2($jumlah)
+  {
+    $user = $_SESSION['user'];
+    $username = $user['username'];
+    $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' AND username = '$username'");
+    if ($this->dbh->hitungBaris2() == 1) {
+      $cek = $this->db->prepare("SELECT * FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' AND username = '$username'");
+      $cek->execute();
+      $fetchCek = $cek->fetch();
+      return count($fetchCek) > 0;
+    }
+    return false;
+  }
+
+  public function aftercekdepositmutasi2($jumlah, $provider)
+  {
+    $user = $_SESSION['user'];
+    $username = $user['username'];
+    $sql = "UPDATE mutasi SET status = 'READ' WHERE jumlah = '$jumlah' AND provider = '$provider' AND username = '$username'";
+    $prep = $this->db->prepare($sql);
+    $status = $prep->execute();
+    $count = $prep->rowCount();
+
+    if ($status) {
+      if ($count == '0') {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  /**
+   * Update mutasi table
+   * @param string $jumlah jumlah nominal dengan angka unik
+   * @param string $provider ovo, gopay, transfer bank
+   */
   public function updatemutasi($jumlah, $provider)
   {
     $this->dbh->query("UPDATE mutasi SET status = 'READ' WHERE jumlah = '$jumlah' AND provider = '$provider' ");
