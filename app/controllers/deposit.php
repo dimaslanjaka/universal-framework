@@ -143,7 +143,7 @@ class Deposit extends Controller
     $data['title'] = 'Cek Mutasi OVO';
     $data['allusers'] = $this->model('Admin_model')->allusers();
     $data['mutasi'] = $this->model('Deposit_model')->bacamutasi($kode, $nominal);
-    $data['cek_depo'] = $this->model('Ambildata_model')->cekdepositmutasi2($data['mutasi']['jumlah']);
+    ///$data['cek_depo'] = $this->model('Ambildata_model')->cekdepositmutasi2($data['mutasi']['jumlah']);
     $data['interface'] = $this;
     $this->view('deposit/ovo/cekmutasi', $data);
   }

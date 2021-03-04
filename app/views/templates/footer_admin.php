@@ -41,7 +41,7 @@
 
 
 
-<?= include __DIR__ . '/modal.php'; ?>
+<?php include __DIR__ . '/modal.php'; ?>
 </body>
 
 <?php

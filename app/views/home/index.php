@@ -854,7 +854,7 @@
 
                                 <?php foreach ($data['metodedeposit'] as $metoddepo) : ?>
 
-                                    <option value="<?= $metoddepo['provider']; ?>"><?= $metoddepo['provider']; ?></option>
+                                    <option value="<?= $metoddepo['provider']; ?>" id="metode-<?= strtolower($metoddepo['provider']); ?>"><?= $metoddepo['provider']; ?></option>
 
                                 <?php endforeach; ?>
 
@@ -909,8 +909,11 @@
 
 
 
-
+<script>
+    const endpoint_ovo = `<?= BASEURL; ?>deposit/cekmutasiovo/0/0`;
+    <?php include __DIR__ . '/index.js'; ?>
+</script>
 <script src="<?= BASEURL; ?>js/custom/home.js"></script>
 <?php
 
-disableForm();
+//disableForm();

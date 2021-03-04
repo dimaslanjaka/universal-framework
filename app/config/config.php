@@ -31,7 +31,7 @@ if ('chandra.smm' != $_SERVER['HTTP_HOST']) {
   $dbs = 'root';
   $dbp = '';
   $base = 'http://chandra.smm/public/';
-  $wname = 'Chandra Pedia';
+  $wname = 'Chandra Pedia Development Mode';
 }
 
 define('DB_NAME', $dbn);

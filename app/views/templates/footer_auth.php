@@ -5,7 +5,7 @@
 <script src="<?= BASEURL; ?>js/bootstrap.min.js"></script>
 
 <script src="<?= BASEURL; ?>js/main_login.js"></script>
-<?= include __DIR__ . '/modal.php'; ?>
+<?php include __DIR__ . '/modal.php'; ?>
 </body>
 
 

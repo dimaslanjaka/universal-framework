@@ -37,7 +37,7 @@
 <script src="<?= BASEURL; ?>js/vendor/bootstrap-datepicker.js"></script>
 
 <script src="<?= BASEURL; ?>js/vendor/bootstrap-tagsinput.min.js"></script>
-<?= include __DIR__ . '/modal.php'; ?>
+<?php include __DIR__ . '/modal.php'; ?>
 </body>
 
 

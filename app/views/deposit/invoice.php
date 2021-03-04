@@ -385,7 +385,7 @@
 
                         <a class="btn btn-danger" href="<?= BASEURL; ?>deposit/batalkandeposit/<?= $deposit['kode_deposit']; ?>">Batalkan</a>
 
-                        <a id="sdh-TF" class="btn btn-success" href="<?= BASEURL; ?>deposit/konfirmasideposit/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>">Sudah Transfer</a>
+                        <a id="sdh-TF" class="btn btn-success" href="<?= BASEURL; ?>deposit/konfirmasideposit/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>">Sudah Transfer (Cek)</a>
 
                     <?php endif; ?>
 
@@ -415,7 +415,7 @@ if (trim(strtolower($deposit['provider'])) == 'ovo') {
     if ($branch != null) {
     ?>
         const endpoint_cekmutasi = `<?= BASEURL; ?>deposit/cekmutasi<?= $branch ?>/<?= $deposit['kode_deposit']; ?>/<?= $deposit['jumlah_transfer']; ?>`;
-        <?= include __DIR__ . '/invoice.js'; ?>
+        <?php include __DIR__ . '/invoice.js'; ?>
     <?php
     }
     ?>

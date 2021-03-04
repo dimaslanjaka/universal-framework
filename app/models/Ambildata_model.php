@@ -209,8 +209,10 @@ class Ambildata_model
    */
   public function cekdepositmutasi($jumlah)
   {
-    $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD'");
-    return $this->dbh->hitungBaris2();
+    $user = $_SESSION['user'];
+    $username = $user['username'];
+    $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' AND username = '$username'");
+    return (int) $this->dbh->hitungBaris2();
   }
 
   /**
@@ -221,16 +223,10 @@ class Ambildata_model
     $user = $_SESSION['user'];
     $username = $user['username'];
     $this->dbh->query("SELECT count(*) FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' AND username = '$username'");
-    if ($this->dbh->hitungBaris2() == 1) {
-      $cek = $this->db->prepare("SELECT * FROM mutasi WHERE jumlah = '$jumlah' AND status = 'UNREAD' AND username = '$username'");
-      $cek->execute();
-      $fetchCek = $cek->fetch();
-      return count($fetchCek) > 0;
-    }
-    return false;
+    return $this->dbh->hitungBaris2() === "1";
   }
 
-  public function aftercekdepositmutasi2($jumlah, $provider)
+  public function aftercekdepositmutasi($jumlah, $provider)
   {
     $user = $_SESSION['user'];
     $username = $user['username'];

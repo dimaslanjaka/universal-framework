@@ -216,3 +216,31 @@ function convert_to_number($rupiah)
 {
   return intval(preg_replace('/,.*|[^0-9]/', '', $rupiah));
 }
+
+/**
+ * Get cookie value by name
+ */
+function get_cookie($name)
+{
+  if (isset($_COOKIE[$name])) return $_COOKIE[$name];
+  return null;
+}
+
+/**
+ * Check cookie by name
+ */
+function has_cookie($name)
+{
+  return get_cookie($name) !== null;
+}
+
+/**
+ * Set cookie
+ */
+function set_cookie($name, $value, $mins = 1, $path = '/', $domain = null)
+{
+  if ($domain == null) {
+    $domain = $_SERVER['HTTP_HOST'];
+  }
+  setcookie($name, $value, time() + (60 * $mins), $path, $domain);
+}
