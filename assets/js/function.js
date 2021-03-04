@@ -7,6 +7,8 @@
  * Licensed under The MIT License
  * http://www.opensource.org/licenses/mit-license
  *
+ * Usage example:
+ * alert(convertToRupiah(10000000)); -> "Rp. 10.000.000"
  */
 function convertToRupiah(angka) {
   var rupiah = "";
@@ -21,14 +23,24 @@ function convertToRupiah(angka) {
       .join("")
   );
 }
-/**
- * Usage example:
- * alert(convertToRupiah(10000000)); -> "Rp. 10.000.000"
- */
-function convertToAngka(rupiah) {
-  return parseInt(rupiah.replace(/,.*|[^0-9]/g, ""), 10);
-}
+
 /**
  * Usage example:
  * alert(convertToAngka("Rp 10.000.123")); -> 10000123
  */
+function convertToAngka(rupiah) {
+  return parseInt(rupiah.replace(/,.*|[^0-9]/g, ""), 10);
+}
+
+function hideLoading() {
+  $("body").removeClass("show-spinner");
+}
+
+function showLoading() {
+  $("body").addClass("show-spinner");
+}
+
+$(document).on("submit", "form#single", function (e) {
+  //e.preventDefault();
+  $(this).find(":input[type=submit]").prop("disabled", true);
+});

@@ -623,11 +623,10 @@
                             <span aria-hidden="true">&times;</span>
 
                         </button>
-
                     </div>
 
                     <div class="modal-body body-pesansosmed">
-                        <form class="form-horizontal" method="POST" action="<?= BASEURL; ?>order/sosmed">
+                        <form class="form-horizontal" method="POST" action="<?= BASEURL; ?>order/sosmed" id="single">
 
                             <div class="form-group row">
 
@@ -817,7 +816,7 @@
 
                 <img src="https://tripay.co.id/member-page/asset/icons/deposit2.png" alt="deposit" class="center">
 
-                <form class="custom__form p-3" action="<?= BASEURL; ?>home/inputdeposit" method="POST">
+                <form class="custom__form p-3" action="<?= BASEURL; ?>home/inputdeposit" method="POST" id="single">
 
                     <div class="form-group mt-0">
 
