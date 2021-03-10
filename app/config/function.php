@@ -1,4 +1,5 @@
 <?php
+include __DIR__ . '/mysql.php';
 
 function tanggal_indo($tanggal)
 {

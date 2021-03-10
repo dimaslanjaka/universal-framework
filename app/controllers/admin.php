@@ -1706,6 +1706,15 @@ class Admin extends Controller
     header('Location:' . BASEURL . 'admin/manageserviceppob');
   }
 
+  public function dbackup()
+  {
+    $data['db'] = $this->db;
+    $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
+    $data['title'] = 'Database Backup';
+    $data['table'] = isset($_REQUEST['table']) ? trim($_REQUEST['table']) : '*';
+    $this->view('admin/database', $data);
+  }
+
   public function manageservicesosmed()
   {
     $data['allservicessosmed'] = $this->model('Admin_model')->allservicessosmed();
