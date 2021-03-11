@@ -15,7 +15,8 @@ class Home_model
   {
     $this->dbh->query("SELECT * FROM semua_pembelian WHERE user = '$data' ORDER BY id DESC LIMIT 10");
 
-    return $this->dbh->resultSet();
+    $result = $this->dbh->resultSet();
+    return $result;
   }
 
   public function datauser($username)

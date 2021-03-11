@@ -25,6 +25,15 @@ class Home extends Controller
     $this->view('templates/footer');
   }
 
+  public function lastorder()
+  {
+    $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
+    $data['title'] = 'Dashboard';
+    $data['pembelian'] = $this->model('Home_model')->pesananTerakhir($_SESSION['user']['username']);
+    $data['db'] = $this->dbh;
+    $this->view('home/lastorder', $data);
+  }
+
   public function orderpulsa()
   {
     $kategori = $_POST['kategori'];

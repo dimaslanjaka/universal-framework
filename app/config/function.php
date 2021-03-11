@@ -245,3 +245,25 @@ function set_cookie($name, $value, $mins = 1, $path = '/', $domain = null)
   }
   setcookie($name, $value, time() + (60 * $mins), $path, $domain);
 }
+
+function escape_mysql_string($value)
+{
+  $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+  $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
+
+  return str_replace($search, $replace, $value);
+}
+
+function escape_non_ascii($value)
+{
+  $return = '';
+  for ($i = 0; $i < strlen($value); ++$i) {
+    $char = $value[$i];
+    $ord = ord($char);
+    if ($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
+      $return .= $char;
+    else
+      $return .= '\\x' . dechex($ord);
+  }
+  return $return;
+}

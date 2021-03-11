@@ -303,9 +303,16 @@
                 <div class="card card-table mg-t-20 mg-sm-t-30">
 
                     <div class="card-header p-3">
-
-                        <h6 class="slim-card-title"> <i class="iconsminds-clock-back"></i> 10 Transaksi Terakhir</h6>
-
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="slim-card-title"> <i class="iconsminds-clock-back"></i> 10 Transaksi Terakhir</h6>
+                            </div>
+                            <div>
+                                <h6 class="slim-card-title">
+                                    <a class="text-primary" href="#" id="check-refund"><i class="iconsminds-reload"></i> Check Refund</a>
+                                </h6>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- card-header -->

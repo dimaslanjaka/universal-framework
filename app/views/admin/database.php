@@ -1,19 +1,76 @@
 <?php
-header('Content-Type: application/json');
+//header('Content-Type: application/json');
+header('Content-Type: text/plain; charset=utf-8');
+
 /**
  * @var PDO
  */
 $pdo = $data['db'];
+$pdo->exec("SET sql_mode='NO_BACKSLASH_ESCAPES'");
+$pdo->exec("SET NAMES `utf8` COLLATE `utf8_general_ci`");
 
-$setn = $pdo->exec("SET NAMES `utf8` COLLATE `utf8_general_ci`");
-$showtbl = $pdo->prepare("SHOW TABLES");
-$showtbl->execute();
-$result = $showtbl->fetchAll(\PDO::FETCH_COLUMN);
-var_dump($result);
+if ($_REQUEST['table'] == '*') {
+  $showtbl = $pdo->prepare("SHOW TABLES");
+  $showtbl->execute();
+  $tables = $showtbl->fetchAll(\PDO::FETCH_COLUMN);
+} else {
+  $tables =  explode(',', $_REQUEST['table']);
+}
+
+foreach ($tables as $table) {
+  $res = "";
+  $res .= "/*---------------------------------------------------------------" .
+    "\n  TABLE: `{$table}`" .
+    "\n  ---------------------------------------------------------------*/\n\n";
+  $res .= "DROP TABLE IF EXISTS `{$table}`;\n";
+  $creation = $pdo->prepare("SHOW CREATE TABLE `{$table}`");
+  $creation->execute();
+  $result = $creation->fetchAll(\PDO::FETCH_KEY_PAIR);
+  $res .= $result[$table] . ";\n";
+  $select = $pdo->prepare("SELECT * FROM `{$table}`");
+  $select->execute();
+  $selectdata = $select->fetchAll(PDO::FETCH_ASSOC);
+
+  $num_rows = count($selectdata);
+  if ($num_rows > 0) {
+    $vals = array();
+    $z = 0;
+    for ($i = 0; $i < $num_rows; ++$i) {
+      $items = $selectdata[$i];
+      //var_dump($items);
+      $vals[$z] = "(";
+      $counter = 0;
+      $maxcounter = count($items);
+      foreach ($items as $key => $value) {
+        //var_dump($key, $value);
+        /*
+      if (!empty($value)) {
+        $vals[$z] .= "'" . escape_mysql_string($value) . "'";
+      } else {
+        $vals[$z] .= "NULL";
+      }
+      */
+        $vals[$z] .= "'" . escape_mysql_string($value) . "'";
+        if ($counter < $maxcounter - 1) {
+          $vals[$z] .= ",";
+        }
+        $counter++;
+      }
+      $vals[$z] .= ")";
+      $z++;
+      $res .= "INSERT INTO `{$table}` VALUES ";
+      $res .= "  " . implode(";\nINSERT INTO `{$table}` VALUES ", $vals) . ";\n";
+    }
+  }
+
+
+  echo $res;
+}
+
 
 function &backup_tables($host, $user, $pass, $name, $tables = '*')
 {
-  $data = "\n/*---------------------------------------------------------------" .
+  $res = "\n/*---------------------------------------------------------------" .
     "\n  SQL DB BACKUP " . date("d.m.Y H:i") . " " .
     "\n  HOST: {$host}" .
     "\n  DATABASE: {$name}" .
@@ -34,13 +91,13 @@ function &backup_tables($host, $user, $pass, $name, $tables = '*')
   }
 
   foreach ($tables as $table) {
-    $data .= "\n/*---------------------------------------------------------------" .
+    $res .= "\n/*---------------------------------------------------------------" .
       "\n  TABLE: `{$table}`" .
       "\n  ---------------------------------------------------------------*/\n";
-    $data .= "DROP TABLE IF EXISTS `{$table}`;\n";
+    $res .= "DROP TABLE IF EXISTS `{$table}`;\n";
     $res = mysql_query("SHOW CREATE TABLE `{$table}`", $link);
     $row = mysql_fetch_row($res);
-    $data .= $row[1] . ";\n";
+    $res .= $row[1] . ";\n";
 
     $result = mysql_query("SELECT * FROM `{$table}`", $link);
     $num_rows = mysql_num_rows($result);
@@ -64,10 +121,10 @@ function &backup_tables($host, $user, $pass, $name, $tables = '*')
         $vals[$z] .= ")";
         $z++;
       }
-      $data .= "INSERT INTO `{$table}` VALUES ";
-      $data .= "  " . implode(";\nINSERT INTO `{$table}` VALUES ", $vals) . ";\n";
+      $res .= "INSERT INTO `{$table}` VALUES ";
+      $res .= "  " . implode(";\nINSERT INTO `{$table}` VALUES ", $vals) . ";\n";
     }
   }
   mysql_close($link);
-  return $data;
+  return $res;
 }

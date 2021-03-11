@@ -15,3 +15,7 @@ window.onload = function () {
     }
   }
 };
+
+$(document).on("click", "a#check-refund", function (e) {
+  e.preventDefault();
+});
