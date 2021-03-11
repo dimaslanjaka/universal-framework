@@ -1,5 +1,6 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
+/// <reference path="../../../../../libs/js/globals.d.ts" />
 /// <reference types="node" />
 /// <reference types="react" />
 /// <reference types="jquery" />
@@ -745,6 +746,16 @@ interface progressBarTimer {
  * @see https://github.com/imalliar/jquery.progressBarTimer
  */
 declare var progressBarTimer: progressBarTimer;
+interface JQueryStatic {
+    /**
+     * Accepts a string containing a CSS selector which is then used to match a set of elements.
+     *
+     * @param selector A string containing a selector expression
+     * @param context A DOM Element, Document, or jQuery to use as context
+     * @see {@link https://api.jquery.com/jQuery/#jQuery-selector-context}
+     */
+    (selector: string, context?: Element | JQuery | string): JQuery;
+}
 /**
  * Hidden reCaptcha v3 object initializer
  */

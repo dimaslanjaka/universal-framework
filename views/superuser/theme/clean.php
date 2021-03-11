@@ -19,6 +19,10 @@ if (user()->is_admin() || LOCAL) {
     }
     $config = \JSON\json::init()->load(ROOT . '/config.json', true);
     $config->result['cache']['ext'] = $latest;
+    $config->result['app']['environtment'] = \MVC\helper::env('dev') ? 'development' : 'production';
+    $config->result['app']['domain'] = $_SERVER['HTTP_HOST'];
+    $config->result['app']['root'] = ROOT;
+    $config->result['app']['protocol'] = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https" : "http";
     $config->save();
     e(['result' => remove_root($latestFileName) . " $latest", 'conf' => $config->result]);
   }

@@ -75,7 +75,7 @@ $(document).ready(function () {
             function (value, index) {
               if (value.hasOwnProperty("limit")) {
                 var g = guid();
-                value.limit = `<form data-success="dtreload" method="post" action="/coupon/manage/edit?guid=${g}" class="form-inline">
+                value.limit = `<form data-success="dtreload" method="post" action="manage/edit?guid=${g}" class="form-inline">
                 <input type="hidden" name="coupon" value="${value.code}" />
                 <div class="md-form m-0 p-0"><input class="form-control p-0 m-0" type="number" id="limit-${
                   value.code
@@ -199,7 +199,7 @@ $(document).ready(function () {
       paging: true,
       lengthMenu: [5, 10, 15, 20, 25, 30, 100, 200, 300, 400, 500, "All"],
       ajax: {
-        url: "/coupon/manage/index?report",
+        url: "manage/index?report",
         headers: {
           Accept: "application/json",
         },

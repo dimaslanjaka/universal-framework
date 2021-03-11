@@ -6,7 +6,7 @@
         "allowSyntheticDefaultImports": true,
         "allowUnreachableCode": true,
         "allowUnusedLabels": true,
-        "checkJs": true,
+        "checkJs": false,
         "pretty": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
