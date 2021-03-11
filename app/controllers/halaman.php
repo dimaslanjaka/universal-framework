@@ -143,16 +143,53 @@ class Halaman extends Controller
     }
   }
 
-
-  /// halaman tiket
-  public function tiket()
+  public function chat()
   {
     $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
-    $data['title'] = 'Tiket';
+    $data['title'] = 'Chat Room';
     $data['faq'] = $this->model('Halaman_model')->daftarfaq();
+    $data['db'] = $this->dbh;
+    $usersf = $this->dbh->query("SELECT * FROM users");
+    $usersf->execute();
+    $data['users'] = $usersf->fetchAll();
 
     $this->view('templates/header', $data);
-    $this->view('halaman/tiket', $data);
+    $this->view('halaman/chat', $data);
+    $this->view('templates/footer');
+  }
+
+  public function ticketrecord()
+  {
+    $username = $_SESSION['user']['username'];
+    $data['user'] = $this->model('Home_model')->datauser($username);
+    $data['db'] = $this->dbh;
+
+    $this->view('halaman/tickets-receiver', $data);
+  }
+
+  public function ticketview($id)
+  {
+    $username = $_SESSION['user']['username'];
+    $data['user'] = $this->model('Home_model')->datauser($username);
+    $data['id_tiket'] = $id;
+    $this->view('templates/header', $data);
+    $this->view('halaman/tickets-view', $data);
+    $this->view('templates/footer');
+  }
+
+  public function tickets()
+  {
+    $username = $_SESSION['user']['username'];
+    $data['user'] = $this->model('Home_model')->datauser($username);
+    $data['title'] = 'Help Desk Ticket System';
+    $data['faq'] = $this->model('Halaman_model')->daftarfaq();
+    $data['db'] = $this->dbh;
+    $getticket = $this->dbh->prepare("SELECT * FROM tiket WHERE user = '$username'");
+    $getticket->execute();
+    $data['my_tickets'] = $getticket->fetchAll(PDO::FETCH_ASSOC);
+
+    $this->view('templates/header', $data);
+    $this->view('halaman/tickets', $data);
     $this->view('templates/footer');
   }
 

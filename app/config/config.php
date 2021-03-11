@@ -8,7 +8,7 @@ if ('chandra.smm' != $_SERVER['HTTP_HOST']) {
   $dbn = 'chandrap_smm';
   $dbs = 'chandrap_smm';
   $dbp = 'chandrapedia';
-  $base = 'https://chandrapedia.my.id/public/';
+  $base = 'https://my.chandrapedia.my.id/public/';
   $wname = 'Chandra Pedia';
 } else {
   $dbn = 'chandra_smm';

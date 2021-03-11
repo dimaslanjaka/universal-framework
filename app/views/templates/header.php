@@ -670,7 +670,7 @@ instagram : https://instagram.com/ilman.sn
 
     </div>
 
-    <!-- GetButton.io widget -->
+    <!-- GetButton.io widget
 
     <script type="text/javascript">
         (function() {
@@ -704,6 +704,159 @@ instagram : https://instagram.com/ilman.sn
         })();
     </script>
 
-    <!-- /GetButton.io widget -->
+    /GetButton.io widget -->
+
+    <!-- Custom Widget -->
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/fontawesome.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/regular.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/solid.css" rel="stylesheet">
+    <div id="widget-f">
+        <a href="#widget" class="at-float" id="at-menu-share">
+            <i class="fas fa-share my-float"></i>
+        </a>
+        <ul>
+            <li><a href="https://wa.me/6285350505161" title="Kirim Pesan Whatsapp">
+                    <i class="fab fa-whatsapp my-float"></i>
+                </a></li>
+            <li><a href="https://chat.whatsapp.com/JMs4Uj3WiIfKH2GHJz8NAQ" title="Whatsapp Group">
+                    <i class="fas fa-users my-float"></i>
+                </a></li>
+        </ul>
+    </div>
+    <style>
+        #widget-f .label-container {
+            position: fixed;
+            bottom: 48px;
+            right: 105px;
+            display: table;
+            visibility: hidden;
+        }
+
+        #widget-f .label-text {
+            color: #fff;
+            background: rgba(51, 51, 51, 0.5);
+            display: table-cell;
+            vertical-align: middle;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        #widget-f .label-arrow {
+            display: table-cell;
+            vertical-align: middle;
+            color: #333;
+            opacity: 0.5;
+        }
+
+        #widget-f .at-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #f33;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            animation: bot-to-top 2s ease-out;
+        }
+
+        #widget-f ul {
+            position: fixed;
+            right: 40px;
+            padding-bottom: 20px;
+            bottom: 80px;
+            z-index: 100;
+        }
+
+        #widget-f ul li {
+            list-style: none;
+            margin-bottom: 10px;
+        }
+
+        #widget-f ul li a {
+            background-color: #f33;
+            color: #fff;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+            width: 60px;
+            height: 60px;
+            display: block;
+        }
+
+        #widget-f ul:hover {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        #widget-f .my-float {
+            font-size: 24px;
+            margin-top: 18px;
+        }
+
+        #widget-f a#at-menu-share+ul {
+            visibility: hidden;
+        }
+
+        #widget-f a#at-menu-share:hover+ul {
+            visibility: visible;
+            animation: scale-in 0.5s;
+        }
+
+        #widget-f a#at-menu-share i {
+            animation: rotate-in 0.5s;
+        }
+
+        #widget-f a#at-menu-share:hover>i {
+            animation: rotate-out 0.5s;
+        }
+
+        @keyframes bot-to-top {
+            0% {
+                bottom: -40px;
+            }
+
+            50% {
+                bottom: 40px;
+            }
+        }
+
+        @keyframes scale-in {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate-in {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-out {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
+    </style>
+    <!-- /Custom widget -->
 
     <?php include __DIR__ . '/header_util.php'; ?>

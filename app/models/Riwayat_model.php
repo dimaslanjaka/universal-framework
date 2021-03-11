@@ -2,9 +2,6 @@
 
 class Riwayat_model extends Controller
 {
-  protected $dbh;
-  protected $db;
-
   public function __construct()
   {
     $this->dbh = new Database();

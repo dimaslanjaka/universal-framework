@@ -5,10 +5,7 @@
         <div class="row">
 
             <div class="col-12">
-
-
-                <a href="/">Home</a>
-                <h1>Dashboard Content</h1>
+                <h1><?= $data['title']; ?></h1>
 
                 <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
 
@@ -16,7 +13,7 @@
 
                         <li class="breadcrumb-item">
 
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
 
                         </li>
 
@@ -35,21 +32,8 @@
                 <div class="separator mb-5"></div>
 
 
-
-
-
-
-
-                <div class="col-lg-12 col-xl-6">
-
-                    <div class="alert alert-info">
-
-                        <p>Slide Ini bisa di geser ya!</p>
-
-                    </div>
-
+                <div class="col-md-12">
                     <div class="icon-cards-row">
-
                         <div class="glide dashboard-numbers">
 
                             <div class="glide__track" data-glide-el="track">

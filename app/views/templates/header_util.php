@@ -22,7 +22,7 @@
   }
 
   #toast-container>.toast-error:before {
-    content: "\f001";
+    content: "\f00d";
   }
 
   #toast-container>.toast-info:before {

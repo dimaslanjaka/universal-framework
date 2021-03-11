@@ -5,17 +5,11 @@
         <div class="row">
 
             <div class="col-12">
-
-
-
                 <div class="mb-2">
 
                     <h1>Profile</h1>
                     <a href="/">Home</a>
                     <div class="text-zero top-right-button-container">
-
-
-
                     </div>
 
                     <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block" aria-label="breadcrumb">
@@ -24,7 +18,7 @@
 
                             <li class="breadcrumb-item">
 
-                                <a href="#">Home</a>
+                                <a href="/">Home</a>
 
                             </li>
 
@@ -75,8 +69,6 @@
                                         </div>
 
                                         <img src="<?= $admin['link_foto']; ?>" alt="Detail Picture" class="card-img-top" />
-
-
 
                                         <div class="card-body">
 

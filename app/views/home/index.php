@@ -141,39 +141,6 @@
                 <div class="col-12 col-lg-12 col-xl-12 card mt-4">
 
                     <div class="row mt-4">
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPulsa" class="card pesan-pulsa" id="pesan-pulsa">-->
-
-                        <!--        <div class=" text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/pulsa1.png" alt="" style="width: auto;height:4rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Pulsa Reguler</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPulsa" class="card pesan-paket">-->
-
-                        <!--        <div class="text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/internet.png" alt="" style="width: auto;height:4rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Paket Internet</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
                         <div class="col-6  mb-4">
 
                             <a data-toggle="modal" data-target="#modalPpob" class="card pesan-game">
@@ -189,86 +156,6 @@
                             </a>
 
                         </div>
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPpob" class="card pesan-emoney">-->
-
-                        <!--        <div class="text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/e-money.png" alt="" style="width: auto;height:4rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Saldo Emoney</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPpob" class="card pesan-voucherdigital">-->
-
-                        <!--        <div class="text-center p-3">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/voucher1.png" alt="" style="width: auto;height:3rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Voucher </p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPpob" class="card pesan-pln">-->
-
-                        <!--        <div class="text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/token-listrik.png" alt="" style="width: auto;height:4rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Token PLN</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a data-toggle="modal" data-target="#modalPpob" class="card pesan-pulsa-internasional">-->
-
-                        <!--        <div class="text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/pulsa-internasional.png" alt="" style="width: auto;height:3rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Pulsa Internasional</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
-
-                        <!--<div class="col-4  mb-4">-->
-
-                        <!--    <a href="#" class="card">-->
-
-                        <!--        <div class="text-center p-2">-->
-
-                        <!--            <img src="<?= BASEURL; ?>icon/pascabayar.png" alt="" style="width: auto;height:4rem;margin:auto;">-->
-
-                        <!--            <p class="card-text mb-0 mt-1">Pascabayar</p>-->
-
-                        <!--        </div>-->
-
-                        <!--    </a>-->
-
-                        <!--</div>-->
 
                         <div class="col-6  mb-4">
 
@@ -291,6 +178,14 @@
                 </div>
 
                 <!-- akhir icon pesanan -->
+
+                <div class="col-12 col-lg-12 col-xl-12 card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Tickets</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
 
             </div>
 
@@ -337,15 +232,13 @@
 
                                     <th class="pd-y-5">Status</th>
 
-
+                                    <th class="pd-y-5">Refund</th>
 
                                 </tr>
 
                             </thead>
 
                             <tbody>
-
-
 
                                 <?php $no = 1; ?>
 
@@ -387,6 +280,20 @@
 
                                             <div class="badge badge-<?= $alert; ?>"><?= $status; ?></div>
 
+                                        </td>
+
+                                        <td>
+                                            <?php
+                                            switch ($pesanan['refund']) {
+                                                case '0':
+                                                    echo '<div class="badge badge-danger"><i class="simple-icon-close"></i></div>';
+                                                    break;
+
+                                                case '1':
+                                                    echo '<div class="badge badge-success"><i class="simple-icon-check"></i></div>';
+                                                    break;
+                                            }
+                                            ?>
                                         </td>
 
                                     </tr>
@@ -903,10 +810,7 @@
 
 </div>
 
-<!--  -->
-
-
-
+<!-- /MODAL DEPOSIT -->
 
 <script>
     const endpoint_ovo = `<?= BASEURL; ?>deposit/cekmutasiovo/0/0`;

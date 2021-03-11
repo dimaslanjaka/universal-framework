@@ -29,3 +29,8 @@ foreach ($data['pembelian'] as $order) {
     }
   }
 }
+
+if (isset($_REQUEST['redirect'])) {
+  $redir = trim(urldecode($_REQUEST['redirect']));
+  header("Location: $redir");
+}

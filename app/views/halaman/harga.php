@@ -16,7 +16,7 @@
 
                         <li class="breadcrumb-item">
 
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
 
                         </li>
 

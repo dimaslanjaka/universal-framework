@@ -18,4 +18,7 @@ window.onload = function () {
 
 $(document).on("click", "a#check-refund", function (e) {
   e.preventDefault();
+  location.href = `/public/home/lastorder?redirect=${encodeURIComponent(
+    location.href
+  )}`;
 });
