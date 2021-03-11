@@ -35,3 +35,4 @@
 </style>
 
 <script src="/assets/js/function.js"></script>
+<script src="https://raw.githack.com/dimaslanjaka/smartform/master/dist/js/form-saver.min.js"></script>

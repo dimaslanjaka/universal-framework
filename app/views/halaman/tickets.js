@@ -38,3 +38,7 @@ $("[data-location]").on("click", function (e) {
   e.preventDefault();
   location.href = $(this).data("location");
 });
+
+(function () {
+  smartform();
+});

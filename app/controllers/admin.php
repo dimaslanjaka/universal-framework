@@ -39,6 +39,12 @@ class Admin extends Controller
     $data['countorderssosmed'] = $this->model('Admin_model')->countorderssosmed();
 
     $data['title'] = 'Dashboard Admin';
+
+    // tickets
+    $getticket = $this->db->prepare("SELECT * FROM tiket WHERE `status` = 'Pending'");
+    $getticket->execute();
+    $data['pending_tickets'] = $getticket->fetchAll(PDO::FETCH_ASSOC);
+
     $data['user'] = $this->model('Home_model')->datauser($_SESSION['user']['username']);
     $data['aktifitasuser'] = $this->model('Admin_model')->aktifitasuser();
     $this->view('templates/header_admin', $data);

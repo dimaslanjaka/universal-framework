@@ -384,6 +384,54 @@
 
                     </div>
 
+                    <div class="col-12 col-lg-12 col-xl-12 card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Tickets</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Sub</th>
+                                        <th scope="col">Msg</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $c = 0;
+                                    foreach ($data['pending_tickets'] as $ticket) {
+                                        $c++;
+                                        //var_dump($ticket);
+                                    ?>
+                                        <tr onclick="location.href=`/public/halaman/ticketview/<?= $ticket['id'] ?>`">
+                                            <th scope="row"><?= $c ?></th>
+                                            <td><?= $ticket['subjek'] ?></td>
+                                            <td><?= (strlen($ticket['pesan']) > 20) ? substr($ticket['pesan'], 0, 20) . '...' : $ticket['pesan'] ?></td>
+                                            <td><?php
+                                                switch (strtolower($ticket['status'])) {
+                                                    case 'pending':
+                                                        echo '<span class="badge badge-secondary">Pending</span>';
+                                                        break;
+                                                    case 'waiting':
+                                                        echo '<span class="badge badge-warning">Waiting</span>';
+                                                        break;
+                                                    case 'closed':
+                                                        echo '<span class="badge badge-danger">Closed</span>';
+                                                        break;
+                                                    case 'responded':
+                                                        echo '<span class="badge badge-success">Responded</span>';
+                                                        break;
+                                                }
+                                                ?></td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
 
 

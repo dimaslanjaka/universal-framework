@@ -13,8 +13,12 @@
                 <input id="mainIssue" class="form-control" name="subject" required>
                 <label class="mt-3">Details</label>
                 <textarea id="details" class="form-control" rows="2" name="msg" required></textarea>
+                <label for="" class="mt-3">WhatsApp Number</label>
+                <input type="number" name="whatsapp" class="form-control" required>
+                <small id="passwordHelpBlock" class="form-text text-success">
+                  Masukkan nomor whatsapp anda, agar admin dapat membalasnya langsung lewat whatsapp anda.
+                </small>
                 <div class="text-center">
-                  <p id="errMsg" class="text-center mt-2"></p>
                   <button id="submitTicket" class="btn btn-secondary text-center mt-2">Submit</button>
                 </div>
               </form>

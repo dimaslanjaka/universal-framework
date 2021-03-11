@@ -94,8 +94,6 @@ instagram : https://instagram.com/ilman.sn
         var url = '<?= BASEURL; ?>'
     </script>
 
-
-
     <link rel="stylesheet" type="text/css" href="<?= BASEURL; ?>css/main.css" />
     <?php include __DIR__ . '/header_util.php'; ?>
 </head>

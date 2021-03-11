@@ -253,6 +253,30 @@ function escape_mysql_string($value)
 
   return str_replace($search, $replace, $value);
 }
+
+/**
+ * Function to check string starting
+ * with given substring
+ */
+function startsWith($string, $startString)
+{
+  $len = strlen($startString);
+  return (substr($string, 0, $len) === $startString);
+}
+
+/**
+ * Function to check the string is ends
+ * with given substring or not
+ */
+function endsWith($string, $endString)
+{
+  $len = strlen($endString);
+  if ($len == 0) {
+    return true;
+  }
+  return (substr($string, -$len) === $endString);
+}
+
 /**
  * Takes a unix timestamp, e.g. time(); and converts to an "ago" format.
  */

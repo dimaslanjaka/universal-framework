@@ -172,6 +172,11 @@ class Halaman extends Controller
     $username = $_SESSION['user']['username'];
     $data['user'] = $this->model('Home_model')->datauser($username);
     $data['id_tiket'] = $id;
+    $getticket = $this->dbh->prepare("SELECT * FROM tiket WHERE id = '$id'");
+    $getticket->execute();
+    $data['tiket'] = $getticket->fetch();
+    $data['db'] = $this->dbh;
+    $data['title'] = "Ticket#$id";
     $this->view('templates/header', $data);
     $this->view('halaman/tickets-view', $data);
     $this->view('templates/footer');
