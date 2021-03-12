@@ -178,7 +178,9 @@
                 </div>
 
                 <!-- akhir icon pesanan -->
-
+                <div class="col-12 col-lg-12 col-xl-12 card mt-4 d-none">
+                    info dashboard
+                </div>
             </div>
 
 

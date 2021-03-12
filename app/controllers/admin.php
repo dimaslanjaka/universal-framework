@@ -41,7 +41,11 @@ class Admin extends Controller
     $data['title'] = 'Dashboard Admin';
 
     // tickets
-    $getticket = $this->db->prepare("SELECT * FROM tiket WHERE `status` = 'Pending'");
+    $sql = "SELECT * FROM tiket ";
+    if (!isset($_REQUEST['all-tickets'])) {
+      $sql .= "WHERE `status` = 'Pending' OR `status` = 'Waiting'";
+    }
+    $getticket = $this->db->prepare($sql);
     $getticket->execute();
     $data['pending_tickets'] = $getticket->fetchAll(PDO::FETCH_ASSOC);
 
