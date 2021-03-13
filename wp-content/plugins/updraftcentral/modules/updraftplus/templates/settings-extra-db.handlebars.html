@@ -1,0 +1,24 @@
+<div class="updraft_backupextradbs_row updraft-hidden" id="updraft_backupextradbs_row_{{updraft_extra_dbs}}">
+	<button type="button" title="{{remove}}" class="updraft_backupextradbs_row_delete">X</button>
+	
+	<h3>{{backup_external_database}}</h3>
+	
+	<div class="updraft_backupextradbs_testresultarea"></div>
+	
+	<div class="updraft_backupextradbs_row_label updraft_backupextradbs_row_host">{{host}}:</div>
+	<input class="updraft_backupextradbs_row_textinput extradb_host" type="text" name="updraft_extradbs[{{updraft_extra_dbs}}][host]" value="{{host_attr}}">
+	
+	<div class="updraft_backupextradbs_row_label">{{username}}:</div>
+	<input class="updraft_backupextradbs_row_textinput extradb_user" type="text" name="updraft_extradbs[{{updraft_extra_dbs}}][user]" value="{{user_attr}}">
+	
+	<div class="updraft_backupextradbs_row_label">{{password}}:</div>
+	<input class="updraft_backupextradbs_row_textinput extradb_pass" type="text" name="updraft_extradbs[{{updraft_extra_dbs}}][pass]" value="{{pass_attr}}">
+	
+	<div class="updraft_backupextradbs_row_label">{{database}}:</div>
+	<input class="updraft_backupextradbs_row_textinput extradb_name" type="text" name="updraft_extradbs[{{updraft_extra_dbs}}][name]" value="{{name_attr}}">
+	
+	<div class="updraft_backupextradbs_row_label" title="{{backup_tables_with_prefixes}}">{{table_prefix}}:</div>
+	<input class="updraft_backupextradbs_row_textinput extradb_prefix" title="{{backup_tables_with_prefixes}}" type="text" name="updraft_extradbs[{{updraft_extra_dbs}}][prefix]" value="{{prefix_attr}}">
+	
+	<div class="updraft_backupextradbs_row_label updraft_backupextradbs_row_test"><a href="#" class="updraft_backupextradbs_row_testconnection">{{test_connection}}</a></div>
+</div>

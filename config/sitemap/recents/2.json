@@ -1,0 +1,175 @@
+{
+    "kind": "youtube#videoListResponse",
+    "etag": "\"p4VTdlkQv3HQeTEaXgvLePAydmU/YA-Sg914CCDFnv36NrifV95ND54\"",
+    "pageInfo": {
+        "totalResults": 1,
+        "resultsPerPage": 1
+    },
+    "items": [
+        {
+            "kind": "youtube#video",
+            "etag": "\"p4VTdlkQv3HQeTEaXgvLePAydmU/4tt21XcEGpoB8heqLAQ5R8mqoBA\"",
+            "id": "9wqpfFI3EVE",
+            "snippet": {
+                "publishedAt": "2013-01-10T01:21:02.000Z",
+                "channelId": "UCLRpI5yd10aJxSel3e6MlNw",
+                "title": "\"Beauty And A Beat\" - Justin Bieber (Alex Goot, Kurt Schneider, and Chrissy Costanza Cover)",
+                "description": "- This song on iTunes/Spotify: http://smarturl.it/agatcbaab\n- Alex Goot original music: http://youtube.com/watch?v=NEjKoz_YbmU&index=1&list=PL92B44799EAAD02C1\n_________________________________\n\nGET IN TOUCH!\n\nALEX GOOT: \n\nYouTube: http://www.youtube.com/GootMusic\nFacebook: http://www.facebook.com/gootmusic\nTwitter: http://www.twitter.com/alexgoot\n\nKURT SCHNEIDER\n\nYouTube: http://www.youtube.com/KurtHugoSchneider\nFacebook: http://www.facebook.com/kurthugoschneider\nTwitter: http://www.twitter.com/kurthschneider\n\nCHRISSY COSTANZA (from Against The Current)\n\nYouTube: http://www.youtube.com/AgainstTheCurrentNY\nFacebook: http://www.facebook.com/againstthecurrentband\nTwitter: http://www.twitter.com/ChrissyCostanza\n\n______________\n\"Beauty and a Beat\" - originally by Justin Bieber ft. Nicki Minaj\nWritten by: Max Martin, Anton Zaslavski, Savan Kotecha, Onika Maraj\nPublished by: Kobalt Music Publishing, Universal Music Publishing & Gema",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/9wqpfFI3EVE/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/9wqpfFI3EVE/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/9wqpfFI3EVE/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    },
+                    "standard": {
+                        "url": "https://i.ytimg.com/vi/9wqpfFI3EVE/sddefault.jpg",
+                        "width": 640,
+                        "height": 480
+                    },
+                    "maxres": {
+                        "url": "https://i.ytimg.com/vi/9wqpfFI3EVE/maxresdefault.jpg",
+                        "width": 1280,
+                        "height": 720
+                    }
+                },
+                "channelTitle": "gootmusic",
+                "tags": [
+                    "beauty",
+                    "justin bieber cover",
+                    "chrissy costanza",
+                    "chrissy costanza cover",
+                    "beat",
+                    "chrisst costanza alex goot",
+                    "chrissy",
+                    "gootmusic",
+                    "beauty and a beat chrissy costanza",
+                    "beauty and a beat kurt hugo schneider",
+                    "costanza",
+                    "justin bieber",
+                    "kurt hugo schneider",
+                    "kurt",
+                    "bieber",
+                    "beauty and a beat",
+                    "justin bieber beauty and a beat",
+                    "cover",
+                    "official",
+                    "acoustic",
+                    "piano",
+                    "acoustic version",
+                    "piano version",
+                    "beauty and a beat alex goot",
+                    "goot",
+                    "alex goot",
+                    "beauty and a beat justin bieber",
+                    "hugo",
+                    "schneider"
+                ],
+                "categoryId": "10",
+                "liveBroadcastContent": "none",
+                "localized": {
+                    "title": "\"Beauty And A Beat\" - Justin Bieber (Alex Goot, Kurt Schneider, and Chrissy Costanza Cover)",
+                    "description": "- This song on iTunes/Spotify: http://smarturl.it/agatcbaab\n- Alex Goot original music: http://youtube.com/watch?v=NEjKoz_YbmU&index=1&list=PL92B44799EAAD02C1\n_________________________________\n\nGET IN TOUCH!\n\nALEX GOOT: \n\nYouTube: http://www.youtube.com/GootMusic\nFacebook: http://www.facebook.com/gootmusic\nTwitter: http://www.twitter.com/alexgoot\n\nKURT SCHNEIDER\n\nYouTube: http://www.youtube.com/KurtHugoSchneider\nFacebook: http://www.facebook.com/kurthugoschneider\nTwitter: http://www.twitter.com/kurthschneider\n\nCHRISSY COSTANZA (from Against The Current)\n\nYouTube: http://www.youtube.com/AgainstTheCurrentNY\nFacebook: http://www.facebook.com/againstthecurrentband\nTwitter: http://www.twitter.com/ChrissyCostanza\n\n______________\n\"Beauty and a Beat\" - originally by Justin Bieber ft. Nicki Minaj\nWritten by: Max Martin, Anton Zaslavski, Savan Kotecha, Onika Maraj\nPublished by: Kobalt Music Publishing, Universal Music Publishing & Gema"
+                }
+            },
+            "contentDetails": {
+                "duration": "PT3M58S",
+                "dimension": "2d",
+                "definition": "hd",
+                "caption": "false",
+                "licensedContent": false,
+                "projection": "rectangular"
+            },
+            "statistics": {
+                "viewCount": "28684702",
+                "likeCount": "236930",
+                "dislikeCount": "4750",
+                "favoriteCount": "0",
+                "commentCount": "11946"
+            },
+            "duration_sec": 238
+        }
+    ],
+    "title": "Beauty And A Beat - Justin Bieber (Alex Goot, Kurt Schneider, and Chrissy Costanza Cover)",
+    "desc": "- This song on iTunes/Spotify: http://smarturl.it/agatcbaab\n- Alex Goot original music: http://youtube.com/watch?v=NEjKoz_YbmU&index=1&list=PL92B44799EAAD02C1\n_________________________________\n\nGET IN TOUCH!\n\nALEX GOOT: \n\nYouTube: http://www.youtube.com/GootMusic\nFacebook: http://www.facebook.com/gootmusic\nTwitter: http://www.twitter.com/alexgoot\n\nKURT SCHNEIDER\n\nYouTube: http://www.youtube.com/KurtHugoSchneider\nFacebook: http://www.facebook.com/kurthugoschneider\nTwitter: http://www.twitter.com/kurthschneider\n\nCHRISSY COSTANZA (from Against The Current)\n\nYouTube: http://www.youtube.com/AgainstTheCurrentNY\nFacebook: http://www.facebook.com/againstthecurrentband\nTwitter: http://www.twitter.com/ChrissyCostanza\n\n______________\nBeauty and a Beat - originally by Justin Bieber ft. Nicki Minaj\nWritten by: Max Martin, Anton Zaslavski, Savan Kotecha, Onika Maraj\nPublished by: Kobalt Music Publishing, Universal Music Publishing & Gema",
+    "img": null,
+    "charts": {
+        "view": "28684702",
+        "view_length": 8,
+        "dataChart": [
+            1,
+            2,
+            6,
+            7,
+            18,
+            22,
+            34,
+            36,
+            48,
+            49,
+            50,
+            54,
+            54,
+            55,
+            60,
+            64,
+            71,
+            71,
+            73,
+            74,
+            77,
+            77,
+            78,
+            78,
+            83,
+            93,
+            94,
+            96,
+            97,
+            97,
+            99
+        ],
+        "dataChartCount": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+        ]
+    }
+}

@@ -1,0 +1,161 @@
+{
+    "kind": "youtube#videoListResponse",
+    "etag": "\"p4VTdlkQv3HQeTEaXgvLePAydmU/NuIrc3RontVvaMHLp_dtFDmm-RE\"",
+    "pageInfo": {
+        "totalResults": 1,
+        "resultsPerPage": 1
+    },
+    "items": [
+        {
+            "kind": "youtube#video",
+            "etag": "\"p4VTdlkQv3HQeTEaXgvLePAydmU/4HXtjq797Jl1ISSP5z6hDgh3z_A\"",
+            "id": "uPS1qFK6PAM",
+            "snippet": {
+                "publishedAt": "2019-12-18T19:20:08.000Z",
+                "channelId": "UCKoafhJ9dkAWaEvlXCiBBwA",
+                "title": "Harry Styles - Juice (Lizzo cover) in the Live Lounge",
+                "description": "Harry Styles covers Lizzo Juice in the BBC Radio 1 Live Lounge\n\nhttp://vevo.ly/V4jgBZ",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/uPS1qFK6PAM/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/uPS1qFK6PAM/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/uPS1qFK6PAM/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    },
+                    "standard": {
+                        "url": "https://i.ytimg.com/vi/uPS1qFK6PAM/sddefault.jpg",
+                        "width": 640,
+                        "height": 480
+                    },
+                    "maxres": {
+                        "url": "https://i.ytimg.com/vi/uPS1qFK6PAM/maxresdefault.jpg",
+                        "width": 1280,
+                        "height": 720
+                    }
+                },
+                "channelTitle": "BBCRadio1VEVO",
+                "tags": [
+                    "Harry Styles",
+                    "Wonderful Christmastime",
+                    "Adore You",
+                    "Lizzo Juice",
+                    "Lights Up",
+                    "One Direction BBC",
+                    "Radio 1",
+                    "Live Lounge"
+                ],
+                "categoryId": "10",
+                "liveBroadcastContent": "none",
+                "localized": {
+                    "title": "Harry Styles - Juice (Lizzo cover) in the Live Lounge",
+                    "description": "Harry Styles covers Lizzo Juice in the BBC Radio 1 Live Lounge\n\nhttp://vevo.ly/V4jgBZ"
+                }
+            },
+            "contentDetails": {
+                "duration": "PT3M26S",
+                "dimension": "2d",
+                "definition": "hd",
+                "caption": "false",
+                "licensedContent": true,
+                "projection": "rectangular"
+            },
+            "statistics": {
+                "viewCount": "5928169",
+                "likeCount": "407861",
+                "dislikeCount": "3484",
+                "favoriteCount": "0",
+                "commentCount": "13311"
+            },
+            "duration_sec": 206
+        }
+    ],
+    "video_url": [
+        {
+            "url": "https://r6---sn-2uuxa3vh-02bs.googlevideo.com/videoplayback?expire=1577510118&ei=hpAGXub7JPKkz7sP8P-smAk&ip=36.82.98.1&id=o-AN-sdorJLazt9KuMnWDqOJ53AGgXiIRPFoAhaExbCZ-Z&itag=18&source=youtube&requiressl=yes&mm=31%2C29&mn=sn-2uuxa3vh-02bs%2Csn-npoeenee&ms=au%2Crdu&mv=m&mvi=5&pl=24&initcwndbps=293750&mime=video%2Fmp4&gir=yes&clen=18445120&ratebypass=yes&dur=205.055&lmt=1577241050168420&mt=1577488478&fvip=3&fexp=23842630&c=WEB&txp=5531432&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&lsparams=mm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHylml4wRgIhAMc8e9Yz-h_1G7KC5PudXOZKpdhhVWbcWXsjrqsPtEtnAiEAvkJWKCXJvvvpZ_xou2n0IQBwwA-rvrWkYcZmyGTJZG0%3D&signature=UEENAr9E0VhnRiW6x4mui8UJVAE-b4BOxepvo6c1-A7xBICaWz1wUoT86dtcuNUtFTlqYMulr-oCrHxabg55ko91sLgIARww2IxgLALA",
+            "format": "MP4 360p"
+        }
+    ],
+    "url_video_api": "https://www.googleapis.com/youtube/v3/videos/?part=id%2Csnippet%2Cstatistics%2CcontentDetails&id=uPS1qFK6PAM&key=AIzaSyA7A6yPL2V8OBGh-DsQ1spG0suJfe5ZJaw",
+    "title": "Harry Styles - Juice (Lizzo cover) in the Live Lounge",
+    "desc": "Harry Styles covers Lizzo Juice in the BBC Radio 1 Live Lounge\n\nhttp://vevo.ly/V4jgBZ",
+    "img": null,
+    "charts": {
+        "view": "5928169",
+        "view_length": 7,
+        "dataChart": [
+            1,
+            2,
+            8,
+            11,
+            13,
+            18,
+            22,
+            26,
+            34,
+            37,
+            40,
+            44,
+            50,
+            62,
+            63,
+            66,
+            73,
+            73,
+            75,
+            77,
+            77,
+            81,
+            82,
+            82,
+            82,
+            83,
+            83,
+            84,
+            88,
+            96,
+            99
+        ],
+        "dataChartCount": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+        ]
+    }
+}

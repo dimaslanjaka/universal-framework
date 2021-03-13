@@ -1,0 +1,139 @@
+<div class="eum-dashboard-app">
+    <div class="eum-section">
+        <h3>{{eum.disable_updates}}</h3>
+        <p class="eum-description">{{eum.disable_updates_description}}</p>
+        {{#ifeq "on" options.all_updates}}
+            <p class="eum-status">{{eum.all_updates_on_status}}</p>
+        {{else}}
+            <p class="eum-status">{{eum.all_updates_off_status}}</p>
+        {{/ifeq}}
+        <div class="toggle-wrapper">
+            <button id="all-updates-on" class="eum-toggle-button" aria-label="{{eum.disable_updates_label_on}}"
+                    value="on">{{eum.disable_updates_label_on}}
+            </button>
+            <button id="all-updates-off" class="eum-toggle-button" aria-label="{{eum.disable_updates_label_off}}" value="off">
+                {{eum.disable_updates_label_off}}
+            </button>
+        </div>
+    </div>
+    <div class="eum-section">
+        <h3>{{eum.core_updates}}</h3>
+        <p class="eum-description">{{eum.core_updates_description}}</p>
+        <div class="toggle-wrapper">
+            <button id="core-updates-on" class="eum-toggle-button" aria-label="{{eum.core_updates_label_on}}"
+                    value="on">{{eum.core_updates_label_on}}
+            </button>
+            <button id="core-updates-off" class="eum-toggle-button" aria-label="{{eum.core_updates_label_off}}" value="off">
+                {{eum.core_updates_label_off}}
+            </button>
+            <button id="core-updates-automatic_minor" class="eum-toggle-button" aria-label="{{eum.core_updates_label_automatic_minor}}" value="automatic-minor">
+                {{eum.core_updates_label_automatic_minor}}
+            </button>
+            <button id="core-updates-automatic" class="eum-toggle-button" aria-label="{{eum.core_updates_label_automatic}}" value="automatic">
+                {{eum.core_updates_label_automatic}}
+            </button>
+            <button id="core-updates-automatic_off" class="eum-toggle-button" aria-label="{{eum.core_updates_label_auto_disabled}}" value="automatic_off">
+                {{eum.core_updates_label_auto_disabled}}
+            </button>            
+        </div>
+    </div>
+    <div class="eum-section">
+        <h3>{{eum.development_updates}}</h3>
+        <p class="eum-description">{{eum.development_updates_description}}</p>
+        <div class="toggle-wrapper">
+            <button id="automatic-development-updates-on" class="eum-toggle-button" aria-label="{{eum.development_updates_label_on}}"
+                    value="on">{{eum.development_updates_label_on}}
+            </button>
+            <button id="automatic-development-updates-off" class="eum-toggle-button" aria-label="{{eum.development_updates_label_off}}" value="off">
+                {{eum.development_updates_label_off}}
+            </button>            
+        </div>
+    </div>
+    <div class="eum-section">
+        <h3>{{eum.plugin_updates}}</h3>
+        <p class="eum-description">{{eum.plugin_updates_description}}</p>
+        <div class="toggle-wrapper">
+            <button id="plugin-updates-on" class="eum-toggle-button" aria-label="{{eum.plugin_updates_label_on}}"
+                    value="on">{{eum.plugin_updates_label_on}}
+            </button>
+            <button id="plugin-updates-off" class="eum-toggle-button" aria-label="{{eum.plugin_updates_label_off}}"
+                    value="off">{{eum.plugin_updates_label_off}}
+            </button>
+            <button id="plugin-updates-automatic" class="eum-toggle-button" aria-label="{{eum.plugin_updates_label_automatic}}"
+                    value="automatic">{{eum.plugin_updates_label_automatic}}
+            </button>
+            <button id="plugin-updates-automatic_off" class="eum-toggle-button" aria-label="{{eum.plugin_updates_label_auto_disabled}}"
+                    value="automatic_off">{{eum.plugin_updates_label_auto_disabled}}
+            </button>
+            <button id="plugin-updates-individual" class="eum-toggle-button" aria-label="{{eum.plugin_updates_label_individually}}"
+                    value="individual">{{eum.plugin_updates_label_individually}}
+            </button>
+        </div>
+    </div>
+    <div class="eum-section">
+        <h3>{{eum.theme_updates}}</h3>
+        <p class="eum-description">{{eum.theme_updates_description}}</p>
+        <div class="toggle-wrapper">
+            <button id="theme-updates-on" class="eum-toggle-button" aria-label="{{eum.theme_updates_label_on}}"
+                    value="on">{{eum.theme_updates_label_on}}
+            </button>
+            <button id="theme-updates-off" class="eum-toggle-button" aria-label="{{eum.theme_updates_label_off}}" value="off">
+                {{eum.theme_updates_label_off}}
+            </button>
+            <button id="theme-updates-automatic" class="eum-toggle-button" aria-label="{{eum.theme_updates_label_automatic}}"
+                    value="automatic">{{eum.theme_updates_label_automatic}}
+            </button>
+            <button id="theme-updates-automatic_off" class="eum-toggle-button" aria-label="{{eum.theme_updates_label_auto_disabled}}"
+                    value="automatic_off">{{eum.theme_updates_label_auto_disabled}}
+            </button>
+            <button id="theme-updates-individual" class="eum-toggle-button" aria-label="{{eum.theme_updates_label_individually}}"
+                    value="individual">{{eum.theme_updates_label_individually}}
+            </button>
+        </div>
+    </div>
+    <div class="eum-section">
+        <h3>{{eum.translation_updates}}</h3>
+        <p class="eum-description">{{eum.translation_updates_description}}</p>
+        <div class="toggle-wrapper">
+            <button id="translation-updates-on" class="eum-toggle-button"
+                    aria-label="{{eum.translation_updates_label_on}}" value="on">{{eum.translation_updates_label_on}}
+            </button>
+            <button id="translation-updates-off" class="eum-toggle-button" aria-label="{{eum.translation_updates_label_off}}"
+                    value="off">{{eum.translation_updates_label_off}}
+            </button>
+            <button id="translation-updates-automatic" class="eum-toggle-button" aria-label="{{eum.translation_updates_label_automatic}}"
+                    value="automatic">{{eum.translation_updates_label_automatic}}
+            </button>
+            <button id="translation-updates-automatic_off" class="eum-toggle-button" aria-label="{{eum.translation_updates_label_auto_disabled}}"
+                    value="automatic_off">{{eum.translation_updates_label_auto_disabled}}
+            </button>
+        </div>
+    </div>
+    
+    <div class="eum-section">
+        <h3>{{eum.emails}}</h3>
+        <p class="eum-description">{{eum.emails_description}}</p>
+        {{#ifeq "on" options.notification_core_update_emails}}
+            <p class="eum-status">{{eum.notification_core_update_emails_on_status}}</p>
+        {{else}}
+            <p class="eum-status">{{eum.notification_core_update_emails_off_status}}</p>
+        {{/ifeq}}
+        <div class="toggle-wrapper">
+            <button id="notification-core-update-emails-on" class="eum-toggle-button"
+                    aria-label="{{eum.emails_label_on}}" value="on">{{eum.emails_label_on}}
+            </button>
+            <button id="notification-core-update-emails-off" class="eum-toggle-button"
+                    aria-label="{{eum.emails_label_off}}" value="off">{{eum.emails_label_off}}
+            </button>
+        </div>
+        <p><label for="notification-emails" class="eum-email-label">{{eum.emails_input_label}}</label></p>
+        <input id="notification-emails" class="eum-input-email" type="email" placeholder="{{eum.emails_placeholder}}"
+               value="{{options.email_addresses}}">
+               <p><button id="eum-save-emails" class="eum-save-emails button button-secondary">{{eum.save_settings_emails}}</button></p>
+    </div>
+    
+    <div>
+        <p id="eum-save-settings-warning" class="warning">{{eum.remember_save_settings}}</p>
+        <p><button id="eum-save-general-settings" class="eum-save button button-primary">{{eum.save_settings_heading}}</button></p>
+    </div>
+</div>

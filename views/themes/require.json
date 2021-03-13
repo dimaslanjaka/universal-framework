@@ -1,0 +1,4 @@
+{
+  "require": ["crypto-js", "underscore"],
+  "function": "$, CryptoJS"
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="31px" height="31px" viewBox="0 0 31 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45 (43475) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Global-Add-Site-Button" transform="translate(-12.000000, -12.000000)" stroke="#FFFFFF" stroke-width="3">
+            <g id="Group-2" transform="translate(14.000000, 14.000000)">
+                <path d="M13,0 L13,26.6920322" id="Line"></path>
+                <path d="M13,0 L13,26.6920322" id="Line" transform="translate(13.500000, 13.500000) rotate(90.000000) translate(-13.500000, -13.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

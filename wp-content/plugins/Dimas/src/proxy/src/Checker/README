@@ -1,0 +1,37 @@
+/**
+ * PHPProxyChecker documetation.
+ * @author Stanislav Afanasiev <stas.progger[at]gmail.com>
+ * @created 15.12.2010
+ * @version 1.0
+ */
+
+English:
+
+Documentation for PHPProxyChecker class
+
+Requirements for use:
+PHP 5.2 .*
+Curl
+open_ssl
+
+How do I use?
+1) You should put the file gate.php on hosting with support for all requirements
+2) You must declare a constant HTTP_GATE, HTTPS_GATE, CHECK_TIMEOUT before calling checkProxy ()
+
+Return Values
+
+If the proxy is working, it returns an array of the following structure:
+TYPE - Type of proxy (HTTP or SOCKS)
+TYPE_NAME - The level of anonymity
+TYPE_CODE - The numeric value of the level of anonymity (0 - Transparent, 1 - Anonymous, 2 - Elite 3 - Indefinite)
+QUERY_TIME - response time to a GET request
+SUPPORT_GET - Support for GET requests (Y | N)
+SUPPORT_COOKIE - Support transfer COOKIES (Y | N)
+SUPPORT_REFERER - Support transfer REFERER (Y | N)
+SUPPORT_POST - Support for POST requests (Y | N)
+SUPPORT_SSL - Support for SSL (for HTTP) (Y | N)
+PROXY_IP - Ip address
+PROXY_PORT - Port
+
+If the proxy is not working, it returns an array of the following structure:
+NOT_WORKING => Y

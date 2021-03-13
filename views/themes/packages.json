@@ -1,0 +1,86 @@
+{
+  "packages": [{
+      "name": "crypto-js",
+      "location": "/assets/components/crypto-js",
+      "main": "index"
+    }, {
+      "name": "jquery",
+      "location": "/assets/components/jquery/dist",
+      "main": "jquery.min"
+    },
+    {
+      "name": "codemirror",
+      "location": "/assets/components/codemirror",
+      "main": "main"
+    }
+  ],
+  "paths": {
+    "bootstrap-bundle": "/assets/components/bootstrap/dist/js/bootstrap.bundle.min",
+    "ionicons": "https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons",
+    "slick": "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min",
+    "underscore": "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min",
+    "xor": "https://cdn.statically.io/gh/dimaslanjaka/Web-Manajemen/master/js/xor",
+    "select2": "/assets/components/select2/dist/js/select2.min",
+    "dt": "/assets/components/datatables.net/js/jquery.dataTables.min",
+    "dt2": "/assets/components/datatables.net-dt/js/dataTables.dataTables.min",
+    "dt3": "/assets/components/datatables.net-responsive/js/dataTables.responsive.min",
+    "dt4": "/assets/components/datatables.net-responsive-dt/js/responsive.dataTables.min",
+    "flot": "/assets/components/jquery.flot/jquery.flot",
+    "flot2": "/assets/components/jquery.flot/jquery.flot.categories",
+    "flot3": "/assets/components/jquery.flot/jquery.flot.resize",
+    "chartjs": "/assets/components/chart.js/dist/Chart.bundle.min",
+    "websocket": "/views/js/websocket",
+    "searchjs": "/views/js/search",
+    "curved": "/assets/components/flot.curvedlines/curvedLines",
+    "lang": "https://dimaslanjaka.github.io/page/js/country/languages",
+    "Select": "/assets/components/Select/src/select",
+    "jquery-loading-overlay": "https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min"
+  },
+  "shim": {
+    "jquery": {
+      "exports": ["jQuery", "$"]
+    },
+    "bootstrap-bundle": {
+      "deps": ["jquery"]
+    },
+    "select2": {
+      "deps": ["jquery"]
+    },
+    "dt": {
+      "deps": ["jquery"]
+    },
+    "dt2": {
+      "deps": ["jquery"]
+    },
+    "dt3": {
+      "deps": ["jquery"]
+    },
+    "dt4": {
+      "deps": ["jquery"]
+    },
+    "flot": {
+      "deps": ["jquery"]
+    },
+    "flot1": {
+      "deps": ["jquery"]
+    },
+    "flot2": {
+      "deps": ["jquery"]
+    },
+    "flot3": {
+      "deps": ["jquery"]
+    },
+    "chartjs": {
+      "deps": ["jquery"]
+    },
+    "searchjs": {
+      "deps": ["jquery"]
+    },
+    "websocket": {
+      "deps": ["jquery"]
+    },
+    "curved": {
+      "deps": ["jquery"]
+    }
+  }
+}

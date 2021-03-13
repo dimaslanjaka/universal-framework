@@ -1,0 +1,28 @@
+#synonyms_wraper{
+	position:relative;
+}
+#synonyms{
+	width:200px;
+	margin: 0 25px 0 10px;
+	float:left;
+}
+
+#word_select{
+	width:100%;
+	
+	height:auto !important;
+	
+}
+
+#synonyms_words{
+	float:left;
+	margin:25px 25px 25px 0;
+}
+
+#synonyms_choice{
+	margin:25px 0 0;
+}
+
+#synonym_word{
+	width:100%;
+}

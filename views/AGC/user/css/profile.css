@@ -1,0 +1,27 @@
+table#profile {
+  overflow: auto;
+  text-align: left;
+}
+
+table#profile tr th {
+  min-width: 50px;
+}
+
+table#profile tr td {
+  padding-left: 5px;
+}
+
+table#profile tr td::before {
+  content: ' : ';
+}
+
+img {
+  max-width: 100%;
+}
+
+.avatar {
+  border: 0.3rem solid rgba(#fff, 0.3);
+  margin-top: -6rem;
+  margin-bottom: 1rem;
+  max-width: 9rem;
+}

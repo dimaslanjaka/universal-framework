@@ -1,0 +1,406 @@
+.kaliforms-wrapper {
+
+    input[type=color],
+    // input[type=date],
+    input[type=datetime-local],
+    input[type=datetime],
+    input[type=email],
+    input[type=month],
+    input[type=number],
+    input[type=password],
+    // input[type=radio],
+    input[type=search],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    // textarea,
+    // select,
+    input[type=week] {
+        all: unset;
+        width: 100%;
+        line-height: 32px;
+    }
+
+    .MuiInputBase-inputMultiline {
+        box-shadow: none
+    }
+
+    .kaliforms-post-editor {
+        .public-DraftEditor-content {
+            min-height: 100px;
+        }
+    }
+}
+
+.react-grid-layout {
+    $base-input-height: 36px !default;
+    $base-input-placeholder-color: #999 !default;
+    $base-input-border-size: 1px !default;
+    $base-input-border-radius: 0px !default;
+    $base-input-color: #000 !default;
+    $base-input-background-color: #fff !default;
+    $base-input-background-focus-color: #fff !default;
+    $base-input-border-color: #ccc !default;
+    $base-input-border-focus-color: #000 !default;
+    $base-select-box-height: 36px !default;
+
+    // ==========================================================================
+    // Base Forms
+    // ==========================================================================*,
+    *:before,
+    *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    // Inputs
+    [type="text"],
+    [type="email"],
+    [type="password"],
+    [type="tel"],
+    [type="number"],
+    [type="date"],
+    [type="search"] {
+        height: $base-input-height;
+        padding: 8px;
+        background-color: $base-input-background-color;
+        border: $base-input-border-size solid $base-input-border-color;
+        border-radius: $base-input-border-radius;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+
+        &:focus {
+            background-color: $base-input-background-focus-color;
+            border-color: $base-input-border-focus-color;
+            outline: 0;
+        }
+    }
+
+    textarea {
+        padding: 8px;
+        background-color: $base-input-background-color;
+        border: $base-input-border-size solid $base-input-border-color;
+        border-radius: $base-input-border-radius;
+        overflow: auto;
+
+        &:focus {
+            background-color: $base-input-background-focus-color;
+            border-color: $base-input-border-focus-color;
+            outline: 0;
+        }
+    }
+
+    // Select
+    select {
+        text-transform: none;
+        height: $base-input-height;
+        padding: 0 8px;
+        background-color: $base-input-background-color;
+        border: $base-input-border-size solid $base-input-border-color;
+        border-radius: $base-input-border-radius;
+
+        &:focus {
+            background-color: $base-input-background-focus-color;
+            border-color: $base-input-border-focus-color;
+            outline: 0;
+        }
+    }
+
+    .disabled,
+    [disabled] {
+        opacity: .4;
+        user-select: none;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    // Placeholders
+    ::-webkit-input-placeholder {
+        color: $base-input-placeholder-color;
+    }
+
+    :-moz-placeholder {
+        color: $base-input-placeholder-color;
+    }
+
+    ::-moz-placeholder {
+        color: $base-input-placeholder-color;
+    }
+
+    :-ms-input-placeholder {
+        color: $base-input-placeholder-color;
+    }
+}
+
+body {
+    margin: 0;
+}
+
+.wp-header-end,
+#screen-meta,
+#slugdiv {
+    display: none;
+}
+
+.react-resizable-handle {
+    opacity: 0;
+}
+
+.react-grid-item.react-grid-placeholder {
+    background: #f3f3f3;
+    opacity: .4;
+}
+
+.react-grid-item>.react-resizable-handle::after {
+    right: 4px;
+    bottom: 4px;
+    width: 10px;
+    height: 11px;
+    border-right: 3px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+}
+
+.postbox {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+#poststuff {
+    padding: 0;
+}
+
+#poststuff .inside {
+    margin: 0;
+    padding: 0;
+}
+
+#adminmenumain {
+    display: none;
+}
+
+#wpcontent,
+#wpfooter {
+    margin-left: initial;
+    padding: 0
+}
+
+body {
+    background: initial;
+}
+
+#kaliforms_forms_builder {
+    border: none;
+    box-shadow: none;
+
+    >h2 {
+        display: none;
+    }
+
+    .handlediv {
+        display: none;
+    }
+}
+
+#submitdiv,
+#titlediv,
+.page-title-action {
+    border: none;
+    box-shadow: none;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+#wpadminbar {
+    display: none;
+}
+
+html.wp-toolbar {
+    padding-top: 0;
+}
+
+#show-settings-link,
+.wrap h1.wp-heading-inline {
+    display: none;
+}
+
+.wrap {
+    margin: 0;
+}
+
+#post-body-content,
+.edit-form-section {
+    margin-bottom: 0
+}
+
+#contextual-help-link-wrap,
+#screen-options-link-wrap {
+    display: none;
+}
+
+#notice,
+#message {
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    z-index: 100;
+    left: 15px;
+}
+
+#kaliforms-container {
+    min-height: 400px;
+    width: 100%;
+}
+
+#wpfooter {
+    display: none;
+}
+
+#wpbody-content {
+    padding-bottom: 0;
+}
+
+#wpwrap {
+    height: 100vh;
+    min-height: 100vh;
+}
+
+.notice {
+    display: none;
+}
+
+.kaliforms-preloader {
+    flex-grow: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    display: flex;
+    z-index: 10000;
+
+    .skeleton-button {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .kaliforms-skeleton-app-bar {
+        display: flex;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: #3B88F7;
+
+        >img {
+            width: 42px;
+            height: 42px;
+            margin-top: 11px;
+            margin-left: 24px;
+        }
+
+        >.skeleton-button {
+            margin-top: 19px;
+            position: absolute;
+            right: 80px;
+
+            &:first-of-type {
+                right: 125px;
+            }
+
+            &:last-of-type {
+                right: 35px;
+            }
+        }
+    }
+
+    .kaliforms-skeleton-main {
+        display: flex;
+        position: fixed;
+        width: 100%;
+        top: 65px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .kaliforms-skeleton-sidebar {
+        flex-grow: 0;
+        max-width: 33%;
+        flex-basis: 33%;
+        background: #fafafa;
+        margin-right: 30px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            padding: 0 30px;
+            margin-bottom: 5px;
+
+            &:first-of-type {
+                margin-top: 95px;
+            }
+
+            .skeleton-box {
+                margin-right: 10px;
+                height: 53px;
+                border-radius: 4px;
+                margin-bottom: 5px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+
+    .kaliforms-skeleton-container {
+        flex-grow: 0;
+        max-width: 67%;
+        flex-basis: 67%;
+    }
+}
+
+.skeleton-box {
+    display: inline-block;
+    height: 2em;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+    background-color: #DDDBDD;
+
+    &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(90deg,
+                rgba(#fff, 0) 0,
+                rgba(#fff, 0.2) 20%,
+                rgba(#fff, 0.5) 60%,
+                rgba(#fff, 0));
+        animation: shimmer 5s infinite;
+        content: '';
+    }
+
+    @keyframes shimmer {
+        100% {
+            transform: translateX(100%);
+        }
+    }
+}

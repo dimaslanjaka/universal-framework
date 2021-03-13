@@ -1,0 +1,57 @@
+.wp-auto-spinner-meta li.tab_head{
+	cursor:pointer;
+}
+
+.wp_signdev_form label {
+	display: block;
+    margin: 15px 0 5px;
+    width: 100%;
+}
+
+
+.wp_signdev_form .f_100 {
+    display: inline;
+    float: left;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 96%;
+}
+
+.wp_signdev_form input[type=text],.wp_signdev_form textarea{
+	width:100%;
+}
+
+.visible-overflow{
+	overflow:visible !important;
+	max-height:none !important;
+}
+
+.post_rewrite{
+margin:20px 0;
+}
+
+#spinner_dev  {
+	 border: 1px solid #DFDFDF;
+	 z-index: 999999999;
+}
+
+ 
+
+
+#spinner_dev   li{
+	background:#F5F5F5;
+	padding:2px 5px;
+	border-bottom: 1px solid #DFDFDF;
+	cursor:pointer;
+}
+
+#spinner_dev li:first-child{
+	font-weight: bold;
+}
+
+
+#spinner_dev   li:hover{
+	background:#aaa;
+	color:#fff	;
+}
+

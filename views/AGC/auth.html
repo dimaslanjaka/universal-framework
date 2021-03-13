@@ -1,0 +1,242 @@
+<html><head>
+  
+  <title>Google APIs - Sample JS Page</title>
+<!-- Required meta tags --> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+
+</head>
+<body class="container">
+<div id="log" style="max-height:300px;overflow:auto" class="border rounded"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+(function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function (message) {
+        if (typeof message == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '<hr />';
+        } else {
+            logger.innerHTML += message + '<hr />';
+        }
+    }
+})();
+
+function LOGx(message){
+  $("#log").append( (JSON && JSON.stringify ? JSON.stringify(message) : message) );
+}
+
+  /***** START BOILERPLATE CODE: Load client library, authorize user. *****/
+
+  // Global variables for GoogleAuth object, auth status.
+  var GoogleAuth;
+
+  /**
+   * Load the API's client and auth2 modules.
+   * Call the initClient function after the modules load.
+   */
+  function handleClientLoad() {
+    gapi.load('client:auth2', initClient);
+  }
+
+  function initClient() {
+    // Initialize the gapi.client object, which app uses to make API requests.
+    // Get API key and client ID from API Console.
+    // 'scope' field specifies space-delimited list of access scopes
+
+    gapi.client.init({
+        'clientId': '439429450847-2r1oa7oj8r0hghopmaasi1brdbc3f2vj.apps.googleusercontent.com',
+        'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'],
+        'scope': 'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtubepartner'
+    }).then(function () {
+      GoogleAuth = gapi.auth2.getAuthInstance();
+
+      // Listen for sign-in state changes.
+      GoogleAuth.isSignedIn.listen(updateSigninStatus);
+
+      // Handle initial sign-in state. (Determine if user is already signed in.)
+      setSigninStatus();
+setInterval(setSigninStatus, 5000);
+
+      // Call handleAuthClick function when user clicks on "Authorize" button.
+      $('#execute-request-button').click(function() {
+        handleAuthClick(event);
+      }); 
+    });
+  }
+
+  function handleAuthClick(event) {
+    // Sign user in after click on auth button.
+    GoogleAuth.signIn();
+  }
+
+  function setSigninStatus() {
+    var user;
+    user = GoogleAuth.currentUser.get();
+    console.log(user);
+    var CLIENT_TOKEN = user.Zi.id_token;
+    isAuthorized = user.hasGrantedScopes('https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtubepartner');
+    console.log("IsAuthorized: " + isAuthorized);
+    // Toggle button text and displayed statement based on current auth status.
+    if (isAuthorized) {
+      defineRequest();
+      //getInfo(CLIENT_TOKEN);
+    }
+  }
+
+  function updateSigninStatus(isSignedIn) {
+    setSigninStatus();
+  }
+
+  function createResource(properties) {
+    var resource = {};
+    var normalizedProps = properties;
+    for (var p in properties) {
+      var value = properties[p];
+      if (p && p.substr(-2, 2) == '[]') {
+        var adjustedName = p.replace('[]', '');
+        if (value) {
+          normalizedProps[adjustedName] = value.split(',');
+        }
+        delete normalizedProps[p];
+      }
+    }
+    for (var p in normalizedProps) {
+      // Leave properties that don't have values out of inserted resource.
+      if (normalizedProps.hasOwnProperty(p) && normalizedProps[p]) {
+        var propArray = p.split('.');
+        var ref = resource;
+        for (var pa = 0; pa < propArray.length; pa++) {
+          var key = propArray[pa];
+          if (pa == propArray.length - 1) {
+            ref[key] = normalizedProps[p];
+          } else {
+            ref = ref[key] = ref[key] || {};
+          }
+        }
+      };
+    }
+    return resource;
+  }
+
+  function removeEmptyParams(params) {
+    for (var p in params) {
+      if (!params[p] || params[p] == 'undefined') {
+        delete params[p];
+      }
+    }
+    return params;
+  }
+
+  function executeRequest(request) {
+    request.execute(function(response) {
+      console.log(response);
+      //LOGx(response);
+    });
+  }
+
+  function buildApiRequest(requestMethod, path, params, properties) {
+    params = removeEmptyParams(params);
+    var request;
+    if (properties) {
+      var resource = createResource(properties);
+      request = gapi.client.request({
+          'body': resource,
+          'method': requestMethod,
+          'path': path,
+          'params': params
+      });
+    } else {
+      request = gapi.client.request({
+          'method': requestMethod,
+          'path': path,
+          'params': params
+      });
+    }
+    executeRequest(request);
+  }
+
+  
+  function defineRequest() {
+  console.log("Request Defined");
+  buildApiRequest('GET',
+                '/youtube/v3/subscriptions',
+                {'channelId': 'UC_x5XG1OV2P6uZZ5FSM9Ttw',
+                 'part': 'snippet,contentDetails'});
+
+  }
+//439429450847-2r1oa7oj8r0hghopmaasi1brdbc3f2vj.apps.googleusercontent.com
+  function getInfo(token){
+    console.log("Token: " + token);
+    var param = { 
+      forChannelId: 'UCGNaoefvJRfd15fo-LQ0zvg',
+      mine: true,
+      part: 'id',
+      key: "AIzaSyDj7KBndQM9QL7mjMOQG3FlqOz-gX0zWq0",
+      access_token: token
+    }
+    console.log('<a href="https://www.googleapis.com/youtube/v3/subscriptions?'+encodeQueryData(param)+'" target="_blank">Click</a>');
+    $.ajax({
+      url: "https://www.googleapis.com/youtube/v3/subscriptions",
+      type: "get", //send it through get method
+      data: param,
+      success: function(response) {
+        //Do Something
+        console.log(response);
+      },
+      error: function(xhr) {
+        //Do Something to handle error
+        console.log(xhr);
+      },
+      complete: function(data){
+        console.log(data);
+      }
+    });
+  }
+
+function encodeQueryData(data) {
+   const ret = [];
+   for (let d in data)
+     ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+   return ret.join('&');
+}
+
+function getSubs(CLIENT_TOKEN){
+var OAUTH2_CLIENT_ID = "439429450847-2r1oa7oj8r0hghopmaasi1brdbc3f2vj.apps.googleusercontent.com";
+console.log("Trigger "+OAUTH2_CLIENT_ID+" Token: "+CLIENT_TOKEN);
+$.get( 'https://www.googleapis.com/youtube/v3/subscriptions', {
+  forChannelId: objectForDeed,
+  mine: true,
+  part: 'id',
+  key: OAUTH2_CLIENT_ID,
+  access_token: CLIENT_TOKEN
+})
+.done(function(json) {
+  console.log('Youtube Subscribe:');
+  console.log( json['items'].length > 0 );
+  if (json['items'].length > 0) {
+    //true
+    console.log('Already Subscribed');
+  } else {
+    //fail
+    console.log('Unsubscribed');
+  }
+})
+.fail(function(resp) {
+  console.log('Request Fail');
+})
+.always(function(ok){
+  console.log("Request Done");
+});
+}
+</script>
+
+<button id="execute-request-button" class="btn btn-primary">Authorize</button>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script async defer src="https://apis.google.com/js/api.js" 
+        onload="this.onload=function(){};handleClientLoad()" 
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+</script>
+
+</body></html>

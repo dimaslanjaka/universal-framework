@@ -1,0 +1,692 @@
+# Translation of Development in Indonesian
+# This file is distributed under the same license as the Development package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2015-04-21 23:53:01+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: GlotPress/1.0-alpha-1000\n"
+"Project-Id-Version: Development\n"
+
+#: views/notice.php:91
+msgid "The connection to akismet.com cannot be established. Please refer to <a href=\"%s\" target=\"_blank\">our guide about firewalls</a> and check your server configuration."
+msgstr "Koneksi ke akismet.com gagal. Silakan merujuk ke <a href=\"%s\" target=\"_blank\">panduan firewall kami</a> dan periksa konfigurasi server Anda."
+
+#: views/notice.php:90
+msgid "The key you entered could not be verified."
+msgstr "Key yang Anda masukkan tak bisa diverifikasi."
+
+#: views/config.php:95
+msgid "All systems functional."
+msgstr "Seluruh sistem berfungsi normal."
+
+#: views/config.php:95
+msgid "Enabled."
+msgstr "Diaktifkan."
+
+#: views/config.php:92
+msgid "Akismet encountered a problem with a previous SSL request and disabled it temporarily. It will begin using SSL for requests again shortly."
+msgstr "Akismet mengalami permasalahan dengan SSL request yang lalu dan menonaktifkannya untuk sementara. Akismet akan mulai menggunakan SSL untuk request sesaat lagi."
+
+#: views/config.php:92
+msgid "Temporarily disabled."
+msgstr "Dinonaktifkan sementara."
+
+#: views/config.php:86
+msgid "Your Web server cannot make SSL requests; contact your Web host and ask them to add support for SSL requests."
+msgstr "Server Web Anda tidak mampu membuat SSL request; hubungi Web host dan minta mereka untuk menambahkan dukungan untuk SSL requests."
+
+#: views/config.php:83 views/config.php:86
+msgid "Disabled."
+msgstr "Dinonaktifkan"
+
+#: views/config.php:76
+msgid "SSL Status"
+msgstr "Status SSL"
+
+#: views/notice.php:97
+msgid "Your Pro subscription allows the use of Akismet on only one site. Please <a href=\"http://docs.akismet.com/billing/add-more-sites/\">purchase additional Pro subscriptions</a> or upgrade to an Enterprise subscription that allows the use of Akismet on unlimited sites.<br /><br />If you have any questions, please get in touch with our support team."
+msgstr "Paket Pro Anda mengizinkan penggunaan Akismet untuk satu situs saja. Silakan <a href=\"http://docs.akismet.com/billing/add-more-sites/\">beli paket Pro tambahan</a> atau upgrade ke paket Enterprise untuk memperoleh izin penggunaan Akismet tanpa batas.<br /><br />Jika Anda memiliki pertanyaan, silakan hubungi tim dukungan kami."
+
+#: views/config.php:127
+msgid "Spam in the <a href=\"%1$s\">spam folder</a> older than 1 day is deleted automatically."
+msgid_plural "Spam in the <a href=\"%1$s\">spam folder</a> older than %2$d days is deleted automatically."
+msgstr[0] "Spam dalam <a href=\"%1$s\">folder spam</a> berumur lebih dari 1 hari otomatis dihapus."
+msgstr[1] "Spam dalam <a href=\"%1$s\">folder spam</a> berumur lebih dari %2$d hari otomatis dihapus."
+
+#. Description of the plugin/theme
+msgid "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from comment and trackback spam</strong>. It keeps your site protected from spam even while you sleep. To get started: 1) Click the \"Activate\" link to the left of this description, 2) <a href=\"http://akismet.com/get/\">Sign up for an Akismet API key</a>, and 3) Go to your Akismet configuration page, and save your API key."
+msgstr "Dengan jutaan pengguna, Akismet mungkin adalah metode terbaik di dunia untuk <strong>melindungi blog Anda dari spam komentar dan lacakbalik</strong>. Ia menjaga situs Anda terlindung dari spam saat Anda tidur sekalipun. Untuk memulai: 1) Klik tautan \"Aktifkan\" di sisi kiri deskripsi ini, 2) <a href=\"http://akismet.com/get/\">Mendaftar untuk memperoleh Akismet API key</a>, dan 3) Masuk ke laman konfigurasi Akismet dan simpan API key Anda."
+
+#. Plugin URI of the plugin/theme
+msgid "http://akismet.com/"
+msgstr "http://akismet.com/"
+
+#: class.akismet-admin.php:692
+msgid "Please check your <a href=\"%s\">Akismet configuration</a> and contact your web host if problems persist."
+msgstr "Mohon periksa <a href=\"%s\">konfigurasi Akismet</a> Anda dan hubungi penyedia layanan web host Anda jika permasalahan tidak teratasi."
+
+#: views/notice.php:43
+msgid "Your web host or server administrator has disabled PHP&#8217;s <code>gethostbynamel</code> functions.  <strong>Akismet cannot work correctly until this is fixed.</strong>  Please contact your web host or firewall administrator and give them <a href=\"%s\" target=\"_blank\">this information about Akismet&#8217;s system requirements</a>."
+msgstr "Penyedia layanan web host atau administrator server Anda menonaktifkan fungsi <code>gethostbynamel</code> PHP.  <strong>Akismet tak bisa bekerja dengan baik sebelum hal ini dibereskan.</strong>  Mohon hubungi administrator web host atau firewall Anda dan kirimkan pada mereka <a href=\"%s\" target=\"_blank\">informasi tentang persyaratan sistem untuk Akismet ini</a>."
+
+#: views/notice.php:21
+msgid "Some comments have not yet been checked for spam by Akismet. They have been temporarily held for moderation and will automatically be rechecked later."
+msgstr "Beberapa komentar belum menjalani pemeriksaan spam oleh Akismet. Komentar-komentar tersebut untuk sementara ditangguhkan untuk moderasi dan nanti akan diperiksa secara otomatis."
+
+#: views/start.php:77
+msgid "Activate Akismet"
+msgstr "Aktifkan Akismet"
+
+#: views/start.php:64 views/start.php:85
+msgid "If you already know your API key."
+msgstr "Jika Anda sudah mengetahui kunci API Anda."
+
+#: views/start.php:78
+msgid "Log in or create an account to get your API key."
+msgstr "Log masuk atau buat sebuah akun untuk memperoleh kunci API Anda."
+
+#: views/start.php:80
+msgid "Get your API key"
+msgstr "Ambil kunci API Anda."
+
+#: views/start.php:28
+msgid "Reactivate Akismet"
+msgstr "Aktifkan Ulang Akismet"
+
+#: views/start.php:22
+msgid "Your subscription for %s is cancelled"
+msgstr "Langganan Anda untuk %s dibatalkan"
+
+#: views/config.php:182
+msgid "Cancelled"
+msgstr "Dibatalkan"
+
+#: views/config.php:190
+msgid "Active"
+msgstr "Aktif"
+
+#: views/notice.php:72
+msgid "There is a problem with your key."
+msgstr "Ada masalah dengan kunci Anda."
+
+#: views/config.php:184
+msgid "Suspended"
+msgstr "Ditangguhkan"
+
+#: views/config.php:186
+msgid "Missing"
+msgstr "Tak ditemukan"
+
+#: views/config.php:188
+msgid "No Subscription Found"
+msgstr "Langganan Tak Ditemukan"
+
+#: views/notice.php:78
+msgid "Since 2012, Akismet began using subscriptions for all accounts (even free ones). It looks like a subscription has not been assigned to your account, and we’d appreciate it if you’d <a href=\"%s\" target=\"_blank\">sign into your account</a> and choose one. Please <a href=\"%s\" target=\"_blank\">contact our support team</a> with any questions."
+msgstr "Sejak 2012, Akismet memberlakukan langganan untuk semua akun (termasuk yang gratis). Kelihatannya belum ada paket langganan terkait akun Anda, dan kami akan berterimakasih jika Anda <a href=\"%s\" target=\"_blank\">mendaftarkan akun</a> dan memilih satu paket. Silakan <a href=\"%s\" target=\"_blank\">hubungi tim dukungan kami</a> jika ada pertanyaan."
+
+#: class.akismet-admin.php:196 views/config.php:114
+msgid "Strictness"
+msgstr "Ketegasan"
+
+#: class.akismet-admin.php:196
+msgid "Choose to either discard the worst spam automatically or to always put all spam in spam folder."
+msgstr "Pilih untuk membuang spam terburuk secara otomatis atau untuk menyimpan spam di folder spam."
+
+#: views/config.php:118
+msgid "Silently discard the worst and most pervasive spam so I never see it."
+msgstr "Buang spam terburuk dan terulet secara diam-diam agar saya tak pernah melihatnya."
+
+#: views/config.php:119
+msgid "Always put spam in the Spam folder for review."
+msgstr "Selalu masukkan spam ke folder Spam untuk saya tinjau."
+
+#: class.akismet-admin.php:195 views/config.php:105
+msgid "Comments"
+msgstr "Komentar"
+
+#: views/notice.php:77
+msgid "Your subscription is missing."
+msgstr "Langganan Anda tidak ditemukan."
+
+#: views/notice.php:96
+msgid "You're using your Akismet key on more sites than your Pro subscription allows."
+msgstr "Anda menggunakan kunci Akismet Anda pada lebih banyak situs daripada yang diizinkan oleh langganan Pro."
+
+#: views/notice.php:99
+msgid "You're using Akismet on far too many sites for your Pro subscription."
+msgstr "Anda menggunakan Akismet pada terlalu banyak situs untuk langganan Pro Anda."
+
+#: views/notice.php:100
+msgid "To continue your service, <a href=\"%s\" target=\"_blank\">upgrade to an Enterprise subscription</a>, which covers an unlimited number of sites. Please <a href=\"%s\" target=\"_blank\">contact our support team</a> with any questions."
+msgstr "Untuk melanjutkan layanan Anda, <a href=\"%s\" target=\"_blank\">tingkatkan ke paket Enterprise</a>, yang melayani situs dalam jumlah tak terbatas. Silakan <a href=\"%s\" target=\"_blank\">hubungi tim dukungan kami</a> jika ada pertanyaan."
+
+#: views/notice.php:82
+msgid "Your Akismet account has been successfully set up and activated. Happy blogging!"
+msgstr "Akun Aksimet Anda telah sukses dikelola dan telah diaktifkan. Selamat nge-blog !"
+
+#: views/notice.php:27
+msgid "Akismet %s requires WordPress 3.0 or higher."
+msgstr "Akismet %s membutuhkan WordPress 3.0 atau lebih tinggi."
+
+#: views/notice.php:86
+msgid "The key you entered is invalid. Please double-check it."
+msgstr "Kunci yang Anda masukkan tidak sah. Coba periksa kembali."
+
+#: views/notice.php:42
+msgid "Network functions are disabled."
+msgstr "Fungsi jaringan dimatikan."
+
+#: views/notice.php:20
+msgid "Akismet has detected a problem."
+msgstr "Akismet telah mendeteksi sebuah masalah."
+
+#: views/notice.php:30
+msgid "Akismet Error Code: %s"
+msgstr "Kode Galat Akismet: %s"
+
+#. translators: the placeholder is a clickable URL that leads to more
+#. information regarding an error code.
+#: views/notice.php:35
+msgid "For more information: %s"
+msgstr "Informasi lebih lanjut: %s"
+
+#: views/notice.php:47
+msgid "We can&#8217;t connect to your site."
+msgstr "Kami tak bisa menyambungkan situs Anda."
+
+#: views/start.php:7 views/start.php:21 views/start.php:34 views/start.php:43
+msgid "Connected via Jetpack"
+msgstr "Tersambung via Jetpack"
+
+#: views/start.php:50
+msgid "Use this Akismet account"
+msgstr "Pakai aku Akismet ini"
+
+#: views/start.php:56
+msgid "Create a new API key with a different email address"
+msgstr "Buat API key baru dengan alamat email berbeda"
+
+#: views/start.php:57
+msgid "Use this option if you want to setup a new Akismet account."
+msgstr "Pilih opsi ini untuk membuat akun Akismet baru."
+
+#: views/start.php:59
+msgid "Register a different email address"
+msgstr "Daftarkan alamat email lain"
+
+#: views/start.php:63 views/start.php:84
+msgid "Manually enter an API key"
+msgstr "Masukkan API key secara manual"
+
+#: views/start.php:70 views/start.php:91
+msgid "Use this key"
+msgstr "Gunakan key ini"
+
+#: views/start.php:18 views/start.php:32
+msgid "Akismet eliminates the comment and trackback spam you get on your site."
+msgstr "Akismet mengeliminir komentar dan trackback spam yang masuk ke situs Anda."
+
+#: views/notice.php:52
+msgid "Please update your payment details."
+msgstr "Silakan mutakhirkan rincian pembayaran Anda."
+
+#: views/notice.php:57
+msgid "Your subscription is cancelled."
+msgstr "Langganan Anda dibatalkan."
+
+#: views/notice.php:62
+msgid "Your subscription is suspended."
+msgstr "Langganan Anda ditangguhkan."
+
+#: views/start.php:37
+msgid "Contact Akismet support"
+msgstr "Hubungi dukungan Akismet"
+
+#: views/notice.php:48
+msgid "Your firewall may be blocking us. Please contact your host and refer to <a href=\"%s\" target=\"_blank\">our guide about firewalls</a>."
+msgstr "Firewall Anda mungkin memblokir kami. Silakan kontak host Anda dan berikan rujukan ke <a href=\"%s\" target=\"_blank\">panduan firewall kami</a>."
+
+#: views/notice.php:53
+msgid "We cannot process your transaction. Please contact your bank for assistance, and <a href=\"%s\" target=\"_blank\">update your payment details</a>."
+msgstr "Kami tak bisa memproses transaksi Anda. Silakan hubungi bank Anda untuk asistensi, dan <a href=\"%s\" target=\"_blank\">mutakhirkan rincian pembayaran Anda</a>."
+
+#: views/notice.php:58
+msgid "Please visit the <a href=\"%s\" target=\"_blank\">Akismet account page</a> to reactivate your subscription."
+msgstr "Silakan kunjungi <a href=\"%s\" target=\"_blank\">laman akun Akismet</a> untuk mengaktifkan ulang langganan Anda."
+
+#: views/notice.php:63 views/notice.php:73
+msgid "Please contact <a href=\"%s\" target=\"_blank\">Akismet support</a> for assistance."
+msgstr "Silakan hubungi <a href=\"%s\" target=\"_blank\">dukungan Akismet</a> untuk asistensi."
+
+#: views/notice.php:68
+msgid "You can help us fight spam and upgrade your account by <a href=\"%s\" target=\"_blank\">contributing a token amount</a>."
+msgstr "Anda bisa membantu kami memerangi spam dan meningkatkan akun Anda dengan cara <a href=\"%s\" target=\"_blank\">mengkontribusikan sejumlah token</a>."
+
+#: views/start.php:40 views/start.php:74
+msgid "Akismet eliminates the comment and trackback spam you get on your site. To setup Akismet, select one of the options below."
+msgstr "Akismet mengeliminir komentar dan trackback spam yang masuk ke situs Anda. Untuk mengatur Akismet, pilih salah satu opsi di bawah ini."
+
+#: views/start.php:4
+msgid "Akismet eliminates the comment and trackback spam you get on your site. Register your email address below to get started."
+msgstr "Akismet mengeliminir komentar dan trackback spam yang masuk ke situs Anda. Daftarkan alamat email di bawah ini untuk memulainya."
+
+#: views/start.php:14
+msgid "Register Akismet"
+msgstr "Daftarkan Akismet"
+
+#: views/start.php:35
+msgid "Your subscription for %s is suspended"
+msgstr "Langganan Anda untuk %s ditangguhkan"
+
+#: views/start.php:36
+msgid "No worries! Get in touch and we&#8217;ll help sort this out."
+msgstr "Tak perlu khawatir! Hubungi kami untuk menyelesaikan masalah ini."
+
+#: views/config.php:117 views/strict.php:2 views/strict.php:3
+msgid "Akismet anti-spam strictness"
+msgstr "Ketegasan anti-spam Akismet"
+
+#: views/strict.php:4
+msgid "Strict: silently discard the worst and most pervasive spam."
+msgstr "Tegas: membuang spam terburuk dan terulet secara diam-diam."
+
+#: views/strict.php:5
+msgid "Safe: always put spam in the Spam folder for review."
+msgstr "Aman: selalu memasukkan spam ke folder Spam untuk peninjauan."
+
+#. Author URI of the plugin/theme
+msgid "http://automattic.com/wordpress-plugins/"
+msgstr "http://automattic.com/wordpress-plugins/"
+
+#. Author of the plugin/theme
+msgid "Automattic"
+msgstr "Automattic"
+
+#: views/notice.php:11
+msgid "Activate your Akismet account"
+msgstr "Aktifkan akun Askimet Anda"
+
+#: views/notice.php:14
+msgid "<strong>Almost done</strong> - activate your account and say goodbye to comment spam"
+msgstr "<strong>Hampir selesai</strong> - Aktifkan akun Anda dan katakan selamat tinggal kepada komentar spam"
+
+#: views/config.php:109
+msgid "Show approved comments"
+msgstr "Perlihatkan komentar yang telah disetujui"
+
+#: views/config.php:152
+msgid "Save Changes"
+msgstr "Simpan Perubahan"
+
+#: class.akismet-admin.php:438
+msgid "Awaiting spam check"
+msgstr "Menunggu pemeriksaan spam"
+
+#: class.akismet-widget.php:12
+msgid "Akismet Widget"
+msgstr "Widget Akismet"
+
+#: class.akismet-widget.php:13
+msgid "Display the number of spam comments Akismet has caught"
+msgstr "Tampilkan jumlah komentar spam yang ditangkap Akismet"
+
+#: class.akismet-widget.php:98
+msgid "<strong class=\"count\">%1$s spam</strong> blocked by <strong>Akismet</strong>"
+msgid_plural "<strong class=\"count\">%1$s spam</strong> blocked by <strong>Akismet</strong>"
+msgstr[0] "<strong class=\"count\">%1$s spam</strong> diblok oleh <strong>Akismet</strong>"
+msgstr[1] "<strong class=\"count\">%1$s spam</strong> diblok oleh <strong>Akismet</strong>"
+
+#: class.akismet-admin.php:69 class.akismet-admin.php:191
+#: class.akismet-admin.php:500 views/config.php:60 views/stats.php:2
+msgid "Settings"
+msgstr "Pengaturan"
+
+#: class.akismet-admin.php:223
+msgid "Cheatin&#8217; uh?"
+msgstr "Mau curang ya?"
+
+#: class.akismet-admin.php:294
+msgid "<a href=\"%1$s\">Akismet</a> has protected your site from %2$s spam comment already. "
+msgid_plural "<a href=\"%1$s\">Akismet</a> has protected your site from %2$s spam comments already. "
+msgstr[0] "<a href=\"%1$s\">Akismet</a> telah berhasil melindungi situs anda dari %2$s komentar spam."
+msgstr[1] "<a href=\"%1$s\">Akismet</a> telah berhasil melindungi situs anda dari %2$s komentar spam."
+
+#: class.akismet-admin.php:442
+msgid "Flagged as spam by Akismet"
+msgstr "Ditandai sebagai spam oleh Akismet"
+
+#: class.akismet-admin.php:462
+msgid "History"
+msgstr "Sejarah"
+
+#: class.akismet-admin.php:282
+msgctxt "comments"
+msgid "Spam"
+msgstr "Spam"
+
+#: class.akismet-admin.php:444
+msgid "Cleared by Akismet"
+msgstr "Dibersihkan oleh Akismet"
+
+#: class.akismet-admin.php:53
+msgid "Comment History"
+msgstr "Sejarah Komentar"
+
+#: class.akismet-admin.php:478
+msgid "%s approved"
+msgid_plural "%s approved"
+msgstr[0] "%s disetujui"
+msgstr[1] "%s disetujui"
+
+#: class.akismet.php:537
+msgid "%s reported this comment as not spam"
+msgstr "%s melaporkan komentar ini bukan spam"
+
+#: class.akismet.php:231
+msgid "Akismet caught this comment as spam"
+msgstr "Akismet menangkap komentar ini sebagai spam"
+
+#: class.akismet.php:491
+msgid "%s reported this comment as spam"
+msgstr "%s melaporkan komentar ini sebagai spam"
+
+#: class.akismet.php:578
+msgid "Akismet caught this comment as spam during an automatic retry."
+msgstr "Akismet menangkap komentar ini sebagai spam pada saat percobaan kembali secara otomatis."
+
+#: class.akismet.php:233 class.akismet.php:242
+msgid "Comment status was changed to %s"
+msgstr "Status komentar telah diganti menjadi %s"
+
+#: class.akismet.php:580
+msgid "Akismet cleared this comment during an automatic retry."
+msgstr "Akismet membersihkan komentar ini pada saat percobaan kembali secara otomatis."
+
+#: class.akismet.php:237
+msgid "Akismet cleared this comment"
+msgstr "Akismet membersihkan komentar ini"
+
+#: class.akismet.php:240
+msgid "Comment was caught by wp_blacklist_check"
+msgstr "Komentar tertangkap wp_blacklist_check"
+
+#: class.akismet.php:247
+msgid "Akismet was unable to check this comment (response: %s), will automatically retry again later."
+msgstr "Akismet tidak dapat mengecek komentar ini (respon: %s), akan dicoba kembali secara otomatis kemudian."
+
+#: class.akismet-admin.php:462 class.akismet-admin.php:470
+msgid "View comment history"
+msgstr "Lihat sejarah komentar"
+
+#. #-#-#-#-#  akismet.pot (Akismet 3.1.2a1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: class.akismet-admin.php:76 class.akismet-admin.php:78
+#: class.akismet-admin.php:749 views/config.php:3
+msgid "Akismet"
+msgstr "Akismet"
+
+#: class.akismet-admin.php:384
+msgid "Akismet was unable to re-check this comment (response: %s)"
+msgstr "Akismet tidak dapat memeriksa kembali komentar ini (respon:%s)"
+
+#: class.akismet-admin.php:448
+msgid "Flagged as spam by %s"
+msgstr "Ditandai sebagai spam oleh %s"
+
+#: class.akismet-admin.php:374
+msgid "Akismet re-checked and caught this comment as spam"
+msgstr "Akismet memeriksa kembali dan menangkap komentar ini sebagai spam"
+
+#: class.akismet-admin.php:450
+msgid "Un-spammed by %s"
+msgstr "Pembatalan spam oleh %s"
+
+#: class.akismet-admin.php:380
+msgid "Akismet re-checked and cleared this comment"
+msgstr "Akismet memeriksa kembali dan membersihkan komentar ini"
+
+#: class.akismet-widget.php:69
+msgid "Spam Blocked"
+msgstr "Spam Diblokir"
+
+#: class.akismet-admin.php:215
+msgid "For more information:"
+msgstr "Untuk informasi lebih lanjut:"
+
+#: class.akismet-widget.php:74
+msgid "Title:"
+msgstr "Judul:"
+
+#: class.akismet-admin.php:182 class.akismet-admin.php:193
+#: class.akismet-admin.php:205
+msgid "Akismet Configuration"
+msgstr "Konfigurasi Akismet"
+
+#: class.akismet-admin.php:169 views/stats.php:2
+msgid "Akismet Stats"
+msgstr "Statistik Akismet"
+
+#: class.akismet-admin.php:332
+msgid "Check for Spam"
+msgstr "Periksa akan Spam"
+
+#: class.akismet-admin.php:491
+msgid "%s ago"
+msgstr "%s lalu"
+
+#: class.akismet-admin.php:104
+msgid "Remove this URL"
+msgstr "Hapus URL ini"
+
+#: class.akismet-admin.php:105
+msgid "Removing..."
+msgstr "Menghapus..."
+
+#: class.akismet-admin.php:106
+msgid "URL removed"
+msgstr "URL dihapus"
+
+#: class.akismet-admin.php:107
+msgid "(undo)"
+msgstr "(undo)"
+
+#: class.akismet-admin.php:129 class.akismet-admin.php:167
+#: class.akismet-admin.php:180
+msgid "Overview"
+msgstr "Ikhtisar"
+
+#: class.akismet-admin.php:203 views/config.php:165
+msgid "Account"
+msgstr "Akun"
+
+#: class.akismet-admin.php:206 views/config.php:170
+msgid "Subscription Type"
+msgstr "Tipe Langganan"
+
+#: class.akismet-admin.php:207 views/config.php:177
+msgid "Status"
+msgstr "Status"
+
+#: class.akismet-admin.php:217
+msgid "Akismet Support"
+msgstr "Dukungan Akismet"
+
+#: class.akismet-admin.php:779
+msgid "Cleaning up spam takes time."
+msgstr "Membersihkan spam menghabiskan waktu."
+
+#: class.akismet.php:991
+msgid "Akismet %s requires WordPress %s or higher."
+msgstr "Akismet %s membutuhkan WordPress %s atau selebihnya."
+
+#: views/config.php:12
+msgid "Summaries"
+msgstr "Ringkasan"
+
+#: views/config.php:18
+msgid "Past six months"
+msgstr "Enam bulan belakangan"
+
+#: views/config.php:20 views/config.php:25
+msgid "Spam blocked"
+msgstr "Spam diblokir"
+
+#: views/config.php:23
+msgid "All time"
+msgstr "Sepanjang waktu"
+
+#: views/config.php:28
+msgid "Accuracy"
+msgstr "Akurasi"
+
+#: views/config.php:121
+msgid "Note:"
+msgstr "Catatan:"
+
+#: views/config.php:146
+msgid "Disconnect this account"
+msgstr "Putuskan sambungan akun ini"
+
+#: views/config.php:208
+msgid "Upgrade"
+msgstr "Tingkatkan"
+
+#: views/config.php:208
+msgid "Change"
+msgstr "Ubah"
+
+#: class.akismet-admin.php:140
+msgid "New to Akismet"
+msgstr "Baru kenal Akismet"
+
+#: class.akismet-admin.php:143
+msgid "You need to enter an API key to activate the Akismet service on your site."
+msgstr "Anda butuh kunci API untuk mengaktifkan layanan Akismet pada situs Anda."
+
+#: class.akismet-admin.php:144
+msgid "Signup for an account on %s to get an API Key."
+msgstr "Daftarkan sebuah akun pada %s untuk memperoleh kunci API."
+
+#: class.akismet-admin.php:151
+msgid "Enter an API Key"
+msgstr "Masukkan Kunci API"
+
+#: class.akismet-admin.php:154
+msgid "If you already have an API key"
+msgstr "Jika Anda sudah punya kunci API"
+
+#: class.akismet-admin.php:156
+msgid "Copy and paste the API key into the text field."
+msgstr "Salin dan sematkan kunci API tersebut ke dalam bidang teks."
+
+#: class.akismet-admin.php:157
+msgid "Click the Use this Key button."
+msgstr "Klik tombol Gunakan Kunci Ini."
+
+#: class.akismet-admin.php:194 views/config.php:67
+msgid "API Key"
+msgstr "Kunci API"
+
+#: class.akismet-admin.php:194
+msgid "Enter/remove an API key."
+msgstr "Masukkan/hapus kunci API."
+
+#: class.akismet-admin.php:206
+msgid "The Akismet subscription plan"
+msgstr "Paket langganan Akismet."
+
+#: class.akismet-admin.php:131 class.akismet-admin.php:142
+#: class.akismet-admin.php:153
+msgid "Akismet Setup"
+msgstr "Pengaturan Akismet"
+
+#: class.akismet-admin.php:108
+msgid "Re-adding..."
+msgstr "Menambahkan kembali..."
+
+#: class.akismet-admin.php:132 class.akismet-admin.php:170
+#: class.akismet-admin.php:183
+msgid "Akismet filters out your comment and trackback spam for you, so you can focus on more important things."
+msgstr "Akismet menyaring komentar dan trackback spam untuk Anda, sehingga Anda bisa fokus untuk hal-hal yang lebih penting."
+
+#: class.akismet-admin.php:133
+msgid "On this page, you are able to setup the Akismet plugin."
+msgstr "Di laman ini, Anda bisa mengatur plugin Akismet."
+
+#: class.akismet-admin.php:171
+msgid "On this page, you are able to view stats on spam filtered on your site."
+msgstr "Di laman ini, Anda bisa melihat statistik spam yang tersaring pada situs Anda."
+
+#: class.akismet-admin.php:184
+msgid "On this page, you are able to enter/remove an API key, view account information and view spam stats."
+msgstr "Di laman ini, Anda bisa memasukkan/menghapus kunci API, melihat informasi akun dan statistik spam."
+
+#: views/config.php:109
+msgid "Show the number of approved comments beside each comment author"
+msgstr "Tampilkan jumlah komentar yang disetujui di samping masing-masing komentator."
+
+#: class.akismet-admin.php:195
+msgid "Show the number of approved comments beside each comment author in the comments list page."
+msgstr "Tampilkan jumlah komentar yang disetujui di samping masing-masing komentator pada laman daftar komentar."
+
+#: class.akismet-admin.php:207
+msgid "The subscription status - active, cancelled or suspended"
+msgstr "Status langganan - aktif, dibatalkan, atau ditangguhkan"
+
+#: class.akismet-admin.php:216
+msgid "Akismet FAQ"
+msgstr "Akismet FAQ"
+
+#: class.akismet-admin.php:284
+msgid "<a href=\"%1$s\">Akismet</a> has protected your site from <a href=\"%2$s\">%3$s spam comment</a>."
+msgid_plural "<a href=\"%1$s\">Akismet</a> has protected your site from <a href=\"%2$s\">%3$s spam comments</a>."
+msgstr[0] "<a href=\"%1$s\">Akismet</a> telah melindungi situs Anda dari <a href=\"%2$s\">%3$s komentar spam</a>."
+msgstr[1] "<a href=\"%1$s\">Akismet</a> telah melindungi situs Anda dari <a href=\"%2$s\">%3$s komentar spam</a>."
+
+#: class.akismet-admin.php:300
+msgid "<a href=\"%s\">Akismet</a> blocks spam from getting to your blog. "
+msgstr "<a href=\"%s\">Akismet</a> memblokir spam yang akan masuk ke blog Anda. "
+
+#: class.akismet-admin.php:306
+msgid "There&#8217;s <a href=\"%2$s\">%1$s comment</a> in your spam queue right now."
+msgid_plural "There are <a href=\"%2$s\">%1$s comments</a> in your spam queue right now."
+msgstr[0] "Ada <a href=\"%2$s\">%1$s komentar</a> dalam antrean spam Anda saat ini."
+msgstr[1] "Ada <a href=\"%2$s\">%1$s komentar</a> dalam antrean spam Anda saat ini."
+
+#: class.akismet-admin.php:312
+msgid "There&#8217;s nothing in your <a href='%s'>spam queue</a> at the moment."
+msgstr "Saat ini, <a href='%s'>antrean spam</a> Anda kosong."
+
+#: class.akismet.php:446
+msgid "%1$s changed the comment status to %2$s"
+msgstr "%1$s mengubah status komentar menjadi %2$s"
+
+#: class.akismet-admin.php:782
+msgid "Since you joined us, Akismet has saved you %s days!"
+msgstr "Sejak bergabung dengan kami, Akismet telah menghemat %s hari Anda!"
+
+#: class.akismet-admin.php:784
+msgid "Since you joined us, Akismet has saved you %d hours!"
+msgstr "Sejak bergabung dengan kami, Akismet telah menghemat %d jam Anda!"
+
+#: class.akismet-admin.php:786
+msgid "Since you joined us, Akismet has saved you %d minutes!"
+msgstr "Sejak bergabung dengan kami, Akismet telah menghemat %d menit Anda!"
+
+#: class.akismet.php:991 views/notice.php:27
+msgid "Please <a href=\"%1$s\">upgrade WordPress</a> to a current version, or <a href=\"%2$s\">downgrade to version 2.4 of the Akismet plugin</a>."
+msgstr "Silakan <a href=\"%1$s\">mutakhirkan WordPress</a> ke versi terbaru, atau <a href=\"%2$s\">turunkan plugin Akismet ke versi 2.4</a>."
+
+#: views/config.php:32
+msgid "%s missed spam, %s false positive"
+msgid_plural "%s missed spam, %s false positives"
+msgstr[0] "%s spam lolos, %s komentar palsu"
+msgstr[1] "%s spam lolos, %s komentar palsu"
+
+#: views/config.php:196
+msgid "Next Billing Date"
+msgstr "Tanggal Tagihan Berikutnya"

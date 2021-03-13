@@ -1,0 +1,208 @@
+@import '~filepond/dist/filepond.css';
+@import '~filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+.kaliforms-form-container {
+
+    input[type=color],
+    input[type=date],
+    input[type=datetime-local],
+    input[type=datetime],
+    input[type=email],
+    input[type=month],
+    input[type=number],
+    input[type=password],
+    // input[type=radio],
+    input[type=search],
+    input[type=tel],
+    input[type=text],
+    input[type=time],
+    input[type=url],
+    input[type=week],
+    select,
+    textarea {
+        width: 100%;
+    }
+
+	.row.kaliforms-pagebreak {
+		margin-top: .5rem;
+	}
+    .row>div> {
+        input[type=color],
+        input[type=date],
+        input[type=datetime-local],
+        input[type=datetime],
+        input[type=email],
+        input[type=month],
+        input[type=number],
+        input[type=password],
+        // input[type=radio],
+        input[type=search],
+        input[type=tel],
+        input[type=text],
+        input[type=time],
+        input[type=url],
+        input[type=week],
+        select,
+        textarea {
+            margin-bottom: 1rem;
+        }
+    }
+
+
+    label {
+        display: block;
+
+        > {
+
+            input[type=radio],
+            input[type=checkbox] {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .global-error-message {
+        color: red;
+        padding: 10px 0;
+        display: none;
+    }
+
+    &.kaliform-loading {
+        position: relative;
+
+        &:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            content: '';
+            display: block;
+            background: transparentize(#fff, .4);
+            z-index: 1000;
+        }
+    }
+
+    .kaliform-loader-container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+    }
+
+    .kaliform-loader {
+        display: inline-block;
+        position: relative;
+        width: 64px;
+        height: 64px;
+    }
+
+    .kaliform-loader div {
+        position: absolute;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #5144e7;
+        animation: kaliform-loader 1.2s linear infinite;
+    }
+
+    .kaliform-loader div:nth-child(1) {
+        top: 6px;
+        left: 6px;
+        animation-delay: 0s;
+    }
+
+    .kaliform-loader div:nth-child(2) {
+        top: 6px;
+        left: 26px;
+        animation-delay: -0.4s;
+    }
+
+    .kaliform-loader div:nth-child(3) {
+        top: 6px;
+        left: 45px;
+        animation-delay: -0.8s;
+    }
+
+    .kaliform-loader div:nth-child(4) {
+        top: 26px;
+        left: 6px;
+        animation-delay: -0.4s;
+    }
+
+    .kaliform-loader div:nth-child(5) {
+        top: 26px;
+        left: 26px;
+        animation-delay: -0.8s;
+    }
+
+    .kaliform-loader div:nth-child(6) {
+        top: 26px;
+        left: 45px;
+        animation-delay: -1.2s;
+    }
+
+    .kaliform-loader div:nth-child(7) {
+        top: 45px;
+        left: 6px;
+        animation-delay: -0.8s;
+    }
+
+    .kaliform-loader div:nth-child(8) {
+        top: 45px;
+        left: 26px;
+        animation-delay: -1.2s;
+    }
+
+    .kaliform-loader div:nth-child(9) {
+        top: 45px;
+        left: 45px;
+        animation-delay: -1.6s;
+    }
+
+    @keyframes kaliform-loader {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    &.fade-out-top {
+        -webkit-animation: fade-out-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: fade-out-top 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+
+    @-webkit-keyframes fade-out-top {
+        0% {
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes fade-out-top {
+        0% {
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            -webkit-transform: translateY(-50px);
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+    }
+}

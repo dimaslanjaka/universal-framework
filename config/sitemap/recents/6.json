@@ -1,0 +1,166 @@
+{
+    "kind": "youtube#videoListResponse",
+    "etag": "\"j6xRRd8dTPVVptg711_CSPADRfg/otsKkc1jJye5ymQCnQCXjX9KEsM\"",
+    "pageInfo": {
+        "totalResults": 1,
+        "resultsPerPage": 1
+    },
+    "items": [
+        {
+            "kind": "youtube#video",
+            "etag": "\"j6xRRd8dTPVVptg711_CSPADRfg/Tdojc9Vw6XyB1PmCL3rOpAFnw-E\"",
+            "id": "hTFSbu_6qHo",
+            "snippet": {
+                "publishedAt": "2019-09-30T05:48:38.000Z",
+                "channelId": "UCX7RJTce2MLIfE4e8QxRl4g",
+                "title": "SALAH APA AKU Reggae SKA by NIKISUKA feat KALIA SISKA",
+                "description": "SALAH APA AKU (Entah apa yang merasukimu) Reggae SKA Version By NIKISUKA feat KALIA SISKA\nSongBy : ILIR7\nhttps://www.youtube.com/watch?v=u4WCCI4JmVw\n\n#SalahApaAku #Ilir7 #NikisukaFeatKaliaSiska\n\n🔴 Tonton Juga Video Lainnya dari Kalia Siska :\nBALUNGAN KERE (Ndarboy Genk)\nSALAH APA AKU (Ilir 7)\nKECEWA (Sosok)\nSATU NAMA TETAP DIHATI (Eye)\nBINTANG KEHIDUPAN (Nike Ardila)\nANTARA BENCI DAN RINDU (Ratih Purwasih)\nAPA SALAH DAN DOSAKU (D'lloyd)\nTAK IKHLASNO (Happy Asmara)\n\nPlaylist nya (Kalia Siska) Ada disini : \nhttps://www.youtube.com/playlist?list=PL6eUev5uI_yjq7SNEuvrRjA6pXjGp3FB8\n\nMinat T-Shirt SKA 86 hub :\nUYE tone STORE : 0857-1639-5808 (WhatsApp)\n\nFollow Me : (Instagram)\n@nikisuka_\n@kaliasiska86",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/hTFSbu_6qHo/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/hTFSbu_6qHo/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/hTFSbu_6qHo/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    },
+                    "standard": {
+                        "url": "https://i.ytimg.com/vi/hTFSbu_6qHo/sddefault.jpg",
+                        "width": 640,
+                        "height": 480
+                    },
+                    "maxres": {
+                        "url": "https://i.ytimg.com/vi/hTFSbu_6qHo/maxresdefault.jpg",
+                        "width": 1280,
+                        "height": 720
+                    }
+                },
+                "channelTitle": "UYE tone",
+                "tags": [
+                    "salah apa aku",
+                    "salah apa aku tik tok",
+                    "salah apa aku lirik",
+                    "salah apa aku dj",
+                    "salah apa aku nikisuka",
+                    "salah apa aku cover",
+                    "entah apa yang merasukimu tik tok",
+                    "entah apa yang merasukimu dj",
+                    "entah apa yang merasukimu dj gagak",
+                    "ilir7 salah apa aku",
+                    "via vallen salah apa aku"
+                ],
+                "categoryId": "10",
+                "liveBroadcastContent": "none",
+                "defaultLanguage": "id",
+                "localized": {
+                    "title": "SALAH APA AKU Reggae SKA by NIKISUKA feat KALIA SISKA",
+                    "description": "SALAH APA AKU (Entah apa yang merasukimu) Reggae SKA Version By NIKISUKA feat KALIA SISKA\nSongBy : ILIR7\nhttps://www.youtube.com/watch?v=u4WCCI4JmVw\n\n#SalahApaAku #Ilir7 #NikisukaFeatKaliaSiska\n\n🔴 Tonton Juga Video Lainnya dari Kalia Siska :\nBALUNGAN KERE (Ndarboy Genk)\nSALAH APA AKU (Ilir 7)\nKECEWA (Sosok)\nSATU NAMA TETAP DIHATI (Eye)\nBINTANG KEHIDUPAN (Nike Ardila)\nANTARA BENCI DAN RINDU (Ratih Purwasih)\nAPA SALAH DAN DOSAKU (D'lloyd)\nTAK IKHLASNO (Happy Asmara)\n\nPlaylist nya (Kalia Siska) Ada disini : \nhttps://www.youtube.com/playlist?list=PL6eUev5uI_yjq7SNEuvrRjA6pXjGp3FB8\n\nMinat T-Shirt SKA 86 hub :\nUYE tone STORE : 0857-1639-5808 (WhatsApp)\n\nFollow Me : (Instagram)\n@nikisuka_\n@kaliasiska86"
+                },
+                "defaultAudioLanguage": "id"
+            },
+            "contentDetails": {
+                "duration": "PT4M49S",
+                "dimension": "2d",
+                "definition": "hd",
+                "caption": "false",
+                "licensedContent": true,
+                "projection": "rectangular"
+            },
+            "statistics": {
+                "viewCount": "4114893",
+                "likeCount": "28462",
+                "dislikeCount": "1261",
+                "favoriteCount": "0",
+                "commentCount": "3345"
+            },
+            "duration_sec": 289
+        }
+    ],
+    "video_url": [
+        {
+            "url": "https://r5---sn-2uuxa3vh-02bs.googlevideo.com/videoplayback?expire=1575463034&ei=GlTnXda2L5DKz7sPwZGh8Aw&ip=36.82.98.120&id=o-AF4A6hKOut4Buj3CMsomu8wdfCc1io24ssFGrF9emopk&itag=18&source=youtube&requiressl=yes&mm=31%2C29&mn=sn-2uuxa3vh-02bs%2Csn-npoeenez&ms=au%2Crdu&mv=m&mvi=4&pl=24&initcwndbps=282500&mime=video%2Fmp4&gir=yes&clen=21143069&ratebypass=yes&dur=288.415&lmt=1569824678368519&mt=1575441343&fvip=5&fexp=23842630%2C23860862&c=WEB&txp=5531432&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cmime%2Cgir%2Cclen%2Cratebypass%2Cdur%2Clmt&sig=ALgxI2wwRQIhAMH-EiT9El3yxMMw_h0TNgqfv13tRRzYwcAyHYf9EtKqAiAdj5TTJTHogkgGuzSStAC_1fwsReH8jlW7Fv4AhTpMjw%3D%3D&lsparams=mm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AHylml4wRAIgRh5lZi-2djmh2pcUD25SMNYLsshCQBk_dONPuI-wFpoCIAr8eV8XFa0K65jtnbJM3bL3cHCcOGwDD9_IvfQNoo8k",
+            "format": "MP4 360p"
+        }
+    ],
+    "url_video_api": "https://www.googleapis.com/youtube/v3/videos/?part=id%2Csnippet%2Cstatistics%2CcontentDetails&id=hTFSbu_6qHo&key=AIzaSyBYr0oEXIBLNXg4otQXfFO5fnomPQsDx4I",
+    "title": "SALAH APA AKU Reggae SKA by NIKISUKA feat KALIA SISKA",
+    "desc": "SALAH APA AKU (Entah apa yang merasukimu) Reggae SKA Version By NIKISUKA feat KALIA SISKA\nSongBy : ILIR7\nhttps://www.youtube.com/watch?v=u4WCCI4JmVw\n\n#SalahApaAku #Ilir7 #NikisukaFeatKaliaSiska\n\n🔴 Tonton Juga Video Lainnya dari Kalia Siska :\nBALUNGAN KERE (Ndarboy Genk)\nSALAH APA AKU (Ilir 7)\nKECEWA (Sosok)\nSATU NAMA TETAP DIHATI (Eye)\nBINTANG KEHIDUPAN (Nike Ardila)\nANTARA BENCI DAN RINDU (Ratih Purwasih)\nAPA SALAH DAN DOSAKU (Dlloyd)\nTAK IKHLASNO (Happy Asmara)\n\nPlaylist nya (Kalia Siska) Ada disini : \nhttps://www.youtube.com/playlist?list=PL6eUev5uI_yjq7SNEuvrRjA6pXjGp3FB8\n\nMinat T-Shirt SKA 86 hub :\nUYE tone STORE : 0857-1639-5808 (WhatsApp)\n\nFollow Me : (Instagram)\n@nikisuka_\n@kaliasiska86",
+    "img": null,
+    "charts": {
+        "view": "4114893",
+        "view_length": 7,
+        "dataChart": [
+            1,
+            2,
+            2,
+            3,
+            6,
+            11,
+            12,
+            14,
+            17,
+            19,
+            21,
+            26,
+            30,
+            31,
+            37,
+            41,
+            42,
+            43,
+            54,
+            57,
+            57,
+            58,
+            63,
+            67,
+            67,
+            72,
+            73,
+            81,
+            88,
+            96,
+            99
+        ],
+        "dataChartCount": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+        ]
+    }
+}

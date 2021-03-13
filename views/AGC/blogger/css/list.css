@@ -1,0 +1,14 @@
+.ui-menu-item {
+  border-bottom: #6b1301 solid 1px;
+}
+.ui-menu-item .post_key {
+	width: 70px;
+}
+
+.ui-menu-item td {
+  border: 0;
+}
+
+* {
+  word-wrap: break-word;
+}

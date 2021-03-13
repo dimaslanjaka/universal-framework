@@ -1,0 +1,4 @@
+deny from all
+<Files ~ "\.(txt)$">
+    Allow from all
+</Files>

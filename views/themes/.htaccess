@@ -1,0 +1,3 @@
+<Files ~ "\.(js)$">
+  Allow from all
+</Files>

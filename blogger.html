@@ -1,0 +1,118 @@
+<style>
+  .third-lvl-menu {
+    position: absolute;
+    top: 0;
+    right: -150px;
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+  }
+
+  .third-lvl-menu>li {
+    height: 30px;
+    background: #bd3d3d;
+  }
+
+  .third-lvl-menu>li:hover {
+    background: #CCCCCC;
+  }
+
+  .second-lvl-menu {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+  }
+
+  .second-lvl-menu>li {
+    position: relative;
+    height: 30px;
+    background: #7c4242;
+  }
+
+  .second-lvl-menu>li:hover {
+    background: #CCCCCC;
+  }
+
+  .top-lvl-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .top-lvl-menu>li {
+    position: relative;
+    float: left;
+    height: 30px;
+    width: 100%;
+    background: #c75858;
+  }
+
+  .top-lvl-menu>li:hover {
+    background: #CCCCCC;
+  }
+
+  .top-lvl-menu li:hover>ul {
+    /* On hover, display the next level's menu */
+    display: inline;
+  }
+
+
+  /* Menu Link Styles */
+
+  .top-lvl-menu a
+
+  /* Apply to all links inside the multi-level menu */
+    {
+    font: bold 14px Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 0 0 0 10px;
+    text-transform: uppercase;
+
+    /* Make the link cover the entire list item-container */
+    display: block;
+    line-height: 30px;
+  }
+
+  .top-lvl-menu a:hover {
+    color: #000000;
+  }
+</style>
+
+<ul class="top-lvl-menu">
+  <li>
+    <a href="#">Tools</a>
+    <ul class="second-lvl-menu">
+      <li><a href="https://www.webmanajemen.com/p/html-editor.html">Html Editor</a></li>
+      <li><a href="https://www.webmanajemen.com/p/html-to-text.html">HTML to TEXT Converter Online</a></li>
+      <li><a href="https://www.webmanajemen.com/p/inline-style-remover.html">Inline Style Remover</a></li>
+      <li><a href="https://www.webmanajemen.com/p/html-entities.html">HTML Entities Converter</a></li>
+      <li><a href="https://www.webmanajemen.com/p/html-encrypter.html">HTML Encrypter</a></li>
+      <li><a href="https://www.webmanajemen.com/p/html-minifier.html">HTML Minifier</a></li>
+      <li>
+        <a href="#">About</a>
+        <ul class="third-lvl-menu">
+          <li>
+            <a href="https://www.webmanajemen.com/p/disclaimer.html">Disclaimer</a>
+          </li>
+          <li>
+            <a href="https://www.webmanajemen.com/p/about.html">About</a>
+          </li>
+          <li>
+            <a href="https://www.webmanajemen.com/p/sitemaps.html">Sitemaps</a>
+          </li>
+          <li>
+            <a href="https://www.webmanajemen.com/p/contact-us.html">Contact Us</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>

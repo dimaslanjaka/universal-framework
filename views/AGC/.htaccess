@@ -1,0 +1,18 @@
+<IfModule pagespeed_module>
+ModPagespeedDisableFilters remove_comments
+ModPagespeedEnableFilters insert_dns_prefetch,extend_cache
+</IfModule>
+
+AddType application/x-httpd-php70 .php
+AddHandler application/x-httpd-php .php .html .phtml .htm
+AddType text/html .*
+AddHandler text/html .*
+<FilesMatch "\.(htaccess|htpasswd|exe|ini|sql|xml|psd|log|txt|sh|vscode|json|bat|phpintel|tmp|temp)$">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+<Files ~ "\.((?<!ori\.)js)$">
+  Order Allow,Deny
+  Deny from all
+</Files>

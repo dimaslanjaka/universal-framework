@@ -1,0 +1,37 @@
+{% api %}{% video %}
+
+{% if is_single_video %}
+<h2>Watch {{ term }} Online</h2>
+<p>
+<iframe class="youtube-player" type="text/html" width="560" height="315" src="http://www.youtube.com/embed/{{ get.v }}" frameborder="0">
+				</iframe>
+<br>
+<strong>Download {{ videos.0.title }}</strong>
+<br>
+	
+    <a href="#" onclick="window.open('http://keepvid.com/?url={{ videos.0.link }}')">MP4</a> |
+    <a href="#" onclick="window.open('http://keepvid.com/?url={{ videos.0.link }}')">FLV</a> |
+    <a href="#" onclick="window.open('http://keepvid.com/?url={{ videos.0.link }}')">3GP</a> |
+    <a href="#" onclick="window.open('http://snipmp3.com/?url={{ videos.0.link }}')">MP3</a>
+</p>
+
+{% else %}
+    
+    {% for ti, item in api %}
+      {% for vi, video in videos %}
+        {% if ti == vi %}
+        <p>
+          <a href="{{ video.title | build_permalink_for 'single_video' }}?v={{ video.link | get_video_id }}">
+                    <img src="http://img.youtube.com/vi/{{ video.link | get_video_id }}/default.jpg" hspace="5" align="left" width="120" height="90" />
+          </a>
+          <a href="{{ video.title | build_permalink_for 'single_video' }}?v={{ video.link | get_video_id }}">
+            <strong>Watch {{video.title  | remove '...' | trim | strtolower | ucfirst }} online</strong>
+          </a>
+          <br />
+          {{item.description | remove '...' | trim | strtolower | ucfirst }}...
+<br>
+    	</p>
+        {% endif %}
+        {% endfor %}
+    {% endfor %}
+{% endif %}

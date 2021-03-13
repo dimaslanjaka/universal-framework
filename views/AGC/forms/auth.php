@@ -1,0 +1,3 @@
+<?php
+
+$gClient = new wpgoogle();

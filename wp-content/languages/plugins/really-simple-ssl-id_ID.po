@@ -1,0 +1,592 @@
+# Translation of Plugins - Really Simple SSL - Stable (latest release) in Indonesian
+# This file is distributed under the same license as the Plugins - Really Simple SSL - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2018-08-19 00:28:04+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: id\n"
+"Project-Id-Version: Plugins - Really Simple SSL - Stable (latest release)\n"
+
+#: class-admin.php:2848
+msgid "Deactivate Plugin and keep SSL"
+msgstr "Nonaktifkan Plugin dan pertahankan SSL"
+
+#. Author of the plugin/theme
+msgid "Rogier Lankhorst, Mark Wolters"
+msgstr "Rogier Lankhorst, Mark Wolters"
+
+#: class-admin.php:2313
+msgid "Do you have visitors from the European Union? Get GDPR ready in 30 minutes with Complianz GDPR. Always up-to-date legal documents by one of the most prominent EU IT Law firms."
+msgstr "Apakah Anda memiliki pengunjung dari Uni Eropa? Siapkan GDPR dalam 30 menit dengan Complianz GDPR. Selalu mutakhirkan dokumen hukum dengan salah satu firma Hukum IT Uni Eropa terkemuka."
+
+#: class-multisite.php:676
+msgid "Activate SSL per site or install a wildcard certificate to fix this."
+msgstr "Aktifkan SSL per situs atau pasang sertifikat wildcard untuk memperbaiki ini."
+
+#: class-multisite.php:675
+msgid "This leads to issues when activating SSL networkwide since subdomains will be forced over SSL as well while they don't have a valid certificate."
+msgstr "Hal ini menyebabkan masalah ketika mengaktifkan SSL networkwide karena subdomain akan dipaksa melalui SSL juga sementara mereka tidak memiliki sertifikat yang valid."
+
+#: class-multisite.php:674
+msgid "You run a Multisite installation with subdomains, but your site doesn't have a wildcard certificate."
+msgstr "Anda menjalankan pemasangan Multisite dengan subdomain, tetapi situs Anda tidak memiliki sertifikat wildcard."
+
+#: class-admin.php:2917
+msgid "(revert to http)"
+msgstr "(kembali ke http)"
+
+#: class-admin.php:2880
+msgid "Clicking this button will deactivate the plugin while keeping your site on SSL. The WordPress 301 redirect, Javascript redirect and mixed content fixer will stop working. The site address will remain https:// and the .htaccess redirect will remain active. Deactivating the plugin via the plugins overview will revert the site back to http://."
+msgstr "Mengeklik tombol ini akan menonaktifkan plugin dan mempertahankan SSL pada situs Anda. Pengalihan 301 WordPress, pengalihan Javascript dan mixed content fixer akan berhenti bekerja. Alamat situs ini akan tetap https:// dan pengalihan .htaccess akan tetap aktif. Menonaktifkan plugin ini via ikhtisar plugin akan mengembalikan situs ini ke http://."
+
+#: class-admin.php:78
+msgid "Really Simple SSL and Really Simple SSL add-ons do not process any personal identifiable information, so the GDPR does not apply to these plugins or usage of these plugins on your website. You can find our privacy policy <a href=\"%s\" target=\"_blank\">here</a>."
+msgstr "Really Simple SSL dan plugin Really Simple SSL tidak memproses informasi identitas pribadi, sehingga GDPR tidak berlaku untuk plugin ini atau penggunaan plugin ini pada situs web Anda. Anda dapat menemukan kebijakan privasi kami <a href=\"%s\" target=\"_blank\">disini</a>."
+
+#: class-admin.php:2875
+msgid "Cancel"
+msgstr "Batal"
+
+#: class-admin.php:2872
+msgid "I'm sure I want to deactivate"
+msgstr "Saya yakin ingin menonaktifkan"
+
+#: class-admin.php:2858
+msgid "Deactivating the plugin via the plugins overview will revert the site back to http://."
+msgstr "Menonaktifkan plugin via ikhtisar plugin akan mengembalikan situs ini ke http://."
+
+#: class-admin.php:2857
+msgid "* The .htaccess redirect will remain active"
+msgstr "* Pengalihan .htaccess akan tetap aktif"
+
+#: class-admin.php:2856
+msgid "* Your site address will remain https://"
+msgstr "* Alamat situs Anda akan tetap https://"
+
+#: class-admin.php:2855
+msgid "* The WordPress 301 and Javascript redirect will stop working"
+msgstr "* Pengalihan 301 WordPress dan Javascript akan berhenti bekerja"
+
+#: class-admin.php:2854
+msgid "* The mixed content fixer will stop working"
+msgstr "* Mixed content fixer akan berhenti bekerja"
+
+#: class-admin.php:2852
+msgid "Deactivating the plugin while keeping SSL will do the following:"
+msgstr "Menonaktifkan plugin ini saat mempertahankan SSL akan:"
+
+#: class-admin.php:2851
+msgid "Are you sure?"
+msgstr "Apakah Anda yakin?"
+
+#: class-admin.php:2565
+msgid "Deactivate plugin and keep SSL"
+msgstr "Nonaktifkan plugin dan pertahankan SSL"
+
+#: class-admin.php:2430
+msgid "More info"
+msgstr "Info lebih lanjut"
+
+#: class-admin.php:2369
+msgid "Export your WooCommerce sales directly to Moneybird."
+msgstr "Ekspor langsung penjualan WooCommerce Anda ke Moneybird."
+
+#: class-admin.php:2358
+msgid "Export your Easy Digital Downloads sales directly to Moneybird."
+msgstr "Ekspor langsung penjualan Easy Digital Downloads Anda ke Moneybird."
+
+#: class-admin.php:2347
+msgid "Automatically send a notification when a user's post on the activity feed is liked or commented on."
+msgstr "Secara otomatis mengirimkan notifikasi saat postingan pengguna pada umpan aktivitas disukai atau dikomentari."
+
+#: class-admin.php:2337
+msgid "Show the most visited users and add a 'last visited users' tab to each user profile."
+msgstr "Tampilkan pengguna yang paling sering dikunjungi dan tambahkan tab 'kunjungan terakhir pengguna' ke setiap profil pengguna."
+
+#: class-admin.php:2326
+msgid "UM Tagging allows you to @tag or @mention all users on your platform."
+msgstr "UM Tagging memungkinkan Anda untuk @tag atau @mention semua pengguna pada platform Anda."
+
+#: class-admin.php:2305
+msgid "Really Simple SSL pro optimizes your SSL configuration: extensive scan for mixed content issues, access to premium support, HSTS and more!"
+msgstr "Really Simple SSL pro mengoptimalkan konfigurasi SSL Anda: pemindaian menyeluruh untuk masalah mixed content, akses ke dukungan premium, HSTS dan lainnya!"
+
+#: class-admin.php:2288
+msgid "We have some suggestions for your setup. Let us know if you have a suggestion for %sus%s!"
+msgstr "Kami memiliki beberapa saran untuk pengaturan Anda. Beri tahu kami jika Anda memiliki saran untuk %skami%s!"
+
+#: class-admin.php:397
+msgid "Really Simple SSL requires a valid SSL certificate. You can check your certificate on %sQualys SSL Labs%s."
+msgstr "Really Simple SSL memerlukan sertifikat SSL yang valid. Anda dapat memeriksa sertifikat Anda pada %sQualys SSL Labs%s."
+
+#: class-admin.php:391
+msgid "Really Simple SSL failed to detect a valid SSL certificate. If you do have an SSL certificate, try to reload this page over https by clicking this button: %sReload over https%s "
+msgstr "Really Simple SSL gagal mendeteksi sertifikat SSL yang valid. Jika Anda memiliki sertifikat SSL, cobalah untuk memuat ulang halaman ini melalui https dengan mengeklik tombol ini: %sMuat ulang melalui https%s "
+
+#: class-admin.php:384
+msgid "Detected possible certificate issues"
+msgstr "Kemungkinan masalah sertifikat yang terdeteksi"
+
+#: class-admin.php:423
+msgid "It is recommended to take a %sbackup%s of your site before activating SSL"
+msgstr "Direkomendasikan untuk membuat %sbackup%s situs Anda sebelum mengaktifkan SSL"
+
+#. Author URI of the plugin/theme
+msgid "https://really-simple-plugins.com"
+msgstr "https://really-simple-plugins.com"
+
+#: class-admin.php:2520 class-admin.php:2524
+msgid "Learn more"
+msgstr "Pelajari lebih lanjut"
+
+#: class-admin.php:2501
+msgid "Secure cookie settings not enabled."
+msgstr "Pengaturan kuki aman tidak diaktifkan."
+
+#: class-admin.php:2495
+msgid "Secure cookies set"
+msgstr "Set kuki aman"
+
+#: class-admin.php:1879 class-multisite.php:646
+msgid "Don't forget to change your settings in Google Analytics and Webmaster tools."
+msgstr "Jangan lupa untuk mengubah pengaturan di alat Google Analytics dan Webmaster."
+
+#: class-admin.php:2831
+msgid "If this option is set to true, the mixed content fixer will fire on the init hook instead of the template_redirect hook. Only use this option when you experience problems with the mixed content fixer."
+msgstr "Jika opsi ini diatur true, mixed content fixer akan diaktifkan pada init hook daripada di template_redirect hook. Hanya gunakan opsi ini saat Anda mengalami masalah dengan mixed content fixer."
+
+#: class-admin.php:2563
+msgid "Switch mixed content fixer hook"
+msgstr "Ganti hook mixed content fixer"
+
+#: class-admin.php:2171
+msgid "and"
+msgstr "dan"
+
+#: class-admin.php:2779
+msgid "The plugin could not detect any possible redirect rule."
+msgstr "Plugin ini tidak dapat mendeteksi aturan pengalihan yang mungkin."
+
+#: class-admin.php:2763
+msgid "The .htaccess redirect rules that were selected by this plugin failed in the test. The following redirect rules were tested:"
+msgstr "Aturan pengalihan .htaccess yang dipilih oleh plugin ini gagal dalam pengujian. Berikut aturan pengalihan telah diuji:"
+
+#: class-admin.php:462
+msgid "You can also let the automatic scan of the pro version handle this for you, and get premium support, increased security with HSTS and more!"
+msgstr "Anda juga dapat membiarkan pemindaian otomatis pada versi pro menangani ini untuk Anda, dan mendapatkan dukungan premium, peningkatan keamanan dengan HSTS, dan banyak lagi!"
+
+#: class-multisite.php:167
+msgid "per site"
+msgstr "per situs"
+
+#: class-multisite.php:164
+msgid "No selection was made"
+msgstr "Tidak ada pilihan yang dibuat"
+
+#: class-multisite.php:145
+msgid "Enable SSL"
+msgstr "Aktifkan SSL"
+
+#: class-multisite.php:788
+msgid "If you want more options to have full control over your multisite network, you can %supgrade%s your license to a multisite license, or dismiss this message"
+msgstr "Jika Anda ingin lebih banyak opsi untuk memiliki kendali penuh atas jaringan multisite Anda, Anda dapat %supgrade%s lisensi Anda ke lisensi multisite, atau abaikan pesan ini"
+
+#: class-multisite.php:779
+msgid "You are running Really Simple SSL pro. A dedicated add-on for multisite has been released. If you want more options to have full control over your multisite network, you can ask for a discount code to %supgrade%s your license to a multisite license."
+msgstr "Anda menjalankan Really Simple SSL pro. Sebuah pengaya khusus untuk multisite telah dirilis. Jika Anda ingin lebih banyak opsi untuk memiliki kontrol penuh atas jaringan multisite Anda, Anda dapat meminta kode diskon untuk %supgrade%s lisensi Anda ke lisensi multisite."
+
+#: class-multisite.php:644
+msgid "SSL was activated per site."
+msgstr "SSL telah diaktifkan per situs."
+
+#: class-multisite.php:642
+msgid "SSL was activated on your entire network."
+msgstr "SSL telah diaktifkan pada seluruh jaringan Anda."
+
+#: class-multisite.php:199
+msgid "Really Simple SSL multisite options"
+msgstr "Opsi multisite Really Simple SSL"
+
+#: class-multisite.php:196
+msgid "Options saved."
+msgstr "Opsi disimpan."
+
+#: class-multisite.php:172
+msgid "Select to enable SSL networkwide or per site."
+msgstr "Pilih untuk mengaktifkan SSL networkwide atau per situs."
+
+#: class-multisite.php:166
+msgid "networkwide"
+msgstr "networkwide"
+
+#: class-multisite.php:156
+msgid "Below you can set the multisite options for Really Simple SSL"
+msgstr "Dibawah ini Anda dapat mengatur opsi multisite untuk Really Simple SSL"
+
+#: class-admin.php:2786
+msgid "If the setting 'do not edit htaccess' is enabled, you can't change this setting."
+msgstr "Jika pengaturan 'jangan edit htaccess' diaktifkan, Anda tidak dapat mengubah pengaturan ini."
+
+#: class-admin.php:2692 class-admin.php:2718 class-admin.php:2751
+#: class-admin.php:2894
+msgid "This option is enabled on the network menu."
+msgstr "Opsi ini diaktifkan pada menu jaringan."
+
+#: class-admin.php:2484 class-admin.php:2503
+msgid "To enable, %sget Premium%s "
+msgstr "Untuk mengaktifkan, %sdapatkan Premium%s "
+
+#: class-admin.php:2482
+msgid "%sHTTP Strict Transport Security%s is not enabled."
+msgstr "%sHTTP Strict Transport Security%s tidak diaktifkan."
+
+#: class-admin.php:445
+msgid "You may need to login in again."
+msgstr "Anda mungkin harus masuk lagi."
+
+#: class-admin.php:2791
+msgid "Before you enable this, make sure you know how to %1$sregain access%2$s to your site in case of a redirect loop."
+msgstr "Sebelum Anda mengaktifkan ini, pastikan Anda mengetahui cara untuk %1$smendapatkan akses kembali%2$s ke situs Anda jika terjadi redirect loop."
+
+#: class-admin.php:2762
+msgid "The .htaccess file is not writable. Add these lines to your .htaccess manually, or set 644 writing permissions"
+msgstr "Berkas .htaccess tidak dapat ditulis. Tambahkan baris berikut pada .htaccess secara manual, atau atur izin tulis 664"
+
+#: class-admin.php:2757
+msgid "A .htaccess redirect is faster. Really Simple SSL detects the redirect code that is most likely to work (99% of websites), but this is not 100%. Make sure you know how to regain access to your site if anything goes wrong!"
+msgstr "Pengalihan .httaccess lebih cepat. Really Simple SSL mendeteksi kode pengalihan yang paling mungkin berfungsi (99% situs web), tapi ini tidak 100%. Pastikan Anda mengetahui cara mendapatkan akses kembali ke situs Anda jika ada yang salah!"
+
+#: class-admin.php:2551
+msgid "Enable 301 .htaccess redirect"
+msgstr "Aktifkan pengalihan .htaccess 301"
+
+#: class-admin.php:2185
+msgid "No 301 redirect is set. Enable the WordPress 301 redirect in the settings to get a 301 permanent redirect."
+msgstr "Pengalihan 301 belum diatur. Aktifkan pengalihan 301 WordPress di pengaturan untuk mendapatkan pengalihan permanen 301."
+
+#: class-admin.php:2182
+msgid "Https redirect cannot be set in the .htaccess. Set the .htaccess redirect manually or enable WordPress redirect in the settings."
+msgstr "Pengalihan https tidak dapat diatur di .htaccess. Atur pengalihan .htaccess secara manual atau aktifkan pengalihan WordPress di pengaturan."
+
+#: class-admin.php:2178
+msgid "Enable a .htaccess redirect or WordPress redirect in the settings to create a 301 redirect."
+msgstr "Aktifkan pengalihan .htaccess atau pengalihan WordPress di pengaturan untuk membuat pengalihan 301."
+
+#: class-admin.php:1845
+msgid "You do not have a 301 redirect to https active in the settings. For SEO purposes it is advised to use 301 redirects. You can enable a 301 redirect in the settings."
+msgstr "Anda tidak memiliki pengalihan 301 ke https yang aktif di pengaturan. Untuk tujuan SEO, disarankan untuk menggunakan pengalihan 301. Anda dapat mengaktifkan pengalihan 301 di pengaturan."
+
+#: class-admin.php:2897
+msgid "In most cases you need to leave this enabled, to prevent mixed content issues on your site."
+msgstr "Pada umumnya, Anda harus membiarkan ini diaktifkan, untuk mencegah masalah mixed content di situs Anda."
+
+#: class-admin.php:2814
+msgid "If you want to customize the Really Simple SSL .htaccess, you need to prevent Really Simple SSL from rewriting it. Enabling this option will do that."
+msgstr "Jika Anda ingin mengubahsuaikan .htaccess Really Simple SSL , Anda harus mencegah Really Simple SSL dapat menulis ulang .httacess. Aktifkan opsi ini untuk melakukannya."
+
+#: class-admin.php:2722
+msgid "Enable this if you want to use the internal WordPress 301 redirect. Needed on NGINX servers, or if the .htaccess redirect cannot be used."
+msgstr "Aktifkan ini jika Anda ingin menggunakan pengalihan WordPress internal. Dibutuhkan pada server NGINX, atau jika pengalihan .htaccess tidak dapat digunakan."
+
+#: class-admin.php:2696
+msgid "This is a fallback you should only use if other redirection methods do not work."
+msgstr "Ini adalah sebuah fallback, yang seharusnya hanya digunakan jika metode pengalihan lainnya tidak bekerja."
+
+#: class-admin.php:2671
+msgid "Enable this option to get debug info in the debug tab."
+msgstr "Aktifkan opsi ini untuk mendapatkan info debug di tab debug."
+
+#: class-admin.php:2547
+msgid "Enable WordPress 301 redirection to SSL"
+msgstr "Aktifkan pengalihan 301 WordPress untuk SSL"
+
+#: class-admin.php:2475
+msgid "HTTP Strict Transport Security was enabled"
+msgstr "HTTP Strict Transport Security telah diaktifkan"
+
+#: class-admin.php:2180
+msgid ".htaccess is not writable. Set 301 WordPress redirect, or set the .htaccess manually if you want to redirect in .htaccess."
+msgstr ".htaccess tidak dapat ditulis. Atur pengalihan WordPress 301, atau atur .htaccess secaa manual jika Anda menginginkan pengalihan di .htaccess."
+
+#: class-admin.php:2174
+msgid "WordPress redirect"
+msgstr "Pengalihan WordPress"
+
+#: class-admin.php:2168
+msgid ".htaccess redirect"
+msgstr "Pengalihan .htaccess"
+
+#: class-admin.php:2166
+msgid "301 redirect to https set: "
+msgstr "Pengalihan 301 ke set https: "
+
+#: class-admin.php:1882 class-multisite.php:649
+msgid "More info."
+msgstr "Info lebih lanjut."
+
+#: class-multisite.php:294
+msgid "reload over https."
+msgstr "muat ulang melalui https."
+
+#: class-multisite.php:292
+msgid "No SSL was detected. If you do have an SSL certificate, try to reload this page over https by clicking this link:"
+msgstr "SSL tidak terdeteksi. Jika Anda memiliki sertifikat SSL, cobalah untuk memuat ulang halaman ini melalui https dengan mengeklik tautan berikut:"
+
+#: class-admin.php:2582
+msgid "Settings to optimize your SSL configuration"
+msgstr "Pengaturan untuk mengoptimalkan konfigurasi SSL Anda"
+
+#: class-multisite.php:295
+msgid "You can check your certificate on"
+msgstr "Anda dapat memeriksa sertifikat Anda pada"
+
+#: class-admin.php:1846
+msgid "View settings page"
+msgstr "Lihat halaman pengaturan"
+
+#: class-multisite.php:343
+msgid "You can also let the automatic scan of the pro version handle this for you, and get premium support and increased security with HSTS included."
+msgstr "Anda juga dapat membiarkan pemindaian otomatis pada versi pro menangani ini untuk Anda, dan mendapatkan dukungan premium dan peningkatan keamanan dengan menyertakan HSTS."
+
+#: class-admin.php:2933
+msgid "Premium Support"
+msgstr "Dukungan Khusus (Premium)"
+
+#: class-admin.php:2923
+msgid "Docs"
+msgstr "Dokumentasi"
+
+#: class-admin.php:2522
+msgid "Still having issues with mixed content? Check out Premium, which includes an extensive scan and premium support. "
+msgstr "Masih mengalami masalah dengan mixed content? Lihat versi Premium, yang menyertakan fitur pemindaian menyeluruh dan dukungan premium. "
+
+#: class-admin.php:2518
+msgid "If you want to be sure you're ready to migrate to SSL, get Premium, which includes an extensive scan and premium support."
+msgstr "Jika Anda ingin memastikan Anda siap bermigrasi ke SSL, dapatkan versi Premium, yang mencakup pemindaian menyeluruh dan dukungan premium."
+
+#: class-admin.php:464 class-multisite.php:345
+msgid "Check out Really Simple SSL Premium"
+msgstr "Lihat Really Simple SSL Premium"
+
+#: class-admin.php:443
+msgid "Go ahead, activate SSL!"
+msgstr "Yuk aktifkan SSL!"
+
+#: class-admin.php:2135
+msgid "Instructions"
+msgstr "Instruksi"
+
+#: class-admin.php:2133
+msgid "The mixed content fixer is active, but was not detected on the frontpage. Please follow these steps to check if the mixed content fixer is working."
+msgstr "Mixed content fixer aktif, tetapi tidak terdeteksi di halaman depan. Harap ikuti langkah-langkah ini untuk memeriksa apakah mixed content fixer berfungsi."
+
+#: class-admin.php:1878 class-multisite.php:639
+msgid "SSL activated!"
+msgstr "SSL diaktifkan!"
+
+#: class-admin.php:2114
+msgid "SSL is not enabled yet"
+msgstr "SSL belum diaktifkan"
+
+#: class-admin.php:2112
+msgid "SSL is enabled on your site."
+msgstr "SSL telah diaktifkan pada situs Anda."
+
+#: class-admin.php:416 class-multisite.php:311
+msgid "Images, stylesheets or scripts from a domain without an SSL certificate: remove them or move to your own server."
+msgstr "Gambar, stylesheets atau script dari domain tanpa sertifikat SSL: hapus atau pindahkan mereka ke server Anda sendiri."
+
+#: class-multisite.php:327
+msgid "Networkwide activation does not check if a site has an SSL certificate. It just migrates all sites to SSL."
+msgstr "Aktivasi networkwide tidak memeriksa apakah situs memiliki sertifikat SSL. Itu hanya memigrasikan semua situs ke SSL."
+
+#: class-multisite.php:322
+msgid "Activate SSL per site"
+msgstr "Aktifkan SSL per situs"
+
+#: class-multisite.php:319
+msgid "Activate SSL networkwide"
+msgstr "Aktifkan SSL networkwide"
+
+#: class-multisite.php:306
+msgid "Choose your preferred setup"
+msgstr "Pilih pengaturan yang Anda inginkan"
+
+#: class-admin.php:1814
+msgid "Because your server does not pass a variable with which WordPress can detect SSL, WordPress may create redirect loops on SSL."
+msgstr "Karena server Anda tidak memenuhi variabel agar WordPress dapat mendeteksi SSL, WordPress mungkin akan membuat redirect loops pada SSL."
+
+#: class-admin.php:1808
+msgid "Or set your wp-config.php to writable and reload this page."
+msgstr "Atau atur wp-config.php Anda agar da[at ditulis dan muat ulang halaman ini."
+
+#: class-admin.php:1791
+msgid "Because your site is behind a loadbalancer and is_ssl() returns false, you should add the following line of code to your wp-config.php."
+msgstr "Karena situs Anda dibelakang sebuah loadbalancer dan is_ssl() returns false, Anda harus menambahkan baris kode berikut pada wp-config.php."
+
+#: class-admin.php:1790
+msgid "Your wp-config.php has to be edited, but is not writable."
+msgstr "wp-config.php perlu disunting, tetapi ia tidak dapat ditulis."
+
+#: class-admin.php:1787 class-admin.php:1815
+msgid "Set your wp-config.php to writable and reload this page."
+msgstr "Atur wp-config.php Anda agar dapat ditulis dan muat ulang halaman ini."
+
+#: class-admin.php:1785
+msgid "A definition of a siteurl or homeurl was detected in your wp-config.php, but the file is not writable."
+msgstr "Definisi siteurl atau homeurl terdeteksi di wp-config.php Anda, tetapi berkas tersebut tidak dapat ditulis."
+
+#: class-admin.php:1781
+msgid "System detection encountered issues"
+msgstr "Sistem pendeteksian mengalami masalah"
+
+#: class-admin.php:415 class-multisite.php:310
+msgid "Http references in your .css and .js files: change any http:// into //"
+msgstr "Referensi http pada berkas .css dan .js: ganti http:// menjadi //"
+
+#: class-admin.php:412 class-multisite.php:307
+msgid "Some things can't be done automatically. Before you migrate, please check for: "
+msgstr "Beberapa hal tidak dapat dilakukan secara otomatis. Sebelum bermigrasi, silakan periksa: "
+
+#: class-admin.php:407
+msgid "Almost ready to migrate to SSL!"
+msgstr "Hampir siap untuk bermigrasi ke SSL!"
+
+#: class-admin.php:51 class-cache.php:10 class-certificate.php:14
+#: class-front-end.php:19 class-help.php:9 class-mixed-content-fixer.php:13
+#: class-multisite.php:32 class-server.php:10
+msgid "%s is a singleton class and you cannot create a second instance."
+msgstr "%s adalah singleton class dan Anda tidak dapat membuat instance kedua."
+
+#: class-admin.php:2815
+msgid ".htaccess is currently not writable."
+msgstr ".htaccess saat ini tidak dapat ditulis."
+
+#: class-admin.php:2131
+msgid "Mixed content fixer was successfully detected on the front-end"
+msgstr "Mixed content fixer berhasil dideteksi pada front-end"
+
+#: class-admin.php:2046
+msgid "On <a href='https://really-simple-ssl.com'>really-simple-ssl.com</a> you can find a lot of articles and documentation about installing this plugin, and installing SSL in general."
+msgstr "Di <a href='https://really-simple-ssl.com'>really-simple-ssl.com</a>, Anda dapat menemukan banyak artikel dan dokumentasi tentang pemasangan plugin ini, dan pemasangan SSL secara umum."
+
+#: class-admin.php:2045
+msgid "Documentation"
+msgstr "Dokumentasi"
+
+#: class-admin.php:2554
+msgid "Enable Javascript redirection to SSL"
+msgstr "Aktifkan pengalihan Javascript ke SSL"
+
+#: class-admin.php:2147
+msgid "Failed activating SSL"
+msgstr "Gagal mengaktifkan SSL"
+
+#. Description of the plugin/theme
+msgid "Lightweight plugin without any setup to make your site SSL proof"
+msgstr "Plugin ringan tanpa konfigurasi yang membuat situs Anda dimuat dengan SSL"
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.really-simple-ssl.com"
+msgstr "https://www.really-simple-ssl.com"
+
+#. Plugin Name of the plugin/theme
+msgid "Really Simple SSL"
+msgstr "Really Simple SSL"
+
+#: class-admin.php:2543
+msgid "Auto replace mixed content"
+msgstr "Otomatis ganti mixed content"
+
+#: class-admin.php:2560
+msgid "Stop editing the .htaccess file"
+msgstr "Berhenti menyunting berkas .htaccess"
+
+#: class-admin.php:2249
+msgid "To view results here, enable the debug option in the settings tab."
+msgstr "Untuk melihat hasil disini, aktifkan opsi debug di tab pengaturan."
+
+#: class-admin.php:2227
+msgid "Send me a copy of these lines if you have any issues. The log will be erased when debug is set to false"
+msgstr "Kirimkan saya salinan dari baris ini jika Anda mengalami masalah. Log akan dihapus ketika debug diatur ke false"
+
+#: class-admin.php:2226
+msgid "Log for debugging purposes"
+msgstr "Log untuk keperluan debugging"
+
+#: class-admin.php:2064 class-admin.php:2557
+msgid "Debug"
+msgstr "Debug"
+
+#: class-admin.php:2213
+msgid "Save"
+msgstr "Simpan"
+
+#: class-admin.php:2151
+msgid "An SSL certificate was detected on your site. "
+msgstr "Sertifikat SSL telah terdeteksi pada situs Anda. "
+
+#: class-admin.php:2149
+msgid "No SSL detected."
+msgstr "SSL tidak terdeteksi."
+
+#: class-admin.php:2062
+msgid "Configuration"
+msgstr "Konfigurasi"
+
+#: class-admin.php:2063 class-admin.php:2542 class-admin.php:2920
+#: class-multisite.php:143 class-multisite.php:814
+msgid "Settings"
+msgstr "Pengaturan"
+
+#: class-admin.php:2104
+msgid "Detected setup"
+msgstr "Pengaturan terdeteksi"
+
+#: class-admin.php:2020
+msgid "SSL"
+msgstr "SSL"
+
+#: class-admin.php:2019
+msgid "SSL settings"
+msgstr "Pengaturan SSL"
+
+#: class-admin.php:1897
+msgid "The force http after leaving checkout in WooCommerce will create a redirect loop."
+msgstr "Paksa http setelah meninggalkan checkout di WooCommerce akan membuat redirect loop."
+
+#: class-admin.php:1899
+msgid "Show me this setting"
+msgstr "Tunjukkan pengaturan ini"
+
+#: class-admin.php:1895
+msgid "Really Simple SSL has a conflict with another plugin."
+msgstr "Really Simple SSL konflik dengan plugin lainnya."
+
+#: class-multisite.php:663
+msgid "Activate networkwide to fix this."
+msgstr "Aktifkan networkwide untuk memperbaiki ini."
+
+#: class-multisite.php:662
+msgid "Because the $_SERVER[\"HTTPS\"] variable is not set, your website may experience redirect loops."
+msgstr "Karena variabel $_SERVER[\"HTTPS\"] tidak ditetapkan, situs web Anda mungkin akan mengalami redirect loops."
+
+#: class-multisite.php:661
+msgid "You run a Multisite installation with subfolders, which prevents this plugin from fixing your missing server variable in the wp-config.php."
+msgstr "Anda menjalankan pemasangan Multisite dengan subfolder, yang mencegah plugin ini memperbaiki variabel server yang belum ada di wp-config.php."
+
+#: class-admin.php:1861 class-multisite.php:625
+msgid "Check again"
+msgstr "Periksa lagi"
+
+#: class-admin.php:1859 class-multisite.php:623
+msgid "The 'force-deactivate.php' file has to be renamed to .txt. Otherwise your ssl can be deactived by anyone on the internet."
+msgstr "Berkas 'force-deactivate.php' harus diganti namanya menjadi .txt. Jika tidak, ssl Anda akan dapat dinonaktifkan oleh orang lain di internet."
+
+#: class-admin.php:1856 class-multisite.php:620
+msgid "Major security issue!"
+msgstr "Masalah keamanan utama!"

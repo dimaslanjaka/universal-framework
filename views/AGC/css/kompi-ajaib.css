@@ -1,0 +1,23 @@
+#show-cat{float:left;margin:20px 5% 20px 0;width:25%;height:389px;overflow-x:hidden;overflow-y:auto;line-height:18px;border:1px solid #ccc}
+#show-cat ul{margin:0;border-top:0px solid #ccc;padding:0}
+#show-cat ul li{list-style-type:none;margin:0;border-right:1px solid #ccc;border-bottom:0px solid #ccc;border-left:0px solid #ccc;padding:0}
+#show-cat ul li a{display:block;padding:10px;border-bottom:1px solid #ccc;}
+#show-cat ul li:last-child a{border-bottom:none;}
+#show-cat ul li a,#navi-cat a{background:#fff;color:#4d90f0;text-decoration:none}
+#show-cat ul li a,#navi-cat a,#navi-cat span{font-size:14px}
+#show-cat ul li a:hover,#navi-cat a:hover{background:#ccc;color:#fff}
+#show-post{float:left;width:69%;line-height:1.6em}
+#show-post ul li{list-style-type:none;margin-left:-40px}
+#navi-cat{padding:20px 0}
+#navi-cat a{margin-right:10px;border:1px solid #ccc}
+#navi-cat a,#navi-cat span{padding:5px 10px}
+#navi-cat span{float:right}
+
+@media screen and (max-width:768px){
+    #show-cat{width:35%;}
+    #show-post{width:59%;}
+}
+@media screen and (max-width:480px){
+    #show-cat{width:100%;margin:20px 0}
+    #show-post{width:100%;}
+}

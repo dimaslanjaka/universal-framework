@@ -1,0 +1,97 @@
+{
+  "_from": "smartwizard",
+  "_id": "smartwizard@4.3.1",
+  "_inBundle": false,
+  "_integrity": "sha512-C7gWnPwcLOi18kANTnCHYCMMo8LgZTcbMMXm6Q4bjUeY6ZaYGKXalaDjnTG6dSShEDmb50V6FeDHIZrXXiy0Hw==",
+  "_location": "/smartwizard",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "smartwizard",
+    "name": "smartwizard",
+    "escapedName": "smartwizard",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/smartwizard/-/smartwizard-4.3.1.tgz",
+  "_shasum": "118b69eb2a19724f88e0c72487ff666cda5ed8eb",
+  "_spec": "smartwizard",
+  "_where": "D:\\agcontents",
+  "author": {
+    "name": "Dipu Raj",
+    "email": "hello@techlaboratory.net"
+  },
+  "bugs": {
+    "url": "https://github.com/techlab/SmartWizard/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Dipu Raj",
+      "email": "hello@techlaboratory.net"
+    }
+  ],
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "jquery": "^3.3.1"
+  },
+  "deprecated": false,
+  "description": "The awesome jQuery step wizard plugin with Bootstrap support",
+  "devDependencies": {
+    "autoprefixer": "^6.7.7",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-cssbeautify": "^0.1.3",
+    "gulp-jasmine": "^2.4.2",
+    "gulp-jshint": "^2.0.4",
+    "gulp-karma": "0.0.5",
+    "gulp-postcss": "^6.4.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.1",
+    "jasmine-core": "^2.5.2",
+    "jasmine-jquery": "^2.1.1",
+    "jshint": "^2.9.4",
+    "karma": "^1.5.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-jasmine-jquery": "^0.1.1",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "0.0.31"
+  },
+  "homepage": "http://techlaboratory.net/smartwizard",
+  "keywords": [
+    "bootstrap",
+    "wizard",
+    "step",
+    "ui",
+    "jquery-plugin",
+    "tabs",
+    "jquery"
+  ],
+  "license": "MIT",
+  "main": "./dist/js/jquery.smartWizard.js",
+  "name": "smartwizard",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techlab/SmartWizard.git"
+  },
+  "scripts": {
+    "build": "gulp",
+    "clean": "gulp clean",
+    "lint": "gulp lint",
+    "start": "",
+    "test": "karma start --single-run --browsers PhantomJS"
+  },
+  "style": "./dist/css/smart_wizard.css",
+  "version": "4.3.1"
+}

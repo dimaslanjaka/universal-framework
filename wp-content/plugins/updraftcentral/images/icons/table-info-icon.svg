@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="21px" viewBox="0 0 22 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <title>Table Information - Mid</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Table-Information-Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-39.000000, 1.000000)">
+        <g id="Table-Information---Mid" transform="translate(39.000000, 0.000000)" stroke="#94979F" stroke-width="2">
+            <rect id="Rectangle" x="1.91666667" y="1" width="18.1666667" height="18" rx="1"></rect>
+            <path d="M2.25,5.45454545 L19.76983,5.45454545" id="Line" stroke-linecap="square"></path>
+            <path d="M2.25,10 L19.76983,10" id="Line" stroke-linecap="square"></path>
+            <path d="M2.25,14.5454545 L19.76983,14.5454545" id="Line" stroke-linecap="square"></path>
+            <path d="M10.7708333,0.903327356 L10.7708333,18.8301849" id="Line-2" stroke-linecap="square"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2017 by dimaslanjaka (http://jsbin.com/jujiwi/30/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<title>jQuery Add Class</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.1.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.4/jquery.lazy.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.4/jquery.lazy.plugins.min.js"></script>
+</head>
+<body id="#top">
+<p>Test</p>
+<p>test</p>
+<div>
+<img src="http://google.me/favicon.ico">
+</div>
+<script id="jsbin-javascript">
+$( "img" ).addClass( "w3-card-4 loader lazy" );
+$('#top > img:not([alt])').attr('alt', 'AltText');
+$('#top > img:not([title])').attr('title', 'TitleText');
+$('#top > img:not([longdesc])').attr('longdesc', 'http://pastebin.com/raw/sWdd3D1g');
+</script>
+</body>
+<script src="http://yui.yahooapis.com/3.10.0/build/yui/yui.js"></script>
+</html>

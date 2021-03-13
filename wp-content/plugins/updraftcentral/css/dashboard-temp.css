@@ -1,0 +1,8 @@
+/*
+ * This file has CSS in it which is either:
+ * 1) New CSS that needs integrating into dashboard.css
+ * or
+ * 2) CSS being used temporarily by the developer, that should be left
+ * The purpose is to allow designers to work on changing dashboard.css, without conflicting with developers who are adding new CSS.
+ * Designers should remove content from this file (via commenting it out, so that it's clear what has happened) and adding it to dashboard.css
+ */

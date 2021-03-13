@@ -1,0 +1,67 @@
+.updraftcentral_row_extracontents .expertmode .advanced_settings_container {
+  height: auto;
+  overflow: hidden; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_menu {
+    border-bottom: 1px solid #cccccc;
+    /*
+		This is here so that there isn't an ugly space between tabs
+		*/
+    font-size: 0px; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_menu .advanced_tools_button {
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 5px;
+      color: #000000; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_menu .advanced_tools_button:hover {
+      background-color: #BF5519;
+      color: #ffffff; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_menu .advanced_tools_text {
+      font-size: 16px;
+      vertical-align: middle !important; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_menu .active {
+      background-color: #BF5519;
+      color: #ffffff; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content {
+    padding-top: 5px;
+    font-size: 16px;
+    width: auto; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content h3 {
+      margin-top: 5px !important; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content h4 {
+      padding: 5px 0px; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content .advanced_tools {
+      display: none; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content .site_info {
+      display: block; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content input#import_settings {
+      height: auto !important; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content button, .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content input[type="submit"] {
+      border: 1px solid transparent;
+      -webkit-user-select: none;
+      padding: .25rem .5rem;
+      font-size: .875rem;
+      border-radius: .2rem;
+      border: 1px solid #269cdf;
+      color: #ffffff !important;
+      background-color: #269cdf; }
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content button:hover, .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content input[type="submit"]:hover,
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content button:active, .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content input[type="submit"]:active,
+    .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content button:focus, .updraftcentral_row_extracontents .expertmode .advanced_settings_container .advanced_settings_content input[type="submit"]:focus {
+      border-color: transparent !important;
+      color: #ffffff !important;
+      background-color: #1b7fb7;
+      text-decoration: none !important; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container .updraft_debugrow th {
+    float: right;
+    text-align: right;
+    font-weight: bold;
+    padding-right: 8px;
+    min-width: 140px; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container .updraft_debugrow td {
+    min-width: 300px; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container #search_replace_form input[type="text"], .updraftcentral_row_extracontents .expertmode .advanced_settings_container #search_replace_form input[type="number"], .updraftcentral_row_extracontents .expertmode .advanced_settings_container #lock_form input[type="text"], .updraftcentral_row_extracontents .expertmode .advanced_settings_container #lock_form select {
+    width: 230px; }
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container #updraftcentral_keys .create_key_container, .updraftcentral_row_extracontents .expertmode .advanced_settings_container #updraftcentral_keys .create_key_container,
+  .updraftcentral_row_extracontents .expertmode .advanced_settings_container #updraftcentral_keys .updraftcentral_key_delete {
+    display: none; }

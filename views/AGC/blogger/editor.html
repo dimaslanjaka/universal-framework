@@ -1,0 +1,160 @@
+<div class="content">
+  <h1 id="head">Blogger Article Editor</h1>
+
+  <div id="myHeader">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item bg-primary">
+        <a class="nav-link active" id="composer-tab" data-toggle="tab" href="#composer" role="tab"
+          aria-controls="composer" aria-selected="true">Visual Editor</a>
+      </li>
+      <li class="nav-item bg-primary">
+        <a class="nav-link" id="plaintext-tab" data-toggle="tab" href="#plaintext" role="tab" aria-controls="plaintext"
+          aria-selected="false">HTML Editor</a>
+      </li>
+      <li class="nav-item bg-primary">
+        <a class="nav-link" id="live-tab" data-toggle="tab" href="#live" role="tab" aria-controls="live"
+          aria-selected="false">Preview</a>
+      </li>
+      <li class="nav-item">
+        <button data-form="%IDFORM%" data-toggle="tooltip-primary" title="Blog:%IDBLOG% Post:%IDPOST%" type="button" class="btn btn-success">
+          Save <i class="fab fa-blogger"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content mt-2" id="myTabContent">
+    <div class="tab-pane fade show active" id="composer" role="tabpanel" aria-labelledby="composer-tab">
+      <hr class="hr-text" data-content="TITLE">
+      <input name="" id="title-visual" class="form-control" value="%TITLE%"></input>
+      <hr class="hr-text" data-content="BODY">
+      <div id="summernote"></div>
+      <hr class="hr-text" data-content="LABEL">
+      <input data-toggle="tooltip" title="separate with commas" type="text" value="%LABEL%" name="label"
+        class="form-control">
+      <span class="text-muted" id="label-helper">label 1<span class="tx-danger">,</span> label 2<span
+          class="tx-danger">,</span> label 3</span>
+    </div>
+    <div class="tab-pane fade" id="plaintext" role="tabpanel" aria-labelledby="plaintext-tab">
+      <form id="%IDFORM%" action="%ACTIONFORM%" method="post">
+        %FORM_FIELD%
+        <hr class="hr-text" data-content="TITLE">
+        <input name="title" id="title-plaintext" cols="30" rows="10" class="form-control" value="%TITLE%"></input>
+        <hr class="hr-text" data-content="CONTENT">
+        <textarea name="body" id="body-plaintext" cols="30" rows="10"
+          class="form-control">Codemirror Initializing</textarea>
+        <hr class="hr-text" data-content="LABEL">
+        <input data-toggle="tooltip" title="separate with commas" type="text" value="%LABEL%" name="label"
+          class="form-control">
+        <span class="text-muted" id="label-helper">label 1<span class="tx-danger">,</span> label 2<span
+            class="tx-danger">,</span> label 3</span>
+        <input type="hidden" name="save" value="blogger">
+        <!--ERROR area-->
+        <hr class="hr-text" data-content="SEO and ERROR">
+        <div id="accordion" class="accordion">
+          <div class="card">
+            <div class="card-header" id="seo-peek" data-toggle="collapse" href="#seo-collapse" aria-expanded="false"
+              aria-controls="seo-collapse">
+              <h5 class="d-flex align-items-center justify-content-between m-3">
+                Critical SEO
+                <span class="fa-stack fa-sm">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                </span>
+              </h5>
+            </div>
+
+            <div id="seo-collapse" class="collapse" aria-labelledby="seo-peek" data-parent="#accordion">
+              <div class="card-body">
+                <div id="seo_result" class="p-2">
+                  <ul>
+                    <p class="tx-success">No SEO error detected</p>
+                  </ul>
+                </div>
+                <div id="seo-references">
+                  <hr class="hr-text" data-content="SEO References">
+                  <div id="a-rel">
+                    <ul><i>anchor REL:</i>
+                      <li>rel="nofollow noopener" for <span class="tx-danger">EXTERNAL links</span></li>
+                      <li>rel="bookmark" for <span class="tx-success">INTERNAL links</span></li>
+                      <li>rel="follow" for <span class="tx-primary">BACKLINKS</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End card-->
+          <!--HTML error-->
+          <div class="card">
+            <div class="card-header" id="html-error-peek" data-toggle="collapse" href="#html-error-collapse"
+              aria-expanded="false" aria-controls="html-error-collapse">
+              <h5 class="d-flex align-items-center justify-content-between m-3">
+                HTML error
+                <span class="fa-stack fa-sm">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fas fa-plus fa-stack-1x fa-inverse"></i>
+                </span>
+              </h5>
+            </div>
+
+            <div id="html-error-collapse" class="collapse" aria-labelledby="html-error-peek" data-parent="#accordion">
+              <div class="card-body p2">
+                <div id="html_error_result">
+                  <ul>
+                    <p class="tx-success">No HTML error detected</p>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End card-->
+        </div>
+        <hr class="hr-text" data-content="TOOLS">
+        <div class="btn-group" id="btn-save">
+          <button class="btn btn-primary" id="autoFormatSelection">
+            Beautify
+          </button>
+          <button class="btn btn-primary" data-toggle="tooltip-primary" title="Comment Selected"
+            id="commentSelection-true">
+            Comment
+          </button>
+          <button class="btn btn-primary" data-toggle="tooltip-primary" title="unComment Selected"
+            id="commentSelection-false">
+            Uncomment
+          </button>
+          <button class="btn btn-primary" data-toggle="tooltip-primary" title="Clean inline style from all tags"
+            id="clean-inline">
+            Inline Style Remover
+          </button>
+        </div>
+      </form>
+      <hr class="hr-text" data-content="USAGE">
+      <blockquote>
+        <p>Search And Replace:</p>
+        <dl>
+          <dt>Ctrl-F / Cmd-F</dt>
+          <dd>Start searching</dd>
+          <dt>Ctrl-G / Cmd-G</dt>
+          <dd>Find next</dd>
+          <dt>Shift-Ctrl-G / Shift-Cmd-G</dt>
+          <dd>Find previous</dd>
+          <dt>Shift-Ctrl-F / Cmd-Option-F</dt>
+          <dd>Replace</dd>
+          <dt>Shift-Ctrl-R / Shift-Cmd-Option-F</dt>
+          <dd>Replace all</dd>
+        </dl>
+      </blockquote>
+
+    </div>
+    <div class="tab-pane fade" id="live" role="tabpanel" aria-labelledby="live-tab">
+      <div id="live-preview" class="">
+        %CONTENT%
+      </div>
+    </div>
+  </div>
+  <div class="nohighlight">
+    <pre id="source" class="d-none">
+        %CONTENT%
+    </pre>
+  </div>
+</div>

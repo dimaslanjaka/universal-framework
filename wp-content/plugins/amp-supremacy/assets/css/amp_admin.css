@@ -1,0 +1,63 @@
+#ampSupremacyCustomOptions{
+    margin-left: 20px;
+}
+
+.amp-lite{
+    margin-left: 60px !important;
+    margin-bottom: 10px !important;
+}
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.amp-menu{
+    background-color:#fff;
+    border-color: #ccc !important;
+    border-bottom-color: transparent;
+}
+
+.save-button{
+    background: #fafafa;
+    /* opacity: 0.7; */
+    position: fixed;
+    top: 80px;
+    al: center;
+    bottom: inherit;
+    top: 94%;
+    /* float: right; */
+    align: center;
+    right: 306px;
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+    padding: 5px 5px;
+    width: 7.7%;
+    z-index: 10;
+}
+.button-margin{
+    margin-right: -83px !important;
+}
+
+.button-leave{
+    margin-right: -255px!important;
+}
+
+/* Custom Button in Page / Post list CSS */
+.column-amps_disable, #amps_disable{
+    text-align: center;
+}
+
+.uk-form-row.mobile-screen-entity > label{
+    margin-right : 10px;
+}
+
+.mobile-screen-entity-select{
+    margin-top: 36px !important;
+}
+
+.uk-form-row.mobile-screen-entity {
+    float: left;
+    margin: 0 auto;
+    margin-left: -30px;
+    width: 100%;
+}

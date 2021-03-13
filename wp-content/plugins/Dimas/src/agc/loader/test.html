@@ -1,0 +1,46 @@
+<div dir="ltr" style="text-align: left;" trbidi="on">
+  <b>How to tethering vpn on android</b>
+
+  <br />
+  <blockquote>
+    <b>ROOT</b> is required</blockquote>
+  <h4 style="text-align: left;">
+    Requirement</h4>
+  <div style="text-align: left;">
+  </div>
+  <ol style="text-align: left;">
+    <li><a href="https://play.google.com/store/apps/details?id=jackpal.androidterm&amp;hl=in" rel="nofollow"
+        target="_blank">Terminal Emulator</a></li>
+  </ol>
+  <h4 style="text-align: left;">
+    Tutorial</h4>
+  <div style="text-align: left;">
+  </div>
+  <ol style="text-align: left;">
+    <li>Start your VPN until connected</li>
+    <li>Open terminal emulator</li>
+
+  <blockquote>
+    Type:<br />
+    <pre>
+su
+ip link show
+id
+iptables -t filter -F FORWARD
+iptables -t nat -F POSTROUTING
+iptables -t filter -l FORWARD -j ACCEPT
+iptables -t nat -I POSTROUTING -j MASQUERADE
+ip rule del from 192.168.43.0/24 lookup 61
+ip route del default dev tun0 scope link table 61
+ip route del 192.168.43.0/24 dev wlan0 scope link table 61
+ip route broadcast 255.255.255.255 dev wlan0 scope link table 61
+exit
+</pre>
+  </blockquote>
+  <li>Now connect your other devices to your android hotspot, try browsing any websites now :)</li>
+</ol>
+<h3>Alternative</h3>
+<p>
+  install <a href="https://play.google.com/store/apps/details?id=com.ardadem.vpntethering&hl=en" target="_blank" rel="noopener noreferrer">VPN tethering</a> from <a href="https://play.google.com/store/apps/details?id=com.ardadem.vpntethering&hl=en" target="_blank" rel="noopener noreferrer">play store</a>
+</p>
+</div>

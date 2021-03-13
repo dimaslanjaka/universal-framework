@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KENTOOZ DOCUMENTATION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">Kentooz Project</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="./index.html">Started</a>
+              </li>
+              <li class="active">
+                <a href="./admin.html">Admin Panel</a>
+              </li>
+              <li class="">
+                <a href="./widget.html">Widget</a>
+              </li>
+              <li class="">
+                <a href="./layout.html">Layout</a>
+              </li>
+              <li class="">
+                <a href="./postformat.html">Post Format</a>
+              </li>
+              <li class="">
+                <a href="./posttype.html">Post Type</a>
+              </li>
+              <li class="">
+                <a href="./other.html">Other</a>
+              </li>
+              <li class="">
+                <a href="./contact.html">Contact Us</a>
+              </li>
+              <li class="">
+                <a href="./credit.html">Credits and sources</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>Admin panel</h1>
+    <p class="lead">Admin panel documentation for kentooz project.</p>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+          <li><a href="#adminpanel"><i class="icon-chevron-right"></i> Admin panel</a></li>
+          <li><a href="#general"><i class="icon-chevron-right"></i> General options</a></li>
+          <li><a href="#banner"><i class="icon-chevron-right"></i> Banner</a></li>
+          <li><a href="#layout"><i class="icon-chevron-right"></i> Layout</a></li>
+          <li><a href="#stylish"><i class="icon-chevron-right"></i> Stylish</a></li>
+          <li><a href="#sidebar"><i class="icon-chevron-right"></i> Sidebar</a></li>
+          <li><a href="#social"><i class="icon-chevron-right"></i> Social Network</a></li>
+          <li><a href="#typography"><i class="icon-chevron-right"></i> Typography</a></li>
+          <li><a href="#comment"><i class="icon-chevron-right"></i> Comment system</a></li>
+          <li><a href="#category"><i class="icon-chevron-right"></i> Category</a></li>
+          <li><a href="#seo"><i class="icon-chevron-right"></i> SEO</a></li>
+          <li><a href="#agc"><i class="icon-chevron-right"></i> AGC setting</a></li>
+          <li><a href="#other"><i class="icon-chevron-right"></i> Other</a></li>
+        </ul>
+      </div>
+      <div class="span9">
+
+
+
+        <!-- Say thanks
+        ================================================== -->
+        <section id="adminpanel">
+          <div class="page-header">
+            <h1>1. Admin panel</h1>
+          </div>
+          <p class="lead">How can i access kentooz admin panel? Go to "appearance -> theme options" you can see kentooz admin panel.<br /><img class="thumbnail" src="assets/img/admin.jpg" alt=""></p>
+          <p class="lead">For demo admin panel please go to import/export click import and look below step.</p>
+		  <p>1. <a href="./settings.txt" target="_blank">Click this</a> after that copy all in settings.txt into your settings click import setting</p>
+		  <p>2. <a href="./themeoptions.txt" target="_blank">Click this</a> after that copy all in themeoptions.txt into your theme options click import theme options</p>
+		  <p>3. Save</p>
+		</section>
+
+
+
+        <!-- File structure
+        ================================================== -->
+        <section id="general">
+          <div class="page-header">
+            <h1>2. General options</h1>
+          </div>
+			<ul>
+				<li><b>Enable logo image?</b> = This setting for enable and disable logo image for website.</li>
+				<li><b>Your logo</b> = Upload your logo image and type full path here.</li>
+				<li><b>Icon before Site name</b> = Choose Your Icon for appear in logo, if your logo image disable.</li>
+				<li><b>Your Favicon</b> = Upload your ico image or type full path here</li>
+				<li><b>Choice page navigation</b> = Select your favorite page navigation, we have 3 page navigation, you can choice default, number page navigation and infinite scroll</li>
+				<li><b>Enable breadcrumbs?</b> = This setting for enable and disable breadcrumbs for website.</li>
+				<li><b>404 error image</b> = Upload your image for 404 error page and type full path here.</li>
+				<li><b>Head Scrip(s)</b> = This setting for write script in head(hook wp_head) you can see the code in header.php</li>
+				<li><b>Footer Scrip(s)</b> = This setting for write script in footer(hook wp_footer) you can see the code in footer.php</li>
+			</ul>
+        </section>
+
+		
+		
+        <!-- Contents
+        ================================================== -->
+        <section id="banner">
+          <div class="page-header">
+            <h1>4. Banner</h1>
+          </div>
+			<ul>
+				<li><b>Enable top banner 728x90?</b> = Please check yes for enable top banner 728x90 and check no for disable top banner 728x90.</li>
+				<li><b>Header banner 728x90</b> = Fill with header banner 728x90..</li>
+				<li><b>Enable after first post banner (200x200)</b> = Please check yes for enable after first post banner (200x200) and check no for disable after first post banner (200x200).</li>
+				<li><b>First post banner (200x200)</b> = Fill with after first post banner (200x200)</li>
+				<li><b>Enable after third post banner (160x600)</b> = Please check yes for enable after third post banner (160x600) and check no for disable after third post banner (160x600).</li>
+				<li><b>After third post banner (160x600)</b> = Fill with after third post banner (160x600).</li>
+				<li><b>Enable Single Footer banner (468x60)?</b> = Please check yes for enable Single Footer banner (468x60) and check no for disable Single Footer banner (468x60).</li>
+				<li><b>Single Footer banner (468x60)</b> = Fill with bottom banner 468x60 in single after post.</li>
+				<li><b>Enable Single right banner(160x600)?</b> = Please check yes for enable Single right banner(160x600) and check no for disable Single right banner(160x600)..</li>
+				<li><b>Single right banner(160x600)</b> = Fill with Single page right banner(160x600).</li>
+				<li><b>Enable top banner attachment page 728x90?</b> = Please check yes for enable top banner attachment page 728x90 and check no for disable top banner attachment page 728x90..</li>
+				<li><b>Top banner attachment page 728x90</b> = Fill with top banner attachment page 728x90.</li>
+				<li><b>Enable bottom banner attachment page 728x90?</b> = Please check yes for enable bottom banner attachment page 728x90 and check no for disable top banner attachment page 728x90..</li>
+				<li><b>Bottom banner attachment page 728x90</b> = Fill with bottom banner attachment page 728x90.</li>
+			</ul>
+        </section>		
+		
+		
+        <!-- Layout
+        ================================================== -->
+        <section id="layout">
+          <div class="page-header">
+            <h1>5. Layout</h1>
+          </div>
+			<ul>
+				<li><b>Sidebar layout</b> = Select default sidebar for your global website. You can use left or right sidebar. </li>
+			</ul>		  
+		  <br /><img class="thumbnail" src="assets/img/adminlayout.jpg" alt="">
+        </section>
+
+
+        <!-- Next
+        ================================================== -->
+        <section id="stylish">
+          <div class="page-header">
+            <h1>6. Stylish</h1>
+          </div>
+			<ul>
+				<li><b>Select color scheme</b> = Please select default scheme for your website, by default this kentooz themes use color schemes #20c1ea.</li>
+				<li><b>Body background</b> = This setting background for your website. Please select your background for your background sites..</li>
+				<li><b>CSS File</b> = If your modified your own css in custom.css file in includes/assets/css/custom.css. Of if you have own css file for example style-1.css, upload it in folder includes/assets/css/ so this option will auto detect your css file, after that select file and save changes.</li>
+			</ul>
+        </section>
+		
+        <!-- Next
+        ================================================== -->
+        <section id="sidebar">
+          <div class="page-header">
+            <h1>7. Sidebar</h1>
+          </div>
+		  <p class="lead">Here you can create unlimited sidebar. Click add new button, see image below <br /><img class="thumbnail" src="assets/img/admin-addnew.jpg" alt=""></p>
+		  <p class="lead">After add new you will see box like image below, fill it. <br /><img class="thumbnail" src="assets/img/admin-sidebar.jpg" alt=""></p>
+			<p>Description:</p>
+			<ul>
+				<li><b>Title</b> = Title sidebar what do you want.</li>
+				<li><b>Slug</b> = Sidebar Slug "All lowercase and must be unique..</li>
+				<li><b>Description</b> = Sidebar Description..</li>
+			</ul>
+		   <p class="lead">After that click Save change, Go to Appearance -> Widgets and you will find the new Sidebar there.</p>
+		   <p>To Assign Sidebar:</p>
+		   <ul>
+				<li>Go to Page/post Edit Page.</li>
+				<li>You will find A Box Called General Settings below the content Area.</li>
+				<li>Choose your customised Sidebar for this Page/Post</li>
+				<li>Click Update</li>
+			</ul>
+		<p>See image below:<br /><img class="thumbnail" src="assets/img/admin-sidebar-2.jpg" alt=""></p>
+        </section>
+
+        <!-- Next
+        ================================================== -->
+        <section id="social">
+          <div class="page-header">
+            <h1>8. Social network</h1>
+          </div>
+			<ul>
+				<li><b>Facebook application ID?</b> = Fill with your facebook application id. To add a Facebook Comments Box you will need to create a Facebook App first. Go to https://developers.facebook.com/apps/ and create a new app. Enter a name and define the locale for the app..</li>
+				<li><b>Please fill box social if you want appear icon social in header</b></li>
+			</ul>
+			<p>Please enter your social network url. This will display social network icon in footer in your website. If you not fill the input icon will not display.</p>
+        </section>
+		
+		
+        <!-- Next
+        ================================================== -->
+        <section id="typography">
+          <div class="page-header">
+            <h1>9. Typography</h1>
+          </div>
+			<ul>
+				<li><b>Body font</b> = Select your body "Default" font from the available fonts, Fonts are provided via Google Fonts API. You can select style for font too, for live preview you can view preview font.</li>
+				<li><b>Heading font</b> = Select your heading "Default" font from the available fonts, Fonts are provided via Google Fonts API. You can select style for font too, for live preview you can view preview font.</li>
+			</ul>
+        </section>
+		
+        <!-- Next
+        ================================================== -->
+        <section id="comment">
+          <div class="page-header">
+            <h1>10. Comment system</h1>
+          </div>
+			<ul>
+				<li><b>Enable Facebook comment?</b> = This setting for enable and disable facebook comment in single.</li>
+				<li><b>Enable default comment?</b> = This setting for enable and disable default comment in single.</li>
+			</ul>
+        </section>
+		
+		
+        <section id="category">
+          <div class="page-header">
+            <h1>12. Category</h1>
+          </div>
+		  <p class="lead">Here you can create exclusive style for category. Click add new button, see image below <br /><img class="thumbnail" src="assets/img/admin-addnew.jpg" alt=""></p>
+		  <p class="lead">After add new you will see box like image below, fill it. <br /><img class="thumbnail" src="assets/img/admin-category.jpg" alt=""></p>	
+		  <p>Description:</p>	
+			<ul>
+				<li><b>Title??</b> = Fill with title what do you want.</li>
+				<li><b>Category</b> = Select the category you want set style.</li>
+				<li><b>Color</b> = Pick a category color(default: #d64a2b ). This set will display exclusive color scheme in category.</li>
+				<li><b>Icon</b> = Choose Your Icon.This set will display icon in menu and category title.</li>
+				<li><b>Background</b> = Upload the background pattern you want for the category page.</li>
+			</ul>
+			<p>For single post or page you can set via metaboxes.</p>
+        </section>
+		
+		
+        <section id="seo">
+          <div class="page-header">
+            <h1>13. SEO</h1>
+          </div>
+			<ul>
+				<li><b>Enable SEO??</b> = Please check yes for enable kentooz SEO and check no for disable kentooz SEO. If you install plugin SEO you must disable this featured. WARNING, If you disable this setting, all setting in seo tabs will not display.</li>
+				<li><b>Google Webmaster tool verification code</b> = This Meta keywords will be used in google search results. If you use plugin SEO please disable SEO featured.</li>
+				<li><b>Bing Webmaster verification code</b> = Enter your verification code for bing webmaster here to add a meta tag to your homepage to verify your site..</li>
+				<li><b>Pinterest site verification code</b> = Enter your verification code for pinterest site here to add a meta tag to your homepage to verify your site..</li>
+				<li><b>Gogole plus profile</b> = Enter your Google Plus Profile URL here to link your sites pages to Google Plus...</li>
+				<li><b>Enable noindex in category</b> = Please check yes for meta noindex in category and check no for meta noindex in category. Check this for excluding category pages from being crawled. Useful for avoiding duplicate content..</li>
+				<li><b>Enable noindex in date</b> = Please check yes for meta noindex in date page and check no for meta noindex in date page. Check this for excluding date pages from being crawled. Useful for avoiding duplicate content..</li>
+				<li><b>Enable noindex in author archive</b> = Please check yes for meta noindex in Author Archives and check no for meta noindex in Author Archives. Check this for excluding Author Archive pages from being crawled. Useful for avoiding duplicate content..</li>
+				<li><b>Enable noindex in tag archive</b> = Please check yes for meta noindex in tag Archives and check no for meta noindex in tag Archives. Check this for excluding tag pages from being crawled. Useful for avoiding duplicate content..</li>
+			</ul>
+			<p>For single post or page you can set via metaboxes.</p>
+        </section>
+		
+        <section id="agc">
+          <div class="page-header">
+            <h1>12. AGC setting</h1>
+          </div>
+			<ul>
+				<li><b>Enable AGC??</b> = Please click on/off for activated AGC in single and search page..</li>
+				<li><b>Google API Key</b> = Fill with your google API key. please see tutorial in <a href="http://gianmr.com/how-to-create-google-api-for-agc/">http://gianmr.com/how-to-create-google-api-for-agc/</a></li>
+				<li><b>Filter bad keyword</b> = Please filter your bad keyword from your AGC.</li>
+			</ul>
+        </section>
+	
+        <!-- Next
+        ================================================== -->
+        <section id="other">
+          <div class="page-header">
+            <h1>13. Other</h1>
+          </div>
+			<ul>
+				<li><b>Enable auto description?</b> = Please check yes for enable auto description in single and attachment and check no for disable auto description in single and attachment.</li>
+				<li><b>Auto content text?</b> = Auto content text, available filter: %ktzblogname%=blogname, %ktzblogdescription%=blog description, %ktzpermalink%=permalink, %ktztitle%=title, %ktzdate%=date, %ktzauthor%=author, %ktzcategory%=category, %ktzblogname%=tag list, %ktzview%=Number view post, %ktzpostformat%=Post format.</li>
+				<li><b>Enable auto read more?</b> = This setting for enable and disable auto read more. If you disable this setting you can use readmore tag via post editor for read more </li>
+				<li><b>Word display for auto read more?</b> = Fill with number how much word will be display in auto read more.</li>
+				<li><b>Footer coloum?</b> = Select footer coloums layout, you can select footer coloum layout. Example 1/1 (full), 1/2 : 1/2, etc..</li>
+				<li><b>Enable related?</b> = This setting for enable and disable related post in single post.</li>
+				<li><b>Related by taxonomy?</b> = Please select what do you want related by the taxonomy. Example view by category or tags</li>
+				<li><b>Enable authorbox?</b> = Please click on/off for activated author box in single.</li>
+				<li><b>Enable shared post?</b> = This setting for enable and disable shared post in single post</li>
+			</ul>
+          <p>Please click button below to see widget tutorial.</p>
+          <a class="btn btn-large" href="./widget.html" >Widget tutorial.</a>
+        </section>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Documentation base by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a> and modified by <a href="http://kentooz.com" target="_blank">kentooz</a>.</p>
+        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+      </div>
+    </footer>
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+    <script src="assets/js/application.js"></script>
+
+
+
+  </body>
+</html>

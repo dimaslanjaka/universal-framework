@@ -1,0 +1,254 @@
+FiveFilters.org: Full-Text RSS
+http://fivefilters.org/content-only/
+CHANGELOG
+------------------------------------
+3.8.1 (2017-10-31)
+ - Bug fix: Systems with old ICU library produced an idn_to_ascii() error
+ - Compatibility test file updated to check for DOM extension
+
+3.8 (2017-09-25)
+ - New site config directive: strip_attr: XPath attribute selector (e.g. //img/@srcset) - remove attribute from element
+ - New site config directive: insert_detected_image: yes/no (default yes) - places image in og:image in the body if no other images extracted
+ - Bug fix: Better handling of Internationalized Domain Names (IDNs)
+ - Bug fix: Relative base URLs (<base>) now resolved against page URL
+ - Bug fix: Wrong site config file chosen in certain cases (when wildcard and exact subdomain files available and cached in APCu) 
+ - Bug fix: &apos; HTML entities not converted correctly when parsing with Gumbo PHP
+ - Remove srcset (+ sizes) attributes on img elements if it looks like they only contain relative URLs (browser will use src attribute value instead)
+ - https:// URLs now re-written to sec:// before being submitted to avoid overzealous security software blocking request on some servers - no redirect, only affects newly submitted URLs on index.php
+ - HTML5-PHP library updated
+ - Language Detect library updated
+ - Site config files updated for better extraction
+ - Minimum PHP version is now 5.4. If you must use PHP 5.3, please stick with Full-Text RSS 3.7
+ - Tested with PHP 7.2
+ - Other fixes/improvements
+ 
+3.7 (2017-02-12)
+ - Request HTML5 output using HTML5-PHP - new config option $options->html5_output and new request parameter &content=html5
+ - Improve support for lazy-loading images
+ - Feed preview now displays RTL content correctly (added dir='auto' to feed.xsl)
+ - New request parameter images=0 to remove all images from extracted content
+ - Open Graph and Twitter card metadata now returned in JSON output (no longer in RSS output)
+ - Metadata now returned in extract.php even if article extraction fails
+ - Additional data returned in extract.php for developers: 'domain', 'word_count'
+ - HTML5-PHP library updated
+ - SimplePie library updated (fixes PHP 7.1 issue)
+ - New VPS Puppet script (ubuntu-16.04.pp) - installs PHP 7 and Gumbo PHP extension for faster HTML5 parsing
+ - Bug fix: Language detection now works correctly with PHP 7
+ - Bug fix: Take base href URL into account when following next_page/single_page links (thanks Lukas!)
+ - Bug fix: VPS Puppet script installs new version of PECL HTTP extension that fixes problem when requesting punycode encoded domains
+ - Site config files updated for better extraction
+ - Compatibility test file updated (will tell you if Gumbo PHP will be used)
+ - Tidy won't be used to repair HTML if using an HTML5 parser (unless explicitly requested in site config file - tidy: yes)
+ - New config option $options->blocked_message - set what a user will see when a URL is blocked by Full-Text RSS
+ - Other fixes/improvements
+
+3.6 (2016-02-21)
+ - Insert og:image (if we find one) at the top of the article when no images have been extracted
+ - Additional lazy image load handling - helps preserve more images designed for JS-enabled browsers
+ - Original GUID values from feed items now preserved
+ - New config option favour_effective_url determines if item's effective URL (after redirects) should replace original item URL in feed output
+ - Adding &use_effective_url to querystring will replace original feed item URL with effective URL (unless disabled with config option above)
+ - APCu stats view in admin panel fixed to work with recent versions of APCu
+ - HTML5-PHP library updated
+ - Tested for PHP 7 compatibility
+ - VPS Puppet script (ubuntu-15.10.pp) updated - fixes issue with IDN encodings, among other things. (This is intended for setting up a new Ubuntu 15.10 instance for running Full-Text RSS.)
+ - Site config files updated for better extraction
+ - Other minor fixes/improvements
+
+3.5 (2015-06-13)
+ - Open Graph properties og:title, og:type, og:url, og:image, and og:description now returned if found in the page being processed
+ - Bug fix: certain XPath expressions weren't being evaluated correctly when HTML5 parsing was enabled
+ - Cookie handling now only on redirects - fixes issue with certain sites (thanks to Dave Vasilevsky)
+ - Compatibility test will no longer show HHVM as incompatible - Full-Text RSS worked with HHVM 3.7.1 in our tests (but without Tidy support and no automatic site config updates)
+ - Humble HTTP Agent updated to support version 2 of PHP's HTTP extension
+ - HTML5-PHP library updated
+ - Site config files can now include HTTP headers (user-agent, cookie, referer), e.g. http_header(user-agent): PHP/5.6
+ - Config option removed: $options->user_agents - use site config files.
+ - Site config files which use single_page_link can now follow it with if_page_contains: XPath to make it conditional.
+ - Minimum supported PHP version is now 5.3. If you must use PHP 5.2, please download Full-Text RSS 3.4
+ - Site config files updated for better extraction
+ - Other minor fixes/improvements
+
+3.4 (2014-09-08)
+ - New request parameter: siteconfig lets you submit extraction rules directly in request
+ - New request paramter: accept=(auto|feed|html) determines what we'll accept as a response (deprecates html=1 parameter)
+ - New request parameter: key_redirect=0 to prevent HTTP redirect to hide API key 
+ - Site config files can now contain native_ad_clue: [xpath] to check for elements which signify that the article is a native ad
+ - New config option: remove_native_ads - set to true and when we notice native ads (see above) we'll remove them from the output (only when processing feeds, doesn't affect output when input URL points to an HTML page).
+ - Feed output will include <dc:type>Native Ad</dc:type> for articles which appear to be native ads.
+ - New config option: user_submitted_config to determine whether siteconfig parameter is enabled or not
+ - Feed output now includes <atom:link rel="self"...> with URL of the generated feed
+ - Feed output now includes <atom:link rel="alternate"...> with URL of the original (input) URL
+ - Feed output now includes <atom:link rel="related"...> with URL to subscribe to the generated feed (using subtome.com)
+ - Feed preview stylesheet (feed.xsl) now presents a subscribe to feed link
+ - Fixed character encoding issue for certain texts
+ - Fixed character encoding issue for certain characters in HTML5 parsing mode
+ - Use base element, if present in HTML, when rewriting URLs
+ - HTML5-PHP library updated
+ - Other minor fixes/improvements
+
+3.3 (2014-05-13)
+ - Content extractor now looks for Schema.org articleBody elements
+ - New endpoint extract.php for developers looking for simpler JSON results (no RSS as input/output)
+ - New endpoint extract.php accepts POST requests and HTML as input (inputhtml request parameter)
+ - Proxy support added (proxy servers can now be added to the config file, see $options->proxy_servers, ->proxy and ->allow_proxy_override)
+ - New HTML5 parser: HTML5Lib has been replaced by HTML5-PHP (the old one had too many problems)
+ - New config option: cache time ($options->cache_time)
+ - New config option: enable/disable single-page retrieval ($options->singlepage)
+ - New config option: allow HTML parser override through querystring ($options->allow_parser_override)
+ - New request parameter: parser - use it to force new HTML5 parser to be used, &parser=html5php (it will be slower)
+ - Expanded debug request parameter: &debug=rawhtml (shows original response headers and body), &debug=parsedhtml (shows response body after parsing)
+ - APC stats page now expects APCu (older version of APC still supported, but stats within admin area won't be viewable)
+ - Auto update of site-specific extraction rules fixed
+ - Content security HTTP headers now used for the feed preview
+ - Request parameters and response examples now listed in a table on the index page (new Request Parameters tab)
+ - Compatibility test file updated to show if HTML5-PHP parser is supported (PHP 5.3 dependency), and to test for HHVM (not yet supported)
+ - Config option removed: $options->registration_key
+ - Preserve TTL element in RSS 2.0 feeds
+ - Other minor fixes/improvements
+
+3.2 (2013-05-14)
+ - A short excerpt from the first few lines of the extracted content can now be included in the output (pass &summary=1 in querystring, see $options->summary in config file for more info)
+ - Full content can now be excluded from the output (pass &content=0 in querystring, see $options->content in config file for more info) 
+ - Site config files can now be automatically updated from our GitHub repository (URL to call visible in admin area)
+ - Site config files updated for better extraction
+ - PHP Readability updated to be more lenient when pruning HTML 
+ - Language detection library updated
+ - HTML meta refresh redirects now also followed
+ - APC stats (if APC is available on your server) now visible in admin area
+ - Bug fix: Duplicate find_string and replace_string values in site config files no longer removed (thanks Fabrizio!)
+ - Bug fix: MIME type actions now applied when following single page URLs
+ - Other minor fixes/improvements
+
+3.1 (2013-03-06)
+ - PHP Readability updated to preserve more images/videos
+ - Site config files updated for better extraction
+ - SimplePie updated
+ - New config option favour_feed_titles and request parameter use_extracted_title to allow extracted titles to be used in generated feed
+ - Remove image lazy loading (looks for markup used by http://wordpress.org/extend/plugins/lazy-load/)
+ - <category> elements appearing inside <item> elements are now preserved in generated feed
+ - <media:thumbnail> elements now preserved
+ - Allow multiple <media:content> elements (previously only one was preserved)
+ - Bug fix: No more self-closing iframe elements
+ - Bug fix: Fixed manifest.yml to prevent error message when deploying to AppFog
+ - Other minor fixes/improvements
+
+3.0 (2012-09-04)
+ - Multi-page support - next_page_link now supported in site config (enable/disable with $options->multipage)
+ - HTML5 parser available - use parser: html5lib in site config, also see $options->allowed_parsers
+ - Updated site patterns for better extraction
+ - New global site config to be applied to all sites (global.txt)
+ - APC caching of site config files to improve performance, if APC available - see $options->apc 
+ - Site config editor in admin/ - easily find, edit, test, and test site config files, or add new ones
+ - Debug mode to see what's happening behind the scenes - see $options->debug
+ - Removed deprecated config options: restrict, message_to_prepend_with_key, message_to_append_with_key, error_message_with_key
+ - Removed extraction with CSS via querystring
+ - Removed config option: $options->alternative_url
+ - Bug fix: allow extraction of a single element
+ - Bug fix: redirect handling improved
+ - Strip 'http://' prefix when API key is supplied
+ - Site config merging (custom + standard + fingerprint + global)
+ - Site config command replace_string(find): replace can now be split over two lines: find_string: find, replace_string: replace
+ - YouTube and Vimeo URLs now return iframe embed code
+ - We now look for OpenGraph title and date elements
+ - Improved extraction from AJAX pages - we now look for AJAX triggers embedded in HTML, per Google spec
+ - JSONP support - use &format=json&callback=functionName in querystring
+ - New config option to enable Cross-Origin Resource Sharing (CORS): $option->cors
+ - New config option to enable XSS filtering, if required: $option->xss_filter
+ - Zend_Cache updated
+ - Smart caching - experimental feature to store cache IDs in APC first, and write output to disk on subsequent request (see $options->smart_cache)
+ - Easier cloud deploy - manifest.yml added for AppFog
+ - Override most config options with environment variables, e.g. ftr_max_entries: 3
+
+2.9.5 (2012-04-29)
+ - Language detection using Text_LanguageDetect or PHP-CLD (dc:language field in output and $options->detect_language in config)
+ - New site patterns added and old ones updated
+ - Experimental tool for simpler site pattern updates (access admin/ folder)
+ - Plus other fixes/improvements
+
+2.9.1 (2011-11-02)
+ - Fix: Character encoding issue affecting some non-English articles (makefulltextfeed.php and SimplePie/Misc.php changed)
+
+2.9 (2011-11-01)
+ - New site patterns added and old ones updated
+ - New config option: require_key - restrict access to those with password/key
+ - New config option: rewrite_url - URL rewrite rules to be applied before HTTP request
+ - New site config options to extract author(s) and publication date (matches included in feed item as <dc:creator> and <pubDate>)
+ - New site config option: replace_string([string to find]): [replacement string]
+ - New site identification method: site fingerprints (HTML fragments linked to site config)
+ - Update check now also checks for new site patterns
+ - Effective URL (URL after redirects/rewrites) now included in feed item as <dc:identifier>
+ - Prevent indexing of generated feeds by search engines
+ - Enclosure support (enclosures preserved as <media:content> elements)
+ - Better handling of non-HTML content types
+ - Sending custom User-Agent HTTP header for matching sites now supported
+ - CSS extraction deprecated in favour of site patterns (still works, but form field removed and feature may disappear in 3.0)
+ - Fix: Improved character-encoding detection
+ - Fix: URL parsing issues for certain URLs (SimplePie updated)
+ - Fix: Author and other Dublin Core (<dc:..>) elements now appear in JSON output
+ - Fix: Minor fixes for PHP Readability
+ - Plus other minor fixes/improvements
+ 
+2.8 (2011-05-30)
+ - Tidy no longer stripping HTML5 elements
+ - JSON output (pass &format=json in querystring)
+ - New site patterns added and old ones updated
+ - New site config option to force full-page retrieval on multi-page articles: single_page_link
+ - User Guide (PDF) now included (although still a work in progress)
+ - URL placeholders now accepted in message_to_prepend/append config options
+ - Plus minor fixes...
+
+2.7 (2011-03-21)
+ - Site patterns for better control over extraction (see site_config/README.txt)
+ - hNews support (improves content extraction for sites using hNews microformatting)
+ - Cookie Jar now used to store and sends cookies when following HTTP redirects
+ - Better handling of certain cases where HTML Tidy fails to clean up properly
+ - Bug fix: curl_multi_select() timing out in certain environments (fixed in HumbleHttpAgent.php)
+ - Bug fix: broken HTTP header parsing in some environments (fixed in SimplePie_HumbleHttpAgent.php)
+ - Bug fix: invalid API URL shown (fixed in index.php)
+ - Plus other minor fixes...
+
+2.6 (2011-03-02)
+ - Rewriting of hash-bang (#!) URLs (see http://www.tbray.org/ongoing/When/201x/2011/02/09/Hash-Blecch for an explanation)
+ - Improved parallel fetching support (HumbleHttpAgent uses curl_multi_* functions if PECL HTTP extension is not present)
+ - Improved HTTP redirect support (now handled in HumbleHttpAgent, no longer relies on PHP)
+ - Improved performance for single page (non-feed) requests: (SimplePie connected to HumbleHttpAgent)
+ - Improved memory use for processing large feeds (HumbleHttpAgent's stored responses cleared as they're retrieved)
+ - Bug fix: exclude on fail option no longer requires valid key
+ - Bug fix: workaround for PHP bug http://bugs.php.net/51192 (fixed in makefulltextfeed.php)
+ - Plus other minor changes...
+
+2.5 (2011-01-08)
+ - New option: custom extraction pattern (CSS selectors)
+ - New option: allowed URLs (restrict service to pre-defined feeds/domains)
+ - New option: exclude items on fail (remove items from feed if content extraction fails)
+ - Remove 'http://' from URL before form submission (prevents errors on hosts which have overly vigilant security software)
+ - Allow overriding of index.php with custom_index.php
+ - config.php now required (override with custom_config.php)
+ - index.php now uses config.php to determine what to display
+ - Bug fix: occasional fatal error in IRI::__toString() (IRI updated)
+ - Bug fix: workaround for PHP bug http://bugs.php.net/51192 (fixed in HumbleHttpAgent.php)
+
+2.2 (2010-10-30)
+ - Character-encoding detection improved (minor change)
+ - Rewriting of relative URLs improved (tracks redirect URLs)
+ - Minor changes to prevent errors in certain hosting environments
+ - Compatibility test file updated with more tests
+
+2.1 (2010-09-13)
+ - Better content extraction (using PHP Readability 1.7.1)
+ - Parallel HTTP requests (using Humble HTTP Agent)
+ - Auto loading of necessary classes
+ - Rewriting of relative URLs (using IRI)
+ - Added compatibility test file (to check if server meets requirements)
+ - Character-encoding support improved (using SimplePie)
+
+1.5 (2010-05-30)
+ - Support for PHP 5.3 (thanks Murilo!)
+ - Character-encoding support improved (favours iconv over mb_convert_encoding)
+
+1.0 (2010-03-05)
+ - Better support for different character-encodings
+ - Auto-cleanup of cache files
+ - Very basic option for load distribution (if you're planning on installing the code on multiple servers)
+ - Separate config file (see config-sample.php) 

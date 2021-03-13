@@ -1,0 +1,1 @@
+jQuery('[id="pbtn"]').click(function(e){e.preventDefault();var i=jQuery(this).parent("#im"),n=jQuery(this).parents(".card-body").find("div.embed-responsive");i.hide(),n.removeClass("d-none").show()});

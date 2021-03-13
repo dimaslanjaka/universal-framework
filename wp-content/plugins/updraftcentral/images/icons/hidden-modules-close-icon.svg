@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Hidden Modules Close Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Hidden-Modules-Close-Icon" stroke="#6E7078" stroke-width="1.8">
+            <g id="Group" transform="translate(1.000000, 0.400000)">
+                <path d="M0.5,1.10000002 L14.5,15.1" id="Line-2"></path>
+                <path d="M0.5,1.10000002 L14.5,15.1" id="Line-2-Copy" transform="translate(7.500000, 8.100000) scale(-1, 1) translate(-7.500000, -8.100000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

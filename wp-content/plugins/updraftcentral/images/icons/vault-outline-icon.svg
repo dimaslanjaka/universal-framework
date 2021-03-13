@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="16px" viewBox="0 0 15 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45 (43475) - http://www.bohemiancoding.com/sketch -->
+    <title>UpdraftVault Ouline Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Side-Menu" transform="translate(-31.000000, -436.000000)">
+            <g id="UpdraftVault-Ouline-Icon" transform="translate(31.000000, 436.000000)">
+                <g id="Group-3" transform="translate(0.000000, -0.441176)">
+                    <circle id="Oval" stroke="#6E7078" stroke-width="1.3" cx="7.5" cy="8.06008601" r="6.85"></circle>
+                    <path d="M4.42861801,1.8079817 C4.42861801,1.8079817 4.42861801,5.96776834 4.42861801,7.59352093 C4.42861801,9.21927353 4.49872814,11.8455589 7.37980167,11.8455589 C10.2608752,11.8455589 10.3309853,9.5880927 10.3309853,7.59352093 C10.3309853,5.59894916 10.3309853,6.15638094 10.3309853,6.15638094" id="Path" stroke="#6E7078" stroke-width="1.3"></path>
+                    <polygon id="Path-2" fill="#6E7078" points="10.4012215 4.75002096 8.89817024 6.57976948 11.9440599 6.57976948"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,20 @@
+<h3>
+	<a href="https://wordpress.org/download/release-archive/">
+		{{udclion.updates.wordpress_core}} {{installed.version}}
+	</a>
+</h3>
+
+<p>
+	{{udclion.updates.new_version_available}}: {{version}}
+</p>
+
+{{#if download}}
+<h5>
+	<a href="{{download}}">({{udclion.updates.download}})</a>
+</h5>
+{{/if}}
+
+<p>
+	{{udclion.updates.php_version_required}}: {{php_version}} ({{udclion.updates.current}}: {{installed.php}})<br>
+	{{udclion.updates.mysql_version_required}}: {{mysql_version}} ({{udclion.updates.current}}: {{installed.mysql}})<br>
+</p>

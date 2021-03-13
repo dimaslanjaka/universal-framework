@@ -1,0 +1,19 @@
+#updraftcentral-search-area {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
+#udc_search_tag {
+  width: 100%; }
+
+.updraftcentral-search-area input[type="text"] {
+  height: 1.7rem;
+  line-height: 1rem;
+  font-size: 1rem;
+  padding: 0rem 0.5rem;
+  border-radius: 0.25rem !important; }
+
+#updraftcentral-search-info {
+  font-style: italic;
+  font-size: 1rem; }

@@ -1,0 +1,11 @@
+<div id="updraft_reportbox_{{index}}" class="updraft_reportbox updraft-hidden">
+	<button class="updraft_reportbox_delete" reportbox_index="{{index}}" type="button"><span class="dashicons dashicons-no"></span></button>
+	<input type="text" title="{{enter_email_here}}" class="updraft_report_email" name="updraft_email[{{index}}]" value=""><br>
+	<input class="updraft_report_checkbox" type="checkbox" id="updraft_report_warningsonly_{{index}}" name="updraft_report_warningsonly[{{index}}]"><label for="updraft_report_warningsonly_{{index}}">{{send_only_on_warnings}}</label><br>
+	<div class="updraft_report_wholebackup">
+		<input class="updraft_report_checkbox" type="checkbox" id="updraft_report_wholebackup_{{index}}" name="updraft_report_wholebackup[{{index}}]" title="{{email_size_limits}}"><label for="updraft_report_wholebackup_{{index}}" title="{{email_size_limits}}">{{whole_backup}}</label>
+	</div>
+	<div class="updraft_report_dbbackup">
+		<input class="updraft_report_checkbox updraft_report_disabled" type="checkbox" id="updraft_report_dbbackup_{{index}}" disabled name="updraft_report_dbbackup[{{index}}]" title="{{email_size_limits}}"><label for="updraft_report_dbbackup_{{index}}" title="{{email_size_limits}}">{{db_backup}}</label>
+	</div>
+</div>

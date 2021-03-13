@@ -1,0 +1,36 @@
+<h4>{{udclion.http_authentication_if_any}}</h4>
+<p class="updraftcentral-authentication-explanation txt-small">{{udclion.http_authentication_explan}}</p>
+
+<!-- Unused password fields to prevent web browsers' auto-complete from filling in wrong data -->
+<!-- https://stackoverflow.com/questions/15738259/disabling-chrome-autofill -->
+<input style="display:none;" type="text" name="fakeusernameremembered"/>
+<input style="display:none;" type="password" name="fakepasswordremembered"/>
+
+<label class="label-top" for="updraftcentral_addsite_http_username">{{udclion.http_username}}:</label> <input autocomplete="off" type="text" class="expert_option full-width" name="http_username" value="{{http_username}}" id="updraftcentral_addsite_http_username">
+
+<label class="label-top" for="updraftcentral_addsite_http_password">{{udclion.http_password}}:</label> <input autocomplete="off" type="password" class="expert_option full-width" name="http_password" value="{{http_password}}" id="updraftcentral_addsite_http_password">
+
+<label class="label-top" for="updraftcentral_addsite_http_authentication_method">{{udclion.http_authentication_method}}:</label> 
+<select class="expert_option full-width" id="updraftcentral_addsite_http_authentication_method" name="http_authentication_method">
+	<option value="basic">{{udclion.basic}}</option>
+	<option value="digest">{{udclion.digest}}</option>
+</select>
+
+<label class="label-top" for="updraftcentral_site_send_cors_headers"><input type="checkbox" id="updraftcentral_site_send_cors_headers" value="1">{{udclion.send_cors_headers}}</label>
+<p class="txt-small txt-italic" style="margin-bottom: 15px;">{{udclion.send_cors_headers_explanation}}</p>
+
+<h4>{{udclion.connection_method}}</h4>
+
+<select id="updraftcentral_site_connection_method">
+	<option value="direct_default_auth">{{udclion.direct_default_auth}}</option>
+	<option value="direct_jquery_auth">{{udclion.direct_jquery_auth}}</option>
+	<option value="direct_manual_auth">{{udclion.direct_manual_auth}}</option>
+	<option value="via_mothership">{{udclion.via_mothership}}</option>
+	<option value="via_mothership_encrypting">{{udclion.via_mothership_encrypting}}</option>
+</select>
+
+<div id="updraftcentral_site_connection_method_message"></div>
+
+<p id="updraftcentral_test_other_connection_methods_section"><em><a href="#" class="updraftcentral_test_other_connection_methods">{{udclion.run_connection_test}}</a></em></p>
+
+<a class="txt-small" href="{{udclion.common_urls.connection_advanced_issues}}">{{udclion.get_advanced_connection_help}}</a>

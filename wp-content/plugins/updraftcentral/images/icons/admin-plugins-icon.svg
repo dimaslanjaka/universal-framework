@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="-2 -2 24 24" enable-background="new -2 -2 24 24" xml:space="preserve">
+<g id="Plugin">
+	<path fill="#93959D" d="M4.03,2.563l13.29,13.405c0,0-2.945,2.891-6.065,2.891c0-0.057-7.224,0-7.224,0s-2.717,4.219-4.913,1.792
+		c0,0-2.138-1.907,1.937-4.766L1.026,9.874C1.026,9.874,0.882,4.588,4.03,2.563z"/>
+	<path fill="#93959D" d="M9.809,6.377L7.035,3.604l4.654-4.68c0,0,1.125-0.955,2.568,0.403c0-0.028,1.186,1.387,0.29,2.255
+		C14.548,1.553,9.809,6.377,9.809,6.377z"/>
+	<path fill="#93959D" d="M16.367,12.794l-2.774-2.774l4.652-4.683c0,0,1.128-0.953,2.571,0.406c0-0.029,1.187,1.386,0.29,2.252
+		C21.106,7.967,16.367,12.794,16.367,12.794z"/>
+</g>
+<g id="settings" display="none">
+	<rect y="0.034" display="inline" fill="#94969E" width="20" height="19.932"/>
+	<g id="Down" display="inline">
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" x1="6.068" y1="3.426" x2="6.068" y2="16.645"/>
+	</g>
+	<g id="Down_1_" display="inline">
+		<line fill="none" stroke="#FFFFFF" stroke-width="2" stroke-miterlimit="10" x1="14.105" y1="16.645" x2="14.105" y2="3.426"/>
+	</g>
+	<ellipse display="inline" fill="#FFFFFF" cx="14.167" cy="6.361" rx="4.201" ry="1.001"/>
+	<ellipse display="inline" fill="#FFFFFF" cx="6.211" cy="12.77" rx="4.201" ry="1"/>
+</g>
+</svg>

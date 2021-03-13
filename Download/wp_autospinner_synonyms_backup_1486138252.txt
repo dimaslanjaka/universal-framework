@@ -1,0 +1,28 @@
+opokproject.net|Proyek Kopok|Proyeku
+Opokproject.net|Proyek Opok|My Project
+kamu|kau
+sama|tidaklah beda
+beda|tidaklah sama
+Ilmi|Wawasan
+ilmu|wawasan
+website|Url|Situs|Tautan|Link|Alamat Url|Url Situs
+Website|Url|Situs|Tautan|Link|Alamat Url|Url Situs
+site|website
+waktu|pada saat
+kepada|untuk
+pemilik|sang pemilik
+owner|by
+from|by
+me|my self
+warna|berwarna
+unduh|download
+scrap|grab
+linux|unix
+hello|hai
+good morning|morning
+guys|reader
+visit|Click|Click This|Tap Url
+Bawah|Berikut
+Itu|Tersebut|Yang dimaksud
+Adalah|Yaitu|ialah
+Download|Unduh|Unduh sekarang|Comot disini

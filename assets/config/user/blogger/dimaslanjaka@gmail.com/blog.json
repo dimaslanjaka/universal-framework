@@ -1,0 +1,455 @@
+{
+    "kind": "blogger#blogList",
+    "items": [
+        {
+            "customMetaData": null,
+            "description": "A blog about How to personalized websites and marketing strategies. Covering php script, javascript, jquery, mysql, seo, e-commerce and others.",
+            "id": "2771056599229295027",
+            "kind": "blogger#blog",
+            "name": "Website Development Indonesia",
+            "published": "2017-04-08T08:19:23+07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2771056599229295027",
+            "status": "LIVE",
+            "updated": "2019-12-28T08:47:49+07:00",
+            "url": "http://www.webmanajemen.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2771056599229295027/posts",
+                "totalItems": 705
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2771056599229295027/pages",
+                "totalItems": 69
+            },
+            "locale": {
+                "country": "GB",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "3753338902333079197",
+            "kind": "blogger#blog",
+            "name": "Gratisan Ku",
+            "published": "2017-09-20T10:47:26-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3753338902333079197",
+            "status": "LIVE",
+            "updated": "2019-12-23T00:34:07-08:00",
+            "url": "http://gratisanindonesiaku.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3753338902333079197/posts",
+                "totalItems": 482
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3753338902333079197/pages",
+                "totalItems": 1
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Temukan Apa Yang Kamu Cari seputar linux, windows, dan bisnis online",
+            "id": "8859451020032983309",
+            "kind": "blogger#blog",
+            "name": "Araka ID",
+            "published": "2016-02-09T12:24:48+07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8859451020032983309",
+            "status": "LIVE",
+            "updated": "2019-11-04T18:46:13+07:00",
+            "url": "http://arakaid.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8859451020032983309/posts",
+                "totalItems": 32
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8859451020032983309/pages",
+                "totalItems": 6
+            },
+            "locale": {
+                "country": "GB",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Tutorial, Firmware, Seputar Tehnologi &amp; ROM",
+            "id": "7471938615964202450",
+            "kind": "blogger#blog",
+            "name": "Zona Berbagi",
+            "published": "2017-07-13T14:02:23+07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7471938615964202450",
+            "status": "LIVE",
+            "updated": "2019-10-19T16:30:49+07:00",
+            "url": "http://zonaa-android.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7471938615964202450/posts",
+                "totalItems": 35
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7471938615964202450/pages",
+                "totalItems": 5
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "6218756707583177260",
+            "kind": "blogger#blog",
+            "name": "CRATCH TEMPLATE",
+            "published": "2018-12-27T07:55:53-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/6218756707583177260",
+            "status": "LIVE",
+            "updated": "2019-11-23T14:22:53-08:00",
+            "url": "http://cratchoni.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/6218756707583177260/posts",
+                "totalItems": 45
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/6218756707583177260/pages",
+                "totalItems": 3
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "9001459376993690855",
+            "kind": "blogger#blog",
+            "name": "Cyber Sukabumi ",
+            "published": "2018-02-12T15:47:04-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/9001459376993690855",
+            "status": "LIVE",
+            "updated": "2019-11-23T18:28:08-08:00",
+            "url": "http://www.semrush.gq/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/9001459376993690855/posts",
+                "totalItems": 23
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/9001459376993690855/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Guides, Reviews, Usefull Contents... Let's make TECH Better.",
+            "id": "4726458283225789313",
+            "kind": "blogger#blog",
+            "name": "Simple Steps",
+            "published": "2016-10-26T05:31:27+05:30",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4726458283225789313",
+            "status": "LIVE",
+            "updated": "2019-10-17T15:57:20+05:30",
+            "url": "http://9naijet.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4726458283225789313/posts",
+                "totalItems": 128
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4726458283225789313/pages",
+                "totalItems": 16
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Konsultasi, edukasi dan solusi keterlambambatan kehamilan bunda. ",
+            "id": "4819178664068755691",
+            "kind": "blogger#blog",
+            "name": "Solusi kehamilan",
+            "published": "2018-06-04T23:08:23-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4819178664068755691",
+            "status": "LIVE",
+            "updated": "2019-12-14T09:11:10-08:00",
+            "url": "http://kehamilann.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4819178664068755691/posts",
+                "totalItems": 19
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4819178664068755691/pages",
+                "totalItems": 2
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "8407819899603111111",
+            "kind": "blogger#blog",
+            "name": "Technology Informations For You",
+            "published": "2017-12-11T23:54:05-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8407819899603111111",
+            "status": "LIVE",
+            "updated": "2019-10-17T03:27:20-07:00",
+            "url": "http://web-manajemen2.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8407819899603111111/posts",
+                "totalItems": 499
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8407819899603111111/pages",
+                "totalItems": 60
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "3170160361434886087",
+            "kind": "blogger#blog",
+            "name": "Multimedia Terkini",
+            "published": "2018-11-12T08:34:46-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3170160361434886087",
+            "status": "LIVE",
+            "updated": "2019-08-05T07:21:39-07:00",
+            "url": "http://multimedia-terkini.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3170160361434886087/posts",
+                "totalItems": 0
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/3170160361434886087/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Reseller Sites that promote Services and Products that include taxes, insurance, law, personal lawyers, and more. Example: Atlanta Personal Injury Lawyers and Georgia Law Firms",
+            "id": "5648434020037546839",
+            "kind": "blogger#blog",
+            "name": "Tax And Information",
+            "published": "2018-02-12T10:17:01-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5648434020037546839",
+            "status": "LIVE",
+            "updated": "2019-12-21T02:22:37-08:00",
+            "url": "http://life-tax-insurance-information.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5648434020037546839/posts",
+                "totalItems": 18
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5648434020037546839/pages",
+                "totalItems": 1
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "5457213591425943041",
+            "kind": "blogger#blog",
+            "name": "Safelink Converter",
+            "published": "2018-02-26T14:51:37+07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5457213591425943041",
+            "status": "LIVE",
+            "updated": "2019-08-05T21:21:39+07:00",
+            "url": "http://verify-1.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5457213591425943041/posts",
+                "totalItems": 6
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/5457213591425943041/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "7674462451650096921",
+            "kind": "blogger#blog",
+            "name": "Evo Magz 4.7",
+            "published": "2017-09-12T15:30:46-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7674462451650096921",
+            "status": "LIVE",
+            "updated": "2019-08-05T07:21:39-07:00",
+            "url": "http://evomagzv47.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7674462451650096921/posts",
+                "totalItems": 0
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/7674462451650096921/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "4912986646699180362",
+            "kind": "blogger#blog",
+            "name": "VainGlory Private Schedule",
+            "published": "2017-10-31T01:55:13-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4912986646699180362",
+            "status": "LIVE",
+            "updated": "2019-08-05T07:21:39-07:00",
+            "url": "http://vgprivate.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4912986646699180362/posts",
+                "totalItems": 2
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/4912986646699180362/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "8052131367758327970",
+            "kind": "blogger#blog",
+            "name": "Bitcoin Tips And Tricks",
+            "published": "2017-09-15T19:58:53-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8052131367758327970",
+            "status": "LIVE",
+            "updated": "2019-10-01T00:47:11-07:00",
+            "url": "http://bitcoin-topic.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8052131367758327970/posts",
+                "totalItems": 5
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/8052131367758327970/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Testimoni Template",
+            "id": "1374533750317245215",
+            "kind": "blogger#blog",
+            "name": "Testimoni Template",
+            "published": "2017-09-08T07:37:52-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/1374533750317245215",
+            "status": "LIVE",
+            "updated": "2019-08-05T07:21:39-07:00",
+            "url": "http://testimonitema.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/1374533750317245215/posts",
+                "totalItems": 1
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/1374533750317245215/pages",
+                "totalItems": 1
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "",
+            "id": "2222488001790838641",
+            "kind": "blogger#blog",
+            "name": "Safelink v3",
+            "published": "2017-09-04T19:59:12-07:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2222488001790838641",
+            "status": "LIVE",
+            "updated": "2019-10-17T03:27:20-07:00",
+            "url": "http://safelink-v3.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2222488001790838641/posts",
+                "totalItems": 186
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/2222488001790838641/pages",
+                "totalItems": 10
+            },
+            "locale": {
+                "country": "",
+                "language": "en",
+                "variant": ""
+            }
+        },
+        {
+            "customMetaData": null,
+            "description": "Tools firmwares drivers for flashing phone",
+            "id": "398262994921153445",
+            "kind": "blogger#blog",
+            "name": "FIRMWARE FLASHING DRIVER",
+            "published": "2015-01-15T23:20:56-08:00",
+            "selfLink": "https://www.googleapis.com/blogger/v3/blogs/398262994921153445",
+            "status": "LIVE",
+            "updated": "2019-11-23T13:44:45-08:00",
+            "url": "http://firmwaresdrivers.blogspot.com/",
+            "posts": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/398262994921153445/posts",
+                "totalItems": 1
+            },
+            "pages": {
+                "selfLink": "https://www.googleapis.com/blogger/v3/blogs/398262994921153445/pages",
+                "totalItems": 0
+            },
+            "locale": {
+                "country": "",
+                "language": "in",
+                "variant": ""
+            }
+        }
+    ]
+}

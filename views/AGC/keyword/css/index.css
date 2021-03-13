@@ -1,0 +1,81 @@
+body {
+  height: 100%;
+}
+#domR {
+  width: 100%;
+}
+.indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 4500;
+}
+
+.dropzone {
+  border: dashed 4px rgb(119, 106, 106);
+  border-radius: 4px;
+  margin: 10px auto 30px;
+  padding: 10px;
+  /*min-height: 300px;*/
+  height: auto;
+  transition: background-color 0.3s;
+  /*background-image: url("https://www.bingmail.com.au/sites/default/files/media/field/image/DropZoneIcon_4web.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-blend-mode: overlay;
+  position: relative;*/
+}
+
+.dropzone #x {
+  position: absolute;
+  /*background: rgba(255, 0, 0, 0.103);
+  color: white;*/
+  top: -10px;
+  right: -10px;
+}
+
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.33;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+}
+
+.border-blue {
+  border-color: blue !important;
+}
+.border-violet {
+  border-color: violet !important;
+}
+
+.float-right-bottom{
+	position:fixed;
+	/*width:60px;
+	height:60px;*/
+	bottom:40px;
+	right:40px;
+	background-color:rgb(2, 223, 167);
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  box-shadow: 2px 2px 3px #999;
+  padding: 10px;
+}
+/*
+.fa-float{
+	margin-top:22px;
+}
+*/

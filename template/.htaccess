@@ -1,0 +1,4 @@
+<Files ~ "\.(js)$">
+  Order Allow,Deny
+  Allow from all
+</Files>

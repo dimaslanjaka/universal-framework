@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="20px" viewBox="0 0 29 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Analytics Icon - Mid</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Analytics-Icon---Mid">
+            <ellipse id="Oval" stroke="#94979F" stroke-width="1.7" fill="#FFFFFF" cx="3.87174149" cy="16.0682145" rx="3.06168378" ry="3.06821452"></ellipse>
+            <ellipse id="Oval" stroke="#94979F" stroke-width="1.7" fill="#FFFFFF" cx="10.7370284" cy="6.20142045" rx="3.06168378" ry="3.06821452"></ellipse>
+            <polygon id="Rectangle-2" fill="#94979F" points="8.06870651 8.10860483 10.042706 9.52323023 6.42257545 14.7819493 4.51972142 13.3637334"></polygon>
+            <polygon id="Rectangle-2" fill="#94979F" points="23.0489851 6 25.0229845 7.4146254 21.402854 12.6733445 19.5 11.2551285"></polygon>
+            <polygon id="Rectangle-2" fill="#94979F" transform="translate(14.688525, 10.198993) rotate(-82.000000) translate(-14.688525, -10.198993) " points="15.4760182 6.86232041 17.4500177 8.2769458 13.8298872 13.5356649 11.9270331 12.1174489"></polygon>
+            <ellipse id="Oval" stroke="#94979F" stroke-width="1.7" fill="#FFFFFF" cx="19.3232847" cy="14.6338996" rx="3.06168378" ry="3.06821452"></ellipse>
+            <ellipse id="Oval" stroke="#94979F" stroke-width="1.7" fill="#FFFFFF" cx="25.1094445" cy="3.84821449" rx="3.06168378" ry="3.06821452"></ellipse>
+        </g>
+    </g>
+</svg>

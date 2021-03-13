@@ -1,0 +1,207 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TagGenerator\n"
+"POT-Creation-Date: 2013-05-01 17:16+0400\n"
+"PO-Revision-Date: 2013-05-02 10:42+0400\n"
+"Last-Translator: Nikitian <mail@nikitian.ru>\n"
+"Language-Team: Nikitian <mail@nikitian.ru>\n"
+"Language: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: __;gettext;gettext_noop;_e\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: c:\\w\\32city.ru\\www\\wp-content\\plugins"
+"\\TagGenerator\n"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:2
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:72
+msgid "Language ru"
+msgstr "Русский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:3
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:73
+msgid "Language en"
+msgstr "Английский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:4
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:74
+msgid "Language pl"
+msgstr "Польский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:5
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:75
+msgid "Language uk"
+msgstr "Украинский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:6
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:76
+msgid "Language de"
+msgstr "Немецкий"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:7
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:77
+msgid "Language fr"
+msgstr "Французский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:8
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:78
+msgid "Language be"
+msgstr "Белорусский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:9
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:79
+msgid "Language es"
+msgstr "Испанский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:10
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:80
+msgid "Language it"
+msgstr "Итальянский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:11
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:81
+msgid "Language bg"
+msgstr "Болгарский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:12
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:82
+msgid "Language cs"
+msgstr "Чешский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:13
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:83
+msgid "Language tr"
+msgstr "Турецкий"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:14
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:84
+msgid "Language ro"
+msgstr "Румынский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/some trash.php:15
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:85
+msgid "Language sr"
+msgstr "Сербский"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:70
+msgid "New propertys saved"
+msgstr "Настройки успешно сохранены"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:86
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:177
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:194
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:250
+msgid "Tag Generation"
+msgstr "Генерация тегов"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:86
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:105
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:177
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:190
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:194
+msgid "Return back"
+msgstr "Назад"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:87
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:296
+msgid "Prefences"
+msgstr "Настройки"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:89
+msgid "Select language"
+msgstr "Выберите язык"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:96
+msgid "Use only text without title"
+msgstr "Не использовать заголовок для генерации тегов"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:101
+msgid "Auto generate tag for new posts"
+msgstr "Автоматическая генерация тегов для новых записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:104
+msgid "Save"
+msgstr "Сохранить"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:159
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:162
+msgid "Can't generate tags"
+msgstr "Не получилось создать тег"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:169
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:170
+msgid "Tag Generator"
+msgstr "Tag Generator"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:178
+msgid "Custom load tags"
+msgstr "Выборочная генерация тегов"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:195
+msgid "List posts"
+msgstr "Список записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:201
+msgid "Load all"
+msgstr "Сгенерировать теги для всех записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:206
+msgid "Title"
+msgstr "Название"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:207
+msgid "Tags"
+msgstr "Теги"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:208
+msgid "Action"
+msgstr "Действие"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:227
+msgid "Load tags from Yahoo"
+msgstr "Загрузить теги с Yahoo"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:255
+msgid "Count posts"
+msgstr "Всего записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:264
+msgid "all work done"
+msgstr "Задача выполнена"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:265
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:294
+msgid "Really load tags for all posts?"
+msgstr "Действительно сгенерировать теги для всех записей?"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:265
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:294
+msgid "Load tags for all ##COUNT## posts"
+msgstr "Генерация тегов для всех ##COUNT## записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:270
+msgid "left"
+msgstr "осталось"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:289
+msgid "Stop"
+msgstr "Остановить"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:295
+msgid "Custom load tags from list posts"
+msgstr "Выборочная генерация тегов для отдельных записей"
+
+#: c:\w\32city.ru\www\wp-content\plugins\TagGenerator/taggenerator.php:317
+msgid "Wrong response code"
+msgstr "Получен ошибочный код ответа от сервера"
+
+#~ msgid "Tag Generator All Posts"
+#~ msgstr "Tag Generator все записи"
+
+#~ msgid "Nothing to do. Post already has tags."
+#~ msgstr "Пропуск записи, т.к. она уже имеет теги"

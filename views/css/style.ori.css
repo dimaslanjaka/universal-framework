@@ -1,0 +1,853 @@
+@import url('/views/css/icon.css');
+
+*:disabled,
+*[disabled],
+*[aria-disabled] {
+  /*border: 1px solid #999999;
+  background-color: #cccccc;*/
+  opacity: 0.5;
+  color: #666666;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+body,
+.az-content {
+  height: 100%;
+}
+
+* {
+  word-wrap: break-word;
+}
+.highlight { background-color: yellow }
+/* bootstrap 4 ui accessible hidder */
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+/* btn-group */
+.btn-group button {
+  margin-right: 2px;
+}
+/* HR OR | HR TEXT
+ * require data-content attribute
+ */
+.hr-text {
+  line-height: 1em;
+  position: relative;
+  outline: 0;
+  border: 0;
+  color: black;
+  text-align: center;
+  height: 1.5em;
+  opacity: .5;
+}
+
+.hr-text:before {
+  content: '';
+  background: linear-gradient(to right, transparent, #818078, transparent);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+}
+
+.hr-text:after {
+  content: attr(data-content);
+  position: relative;
+  display: inline-block;
+  color: black;
+  padding: 0 .5em;
+  line-height: 1.5em;
+  color: #f8f9fa;
+  background-color: #818078;
+  /**818078*/
+}
+
+/** Loading Button */
+button.loading {
+  background-image: url('https://res.cloudinary.com/dimaslanjaka/image/fetch/http://www.fotos-lienzo.es/media/aw_searchautocomplete/default/loading.gif');
+  background-repeat: no-repeat;
+}
+
+button.loading:after {
+  content: "Fetching...";
+  text-align: right;
+  padding-left: 25px;
+}
+
+.running .text {
+  position: absolute;
+  font-family: Arial;
+  font-size: 16px;
+  text-align: center;
+  left: -100px;
+  right: -100px;
+  width: 200px;
+  margin: auto;
+}
+
+/** three dots loading */
+/*Huge thanks to @tobiasahlin at http://tobiasahlin.com/spinkit/ */
+.spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner>div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0)
+  }
+
+  40% {
+    -webkit-transform: scale(1.0)
+  }
+}
+
+@keyframes sk-bouncedelay {
+
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+/**
+<div class="spinner">
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
+</div>
+ */
+
+/* another loading */
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+   .modal-loading {
+    display: none;
+    position: fixed;
+    z-index: 4500;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+  }
+  .modal-loading .modal-loading-text {
+    left: 0;
+    line-height: 200px;
+    margin-top: -100px;
+    position: absolute;
+    text-align: center;
+    top: 55%;
+    width: 100%;
+  }
+  .modal-loading span {
+    left: 0;
+    line-height: 200px;
+    margin-top: -100px;
+    position: absolute;
+    text-align: center;
+    top: 60%;
+    width: 100%;
+  }
+
+  .loading-corner-right {
+    display: none;
+    position: fixed;
+    z-index: 4501;
+    bottom: 0;
+    right: 0px;
+    height: auto;
+    min-height: 50px;
+    width: auto;
+    min-width: 50px;
+    background: rgba(255, 255, 255, .8) url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+  }
+
+  .loading-corner-right .loading-corner-right-text {
+    left: 0;
+    line-height: 50px;
+    margin: -100px 50px 0px 50px;
+    position: relative;
+    text-align: center;
+    top: 55%;
+    width: 100%;
+  }
+  .loading-corner-right span {
+    left: 0;
+    line-height: 50px;
+    margin: -100px 50px 0px 50px;
+    position: relative;
+    text-align: center;
+    top: 60%;
+    width: 100%;
+  }
+
+  /* When the body has the loading class, we turn
+     the scrollbar off with overflow:hidden */
+  body.loading .modal-loading {
+    overflow: hidden;
+    display: block;
+  }
+  body.loading-right .loading-corner-right {
+    overflow: hidden;
+    display: block;
+  }
+
+/* Hidden Recaptcha */
+.rc-anchor-normal-footer,
+.grecaptcha-badge,
+.smalltext {
+  display: none;
+  visibility: hidden;
+}
+
+/* Link in header cards */
+.card-header a {
+  color: #ffffff;
+}
+
+/*Tooltip*/
+.tooltip-danger .tooltip-inner {
+  background-color: rgb(196, 4, 4);
+  color: #fff;
+}
+
+.tooltip-danger.bs-tooltip-top .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="top"] .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: rgb(196, 4, 4);
+}
+
+.tooltip-danger.bs-tooltip-bottom .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="bottom"] .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: rgb(196, 4, 4);
+}
+
+.tooltip-danger.bs-tooltip-left .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="left"] .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+  border-left-color: rgb(196, 4, 4);
+}
+
+.tooltip-danger.bs-tooltip-right .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="right"] .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: rgb(196, 4, 4);
+}
+
+.tooltip-success .tooltip-inner {
+  background-color: rgb(4, 196, 100);
+  color: #fff;
+}
+
+.tooltip-success.bs-tooltip-top .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="top"] .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: rgb(4, 196, 100);
+}
+
+.tooltip-success.bs-tooltip-bottom .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="bottom"] .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: rgb(4, 196, 100);
+}
+
+.tooltip-success.bs-tooltip-left .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="left"] .arrow::before,
+.tooltip-success.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+  border-left-color: rgb(4, 196, 100);
+}
+
+.tooltip-danger.bs-tooltip-right .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="right"] .arrow::before,
+.tooltip-danger.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: rgb(196, 4, 4);
+}
+
+/** HR line with text */
+.or-seperator {
+  margin: 20px 0 10px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+}
+
+/** card table */
+table#card-table td:nth-child(1) {
+  width: 30%;
+}
+
+/** Ajax progress */
+.ajax-progress {
+  display: block;
+  text-align: center;
+  width: 0;
+  height: 3px;
+  background: red;
+  transition: width .3s;
+}
+
+.ajax-progress.hide {
+  opacity: 0;
+  transition: opacity 1.3s;
+}
+
+/** vertical divider */
+.vertical-divider {
+  position: absolute;
+  display: table;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.vertical-divider .center-element {
+  position: relative;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.vertical-divider .center-element:before,
+.vertical-divider .center-element:after {
+  position: absolute;
+  content: "";
+  width: 1px;
+  left: 50%;
+  border-left: 1px solid black;
+}
+
+.vertical-divider .center-element:before {
+  bottom: 50%;
+  top: 0;
+  margin-bottom: 20px;
+}
+
+.vertical-divider .center-element:after {
+  top: 50%;
+  bottom: 0;
+  margin-top: 20px;
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+  visibility: hidden;
+  /* Hidden by default. Visible on click */
+  min-width: 250px;
+  /* Set a default minimum width */
+  margin-left: -125px;
+  /* Divide value of min-width by 2 */
+  background-color: #333;
+  /* Black background color */
+  color: #fff;
+  /* White text color */
+  text-align: center;
+  /* Centered text */
+  border-radius: 2px;
+  /* Rounded borders */
+  padding: 16px;
+  /* Padding */
+  position: fixed;
+  /* Sit on top of the screen */
+  z-index: 5677;
+  /* Add a z-index if needed */
+  left: 50%;
+  /* Center the snackbar */
+  bottom: 30px;
+  /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+  visibility: visible;
+  /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+
+/*Profile Card 1*/
+.profile-card-1 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  color: #ffffff;
+  text-align: center;
+  height: 368px;
+  border: none;
+}
+
+.profile-card-1 .background {
+  width: 100%;
+  vertical-align: top;
+  opacity: 0.9;
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+  -webkit-transform: scale(1.8);
+  transform: scale(2.8);
+}
+
+.profile-card-1 .card-content {
+  width: 100%;
+  padding: 15px 25px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+}
+
+.profile-card-1 .profile {
+  border-radius: 50%;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  max-width: 100px;
+  opacity: 1;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 1);
+  -webkit-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+}
+
+.profile-card-1 h2 {
+  margin: 0 0 5px;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.profile-card-1 h2 small {
+  display: block;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.profile-card-1 i {
+  display: inline-block;
+  font-size: 16px;
+  color: #ffffff;
+  text-align: center;
+  border: 1px solid #fff;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.profile-card-1 .icon-block {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.profile-card-1 .icon-block a {
+  text-decoration: none;
+}
+
+.profile-card-1 i:hover {
+  background-color: #fff;
+  color: #2E3434;
+  text-decoration: none;
+}
+
+/*Profile card 2*/
+.profile-card-2 .card-img-block {
+  float: left;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.profile-card-2 .card-body {
+  position: relative;
+}
+
+.profile-card-2 .profile {
+  border-radius: 50%;
+  position: absolute;
+  top: -42px;
+  left: 15%;
+  max-width: 75px;
+  border: 3px solid rgba(255, 255, 255, 1);
+  -webkit-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+}
+
+.profile-card-2 h5 {
+  font-weight: 600;
+  color: #6ab04c;
+}
+
+.profile-card-2 .card-text {
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.profile-card-2 .icon-block {
+  float: left;
+  width: 100%;
+}
+
+.profile-card-2 .icon-block a {
+  text-decoration: none;
+}
+
+.profile-card-2 i {
+  display: inline-block;
+  font-size: 16px;
+  color: #6ab04c;
+  text-align: center;
+  border: 1px solid #6ab04c;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.profile-card-2 i:hover {
+  background-color: #6ab04c;
+  color: #fff;
+}
+
+/*Profile Card 3*/
+.profile-card-3 {
+  font-family: 'Open Sans', Arial, sans-serif;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+  height: 368px;
+  border: none;
+}
+
+.profile-card-3 .background-block {
+  float: left;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.profile-card-3 .background-block .background {
+  width: 100%;
+  vertical-align: top;
+  opacity: 0.9;
+  -webkit-filter: blur(0.5px);
+  filter: blur(0.5px);
+  -webkit-transform: scale(1.8);
+  transform: scale(2.8);
+}
+
+.profile-card-3 .card-content {
+  width: 100%;
+  padding: 15px 25px;
+  color: #232323;
+  float: left;
+  background: #efefef;
+  height: 50%;
+  border-radius: 0 0 5px 5px;
+  position: relative;
+  z-index: 9999;
+}
+
+.profile-card-3 .card-content::before {
+  content: '';
+  background: #efefef;
+  width: 120%;
+  height: 100%;
+  left: 11px;
+  bottom: 51px;
+  position: absolute;
+  z-index: -1;
+  transform: rotate(-13deg);
+}
+
+.profile-card-3 .profile {
+  border-radius: 50%;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  max-width: 100px;
+  opacity: 1;
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 1);
+  -webkit-transform: translate(-50%, 0%);
+  transform: translate(-50%, 0%);
+  z-index: 99999;
+}
+
+.profile-card-3 h2 {
+  margin: 0 0 5px;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.profile-card-3 h2 small {
+  display: block;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.profile-card-3 i {
+  display: inline-block;
+  font-size: 16px;
+  color: #232323;
+  text-align: center;
+  border: 1px solid #232323;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.profile-card-3 .icon-block {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.profile-card-3 .icon-block a {
+  text-decoration: none;
+}
+
+.profile-card-3 i:hover {
+  background-color: #232323;
+  color: #fff;
+  text-decoration: none;
+}
+
+
+/*Profile card 4*/
+.profile-card-4 .card-img-block {
+  float: left;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.profile-card-4 .card-body {
+  position: relative;
+}
+
+.profile-card-4 .profile {
+  border-radius: 50%;
+  position: absolute;
+  top: -62px;
+  left: 50%;
+  width: 100px;
+  border: 3px solid rgba(255, 255, 255, 1);
+  margin-left: -50px;
+}
+
+.profile-card-4 .card-img-block {
+  position: relative;
+}
+
+.profile-card-4 .card-img-block>.info-box {
+  position: absolute;
+  background: rgba(217, 11, 225, 0.6);
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  -webkit-transition: 1s ease;
+  transition: 1s ease;
+  opacity: 0;
+}
+
+.profile-card-4 .card-img-block:hover>.info-box {
+  opacity: 1;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.profile-card-4 h5 {
+  font-weight: 600;
+  color: #d90be1;
+}
+
+.profile-card-4 .card-text {
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.profile-card-4 .icon-block {
+  float: left;
+  width: 100%;
+}
+
+.profile-card-4 .icon-block a {
+  text-decoration: none;
+}
+
+.profile-card-4 i {
+  display: inline-block;
+  font-size: 16px;
+  color: #d90be1;
+  text-align: center;
+  border: 1px solid #d90be1;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.profile-card-4 i:hover {
+  background-color: #d90be1;
+  color: #fff;
+}
+
+/*Profile Card 5*/
+.profile-card-5 {
+  margin-top: 20px;
+}
+
+.profile-card-5 .btn {
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.profile-card-5 .card-img-block {
+  width: 91%;
+  margin: 0 auto;
+  position: relative;
+  top: -20px;
+
+}
+
+.profile-card-5 .card-img-block img {
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.63);
+}
+
+.profile-card-5 h5 {
+  color: #4E5E30;
+  font-weight: 600;
+}
+
+.profile-card-5 p {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.profile-card-5 .btn-primary {
+  background-color: #4E5E30;
+  border-color: #4E5E30;
+}
+
+#agcontent,
+#agcontents,
+#A-G-C {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#nav-long {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,34 @@
+
+$gray-500:                      #969dab;
+$gray-600:                      #70737c;
+$gray-700:                      #494c57;
+$gray-800:                      #343640;
+$gray-900:                      #212229;
+
+$body-color:                    $gray-700;
+
+// Color
+$green:                         #3bb001;
+$teal:                          #00cccc;
+$pink:                          #f10075;
+
+// Border
+$border-radius:                 3px;
+
+// Buttons & Inputs
+$btn-focus-box-shadow:          none;
+$btn-active-box-shadow:         none;
+//$input-btn-padding-y:
+
+// Typography
+$font-family-poppins:           'Poppins', sans-serif;
+$font-family-roboto:            'Roboto', 'Helvetica Neue', 'Helvetica', sans-serif;
+$font-family-opensans:          'Open Sans', 'Helvetica Neue', 'Helvetica', sans-serif;
+$font-family-lato:              'Lato', sans-serif;
+$font-family-rubik:             'Rubik', sans-serif;
+
+$font-family-base:              $font-family-roboto;
+
+$font-size-base:                .8125rem;
+
+$link-hover-decoration:         none;

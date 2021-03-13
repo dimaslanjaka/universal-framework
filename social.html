@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+  <meta name="apple-mobile-web-app-title" content="CodePen">
+  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+  <title>CodePen - Social Media Icons hover effect </title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #262626;
+    }
+
+    ul {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    ul li {
+      list-style: none;
+    }
+
+    ul li a {
+      width: 80px;
+      height: 80px;
+      background-color: #fff;
+      text-align: center;
+      line-height: 80px;
+      font-size: 35px;
+      margin: 0 10px;
+      display: block;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #fff;
+      z-index: 1;
+    }
+
+    ul li a .icon {
+      position: relative;
+      color: #262626;
+      transition: .5s;
+      z-index: 3;
+    }
+
+    ul li a:hover .icon {
+      color: #fff;
+      transform: rotateY(360deg);
+    }
+
+    ul li a:before {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f00;
+      transition: .5s;
+      z-index: 2;
+    }
+
+    ul li a:hover:before {
+      top: 0;
+    }
+
+    ul li:nth-child(1) a:before {
+      background: #3b5999;
+    }
+
+    ul li:nth-child(2) a:before {
+      background: #55acee;
+    }
+
+    ul li:nth-child(3) a:before {
+      background: #333;
+    }
+
+    ul li:nth-child(4) a:before {
+      background: #f57d00;
+    }
+  </style>
+  <script>
+    window.console = window.console || function(t) {};
+  </script>
+  <script>
+    if (document.location.search.match(/type=embed/gi)) {
+      window.parent.postMessage("resize", "*");
+    }
+  </script>
+</head>
+
+<body translate="no">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+  </script>
+  <ul>
+    <li>
+      <a href="//facebook.com/dimaslanjaka1" target="_blank">
+        <i class="fab fa-facebook-f icon"></i> </a>
+    </li>
+    <li>
+      <a href="https://twitter.com/WManajemen" target="_blank"><i class="fab fa-twitter icon"></i></a>
+    </li>
+    <li>
+      <a href="//github.com/dimaslanjaka" target="_blank"><i class="fab fa-github icon"></i></a></li>
+    <li>
+      <a href="//web-manajemen.blogspot.com" target="_blank"><i class="fab fa-blogger icon"></i></a></li>
+  </ul>
+</body>
+
+</html>

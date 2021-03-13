@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="updraftcentral_eum_container">
+		<div class="col-md-12">
+			<div class="eum-dashboard">
+				<div class="row">
+					<div class="col-md-12">
+						{{#if action.install_and_activate}}
+							<div class="eum-not-installed">
+								{{action.messages.not_installed}}
+							</div>
+							<button class="btn btn-primary" id="btn-eum-install-activate">{{action.messages.install_and_activate}}</button>
+						{{/if}}
+						{{#if action.activate}}
+							<div class="eum-not-activated">
+								{{action.messages.not_activated}}
+							</div>
+							<button class="btn btn-primary" id="btn-eum-activate">{{action.messages.activate}}</button>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

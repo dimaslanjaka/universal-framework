@@ -1,0 +1,79 @@
+<div class="updraft_site_settings_output">
+	<p>{{udclion.updraftplus.new_api_user_desc}}</p>
+	
+	<table class="form-table">
+		<tbody>
+			<tr>
+				<th>
+					<label for="uk_or_us">{{udclion.updraftplus.uk_or_us}}</label>
+				</th>
+				<td>
+					<select class="form-control location" name="uk_or_us">
+						{{#each accounts}}
+						<option value="{{@key}}">{{this}}</option>
+						{{/each}}
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="region">{{udclion.updraftplus.storage_region}}</label>
+				</th>
+				<td>
+					<select class="form-control region" name="region">
+						{{#each regions}}
+						<option value="{{@key}}">{{this}}</option>
+						{{/each}}
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="admin_user">{{udclion.updraftplus.admin_username}}</label>
+				</th>
+				<td>
+					<input class="form-control adminuser" type="text" name="admin_user" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="key">{{udclion.updraftplus.admin_api_key}}</label>
+				</th>
+				<td>
+					<input class="form-control adminapikey" type="text" name="key" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="new_user">{{udclion.updraftplus.new_users_username}}</label>
+				</th>
+				<td>
+					<input class="form-control newuser" type="text" name="new_user" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="email">{{udclion.updraftplus.new_users_email}}</label>
+				</th>
+				<td>
+					<input class="form-control newemail" type="text" name="email" />
+				</td>
+			</tr>
+			
+			<tr>
+				<th>
+					<label for="container">{{udclion.updraftplus.container}}</label>
+				</th>
+				<td>
+					<input class="form-control container" type="text" name="container" />
+				</td>
+			</tr>
+			
+		</tbody>
+	</table>
+</div>

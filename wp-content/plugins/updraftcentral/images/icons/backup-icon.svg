@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="20px" viewBox="0 0 23 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>Backup Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Backup-Now-Icon" transform="translate(-22.000000, 0.000000)">
+            <g id="Backup-Icon---Mid" transform="translate(22.000000, 0.000000)">
+                <path d="M1.7037037,15.6521739 L1.7037037,18.2608696 L21.2962963,18.2608696 L21.2962963,15.6521739 L1.7037037,15.6521739 Z M0,13.9130435 L23,13.9130435 L23,20 L0,20 L0,13.9130435 Z" id="Rectangle-10" fill="#94979F" fill-rule="nonzero"></path>
+                <polygon id="Rectangle" fill="#94979F" fill-rule="evenodd" points="4.61557455 0 18.4928854 0 23 13.9130435 0 13.9130435"></polygon>
+                <rect id="Rectangle-2" fill="#FFFFFF" fill-rule="evenodd" x="10.5108271" y="3.21739135" width="2.00719243" height="6.08695652"></rect>
+                <polygon id="Path-5" fill="#FFFFFF" fill-rule="evenodd" points="7.68275396 8.20088084 15.2598883 8.20088084 11.4713211 12.0370025"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

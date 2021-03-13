@@ -1,0 +1,4 @@
+define(["codemirror/lib/codemirror", "codemirror/addon/fold/foldgutter", "codemirror/addon/fold/foldcode", "codemirror/addon/fold/markdown-fold", "codemirror/addon/edit/continuelist", "codemirror/addon/display/fullscreen", "codemirror/addon/display/autorefresh", "codemirror/addon/hint/show-hint", "codemirror/addon/hint/javascript-hint", "codemirror/addon/hint/html-hint", "codemirror/addon/hint/css-hint", "codemirror/addon/hint/show-hint", "codemirror/addon/search/search", "codemirror/addon/search/searchcursor", "codemirror/addon/search/jump-to-line", "codemirror/addon/search/match-highlighter", "codemirror/addon/dialog/dialog", "codemirror/addon/mode/loadmode", "codemirror/mode/htmlmixed/htmlmixed", "codemirror/mode/javascript/javascript", "codemirror/mode/xml/xml", "codemirror/mode/css/css"], function(CodeMirror) {
+  "use strict";
+  return CodeMirror;
+});

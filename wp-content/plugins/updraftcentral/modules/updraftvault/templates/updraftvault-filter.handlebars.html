@@ -1,0 +1,20 @@
+<hr />
+<div class="row">
+	<div class="updraftcentral_updraftvault_header">
+		<div class="col-md-6">
+			<button type="button" data-action="delete" class="btn btn-sm btn-danger updraftcentral_site_updraftvault_action_btn">{{udclion.updraftvault.delete}}</button>
+		</div>
+		<div class="col-md-4 per_page_label">
+			{{udclion.updraftvault.per_page}}
+		</div>
+		<div class="col-md-2">
+		{{#if paging}}
+			<select id="udc_per_page" name="per_page" class="per_page form-control">
+			{{#each paging.per_page_options}}
+				<option value="{{this}}">{{this}}</option>
+			{{/each}}
+			</select>
+		{{/if}}
+		</div>
+	</div>
+</div>

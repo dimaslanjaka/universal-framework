@@ -1,0 +1,27 @@
+{
+  "name": "dimaslanjaka/dimaslanjaka-proxy-parser",
+  "description": "Php proxy parser",
+  "keywords": [
+    "Proxy",
+    "Parser",
+    "PHP"
+  ],
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "type": "library",
+  "authors": [
+    {
+      "name": "dimaslanjaka",
+      "email": "dimaslanjaka@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DimasProxyParser\\": "src/"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3",
+    "paquettg/php-html-parser": "^1.7"
+  }
+}

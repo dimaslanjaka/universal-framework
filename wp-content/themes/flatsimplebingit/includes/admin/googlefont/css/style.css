@@ -1,0 +1,35 @@
+/* OptionTreeGoogleFont Preview CSS */
+.font-preview textarea {
+	padding: 20px 12px;
+	border: 1px solid #ccc;
+	margin: 0 0 5px;
+	line-height: 1em;
+	border-radius: 2px;
+	width: 100%; 
+	background: #f7f8f9 none 99% 11% no-repeat;
+	overflow-y: hidden;
+		
+		
+	-webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.05);
+	
+	-webkit-backface-visibility: hidden;
+	
+}
+
+.font-preview .loading {
+	background-image: url(../img/ajax-loader.gif);
+	background-position: 99% 14%;
+	background-repeat: no-repeat;
+}
+
+.font-preview .transition {
+	-webkit-transition: all 500ms;
+	-moz-transition: all 500ms;
+	-ms-transition: all 500ms;
+	-o-transition: all 500ms;
+	transition: all 500ms;
+}
+
+#option-tree-settings-api .font-preview p { margin: 0 !important; padding: .5em 0 !important }

@@ -1,0 +1,1 @@
+curl_setopt($ch, CURLOPT_URL, 'http://www.google.se/' . urlencode('#hl=sv&q=dogs'));

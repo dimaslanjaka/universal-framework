@@ -1,0 +1,19 @@
+<div class="updraftcentral_paginator">
+	<ul>
+		<li>
+			<a href="#" class="page_prev">
+				<span class="dashicons dashicons-arrow-left-alt2"></span>
+			</a>
+		</li>
+	{{#each pages}}
+		<li>
+			<a href="?page={{this}}" class="page" data-page="{{this}}">{{this}}</a>
+		</li>
+	{{/each}}
+		<li>
+		  <a href="#" class="page_next">
+			<span class="dashicons dashicons-arrow-right-alt2"></span>
+		  </a>
+		</li>
+	</ul>
+</div>

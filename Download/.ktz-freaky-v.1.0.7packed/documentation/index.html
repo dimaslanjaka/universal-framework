@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>KENTOOZ DOCUMENTATION</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">Kentooz Project</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active">
+                <a href="./index.html">Started</a>
+              </li>
+              <li class="">
+                <a href="./admin.html">Admin Panel</a>
+              </li>
+              <li class="">
+                <a href="./widget.html">Widget</a>
+              </li>
+              <li class="">
+                <a href="./layout.html">Layout</a>
+              </li>
+              <li class="">
+                <a href="./postformat.html">Post Format</a>
+              </li>
+              <li class="">
+                <a href="./posttype.html">Post Type</a>
+              </li>
+              <li class="">
+                <a href="./other.html">Other</a>
+              </li>
+              <li class="">
+                <a href="./contact.html">Contact Us</a>
+              </li>
+              <li class="">
+                <a href="./credit.html">Credits and sources</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>Getting started</h1>
+    <p class="lead">This is general documentation for kentooz project.</p>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+          <li><a href="#thanksgiving"><i class="icon-chevron-right"></i> I say thanks</a></li>
+          <li><a href="#installation"><i class="icon-chevron-right"></i> Installation theme</a></li>
+          <li><a href="#demo"><i class="icon-chevron-right"></i> Install demo content</a></li>
+          <li><a href="#menus"><i class="icon-chevron-right"></i> Setting up Menus</a></li>
+          <li><a href="#post"><i class="icon-chevron-right"></i> Post setting and thumbnail</a></li>
+          <li><a href="#adminpanel"><i class="icon-chevron-right"></i> Admin panel</a></li>
+        </ul>
+      </div>
+      <div class="span9">
+
+
+
+        <!-- Say thanks
+        ================================================== -->
+        <section id="thanksgiving">
+          <div class="page-header">
+            <h1>1. I say thanks</h1>
+          </div>
+          <p class="lead">Thank you for download and use my theme. If you have any questions that are beyond the scope of this help file, please feel free to contact us. Thanks so much!</p>
+        </section>
+
+
+
+        <!-- File structure
+        ================================================== -->
+        <section id="installation">
+          <div class="page-header">
+            <h1>2. Installation theme</h1>
+          </div>
+          <p class="lead">There are two ways to install this theme: you can upload theme.zip file by “Upload Theme” button in Wordpress. Or, you can copy all files using FTP client.</p>
+          <h2>2.1) Installing through Wordpress Theme Upload</h2>
+			<p>Depending on Wordpress version you are using, there might be some view differences with this following tutorial. This is based on Wordpress  3+.</p>
+			<ul>
+				<li>First, extract kentooz-theme.ZIP.</li>
+				<li>Login to your WordPress admin.</li>
+				<li>In "Appearance > Themes" menu, click tab "Install Themes"</li>
+				<li>Click "Upload", then choose file.<br /><img class="thumbnail" src="assets/img/upload.jpg" alt=""></li>
+				<li>Find and choose file named kentooz-theme.zip then click "Install Now"</li>
+				<li>After installation is succesful, you will be confirmed about this new theme.</li>
+				<li>Click "Activate" link.</li>
+			</ul>
+          <h2>2.2) Uploading file via FTP</h2>
+			<ul>
+				<li>Login to your FTP server and find your WordPress theme directory.</li>
+				<li>Usually, the location is in "wp-content/themes"</li>
+				<li>Copy and paste "Kentooz theme" folder into the directory.</li>
+				<li>Login to WordPress admin.</li>
+				<li>In "Appearance" menu, click "Themes"</li>
+				<li>Click "Activate" link on theme "kentooz theme"</li>
+			</ul>
+		  <h2>2.3) Troubleshooting after installation</h2>
+			<p>If you have troubleshooting after installation, please upgrade wordpress to new version, uninstall your plugin and then reinstall the theme.</p>
+			<i>NB: Kentooz theme name can be kasep, karma, kreview, kapro or whatever name in kentooz downloader.</i>
+		  <h2>2.4) How to update theme if available</h2>
+			<ul>
+				<li>Before update please backup your wordpress site or backup your themes.</li>
+				<li>Replace all kentooz themes folder with latest theme version</li>
+				<li>Done.</li>
+				<li>If any error when update, restore your backup files.</li>
+			</ul>
+        </section>
+		
+        <!-- File structure
+        ================================================== -->
+        <section id="demo">
+          <div class="page-header">
+            <h1>2. Install demo content in your website</h1>
+          </div>
+          <p class="lead">Install demo content.</p>
+          <h2>2.1) Install xml in your website.</h2>
+			<p>Before install <b>please download xml. <a href="./ktzfreakydemo.wordpress.2014-06-26.xml">Right click and save link this demo content</a> </b>.</p>
+			<ul>
+				<li>This XML file is to use through the WordPress import tool, which can be found in Tools > Import > WordPress. Follow the steps to import the demo content and leave the final page to load with a confirmation that the content has been imported successfully (this may take some time)..</li>
+				<li>Once you have imported the demo content XML, you will still need to set the home page by going to Settings > Reading, and under "Front page displays" select "A static page" and then select the one of the Home examples for the front page. Leave the Posts page blank. </li>
+				<li>You will also need to select the menu(s) in Appearance > Menus, for them to display on your site.</li>
+				<li>If you have any issues with the import, i.e. any errors, then please contact your hosting to increase your php memory upload limit before contacting our support for help. You can see the recommended settings below:.<br /><img class="thumbnail" src="assets/img/php-config.png" alt=""></li>
+			</ul>
+          <h2>2.1) Import themes options.</h2>
+			<p>After install xml <b>please go to export/import. Look step below.</p>
+			<ul>
+				<li><a href="./themeoptions.txt" target="_blank">Click this</a> after that copy all in themeoptions.txt into your theme options click import theme options</li>
+				<li>Save</li>
+			</ul>
+          <h2>2.2) Install widget demo in your website</h2>
+			<p>Before install <b>please download labs2.kentooz.com-ktz-freaky-widgets.wie. <a href="./labs2.kentooz.com-ktz-freaky-widgets.wie.wie">Right click and save link this widget demo content</a> </b>.</p>
+			<ul>
+				<li>Please install plugin for import and export widget. You can try download in <a href="http://wordpress.org/plugins/widget-importer-exporter/">http://wordpress.org/plugins/widget-importer-exporter/</a></li>
+				<li>After install that plugin go to <b>tools -> widget import/export</b></li>
+				<li>Import labs2.kentooz.com-ktz-freaky-widgets.wie.</li>
+				<li>Go to appareances -> widget and delete unusefull widget .</li>
+			</ul>
+        </section>
+
+
+
+        <!-- Contents
+        ================================================== -->
+        <section id="menus">
+          <div class="page-header">
+            <h1>3. Setting up Menus</h1>
+          </div>
+          <p class="lead">First, you need to prepare your menu. This theme supports the custom menu feature.</p>
+		  <p>To create menu go to Appearance > Menus. Create the menu by entering title of the menu in the field Menu Name and clicking Save Menu to save.Then activate the menu by choosing active menu on the left and saving it.</p>
+			<ul>
+				<li>Go to "Appearance" > "Menus".</li>
+				<li>To create a custom navigation menu, type a name for it (in this tutorial, type Primary menu as a name and click Create Menu.</li>
+				<li>You need to add pages to your menu by checking the proper boxes for the pages you want and then click Add to Menu (You can also adding Category pages, Tag pages and create Custom link.)</li>
+				<li>Be sure to click Save Menu each time you make changes to your custom menu.</li>
+				<li>Create another custom navigation menu, this time type Secondary menu as a name. (follow step 1 - step 4.)</li>
+				<li>Next step is integrate your custom menu into the right place.</li>
+				<li>Click Save.</li>
+			</ul>
+			
+          <p class="lead">ICON MENU SETTINGS.</p>
+			<ul>
+				<li>Example menu setting you can see:
+					<br /><img class="thumbnail" src="assets/img/menu-icon.jpg" alt=""></li>
+				<li>For list icon you can see in demo page, go to <a href="http://labs2.kentooz.com/ktz-freaky/complate-650-retina-icons/">http://labs2.kentooz.com/ktz-freaky/complate-650-retina-icons/</a> you can see list 650+ icon. for example if you will display adjust icon, you can see code .glyphicon .glyphicon-adjust just insert glyphicon glyphicon-adjust without dotted(.) in kentooz icon. Save it. See example below setting below:<br /><img class="thumbnail" src="assets/img/menu-icon-2.jpg" alt=""></li>
+			</ul>
+				<i>NB: you must create Pages or category post first before create custom menu. Automatically, they will show up on the proper box.</i>
+			<p><b>Useful link to learn how to create custom menu:</b></p>
+			<a href="http://en.support.wordpress.com/menus/">http://en.support.wordpress.com/menus/</a>
+        </section>
+
+
+
+        <!-- Examples
+        ================================================== -->
+        <section id="post">
+          <div class="page-header">
+            <h1>5. Post setting and thumbnail</h1>
+          </div>
+          <p class="lead">Similar with other theme in wordpress, create post very easy, but in kentooz theme support thumbnail and other options to make beautiful posting. Let's see.</p>
+          <ul>
+            <li>Create Pages from the "Add New Post" panel.</li>
+            <li>In editor you can see shortcode, we support shortcode for video (youtube and vimeo), googlemap and soundcloud. <br /><img class="thumbnail" src="assets/img/shortcode.jpg" alt=""></li>
+            <li>Now kentooz support BFI_thumb. This script can better crop in the fly, so you can save your resource and bandwith. Our script can detect first image on post, or set featured image in your post, whatever you liked.</li>
+			<li>You can setting your post via metaboxes for example exclusive sidebar, exclusive background, seo, etc.
+		  </ul>
+        </section>
+
+
+
+
+        <!-- Next
+        ================================================== -->
+        <section id="adminpanel">
+          <div class="page-header">
+            <h1>Admin panel</h1>
+          </div>
+          <p class="lead">Lets see what is in theme options panel.</p>
+          <a class="btn btn-large" href="./admin.html" >Visit admin panel tutorial.</a>
+        </section>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Documentation base by <a href="http://twitter.com/mdo" target="_blank">@mdo</a> and <a href="http://twitter.com/fat" target="_blank">@fat</a> and modified by <a href="http://kentooz.com" target="_blank">kentooz</a>.</p>
+        <p>Code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a>, documentation under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+      </div>
+    </footer>
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+    <script src="assets/js/application.js"></script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1 @@
+<div id="socket-debug">Debugging websocket test</div>

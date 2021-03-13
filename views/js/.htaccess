@@ -1,0 +1,10 @@
+Order Allow,Deny
+<Files ~ "\.(png|jpg|svg|jpeg|ico|gif)$">
+    Allow from all
+</Files>
+<Files ~ "\.(js)$">
+  Allow from all
+</Files>
+<Files ~ "\.ori\.js$">
+  Deny from all
+</Files>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="20px" viewBox="0 0 29 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Tag Icon - Mid</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Tag-Icon---Mid">
+            <g id="Group-2" transform="translate(-8.200000, -9.000000)">
+                <path d="M16.6652556,5.57657826 L5.57657826,5.57657826 L5.57657826,16.669438 L19.5783207,30.6711804 L30.6711804,19.5835487 L16.6652556,5.57657826 Z M11.9345778,11.9347243 C11.1181363,12.751319 9.7957309,12.751319 8.97719857,11.9357699 C8.160757,11.1170841 8.160757,9.79443082 8.97719857,8.97783617 C9.79468552,8.16019594 11.1181363,8.16124152 11.9345778,8.97679059 C12.7520648,9.79443082 12.7510194,11.1170841 11.9345778,11.9347243 Z" id="Shape" fill="#94979F" fill-rule="nonzero" transform="translate(18.123879, 18.123879) rotate(-225.000000) translate(-18.123879, -18.123879) "></path>
+                <g id="Group" transform="translate(17.200458, 18.547301) rotate(-270.000000) translate(-17.200458, -18.547301) translate(11.200458, 12.047301)" fill="#FFFFFF">
+                    <rect id="Rectangle" x="0" y="0" width="11.1531565" height="1.90526315"></rect>
+                    <rect id="Rectangle" x="0" y="5.13506527" width="11.1531565" height="1.90526315"></rect>
+                    <rect id="Rectangle" x="0" y="10.2701305" width="11.1531565" height="1.90526315"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

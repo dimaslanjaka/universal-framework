@@ -1,0 +1,192 @@
+/*
+* Azia v1.0.0 (https://themepixels.me/azia)
+* Copyright 2018 ThemePixels
+* Licensed under ThemeForest License
+*
+*
+* ------ Table Of Contents -------
+*
+*   1. FONTS IMPORT
+*   2. BOOTSTRAP FRAMEWORK
+*   3. BOOTSTRAP OVERRIDES
+*      3.1  Accordion
+*      3.2  Alerts
+*      3.3  Buttons
+*      3.4  Cards
+*      3.5  Dropdown
+*      3.6  Forms
+*      3.7  Grid
+*      3.8  Input Groups
+*      3.9  Modal
+*      3.10 Nav
+*      3.11 Pagination
+*      3.12 Popover
+*      3.13 Progress
+*      3.14 Table
+*      3.15 Tooltip
+*   4. CUSTOM VENDOR STYLES
+*      4.1  Datatables
+*      4.2  Datepicker
+*      4.3  jQuery Steps
+*      4.4  jQVMap
+*      4.5  Morris
+*      4.6  Parsley
+*      4.7  Quill
+*      4.8  RangeSlider
+*      4.9  Perfect Scrollbar
+*      4.10 Select2
+*      4.11 Spectrum
+*   5. CUSTOM ELEMENTS STYLES
+*      5.1  Buttons
+*      5.2  Charts
+*      5.3  Forms
+*      5.4  Image
+*      5.5  List
+*      5.6  Modal
+*      5.7  Nav
+*   6. PAGE LAYOUT STYLES
+*      6.1  Content
+*      6.2  Footer
+*      6.3  Global
+*      6.4  Header
+*      6.5  Iconbar
+*      6.6  Navbar
+*      6.7  Navbar Variant
+*      6.8  Sidebar
+*   7. TEMPLATE STYLES
+*      7.1  Demo
+*      7.2  Calendar
+*      7.3  Chat
+*      7.4  Contacts
+*      7.5  Invoice
+*      7.6  Mail
+*      7.7  Profile
+*      7.8  Signin
+*      7.9  Signup
+*      7.10 Error
+*   8. DASHBOARD STYLES
+*      8.1  Dashboard One
+*      8.2  Dashboard Two
+*      8.3  Dashboard Three
+*      8.4  Dashboard Four
+*      8.5  Dashboard Five
+*      8.6  Dashboard Six
+*      8.7  Dashboard Seven
+*      8.8  Dashboard Eight
+*      8.9  Dashboard Nine
+*      8.10 Dashboard Ten
+*   9. UTILITIES/HELPER CLASSES
+*      9.1  Background
+*      9.2  Border
+*      9.3  Height
+*      9.4  Margin
+*      9.5  Misc
+*      9.6  Padding
+*      9.7  Position
+*      9.8  Typography
+*      9.9  Width
+*
+*/
+
+
+/* ############### FONTS IMPORT ############### */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800');
+@import url('https://fonts.googleapis.com/css?family=Archivo:400,500,600,700');
+
+// Bootstrap variable overrides
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+/* ############### BOOTSTRAP FRAMEWORK ############### */
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Custom variables and mixins
+@import "custom/variables";
+@import "custom/mixins";
+
+/* ########## BOOTSTRAP OVERRIDES ########## */
+@import "bootstrap/accordion";
+@import "bootstrap/alerts";
+@import "bootstrap/buttons";
+@import "bootstrap/cards";
+@import "bootstrap/dropdown";
+@import "bootstrap/forms";
+@import "bootstrap/grid";
+@import "bootstrap/input-group";
+@import "bootstrap/modal";
+@import "bootstrap/nav";
+@import "bootstrap/pagination";
+@import "bootstrap/popover";
+@import "bootstrap/progress";
+@import "bootstrap/table";
+@import "bootstrap/tooltip";
+
+/* ############### CUSTOM VENDOR STYLES ############### */
+@import "lib/datatables";
+@import "lib/datepicker";
+@import "lib/jquery-steps";
+@import "lib/morris";
+@import "lib/parsley";
+@import "lib/jqvmap";
+@import "lib/quill";
+@import "lib/rangeslider";
+@import "lib/scrollbar";
+@import "lib/select2";
+@import "lib/spectrum";
+
+/* ############### CUSTOM ELEMENT STYLES ############### */
+@import "custom/buttons";
+@import "custom/charts";
+@import "custom/forms";
+@import "custom/image";
+@import "custom/list";
+@import "custom/modal";
+@import "custom/nav";
+
+/* ############### PAGE LAYOUT STYLES ############### */
+@import "layout/content";
+@import "layout/footer";
+@import "layout/global";
+@import "layout/header";
+@import "layout/iconbar";
+@import "layout/navbar";
+@import "layout/navbar-variant";
+@import "layout/sidebar";
+
+/* ############### TEMPLATE STYLES ############### */
+@import "template/demo";
+
+@import "template/calendar";
+@import "template/chat";
+@import "template/contacts";
+@import "template/invoice";
+@import "template/mail";
+@import "template/profile";
+@import "template/signin";
+@import "template/signup";
+@import "template/error";
+
+/* ############### DASHBOARD STYLES ############### */
+@import "template/dashboard-one";
+@import "template/dashboard-two";
+@import "template/dashboard-three";
+@import "template/dashboard-four";
+@import "template/dashboard-five";
+@import "template/dashboard-six";
+@import "template/dashboard-seven";
+@import "template/dashboard-eight";
+@import "template/dashboard-nine";
+@import "template/dashboard-ten";
+
+/* ############### UTILITIES/HELPER CLASSES ############### */
+@import "util/background";
+@import "util/border";
+@import "util/height";
+@import "util/margin";
+@import "util/misc";
+@import "util/padding";
+@import "util/position";
+@import "util/typography";
+@import "util/width";

@@ -1,0 +1,48 @@
+body {
+	background-color: #ecfab6;
+}
+/* Carousel base class */
+.carousel {
+  max-width: 100%;
+}
+.carousel-indicators {
+	position: absolute;
+	top: 2em;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+  bottom: 3rem;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+  height: 20rem;
+  background-color: #777;
+}
+.carousel-item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 20rem;
+}
+
+
+/* using a container causes multiple alerts to stack. */
+.alerts-container {
+	position: fixed;
+	top: 1em;
+	right: 2em;
+	z-index: 9999;
+}
+.alert {
+	position: relative;
+	min-width: 15em;
+	text-align: center;
+	display: none;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	-webkit-box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 6px 20px 0px rgba(0,0,0,0.2);
+}

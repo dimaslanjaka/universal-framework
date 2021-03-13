@@ -1,0 +1,1120 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: multilanguage-pro\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-16 12:48+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: BestWebSoft team <wp@bestwebsoft.com>\n"
+"Language-Team: BestWebSoft <wp@bestwebsoft.com>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/class-mltlngg-settings.php:23 multilanguage.php:38
+#: multilanguage.php:40 multilanguage.php:1332 multilanguage.php:2757
+#: multilanguage.php:2771
+msgid "Settings"
+msgstr "Настройки"
+
+#: includes/class-mltlngg-settings.php:24
+msgid "Misc"
+msgstr "Разное"
+
+#: includes/class-mltlngg-settings.php:25
+msgid "Custom Code"
+msgstr "Пользовательский код"
+
+#: includes/class-mltlngg-settings.php:26
+msgid "License Key"
+msgstr "Лицензионный ключ"
+
+#: includes/class-mltlngg-settings.php:79 includes/table.php:357
+msgid "Settings saved."
+msgstr "Настройки сохранены."
+
+#: includes/class-mltlngg-settings.php:90
+msgid "Multilanguage Settings"
+msgstr "Настройки Multilanguage"
+
+#: includes/class-mltlngg-settings.php:95
+msgid "Default Language Switcher Type"
+msgstr "Тип переключателя языка по умолчанию"
+
+#: includes/class-mltlngg-settings.php:100
+#: includes/class-mltlngg-settings.php:105
+#: includes/class-mltlngg-settings.php:110 multilanguage.php:1031
+#: multilanguage.php:1032 multilanguage.php:1033 multilanguage.php:1125
+#: multilanguage.php:1131 multilanguage.php:1137 multilanguage.php:2705
+#: multilanguage.php:2709 multilanguage.php:2713
+msgid "Drop-down list"
+msgstr "Выпадающий список"
+
+#: includes/class-mltlngg-settings.php:100
+#: includes/class-mltlngg-settings.php:110 multilanguage.php:1031
+#: multilanguage.php:1033 multilanguage.php:1125 multilanguage.php:1137
+#: multilanguage.php:2705 multilanguage.php:2713
+msgid "flag"
+msgstr "флаг"
+
+#: includes/class-mltlngg-settings.php:100
+#: includes/class-mltlngg-settings.php:105 multilanguage.php:1028
+#: multilanguage.php:1031 multilanguage.php:1032 multilanguage.php:1125
+#: multilanguage.php:1131 multilanguage.php:2705 multilanguage.php:2709
+msgid "title"
+msgstr "заголовок"
+
+#: includes/class-mltlngg-settings.php:115 includes/table.php:39
+#: multilanguage.php:1028 multilanguage.php:1030 multilanguage.php:1142
+#: multilanguage.php:2717
+msgid "Flag"
+msgstr "Флаг"
+
+#: includes/class-mltlngg-settings.php:122
+#: includes/class-mltlngg-settings.php:131
+#: includes/class-mltlngg-settings.php:140 multilanguage.php:1149
+#: multilanguage.php:1158 multilanguage.php:1167 multilanguage.php:2721
+#: multilanguage.php:2725 multilanguage.php:2729
+msgid "Google Auto Translate"
+msgstr "Авто переводчик Google"
+
+#: includes/class-mltlngg-settings.php:123 multilanguage.php:1150
+#: multilanguage.php:2721
+msgid "drop-down only"
+msgstr "только выпадающий список"
+
+#: includes/class-mltlngg-settings.php:132 multilanguage.php:1159
+#: multilanguage.php:2725
+msgid "horizontal"
+msgstr "горизонтальный"
+
+#: includes/class-mltlngg-settings.php:141 multilanguage.php:1168
+#: multilanguage.php:2729
+msgid "vertical"
+msgstr "вертикальный"
+
+#: includes/class-mltlngg-settings.php:151
+#: includes/class-mltlngg-settings.php:273 includes/table.php:413
+msgid "Close"
+msgstr "Закрыть"
+
+#: includes/class-mltlngg-settings.php:155
+msgid "Switch Language Automatically"
+msgstr "Переключать язык автоматически"
+
+#: includes/class-mltlngg-settings.php:157
+msgid ""
+"Enable to determine user IP and switch website language automatically based "
+"on the location."
+msgstr ""
+"Включите, чтобы автоматически определять IP-адрес пользователя и переключать "
+"язык сайта в зависимости от местоположения."
+
+#: includes/class-mltlngg-settings.php:161
+msgid "Slug Position in the URL"
+msgstr "Позиция слага в URL-адресе"
+
+#: includes/class-mltlngg-settings.php:173
+msgid "Before"
+msgstr "Перед"
+
+#: includes/class-mltlngg-settings.php:182
+msgid "After"
+msgstr "После"
+
+#: includes/class-mltlngg-settings.php:198
+msgid "Default Language Slug"
+msgstr "Слаг стандартного языка"
+
+#: includes/class-mltlngg-settings.php:200
+msgid "Enable to show default language slug in the URL."
+msgstr "Включите, чтобы отображать слаг в URL-адресе для языка по умолчанию."
+
+#: includes/class-mltlngg-settings.php:204
+msgid "WordPress Language"
+msgstr "Язык Wordpress"
+
+#: includes/class-mltlngg-settings.php:206
+msgid ""
+"Enable to switch WordPress language automatically when the language is "
+"changed in the front-end (installed WordPress language packs are required)."
+msgstr ""
+"Включите, чтобы автоматически переключать язык WordPress при изменении языка "
+"в интерфейсе (требуются установленные языковые пакеты WordPress)."
+
+#: includes/class-mltlngg-settings.php:210
+msgid "Open Graph Markup"
+msgstr "Разметка open graph"
+
+#: includes/class-mltlngg-settings.php:215
+#, php-format
+msgid "Enable to add the ability to translate %s."
+msgstr "Включите, чтобы добавить возможность перевода %s."
+
+#: includes/class-mltlngg-settings.php:216
+msgid "open graph meta tags"
+msgstr "open graph мета тегов"
+
+#: includes/class-mltlngg-settings.php:218
+#, php-format
+msgid ""
+"This option automatically adds metadata for each language in the %s section. "
+"Facebook and other social networks use this data when your pages are shared."
+msgstr ""
+"Эта опция автоматически добавляет метаданные для каждого языка в блоке %s. "
+"Facebook и другие социальные сети используют эти данные, когда кто-то "
+"делится вашей страницей."
+
+#: includes/class-mltlngg-settings.php:223
+msgid "Hreflang Attribute"
+msgstr "Атрибут hreflang"
+
+#: includes/class-mltlngg-settings.php:225
+#, php-format
+msgid ""
+"Enable to add hreflang attribute used by search engines and display the "
+"correct language or regional URL in search results. This option inserts "
+"automatically the respective link for each language within the %s section."
+msgstr ""
+"Включите, чтобы добавлять атрибут hreflang и отображать в результатах поиска "
+"правильного языка или регионального URL-адреса. Эта опция автоматически "
+"вставляет соответствующую ссылку для каждого языка в блоке %s."
+
+#: includes/class-mltlngg-settings.php:230
+msgid "Translation Saving Mode"
+msgstr "Режим сохранения переводов"
+
+#: includes/class-mltlngg-settings.php:235
+msgid "Auto"
+msgstr "Автоматический"
+
+#: includes/class-mltlngg-settings.php:240
+msgid "Manual (Save Changes button)"
+msgstr "Ручной (кнопка «Сохранить изменения»)"
+
+#: includes/class-mltlngg-settings.php:243
+msgid ""
+"Enable Manual mode if you have some problems with translations saving using "
+"Auto mode."
+msgstr ""
+"Включите ручной режим, если возникли проблемы с сохранением переводов в "
+"автоматическом режиме."
+
+#: includes/class-mltlngg-settings.php:248
+msgid "Default Search by"
+msgstr "Выполнять поиск по содержимому"
+
+#: includes/class-mltlngg-settings.php:252
+msgid "Current language"
+msgstr "для текущего языка"
+
+#: includes/class-mltlngg-settings.php:256
+msgid "All active languages"
+msgstr "для всех активных языков"
+
+#: includes/class-mltlngg-settings.php:277
+msgid "Update GeoIP Every"
+msgstr "Обновлять GeoIP каждый(е)"
+
+#: includes/class-mltlngg-settings.php:280
+msgid "months"
+msgstr "месяц(ев)"
+
+#: includes/class-mltlngg-settings.php:281
+msgid "Country table is not loaded yet."
+msgstr "Таблица стран еще не загружена."
+
+#: includes/class-mltlngg-settings.php:283
+msgid "Update Now"
+msgstr "Обновить сейчас"
+
+#: includes/class-mltlngg-settings.php:286
+#, php-format
+msgid ""
+"Automatically download lists with registered IP addresses all over the world "
+"(from %s) to the database. Receive an information about each IP address, and "
+"to which country it belongs to."
+msgstr ""
+"Автоматически загружать списки зарегистрированных IP-адресов во всем мире (с "
+"%s) в базу данных. Получайте информацию о каждом IP-адресе, и к какой стране "
+"он принадлежит."
+
+#: includes/class-mltlngg-settings.php:286
+msgid "Learn More"
+msgstr "Подробнее"
+
+#: includes/class-mltlngg-settings.php:317
+msgid "Language Switcher"
+msgstr "Переключатель языка"
+
+#: includes/class-mltlngg-settings.php:320
+msgid "Add \"Multilanguage Switcher\" to a widget."
+msgstr "Добавьте 'Переключатель языка' в виджет."
+
+#: includes/class-mltlngg-settings.php:320
+msgid "Navigate to Widgets"
+msgstr "Перейти к виджетам"
+
+#: includes/class-mltlngg-settings.php:321
+msgid "Add \"Multilanguage Switcher\" to a menu."
+msgstr "Добавьте 'Переключатель языка' в меню."
+
+#: includes/class-mltlngg-settings.php:321
+msgid "Navigate to Menus"
+msgstr "Перейти к меню"
+
+#: includes/class-mltlngg-settings.php:322
+msgid ""
+"Add a language switcher to your posts, pages or custom post types by using "
+"the following shortcode:"
+msgstr ""
+"Добавьте переключатель языка на ваши записи, страницы или пользовательские "
+"типы записей с помощью данного шорткода:"
+
+#: includes/class-mltlngg-settings.php:324
+msgid ""
+"Add a language switcher to PHP template files by using the following code"
+msgstr ""
+"Добавьте переключатель языка в файлы шаблонов PHP, используя следующий код"
+
+#: includes/class-mltlngg-settings.php:333
+msgid "Please enable JavaScript in your browser."
+msgstr "Пожалуйста, включите JavaScript в вашем браузере."
+
+#: includes/table.php:15
+msgid "language"
+msgstr "язык"
+
+#: includes/table.php:16
+msgid "languages"
+msgstr "языки"
+
+#: includes/table.php:37 multilanguage.php:1029
+msgid "Title"
+msgstr "Заголовок"
+
+# ярлык или всё таки слаг?
+#: includes/table.php:38 includes/table.php:417
+msgid "URL Slug"
+msgstr "URL слаг"
+
+#: includes/table.php:40 includes/table.php:404
+msgid "Order"
+msgstr "Порядок"
+
+#: includes/table.php:58 includes/table.php:372 includes/table.php:382
+msgid "Default"
+msgstr "По умолчанию"
+
+#: includes/table.php:63
+msgid "Edit"
+msgstr "Редактировать"
+
+#: includes/table.php:70 includes/table.php:82 includes/table.php:93
+msgid "Enable"
+msgstr "Включить"
+
+#: includes/table.php:72 includes/table.php:83 includes/table.php:88
+msgid "Disable"
+msgstr "Отключить"
+
+#: includes/table.php:74 includes/table.php:84 includes/table.php:89
+#: includes/table.php:94
+msgid "Delete"
+msgstr "Удалить"
+
+#: includes/table.php:216 includes/table.php:467 multilanguage.php:42
+msgid "Languages"
+msgstr "Языки"
+
+#: includes/table.php:251
+msgid "Language added"
+msgstr "Язык добавлен"
+
+#: includes/table.php:253
+msgid "Incorrect language data."
+msgstr "Некорректные данные языка."
+
+#: includes/table.php:319
+#, php-format
+msgid "Error: File size > %s."
+msgstr "Ошибка: размер файла > %s."
+
+#: includes/table.php:321
+msgid "Error: Invalid file type."
+msgstr "Ошибка: некорректный тип файла."
+
+#: includes/table.php:333
+msgid "Error: Failed to move file."
+msgstr "Ошибка: не удалось переместить файл."
+
+#: includes/table.php:336
+#, php-format
+msgid "Error: Image width and height should not exceed %s."
+msgstr "Ошибка: ширина и высота изображения не должны превышать %s."
+
+#: includes/table.php:340
+msgid "Uploading Error: Check image properties."
+msgstr "Ошибка загрузки: проверьте параметры изображения."
+
+#: includes/table.php:361
+msgid "Edit Language"
+msgstr "Редактировать язык"
+
+#: includes/table.php:378
+msgid "Flag Image"
+msgstr "Изображение флага"
+
+#: includes/table.php:385
+msgid "Custom"
+msgstr "Пользовательское"
+
+#: includes/table.php:392
+msgid "Current flag"
+msgstr "Текущий флаг"
+
+#: includes/table.php:400
+#, php-format
+msgid ""
+"Upload image of %s maximum dimensions in JPG, JPEG or PNG formats (maximum "
+"file size - %s)."
+msgstr ""
+"Загружайте изображения максимальных размеров %s в форматах JPG, JPEG или PNG "
+"(максимальный размер файла - %s)."
+
+#: includes/table.php:441
+msgid "Site Title"
+msgstr "Название сайта"
+
+#: includes/table.php:447
+msgid "Tagline"
+msgstr "Краткое описание"
+
+#: includes/table.php:455 multilanguage.php:48
+msgid "Upgrade to Pro"
+msgstr "Обновить до Pro"
+
+#: includes/table.php:461
+msgid "Save changes"
+msgstr "Сохранить изменения"
+
+#: includes/table.php:468
+msgid "Add New"
+msgstr "Добавить новый"
+
+#: includes/table.php:488
+msgid "You have the same order for two or more languages."
+msgstr "Вы выбрали одинаковый порядок для двух или более языков"
+
+#: includes/table.php:507
+msgid "All"
+msgstr "Все"
+
+#: includes/table.php:508
+msgid "Active"
+msgstr "Активные"
+
+#: includes/table.php:509
+msgid "Disabled"
+msgstr "Отключенные"
+
+#: includes/table.php:547
+msgctxt "plural"
+msgid "enabled"
+msgstr "включены"
+
+#: includes/table.php:547
+msgctxt "singular"
+msgid "enabled"
+msgstr "включен"
+
+#: includes/table.php:564
+msgctxt "plural"
+msgid "disabled"
+msgstr "отключены"
+
+#: includes/table.php:564
+msgctxt "singular"
+msgid "disabled"
+msgstr "отключен"
+
+#: includes/table.php:580
+msgctxt "plural"
+msgid "deleted"
+msgstr "удалены"
+
+#: includes/table.php:580
+msgctxt "singular"
+msgid "deleted"
+msgstr "удален"
+
+#: includes/table.php:584
+msgid "Unknown action"
+msgstr "Неизвестное действие"
+
+#: includes/table.php:588
+#, php-format
+msgid "Selected languages have been %s"
+msgstr "Выбранные языки были %s"
+
+#: includes/table.php:591
+#, php-format
+msgid "None of the selected languages has been %s"
+msgstr "Ни один из выбранных языков не был %s"
+
+#: includes/table.php:612
+msgid "Choose a language"
+msgstr "Выберите язык"
+
+#: includes/table.php:616
+msgid "Choose language from list below"
+msgstr "Выберете язык"
+
+#: includes/table.php:631 multilanguage.php:1371
+msgid "Add Language"
+msgstr "Добавить язык"
+
+#: multilanguage.php:136 multilanguage.php:1037 multilanguage.php:2525
+#: multilanguage.php:2528
+msgid "Multilanguage switcher"
+msgstr "Переключатель языка"
+
+#: multilanguage.php:1005
+msgid ""
+"Attention!!! The changes will not be saved because Title and Content fields "
+"are empty on the current tab! It is recommended to fill in at least one "
+"field or switch to the tab with the fields that are already filled."
+msgstr ""
+"Внимание!!! Внесенные изменения сохранены не будут, так как в текущей "
+"вкладке заголовок и содержание пустые! Рекомендуется заполнить хотя бы 1 "
+"поле или переключиться на вкладку с заполненными полями."
+
+#: multilanguage.php:1006
+msgid "Switching to another language will remove all unsaved. Save data?"
+msgstr ""
+"При переключении на другой язык все несохраненные данные будут потеряны. "
+"Сохранить данные?"
+
+#: multilanguage.php:1084
+msgid "Content language switcher"
+msgstr "Переключатель языка для содержимого"
+
+#: multilanguage.php:1116
+msgid "Localization"
+msgstr "Локализация"
+
+#: multilanguage.php:1119
+msgid "Title:"
+msgstr "Заголовок:"
+
+#: multilanguage.php:1376
+msgid "Attention"
+msgstr "Внимание"
+
+#: multilanguage.php:1376
+msgid ""
+"Please update the post before switching the language. Data is not saved "
+"automatically."
+msgstr ""
+"Обновите страницу перед переключением языка. Данные не сохраняются "
+"автоматически."
+
+#: multilanguage.php:1380
+msgid "Edit for language"
+msgstr "Редактировать для языка"
+
+#: multilanguage.php:1638 multilanguage.php:1702
+msgid "Translations"
+msgstr "Переводы"
+
+#: multilanguage.php:1837
+#, php-format
+msgid "Protected: %s"
+msgstr "Защищено: %s"
+
+#: multilanguage.php:1840
+#, php-format
+msgid "Private: %s"
+msgstr "Личное: %s"
+
+#: multilanguage.php:2060 multilanguage.php:2623
+msgid "(more&hellip;)"
+msgstr "(детальнее&hellip;)"
+
+#: multilanguage.php:2701
+msgid "Select Switcher Type"
+msgstr "Выберите тип переключателя"
+
+#: multilanguage.php:2773
+msgid "FAQ"
+msgstr "FAQ"
+
+#: multilanguage.php:2774
+msgid "Support"
+msgstr "Поддержка"
+
+#~ msgid "open graf meta tags"
+#~ msgstr "open graf мета тегов"
+
+#~ msgid "hreflang Attribute"
+#~ msgstr "Атрибут hreflang"
+
+#~ msgid "Error: check image width or height."
+#~ msgstr "Ошибка: проверьте ширину и высоту изображения."
+
+#~ msgid ""
+#~ "Upload image with the maximum %s dimensions, JPG, JPEG or PNG formats "
+#~ "(maximum file size - %s)."
+#~ msgstr ""
+#~ "Загрузите изображение с параметрами %s, в JPG, JPEG или PNG формате "
+#~ "(максимальный размер файла - %s)."
+
+#~ msgid "Wordpress Language"
+#~ msgstr "Язык WordPress"
+
+#~ msgid "No one from selected languages has not been %s"
+#~ msgstr "Ни один из выбранных языков не был %s"
+
+#~ msgid ""
+#~ "Enable to add hreflang attribute used by search engines and display the "
+#~ "correct language or regional URL in search results. This option "
+#~ "automatically inserts the respective link each language within the %s "
+#~ "section."
+#~ msgstr ""
+#~ "Включите для добавления атрибута hreflang, используемого поисковыми "
+#~ "системами, и отображения в результатах поиска правильного язык или "
+#~ "регионального URL-адреса. Эта опция автоматически вставляет "
+#~ "соответствующую ссылку для каждого языка в блоке %s."
+
+#~ msgid "Save Translation Mode"
+#~ msgstr "Режим Сохранения Переводов"
+
+#~ msgid ""
+#~ "Enable Manual mode if you experience some problems with saving "
+#~ "translations using Auto mode."
+#~ msgstr ""
+#~ "Включите ручной режим, если возникли проблемы с сохранением переводов в "
+#~ "автоматическом режиме."
+
+#~ msgid "Dafault"
+#~ msgstr "Стандартный"
+
+#~ msgid "Aligned languages list"
+#~ msgstr "Список языков в ряд"
+
+#~ msgid "Aligned flag icons"
+#~ msgstr "Иконки флагов в ряд"
+
+#~ msgid "Drop-down languages list"
+#~ msgstr "Выпадающий список языков"
+
+#~ msgid "Drop-down flag icons"
+#~ msgstr "Выпадающие иконки флагов"
+
+#~ msgid "Flag icons"
+#~ msgstr "Иконки флагов"
+
+#~ msgid "Settings saved"
+#~ msgstr "Настройки сохранены"
+
+#~ msgid "Incorrect language data"
+#~ msgstr "Некорректные данные языка"
+
+#~ msgid "All plugin settings were restored."
+#~ msgstr "Все настройки плагина восстановлены."
+
+#~ msgid "Add language"
+#~ msgstr "Добавить язык"
+
+#~ msgid "Custom code"
+#~ msgstr "Пользовательский код"
+
+#~ msgid "Go PRO"
+#~ msgstr "Перейти на Pro версию"
+
+#~ msgid ""
+#~ "If you would like to display Language switcher with a widget, you need to "
+#~ "add the widget \"Multilanguage\" in the Widgets tab."
+#~ msgstr ""
+#~ "Если вы хотите отображать Переключатель языка виджетом, вам необходимо "
+#~ "добавить виджет \"Multilanguage\" на вкладке виджетов."
+
+#~ msgid ""
+#~ "If you would like to add a Language switcher to your page or post, please "
+#~ "use %s button"
+#~ msgstr ""
+#~ "Если вы хотите добавить переключатель языка на вашу страницу или пост, то "
+#~ "используйте кнопку %s"
+
+#~ msgid ""
+#~ "You can add Language switcher to your page or post by clicking on %s "
+#~ "button in the content edit block using the Visual mode. If the button "
+#~ "isn't displayed, please use the shortcode %s."
+#~ msgstr ""
+#~ "Вы можете добавить переключатель языка на вашу страницу или пост, нажав "
+#~ "на кнопку %s в блоке редактирования контента в режиме Visual. Если кнопка "
+#~ "не отображается, пожалуйста, используйте шорткод %s."
+
+#~ msgid ""
+#~ "Also, you can paste the following strings into the template source code"
+#~ msgstr ""
+#~ "Кроме того, вы можете вставить следующие строки в исходный код шаблона"
+
+#~ msgid "Enable new language"
+#~ msgstr "Включать новый язык"
+
+#~ msgid "The newly added language will be enabled automatically"
+#~ msgstr "Новый добавленный язык будет включен автоматически"
+
+#~ msgid "Autosave translation in the editor"
+#~ msgstr "Автосохранение переводов в редакторе"
+
+#~ msgid ""
+#~ "When switching edit posts/pages translation tab, the changes made in the "
+#~ "previous tab will be saved automatically (only when the JavaScript is "
+#~ "enabled)"
+#~ msgstr ""
+#~ "При переключении вкладки редактирования языка перевода постов/страниц, "
+#~ "изменения, сделанные в предыдущей вкладке, будут автоматически "
+#~ "сохраняться (только при включенном JavaScript)"
+
+#~ msgid "Switch Wordpress localization"
+#~ msgstr "Менять язык Wordpress"
+
+#~ msgid ""
+#~ "When changing the language in the frontend, WordPress localization will "
+#~ "also be changed (only in case additional WordPress language packs are "
+#~ "installed)"
+#~ msgstr ""
+#~ "При переключении языка во фронтенде, язык Wordpress также будет меняться "
+#~ "(только при наличии установленных дополнительных языковых пакетов для "
+#~ "Wordpress)"
+
+#~ msgid "Language switcher"
+#~ msgstr "Переключатель языка"
+
+#~ msgid "Add hreflang links to %s section"
+#~ msgstr "Добавить hreflang ссылки в %s секцию"
+
+#~ msgid ""
+#~ "The hreflang attribute is used by Google and other search systems to "
+#~ "display the correct language or regional URL in search results. This "
+#~ "option automatically inserts the respective link elements of each "
+#~ "language within the head section."
+#~ msgstr ""
+#~ "Атрибут hreflang используется Google и другими поисковыми системами для "
+#~ "того, чтобы отобразить правильный язык или региональный URL в результатах "
+#~ "поиска. Эта опция автоматически добавляет соответствующие элементы ссылок "
+#~ "каждого языка в head секцию."
+
+#~ msgid "Hide link slug for default language"
+#~ msgstr "Скрыть параметр ссылки для языка по умолчанию"
+
+#~ msgid "Default searching by"
+#~ msgstr "Стандартный поиск по"
+
+#~ msgid "selected language"
+#~ msgstr "выбранному языку"
+
+#~ msgid "all available languages"
+#~ msgstr "всем доступным языкам"
+
+#~ msgid "Determining the locale using the user's IP"
+#~ msgstr "Определение локали по IP пользователя"
+
+#~ msgid "Update GeoIP"
+#~ msgstr "Обновлять GeoIP"
+
+#~ msgid "every"
+#~ msgstr "каждые"
+
+#~ msgid "Update now"
+#~ msgstr "Обновить сейчас"
+
+#~ msgid ""
+#~ "This option allows you to download lists with registered IP addresses all "
+#~ "over the world to the database (from"
+#~ msgstr ""
+#~ "Эта опция позволяет дополнительно загрузить в базу данных списки "
+#~ "зарегистрированных IP-адресов всего мира и информацию о том, к какой "
+#~ "стране принадлежит каждый IP-адрес ( с сайта "
+
+#~ msgid ""
+#~ "With this, you receive an information about each IP address, and to which "
+#~ "country it belongs to. You can select the desired frequency for IP "
+#~ "database updating"
+#~ msgstr ""
+#~ "Эта опция позволяет получить информацию о принадлежности каждого IP-"
+#~ "адреса к определённой стране. Вы можете выбрать необходимую периодичность "
+#~ "обновления GeoIP"
+
+#~ msgid ""
+#~ "If you need to update GeoIP immediately, please click on the \"Update now"
+#~ "\" button and wait until the operation is finished"
+#~ msgstr ""
+#~ "Если Вам необходимо полностью обновить GeoIP немедленно, просто нажмите "
+#~ "на кнопку \"Обновить немедленно\"  и дождитесь окончания операции"
+
+#~ msgid ""
+#~ "Due to the fact that JavaScript is disabled, GeoIP will be updated via "
+#~ "wp_cron"
+#~ msgstr ""
+#~ "Из-за того, что JavaScript отключен, GeoIP будет обновлена посредством "
+#~ "wp_cron"
+
+#~ msgid "Read more about"
+#~ msgstr "Читать подробнее об"
+
+#~ msgid "Last update was carried out"
+#~ msgstr "Последнее обновление произошло"
+
+#~ msgid "If you upgrade to Pro version all your settings will be saved."
+#~ msgstr "При обновлении до версии Pro все ваши настройки будут сохранены."
+
+#~ msgid "Unlock premium options by upgrading to Pro version"
+#~ msgstr "Активируйте премиум опции обновившись до Pro версии"
+
+#~ msgid "Name"
+#~ msgstr "Название"
+
+#~ msgid "Locale"
+#~ msgstr "Локализация"
+
+#~ msgid "Link slug"
+#~ msgstr "Параметр ссылки"
+
+#~ msgid "Status"
+#~ msgstr "Статус"
+
+#~ msgid "Priority"
+#~ msgstr "Приоритет"
+
+#~ msgid "Enabled"
+#~ msgstr "Включен"
+
+#~ msgid "Display alternative page links"
+#~ msgstr "Вывести альтернативные ссылки"
+
+#~ msgid ""
+#~ "With this option, there will be added links to your current page for each "
+#~ "language from your site into the tag %s"
+#~ msgstr ""
+#~ "При активированной этой опции, в тег %s Вашего сайта будут добавлены "
+#~ "альтернативные ссылки на текущую страницу для каждого языка Вашего сайта"
+
+#~ msgid "Switch"
+#~ msgstr "Переключить"
+
+#~ msgid ""
+#~ "This language is selected by default. Please select a different default "
+#~ "language before disabling it."
+#~ msgstr ""
+#~ "Этот язык выбран по умолчанию. Пожалуйста, выберите другой язык по "
+#~ "умолчанию прежде чем отключить этот."
+
+#~ msgid "Language deleted"
+#~ msgstr "Язык удален"
+
+#~ msgid ""
+#~ "This language is selected by default. Please select a different default "
+#~ "language before deleting it."
+#~ msgstr ""
+#~ "Этот язык выбран по умолчанию. Пожалуйста, выберите другой язык по "
+#~ "умолчанию прежде чем удалить этот."
+
+#~ msgid "Automatic country table update every"
+#~ msgstr "Автоматическое обновление таблицы стран, каждые"
+
+#~ msgid "day"
+#~ msgstr "дней"
+
+#~ msgid ""
+#~ "on the developers site the data is updated on the first Tuesday of every "
+#~ "month"
+#~ msgstr ""
+#~ "на сайте разработчиков данные обновляются в первый вторник каждого месяца"
+
+#~ msgid "Please enable JavaScript to use the option"
+#~ msgstr "Пожалуйста, включите JavaScript, чтобы использовать опцию"
+
+#~ msgid "You do not have sufficient permissions to access this page."
+#~ msgstr "У вас недостаточно прав для доступа к этой странице."
+
+#~ msgid "Add&nbsp;language"
+#~ msgstr "Добавить&nbsp;язык"
+
+#~ msgid "Notice:"
+#~ msgstr "Внимание:"
+
+#~ msgid ""
+#~ "The plugin's settings have been changed. In order to save them please "
+#~ "don't forget to click the 'Save Changes' button."
+#~ msgstr ""
+#~ "Настройки плагина были изменены. Для сохранения настроек, не забудьте "
+#~ "нажать на кнопку 'Сохранить изменения'."
+
+#~ msgid "the language which is currently selected for the site"
+#~ msgstr "языку, который "
+
+#~ msgid "Go"
+#~ msgstr "Перейти"
+
+#~ msgid "requires"
+#~ msgstr "требуется"
+
+#~ msgid ""
+#~ "or higher, that is why it has been deactivated! Please upgrade WordPress "
+#~ "and try again."
+#~ msgstr ""
+#~ "или выше, в связи с чем плагин деактивирован! Пожалуйста, обновите "
+#~ "WordPress и попробуйте снова."
+
+#~ msgid "Back to the WordPress"
+#~ msgstr "Вернуться на WordPress"
+
+#~ msgid "Plugins page"
+#~ msgstr "Страницу плагинов"
+
+#~ msgid "If you enjoy our plugin, please give it 5 stars on WordPress"
+#~ msgstr "Если вам понравился плагин, то поставьте нам 5 звезд на WordPress"
+
+#~ msgid "Rate the plugin"
+#~ msgstr "Оценить плагин"
+
+#~ msgid "If there is something wrong about it, please contact us"
+#~ msgstr "Если у вас возникнут какие-либо трудности, обращайтесь"
+
+#~ msgid "Enable a new language when it is added:"
+#~ msgstr "Включать новый язык при добавлении:"
+
+#~ msgid "Yes"
+#~ msgstr "Да"
+
+#~ msgid "Select how to display Language Switch Widget:"
+#~ msgstr "Выберите как отображать переключение языка в виджете:"
+
+#~ msgid "Multi Language"
+#~ msgstr "Multi Language"
+
+#~ msgid "Save"
+#~ msgstr "Сохранить"
+
+#~ msgid "default"
+#~ msgstr "по умолчанию"
+
+#~ msgid "You must fill all fields"
+#~ msgstr "Необходимо заполнить все поля"
+
+#~ msgid "Incorrect locale or name entered."
+#~ msgstr "Неверно введена локализация или имя."
+
+#~ msgid "Enter wordpress language code. List of codes you can found"
+#~ msgstr "Введите код языка wordpress. Список кодов вы можете найти"
+
+#~ msgid "here"
+#~ msgstr "здесь"
+
+#~ msgid "Example: (en_US)."
+#~ msgstr "Пример: (ru_RU)."
+
+#~ msgid "Name of the language"
+#~ msgstr "Название языка"
+
+#~ msgid "Changes have been saved"
+#~ msgstr "Изменения сохранены"
+
+#~ msgid "Posts by: "
+#~ msgstr "Публикации автора: "
+
+#~ msgid "Not Found..."
+#~ msgstr "Ничего не найдено..."
+
+#~ msgid "Try using the search form"
+#~ msgstr "Попробуйте воспользоваться формой поиска"
+
+#~ msgid "Enter search keyword"
+#~ msgstr "Введите искомое слово"
+
+#~ msgid "search"
+#~ msgstr "поиск"
+
+#~ msgid "Page: "
+#~ msgstr "Страница: "
+
+#~ msgid "edit"
+#~ msgstr "изменить"
+
+#~ msgid "posted by "
+#~ msgstr "опубликовал "
+
+#~ msgid " in "
+#~ msgstr " в "
+
+#~ msgid "Pages:"
+#~ msgstr "Страницы:"
+
+#~ msgid "read comments"
+#~ msgstr "комментарии"
+
+#~ msgid "Tags: "
+#~ msgstr "Метки: "
+
+#~ msgid "Search results for: "
+#~ msgstr "Результаты поиска для: "
+
+#~ msgid "Sorry, no results for your search request..."
+#~ msgstr "Извините, по вашему запросу ничего не найдено..."
+
+#~ msgid "more"
+#~ msgstr "подробнее"
+
+#~ msgid "Powered by %s and %s"
+#~ msgstr "Создано %s и %s"
+
+#~ msgid "Archives for: "
+#~ msgstr "Архив за: "
+
+#~ msgid "Comments are closed."
+#~ msgstr "Комментирование закрыто."
+
+#~ msgid "One response to &ldquo; %s &rdquo;"
+#~ msgstr "Один комментарий к &ldquo; %s &rdquo;"
+
+#~ msgid "%d Responses to &ldquo; %s &rdquo;"
+#~ msgstr "%d комментария(ев) к &ldquo; %s &rdquo;"
+
+#~ msgid "Reply"
+#~ msgstr "Ответить"
+
+#~ msgid "Log in to Reply"
+#~ msgstr "Для комментирования нужно войти/зарегистрироваться"
+
+#~ msgctxt "noun"
+#~ msgid "Comment"
+#~ msgstr "Комментарий"
+
+#~ msgid "You must be "
+#~ msgstr "Вы должны "
+
+#~ msgid "logged in"
+#~ msgstr "войти"
+
+#~ msgid " to post a comment."
+#~ msgstr " для комментирования."
+
+#~ msgid "Logged in as "
+#~ msgstr "Вы вошли как "
+
+#~ msgid "Log out of this account"
+#~ msgstr "Выйти из этого аккаунта"
+
+#~ msgid " Log out?"
+#~ msgstr " Выйти?"
+
+#~ msgid "You may use these "
+#~ msgstr "Вы можете использовать такие "
+
+#~ msgid " tags and attributes: %s"
+#~ msgstr " теги и атрибуты: %s"
+
+#~ msgid "Leave a Reply"
+#~ msgstr "Оставить комментарий"
+
+#~ msgid "Leave a Reply to %s"
+#~ msgstr "Ответить на комментарий %s"
+
+#~ msgid "Cancel reply"
+#~ msgstr "Отменить ответ"
+
+#~ msgid "Post Comment"
+#~ msgstr "Опубликовать"
+
+#~ msgid "Pages: "
+#~ msgstr "Страницы: "
+
+#~ msgid "Page not Found..."
+#~ msgstr "Страница не найдена..."
+
+#~ msgid "Full size is %s pixels"
+#~ msgstr "Полный размер %s пикселей"
+
+#~ msgid "Link to full-size image"
+#~ msgstr "Ссылка на изображение в полном размере"
+
+#~ msgid "Click to full-size image: "
+#~ msgstr "Открыть изображение в полном размере: "
+
+#~ msgid "Previous Image"
+#~ msgstr "Предыдущее изображение"
+
+#~ msgid "Next Image"
+#~ msgstr "Следующее изображение"
+
+#~ msgid "Category: "
+#~ msgstr "Категория: "
+
+#~ msgid "Archives for Tag: "
+#~ msgstr "Архив для Метки: "
+
+#~ msgid "Primary menu"
+#~ msgstr "Основное меню"
+
+#~ msgid "Page %s"
+#~ msgstr "Страница %s"
+
+#~ msgid "Logo & Favicon"
+#~ msgstr "Логотип и Фавикон"
+
+#~ msgid "Upload a logo to be displayed on the left above the header"
+#~ msgstr "Загрузите логотип, который будет отображаться слева над хедером"
+
+#~ msgid "Logo (supported formats: .jpg, .png, .gif)"
+#~ msgstr "Логотип (поддерживаемые форматы: .jpg, .png, .gif)"
+
+#, fuzzy
+#~ msgid "Favicon (supported formats: .ico, .jpg, .png, .gif)"
+#~ msgstr "Фавикон (поддерживаемые форматы: .ico, .jpg, .png, .gif)"
+
+#~ msgid "Logo"
+#~ msgstr "Логотип"
+
+#, fuzzy
+#~ msgid "Image"
+#~ msgstr "Следующее изображение"
+
+#~ msgid " and "
+#~ msgstr " и "
+
+#~ msgid ""
+#~ "You may use these <abbr title=\"HyperText Markup Language\">HTML</abbr> "
+#~ "tags and attributes: %s"
+#~ msgstr ""
+#~ "Вы можете использовать эти <abbr title=\"HyperText Markup Language"
+#~ "\">HTML</abbr> теги и атрибуты: %s"
+
+#~ msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
+#~ msgstr ""
+#~ "Для комментирования нужно <a href=\"%s\">войти/зарегистрироваться</a>."
+
+#~ msgid ""
+#~ "Logged in as <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out "
+#~ "of this account\">Log out?</a>"
+#~ msgstr ""
+#~ "Вы вошли как <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out "
+#~ "of this account\">Выйти?</a>"
+
+#~ msgid "Design by: "
+#~ msgstr "Дизайн: "
+
+#~ msgid "and partners: "
+#~ msgstr "и партнеры: "
+
+#~ msgid "%d Responses to &ldquo; %s &rdquo; "
+#~ msgstr "%d комментария(ев) к &ldquo; %s &rdquo; "

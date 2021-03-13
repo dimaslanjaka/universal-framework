@@ -1,0 +1,24 @@
+Mengubah dom document sebuah elemen kedalam HTMl string biasa
+
+<div id="elemenTersedia"></div>
+<script>
+  function htmlFromDom(ClonedNode) {
+    var target = document.getElementById('element-helper');
+    if (!target) {
+      document.body.innerHTML += '<div id="element-helper" style="display:none"></div>';
+      target = document.getElementById('element-helper');
+    }
+    target.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.appendChild(ClonedNode);
+    return wrap.innerHTML;
+  }
+  /* Penggunaan dalam pembuatan element */
+  var elem = document.createElement('p');
+  elem.id = 'IDELEMENT';
+  elem.innerHTML = 'text element';
+  // print secara langsung juga bisa
+  document.write(htmlFromDom(elem));
+  // atau append ke element yang tersedia
+  document.getElementById('elemenTersedia').innerHTML = htmlFromDom(elem);
+</script>

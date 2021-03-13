@@ -1,0 +1,8 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.1",
+        "pear/net_smtp": "^1.9",
+        "pear/mail": "^1.4",
+        "pear/pear-core-minimal": "^1.10"
+    }
+}

@@ -1,0 +1,28 @@
+<div class="uc-settings-container">
+	<span class="dashicons dashicons-admin-tools updraft-dashicon-big"></span>
+		<h3 class="uc-timeouts-header">{{udclion.timeout_header}}</h3>
+		<div class="uc-timeouts-subheading">{{udclion.timeout_subheading}}</div>
+		<p class="uc-timeouts-settings">
+			<input min="30" step="5" id="updraftcentral_settings_timeout" max="7200" type="number" value=
+			"{{timeout}}"><span class="uc-timeouts-label">{{udclion.seconds}}</span>
+			<div class="clear"></div>
+		</p>
+	
+	<h3>{{udclion.debugging_level}}</h3>
+	
+	<p>
+		<input type="number" min="0" max="3" step="1" id="updraftcentral_debug_level"> <label for="updraftcentral_debug_level">({{udclion.debugging_level_this_session}})</label>
+	</p>
+	
+	<p>
+	{{udclion.browser_cache}}: 
+	<button class="btn btn-sm btn-secondary" id="updraft_debug_empty_browser_cache">{{udclion.empty}}</button>
+	<button class="btn btn-sm btn-secondary" id="updraft_debug_show_browser_cache">{{udclion.log_contents}}</button>
+	</p>
+	
+	<hr>
+	
+	<p>{{uc_version}}<br>
+	{{udclion.home_url}}<br>
+	{{running_on}}</p>
+</div>

@@ -1,0 +1,10 @@
+psutil
+requests[security]
+argparse
+selenium
+user_agent
+colorama
+fake_useragent
+proxy-grabber
+asyncio
+proxybroker

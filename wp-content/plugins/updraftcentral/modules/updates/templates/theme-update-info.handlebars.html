@@ -1,0 +1,35 @@
+<h3>
+	<a href="{{update.url}}">{{name}} {{#if version}}{{version}}{{/if}}</a>
+</h3>
+
+<h4>
+	{{udclion.updates.by}} 
+	{{{author}}}
+</h4>
+
+<p>
+	<em>{{{description}}}</em>
+</p>
+
+<h5>
+	{{udclion.updates.new_version_available}}: {{update.new_version}}	
+	{{#if update.package}}
+		<a href="{{update.package}}">({{udclion.updates.download}})</a>
+	{{/if}}
+</h5>
+
+{{#if update.sections}}
+<ul class="nav nav-tabs" id="updates-sections-list">
+	{{#if update.sections.changelog}}
+		<li class="nav-item"><a href="#" class="updates-section-link" data-section="changelog">{{udclion.updates.changelog}}</a></li>
+	{{/if}}
+</ul>
+
+<div class="tab-content" id="updates-sections">
+	{{#if update.sections.changelog}}
+		<div id="updates-section-changelog" class="updates-section">
+			{{{update.sections.changelog}}}
+		</div>
+	{{/if}}
+</div>
+{{/if}}

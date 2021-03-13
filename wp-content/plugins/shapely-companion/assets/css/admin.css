@@ -1,0 +1,51 @@
+.shapely-media-control img {
+	width: 100%;
+	height: auto;
+}
+
+.logo_heading {
+	display: block;
+	width: 100%;
+}
+
+#setting-error-tgmpa.notice {
+	display: block;
+}
+
+.client-sortable .logo_heading {
+	background: #f3f3f3;
+	border: 1px dotted;
+	cursor: move;
+	display: block;
+	font-size: 14px;
+	padding: 8px 0;
+	text-align: center;
+	width: 100%;
+}
+
+.client-sortable .logo_heading:hover {
+	border: 1px solid;
+}
+
+.client-sortable .cloneya a.clone,
+.client-sortable .cloneya a.delete {
+	display: none;
+}
+
+.client-sortable .cloneya:last-child a.clone,
+.client-sortable .cloneya:last-child a.delete {
+	display: inline-block;
+}
+
+.shapely-media-control img {
+	width: 100%;
+}
+
+.shapely-editor-container label {
+	position: relative;
+	top: 30px;
+}
+
+.checkbox_switch {
+	margin: 10px auto;
+}

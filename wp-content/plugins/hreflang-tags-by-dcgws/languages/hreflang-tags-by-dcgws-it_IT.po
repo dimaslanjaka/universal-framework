@@ -1,0 +1,350 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HREFLANG Tags Lite\n"
+"POT-Creation-Date: 2020-01-16 00:43+0800\n"
+"PO-Revision-Date: 2020-01-16 00:43+0800\n"
+"Last-Translator: David Robert Davis, Jr <david.davis@dcgws.com>\n"
+"Language-Team: David Robert Davis, Jr <david.davis@dcgws.com>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: hreflang-tags-by-dcgws.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: hreflang-init.php:58
+#, php-format
+msgid ""
+"Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
+"support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do "
+"not miss out on this limited time offer.</strong> Includes our newly "
+"improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
+"pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
+"start-2020\">Click Here</a> to download right now. Use the discount code "
+"50TOSTART20!"
+msgstr ""
+"Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
+"support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do "
+"not miss out on this limited time offer.</strong> Includes our newly "
+"improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
+"pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
+"start-2020\">Click Here</a> to download right now. Use the discount code "
+"50TOSTART20!"
+
+#: hreflang-main.php:26 includes/functions.php:314 includes/functions.php:340
+msgid "HREFLANG Tags"
+msgstr "Tags HREFLANG"
+
+#: hreflang-main.php:61
+msgid "Dashboard"
+msgstr "Riepilogo"
+
+#: hreflang-main.php:62
+msgid "HTML Code Generator"
+msgstr "Generatore di codice HTML"
+
+#: hreflang-main.php:63
+msgid "Bulk Editor"
+msgstr "Editor di massa"
+
+#: hreflang-main.php:64
+msgid "Validation Tool"
+msgstr "Strumento di convalida"
+
+#: hreflang-main.php:117
+msgid "Remove this ad?"
+msgstr "Rimuovere questo annuncio?"
+
+#: hreflang-main.php:118
+msgid "Upgrade to HREFLANG Pro"
+msgstr "Esegui l'upgrade a HREFLANG Pro"
+
+#: includes/functions.php:255 includes/functions.php:276
+#: includes/functions.php:316 includes/functions.php:352
+#: includes/functions.php:379
+msgid "Alternative URL"
+msgstr "URL alternativo:"
+
+#: includes/functions.php:257 includes/functions.php:278
+#: includes/functions.php:318 includes/functions.php:354
+#: includes/functions.php:381
+msgid "Language"
+msgstr "Lingue"
+
+#: includes/functions.php:259 includes/functions.php:280
+#: includes/functions.php:320 includes/functions.php:356
+#: includes/functions.php:383
+msgid "Select one"
+msgstr "Seleziona"
+
+#: includes/notices.php:52
+msgid "HREFLANG Tags Excluse Offer - Only for Users of Free Version"
+msgstr "Tag HREFLANG Escludi offerta - Solo per utenti della versione gratuita"
+
+#: tabs/bulk_editor.php:16 tabs/generator.php:18 tabs/validation_tool.php:16
+msgid "This tool is one of the Pro features of HREFLANG Tags."
+msgstr "Questo strumento è una delle caratteristiche di HREFLANG tag Pro."
+
+#: tabs/bulk_editor.php:17
+msgid ""
+"You can access all your pages and posts here and add your hreflang tags, all "
+"in one convenient place."
+msgstr ""
+"È possibile accedere a pagine e post qui e aggiungere i tag hreflang, tutto "
+"in un unico e pratico."
+
+#: tabs/bulk_editor.php:18
+msgid ""
+"Please watch this short video demonstration of the HREFLANG Tags Pro Bulk "
+"Editor."
+msgstr ""
+"Si prega di guardare questa breve dimostrazione video del Bulk Editor di tag "
+"HREFLANG Pro."
+
+#: tabs/bulk_editor.php:20 tabs/generator.php:22 tabs/validation_tool.php:20
+msgid "Download HREFLANG Tags Pro Now"
+msgstr "Scarica HREFLANG tag Pro ora"
+
+#: tabs/dashboard.php:22
+msgid "Content Types"
+msgstr "Tipi di contenuto"
+
+#: tabs/dashboard.php:58
+msgid ""
+"These are the types of content that you want to set HREFLANG Tags metaboxes "
+"for."
+msgstr ""
+"Questi sono i tipi di contenuto che si desidera impostare HREFLANG Tag "
+"metaboxes per."
+
+#: tabs/dashboard.php:69
+msgid ""
+"Warning! Are you sure you want to delete all your hreflang tags? You cannot "
+"undo this action."
+msgstr ""
+"Avvertimento! Sei sicuro di voler eliminare tutti i tag hreflang? Non puoi "
+"annullare questa azione."
+
+#: tabs/dashboard.php:69
+msgid "Erase all Hreflang Tags"
+msgstr "Cancella tutti i tag Hreflang"
+
+#: tabs/dashboard.php:72
+msgid "How-to/Tutorial Video"
+msgstr "How-to / Tutorial Video"
+
+#: tabs/dashboard.php:73
+msgid ""
+"I get many requests for documentation or instructions on how to set up "
+"HREFLANG Tags. I've prepared a video that I think will help you."
+msgstr ""
+"Ricevo molte richieste di documentazione o istruzioni su come impostare i "
+"tag HREFLANG. Ho preparato un video che ritengo possa aiutarti."
+
+#: tabs/dashboard.php:76
+msgid ""
+"If you feel this plugin has helped you and you would like to say thanks, "
+"click <a target=\"_blank\" href=\"https://www.PayPal.Me/DCGWS/5usd\">here</"
+"a> to send me $5. Thanks!<br>David, DCGWS Founder"
+msgstr ""
+"Se ritieni che questo plugin ti abbia aiutato e desideri ringraziarti, fai "
+"clic <a target=\"_blank\" href=\"https://www.PayPal.Me/DCGWS/5usd\">qui</a> "
+"per inviarmi $ 5. Grazie! <br> David, fondatore di DCGWS"
+
+#: tabs/generator.php:19
+msgid ""
+"You can easily create the HTML code for your non-WordPress sites here with "
+"this easy to use generator"
+msgstr ""
+"È possibile creare facilmente il codice HTML per i siti non-WordPress qui "
+"con questo generatore facile da usare"
+
+#: tabs/generator.php:20
+msgid ""
+"Please watch this short video demonstration of the HREFLANG Tags Generator "
+"for HTML sites."
+msgstr ""
+"Si prega di guardare questo breve video dimostrativo del generatore di tag "
+"HREFLANG per siti HTML."
+
+#: tabs/validation_tool.php:17
+msgid "Now you can test your hreflang tags directly from the meta box."
+msgstr ""
+"Ora è possibile testare il vostro tag hreflang direttamente dalla casella di "
+"meta."
+
+#: tabs/validation_tool.php:18
+msgid ""
+"Please watch this short video demonstration of the HREFLANG Tags Validation "
+"Tool."
+msgstr ""
+"Si prega di guardare questo breve video dimostrativo dello strumento di "
+"convalida di tag HREFLANG."
+
+#. Plugin Name of the plugin/theme
+msgid "HREFLANG Tags Lite"
+msgstr "HREFLANG Tag Lite"
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/hreflang-tags-by-dcgws/"
+msgstr "https://wordpress.org/plugins/hreflang-tags-by-dcgws/"
+
+#. Description of the plugin/theme
+msgid ""
+"Smart implementation of HREFLANG meta tags into the head section of your "
+"WordPress site."
+msgstr ""
+"Implementazione intelligente di HREFLANG meta tag nella sezione head del "
+"vostro sito WordPress."
+
+#. Author of the plugin/theme
+msgid "DCGWS Internet Solutions"
+msgstr "DCGWS Internet Solutions"
+
+#. Author URI of the plugin/theme
+msgid "http://dcgws.com"
+msgstr "http://dcgws.com"
+
+#~ msgid "HREFLANG Tags Lite End of Life"
+#~ msgstr "HREFLANG Tag Lite fine della vita"
+
+#~ msgid ""
+#~ "WordPress 5.0 is just around the corner and this free version will not "
+#~ "support the upcoming changes to WordPress."
+#~ msgstr ""
+#~ "WordPress 5.0 è proprio dietro l'angolo e questa versione gratuita non "
+#~ "supporterà le prossime modifiche a WordPress."
+
+#~ msgid ""
+#~ "Unfortunately, the time and cost needed to maintain both this free "
+#~ "version and our pro version is preventing better and new changes to "
+#~ "HREFLANG Tags Pro. As such, this will be the last update to this free "
+#~ "plugin."
+#~ msgstr ""
+#~ "Sfortunatamente, i tempi e i costi necessari per mantenere sia questa "
+#~ "versione gratuita che la nostra versione pro impediscono modifiche "
+#~ "migliori e nuove ai tag HREFLANG Pro. In quanto tale, questo sarà "
+#~ "l'ultimo aggiornamento di questo plugin gratuito."
+
+#~ msgid ""
+#~ "It's really important that everyone who wants to upgrade gets to upgrade. "
+#~ "I will giving the first 1,000 users a 99 cents upgrade. Yes, less than $1 "
+#~ "for all of our pro features, plus 1 year free support and upgrades."
+#~ msgstr ""
+#~ "È molto importante che tutti quelli che vogliono aggiornare possano "
+#~ "aggiornare. Darò ai primi 1.000 utenti un upgrade di 99 centesimi. Sì, "
+#~ "meno di $ 1 per tutte le nostre funzionalità professionali, oltre a 1 "
+#~ "anno di supporto e aggiornamenti gratuiti."
+
+#~ msgid ""
+#~ "For the of you who plan on upgrading, thank you and I expect to be able "
+#~ "to offer many new features in the coming weeks and months."
+#~ msgstr ""
+#~ "Per il di voi che hanno intenzione di eseguire l'aggiornamento, vi "
+#~ "ringrazio e si aspettano di essere in grado di offrire molte novità nelle "
+#~ "prossime settimane e mesi."
+
+#~ msgid "For our 6,000+ active users, thank you for your continued support."
+#~ msgstr ""
+#~ "Per nostri 6.000 + utenti attivi, grazie per il vostro continuo supporto."
+
+#~ msgid "<b>David Davis, Owner and Developer, DCGWS</b>"
+#~ msgstr "<b>David Davis, proprietario e sviluppatore, DCGWS</b>"
+
+#~ msgid ""
+#~ "Use coupon code <b>HTP99FOR1000</b> to get $9 off HREFLANG TAGS Pro ONLY "
+#~ "for the first 1,000 users! Hurry, this will not last long. Includes our "
+#~ "Brand New Bulk Validation Tool! <a href=\"http://dcgws.com/product/"
+#~ "hreflang-tags-pro-plugin-wordpress/#utm_source=plugin-"
+#~ "page&utm_medium=admin-notice&utm_campaign=hreflang-tags-pro\">Order now "
+#~ "for only $0.99</a>!"
+#~ msgstr ""
+#~ "Utilizza il codice coupon <b>HTP99FOR1000</b> per ottenere $ 9 da "
+#~ "HREFLANG TAGS Pro SOLO per i primi 1.000 utenti! Sbrigati, non durerà a "
+#~ "lungo. Include il nostro nuovissimo strumento di validazione di massa! <a "
+#~ "href=\"http://dcgws.com/product/hreflang-tags-pro-plugin-wordpress/"
+#~ "#utm_source=plugin-page&utm_medium=admin-notice&utm_campaign=hreflang-"
+#~ "tags-pro\">Ordina ora per soli $ 0,99</a> !"
+
+#~ msgid "DCGWS"
+#~ msgstr "DCGWS"
+
+#~ msgid ""
+#~ "For the next 5 days, I will give a $7 discount for the Pro version. The "
+#~ "regular price for the Pro version is $9.99. Until July 16, you can "
+#~ "download the Pro version for $2.99."
+#~ msgstr ""
+#~ "Per i prossimi 5 giorni, darà uno sconto di $7 per la versione Pro. Il "
+#~ "prezzo normale per la versione Pro è di $9,99. Fino al 16 luglio, è "
+#~ "possibile scaricare la versione Pro per $2.99."
+
+#~ msgid ""
+#~ "Last Chance. WordPress 5.0 is just around the corner and this free "
+#~ "version will not support the upcoming changes to WordPress."
+#~ msgstr ""
+#~ "Ultima possibilita '. WordPress 5.0 è proprio dietro l'angolo e questa "
+#~ "versione gratuita non supporta le imminenti modifiche a WordPress."
+
+#~ msgid ""
+#~ "For the next 3 days, I will give a $5 discount for the Pro version. The "
+#~ "regular price for the Pro version is $9.99. Until July 20, you can "
+#~ "download the Pro version for $4.99."
+#~ msgstr ""
+#~ "Per i prossimi 3 giorni, darà uno sconto di $5 per la versione Pro. Il "
+#~ "prezzo normale per la versione Pro è di $9,99. Fino al 20 luglio, è "
+#~ "possibile scaricare la versione Pro per $4,99."
+
+#~ msgid ""
+#~ "Use coupon code <b>EndOfLifeSale</b> to get <i>$5 off</i> HREFLANG TAGS "
+#~ "Pro <i>ONLY until June 20, 2018</i>! <b>Includes our Brand New Bulk "
+#~ "Validation Tool!</b> <a href=\"http://dcgws.com/product/hreflang-tags-pro-"
+#~ "plugin-wordpress/#utm_source=plugin-page&utm_medium=admin-"
+#~ "notice&utm_campaign=hreflang-tags-pro\">Order now for only $4.99!</a>"
+#~ msgstr ""
+#~ "Utilizza il codice promozionale <b>EndOfLifeSale</b> per ottenere <i>$ 5 "
+#~ "di sconto su</i> HREFLANG TAGS Pro <i>fino al 20 giugno 2018</i> ! "
+#~ "<b>Include il nostro nuovissimo strumento di validazione di massa!</b> <a "
+#~ "href=\"http://dcgws.com/product/hreflang-tags-pro-plugin-wordpress/"
+#~ "#utm_source=plugin-page&utm_medium=admin-notice&utm_campaign=hreflang-"
+#~ "tags-pro\">Ordina ora per soli $ 4,99!</a>"
+
+#~ msgid ""
+#~ "For the next 24 hrs, I will give a $3 discount for the Pro version. The "
+#~ "regular price for the Pro version is $9.99. Until July 21, you can "
+#~ "download the Pro version for $6.99."
+#~ msgstr ""
+#~ "Per le prossime 24 ore, darò uno sconto di $ 3 per la versione Pro. Il "
+#~ "prezzo normale per la versione Pro è $ 9,99. Fino al 21 luglio, è "
+#~ "possibile scaricare la versione Pro per $ 6,99."
+
+#~ msgid ""
+#~ "Use coupon code <b>EndOfLifeSale</b> to get <i>$3 off</i> HREFLANG TAGS "
+#~ "Pro <i>ONLY until June 21, 2018</i>! <b>Includes our Brand New Bulk "
+#~ "Validation Tool!</b> <a href=\"http://dcgws.com/product/hreflang-tags-pro-"
+#~ "plugin-wordpress/#utm_source=plugin-page&utm_medium=admin-"
+#~ "notice&utm_campaign=hreflang-tags-pro\">Order now for only $6.99!</a>"
+#~ msgstr ""
+#~ "Utilizza il codice promozionale <b>EndOfLifeSale</b> per ottenere <i>$ 3 "
+#~ "al largo di</i> HREFLANG TAGS Pro <i>fino al 21 giugno 2018</i> ! "
+#~ "<b>Include il nostro nuovissimo strumento di validazione di massa!</b> <a "
+#~ "href=\"http://dcgws.com/product/hreflang-tags-pro-plugin-wordpress/"
+#~ "#utm_source=plugin-page&utm_medium=admin-notice&utm_campaign=hreflang-"
+#~ "tags-pro\">Ordina ora per soli $ 6,99!</a>"
+
+#~ msgid ""
+#~ "Please watch this short video demonstration of the HREFLANG Tags Bulk "
+#~ "Editor."
+#~ msgstr ""
+#~ "Si prega di guardare questo breve video dimostrativo dell'Editor Bulk "
+#~ "HREFLANG tag."
+
+#~ msgid "http://dcgws.com/resources/plugins-software/hreflang-tags-by-dcgws/"
+#~ msgstr "http://dcgws.com/resources/plugins-software/hreflang-tags-by-dcgws/"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="20px" viewBox="0 0 25 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>Configure Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Settings-Icon" transform="translate(-16.000000, 0.000000)" fill-rule="nonzero" fill="#94979F">
+            <g id="Configure-Icon---Mid" transform="translate(16.000000, 0.000000)">
+                <path d="M6.05,15.4545455 L4.03333333,15.4545455 L4.03333333,20 L2.01666667,20 L2.01666667,15.4545455 L0,15.4545455 L0,12.7272727 L6.05,12.7272727 L6.05,15.4545455 Z M4.03333333,0 L2.01666667,0 L2.01666667,10.9090909 L4.03333333,10.9090909 L4.03333333,0 Z M15.125,6.36363636 L9.075,6.36363636 L9.075,9.09090909 L11.0916667,9.09090909 L11.0916667,20 L13.1083333,20 L13.1083333,9.09090909 L15.125,9.09090909 L15.125,6.36363636 Z M13.1083333,0 L11.0916667,0 L11.0916667,4.54545455 L13.1083333,4.54545455 L13.1083333,0 Z M24.2,12.7272727 L18.15,12.7272727 L18.15,15.4545455 L20.1666667,15.4545455 L20.1666667,20 L22.1833333,20 L22.1833333,15.4545455 L24.2,15.4545455 L24.2,12.7272727 Z M22.1833333,0 L20.1666667,0 L20.1666667,10.9090909 L22.1833333,10.9090909 L22.1833333,0 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

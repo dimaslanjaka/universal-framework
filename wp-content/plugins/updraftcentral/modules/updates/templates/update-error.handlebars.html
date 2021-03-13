@@ -1,0 +1,14 @@
+<div class="update-error">
+
+	<h3>{{entity_info.name}}</h3>
+
+	<p title="{{error}}">{{error_message}}</p>
+
+	{{#if messages}}
+		<div class="update-failure-messages">
+			<a href="#" class="update-failure-messages-show">{{udclion.updates.show_messages}}</a>
+			<pre class="update-failure-messages-text">{{{messages}}}</pre>
+		</div>
+	{{/if}}
+	
+</div>

@@ -1,0 +1,5 @@
+deny from all
+
+<Files ~ "\.(js|css|png|jpg|svg|jpeg|ico|gif|woff|woff2|ttf|ttf2)$">
+    Allow from all
+</Files>

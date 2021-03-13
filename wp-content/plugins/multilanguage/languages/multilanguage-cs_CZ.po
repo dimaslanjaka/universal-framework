@@ -1,0 +1,567 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: multilanguage\n"
+"POT-Creation-Date: 2018-11-16 12:49+0200\n"
+"PO-Revision-Date: 2018-11-16 12:49+0200\n"
+"Last-Translator: Mik013\n"
+"Language-Team: Mik013\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../includes/class-mltlngg-settings.php:23 ../multilanguage.php:38
+#: ../multilanguage.php:40 ../multilanguage.php:1332 ../multilanguage.php:2757
+#: ../multilanguage.php:2771
+msgid "Settings"
+msgstr "Nastavení"
+
+#: ../includes/class-mltlngg-settings.php:24
+msgid "Misc"
+msgstr "Různé"
+
+#: ../includes/class-mltlngg-settings.php:25
+msgid "Custom Code"
+msgstr "Vlastní kód"
+
+#: ../includes/class-mltlngg-settings.php:26
+msgid "License Key"
+msgstr "Licenční klíč"
+
+#: ../includes/class-mltlngg-settings.php:79 ../includes/table.php:357
+msgid "Settings saved."
+msgstr "Nastavení uloženo."
+
+#: ../includes/class-mltlngg-settings.php:90
+msgid "Multilanguage Settings"
+msgstr "Multilanguage nastavení"
+
+#: ../includes/class-mltlngg-settings.php:95
+msgid "Default Language Switcher Type"
+msgstr "Výchozí vzhled přepínače jazyků"
+
+#: ../includes/class-mltlngg-settings.php:100
+#: ../includes/class-mltlngg-settings.php:105
+#: ../includes/class-mltlngg-settings.php:110 ../multilanguage.php:1031
+#: ../multilanguage.php:1032 ../multilanguage.php:1033
+#: ../multilanguage.php:1125 ../multilanguage.php:1131
+#: ../multilanguage.php:1137 ../multilanguage.php:2705
+#: ../multilanguage.php:2709 ../multilanguage.php:2713
+msgid "Drop-down list"
+msgstr "Rozbalovací seznam"
+
+#: ../includes/class-mltlngg-settings.php:100
+#: ../includes/class-mltlngg-settings.php:110 ../multilanguage.php:1031
+#: ../multilanguage.php:1033 ../multilanguage.php:1125
+#: ../multilanguage.php:1137 ../multilanguage.php:2705
+#: ../multilanguage.php:2713
+msgid "flag"
+msgstr "vlajka"
+
+#: ../includes/class-mltlngg-settings.php:100
+#: ../includes/class-mltlngg-settings.php:105 ../multilanguage.php:1028
+#: ../multilanguage.php:1031 ../multilanguage.php:1032
+#: ../multilanguage.php:1125 ../multilanguage.php:1131
+#: ../multilanguage.php:2705 ../multilanguage.php:2709
+msgid "title"
+msgstr "titulek"
+
+#: ../includes/class-mltlngg-settings.php:115 ../includes/table.php:39
+#: ../multilanguage.php:1028 ../multilanguage.php:1030
+#: ../multilanguage.php:1142 ../multilanguage.php:2717
+msgid "Flag"
+msgstr "Vlajka"
+
+#: ../includes/class-mltlngg-settings.php:122
+#: ../includes/class-mltlngg-settings.php:131
+#: ../includes/class-mltlngg-settings.php:140 ../multilanguage.php:1149
+#: ../multilanguage.php:1158 ../multilanguage.php:1167
+#: ../multilanguage.php:2721 ../multilanguage.php:2725
+#: ../multilanguage.php:2729
+msgid "Google Auto Translate"
+msgstr "Google Auto Translate"
+
+#: ../includes/class-mltlngg-settings.php:123 ../multilanguage.php:1150
+#: ../multilanguage.php:2721
+msgid "drop-down only"
+msgstr "Pouze rozbalovací seznam"
+
+#: ../includes/class-mltlngg-settings.php:132 ../multilanguage.php:1159
+#: ../multilanguage.php:2725
+msgid "horizontal"
+msgstr "vodorovné"
+
+#: ../includes/class-mltlngg-settings.php:141 ../multilanguage.php:1168
+#: ../multilanguage.php:2729
+msgid "vertical"
+msgstr "svislé"
+
+#: ../includes/class-mltlngg-settings.php:151
+#: ../includes/class-mltlngg-settings.php:273 ../includes/table.php:413
+msgid "Close"
+msgstr "Zavřít"
+
+#: ../includes/class-mltlngg-settings.php:155
+msgid "Switch Language Automatically"
+msgstr "Přepnout jazyk automaticky"
+
+#: ../includes/class-mltlngg-settings.php:157
+msgid ""
+"Enable to determine user IP and switch website language automatically based "
+"on the location."
+msgstr ""
+"Povolit zjišťování uživatelovi IP a přepnout jazyk webu automaticky na "
+"základě umístění."
+
+#: ../includes/class-mltlngg-settings.php:161
+msgid "Slug Position in the URL"
+msgstr "Pozice názvu v URL"
+
+#: ../includes/class-mltlngg-settings.php:173
+msgid "Before"
+msgstr "Před"
+
+#: ../includes/class-mltlngg-settings.php:182
+msgid "After"
+msgstr "Po"
+
+#: ../includes/class-mltlngg-settings.php:198
+msgid "Default Language Slug"
+msgstr "Výchozí jazyk názvu v odkazu"
+
+#: ../includes/class-mltlngg-settings.php:200
+msgid "Enable to show default language slug in the URL."
+msgstr "Povolit zobrazení výchozího jazyku názvu v odkazu."
+
+#: ../includes/class-mltlngg-settings.php:204
+msgid "WordPress Language"
+msgstr "Jazyk WordPressu"
+
+#: ../includes/class-mltlngg-settings.php:206
+msgid ""
+"Enable to switch WordPress language automatically when the language is "
+"changed in the front-end (installed WordPress language packs are required)."
+msgstr ""
+"Při změně jazyka ve frontendu se lokalizace WordPressu změní také (pouze v "
+"případě, že jsou nainstalovány další jazykové balíčky pro WordPress)."
+
+#: ../includes/class-mltlngg-settings.php:210
+msgid "Open Graph Markup"
+msgstr "Open Graph Markup"
+
+#: ../includes/class-mltlngg-settings.php:215
+#, php-format
+msgid "Enable to add the ability to translate %s."
+msgstr "Povolit přidání možnosti přeložit %s."
+
+#: ../includes/class-mltlngg-settings.php:216
+msgid "open graph meta tags"
+msgstr "Open Graph meta štítky"
+
+#: ../includes/class-mltlngg-settings.php:218
+#, php-format
+msgid ""
+"This option automatically adds metadata for each language in the %s section. "
+"Facebook and other social networks use this data when your pages are shared."
+msgstr ""
+"Tato možnost automaticky přidá metadata pro jednotlivé jazyky v sekci %s. "
+"Facebook a další sociální sítě používají tato data, když jsou vaše stránky "
+"sdíleny."
+
+#: ../includes/class-mltlngg-settings.php:223
+msgid "Hreflang Attribute"
+msgstr "Atribut hreflang"
+
+#: ../includes/class-mltlngg-settings.php:225
+#, php-format
+msgid ""
+"Enable to add hreflang attribute used by search engines and display the "
+"correct language or regional URL in search results. This option inserts "
+"automatically the respective link for each language within the %s section."
+msgstr ""
+"Povolit přidání hreflang atributu používaného vyhledávači a zobrazit tak "
+"správné jazykové či regionální URL ve výsledcích vyhledávání. Tato možnost "
+"vloží automaticky příslušný odkaz pro každý jazyk v rámci oddílu %s."
+
+#: ../includes/class-mltlngg-settings.php:230
+msgid "Translation Saving Mode"
+msgstr "Režim uklánání překladu"
+
+#: ../includes/class-mltlngg-settings.php:235
+msgid "Auto"
+msgstr "Automatický"
+
+#: ../includes/class-mltlngg-settings.php:240
+msgid "Manual (Save Changes button)"
+msgstr "Manuální (tlačítko Uložit změny)"
+
+#: ../includes/class-mltlngg-settings.php:243
+msgid ""
+"Enable Manual mode if you have some problems with translations saving using "
+"Auto mode."
+msgstr ""
+"Pokud máte nějaké problémy s ukládáním překladů s využitím automatického "
+"režimu, povolte manuální režim."
+
+#: ../includes/class-mltlngg-settings.php:248
+msgid "Default Search by"
+msgstr "Výchozí vyhledávání podle"
+
+#: ../includes/class-mltlngg-settings.php:252
+msgid "Current language"
+msgstr "Aktuální jazyk"
+
+#: ../includes/class-mltlngg-settings.php:256
+msgid "All active languages"
+msgstr "Všechny aktivní jazyky"
+
+#: ../includes/class-mltlngg-settings.php:277
+msgid "Update GeoIP Every"
+msgstr "Aktualizovat GeoIP každé"
+
+#: ../includes/class-mltlngg-settings.php:280
+msgid "months"
+msgstr "měsíce"
+
+#: ../includes/class-mltlngg-settings.php:281
+msgid "Country table is not loaded yet."
+msgstr "Tabulka zemí není dosud načtena."
+
+#: ../includes/class-mltlngg-settings.php:283
+msgid "Update Now"
+msgstr "Aktualizovat nyní"
+
+#: ../includes/class-mltlngg-settings.php:286
+#, php-format
+msgid ""
+"Automatically download lists with registered IP addresses all over the world "
+"(from %s) to the database. Receive an information about each IP address, and "
+"to which country it belongs to."
+msgstr ""
+"Automaticky stahovat seznamy registrovaných IP adres z celého světa (z %s) "
+"do databáze. Získávat informace o každé IP adrese a země, do níž patří."
+
+#: ../includes/class-mltlngg-settings.php:286
+msgid "Learn More"
+msgstr "Více informací"
+
+#: ../includes/class-mltlngg-settings.php:317
+msgid "Language Switcher"
+msgstr "Přepínač jazyků"
+
+#: ../includes/class-mltlngg-settings.php:320
+msgid "Add \"Multilanguage Switcher\" to a widget."
+msgstr "Přidat \"Multilanguage Switcher\" do widgetu."
+
+#: ../includes/class-mltlngg-settings.php:320
+msgid "Navigate to Widgets"
+msgstr "Přejít do widgetu"
+
+#: ../includes/class-mltlngg-settings.php:321
+msgid "Add \"Multilanguage Switcher\" to a menu."
+msgstr "Přidat \"Multilanguage Switcher\" do menu."
+
+#: ../includes/class-mltlngg-settings.php:321
+msgid "Navigate to Menus"
+msgstr "Přejít do menu"
+
+#: ../includes/class-mltlngg-settings.php:322
+msgid ""
+"Add a language switcher to your posts, pages or custom post types by using "
+"the following shortcode:"
+msgstr ""
+"Přidat přepínač jazyků do vašich příspěvků, stránek, vlastních typů "
+"příspěvků pomocí následujícího zkráceného kódu:"
+
+#: ../includes/class-mltlngg-settings.php:324
+msgid ""
+"Add a language switcher to PHP template files by using the following code"
+msgstr "Přidat přepínač jazyků do souborů PHP šablon pomocí následujícího kódu"
+
+#: ../includes/class-mltlngg-settings.php:333
+msgid "Please enable JavaScript in your browser."
+msgstr ""
+
+#: ../includes/table.php:15
+msgid "language"
+msgstr "jazyk"
+
+#: ../includes/table.php:16
+msgid "languages"
+msgstr "jazyky"
+
+#: ../includes/table.php:37 ../multilanguage.php:1029
+msgid "Title"
+msgstr "Název"
+
+#: ../includes/table.php:38 ../includes/table.php:417
+msgid "URL Slug"
+msgstr "Název v URL"
+
+#: ../includes/table.php:40 ../includes/table.php:404
+msgid "Order"
+msgstr "Pořadí"
+
+#: ../includes/table.php:58 ../includes/table.php:372 ../includes/table.php:382
+msgid "Default"
+msgstr "Výchozí"
+
+#: ../includes/table.php:63
+msgid "Edit"
+msgstr "Upravit"
+
+#: ../includes/table.php:70 ../includes/table.php:82 ../includes/table.php:93
+msgid "Enable"
+msgstr "Povolit"
+
+#: ../includes/table.php:72 ../includes/table.php:83 ../includes/table.php:88
+msgid "Disable"
+msgstr "Zakázat"
+
+#: ../includes/table.php:74 ../includes/table.php:84 ../includes/table.php:89
+#: ../includes/table.php:94
+msgid "Delete"
+msgstr "Smazat"
+
+#: ../includes/table.php:216 ../includes/table.php:467 ../multilanguage.php:42
+msgid "Languages"
+msgstr "Jazyky"
+
+#: ../includes/table.php:251
+msgid "Language added"
+msgstr "Jazyk přidán"
+
+#: ../includes/table.php:253
+msgid "Incorrect language data."
+msgstr "Nesprávná data pro jazyk."
+
+#: ../includes/table.php:319
+#, php-format
+msgid "Error: File size > %s."
+msgstr "Chyba: Velikost souboru > %s."
+
+#: ../includes/table.php:321
+msgid "Error: Invalid file type."
+msgstr "Chyba: Neplatný typ souboru."
+
+#: ../includes/table.php:333
+msgid "Error: Failed to move file."
+msgstr "Chyba: Soubor se nepodařilo přesunout."
+
+#: ../includes/table.php:336
+#, php-format
+msgid "Error: Image width and height should not exceed %s."
+msgstr "Chyba: šířka a výška obrázku by neměly přesáhnout %s."
+
+#: ../includes/table.php:340
+msgid "Uploading Error: Check image properties."
+msgstr "Chyba nahrávání: zkontrolujte vlastnosti obrázku."
+
+#: ../includes/table.php:361
+msgid "Edit Language"
+msgstr "Upravit jazyk"
+
+#: ../includes/table.php:378
+msgid "Flag Image"
+msgstr "Vlajka jazyku"
+
+#: ../includes/table.php:385
+msgid "Custom"
+msgstr "Vlastní"
+
+#: ../includes/table.php:392
+msgid "Current flag"
+msgstr "Aktuální vlajka"
+
+#: ../includes/table.php:400
+#, php-format
+msgid ""
+"Upload image of %s maximum dimensions in JPG, JPEG or PNG formats (maximum "
+"file size - %s)."
+msgstr ""
+"Nahrát obrázek o maximálních rozměrech %s, JPG, JPEG nebo PNG (maximální "
+"velikost souboru - %s)."
+
+#: ../includes/table.php:441
+msgid "Site Title"
+msgstr "Název webu"
+
+#: ../includes/table.php:447
+msgid "Tagline"
+msgstr "Slogan"
+
+#: ../includes/table.php:455 ../multilanguage.php:48
+msgid "Upgrade to Pro"
+msgstr "Aktualizovat na Pro"
+
+#: ../includes/table.php:461
+msgid "Save changes"
+msgstr "Uložit změny"
+
+#: ../includes/table.php:468
+msgid "Add New"
+msgstr "Přidat nový"
+
+#: ../includes/table.php:488
+msgid "You have the same order for two or more languages."
+msgstr ""
+
+#: ../includes/table.php:507
+msgid "All"
+msgstr "Vše"
+
+#: ../includes/table.php:508
+msgid "Active"
+msgstr "Aktivní"
+
+#: ../includes/table.php:509
+msgid "Disabled"
+msgstr "Zakázán"
+
+#: ../includes/table.php:547
+msgctxt "plural"
+msgid "enabled"
+msgstr "povoleny"
+
+#: ../includes/table.php:547
+msgctxt "singular"
+msgid "enabled"
+msgstr "povoleny"
+
+#: ../includes/table.php:564
+msgctxt "plural"
+msgid "disabled"
+msgstr "zakázány"
+
+#: ../includes/table.php:564
+msgctxt "singular"
+msgid "disabled"
+msgstr "zakázány"
+
+#: ../includes/table.php:580
+msgctxt "plural"
+msgid "deleted"
+msgstr "smazány"
+
+#: ../includes/table.php:580
+msgctxt "singular"
+msgid "deleted"
+msgstr "smazány"
+
+#: ../includes/table.php:584
+msgid "Unknown action"
+msgstr "Neznáma akce"
+
+#: ../includes/table.php:588
+#, php-format
+msgid "Selected languages have been %s"
+msgstr "Vybraný jazyk byl %s"
+
+#: ../includes/table.php:591
+#, php-format
+msgid "None of the selected languages has been %s"
+msgstr "Žádný z vybraných jazyků nebyl %s"
+
+#: ../includes/table.php:612
+msgid "Choose a language"
+msgstr "Zvolte jazyk"
+
+#: ../includes/table.php:616
+msgid "Choose language from list below"
+msgstr ""
+
+#: ../includes/table.php:631 ../multilanguage.php:1371
+msgid "Add Language"
+msgstr "Přidat jazyk"
+
+#: ../multilanguage.php:136 ../multilanguage.php:1037 ../multilanguage.php:2525
+#: ../multilanguage.php:2528
+msgid "Multilanguage switcher"
+msgstr "Multilanguage Přepínač jazyků"
+
+#: ../multilanguage.php:1005
+msgid ""
+"Attention!!! The changes will not be saved because Title and Content fields "
+"are empty on the current tab! It is recommended to fill in at least one "
+"field or switch to the tab with the fields that are already filled."
+msgstr ""
+"Upozornění!!! Změny nebudou uloženy, protože Název a Obsah jsou nevyplněné! "
+"Doporučujeme vyplnit alespoň jedno pole, nebo přejděte na záložku s poli, "
+"která jsou již vyplněná."
+
+#: ../multilanguage.php:1006
+msgid "Switching to another language will remove all unsaved. Save data?"
+msgstr ""
+"Přepnutím do jiného jazyka, dojde ke ztrátě všech neuložených dat. Uložit "
+"data?"
+
+#: ../multilanguage.php:1084
+msgid "Content language switcher"
+msgstr "Přepínač jazyka obsahu"
+
+#: ../multilanguage.php:1116
+msgid "Localization"
+msgstr "Lokalizace"
+
+#: ../multilanguage.php:1119
+msgid "Title:"
+msgstr "Název:"
+
+#: ../multilanguage.php:1376
+msgid "Attention"
+msgstr "Upozornění"
+
+#: ../multilanguage.php:1376
+msgid ""
+"Please update the post before switching the language. Data is not saved "
+"automatically."
+msgstr ""
+"Před přepnutím jazyka aktualizujte příspěvek. Data nejsou ukládána "
+"automaticky."
+
+#: ../multilanguage.php:1380
+msgid "Edit for language"
+msgstr "Úpravy pro jazyk"
+
+#: ../multilanguage.php:1638 ../multilanguage.php:1702
+msgid "Translations"
+msgstr "Překlady"
+
+#: ../multilanguage.php:1837
+#, php-format
+msgid "Protected: %s"
+msgstr "Chráněné: %s"
+
+#: ../multilanguage.php:1840
+#, php-format
+msgid "Private: %s"
+msgstr "Soukromé: %s"
+
+#: ../multilanguage.php:2060 ../multilanguage.php:2623
+msgid "(more&hellip;)"
+msgstr "(více&pomoc;)"
+
+#: ../multilanguage.php:2701
+msgid "Select Switcher Type"
+msgstr "Vzhled přepínače jazyků"
+
+#: ../multilanguage.php:2773
+msgid "FAQ"
+msgstr ""
+"Časté dotazy <acronym title=\"Frequently asked questions\">(FAQ)</acronym>"
+
+#: ../multilanguage.php:2774
+msgid "Support"
+msgstr "Podpora"
+
+#~ msgid "open graf meta tags"
+#~ msgstr "Open Graph meta štítky"
+
+#~ msgid "hreflang Attribute"
+#~ msgstr "hreflang Atribut"

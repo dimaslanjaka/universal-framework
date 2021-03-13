@@ -1,0 +1,426 @@
+# Copyright (C) 2016 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://www.colorlib.com/\n"
+"POT-Creation-Date: 2016-12-14 14:44:03+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Colorlib <office@colorlib.com>\n"
+"Language-Team: Colorlib <office@colorlib.com>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+
+#: inc/class-epsilon-color-scheme.php:52
+msgid "Accent Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:53
+msgid "The main color used for links, buttons, and more."
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:58
+msgid "Text Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:59
+msgid "The color used for paragraphs."
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:65
+msgid "Content Widget Title Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:66
+msgid "The color used for content widgets title."
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:72
+msgid "Footer Background Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:73
+msgid "The color used for the footer background."
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:79
+msgid "Footer Widget Title Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:80
+msgid "The color used for the footer widgets title."
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:86
+msgid "Footer Links Color"
+msgstr ""
+
+#: inc/class-epsilon-color-scheme.php:87
+msgid "The color used for the footer links."
+msgstr ""
+
+#: inc/shapely-demo-content.php:61
+msgid "Front Page"
+msgstr ""
+
+#: inc/shapely-demo-content.php:62
+msgid "Blog"
+msgstr ""
+
+#: inc/shapely-woo-setup.php:101
+msgid "View your shopping cart"
+msgstr ""
+
+#: inc/shapely-woo-setup.php:102
+msgid "Start shopping"
+msgstr ""
+
+#: inc/shapely-woo-setup.php:106
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/views/shapely-demo-content.php:11
+msgid "I want my site to look like your demo"
+msgstr ""
+
+#: inc/views/shapely-demo-content.php:14 inc/views/shapely-demo-content.php:23
+msgid "Content Imported"
+msgstr ""
+
+#: inc/views/shapely-demo-content.php:17
+msgid "I want only to import demo widgets"
+msgstr ""
+
+#: inc/views/shapely-demo-content.php:20
+msgid "Import Widgets"
+msgstr ""
+
+#: inc/widgets/widget-categories.php:15
+msgid "Shapely Categories"
+msgstr ""
+
+#: inc/widgets/widget-categories.php:18
+msgid "[Shapely] Categories"
+msgstr ""
+
+#: inc/widgets/widget-categories.php:28 inc/widgets/widget-categories.php:78
+msgid "Categories"
+msgstr ""
+
+#: inc/widgets/widget-categories.php:90 inc/widgets/widget-home-clients.php:92
+#: inc/widgets/widget-home-features.php:120
+#: inc/widgets/widget-home-features.php:142
+#: inc/widgets/widget-home-parallax.php:136
+#: inc/widgets/widget-home-portfolio.php:99
+#: inc/widgets/widget-home-testimonials.php:103
+#: inc/widgets/widget-social.php:57
+msgid "Title "
+msgstr ""
+
+#: inc/widgets/widget-categories.php:99
+msgid "Limit Categories "
+msgstr ""
+
+#: inc/widgets/widget-categories.php:110
+msgid "Enable Posts Count"
+msgstr ""
+
+#: inc/widgets/widget-home-call-for-action.php:12
+msgid "[Shapely] Call for Action Section"
+msgstr ""
+
+#: inc/widgets/widget-home-call-for-action.php:15
+msgid "[Shapely] Call for Action Section For FrontPage"
+msgstr ""
+
+#: inc/widgets/widget-home-call-for-action.php:70
+msgid "Callout Text "
+msgstr ""
+
+#: inc/widgets/widget-home-call-for-action.php:79
+msgid "Button Text "
+msgstr ""
+
+#: inc/widgets/widget-home-call-for-action.php:88
+msgid "Button Link "
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:12
+msgid "Shapely Client Section That Displays Logos In A Slider"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:15
+msgid "[Shapely] Client Section For FrontPage"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:20
+msgid "Our Main Clients"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:48
+msgid "Logos"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:112
+msgid "Logo #"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:124
+#: inc/widgets/widget-home-parallax.php:158
+#: inc/widgets/widget-home-testimonials.php:134
+#: inc/widgets/widget-video.php:198
+msgid "Choose Image"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:127
+msgid "Link:"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:133
+msgid "Add"
+msgstr ""
+
+#: inc/widgets/widget-home-clients.php:134
+msgid "Delete"
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:12
+msgid "Widget to set Features in Home Section"
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:16
+msgid "[Shapely] Features Section For FrontPage"
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:129
+#: inc/widgets/widget-home-features.php:169
+#: inc/widgets/widget-home-parallax.php:163
+#: inc/widgets/widget-home-portfolio.php:108
+msgid "Content "
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:139
+msgid "Feature %s"
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:151
+msgid "Icon( Font Awsome ) "
+msgstr ""
+
+#: inc/widgets/widget-home-features.php:158
+msgid "Select Icon"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:16
+msgid "Shapely FrontPage Parallax Section"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:19
+msgid "[Shapely] Parralax Section For FrontPage"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:31
+msgid "left"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:147
+msgid "Image"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:159 inc/widgets/widget-video.php:199
+msgid "Remove Image"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:171
+msgid "Image Position "
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:175
+msgid "Left"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:177
+msgid "Right"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:179
+msgid "Top"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:181
+msgid "Bottom"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:183
+msgid "Background Full"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:185
+msgid "Background Small"
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:190
+msgid "Button 1 Text "
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:199
+msgid "Button 1 Link "
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:208
+msgid "Button 2 Text "
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:217
+msgid "Button 2 Link "
+msgstr ""
+
+#: inc/widgets/widget-home-parallax.php:227
+msgid "Border bottom"
+msgstr ""
+
+#: inc/widgets/widget-home-portfolio.php:12
+msgid "Shapely Porfolio for Home Widget Section"
+msgstr ""
+
+#: inc/widgets/widget-home-portfolio.php:15
+msgid "[Shapely] Porfolio for Home Widget Section"
+msgstr ""
+
+#: inc/widgets/widget-home-testimonials.php:12
+msgid "Shapely Testimonial Widget Section"
+msgstr ""
+
+#: inc/widgets/widget-home-testimonials.php:15
+msgid "[Shapely] Testimonial Section For FrontPage"
+msgstr ""
+
+#: inc/widgets/widget-home-testimonials.php:20
+msgid "People just like you are already loving Colorlib"
+msgstr ""
+
+#: inc/widgets/widget-home-testimonials.php:112
+msgid "Limit "
+msgstr ""
+
+#: inc/widgets/widget-home-testimonials.php:123
+msgid "Background Parallax Image:"
+msgstr ""
+
+#: inc/widgets/widget-recent-posts.php:13
+msgid "Widget to show recent posts with thumbnails"
+msgstr ""
+
+#: inc/widgets/widget-recent-posts.php:16
+msgid "[Shapely] Recent Posts"
+msgstr ""
+
+#: inc/widgets/widget-recent-posts.php:21
+#: inc/widgets/widget-recent-posts.php:87
+msgid "recent Posts"
+msgstr ""
+
+#: inc/widgets/widget-recent-posts.php:95
+msgid "Title"
+msgstr ""
+
+#: inc/widgets/widget-recent-posts.php:104
+msgid "Limit Posts Number"
+msgstr ""
+
+#: inc/widgets/widget-social.php:12
+msgid "shapely Social Widget"
+msgstr ""
+
+#: inc/widgets/widget-social.php:15
+msgid "[Shapely] Social Widget"
+msgstr ""
+
+#: inc/widgets/widget-social.php:20 inc/widgets/widget-social.php:53
+msgid "Follow us"
+msgstr ""
+
+#: inc/widgets/widget-social.php:23
+msgid ""
+"This widget works only with Shapely theme. Please install and activate it "
+"first."
+msgstr ""
+
+#: inc/widgets/widget-video.php:11
+msgid "Shapely Video Section"
+msgstr ""
+
+#: inc/widgets/widget-video.php:13
+msgid "[Shapely] Video Section"
+msgstr ""
+
+#: inc/widgets/widget-video.php:101
+msgid "General Controls"
+msgstr ""
+
+#: inc/widgets/widget-video.php:104
+msgid "Video Type "
+msgstr ""
+
+#: inc/widgets/widget-video.php:108
+msgid "YouTube"
+msgstr ""
+
+#: inc/widgets/widget-video.php:110
+msgid "Upload"
+msgstr ""
+
+#: inc/widgets/widget-video.php:116
+msgid "Autoplay"
+msgstr ""
+
+#: inc/widgets/widget-video.php:131
+msgid "Full height"
+msgstr ""
+
+#: inc/widgets/widget-video.php:145
+msgid "Video Height (in pixels): "
+msgstr ""
+
+#: inc/widgets/widget-video.php:153
+msgid "YouTube Controls"
+msgstr ""
+
+#: inc/widgets/widget-video.php:157
+msgid "YouTube ID: "
+msgstr ""
+
+#: inc/widgets/widget-video.php:165
+msgid "Video Upload Controls"
+msgstr ""
+
+#: inc/widgets/widget-video.php:170
+msgid "Video URL: "
+msgstr ""
+
+#: inc/widgets/widget-video.php:182
+msgid "Choose Video"
+msgstr ""
+
+#: inc/widgets/widget-video.php:183
+msgid "Remove Video"
+msgstr ""
+
+#: inc/widgets/widget-video.php:188
+msgid "Placeholder: "
+msgstr ""

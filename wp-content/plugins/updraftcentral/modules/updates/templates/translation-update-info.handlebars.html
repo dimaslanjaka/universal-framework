@@ -1,0 +1,27 @@
+<h3>
+	{{udclion.updates.available_translation_updates}}
+</h3>
+
+<p>
+	<div class="translation-updates-container">
+		<table>
+			<tbody>
+			<tr>
+				<th id="translation-language-column">{{udclion.updates.language}}</th>
+				<th id="translation-type-column">{{udclion.updates.type}}</th>
+				<th id="translation-slug-column">{{udclion.updates.slug}}</th>
+				<th id="translation-version-column">{{udclion.updates.new_version}}</th>
+			</tr>
+			{{#uc_each translations}}
+			<tr>
+				<td>{{language}}</td>
+				<td>{{type}}</td>
+				<td>{{slug}}</td>
+				<td>{{version}} <a href="{{package}}">(download)</a></td>
+			</tr>
+			{{/uc_each}}
+			</tbody>
+		</table>
+	</div>
+</p>
+

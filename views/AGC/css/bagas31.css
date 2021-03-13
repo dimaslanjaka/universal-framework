@@ -1,0 +1,11 @@
+@media (min-width: 992px) {
+  .az-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(216, 211, 211);
+  }
+  .az-footer a {
+    color: grey;
+  }
+}

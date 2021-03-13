@@ -1,0 +1,10 @@
+label {
+  text-transform: capitalize;
+}
+textarea#proxies {
+  min-height: 300px;
+}
+
+table i.fab, table i.fas {
+  margin-right: 3px;
+}

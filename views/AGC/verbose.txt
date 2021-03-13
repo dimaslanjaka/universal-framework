@@ -1,0 +1,45 @@
+* Rebuilt URL to: https://www.uxfree.com/
+*   Trying 173.255.227.137...
+* Connected to www.uxfree.com (173.255.227.137) port 443 (#0)
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /home/bareesse/public_html/cacert.pem
+  CApath: none
+* NPN, negotiated HTTP1.1
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
+* Server certificate:
+*  subject: CN=www.uxfree.com
+*  start date: Dec  7 18:01:24 2018 GMT
+*  expire date: Mar  7 18:01:24 2019 GMT
+*  issuer: C=US; O=Let's Encrypt; CN=Let's Encrypt Authority X3
+*  SSL certificate verify ok.
+> GET / HTTP/1.1
+Host: www.uxfree.com
+User-Agent: Mozilla/5.0 (Linux; Android 7.0; Redmi Note 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.80 Mobile Safari/537.36
+Accept: */*
+Accept-Encoding: gzip
+Referer: https://translate.google.co.id/m/translateLxg
+Cookie: bp_user-registered=0; bp_user-role=guest
+0: Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+1: Connection: Keep-Alive
+2: Cache-Control: max-age=0
+3: Upgrade-Insecure-Requests: 1
+4: DNT: 1
+5: Keep-Alive: 300
+6: Content-type: */*;charset=UTF-8
+7: Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+8: Accept-Language: en-us,en;q=0.5
+9: Pragma: no-cache
+10: Origins: https://onhax.me
+
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Wed, 09 Jan 2019 23:32:42 GMT
+< Content-Type: text/html; charset=UTF-8
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+< Vary: Accept-Encoding
+< X-Powered-By: PHP/7.1.7
+< Content-Encoding: gzip
+< 
+* Connection #0 to host www.uxfree.com left intact
