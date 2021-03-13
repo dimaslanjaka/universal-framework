@@ -64,7 +64,7 @@
     "protocol": "http",
     "environtment": "development",
     "theme": {
-      "default": "mdb-dashboard",
+      "default": "default",
       "mdb-dashboard": ["telkomsel", "coupon", "im3"]
     },
     "shutdown": ["coupon"],
