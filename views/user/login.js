@@ -14,7 +14,7 @@ $(document).on("submit", "form", function (e) {
   });
   gexec("login");
 });
-gexec("login");
+
 var userdata = new user();
 userdata.fetch(function (res) {
   if (typeof res == "object") {
