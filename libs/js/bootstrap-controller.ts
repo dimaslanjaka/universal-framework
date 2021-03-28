@@ -32,11 +32,13 @@ if (!isnode()) {
           break;
       }
     });
+
     //href hyperlink button
     $(document).on("click", "button[href].btn-link", function (e) {
       e.preventDefault();
       location.href = $(this).attr("href");
     });
+
     /**
      * open in new tab
      */

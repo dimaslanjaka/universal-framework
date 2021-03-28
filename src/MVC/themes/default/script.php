@@ -4,6 +4,13 @@
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+<script src="<?= path2url(__DIR__ . '/js/core.min.js') ?>" async></script>
+<script>
+  let scriptsrc = `<?= path2url(__DIR__ . '/../assets/js/app.min.js') ?>`;
+  let myScript = document.createElement("script");
+  myScript.setAttribute("src", scriptsrc);
+  document.body.appendChild(myScript);
+</script>
 <?php
 $element = new HTML\element();
 // datatables is defined
@@ -27,14 +34,14 @@ if (defined('materialize')) {
 }
 
 // application javascript
-echo $element->js([
+/*echo $element->js([
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
     __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
   ])),
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
     __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
   ]))
-]);
+]);*/
 
 if (defined('jquery-ui')) {
   echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

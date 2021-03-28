@@ -22,6 +22,7 @@ class client extends Google_Client
   private $filemanager;
   private $token_folder;
   private $configuration;
+  public $application_name = "Google Client Library";
 
   public function __construct(array $config = ['token' => ['folder' => __DIR__ . '/token']])
   {
@@ -35,6 +36,68 @@ class client extends Google_Client
       file::file($token_folder . '/.gitignore', "*\n!.gitignore\n!.htaccess");
     }
     $this->configuration = $config;
+  }
+
+  public static function get_profile()
+  {
+    if (isset($_SESSION['google']['login'])) {
+      return $_SESSION['google']['login'];
+    }
+    return [];
+  }
+
+  public static function get_profile_picture()
+  {
+    if (!empty(self::get_profile())) {
+      if (isset(self::get_profile()['picture'])) return self::get_profile()['picture'];
+    }
+    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
+  }
+
+  public static function get_profile_name()
+  {
+    if (!empty(self::get_profile())) {
+      if (isset(self::get_profile()['name'])) return self::get_profile()['name'];
+    }
+    return 'Login Required';
+  }
+
+  /**
+   * @param string $redirect /auth/google
+   */
+  public function create_auth_url($scope, $redirect)
+  {
+    $this->custom_client($scope, $redirect);
+    return $this->createAuthUrl();
+  }
+
+  /**
+   * @return \GoogleExt\Client
+   */
+  public function custom_client($scope, $redirect)
+  {
+    $this->setApplicationName($this->application_name);
+    $this->setCredentials(
+      CONFIG['google']['client'],
+      CONFIG['google']['secret'],
+      CONFIG['google']['key']
+    );
+    $scopes = [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile'
+    ];
+    if (is_string($scope)) {
+      switch ($scope) {
+        case 'blogger':
+          $scopes[] = 'https://www.googleapis.com/auth/blogger';
+          break;
+      }
+    }
+    $this->set_scope(array_unique($scopes));
+    $this->set_offline(true);
+    $this->setRedirectUri($this->getOrigin($redirect));
+    $this->auto_login($redirect);
+    return $this;
   }
 
   /**
@@ -160,7 +223,11 @@ class client extends Google_Client
   public function check_subscriber(string $cid = 'UCGNaoefvJRfd15fo-LQ0zvg', bool $only_get_url = false)
   {
     if (!$only_get_url) {
-      $service = new \Google_Service_YouTube($this);
+      /**
+       * @var \Google\Client
+       */
+      $client = $this;
+      $service = new \Google_Service_YouTube($client);
       $response = $service->subscriptions->listSubscriptions(
         'snippet,contentDetails',
         array_filter(['forChannelId' => $cid, 'mine' => true])
@@ -185,9 +252,20 @@ class client extends Google_Client
     return $output;
   }
 
-  public function auto_login()
+  /**
+   * Auto get token from $_GET['code']
+   * And auto refresh token
+   * * @param string $redirect /auth/google
+   */
+  public function auto_login($redirect)
   {
     $config = $this->configuration;
+    $this->setCredentials(
+      CONFIG['google']['client'],
+      CONFIG['google']['secret'],
+      CONFIG['google']['key']
+    );
+    $this->setRedirectUri($this->getOrigin($redirect));
     if (isset($_GET['code'])) {
       $token = $this->fetchAccessTokenWithAuthCode($_GET['code']);
       /*$this->authenticate($_GET['code']);
@@ -197,7 +275,7 @@ class client extends Google_Client
         if (isset($token['error'])) {
           e($token);
         }
-        //$this->setAccessToken($token);
+        $this->setAccessToken($token);
       }
       if (isset($config['token']['folder']) && $this->getAccessToken()) {
         $user = $this->fetch_user();
@@ -252,7 +330,11 @@ class client extends Google_Client
    */
   public function fetch_user()
   {
-    $service = new \Google_Service_Oauth2($this);
+    /**
+     * @var \Google\Client
+     */
+    $client = $this;
+    $service = new \Google_Service_Oauth2($client);
     $this->addScope(\Google_Service_Oauth2::USERINFO_EMAIL);
     $this->addScope(\Google_Service_Oauth2::USERINFO_PROFILE);
     $this->authenticate($_GET['code']);

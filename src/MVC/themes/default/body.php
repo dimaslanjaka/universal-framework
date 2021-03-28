@@ -1,4 +1,4 @@
-<body class="fixed-sn mdb-skin-custom" data-spy="scroll" data-target="#scrollspy" data-offset="15">
+<body>
 
   <!--Main Navigation-->
   <header>
@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar" role="navigation">
       <div class="container">
         <a class="navbar-brand" href="#"><strong>MDB</strong></a>
-        <button class="navbar-toggler" data-toggle="collapsex" data-target="#navbarSupportedContent">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
