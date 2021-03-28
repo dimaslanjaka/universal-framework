@@ -45,7 +45,7 @@ if (!isnode()) {
       if (options.hasOwnProperty("proxy") && !options.proxy) {
         allowed = false;
       }
-
+      console.log(options);
       if (allowed) {
         var http = window.location.protocol === "http:" ? "http:" : "https:";
         if (typeof options.proxy == "string") {

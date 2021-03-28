@@ -137,7 +137,6 @@
   "typescript.disableAutomaticTypeAcquisition": false,
   "typescript.locale": "en",
   "typescript.suggest.autoImports": true,
-  "typescript.tsc.autoDetect": "off",
   "typescript.suggest.completeJSDocs": true,
   "typescript.tsserver.log": "off",
   "typescript.surveys.enabled": false,

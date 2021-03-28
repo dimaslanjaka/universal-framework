@@ -4,9 +4,9 @@ import * as Process from "process";
 import * as http from "http";
 import { readFile, list_package, asset } from "../compiler/func";
 import app from "express";
-import io from "socket.io";
+//import io from "socket.io";
 import * as url_core from "url";
-
+const io = require("socket.io")(80);
 console.clear();
 var config: {
   app: {
@@ -151,9 +151,9 @@ export function serve(port: number = 3000) {
 
     res.end(); //end the response
   });
-
+  //new io.Server()
   const webSocket = io(httpServer);
-  webSocket.on("connect", (socket) => {
+  webSocket.on("connect", (socket: { id: any }) => {
     console.log("websocket connected", socket.id);
   });
   var numClients = 0;

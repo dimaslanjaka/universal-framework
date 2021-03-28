@@ -111,6 +111,7 @@
 <script>
   new WOW().init();
 </script>
+
 <?php
 include __DIR__ . '/script.php';
 ?>

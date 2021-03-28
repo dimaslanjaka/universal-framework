@@ -83,66 +83,71 @@ gulp.task("watch", async function () {
   var compiler_runner: any = false;
   var run_watch = gulp
     .watch(files, null)
-    .on("change", function (
-      file: string | Buffer | import("url").URL | string[]
-    ) {
-      const trigger = function () {
-        file = framework.normalize(path.resolve(file.toString()));
-        /**
-         * Check is library compiler or source compiler
-         */
-        const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
-        const filename_log = framework.filelog(file);
+    .on(
+      "change",
+      function (file: string | Buffer | import("url").URL | string[]) {
+        const trigger = function () {
+          file = framework.normalize(path.resolve(file.toString()));
+          /**
+           * Check is library compiler or source compiler
+           */
+          const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
+          const filename_log = framework.filelog(file);
 
-        if (is_Lib) {
-          var isCompiler = file.includes("/libs/compiler/");
-          var isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
-          if (isCompiler || isFramework) return;
-          //console.log(file, isFramework);
-          log.log(
-            log.random("Library compiler triggered by ") +
-              log.random(framework.filelog(file))
-          );
-          log.log(
-            log
-              .chalk()
-              .yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`)
-          );
-          if (compiler_runner) {
-            log.log(log.error("Compiler still running"));
-          } else {
-            compiler_runner = setTimeout(function () {
-              createApp(true);
-              compiler_runner = null;
-            }, 5000);
-          }
+          if (is_Lib) {
+            var isCompiler = file.includes("/libs/compiler/");
+            var isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(
+              file
+            );
+            if (isCompiler || isFramework) return;
+            //console.log(file, isFramework);
+            log.log(
+              log.random("Library compiler triggered by ") +
+                log.random(framework.filelog(file))
+            );
+            log.log(
+              log
+                .chalk()
+                .yellow(
+                  `start compile ${log.random("src/MVC/themes/assets/js")}`
+                )
+            );
+            if (compiler_runner) {
+              log.log(log.error("Compiler still running"));
+            } else {
+              compiler_runner = setTimeout(function () {
+                createApp(true);
+                compiler_runner = null;
+              }, 5000);
+            }
 
-          // run documentation builder
-          //doc();
-        } else {
-          if (/\.(js|scss|css|less)$/s.test(file)) {
-            if (!/\.min\.(js|css)$/s.test(file)) {
-              compileAssets(file);
-            }
-          } else if (file.endsWith(".ts") && !file.endsWith(".d.ts")) {
-            if (!/libs\/|libs\\/s.test(file)) {
-              single_tsCompile(file);
-            }
-          } else if (file.endsWith(".browserify")) {
-            framework.browserify(file);
+            // run documentation builder
+            //doc();
           } else {
-            var reason = log.error("undefined");
-            if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
-              reason = log.random("Excluded");
-            } else if (/\.(d\.ts)$/s.test(filename_log)) {
-              reason = log.random("Typehint");
+            if (/\.(js|scss|css|less)$/s.test(file)) {
+              if (!/\.min\.(js|css)$/s.test(file)) {
+                compileAssets(file);
+              }
+            } else if (file.endsWith(".ts") && !file.endsWith(".d.ts")) {
+              if (!/libs\/|libs\\/s.test(file)) {
+                single_tsCompile(file);
+              }
+            } else if (file.endsWith(".browserify")) {
+              framework.browserify(file);
+            } else {
+              var reason = log.error("undefined");
+              if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
+                reason = log.random("Excluded");
+              } else if (/\.(d\.ts)$/s.test(filename_log)) {
+                reason = log.random("Typehint");
+              }
+              log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
             }
-            log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
           }
-        }
-      };
-      return trigger();
-    });
+        };
+        return trigger();
+      }
+    );
   return run_watch;
 });
 
@@ -463,32 +468,31 @@ export function typescriptCompiler(
   callback: (arg0: any, arg1: any) => void = null
 ) {
   return new Promise((resolve, reject) => {
-    exec(`tsc -p ${source}`, function (
-      err: ExecException,
-      stdout: string,
-      stderr: string
-    ) {
-      if (!err) {
-        if (typeof callback == "function") {
-          callback(source, destination);
+    exec(
+      `tsc -p ${source}`,
+      function (err: ExecException, stdout: string, stderr: string) {
+        if (!err) {
+          if (typeof callback == "function") {
+            callback(source, destination);
+          }
+          if (stdout.trim().length) {
+            console.log(stdout);
+          }
+          if (stderr.trim().length) {
+            console.log(stderr);
+          }
+          log.log(
+            log.random("successfully compiled ") +
+              log.success(path.basename(source))
+          );
+          resolve(true);
+        } else {
+          log.log(
+            log.random("failed compile ") + log.error(path.basename(source))
+          );
+          reject(err.message);
         }
-        if (stdout.trim().length) {
-          console.log(stdout);
-        }
-        if (stderr.trim().length) {
-          console.log(stderr);
-        }
-        log.log(
-          log.random("successfully compiled ") +
-            log.success(path.basename(source))
-        );
-        resolve();
-      } else {
-        log.log(
-          log.random("failed compile ") + log.error(path.basename(source))
-        );
-        reject(err.message);
       }
-    });
+    );
   });
 }

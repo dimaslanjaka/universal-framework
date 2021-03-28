@@ -113,8 +113,10 @@ class element
     $result = '';
     $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';
     foreach ($source as $path) {
-      $path .= $config;
-      $result .= '<script src="' . $path . '"></script>';
+      if (!empty($path)) {
+        $path .= $config;
+        $result .= '<script src="' . $path . '"></script>';
+      }
     }
 
     return $result;

@@ -11,6 +11,7 @@ $(document).on("submit", "form", function (e) {
     success: function (res) {
       console.log(res);
     },
+    proxy: false,
   });
   gexec("login");
 });
