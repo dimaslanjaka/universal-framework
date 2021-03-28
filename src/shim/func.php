@@ -118,6 +118,14 @@ function path2url($file, $Protocol = 'http://')
 }
 
 /**
+ * Get URL Origin by Path
+ */
+function getOrigin($path)
+{
+  return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]$path";
+}
+
+/**
  * Fix url
  *
  * @param string $url
