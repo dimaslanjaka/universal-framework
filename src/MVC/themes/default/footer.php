@@ -101,13 +101,13 @@
 
 <!--  SCRIPTS  -->
 <!-- JQuery -->
-<script type="text/javascript" src="<?= path2url(__DIR__ . "/MDB-Pro_4.11.0/dist/js/jquery-3.4.1.min.js") ?>"></script>
+<script type="text/javascript" src="/assets/mdb-dashboard/js/jquery-3.4.1.min.js"></script>
 <!-- Bootstrap tooltips -->
-<script type="text/javascript" src="<?= path2url(__DIR__ . "/MDB-Pro_4.11.0/dist/js/popper.min.js") ?>"></script>
+<script type="text/javascript" src="/assets/mdb-dashboard/js/popper.min.js"></script>
 <!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="<?= path2url(__DIR__ . "/MDB-Pro_4.11.0/dist/js/bootstrap.min.js") ?>"></script>
+<script type="text/javascript" src="/assets/mdb-dashboard/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
-<script type="text/javascript" src="<?= path2url(__DIR__ . "/MDB-Pro_4.11.0/dist/js/mdb.min.js") ?>"></script>
+<script type="text/javascript" src="/assets/mdb-dashboard/js/mdb.min.js"></script>
 <script>
   new WOW().init();
 </script>
