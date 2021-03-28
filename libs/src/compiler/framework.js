@@ -1107,6 +1107,7 @@ var ip = /** @class */ (function () {
     };
     ip.cloudflare = function () {
         return $.ajax({
+            proxy: false,
             url: "//www.cloudflare.com/cdn-cgi/trace",
             success: function (str) {
                 var regex = /ip\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gm;

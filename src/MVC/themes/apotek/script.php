@@ -1,56 +1,143 @@
-<!--<script src='<?= path2url(__DIR__ . '/src/ajax.min.js') ?>'></script>-->
 <script src='/node_modules/sweetalert/dist/sweetalert.min.js'></script>
 <script src='/node_modules/toastr/build/toastr.min.js'></script>
 <link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
 <script src='/node_modules/crypto-js/crypto-js.js'></script>
-<!--<script src='/node_modules/requirejs/require.js'></script>-->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js'></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-<!-- datatables -->
-<script src='https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js'></script>
-<script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
-<!-- Buttons bootstrap4 -->
-<link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.5.2/css/buttons.bootstrap4.min.css'>
-<script src='https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js'></script>
-<script src='https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js'></script>
-<script>
-  /* disable alert warning */
-  $.fn.dataTable.ext.errMode = 'none';
-</script>
-<!-- /datatables -->
-
-<!-- select2 -->
-<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js'></script>
-<script>
-  /* set default theme to bootstrap */
-  $.fn.select2.defaults.set("theme", "bootstrap");
-</script>
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'>
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.7/select2-bootstrap.min.css'>
-<!-- /select2 -->
-
-<!-- Fancybox -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-<!-- /Fancybox -->
 
 <?php
-
+$element = new HTML\element();
+// datatables is defined
+if (defined('datatables')) {
+  include __DIR__ . '/../assets/partial/datatables.php';
+}
+//if select2 defined
+if (defined('select2')) {
+  echo '<link rel="stylesheet" href="/node_modules/select/dist/css/select2.min.css">';
+  echo '<script src="/node_modules/select/dist/js/select2.min.js"></script>';
+  $element->link([
+    [__DIR__ . '/assets/style.select2.min.css', __DIR__ . '/assets/style.select2.css'],
+  ], true, true, 'stylesheet');
+  $element->script([
+    [__DIR__ . '/assets/select2.parser.min.js', __DIR__ . '/assets/select2.parser.js'],
+  ], true, true);
+}
+//if materialize defined
+if (defined('materialize')) {
+  echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+  echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>';
+}
 // application javascript
 echo $element->js([
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
     __DIR__ . '/../assets/js/app.min.js', __DIR__ . '/../assets/js/app.js'
+  ])),
+  \MVC\helper::get_url_path(\MVC\helper::asset_find([
+    __DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js'
   ]))
-  //path2url(__DIR__ . '/../assets/js/app.js')
 ]);
+
+if (defined('jquery-ui')) {
+  echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>';
+}
+
+/**
+ * defined custom script src.
+ *
+ * @todo Dynamic include script src
+ */
+$scriptsrc = defined('SCRIPTSRC') ? SCRIPTSRC : (defined('scriptsrc') ? scriptsrc : null);
+if (null !== $scriptsrc) {
+  if (is_string($scriptsrc)) {
+    if (file_exists($scriptsrc)) {
+      $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
+      if (!empty(trim($scriptsrc))) {
+        echo '<script src="' . $scriptsrc . '"></script>';
+      }
+    }
+  } elseif (is_array($scriptsrc)) {
+    foreach ($scriptsrc as $src) {
+      if (is_string($src)) {
+        $src = \MVC\helper::get_url_path($src, true);
+        if (!empty(trim($src))) {
+          echo '<script srce="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+        } else {
+          echo htmlcomment("$src not exists");
+        }
+      } elseif (is_array($src)) {
+        foreach ($src as $find) {
+          if (file_exists($find)) {
+            $find = \MVC\helper::get_url_path($find, true);
+            if (!empty(trim($find))) {
+              echo '<script srcx="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+            }
+          } else {
+            echo htmlcomment("$find not exists");
+          }
+        }
+      }
+    }
+  }
+} else {
+  define('scriptsrc', []);
+  define('SCRIPTSRC', []);
+}
+
+
+/**
+ * defined custom style src.
+ *
+ * @todo Dynamic include link rel stylesheet
+ */
+$stylesrc = defined('STYLESRC') ? STYLESRC : (defined('stylesrc') ? stylesrc : null);
+if (null !== $stylesrc) {
+  if (is_string($stylesrc)) {
+    if (file_exists($stylesrc)) {
+      $stylesrc = \MVC\helper::get_url_path($stylesrc, true);
+    }
+    echo '<link rel="stylesheet" href="' . $stylesrc . '">';
+  } elseif (is_array($stylesrc)) {
+    foreach ($stylesrc as $src) {
+      if (is_string($src)) {
+        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
+          echo '<link rel="stylesheet" href="' . $src . '?cache=' . CONFIG['cache']['key'] . '">';
+        } else {
+          echo htmlcomment("$src not exists");
+        }
+      } elseif (is_array($src)) {
+        foreach ($src as $find) {
+          if (file_exists($find) && $find = \MVC\helper::get_url_path($find, true) && !empty(trim($find))) {
+            echo '<link rel="stylesheet" href="' . $find . '?cache=' . CONFIG['cache']['key'] . '">';
+          } else {
+            echo htmlcomment("$find not exists");
+          }
+        }
+      }
+    }
+  }
+} else {
+  define('stylesrc', []);
+  define('STYLESRC', []);
+}
+
+$style = defined('STYLE') && is_array(STYLE) ? STYLE : (defined('style') && is_array(style) ? style : null);
+if ($style) {
+  foreach (STYLE as $style) {
+    if (is_string($style)) {
+      if (file_exists($style)) {
+        echo '<style>';
+        include $style;
+        echo '</style>';
+      }
+    }
+  }
+} else {
+  define('style', []);
+  define('STYLE', []);
+}
 
 // process view content css
 if (isset($content) && file_exists($content)) {
@@ -77,13 +164,20 @@ if (isset($content) && file_exists($content)) {
     echo "<comment style=\"display:none\">$src, $contentMinJS, $contentJS not found</comment>";
   }
 }
-?>
 
-<!-- Custom -->
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script type="text/javascript">
+?>
+<script>
   <?php
-  include __DIR__ . '/custom/custom.min.js';
+  if (defined('SCRIPT')) {
+    foreach (SCRIPT as $primary => $secondary) {
+      \MVC\helper::include_asset($primary, $secondary);
+    }
+  } else {
+    define('SCRIPT', []);
+  }
   ?>
 </script>
-<!-- /Custom -->
+<?php
+
+//render stacked alert
+//\MVC\alert::init()->final(true);

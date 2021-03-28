@@ -31,10 +31,10 @@
 
             <div class="row">
               <div class="col-md-6">
-                <button class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" type="submit">Sign in</button>
+                <button class="btn btn-block z-depth-0 my-4 waves-effect" type="submit">Sign in</button>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-outline-info btn-rounded btn-block z-depth-0 my-4 waves-effect" href="/signup">Sign up</a>
+                <a class="btn btn-block z-depth-0 my-4 waves-effect" href="/signup">Sign up</a>
               </div>
             </div>
 

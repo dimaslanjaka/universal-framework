@@ -6,8 +6,6 @@
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
 <?php
 $element = new HTML\element();
@@ -29,6 +27,7 @@ if (defined('select2')) {
 //if materialize defined
 if (defined('materialize')) {
   echo '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">';
+  echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>';
 }
 // application javascript
 echo $element->js([
@@ -55,24 +54,26 @@ if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (file_exists($scriptsrc)) {
       $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
-      echo '<script src="' . $scriptsrc . '"></script>';
+      if (!empty(trim($scriptsrc))) {
+        echo '<script src="' . $scriptsrc . '"></script>';
+      }
     }
   } elseif (is_array($scriptsrc)) {
     foreach ($scriptsrc as $src) {
       if (is_string($src)) {
-        if ($src = \MVC\helper::get_url_path($src, true) && !empty(trim($src))) {
-          echo '<script src="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+        $src = \MVC\helper::get_url_path($src, true);
+        if (!empty(trim($src))) {
+          echo '<script srce="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
         } else {
           echo htmlcomment("$src not exists");
         }
       } elseif (is_array($src)) {
         foreach ($src as $find) {
-          if (
-            file_exists($find) &&
-            $find = \MVC\helper::get_url_path($find, true) &&
-            !empty(trim($find))
-          ) {
-            echo '<script src="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+          if (file_exists($find)) {
+            $find = \MVC\helper::get_url_path($find, true);
+            if (!empty(trim($find))) {
+              echo '<script srcx="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+            }
           } else {
             echo htmlcomment("$find not exists");
           }
@@ -179,4 +180,4 @@ if (isset($content) && file_exists($content)) {
 <?php
 
 //render stacked alert
-\MVC\alert::init()->final(true);
+//\MVC\alert::init()->final(true);

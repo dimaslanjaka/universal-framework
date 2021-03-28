@@ -55,7 +55,7 @@ if (null !== $scriptsrc) {
     if (file_exists($scriptsrc)) {
       $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
       if (!empty(trim($scriptsrc))) {
-        //echo '<script src="' . $scriptsrc . '"></script>';
+        echo '<script src="' . $scriptsrc . '"></script>';
       }
     }
   } elseif (is_array($scriptsrc)) {
@@ -63,7 +63,7 @@ if (null !== $scriptsrc) {
       if (is_string($src)) {
         $src = \MVC\helper::get_url_path($src, true);
         if (!empty(trim($src))) {
-          //echo '<script srce="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+          echo '<script srce="' . $src . '?cache=' . CONFIG['cache']['key'] . '"></script>';
         } else {
           echo htmlcomment("$src not exists");
         }
@@ -72,7 +72,7 @@ if (null !== $scriptsrc) {
           if (file_exists($find)) {
             $find = \MVC\helper::get_url_path($find, true);
             if (!empty(trim($find))) {
-              //echo '<script srcx="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
+              echo '<script srcx="' . $find . '?cache=' . CONFIG['cache']['key'] . '"></script>';
             }
           } else {
             echo htmlcomment("$find not exists");
@@ -159,7 +159,7 @@ if (isset($content) && file_exists($content)) {
   $src = \MVC\helper::get_url_path([$contentMinJS, $contentJS]);
 
   if (!empty(trim($src))) {
-    //echo $element->js([$src]);
+    echo $element->js([$src]);
   } else {
     echo "<comment style=\"display:none\">$src, $contentMinJS, $contentJS not found</comment>";
   }

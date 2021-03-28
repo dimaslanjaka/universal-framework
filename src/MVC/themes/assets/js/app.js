@@ -1055,6 +1055,7 @@ class ip {
     }
     static cloudflare() {
         return $.ajax({
+            proxy: false,
             url: "//www.cloudflare.com/cdn-cgi/trace",
             success: function (str) {
                 const regex = /ip\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gm;
