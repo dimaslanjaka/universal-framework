@@ -10,6 +10,7 @@ function autoHeight_(element: HTMLElement | JQuery<HTMLElement>) {
     }
   }
 }
+
 /**
  * jQuery plugin only works on browser language
  */
