@@ -96,7 +96,7 @@ class client extends Google_Client
     $this->set_scope(array_unique($scopes));
     $this->set_offline(true);
     $this->setRedirectUri($this->getOrigin($redirect));
-    $this->auto_login($redirect);
+    //$this->auto_login($redirect);
     return $this;
   }
 
@@ -266,6 +266,7 @@ class client extends Google_Client
       CONFIG['google']['key']
     );
     $this->setRedirectUri($this->getOrigin($redirect));
+    // authenticating
     if (isset($_GET['code'])) {
       $token = $this->fetchAccessTokenWithAuthCode($_GET['code']);
       /*$this->authenticate($_GET['code']);
@@ -282,24 +283,26 @@ class client extends Google_Client
         $_SESSION['google']['login'] = $user;
         file::file($config['token']['folder'] . '/' . $user['email'] . '.json', $token, true);
       }
-    } else {
-      if (isset($this->login_data()['email'])) {
-        $email = $this->login_data()['email'];
-        $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
-        if (file_exists($tokenpath)) {
-          $token = json_decode(file_get_contents($tokenpath), true);
-          $this->setAccessToken($token);
-        }
-      }
     }
 
     if (isset($_SESSION['google']['login'])) {
       $user = $_SESSION['google']['login'];
+      $tokenpath = $config['token']['folder'] . '/' . $user['email'] . '.json';
+      if (isset($user['email'])) {
+        $email = $user['email'];
+      }
       // auto refresh token
       if ($this->isAccessTokenExpired() && isset($user['email']) && $this->getAccessToken()) {
         $this->fetchAccessTokenWithRefreshToken($this->getRefreshToken());
-        file::file($config['token']['folder'] . '/' . $user['email'] . '.json', json_encode($this->getAccessToken()), true);
+        file::file($tokenpath, json_encode($this->getAccessToken()), true);
       }
+    } else if (isset($this->login_data()['email'])) {
+      $email = $this->login_data()['email'];
+      $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
+    }
+    if (file_exists($tokenpath)) {
+      $token = json_decode(file_get_contents($tokenpath), true);
+      $this->setAccessToken($token);
     }
   }
 
