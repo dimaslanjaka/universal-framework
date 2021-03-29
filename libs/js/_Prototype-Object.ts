@@ -1,10 +1,5 @@
 /// <reference path="./Object.d.ts"/>
-/**
- * Object management
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @todo easy object processing
- */
-type NotFunction<T> = T extends Function ? never : T;
+/// <reference path="./smartform/src/js/Object.d.ts"/>
 
 Object.size = function (obj) {
   var size = 0,

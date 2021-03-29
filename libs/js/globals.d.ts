@@ -25,12 +25,7 @@ interface JQuery extends jQuery {
    * Get current ID(*) or NAME attribute
    */
   get_unique_identifier(): String;
-  /**
-   * Smartform
-   * @description saving queries from user input
-   * @todo save typed words
-   */
-  smartForm(): void;
+
   smartform_config: smartformConfig;
 
   /**

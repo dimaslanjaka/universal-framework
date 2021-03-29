@@ -1,62 +1,143 @@
+/// <reference path="./Object.d.ts"/>
+/// <reference path="./globals.d.ts"/>
+
 /**
-     * @todo Adding attribute id if not have id
-     */
-    if (!elem.attr("id") || elem.attr("id") == "") {
-      try {
+ * SMARTFORM
+ * @todo save form user input
+ */
+
+/**
+ * Element Counter
+ */
+var Count = -1;
+/**
+ * Local Storage key
+ */
+var storageKey: String = "";
+if (typeof location != "undefined") {
+  location.pathname.replace(/\/$/s, "") + "/formField";
+}
+/**
+ * Element Indexer
+ */
+var formField: object | Array<any>;
+var formSaved = localStorage.getItem(storageKey.toString());
+if (!formSaved) {
+  formField = [];
+} else {
+  formField = JSON.parse(formSaved);
+}
+var uniqueid = guid();
+
+/**
+ * Get unique identifier of elements
+ * @param elem jQuery<HTMLElement> or HTMLElement
+ * @return string of unique identifier
+ */
+function get_unique_id_element(
+  elem: HTMLElement | JQuery<HTMLElement>,
+  encrypted: boolean = false
+) {
+  var element:
+    | HTMLElement
+    | HTMLDocument
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement = null;
+  if (elem instanceof jQuery) {
+    element = elem.get(0);
+  } else if (elem instanceof HTMLElement) {
+    element = elem;
+  }
+
+  if (element != null && !(element instanceof HTMLDocument)) {
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement ||
+      element instanceof HTMLTextAreaElement
+    ) {
+      if (!element.hasAttribute("id") || element.getAttribute("id") == "") {
         if (!(Count in formField)) {
           /**
            * @todo ID generator 6 digit alphanumerics
            */
           var id: string = Math.random().toString(20).substr(2, 6);
-          elem.attr("id", id);
+          element.setAttribute("id", id);
+          /**
+           * Save to localstorage
+           */
           (<any>formField)[Count] = id;
           localStorage.setItem(
             storageKey.toString(),
             JSON.stringify(formField)
           );
         } else {
-          elem.attr("id", (<any>formField)[Count]);
+          element.setAttribute("id", (<any>formField)[Count]);
         }
-      } catch (error) {
-        console.error(error);
-        console.log(formField, typeof formField);
+        /**
+         * Increase indexer
+         */
+        Count++;
       }
-      /**
-       * Increase index offset
-       */
-      Count++;
-    }
-    if (elem.attr("aria-autovalue")) {
-      elem.val(uniqueid);
-    }
-    return (
-      "[" +
+
+      if (element.hasAttribute("aria-autovalue")) {
+        element.setAttribute("value", uniqueid);
+      }
+
+      var combined =
+        "[" +
         location.pathname.replace(/\/$/, "") +
         "/" +
-        elem.prop("tagName") +
+        element.tagName +
         "/" +
-        elem.attr("id") +
+        element.getAttribute("id") +
         "/" +
-        elem.attr("name") || "empty" + "]"
-    );
+        (element.hasAttribute("name")
+          ? element.getAttribute("name")
+          : "empty") +
+        "]";
+      if (encrypted) return md5(combined);
+      return combined;
+    } else {
+      console.log(`element ${element}`);
+    }
+  }
+  return "";
+}
 
+/**
+ * Restore saved values of fields
+ * @param elem
+ */
+function restore_form_fields(elem: HTMLElement | JQuery<HTMLElement>) {
+  Count++;
 
+  var element:
+    | HTMLElement
+    | HTMLDocument
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement = null;
+  if (elem instanceof jQuery) {
+    element = elem.get(0);
+  } else if (elem instanceof HTMLElement) {
+    element = elem;
+  }
 
-    $.fn.smartForm = function () {
-      Count++;
-      //console.log(`${Count} ${$(this).hasAttr("no-save")}`);
-      if ($(this).hasAttr("no-save")) {
-        console.error(
-          `${$(this).get_unique_identifier().toString()} attribute no save exists`
-        );
+  if (element != null && !(element instanceof HTMLDocument)) {
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement ||
+      element instanceof HTMLTextAreaElement
+    ) {
+      if (element.hasAttribute("no-save")) {
         return;
       }
-      var t = $(this);
-      //set indicator
-      t.attr("aria-smartform", uniqueid);
+      // set indicator
+      element.setAttribute("aria-smartform", uniqueid);
       var item: string | number | boolean | symbol | object;
-      var key = t.get_unique_identifier().toString();
-      var type = $(this).attr("type");
+      var key = get_unique_id_element(element);
+      var type = element.getAttribute("type");
 
       // begin restoration
       if (key != null && key != "null" && key.length > 0) {
@@ -70,13 +151,15 @@
           if (item === null) {
             return;
           }
-          $(this).prop("checked", item);
+          element.setAttribute("checked", item.toString());
+          element.checked = item;
           return;
         }
         // radio input button
         else if (type === "radio") {
           item = localStorage.getItem(key) === "on";
-          $(this).prop("checked", item);
+          element.setAttribute("checked", item.toString());
+          element.checked = item;
           return;
         }
         // input text number, textarea, or select
@@ -86,8 +169,186 @@
           if (item === null || !item.toString().length) {
             return;
           }
-          $(this).val(item);
+          element.setAttribute("value", item);
+          element.value = item;
         }
-        //console.log('load', type, key, item);
       }
-    };
+    }
+  }
+}
+
+/**
+ * Save textarea values
+ * @param elem
+ */
+function save_fields(elem: HTMLElement | JQuery<HTMLElement>) {
+  var element:
+    | HTMLElement
+    | HTMLDocument
+    | HTMLInputElement
+    | HTMLTextAreaElement
+    | HTMLSelectElement = null;
+  if (elem instanceof jQuery) {
+    element = elem.get(0);
+  } else if (elem instanceof HTMLElement) {
+    element = elem;
+  }
+  if (element != null && !(element instanceof HTMLDocument)) {
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement ||
+      element instanceof HTMLTextAreaElement
+    ) {
+      get_unique_id_element(element);
+      var aria = element.getAttribute("aria-smartform");
+      if (aria && aria != uniqueid) {
+        if (typeof jQuery != "undefined") {
+          $(element).smartForm();
+          $(element).attr("aria-smartform", uniqueid);
+        }
+      }
+    }
+  }
+}
+
+if (!(typeof module !== "undefined" && module.exports)) {
+  if (typeof jQuery != "undefined") {
+    (function ($) {
+      $.fn.smartform_config = {
+        console_log: false,
+      };
+      $.fn.get_unique_identifier = function () {
+        return get_unique_id_element($(this));
+      };
+      $.fn.smartForm = function () {
+        restore_form_fields($(this));
+      };
+
+      $.arrive = function (target, callback) {
+        if (target) {
+          $(target).bind("DOMNodeInserted", callback);
+        } else {
+          if (typeof callback == "function") {
+            $(document).bind("DOMNodeInserted", callback);
+          } else if (typeof target == "function") {
+            $(document).bind("DOMNodeInserted", target);
+          }
+        }
+      };
+
+      // bind to new elements
+      $(document).bind("DOMNodeInserted", function () {
+        var t = $(this);
+        var val = localStorage.getItem(t.get_unique_identifier().toString());
+        var tag = t.prop("tagName");
+        var allowed =
+          !t.hasAttr("no-save") &&
+          t.hasAttr("aria-smartform") &&
+          typeof tag != "undefined";
+
+        if (allowed && val) {
+          console.log(tag, allowed && val);
+          switch (t.prop("tagName")) {
+            case "SELECT":
+            case "INPUT":
+            case "TEXTAREA":
+              t.val(val);
+              break;
+          }
+        }
+      });
+
+      // detach from removed elements
+      $(document).bind("DOMNodeRemoved", function () {
+        var t = $(this);
+        var allowed = !t.hasAttr("no-save") && t.hasAttr("aria-smartform");
+        if (allowed) {
+          switch (t.prop("tagName")) {
+            case "SELECT":
+            case "INPUT":
+            case "TEXTAREA":
+              t.off("change");
+              break;
+          }
+        }
+      });
+
+      //save value to localstorage
+      $(document).on("change", "select, input, textarea", function (e) {
+        var t = $(this);
+        var key = t.get_unique_identifier().toString();
+        var item = t.val();
+        var allowed = !t.hasAttr("no-save") && t.hasAttr("aria-smartform");
+        if (key && item !== "" && allowed) {
+          if (t.attr("type") == "checkbox") {
+            localStorage.setItem(key, t.is(":checked").toString());
+            console.log("save checkbox button ", $(this).offset());
+            return;
+          }
+          if (t.attr("type") == "radio" && t.attr("id")) {
+            $('[name="' + t.attr("name") + '"]').each(function (i, e) {
+              localStorage.setItem(
+                $(this).get_unique_identifier().toString(),
+                "off"
+              );
+            });
+            setTimeout(() => {
+              localStorage.setItem(key, item.toString());
+              console.log("save radio button ", $(this).offset());
+            }, 500);
+            return;
+          }
+          localStorage.setItem(key, item.toString());
+          //console.log('save', key, localStorage.getItem(key));
+        }
+      });
+
+      $(document).on("focus", "input,textarea,select", function () {
+        save_fields($(this));
+      });
+    })(jQuery);
+  }
+}
+
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+function smartform() {
+  //set value from localstorage
+  var setglobal = function () {
+    jQuery("input,textarea,select").each(function (i, el) {
+      $(this).smartForm();
+    });
+  };
+  if (typeof jQuery != "undefined") setglobal();
+  //setInterval(function () { }, 500);
+}
+
+/**
+ * Copy to clipboard
+ */
+function copyToClipboard(text: string, el: JQuery) {
+  var copyTest = document.queryCommandSupported("copy");
+  var elOriginalText = el.attr("data-original-title");
+
+  if (copyTest === true) {
+    var copyTextArea = document.createElement("textarea");
+    copyTextArea.value = text;
+    document.body.appendChild(copyTextArea);
+    copyTextArea.select();
+    try {
+      var successful = document.execCommand("copy");
+      var msg = successful ? "Copied!" : "Whoops, not copied!";
+      el.attr("data-original-title", msg);
+      el.tooltip("show");
+    } catch (err) {
+      console.log("Oops, unable to copy");
+    }
+    document.body.removeChild(copyTextArea);
+    el.attr("data-original-title", elOriginalText);
+  } else {
+    // Fallback if browser doesn't support .execCommand('copy')
+    window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
+  }
+}

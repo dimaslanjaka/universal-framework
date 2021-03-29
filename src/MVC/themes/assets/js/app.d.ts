@@ -1,7 +1,9 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
+/// <reference path="../../../../../libs/js/smartform/src/js/Object.d.ts" />
 /// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference path="../../../../../libs/js/globals.d.ts" />
+/// <reference path="../../../../../libs/js/smartform/src/js/globals.d.ts" />
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
@@ -304,12 +306,6 @@ interface String {
      */
     isEmpty(): boolean;
 }
-/**
- * Object management
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @todo easy object processing
- */
-declare type NotFunction<T> = T extends Function ? never : T;
 interface ipapi_response {
     ip: "114.4.83.195";
     city: "Jakarta";
@@ -981,49 +977,62 @@ declare var INPT: NodeListOf<Element>;
 declare var index: number;
 declare var element: Element;
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-/**
- * SMARTFORM
- * @todo save form user input
- */
-/**
- * Element Counter
- */
-declare var Count: number;
-/**
- * Local Storage key
- */
-declare var storageKey: String;
-/**
- * Element Indexer
- */
-declare var formField: object | Array<any>;
-declare var formSaved: string;
-declare var uniqueid: string;
-/**
- * Get unique identifier of elements
- * @param elem jQuery<HTMLElement> or HTMLElement
- * @return string of unique identifier
- */
-declare function get_unique_id_element(elem: HTMLElement | JQuery<HTMLElement>, encrypted?: boolean): string;
-/**
- * Restore saved values of fields
- * @param elem
- */
-declare function restore_form_fields(elem: HTMLElement | JQuery<HTMLElement>): void;
-/**
- * Save textarea values
- * @param elem
- */
-declare function save_fields(elem: HTMLElement | JQuery<HTMLElement>): void;
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-declare function smartform(): void;
-/**
- * Copy to clipboard
- */
-declare function copyToClipboard(text: string, el: JQuery): void;
+declare module "smartform/src/js/func" {
+    export function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
+    export function extend(...args: any[]): any;
+    export function getClosest(elem: Element, selector: string): boolean | Element;
+    export function getDataOptions(options: string): any;
+    export function eventHandler(event: any): void;
+    /**
+     * Is Browser (not node)
+     */
+    export var isBrowser: Function;
+    /**
+     * Is Node (not browser)
+     */
+    export var isNode: Function;
+}
+declare module "smartform/src/js/formSaver" {
+    export class formSaver {
+        /**
+         * Save form data to localStorage
+         * @public
+         * @param  {Element} btn Button that triggers form save
+         * @param  {Element} form The form to save
+         * @param  {Object} options
+         * @param  {Event} event
+         */
+        saveForm(btn: any, formID: any, options: any, event: any): void;
+        /**
+         * Remove form data from localStorage
+         * @public
+         * @param  {Element} btn Button that triggers form delete
+         * @param  {Element} form The form to remove from localStorage
+         * @param  {Object} options
+         * @param  {Event} event
+         */
+        deleteForm(btn: any, formID: any, options: any, event: any): void;
+        /**
+         * Load form data from localStorage
+         * @public
+         * @param  {Element} form The form to get data for
+         * @param  {Object} options
+         */
+        loadForm(form: any, options: any): void;
+        /**
+         * Destroy the current initialization.
+         * @public
+         */
+        destroy(): void;
+        /**
+         * Initialize Form Saver
+         * @public
+         * @param {Object} options User settings
+         */
+        init(options: any): void;
+    }
+}
+declare module "jQueryPlugin-smartform" { }
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
@@ -1525,3 +1534,51 @@ declare class ZLIB {
     static decompress(str: any): string;
     static compress(str: any): any;
 }
+declare module "smartform/gulpfile-old" {
+    export {};
+}
+declare module "smartform/gulpfile" {
+    var _default: import("undertaker").TaskFunction;
+    export default _default;
+    export var watch: import("undertaker").TaskFunction;
+}
+declare module "smartform/dist/js/form-saver" {
+    export function saveForm(btn: Element, formID: any, options: any, event: Event): void;
+    export function deleteForm(btn: Element, formID: any, options: any, event: Event): void;
+    export function loadForm(form: Element, options: any): void;
+    export function destroy(): void;
+    export function init(options: any): void;
+}
+declare module "smartform/docs/dist/js/form-saver" {
+    export function saveForm(btn: Element, formID: any, options: any, event: Event): void;
+    export function deleteForm(btn: Element, formID: any, options: any, event: Event): void;
+    export function loadForm(form: Element, options: any): void;
+    export function destroy(): void;
+    export function init(options: any): void;
+}
+/**
+ * Object management
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ * @todo easy object processing
+ */
+declare type NotFunction<T> = T extends Function ? never : T;
+/**
+ * Copy to clipboard
+ */
+declare function copyToClipboard(text: string, el: JQuery): void;
+/**
+ * SMARTFORM
+ * @todo save form user input
+ */
+declare function uniqueIDGen(a?: string, b?: boolean): string;
+declare const isNotNode: boolean;
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+declare function smartform(): void;
+declare function getCookies(): {};
+declare function setCookie(cname: any, cvalue: any, minutes: any): void;
+declare function getCookie(cname: any): string;
+declare function localStorageAvailable(): boolean;
+declare function deleteAllCookies(): void;

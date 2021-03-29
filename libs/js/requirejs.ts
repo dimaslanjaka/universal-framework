@@ -215,7 +215,7 @@ function datatables_init() {
         console.error("Datatables not loaded");
       }
     }
-    resolve();
+    resolve(true);
   });
 }
 

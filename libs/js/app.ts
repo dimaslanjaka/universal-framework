@@ -167,7 +167,7 @@ class dimas {
       if (typeof callback == "function") {
         callback();
       }
-      resolve();
+      resolve(true);
     });
   }
 
