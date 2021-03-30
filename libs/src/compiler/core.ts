@@ -44,7 +44,7 @@ class core {
       if (typeof callback == "function") {
         callback();
       }
-      resolve();
+      resolve(true);
     });
   }
   /**

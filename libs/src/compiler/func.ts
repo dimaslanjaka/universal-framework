@@ -464,9 +464,9 @@ export function async(callback: Function) {
   return new Promise(async function (resolve, reject) {
     if (typeof callback == "function") {
       await callback();
-      resolve();
+      resolve(true);
     } else {
-      reject();
+      reject(false);
     }
   });
 }

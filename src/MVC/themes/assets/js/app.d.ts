@@ -977,62 +977,6 @@ declare var INPT: NodeListOf<Element>;
 declare var index: number;
 declare var element: Element;
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-declare module "smartform/src/js/func" {
-    export function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
-    export function extend(...args: any[]): any;
-    export function getClosest(elem: Element, selector: string): boolean | Element;
-    export function getDataOptions(options: string): any;
-    export function eventHandler(event: any): void;
-    /**
-     * Is Browser (not node)
-     */
-    export var isBrowser: Function;
-    /**
-     * Is Node (not browser)
-     */
-    export var isNode: Function;
-}
-declare module "smartform/src/js/formSaver" {
-    export class formSaver {
-        /**
-         * Save form data to localStorage
-         * @public
-         * @param  {Element} btn Button that triggers form save
-         * @param  {Element} form The form to save
-         * @param  {Object} options
-         * @param  {Event} event
-         */
-        saveForm(btn: any, formID: any, options: any, event: any): void;
-        /**
-         * Remove form data from localStorage
-         * @public
-         * @param  {Element} btn Button that triggers form delete
-         * @param  {Element} form The form to remove from localStorage
-         * @param  {Object} options
-         * @param  {Event} event
-         */
-        deleteForm(btn: any, formID: any, options: any, event: any): void;
-        /**
-         * Load form data from localStorage
-         * @public
-         * @param  {Element} form The form to get data for
-         * @param  {Object} options
-         */
-        loadForm(form: any, options: any): void;
-        /**
-         * Destroy the current initialization.
-         * @public
-         */
-        destroy(): void;
-        /**
-         * Initialize Form Saver
-         * @public
-         * @param {Object} options User settings
-         */
-        init(options: any): void;
-    }
-}
-declare module "jQueryPlugin-smartform" { }
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
@@ -1566,6 +1510,66 @@ declare type NotFunction<T> = T extends Function ? never : T;
  * Copy to clipboard
  */
 declare function copyToClipboard(text: string, el: JQuery): void;
+declare module "smartform/src/js/func" {
+    /**
+     * Set all forms to be smart
+     * @todo save input fields into browser for reusable form
+     */
+    export function smartform(): void;
+    export function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
+    export function extend(...args: any[]): any;
+    export function getClosest(elem: Element, selector: string): boolean | Element;
+    export function getDataOptions(options: string): any;
+    export function eventHandler(event: any): void;
+    /**
+     * Is Browser (not node)
+     */
+    export var isBrowser: Function;
+    /**
+     * Is Node (not browser)
+     */
+    export var isNode: Function;
+}
+declare module "smartform/src/js/formSaver" {
+    export class formSaver {
+        /**
+         * Save form data to localStorage
+         * @public
+         * @param  {Element} btn Button that triggers form save
+         * @param  {Element} form The form to save
+         * @param  {Object} options
+         * @param  {Event} event
+         */
+        saveForm(btn: any, formID: any, options: any, event: any): void;
+        /**
+         * Remove form data from localStorage
+         * @public
+         * @param  {Element} btn Button that triggers form delete
+         * @param  {Element} form The form to remove from localStorage
+         * @param  {Object} options
+         * @param  {Event} event
+         */
+        deleteForm(btn: any, formID: any, options: any, event: any): void;
+        /**
+         * Load form data from localStorage
+         * @public
+         * @param  {Element} form The form to get data for
+         * @param  {Object} options
+         */
+        loadForm(form: any, options: any): void;
+        /**
+         * Destroy the current initialization.
+         * @public
+         */
+        destroy(): void;
+        /**
+         * Initialize Form Saver
+         * @public
+         * @param {Object} options User settings
+         */
+        init(options: any): void;
+    }
+}
 /**
  * SMARTFORM
  * @todo save form user input
