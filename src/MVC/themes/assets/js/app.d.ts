@@ -1,9 +1,8 @@
 /// <reference path="../../../../../libs/js/Object.d.ts" />
-/// <reference path="../../../../../libs/js/smartform/src/js/Object.d.ts" />
+/// <reference path="../../../../../libs/src/smartform/src/js/Object.d.ts" />
 /// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference path="../../../../../libs/js/globals.d.ts" />
-/// <reference path="../../../../../libs/js/smartform/src/js/globals.d.ts" />
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
@@ -768,6 +767,17 @@ declare class dimas {
      */
     isNumber(v: string | number): boolean;
     /**
+     * Check if valid url
+     * @param url url address
+     */
+    isURL(url: string): boolean;
+    /**
+     * Check url is valid and reachable
+     * @param url url address
+     * @param callback callback function
+     */
+    isURLReachable(url: string, callback: (arg0: boolean, arg1: string) => any): void;
+    /**
      * strpad / startwith zero [0]
      * @param {number} val
      */
@@ -976,7 +986,59 @@ declare function setInputFilter(textbox: any, inputFilter: any): void;
 declare var INPT: NodeListOf<Element>;
 declare var index: number;
 declare var element: Element;
+/**
+ * Auto height textarea
+ */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
+declare function extend_setting_form(...param: any[]): {
+    selectorStatus: string;
+    selectorSave: string;
+    selectorDelete: string;
+    selectorIgnore: string;
+    deleteClear: boolean;
+    saveMessage: string;
+    deleteMessage: string;
+    saveClass: string;
+    deleteClass: string;
+    initClass: string;
+    callbackSave: () => void;
+    callbackDelete: () => void;
+    callbackLoad: () => void;
+};
+declare function formsaver(): void;
+declare function forEach(collection: any, callback: any, scope?: any): void;
+declare function getClosest(elem: any, selector: any): any;
+declare function getDataOptions(options: any): any;
+declare function eventHandler(event: any): void;
+declare var isBrowser: Function;
+declare var isNode: Function;
+declare var settings: any;
+declare var forms: any;
+declare namespace defaults {
+    const selectorStatus: string;
+    const selectorSave: string;
+    const selectorDelete: string;
+    const selectorIgnore: string;
+    const deleteClear: boolean;
+    const saveMessage: string;
+    const deleteMessage: string;
+    const saveClass: string;
+    const deleteClass: string;
+    const initClass: string;
+    function callbackSave(): void;
+    function callbackDelete(): void;
+    function callbackLoad(): void;
+}
+declare class formSaver {
+    static saveForm(btn: any, formID: any, options: any, event?: any): void;
+    static deleteForm(btn: any, formID: any, options: any, event?: any): void;
+    loadForm(form: any, options: any): void;
+    destroy(): void;
+    init(options: any): void;
+    auto(): void;
+}
+declare function makeid(length: any): string;
+declare function makeid(length: number): string;
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
@@ -1361,6 +1423,7 @@ declare function countNewLines(placeholder: string): string | number;
  * @param {Function} callback
  */
 declare function findDups(arr: Array<any>, callback: Function): any;
+declare function makeid(length: any): string;
 /**
  * Auto Generate ID
  * @param {Number} length
@@ -1478,111 +1541,3 @@ declare class ZLIB {
     static decompress(str: any): string;
     static compress(str: any): any;
 }
-declare module "smartform/gulpfile-old" {
-    export {};
-}
-declare module "smartform/gulpfile" {
-    var _default: import("undertaker").TaskFunction;
-    export default _default;
-    export var watch: import("undertaker").TaskFunction;
-}
-declare module "smartform/dist/js/form-saver" {
-    export function saveForm(btn: Element, formID: any, options: any, event: Event): void;
-    export function deleteForm(btn: Element, formID: any, options: any, event: Event): void;
-    export function loadForm(form: Element, options: any): void;
-    export function destroy(): void;
-    export function init(options: any): void;
-}
-declare module "smartform/docs/dist/js/form-saver" {
-    export function saveForm(btn: Element, formID: any, options: any, event: Event): void;
-    export function deleteForm(btn: Element, formID: any, options: any, event: Event): void;
-    export function loadForm(form: Element, options: any): void;
-    export function destroy(): void;
-    export function init(options: any): void;
-}
-/**
- * Object management
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- * @todo easy object processing
- */
-declare type NotFunction<T> = T extends Function ? never : T;
-/**
- * Copy to clipboard
- */
-declare function copyToClipboard(text: string, el: JQuery): void;
-declare module "smartform/src/js/func" {
-    /**
-     * Set all forms to be smart
-     * @todo save input fields into browser for reusable form
-     */
-    export function smartform(): void;
-    export function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
-    export function extend(...args: any[]): any;
-    export function getClosest(elem: Element, selector: string): boolean | Element;
-    export function getDataOptions(options: string): any;
-    export function eventHandler(event: any): void;
-    /**
-     * Is Browser (not node)
-     */
-    export var isBrowser: Function;
-    /**
-     * Is Node (not browser)
-     */
-    export var isNode: Function;
-}
-declare module "smartform/src/js/formSaver" {
-    export class formSaver {
-        /**
-         * Save form data to localStorage
-         * @public
-         * @param  {Element} btn Button that triggers form save
-         * @param  {Element} form The form to save
-         * @param  {Object} options
-         * @param  {Event} event
-         */
-        saveForm(btn: any, formID: any, options: any, event: any): void;
-        /**
-         * Remove form data from localStorage
-         * @public
-         * @param  {Element} btn Button that triggers form delete
-         * @param  {Element} form The form to remove from localStorage
-         * @param  {Object} options
-         * @param  {Event} event
-         */
-        deleteForm(btn: any, formID: any, options: any, event: any): void;
-        /**
-         * Load form data from localStorage
-         * @public
-         * @param  {Element} form The form to get data for
-         * @param  {Object} options
-         */
-        loadForm(form: any, options: any): void;
-        /**
-         * Destroy the current initialization.
-         * @public
-         */
-        destroy(): void;
-        /**
-         * Initialize Form Saver
-         * @public
-         * @param {Object} options User settings
-         */
-        init(options: any): void;
-    }
-}
-/**
- * SMARTFORM
- * @todo save form user input
- */
-declare function uniqueIDGen(a?: string, b?: boolean): string;
-declare const isNotNode: boolean;
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-declare function smartform(): void;
-declare function getCookies(): {};
-declare function setCookie(cname: any, cvalue: any, minutes: any): void;
-declare function getCookie(cname: any): string;
-declare function localStorageAvailable(): boolean;
-declare function deleteAllCookies(): void;

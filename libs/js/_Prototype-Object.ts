@@ -1,5 +1,5 @@
 /// <reference path="./Object.d.ts"/>
-/// <reference path="./smartform/src/js/Object.d.ts"/>
+/// <reference path="../src/smartform/src/js/Object.d.ts"/>
 
 Object.size = function (obj) {
   var size = 0,

@@ -314,7 +314,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
  * Set all forms to be smart
  * @todo save input fields into browser for reusable form
  */
-function smartform() {
+function formsaver() {
   //set value from localstorage
   var setglobal = function () {
     jQuery("input,textarea,select").each(function (i, el) {

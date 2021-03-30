@@ -205,6 +205,39 @@ class dimas {
   }
 
   /**
+   * Check if valid url
+   * @param url url address
+   */
+  isURL(url: string) {
+    let result: URL;
+    try {
+      result = new URL(url);
+    } catch (_) {
+      return false;
+    }
+
+    return result.protocol === "http:" || result.protocol === "https:";
+  }
+
+  /**
+   * Check url is valid and reachable
+   * @param url url address
+   * @param callback callback function
+   */
+  isURLReachable(url: string, callback: (arg0: boolean, arg1: string) => any) {
+    if (this.isURL(url)) {
+      var myRequest = new Request(url);
+
+      fetch(myRequest).then(function (response) {
+        console.log(`${response.status} ${url}`);
+        if (response.status == 200) {
+          callback(true, url);
+        }
+      });
+    }
+  }
+
+  /**
    * strpad / startwith zero [0]
    * @param {number} val
    */

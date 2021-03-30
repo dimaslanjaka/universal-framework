@@ -31,6 +31,7 @@ interface JQuery extends jQuery {
   /**
    * Auto height textarea based on input
    * @example $('textarea').autoHeight();
+   * @see https://mdbootstrap.com/support/general/text-area-auto-grow/
    */
   autoHeight(): void;
 

@@ -7,6 +7,7 @@ $GLOBALS['router_state'] = [];
 class router extends themes
 {
   public $root;
+  public $PHP_ERROR_FILE = PHP_ERROR_FILE;
 
   public function __construct()
   {
@@ -84,7 +85,7 @@ class router extends themes
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
         ini_set('log_errors', 1);
-        ini_set('error_log', \Filemanager\file::file(__DIR__ . '/tmp/php-error.log', ''));
+        ini_set('error_log', \Filemanager\file::file($this->PHP_ERROR_FILE, ''));
         break;
 
       case 'production':

@@ -34,4 +34,4 @@ userdata.fetch(function (res) {
 recaptcha().set_key("6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie");
 recaptcha().init();
 // activate smartform whole documents
-smartform();
+formsaver();

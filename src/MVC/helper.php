@@ -213,7 +213,7 @@ class helper
    */
   public static function php_error_log(bool $onlypath = false)
   {
-    $log = __DIR__ . '/tmp/php-error.log';
+    $log = PHP_ERROR_FILE;
     if ($log = realpath($log)) {
       if ('DELETE' == $_SERVER['REQUEST_METHOD']) {
         if ('php' == self::is_header('Log')) {

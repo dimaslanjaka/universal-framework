@@ -22,11 +22,51 @@
         "showReuseMessage": true,
         "clear": false
       },
-      "command": "npm run start",
+      "command": "npm --silent run start",
       "runOptions": {
         "instanceLimit": 1,
         "reevaluateOnRerun": true,
         "runOn": "folderOpen"
+      }
+    },
+    {
+      "label": "Build Using Typescript Compiler",
+      "detail": "Install compiler without gulp, using default typescript compiler",
+      "type": "shell",
+      "isBackground": true,
+      "options": {},
+      "command": "npm --silent run build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
+      }
+    },
+    {
+      "label": "Build Components",
+      "detail": "Install components (form saver, etc)",
+      "type": "shell",
+      "isBackground": true,
+      "options": {},
+      "command": "npm --silent run component-build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "runOptions": {
+        "instanceLimit": 1,
+        "reevaluateOnRerun": true
       }
     }
   ]

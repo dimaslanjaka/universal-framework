@@ -23,7 +23,7 @@ __rar*
 sync-config.json
 sftp.json
 sftp*.json
-config.json
+#config.json
 *-private*
 
 # Ignore output builder

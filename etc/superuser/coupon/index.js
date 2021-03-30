@@ -27,7 +27,7 @@ $(document).ready(function () {
     );
   });
 
-  smartform();
+  formsaver();
 
   $.fn.dataTable.ext.errMode = "none";
   table = $("#listCoupons").DataTable({

@@ -1,2 +1,2 @@
 AjaxForm();
-smartform();
+formsaver();

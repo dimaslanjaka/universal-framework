@@ -76,7 +76,7 @@ if (!empty($template)) {
     }
     $template_stack[$key] = $value;
   }
-}
+} 
 
 // Set template by zone divider
 $theme->setThemeByZones(

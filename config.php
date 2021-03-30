@@ -10,6 +10,9 @@ define('ROOT', __DIR__);
 resolve_dir(ROOT . '/tmp');
 resolve_dir(ROOT . '/src/Session/sessions');
 
+// define php error file
+define('PHP_ERROR_FILE',  ROOT . '/tmp/php-error.log');
+
 // define cors detector
 define('CORS', \MVC\helper::cors());
 

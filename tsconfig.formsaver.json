@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": false,
-    "target": "ES5",
+    "target": "ES6",
     "module": "amd",
     "declaration": false,
     "removeComments": false,
@@ -10,15 +10,13 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "checkJs": false,
-    "outFile": "./libs/src/compiler/framework.js",
-    "sourceRoot": "./libs/js/",
-    "rootDir": "./libs/js/",
-    "sourceMap": true,
+    "outFile": "./libs/js/jQueryPlugin-formsaver.js",
+    "sourceRoot": "./src/smartform/src/",
+    "sourceMap": false,
+    "inlineSourceMap": true,
     "watch": false,
     "skipLibCheck": true,
     "importHelpers": true,
-    "charset": "UTF-8",
-    "disableSizeLimit": false,
     "lib": [
       "DOM",
       "ESNext",
@@ -31,12 +29,11 @@
     ],
     "typeRoots": ["node_modules/@types"]
   },
-  "include": ["./libs/js/**/*"],
+  "include": ["./libs/src/smartform/dist/release/bundle.js"],
   "typeAcquisition": {
-    "include": ["jQuery", "toastr", "sweetalert", "CryptoJS", "crypto-js"]
+    "include": ["jQuery", "toastr", "sweetalert", "CryptoJS"]
   },
   "exclude": [
-    "./libs/js/jQueryPlugin-formsaver.js",
     "node_modules",
     "**/.vscode/**",
     "**/node_modules/**",
