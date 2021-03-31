@@ -164,6 +164,8 @@ if (!realpath($view)) {
   }
   http_response_code(404);
   include __DIR__ . '/404.php';
+  // @todo if not found auto remove config meta
+  //
 } elseif ($view = realpath($view)) {
   // if file exists, set as view
   $theme->view($view);

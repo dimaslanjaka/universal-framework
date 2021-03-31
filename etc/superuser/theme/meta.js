@@ -1,4 +1,34 @@
-$("#meta").DataTable({
+formsaver();
+// datatables instance
+var table;
+// global data for searching datatables
+var table_search_data = "";
+// disable alert
+$.fn.dataTable.ext.errMode = "none";
+// custom search
+// the common/unified plugin (for all datatables)
+$.fn.DataTable.ext.search.push(function (
+  settings,
+  columnsOutput,
+  dataIndex,
+  data,
+  outputIndex
+) {
+  // this = ext.search array (all custom search functions (including this one)
+  if (settings._myFilter) {
+    return settings._myFilter.call(settings, {
+      data: data,
+      dataIndex: dataIndex,
+      outputIndex: outputIndex,
+      columnsOutput: columnsOutput,
+      settings: settings,
+    });
+  } else {
+    return true;
+  }
+});
+
+table = $("#meta").DataTable({
   destroy: true,
   dom: "Bfrtip",
   processing: false,
@@ -65,7 +95,10 @@ $("#meta").DataTable({
     },
   },
   rowCallback: function (row, data) {
-    $("td:eq(0)", row).append(data.html_hidden);
+    //console.log(row);
+    $("td:eq(0)", row).attr("data-label", data.data.title);
+    //console.log(data);
+    //$("td:eq(0)", row).append(data.html_hidden);
   },
   columns: [
     {
@@ -85,4 +118,36 @@ $("#meta").DataTable({
       data: "modified",
     },
   ],
+  initComplete: function (settings, json) {
+    //Initialise the api
+    var api = this.api();
+
+    //Set a counter to zero, needed later for filter grouping
+    var i = 0;
+
+    //Use an array to define which columns we want to filter on and call the .every() method
+    api.columns([0, 1, 2]).every(function (index) {
+      //Reference the current column
+      var column = this;
+      console.log(column);
+    });
+
+    settings._myFilter = function (info) {
+      if ($("#jFilter").prop("checked")) {
+        var idata = info.data.data;
+        console.log(object_join(idata));
+        return info.data.data.toLowerCase().indexOf("j") >= 0;
+      } else {
+        return true;
+      }
+    };
+  },
+});
+
+table.on("search.dt", function () {
+  table_search_data = $(".dataTables_filter input")[0].value;
+  //console.log(input.value);
+});
+$("#jFilter").on("click", function () {
+  table.draw(); // redraw will apply all the filters
 });

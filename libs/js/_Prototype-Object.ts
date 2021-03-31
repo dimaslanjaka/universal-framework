@@ -1,4 +1,5 @@
-/// <reference path="./Object.d.ts"/>
+/// <reference path="globals.d.ts" />
+/// <reference path="Object.d.ts" />
 /// <reference path="../src/smartform/src/js/Object.d.ts"/>
 
 Object.size = function (obj) {
@@ -46,3 +47,16 @@ Object.each = function (callback) {
 Object.isEmpty = function () {
   return this.length === 0;
 };
+
+/**
+ * Join object to separated string
+ * @param obj Object
+ * @returns Joined string
+ */
+function object_join(obj: object) {
+  return Object.keys(obj)
+    .map(function (k) {
+      return obj[k];
+    })
+    .join(",");
+}

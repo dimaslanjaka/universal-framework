@@ -838,6 +838,7 @@ class STORAGE {
 function storage() {
     return new STORAGE();
 }
+/// <reference path="globals.d.ts" />
 String.prototype.parse_url = function () {
     var parser = document.createElement("a"), searchObject, queries, split, i;
     // Let the browser do the work
@@ -924,7 +925,8 @@ String.prototype.isEmpty = function () {
     }
     return false;
 };
-/// <reference path="./Object.d.ts"/>
+/// <reference path="globals.d.ts" />
+/// <reference path="Object.d.ts" />
 /// <reference path="../src/smartform/src/js/Object.d.ts"/>
 Object.size = function (obj) {
     var size = 0, key;
@@ -969,6 +971,18 @@ Object.each = function (callback) {
 Object.isEmpty = function () {
     return this.length === 0;
 };
+/**
+ * Join object to separated string
+ * @param obj Object
+ * @returns Joined string
+ */
+function object_join(obj) {
+    return Object.keys(obj)
+        .map(function (k) {
+        return obj[k];
+    })
+        .join(",");
+}
 /// <reference path="_Prototype-String.ts"/>
 /// <reference path="_Prototype-Object.ts"/>
 const cookie_ip = "ip".rot13();

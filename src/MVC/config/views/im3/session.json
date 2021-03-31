@@ -1,10 +1,5 @@
 {
-    "published": "05/15/20 9:18 AM",
-    "modified": "05/15/20 9:18 AM",
-    "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
-    "theme": false,
-    "title": "/im3/session",
-    "share": false,
-    "desc": "",
-    "content": "\\views\\im3\\session.php"
+    "path": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\im3\\session.json",
+    "config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\im3\\session.json",
+    "title": "Session manager"
 }

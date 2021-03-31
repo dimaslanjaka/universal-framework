@@ -2,7 +2,11 @@
 <section>
   <div class="card">
     <div class="card-body">
-      <table class="table" id="meta"></table>
+      <div>
+        <label><input id="jFilter" type="checkbox"> J only</label>
+      </div>
+      <table class="table" id="meta">
+      </table>
     </div>
   </div>
 </section>
