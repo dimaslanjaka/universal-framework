@@ -1011,6 +1011,11 @@ Object.each = function (callback) {
 Object.isEmpty = function () {
     return this.length === 0;
 };
+/**
+ * Join object to separated string
+ * @param obj Object
+ * @returns Joined string
+ */
 function object_join(obj) {
     return Object.keys(obj)
         .map(function (k) {
