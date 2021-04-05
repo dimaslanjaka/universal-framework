@@ -94,7 +94,7 @@ class themes
     }
 
     /*
-     * Setup default meta
+     * @todo Setup default meta
      */
     $this->meta = [
       'published' => date('m/j/y g:i A'),
@@ -109,6 +109,7 @@ class themes
       'obfuscate' => false,
       'cache' => false,
       'label' => 'default',
+      'meta_config' => $this->config
     ];
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');
@@ -259,11 +260,17 @@ class themes
     return $this;
   }
 
+  /**
+   * Remove root path
+   */
   public function remove_root($path)
   {
     return str_replace($this->root, '', $path);
   }
 
+  /**
+   * Transform to linux separated file
+   */
   public function fix_slash($path)
   {
     return preg_replace('/(\/|\\\\){2,100}/m', '/', $path);
@@ -393,6 +400,7 @@ class themes
 
   public function load_render(array $variables, bool $print = true)
   {
+    $this->meta['meta_config'] = fixpath($this->config);
     //exit(\JSON\json::json($this));
     if (file_exists($this->view)) {
       // Extract the variables to a local namespace
@@ -435,6 +443,9 @@ class themes
     }
   }
 
+  /**
+   * Load admin tools
+   */
   public function load_admin_tools()
   {
     if ($this->is_admin()) {

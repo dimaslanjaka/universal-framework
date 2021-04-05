@@ -2,6 +2,7 @@
 
 namespace Filemanager;
 
+use JSON\json;
 use MVC\Exception;
 
 class file
@@ -170,7 +171,7 @@ class file
     }
     if (file_exists($file)) {
       $ret = file_get_contents($file);
-      if ($parse_json && \JSON\json::is_json($ret)) {
+      if ($parse_json && json::is_json($ret)) {
         $ret = json_decode($ret, true);
       }
     }

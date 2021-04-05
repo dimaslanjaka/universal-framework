@@ -27,7 +27,7 @@
         <h5 class="text-uppercase font-weight-bold">Information</h5>
         <p>
           By accessing this website, you accept our cookie policies. Recommended using browser <b>chrome</b> with <b>disabled LITE mode</b>.
-          <div id="debug-container"></div>
+        <div id="debug-container"></div>
         </p>
 
       </div>

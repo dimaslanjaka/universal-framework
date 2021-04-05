@@ -68,10 +68,6 @@ class Exception extends \Exception
 
   public function is_admin()
   {
-    if (isset($_SESSION['login'])) {
-      if (isset($_SESSION['login']['role'])) {
-        return preg_match('/^superadmin$/s', $_SESSION['login']['role']);
-      }
-    }
+    return is_admin();
   }
 }

@@ -66,6 +66,14 @@ if (!defined('ENVIRONMENT')) {
       }
       ?>
     </div>
+
+    <section>
+      <?php
+      if (is_admin()) {
+        include __DIR__ . '/../meta-editor.php';
+      }
+      ?>
+    </section>
   </main>
 
   <?php include __DIR__ . '/footer.php'; ?>

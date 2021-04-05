@@ -138,7 +138,7 @@ function fixurl(string $url)
 }
 
 /**
- * Fix path separator
+ * Fix path separator based OS
  *
  * @param string $subject
  * @return string

@@ -1,5 +1,6 @@
 <?php
 $user = user();
+
 if (!$user->is_admin() || !isset($Config)) {
   return;
 }
