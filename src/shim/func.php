@@ -204,3 +204,21 @@ function get_includes()
 
   return $inc;
 }
+
+/**
+ * check session name exist ($_SESSION)
+ */
+function is_session(string $sessionName)
+{
+  return isset($_SESSION[$sessionName]);
+}
+
+/**
+ * Get session value by name ($_SESSION)
+ */
+function get_session(string $sessionName)
+{
+  if (is_session($sessionName)) {
+    return $_SESSION[$sessionName];
+  }
+}

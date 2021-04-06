@@ -41,7 +41,8 @@
       "simplehtmldom\\": "src/simplehtmldom/",
       "Telkomsel\\": "src/Telkomsel/",
       "Typehint\\": "src/Typehint/",
-      "User\\": "src/User/"
+      "User\\": "src/User/",
+      "Utils\\": "src/Utils/"
     }
   },
   "bin": [

@@ -51,3 +51,14 @@ function isRequest(string $methodName)
 {
   return $_SERVER['REQUEST_METHOD'] == strtoupper($methodName);
 }
+
+/**
+ * Get request value by name ($_REQUEST)
+ */
+function getRequest(string $requestName)
+{
+  if (isset($_REQUEST[$requestName])) {
+    return $_REQUEST[$requestName];
+  }
+  return null;
+}
