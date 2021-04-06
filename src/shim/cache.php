@@ -147,7 +147,7 @@ function process_page(bool $obfuscatejs, \MVC\themes $theme)
    */
   $result = str_replace('</html>', '', $result);
   echo $result;
-  $theme->load_admin_tools();
+  //$theme->load_admin_tools();
 
   echo '</html>';
 }

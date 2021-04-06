@@ -1,14 +1,16 @@
 {
-    "published": "03/31/21 8:34 AM",
-    "modified": "03/31/21 8:34 AM",
+    "published": "2021-04-06T07:45:00",
+    "modified": "2021-04-06T07:45:00",
     "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
     "theme": true,
-    "title": "/superuser/theme/meta/index?fetch",
+    "title": "Meta Site Manager",
     "share": false,
     "desc": "",
-    "content": "\\etc\\superuser\\theme\\meta\\index.php",
+    "content": "D:\\Workspaces\\PHP\\universal-framework\\etc\\superuser\\theme\\meta\\index.php",
     "robot": "noindex, nofollow",
     "obfuscate": false,
     "cache": false,
-    "label": "default"
+    "label": "default",
+    "meta_config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\etc\\superuser\\theme\\meta\\index.json",
+    "comments": false
 }

@@ -6,6 +6,7 @@ if (!function_exists('folder_session')) {
   include __DIR__ . '/loader.php';
 }
 
+use Filemanager\file;
 use JSON\json;
 
 class themes
@@ -38,64 +39,7 @@ class themes
       }
     }
 
-    /*
-     * Load admin utility
-     */
-    if ($this->is_admin()) {
-      // Metadata receiver
-      if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
-        unset($_POST['meta-save']);
-        if (isset($_POST['meta-config'])) {
-          $config_meta = $_POST['meta-config'];
-          unset($_POST['meta-config']);
-          if ($config_meta = realpath($config_meta)) {
-            foreach ($_POST as $key => $value) {
-              if ('true' == $value) {
-                $_POST[$key] = true;
-              } elseif ('false' == $value) {
-                $_POST[$key] = false;
-              } elseif (is_numeric($value)) {
-                settype($_POST[$key], 'integer');
-              } elseif (is_string($value)) {
-                $_POST[$key] = trim($value);
-              }
-            }
-            $meta_data = $_POST;
-            //robot tag header
-            if (!isset($meta_data['robot'])) {
-              $meta_data['robot'] = 'noindex, nofollow';
-            }
-            //allow comments
-            if (!isset($meta_data['comments'])) {
-              $meta_data['comments'] = false;
-            }
-            //cache page
-            if (!isset($meta_data['cache'])) {
-              $meta_data['cache'] = false;
-            }
-            // obfuscate javascript
-            if (!isset($meta_data['obfuscate'])) {
-              $meta_data['obfuscate'] = true;
-            }
-            if (file_exists($config_meta)) {
-              \Filemanager\file::file($config_meta, $meta_data, true);
-              if (!\MVC\helper::cors()) {
-                safe_redirect(\MVC\helper::geturl());
-              } else {
-                if (ob_get_level()) {
-                  ob_end_clean();
-                }
-                exit(\JSON\json::json(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]));
-              }
-            }
-          }
-        }
-      }
-    }
-
-    /*
-     * @todo Setup default meta
-     */
+    // @todo Setup default meta
     $this->meta = [
       'published' => date('m/j/y g:i A'),
       'modified' => date('m/j/y g:i A'),
@@ -111,6 +55,7 @@ class themes
       'label' => 'default',
       'meta_config' => $this->config
     ];
+
     $this->root = realpath(__DIR__ . '/../../');
     $this->root_theme = realpath(__DIR__ . '/themes');
     $this->view = helper::platformSlashes($this->root . '/view');
@@ -195,12 +140,6 @@ class themes
   {
     $this->theme = $theme;
     $this->root_theme = helper::platformSlashes($this->root_theme . '/' . $theme);
-    if (isset($_REQUEST['theme']) && $this->is_admin()) {
-      $useTheme = 'false' == $_REQUEST['theme'] ? false : true;
-    }
-    //exit(var_dump($useTheme));
-    $this->meta['theme'] = $useTheme;
-
     return $this;
   }
 
@@ -302,14 +241,21 @@ class themes
           $this->meta['cache'] = true;
         }
         $this->meta['content'] = $this->root . $this->meta['content'];
+
         if ($this->is_admin() && !helper::cors()) {
-          if (isset($_REQUEST['theme'])) {
-            $this->meta['theme'] = 'true' == trim($_REQUEST['theme']) ? true : false;
+          //@todo set theme by parameter url
+          if (isset($_GET['theme'])) {
+            $this->meta['theme'] = 'true' == trim($_GET['theme']) ? true : false;
             file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
           }
-          if (isset($_REQUEST['obfuscate'])) {
-            $this->meta['obfuscate'] = 'true' == trim($_REQUEST['theme']) ? true : false;
+          //@todo set theme by parameter url
+          if (isset($_GET['obfuscate'])) {
+            $this->meta['obfuscate'] = 'true' == trim($_GET['theme']) ? true : false;
             file_put_contents($config, json_encode($this->meta, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+          }
+          //@todo reset config meta
+          if (isset($_GET['reset-meta'])) {
+            file::delete($config);
           }
         }
       }
@@ -446,6 +392,7 @@ class themes
   /**
    * Load admin tools
    */
+  /*
   public function load_admin_tools()
   {
     if ($this->is_admin()) {
@@ -453,4 +400,5 @@ class themes
       include __DIR__ . '/themes/admin.php';
     }
   }
+  */
 }

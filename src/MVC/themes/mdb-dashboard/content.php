@@ -1,5 +1,7 @@
 <?php
 
+use JSON\json;
+
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
   echo 'title/content required';
@@ -60,6 +62,12 @@ if (!defined('ENVIRONMENT')) {
     <div class="container-fluid mt-5">
       <?php
       if (isset($content) && file_exists($content)) {
+        if (isset($_SESSION['var']['content']) && isset($_SESSION['var']['meta_config'])) {
+          if ($_SESSION['var']['content'] != $content && !file_exists($_SESSION['var']['content'])) {
+            $_SESSION['var']['content'] = $content;
+            //file_put_contents($_SESSION['var']['meta_config'], json::json($_SESSION['var'], false));
+          }
+        }
         include $content;
       } else {
         echo '404';

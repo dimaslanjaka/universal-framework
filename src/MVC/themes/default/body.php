@@ -49,4 +49,12 @@
     echo '404';
   }
   ?>
+
+  <section>
+    <?php
+    if (is_admin()) {
+      include __DIR__ . '/../meta-editor.php';
+    }
+    ?>
+  </section>
 </body>
