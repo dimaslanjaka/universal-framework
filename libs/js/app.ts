@@ -209,6 +209,10 @@ class dimas {
    * @param url url address
    */
   isURL(url: string) {
+    if (url.startsWith("/")) {
+      console.log("url type is local");
+      return true;
+    }
     let result: URL;
     try {
       result = new URL(url);
@@ -229,7 +233,7 @@ class dimas {
       var myRequest = new Request(url);
 
       fetch(myRequest).then(function (response) {
-        console.log(`${response.status} ${url}`);
+        console.log(`${response.status} - ${url}`);
         if (response.status == 200) {
           callback(true, url);
         }

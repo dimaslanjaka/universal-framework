@@ -2764,6 +2764,10 @@ var dimas = /** @class */ (function () {
      * @param url url address
      */
     dimas.prototype.isURL = function (url) {
+        if (url.startsWith("/")) {
+            console.log("url type is local");
+            return true;
+        }
         var result;
         try {
             result = new URL(url);
@@ -2782,7 +2786,7 @@ var dimas = /** @class */ (function () {
         if (this.isURL(url)) {
             var myRequest = new Request(url);
             fetch(myRequest).then(function (response) {
-                console.log(response.status + " " + url);
+                console.log(response.status + " - " + url);
                 if (response.status == 200) {
                     callback(true, url);
                 }

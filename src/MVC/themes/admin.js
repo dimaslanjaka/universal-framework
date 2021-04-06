@@ -1,10 +1,7 @@
-var divToolBox = document.createElement("div");
-divToolBox.innerHTML = "Display admin toolbox in corner";
-var toolboxCookie = "ToolBox"; //`${location.href}`;
-if (typeof md5 !== "undefined") toolboxCookie = md5(toolboxCookie);
-
-if (typeof jQuery != "undefined" && typeof Cookies != "undefined") {
+if (typeof jQuery != "undefined") {
+  //console.log("jquery loaded");
   var admt = $("form[id^='meta-admin-toolbox-']");
+
   if (admt.length) {
     admt.on("submit", function (e) {
       e.preventDefault();
@@ -19,14 +16,11 @@ if (typeof jQuery != "undefined" && typeof Cookies != "undefined") {
       });
     });
   }
-}
-
-/**
- *
- * @param {HTMLTextAreaElement} t
- */
-function preview_thumb(t) {
-  var val = t.value.trim();
-  t.value = val;
-  document.getElementById("thumb-preview").setAttribute("src", val);
+  $("#meta-thumbnail").on("change", function (e) {
+    document
+      .getElementById("thumb-preview")
+      .setAttribute("src", $(this).val().trim());
+  });
+} else {
+  //console.error("jquery not loaded");
 }

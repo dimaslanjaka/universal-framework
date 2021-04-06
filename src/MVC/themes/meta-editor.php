@@ -57,9 +57,11 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
         if (!\MVC\helper::cors()) {
           safe_redirect(\MVC\helper::geturl());
         } else {
+          // @todo remove all output buffers
           if (ob_get_level()) {
             ob_end_clean();
           }
+          // return json
           exit(\JSON\json::json(['message' => 'Meta Saved', 'title' => 'Meta Changer', 'reload' => true]));
         }
       }
@@ -85,30 +87,31 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
             $value = date("Y-m-d\TH:i:s", strtotime($value));
             $attributes[] = 'step="1"';
           }
-          if (in_array($key, ['content'])) {
-            //$attributes[] = 'readonly';
+          if (in_array($key, ['meta_config', 'content'])) {
+            $attributes[] = 'readonly';
           }
 
-          $inputhtml = '<input type="' . $typeMeta . '" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control" ' . implode(' ', $attributes) . '>
+          $inputhtml = '<input no-save="true" type="' . $typeMeta . '" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control" ' . implode(' ', $attributes) . '>
           <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>';
           if ('thumbnail' == $key) {
-            $inputhtml = '<textarea cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea">' . $value . '</textarea>
+            $inputhtml = '<textarea cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea" no-save="true">' . $value . '</textarea>
             <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>
             <div style="position: relative;"><img id="thumb-preview" src="' . $value . '" alt="preview" width="100%" height="180px" /><div class="card-label">preview</div></div>';
           } elseif ('desc' == $key) {
-            $inputhtml = '<textarea cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea">' . $value . '</textarea>
+            $inputhtml = '<textarea no-save="true" cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea">' . $value . '</textarea>
             <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>';
           } elseif (in_array($key, ['theme', 'share', 'comments', 'cache', 'obfuscate'])) {
             if ('boolean' != gettype($value)) {
               $value = false;
             }
             echo '
-            <select name="' . $key . '" class="mdb-select md-form colorful-select dropdown-primary" id="meta-' . $key . '">
+            <select no-save="true" name="' . $key . '" class="mdb-select md-form colorful-select dropdown-primary" id="meta-' . $key . '">
               <option value="" disabled>Choose your option</option>
               <option value="true" ' . (true === $value ? 'selected' : '') . '>True</option>
               <option value="false" ' . (false === $value ? 'selected' : '') . '>False</option>
             </select>
-            <label class="mdb-main-label">' . $key . ' (' . gettype($value) . ')</label>';
+            <label class="mdb-main-label">' . $key . ' (' . gettype($value) . ')</label>
+            ';
             continue;
           }
           echo '

@@ -1,10 +1,8 @@
 var timerx;
 $("#blog-set").on("change focusout", function (e) {
-  var url = $(this).val();
+  var url = $(this).val().trim();
   clearTimeout(timerx);
-  if (
-    framework().isURLReachable("https://cors-anywhere.herokuapp.com/" + url)
-  ) {
+  if (framework().isURL(url) || url.endsWith("blogspot.com")) {
     timerx = setTimeout(() => {
       $.ajax({
         url: location.href,
@@ -12,10 +10,9 @@ $("#blog-set").on("change focusout", function (e) {
         data: {
           "set-blog": url,
         },
+        proxy: false,
       });
     }, 500);
-  } else {
-    toastr.error("URL INVALID", "INFO");
   }
 });
 

@@ -1,8 +1,12 @@
 $(document).ready(function () {
   setTimeout(() => {
+    // @todo fix input, select, textarea
     $(".mdb-select").not(".select-wrapper").materialSelect();
     $("input,textarea").each(function (i, el) {
-      if (!empty($(el).val())) {
+      if ($(el).attr("type") == "hidden") return;
+
+      if ($(el).val().length) {
+        //console.log([$(el).val(), $(el).attr("name"), $(el)]);
         var labels = $(el).closest("div").find("label");
         if (labels.length) {
           if (!labels.hasClass("active")) {
