@@ -222,3 +222,30 @@ function get_session(string $sessionName)
     return $_SESSION[$sessionName];
   }
 }
+
+/**
+ * Set session
+ */
+function set_session(string $name, $value)
+{
+  $_SESSION[$name] = $value;
+}
+
+/**
+ * Parse URL deeper.
+ */
+function parse_url2($url, $encoded = false)
+{
+  if ($encoded) {
+    $url = urldecode($url);
+  }
+  $url = html_entity_decode($url);
+  $parts = parse_url($url);
+  if (isset($parts['query'])) {
+    parse_str($parts['query'], $query);
+    $parts['original_query'] = $parts['query'];
+    $parts['query'] = $query;
+  }
+
+  return array_merge($parts);
+}
