@@ -14,11 +14,11 @@ $google_auth = $google->create_auth_url('', '/auth/google');
           <div class="col-sm-7">
             <div class="card-body">
               <h5 class="card-title"><?= GoogleExt\client::get_profile_name() ?></h5>
-              <div class="btn-group">
-                <a id="google" class="btn btn-sm text-white btn-google" href="<?= $google_auth ?>">
+              <div id="login-btn-group">
+                <a id="google" class="btn btn-block text-white btn-google mb-2" href="<?= $google_auth ?>">
                   Login with Google
                 </a>
-                <a id="blogger" class="btn btn-sm text-white btn-blogger" href="<?= $blogger_auth ?>">
+                <a id="blogger" class="btn btn-block text-white btn-blogger mb-2" href="<?= $blogger_auth ?>">
                   Login with Blogger
                 </a>
               </div>

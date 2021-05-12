@@ -285,6 +285,7 @@ class client extends Google_Client
       }
     }
 
+    $tokenpath = null;
     if (isset($_SESSION['google']['login'])) {
       $user = $_SESSION['google']['login'];
       $tokenpath = $config['token']['folder'] . '/' . $user['email'] . '.json';
@@ -300,6 +301,7 @@ class client extends Google_Client
       $email = $this->login_data()['email'];
       $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
     }
+
     if (file_exists($tokenpath)) {
       $token = json_decode(file_get_contents($tokenpath), true);
       $this->setAccessToken($token);

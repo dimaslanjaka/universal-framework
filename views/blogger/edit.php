@@ -27,7 +27,23 @@ $singlepost = $service->posts->get($_REQUEST['bid'], $_GET['pid']);
   <form action="" method="post">
     <div class="form-group mb-2"><label for="">Title</label><input type="text" class="form-control" id="title" value="<?= (isset($singlepost->title) ? $singlepost->title : "") ?>" name="title"></div>
 
-    <div class="form-group mb-2"><label for="">Content</label><textarea id="body" name="body" class="form-control" cols="5"><?php echo isset($singlepost->content) ? $singlepost->content : '';  ?></textarea></div>
+    <div class="form-group mb-2">
+      <label for="">Content</label>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="editor-tab" data-toggle="tab" href="#editor" role="tab" aria-controls="editor" aria-selected="true">Editor</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="preview-tab" data-toggle="tab" href="#preview" role="tab" aria-controls="preview" aria-selected="false">Preview</a>
+        </li>
+      </ul>
+
+      <div class="tab-content border" id="myTabContent">
+        <div class="tab-pane fade show active" id="editor" role="tabpanel" aria-labelledby="editor-tab"><textarea id="body" name="body" class="form-control" cols="5"><?php echo isset($singlepost->content) ? htmlentities($singlepost->content) : 'Contet Empty';  ?></textarea></div>
+        <div class="tab-pane fade" id="preview" role="tabpanel" aria-labelledby="preview-tab"><iframe id="FileFrame" src="about:blank" frameborder="0" width="100%"></iframe></div>
+      </div>
+    </div>
 
     <div class="form-group mb-2">
       <label for="">Label</label>

@@ -1,19 +1,21 @@
-var timerx;
-$("#blog-set").on("change focusout", function (e) {
-  var url = $(this).val().trim();
-  clearTimeout(timerx);
-  if (framework().isURL(url) || url.endsWith("blogspot.com")) {
-    timerx = setTimeout(() => {
-      $.ajax({
-        url: location.href,
-        method: "post",
-        data: {
-          "set-blog": url,
-        },
-        proxy: false,
-      });
-    }, 500);
-  }
-});
+$("#blog-set").on("change focusout", sendBlog);
+$("#form-set").on("submit", sendBlog);
 
 formsaver();
+
+/**
+ *
+ * @param {JQuery.Event} e
+ */
+function sendBlog(e) {
+  e.preventDefault();
+  var url = $("#blog-set").val().trim();
+  $.ajax({
+    url: location.href,
+    method: "post",
+    data: {
+      "set-blog": url,
+    },
+    proxy: false,
+  });
+}
