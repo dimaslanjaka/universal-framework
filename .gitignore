@@ -108,5 +108,5 @@ Thumbs.db
 
 # node & composer
 yarn.lo*
-package-lock.json
-composer.lock
+#package-lock.json
+#composer.lock
