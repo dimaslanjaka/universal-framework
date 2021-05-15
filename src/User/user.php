@@ -47,6 +47,8 @@ class user
       if (!$check) {
         $sql = \Filemanager\file::get(__DIR__ . '/user.sql');
         $this->pdo->query($sql)->exec();
+
+        //INSERT INTO userdata VALUES("1","Administrator","admin@webmanajemen.com","dimaslanjaka","7z1RxYs6LjUTu3g7crCQxQ==","2020-04-10 06:43:32","","superadmin","2021-05-16 02:17:22","2020-07-14 15:28:08");
       }
     }
     if (!$GLOBALS['user_instance']) {
@@ -312,7 +314,7 @@ class user
     }
     $db = $this->dbname;
     $crypt = new crypt();
-    $pass = $crypt->encrypt('dimaslanjaka', $pass);
+    $pass = $crypt->encrypt(CONFIG['security']['salt'], $pass);
     if (!$this->is_admin()) {
       $q = "UPDATE `$db` SET `password` = :pass WHERE `$db`.`id` = :id AND `$db`.`role` <> 'superadmin' AND `$db`.`role` <> 'admin';";
     } else {
@@ -383,7 +385,7 @@ class user
     $db = $this->dbname;
     $password = addslashes($password);
     $crypt = new crypt();
-    $password = $crypt->encrypt('dimaslanjaka', $password);
+    $password = $crypt->encrypt(CONFIG['security']['salt'], $password);
 
     $query = "SELECT * FROM `$db` WHERE username=:username AND password=:password";
     //var_dump($username, $password, $query);
@@ -545,7 +547,7 @@ class user
     $username = addslashes($username);
     $password = addslashes($password);
     $crypt = new crypt();
-    $password = $crypt->encrypt('dimaslanjaka', $password);
+    $password = $crypt->encrypt(CONFIG['security']['salt'], $password);
     $db = $this->dbname;
     $q = "INSERT INTO `$db` (`display_name`, `username`, `password`, `role`) VALUES (:name, :username, :password, :role);";
     $exec = $this->pdo->SQL_Exec($q, ['name' => $name, 'username' => $username, 'password' => $password, 'role' => $role]);

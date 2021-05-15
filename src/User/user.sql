@@ -12,3 +12,4 @@ CREATE TABLE `userdata` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='User Profile and login information';
+
