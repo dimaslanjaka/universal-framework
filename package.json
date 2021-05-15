@@ -197,6 +197,7 @@
   },
   "scripts": {
     "postinstall": "",
+    "ngrok": "node ./ngrok.js",
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
