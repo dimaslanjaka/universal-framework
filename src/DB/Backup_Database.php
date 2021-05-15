@@ -73,8 +73,7 @@ class Backup_Database
     mysqli_select_db($this->conn, $this->dbName);
     // Check connection
     if ($this->conn->connect_errno) {
-      echo "Failed to connect to MySQL: " . $this->conn->connect_error;
-      exit();
+      throw new Exception("Failed to connect to MySQL: " . $this->conn->connect_error, 1);
     }
     if (!mysqli_set_charset($this->conn, $this->charset)) {
       mysqli_query($this->conn, 'SET NAMES ' . $this->charset);
@@ -89,6 +88,7 @@ class Backup_Database
    */
   public function backupTables($tables = '*', $outputDir = __DIR__ . '/backup')
   {
+    $res = [];
     try {
       /*
        * Tables to export
@@ -105,46 +105,50 @@ class Backup_Database
         $tables = is_array($tables) ? $tables : explode(',', $tables);
       }
 
-      $sql = 'CREATE DATABASE IF NOT EXISTS ' . $this->dbName . ";\n\n";
+      $sql = "SET SQL_MODE = \"NO_AUTO_VALUE_ON_ZERO\";\r\nSET time_zone = \"+00:00\";\r\n\r\n\r\n/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;\r\n/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;\r\n/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;\r\n/*!40101 SET NAMES utf8 */;\r\n--\r\n-- Database: `" . implode(", ", $tables) . "`\r\n--\r\n\r\n\r\n";
+      $sql .= 'CREATE DATABASE IF NOT EXISTS ' . $this->dbName . ";\n\n";
       $sql .= 'USE ' . $this->dbName . ";\n\n";
 
       /*
        * Iterate tables
        */
       foreach ($tables as $table) {
-        echo 'Backing up ' . $table . ' table...';
+        //echo 'Backing up ' . $table . ' table...';
 
         $result = mysqli_query($this->conn, 'SELECT * FROM ' . $table);
         $numFields = mysqli_num_fields($result);
 
-        $sql .= 'DROP TABLE IF EXISTS ' . $table . ';';
+        $sql_tbl = 'DROP TABLE IF EXISTS ' . $table . ';';
         $row2 = mysqli_fetch_row(mysqli_query($this->conn, 'SHOW CREATE TABLE ' . $table));
-        $sql .= "\n\n" . $row2[1] . ";\n\n";
+        $sql_tbl .= "\n\n" . $row2[1] . ";\n\n";
 
         for ($i = 0; $i < $numFields; ++$i) {
           while ($row = mysqli_fetch_row($result)) {
-            $sql .= 'INSERT INTO ' . $table . ' VALUES(';
+            $sql_tbl .= 'INSERT INTO ' . $table . ' VALUES(';
             for ($j = 0; $j < $numFields; ++$j) {
               $row[$j] = addslashes($row[$j]);
               $row[$j] = preg_replace("[^\r]\n", '\\n', $row[$j]);
               if (isset($row[$j])) {
-                $sql .= '"' . $row[$j] . '"';
+                $sql_tbl .= '"' . $row[$j] . '"';
               } else {
-                $sql .= '""';
+                $sql_tbl .= '""';
               }
 
               if ($j < ($numFields - 1)) {
-                $sql .= ',';
+                $sql_tbl .= ',';
               }
             }
 
-            $sql .= ");\n";
+            $sql_tbl .= ");\n";
           }
         }
 
-        $sql .= "\n\n\n";
+        $sql_tbl .= "\n\n\n";
+        file_put_contents($outputDir . "/$table.sql", $sql_tbl);
+        $sql .= $sql_tbl;
 
-        echo ' OK' . '<br />';
+        //echo ' OK' . '<br />';
+        $res[$table] = "OK";
       }
     } catch (Exception $e) {
       var_dump($e->getMessage());
@@ -152,7 +156,16 @@ class Backup_Database
       return false;
     }
 
-    return $this->saveFile($sql, $outputDir);
+    $this->saveFile($sql, $outputDir);
+    return $res;
+  }
+
+  function download($content, $backup_name)
+  {
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary");
+    header('Content-Length: ' . (function_exists('mb_strlen') ? mb_strlen($content, '8bit') : strlen($content)));
+    header("Content-disposition: attachment; filename=\"" . $backup_name . "\"");
   }
 
   /**
@@ -167,7 +180,7 @@ class Backup_Database
     }
 
     try {
-      $handle = fopen($outputDir . '/db-backup-' . $this->dbName . '-' . date('Ymd-His', time()) . '.sql', 'w+');
+      $handle = fopen($outputDir . '/' . $this->dbName . '-' . date('Ymd-His', time()) . '.sql', 'w+');
       fwrite($handle, $sql);
       fclose($handle);
     } catch (Exception $e) {

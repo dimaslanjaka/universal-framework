@@ -43,6 +43,11 @@ class user
       ];
       $this->pdo = new \DB\pdo($user, $pass, $db, $host, $charset);
       $this->pdo->connect($user, $pass, $db, $host, $charset);
+      $check = $this->pdo->check_table('userdata');
+      if (!$check) {
+        $sql = \Filemanager\file::get(__DIR__ . '/user.sql');
+        $this->pdo->query($sql)->exec();
+      }
     }
     if (!$GLOBALS['user_instance']) {
       $GLOBALS['user_instance'] = $this;
