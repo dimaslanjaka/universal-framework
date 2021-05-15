@@ -14,7 +14,6 @@ define('DB_USER', CONFIG['database']['user']);
 define('DB_PASSWORD', CONFIG['database']['pass']);
 define('DB_NAME', CONFIG['database']['dbname']);
 define('DB_HOST', CONFIG['database']['host']);
-define('OUTPUT_DIR', __DIR__);
 define('TABLES', '*');
 
 /**
@@ -47,14 +46,14 @@ class Backup_Database
    */
   public $charset = '';
   /**
-   * @var \mysqli
+   * @var \mysqli|null
    */
   public $conn;
 
   /**
    * Constructor initializes database.
    */
-  public function Backup_Database($host, $username, $passwd, $dbName, $charset = 'utf8')
+  function __construct($host, $username, $passwd, $dbName, $charset = 'utf8')
   {
     $this->host = $host;
     $this->username = $username;
@@ -63,12 +62,20 @@ class Backup_Database
     $this->charset = $charset;
 
     $this->initializeDatabase();
+    if ($this->conn == null) {
+      throw new Exception("Mysqli Connection Error (null)", 1);
+    }
   }
 
-  protected function initializeDatabase()
+  function initializeDatabase()
   {
     $this->conn = mysqli_connect($this->host, $this->username, $this->passwd);
     mysqli_select_db($this->conn, $this->dbName);
+    // Check connection
+    if ($this->conn->connect_errno) {
+      echo "Failed to connect to MySQL: " . $this->conn->connect_error;
+      exit();
+    }
     if (!mysqli_set_charset($this->conn, $this->charset)) {
       mysqli_query($this->conn, 'SET NAMES ' . $this->charset);
     }
@@ -80,7 +87,7 @@ class Backup_Database
    *
    * @param string $tables
    */
-  public function backupTables($tables = '*', $outputDir = '.')
+  public function backupTables($tables = '*', $outputDir = __DIR__ . '/backup')
   {
     try {
       /*
@@ -89,8 +96,10 @@ class Backup_Database
       if ('*' == $tables) {
         $tables = [];
         $result = mysqli_query($this->conn, 'SHOW TABLES');
-        while ($row = mysqli_fetch_row($result)) {
-          $tables[] = $row[0];
+        if ($result != null) {
+          while ($row = mysqli_fetch_row($result)) {
+            $tables[] = $row[0];
+          }
         }
       } else {
         $tables = is_array($tables) ? $tables : explode(',', $tables);

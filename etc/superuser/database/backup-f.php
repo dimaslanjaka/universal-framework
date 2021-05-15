@@ -1,5 +1,6 @@
 <?php
 
+use DB\Backup_Database;
 use JSON\json;
 
 $pdo = pdo();
@@ -20,7 +21,7 @@ if (isset($_REQUEST['tables'])) { // show all tables
    * Instantiate Backup_Database and perform backup.
    */
   $backupDatabase = new Backup_Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  $status = $backupDatabase->backupTables(TABLES, OUTPUT_DIR) ? 'OK' : 'KO';
+  $status = $backupDatabase->backupTables(TABLES) ? 'OK' : 'KO';
   echo '<br /><br /><br />Backup result: ' . $status;
 
   exit;
