@@ -369,7 +369,7 @@ class user
   public function generate_password($password)
   {
     $crypt = new crypt();
-    return $crypt->encrypt('dimaslanjaka', $password);
+    return $crypt->encrypt(CONFIG['security']['salt'], $password);
   }
 
   public function login($username, $password)
