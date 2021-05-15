@@ -54,6 +54,7 @@ if (defined('jquery-ui')) {
  * @todo Dynamic include script src
  */
 $scriptsrc = defined('SCRIPTSRC') ? SCRIPTSRC : (defined('scriptsrc') ? scriptsrc : null);
+
 if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (file_exists($scriptsrc)) {
