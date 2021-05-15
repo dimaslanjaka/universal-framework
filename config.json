@@ -13,7 +13,7 @@
     },
     "cache": {
         "enable": false,
-        "ext": "43e3b82a1e2ec4bbb602842c6803a0cd",
+        "ext": "2021-03-28T04:32:40+07:00",
         "key": "API",
         "timeout": 60
     },
@@ -26,7 +26,8 @@
     "app": {
         "views": "views",
         "root": "D:\\Workspaces\\PHP\\universal-framework",
-        "domain": "localhost",
+        "domain": "f96d5416223c.ngrok.io",
+        "port": 80,
         "protocol": "http",
         "environtment": "development",
         "theme": {
@@ -55,6 +56,9 @@
     },
     "session": {
         "folder": "src\/Session\/sessions"
+    },
+    "ngrok": {
+        "url": "https:\/\/f96d5416223c.ngrok.io"
     },
     "root": "",
     "$schema": ".\/config-schema.json"

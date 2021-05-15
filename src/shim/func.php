@@ -104,13 +104,16 @@ function toNumber($val)
  * Convert path to url
  *
  * @param string $file
- * @param string $Protocol
+ * @param string $Protocol http://, https://, etc
  * @return void
  */
-function path2url($file, $Protocol = 'http://')
+function path2url($file, $Protocol = null)
 {
   $file = realpath($file);
   //var_dump($file);
+  if ($Protocol == null) {
+    $Protocol = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . "://";
+  }
   if ($file) {
     return $Protocol . $_SERVER['HTTP_HOST'] . fixurl(str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath($file)));
   }

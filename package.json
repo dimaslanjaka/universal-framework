@@ -60,7 +60,7 @@
     "javascript-obfuscator": "^2.6.2",
     "jquery-form-saver": "^1.0.7",
     "jsonplus": "^1.2.1",
-    "ngrok": "^3.3.0",
+    "ngrok": "^3.4.1",
     "open": "^7.3.0",
     "requirejs": "^2.3.6",
     "sass": "^1.32.8",
