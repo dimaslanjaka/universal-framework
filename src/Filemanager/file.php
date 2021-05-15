@@ -105,7 +105,7 @@ class file
    * Create file nested.
    *
    * @param string $path
-   * @param bool   $create
+   * @param bool   $create content
    * @param bool   $force
    * @param bool   $append
    * @param bool   $dump
@@ -137,6 +137,14 @@ class file
 
     return $path;
     //return $fm->_file_($path, $create, $force, $append, $dump);
+  }
+
+  public static function write($path, $content = "", $append = false)
+  {
+    if (is_object($content) || is_array($content)) {
+      $content = \JSON\json::json($content, false);
+    }
+    return self::file($path, $content, true, $append, false);
   }
 
   public function determineContent($create)

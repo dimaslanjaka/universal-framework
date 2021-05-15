@@ -242,6 +242,9 @@ class session
     ));
   }
 
+  /**
+   * Is session set ?
+   */
   public static function has($key, bool $empty = true)
   {
     $return = isset($_SESSION[$key]);
