@@ -1,24 +1,21 @@
 <?php
 
+namespace DB;
+
+use Exception;
+
 // Report all errors
 error_reporting(E_ALL);
 
 /*
  * Define database parameters here
  */
-define('DB_USER', '');
-define('DB_PASSWORD', '');
-define('DB_NAME', '');
-define('DB_HOST', '');
-define('OUTPUT_DIR', '');
+define('DB_USER', CONFIG['database']['user']);
+define('DB_PASSWORD', CONFIG['database']['pass']);
+define('DB_NAME', CONFIG['database']['dbname']);
+define('DB_HOST', CONFIG['database']['host']);
+define('OUTPUT_DIR', __DIR__);
 define('TABLES', '*');
-
-/**
- * Instantiate Backup_Database and perform backup.
- */
-$backupDatabase = new Backup_Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-$status = $backupDatabase->backupTables(TABLES, OUTPUT_DIR) ? 'OK' : 'KO';
-echo '<br /><br /><br />Backup result: ' . $status;
 
 /**
  * The Backup_Database class.
@@ -71,8 +68,8 @@ class Backup_Database
   protected function initializeDatabase()
   {
     $this->conn = mysqli_connect($this->host, $this->username, $this->passwd);
-    mysqli_select_db($this->dbName, $this->conn);
-    if (!mysqli_set_charset($this->charset, $this->conn)) {
+    mysqli_select_db($this->conn, $this->dbName);
+    if (!mysqli_set_charset($this->conn, $this->charset)) {
       mysqli_query($this->conn, 'SET NAMES ' . $this->charset);
     }
   }

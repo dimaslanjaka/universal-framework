@@ -6,7 +6,7 @@
       "type": "shell",
       "isBackground": true,
       "options": {},
-      "detail": "${defaultBuildTask}",
+      "detail": "Watch Files And Build When modified",
       "group": "build",
       "dependsOn": [
         {

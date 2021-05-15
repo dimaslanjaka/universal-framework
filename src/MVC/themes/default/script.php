@@ -24,8 +24,8 @@ if (defined('datatables')) {
 }
 //if select2 defined
 if (defined('select2')) {
-  echo '<link rel="stylesheet" href="/node_modules/select/dist/css/select2.min.css">';
-  echo '<script src="/node_modules/select/dist/js/select2.min.js"></script>';
+  echo '<link rel="stylesheet" href="/node_modules/select2/dist/css/select2.min.css">';
+  echo '<script src="/node_modules/select2/dist/js/select2.min.js"></script>';
   $element->link([
     [THEME_DIR . '/assets/style.select2.min.css', THEME_DIR . '/assets/style.select2.css'],
   ], true, true, 'stylesheet');
