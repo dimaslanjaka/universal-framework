@@ -63,7 +63,7 @@ $scriptsrc = defined('SCRIPTSRC') ? SCRIPTSRC : (defined('scriptsrc') ? scriptsr
 if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
     if (startsWith($scriptsrc, "http")) {
-      echo '<script src="' . $scriptsrc . '" async></script>';
+      echo '<script src="' . $scriptsrc . '"></script>';
     } else if (file_exists($scriptsrc)) {
       $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
       if (!empty(trim($scriptsrc))) {
@@ -171,7 +171,7 @@ if (isset($content) && file_exists($content)) {
   $src = \MVC\helper::get_url_path([$contentMinJS, $contentJS]);
 
   if (!empty(trim($src))) {
-    echo $element->js([$src]);
+    echo "<script src='$src' async></script>";
   } else {
     echo "<comment style=\"display:none\">$src, $contentMinJS, $contentJS not found</comment>";
   }
