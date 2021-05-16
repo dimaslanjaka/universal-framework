@@ -4,6 +4,10 @@ namespace Proxy;
 
 $GLOBALS['proxy_loaded'] = null;
 
+/**
+ * Integrate proxies into database
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ */
 class db
 {
   /**

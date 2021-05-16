@@ -7298,7 +7298,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Proxy\\db",
             "name": "db",
-            "summary": "",
+            "summary": "Integrate\u0020proxies\u0020into\u0020database",
             "url": "classes/Proxy-db.html"
         },                {
             "fqsen": "\\Proxy\\db\u003A\u003A__construct\u0028\u0029",
