@@ -82,6 +82,7 @@ PHP framework with powerful functions
 - type below code into terminal:
 
 ```sh
+npm install -g typescript
 composer install --prefer-source
 npm install --prefer-offline
 npm install typescript gulp depcheck -g --prefer-offline
