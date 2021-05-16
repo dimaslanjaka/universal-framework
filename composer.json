@@ -84,7 +84,9 @@
     "psr/log": "^1.0",
     "scssphp/scssphp": "^1.1",
     "squizlabs/php_codesniffer": "^3.5",
-    "stichoza/google-translate-php": "^4.0"
+    "stichoza/google-translate-php": "^4.0",
+    "ext-libxml": "*",
+    "ext-dom": "*"
   },
   "scripts": {
     "php-cs-fixer": "php-cs-fixer fix src --config=./.php_cs.dist"

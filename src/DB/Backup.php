@@ -1,8 +1,9 @@
-<?php
+<?php /** @noinspection PhpPrivateFieldCanBeLocalVariableInspection */
 
 namespace DB;
 
 use Exception;
+use mysqli;
 
 // Report all errors
 error_reporting(E_ALL);
@@ -14,7 +15,7 @@ define('DB_USER', CONFIG['database']['user']);
 define('DB_PASSWORD', CONFIG['database']['pass']);
 define('DB_NAME', CONFIG['database']['dbname']);
 define('DB_HOST', CONFIG['database']['host']);
-define('TABLES', '*');
+//define('TABLES', '*');
 
 /**
  * The Backup_Database class.
@@ -46,7 +47,7 @@ class Backup
      */
     public $charset = '';
     /**
-     * @var \mysqli|null
+     * @var mysqli|null
      */
     public $conn;
 
@@ -222,12 +223,17 @@ class Backup
         return true;
     }
 
-    public function download($backup_name = '')
+    /**
+     * Download SQL File To Client Browser
+     * @throws Exception
+     */
+    public function download($sqlFile)
     {
-        $content = file_get_contents($this->outputFile);
-        if (empty($backup_name)) {
-            $backup_name = basename($this->outputFile);
+        if ($sqlFile == null) {
+            throw new Exception("Output file is null", 1);
         }
+        $content = file_get_contents($sqlFile);
+        $backup_name = basename($sqlFile);
         header('Content-Type: application/octet-stream');
         header('Content-Transfer-Encoding: Binary');
         header('Content-Length: ' . (function_exists('mb_strlen') ? mb_strlen($content, '8bit') : strlen($content)));
