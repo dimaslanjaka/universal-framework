@@ -110,3 +110,7 @@ Thumbs.db
 yarn.lo*
 #package-lock.json
 #composer.lock
+
+# phpdoc
+.phpdoc/cache/*
+!.phpdoc/*
