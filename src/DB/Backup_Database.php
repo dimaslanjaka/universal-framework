@@ -51,6 +51,13 @@ class Backup_Database
   public $conn;
 
   /**
+   * Output Directory
+   *
+   * @var string
+   */
+  public $outputDir = __DIR__ . '/backup';
+
+  /**
    * Constructor initializes database.
    */
   function __construct($host, $username, $passwd, $dbName, $charset = 'utf8')
@@ -80,13 +87,19 @@ class Backup_Database
     }
   }
 
+  function clean()
+  {
+    $fullPath = __DIR__ . "/test/";
+    array_map('unlink', glob("$fullPath*.log"));
+  }
+
   /**
    * Backup the whole database or just some tables
    * Use '*' for whole database or 'table1 table2 table3...'.
    *
    * @param string $tables
    */
-  public function backupTables($tables = '*', $outputDir = __DIR__ . '/backup')
+  public function backupTables($tables = '*')
   {
     $res = [];
     try {
@@ -144,7 +157,7 @@ class Backup_Database
         }
 
         $sql_tbl .= "\n\n\n";
-        file_put_contents($outputDir . "/$table.sql", $sql_tbl);
+        file_put_contents($this->outputDir . "/$table.sql", $sql_tbl);
         $sql .= $sql_tbl;
 
         //echo ' OK' . '<br />';
@@ -156,7 +169,7 @@ class Backup_Database
       return false;
     }
 
-    $this->saveFile($sql, $outputDir);
+    $this->saveFile($sql, $this->outputDir);
     return $res;
   }
 

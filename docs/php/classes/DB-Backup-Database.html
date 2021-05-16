@@ -268,6 +268,13 @@
 <dd>Host where database is located.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/DB-Backup-Database.html#property_outputDir">$outputDir</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>Output Directory</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/DB-Backup-Database.html#property_passwd">$passwd</a>
     <span>
                 &nbsp;: mixed            </span>
@@ -295,6 +302,13 @@
 </dt>
 <dd>Backup the whole database or just some tables
 Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/DB-Backup-Database.html#method_clean">clean()</a>
+    <span>
+                        &nbsp;: mixed    </span>
+</dt>
+<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/DB-Backup-Database.html#method_download">download()</a>
@@ -463,6 +477,38 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_outputDir">
+        $outputDir
+        <a href="classes/DB-Backup-Database.html#property_outputDir" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">58</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Output Directory</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$outputDir</span>
+     = <span class="phpdocumentor-signature__default-value">__DIR__ . &#039;/backup&#039;</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_passwd">
         $passwd
         <a href="classes/DB-Backup-Database.html#property_passwd" class="headerlink"><i class="fas fa-link"></i></a>
@@ -540,7 +586,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">56</span>
+    <span class="phpdocumentor-element-found-in__line">63</span>
 </aside>
 
         <p class="phpdocumentor-summary">Constructor initializes database.</p>
@@ -612,7 +658,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">89</span>
+    <span class="phpdocumentor-element-found-in__line">102</span>
 </aside>
 
         <p class="phpdocumentor-summary">Backup the whole database or just some tables
@@ -620,7 +666,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">backupTables</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tables</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;*&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$outputDir</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">__DIR__ . &#039;/backup&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">backupTables</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$tables</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;*&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -634,15 +680,40 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
                     <section class="phpdocumentor-description"></section>
 
             </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$outputDir</span>
-                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">__DIR__ . &#039;/backup&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
             </dl>
 
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"></section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_clean">
+        clean()
+        <a href="classes/DB-Backup-Database.html#method_clean" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">90</span>
+</aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">clean</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+    
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
@@ -665,7 +736,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">163</span>
+    <span class="phpdocumentor-element-found-in__line">176</span>
 </aside>
 
     
@@ -714,7 +785,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">70</span>
+    <span class="phpdocumentor-element-found-in__line">77</span>
 </aside>
 
     
@@ -746,7 +817,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">176</span>
+    <span class="phpdocumentor-element-found-in__line">189</span>
 </aside>
 
         <p class="phpdocumentor-summary">Save SQL to file.</p>

@@ -2726,6 +2726,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-Backup-Database.html#method_initializeDatabase"
         },                {
+            "fqsen": "\\DB\\Backup_Database\u003A\u003Aclean\u0028\u0029",
+            "name": "clean",
+            "summary": "",
+            "url": "classes/DB-Backup-Database.html#method_clean"
+        },                {
             "fqsen": "\\DB\\Backup_Database\u003A\u003AbackupTables\u0028\u0029",
             "name": "backupTables",
             "summary": "Backup\u0020the\u0020whole\u0020database\u0020or\u0020just\u0020some\u0020tables\nUse\u0020\u0027\u002A\u0027\u0020for\u0020whole\u0020database\u0020or\u0020\u0027table1\u0020table2\u0020table3...\u0027.",
@@ -2770,6 +2775,11 @@ Search.appendIndex(
             "name": "conn",
             "summary": "",
             "url": "classes/DB-Backup-Database.html#property_conn"
+        },                {
+            "fqsen": "\\DB\\Backup_Database\u003A\u003A\u0024outputDir",
+            "name": "outputDir",
+            "summary": "Output\u0020Directory",
+            "url": "classes/DB-Backup-Database.html#property_outputDir"
         },                {
             "fqsen": "\\DB\\DB",
             "name": "DB",
