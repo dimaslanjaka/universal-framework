@@ -13,7 +13,7 @@
   },
   "cache": {
     "enable": false,
-    "ext": "8040f99baa5a8239d7851bfa60a33820",
+    "ext": "34c3819b1893833f406584f8e64cd572",
     "key": "API",
     "timeout": 60
   },
@@ -47,7 +47,7 @@
     ],
     "group": {
       "blog.php.io": {
-        "index": "etc/blog/index"
+        "index": "etc\/blog\/index"
       }
     }
   },
@@ -55,11 +55,11 @@
     "salt": "dimaslanjaka"
   },
   "session": {
-    "folder": "src/Session/sessions"
+    "folder": "src\/Session\/sessions"
   },
   "ngrok": {
-    "url": "https://5e884c57ba76.ngrok.io"
+    "url": "https:\/\/5e884c57ba76.ngrok.io"
   },
   "root": "",
-  "$schema": "./config-schema.json"
+  "$schema": ".\/config-schema.json"
 }

@@ -6,9 +6,9 @@ echo '</style>';
 
 <div class="loading">Loading&#8230;</div>
 <script>
-  <?php
-  \MVC\helper::include_asset(__DIR__ . '/loading.min.js', __DIR__ . '/loading.js');
-  ?>
+    <?php
+    \MVC\helper::include_asset(__DIR__ . '/loading.min.js', __DIR__ . '/loading.js');
+    ?>
 </script>
 
 <!--<div class="loadingio-spinner-spinner-9epcps7tyt">

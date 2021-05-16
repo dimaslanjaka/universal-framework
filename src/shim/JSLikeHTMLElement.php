@@ -38,6 +38,30 @@
 class JSLikeHTMLElement extends DOMElement
 {
     /**
+     * Used for getting innerHTML like it's done in JavaScript:.
+     *
+     * @code
+     * $string = $div->innerHTML;
+     * @endcode
+     */
+    public function __get($name)
+    {
+        if ('innerHTML' == $name) {
+            $inner = '';
+            foreach ($this->childNodes as $child) {
+                $inner .= $this->ownerDocument->saveXML($child);
+            }
+
+            return $inner;
+        }
+
+        $trace = debug_backtrace();
+        trigger_error('Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
+
+        return null;
+    }
+
+    /**
      * Used for setting innerHTML like it's done in JavaScript:.
      *
      * @code
@@ -86,30 +110,6 @@ class JSLikeHTMLElement extends DOMElement
             $trace = debug_backtrace();
             trigger_error('Undefined property via __set(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
         }
-    }
-
-    /**
-     * Used for getting innerHTML like it's done in JavaScript:.
-     *
-     * @code
-     * $string = $div->innerHTML;
-     * @endcode
-     */
-    public function __get($name)
-    {
-        if ('innerHTML' == $name) {
-            $inner = '';
-            foreach ($this->childNodes as $child) {
-                $inner .= $this->ownerDocument->saveXML($child);
-            }
-
-            return $inner;
-        }
-
-        $trace = debug_backtrace();
-        trigger_error('Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE);
-
-        return null;
     }
 
     public function __toString()

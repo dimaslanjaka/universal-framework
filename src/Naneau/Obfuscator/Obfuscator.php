@@ -90,91 +90,18 @@ class Obfuscator
     }
 
     /**
-     * Get the parser.
+     * Get the file list.
      *
-     * @return Parser
-     */
-    public function getParser()
+     * @return SplFileInfo
+     **/
+    private function getFiles($directory)
     {
-        return $this->parser;
-    }
-
-    /**
-     * Set the parser.
-     *
-     * @return Obfuscator
-     */
-    public function setParser(Parser $parser)
-    {
-        $this->parser = $parser;
-
-        return $this;
-    }
-
-    /**
-     * Get the node traverser.
-     *
-     * @return NodeTraverser
-     */
-    public function getTraverser()
-    {
-        return $this->traverser;
-    }
-
-    /**
-     * Set the node traverser.
-     *
-     * @return Obfuscator
-     */
-    public function setTraverser(NodeTraverser $traverser)
-    {
-        $this->traverser = $traverser;
-
-        return $this;
-    }
-
-    /**
-     * Get the "pretty" printer.
-     *
-     * @return PrettyPrinter
-     */
-    public function getPrettyPrinter()
-    {
-        return $this->prettyPrinter;
-    }
-
-    /**
-     * Set the "pretty" printer.
-     *
-     * @return Obfuscator
-     */
-    public function setPrettyPrinter(PrettyPrinter $prettyPrinter)
-    {
-        $this->prettyPrinter = $prettyPrinter;
-
-        return $this;
-    }
-
-    /**
-     * Get the event dispatcher.
-     *
-     * @return EventDispatcher
-     */
-    public function getEventDispatcher()
-    {
-        return $this->eventDispatcher;
-    }
-
-    /**
-     * Set the event dispatcher.
-     *
-     * @return Obfuscator
-     */
-    public function setEventDispatcher(EventDispatcher $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
+        return new RegexIterator(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory)
+            ),
+            $this->getFileRegex()
+        );
     }
 
     /**
@@ -202,18 +129,25 @@ class Obfuscator
     }
 
     /**
-     * Get the file list.
+     * Get the event dispatcher.
      *
-     * @return SplFileInfo
-     **/
-    private function getFiles($directory)
+     * @return EventDispatcher
+     */
+    public function getEventDispatcher()
     {
-        return new RegexIterator(
-            new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directory)
-            ),
-            $this->getFileRegex()
-        );
+        return $this->eventDispatcher;
+    }
+
+    /**
+     * Set the event dispatcher.
+     *
+     * @return Obfuscator
+     */
+    public function setEventDispatcher(EventDispatcher $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 
     /**
@@ -248,5 +182,71 @@ class Obfuscator
                 throw new Exception(sprintf('Could not parse file "%s"', $file), null, $e);
             }
         }
+    }
+
+    /**
+     * Get the node traverser.
+     *
+     * @return NodeTraverser
+     */
+    public function getTraverser()
+    {
+        return $this->traverser;
+    }
+
+    /**
+     * Set the node traverser.
+     *
+     * @return Obfuscator
+     */
+    public function setTraverser(NodeTraverser $traverser)
+    {
+        $this->traverser = $traverser;
+
+        return $this;
+    }
+
+    /**
+     * Get the parser.
+     *
+     * @return Parser
+     */
+    public function getParser()
+    {
+        return $this->parser;
+    }
+
+    /**
+     * Set the parser.
+     *
+     * @return Obfuscator
+     */
+    public function setParser(Parser $parser)
+    {
+        $this->parser = $parser;
+
+        return $this;
+    }
+
+    /**
+     * Get the "pretty" printer.
+     *
+     * @return PrettyPrinter
+     */
+    public function getPrettyPrinter()
+    {
+        return $this->prettyPrinter;
+    }
+
+    /**
+     * Set the "pretty" printer.
+     *
+     * @return Obfuscator
+     */
+    public function setPrettyPrinter(PrettyPrinter $prettyPrinter)
+    {
+        $this->prettyPrinter = $prettyPrinter;
+
+        return $this;
     }
 }

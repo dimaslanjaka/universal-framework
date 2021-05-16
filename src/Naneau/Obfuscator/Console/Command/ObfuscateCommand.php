@@ -153,6 +153,29 @@ class ObfuscateCommand extends Command
     }
 
     /**
+     * Finalize the container.
+     *
+     * loads any given config file and compiles the container
+     *
+     * @return ObfuscateCommand
+     **/
+    private function finalizeContainer(InputInterface $input)
+    {
+        // Load config if given
+        $config = $input->getOption('config');
+        if (!empty($config)) {
+            if (!is_readable($config)) {
+                throw new InvalidArgumentException(sprintf('Can not read config file "%s"', $config));
+            }
+            $this->getContainer()->loadFile($config);
+        }
+
+        $this->getContainer()->getContainer()->compile();
+
+        return $this;
+    }
+
+    /**
      * Get the container.
      *
      * @return Container
@@ -172,16 +195,6 @@ class ObfuscateCommand extends Command
         $this->container = $container;
 
         return $this;
-    }
-
-    /**
-     * Get the obfuscator.
-     *
-     * @return Obfuscator
-     */
-    public function getObfuscator()
-    {
-        return $this->getContainer()->getContainer()->get('obfuscator');
     }
 
     /**
@@ -216,25 +229,12 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Finalize the container.
+     * Get the obfuscator.
      *
-     * loads any given config file and compiles the container
-     *
-     * @return ObfuscateCommand
-     **/
-    private function finalizeContainer(InputInterface $input)
+     * @return Obfuscator
+     */
+    public function getObfuscator()
     {
-        // Load config if given
-        $config = $input->getOption('config');
-        if (!empty($config)) {
-            if (!is_readable($config)) {
-                throw new InvalidArgumentException(sprintf('Can not read config file "%s"', $config));
-            }
-            $this->getContainer()->loadFile($config);
-        }
-
-        $this->getContainer()->getContainer()->compile();
-
-        return $this;
+        return $this->getContainer()->getContainer()->get('obfuscator');
     }
 }

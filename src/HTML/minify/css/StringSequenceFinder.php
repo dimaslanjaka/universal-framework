@@ -18,11 +18,11 @@ class StringSequenceFinder extends MinificationSequenceFinder
     {
         $this->start_idx = strpos($string, $this->start_delimiter);
         if ($this->isValid()) {
-      $this->end_idx = strpos($string, $this->end_delimiter, $this->start_idx + 1);
-      // sanity check for non well formed lines
+            $this->end_idx = strpos($string, $this->end_delimiter, $this->start_idx + 1);
+            // sanity check for non well formed lines
             $this->end_idx = (false === $this->end_idx ? strlen($string) : $this->end_idx + strlen(
                     $this->end_delimiter
                 ));
+        }
     }
-  }
 }

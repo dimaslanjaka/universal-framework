@@ -26,7 +26,7 @@ function aesDecrypt($jsonString, $passphrase)
     $key = substr($result, 0, 32);
     $data = openssl_decrypt($ct, 'aes-256-cbc', $key, true, $iv);
 
-  return json_decode($data, true);
+    return json_decode($data, true);
 }
 
 /**
@@ -39,13 +39,13 @@ function aesDecrypt($jsonString, $passphrase)
  */
 function aesEncrypt($value, $passphrase)
 {
-  $salt = openssl_random_pseudo_bytes(8);
-  $salted = '';
-  $dx = '';
-  while (strlen($salted) < 48) {
-    $dx = md5($dx . $passphrase . $salt, true);
-    $salted .= $dx;
-  }
+    $salt = openssl_random_pseudo_bytes(8);
+    $salted = '';
+    $dx = '';
+    while (strlen($salted) < 48) {
+        $dx = md5($dx . $passphrase . $salt, true);
+        $salted .= $dx;
+    }
     $key = substr($salted, 0, 32);
     $iv = substr($salted, 32, 16);
     $encrypted_data = openssl_encrypt(json_encode($value), 'aes-256-cbc', $key, true, $iv);

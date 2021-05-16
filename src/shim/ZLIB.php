@@ -8,17 +8,17 @@
  */
 class ZLIB
 {
-  public static function compress($str)
-  {
-    return base64_encode(gzdeflate($str, 6, ZLIB_ENCODING_DEFLATE));
-  }
+    public static function compress($str)
+    {
+        return base64_encode(gzdeflate($str, 6, ZLIB_ENCODING_DEFLATE));
+    }
 
-  public static function decompress($str)
-  {
-    $b64 = base64_decode($str);
+    public static function decompress($str)
+    {
+        $b64 = base64_decode($str);
 
-    return $b64 ? gzinflate($b64) : null;
-  }
+        return $b64 ? gzinflate($b64) : null;
+    }
 }
 
 /**
@@ -26,7 +26,7 @@ class ZLIB
  *
  * @return bool
  */
-function isB64(string $s)
+function isB64($s)
 {
     /*
      * first check if we're dealing with an actual valid base64 encoded string

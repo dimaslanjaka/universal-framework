@@ -54,29 +54,6 @@ class ScramblePrivateMethod extends ScramblerVisitor
     }
 
     /**
-     * Check all variable nodes.
-     *
-     * @return void
-     **/
-    public function enterNode(Node $node)
-    {
-        if ($this->shouldSkip()) {
-            return;
-        }
-
-        // Scramble calls
-        if ($node instanceof MethodCall || $node instanceof StaticCall) {
-            // Node wasn't renamed
-            if (!$this->isRenamed($node->name)) {
-                return;
-            }
-
-            // Scramble usage
-            return $this->scramble($node);
-        }
-    }
-
-    /**
      * Recursively scan for method calls and see if variables are used.
      *
      * @param Node[] $nodes
@@ -128,6 +105,29 @@ class ScramblePrivateMethod extends ScramblerVisitor
             if (isset($node->stmts) && is_array($node->stmts)) {
                 $this->scanMethodDefinitions($node->stmts);
             }
+        }
+    }
+
+    /**
+     * Check all variable nodes.
+     *
+     * @return void
+     **/
+    public function enterNode(Node $node)
+    {
+        if ($this->shouldSkip()) {
+            return;
+        }
+
+        // Scramble calls
+        if ($node instanceof MethodCall || $node instanceof StaticCall) {
+            // Node wasn't renamed
+            if (!$this->isRenamed($node->name)) {
+                return;
+            }
+
+            // Scramble usage
+            return $this->scramble($node);
         }
     }
 }

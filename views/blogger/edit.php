@@ -18,7 +18,7 @@ if (!isset($_REQUEST['bid']) || !isset($_REQUEST['pid'])) {
 }
 
 // set blog id
-$service->set_blog_id($_REQUEST['bid']);
+$service->setBlogId($_REQUEST['bid']);
 // get single post
 $singlepost = $service->posts->get($_REQUEST['bid'], $_GET['pid']);
 ?>

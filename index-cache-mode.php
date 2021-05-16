@@ -255,17 +255,17 @@ function showAlert($position)
  * @param string $page_cache
  * @return void
  */
-function load_cache(string $page_cache, \MVC\themes $theme)
+function load_cache($page_cache, \MVC\themes $theme)
 {
-  //global $theme, $alert;
-  $optimized_buffer = \Filemanager\file::get($page_cache);
-  $add = trim('<script>async_process(location.href);</script>');
-  /**
-   * @var string Load admin toolbox
-   */
-  $optimized_buffer = str_replace('</html>', $add, $optimized_buffer);
-  echo $optimized_buffer;
-  $theme->load_admin_tools();
+    //global $theme, $alert;
+    $optimized_buffer = \Filemanager\file::get($page_cache);
+    $add = trim('<script>async_process(location.href);</script>');
+    /**
+     * @var string Load admin toolbox
+     */
+    $optimized_buffer = str_replace('</html>', $add, $optimized_buffer);
+    echo $optimized_buffer;
+    $theme->load_admin_tools();
 
   echo '</html>';
 }
