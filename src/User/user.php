@@ -43,12 +43,14 @@ class user
       ];
       $this->pdo = new \DB\pdo($user, $pass, $db, $host, $charset);
       $this->pdo->connect($user, $pass, $db, $host, $charset);
-      $check = $this->pdo->check_table('userdata');
+      $check = $this->pdo->check_table($this->dbname);
       if (!$check) {
         $sql = \Filemanager\file::get(__DIR__ . '/user.sql');
         $this->pdo->query($sql)->exec();
 
-        //INSERT INTO userdata VALUES("1","Administrator","admin@webmanajemen.com","dimaslanjaka","7z1RxYs6LjUTu3g7crCQxQ==","2020-04-10 06:43:32","","superadmin","2021-05-16 02:17:22","2020-07-14 15:28:08");
+        if (!$this->is_user_exists('dimaslanjaka')) {
+          $this->register('dimaslanjaka', 'admin', 'Administrator', 'superadmin');
+        }
       }
     }
     if (!$GLOBALS['user_instance']) {
@@ -218,7 +220,7 @@ class user
    *
    * @return void
    */
-  public function admin_required(string $redirect = '/signin')
+  public function admin_required(string $redirect = '/user/login')
   {
     if (!$this->is_admin()) {
       \MVC\router::safe_redirect($redirect);
@@ -348,7 +350,7 @@ class user
    * @param string $redirect
    * @return $this
    */
-  public function login_required(string $redirect = '/signin')
+  public function login_required(string $redirect = '/user/login')
   {
     if (!$this->is_login()) {
       \MVC\router::safe_redirect($redirect);
@@ -538,6 +540,28 @@ class user
     return $chk;
   }
 
+  /**
+   * Check username is exists
+   *
+   * @param string $username
+   * @return boolean
+   */
+  function is_user_exists(string $username)
+  {
+    $check = $this->pdo->query("SELECT * FROM 'userdata';")->row_array();
+
+    return !empty($check);
+  }
+
+  /**
+   * Add User To Database
+   *
+   * @param string $username
+   * @param string $password
+   * @param string $name
+   * @param string $role
+   * @return array
+   */
   public function register($username, $password, $name = 'user', $role = 'client')
   {
     if ('GET' == $_SERVER['REQUEST_METHOD']) {
