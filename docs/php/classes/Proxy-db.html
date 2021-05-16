@@ -238,6 +238,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                 <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/Proxy-db.html#property_dbname">$dbname</a>
+    <span>
+                &nbsp;: mixed            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/Proxy-db.html#property_pdo">$pdo</a>
     <span>
                 &nbsp;: <a href="classes/DB-pdo.html"><abbr title="\DB\pdo">pdo</abbr></a>            </span>
@@ -254,9 +261,9 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Proxy-db.html#method_inactive_proxies">inactive_proxies()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;|null    </span>
 </dt>
-<dd></dd>
+<dd>Get All Inactive Proxies</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Proxy-db.html#method_load_proxies">load_proxies()</a>
@@ -268,9 +275,9 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Proxy-db.html#method_load_proxies_db">load_proxies_db()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: array&lt;string|int, mixed&gt;|null    </span>
 </dt>
-<dd></dd>
+<dd>Load proxies from database</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Proxy-db.html#method_random_proxy">random_proxy()</a>
@@ -291,6 +298,36 @@
             Properties
             <a href="classes/Proxy-db.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_dbname">
+        $dbname
+        <a href="classes/Proxy-db.html#property_dbname" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">15</span>
+</aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">$dbname</span>
+     = <span class="phpdocumentor-signature__default-value">&#039;proxies&#039;</span></code>
+
+    
+    
+
+</article>
                     <article
         class="
             phpdocumentor-element
@@ -343,7 +380,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">17</span>
 </aside>
 
     
@@ -385,20 +422,22 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">29</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Get All Inactive Proxies</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">inactive_proxies</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">inactive_proxies</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span></code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span>
             &mdash;
             <section class="phpdocumentor-description"></section>
 
@@ -417,7 +456,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">45</span>
+    <span class="phpdocumentor-element-found-in__line">62</span>
 </aside>
 
     
@@ -449,20 +488,22 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">34</span>
+    <span class="phpdocumentor-element-found-in__line">51</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Load proxies from database</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">load_proxies_db</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">load_proxies_db</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span></code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;|null</span>
             &mdash;
             <section class="phpdocumentor-description"></section>
 
@@ -481,7 +522,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/Proxy/db.php"><a href="files/src-proxy-db.html"><abbr title="src/Proxy/db.php">db.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">32</span>
 </aside>
 
     

@@ -2728,7 +2728,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\DB\\Backup_Database\u003A\u003Aclean\u0028\u0029",
             "name": "clean",
-            "summary": "",
+            "summary": "Clean\u0020All\u0020Backuped\u0020Database\u0020SQL",
             "url": "classes/DB-Backup-Database.html#method_clean"
         },                {
             "fqsen": "\\DB\\Backup_Database\u003A\u003AbackupTables\u0028\u0029",
@@ -2780,6 +2780,11 @@ Search.appendIndex(
             "name": "outputDir",
             "summary": "Output\u0020Directory",
             "url": "classes/DB-Backup-Database.html#property_outputDir"
+        },                {
+            "fqsen": "\\DB\\Backup_Database\u003A\u003A\u0024result",
+            "name": "result",
+            "summary": "Result",
+            "url": "classes/DB-Backup-Database.html#property_result"
         },                {
             "fqsen": "\\DB\\DB",
             "name": "DB",
@@ -7308,12 +7313,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Proxy\\db\u003A\u003Ainactive_proxies\u0028\u0029",
             "name": "inactive_proxies",
-            "summary": "",
+            "summary": "Get\u0020All\u0020Inactive\u0020Proxies",
             "url": "classes/Proxy-db.html#method_inactive_proxies"
         },                {
             "fqsen": "\\Proxy\\db\u003A\u003Aload_proxies_db\u0028\u0029",
             "name": "load_proxies_db",
-            "summary": "",
+            "summary": "Load\u0020proxies\u0020from\u0020database",
             "url": "classes/Proxy-db.html#method_load_proxies_db"
         },                {
             "fqsen": "\\Proxy\\db\u003A\u003Aload_proxies\u0028\u0029",
@@ -7325,6 +7330,11 @@ Search.appendIndex(
             "name": "pdo",
             "summary": "PDO.",
             "url": "classes/Proxy-db.html#property_pdo"
+        },                {
+            "fqsen": "\\Proxy\\db\u003A\u003A\u0024dbname",
+            "name": "dbname",
+            "summary": "",
+            "url": "classes/Proxy-db.html#property_dbname"
         },                {
             "fqsen": "\\Proxy\\gate",
             "name": "gate",

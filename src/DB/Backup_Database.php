@@ -58,6 +58,13 @@ class Backup_Database
   public $outputDir = __DIR__ . '/backup';
 
   /**
+   * Result
+   *
+   * @var array
+   */
+  public $result = [];
+
+  /**
    * Constructor initializes database.
    */
   function __construct($host, $username, $passwd, $dbName, $charset = 'utf8')
@@ -87,10 +94,15 @@ class Backup_Database
     }
   }
 
+  /**
+   * Clean All Backuped Database SQL
+   *
+   * @return void
+   */
   function clean()
   {
-    $fullPath = __DIR__ . "/test/";
-    array_map('unlink', glob("$fullPath*.log"));
+    $fullPath = $this->outputDir;
+    array_map('unlink', glob("$fullPath*.sql"));
   }
 
   /**
@@ -101,7 +113,6 @@ class Backup_Database
    */
   public function backupTables($tables = '*')
   {
-    $res = [];
     try {
       /*
        * Tables to export
@@ -159,9 +170,12 @@ class Backup_Database
         $sql_tbl .= "\n\n\n";
         file_put_contents($this->outputDir . "/$table.sql", $sql_tbl);
         $sql .= $sql_tbl;
+        if (is_admin()) {
+          $this->result[$table]['sql'] = $sql_tbl;
+        }
 
         //echo ' OK' . '<br />';
-        $res[$table] = "OK";
+        $this->result[$table]['status'] = "OK";
       }
     } catch (Exception $e) {
       var_dump($e->getMessage());
@@ -170,7 +184,7 @@ class Backup_Database
     }
 
     $this->saveFile($sql, $this->outputDir);
-    return $res;
+    return $this->result;
   }
 
   function download($content, $backup_name)

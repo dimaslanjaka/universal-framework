@@ -282,6 +282,13 @@
 <dd>Password used to connect to database.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/DB-Backup-Database.html#property_result">$result</a>
+    <span>
+                &nbsp;: array&lt;string|int, mixed&gt;            </span>
+</dt>
+<dd>Result</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/DB-Backup-Database.html#property_username">$username</a>
     <span>
                 &nbsp;: mixed            </span>
@@ -306,9 +313,9 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/DB-Backup-Database.html#method_clean">clean()</a>
     <span>
-                        &nbsp;: mixed    </span>
+                        &nbsp;: void    </span>
 </dt>
-<dd></dd>
+<dd>Clean All Backuped Database SQL</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/DB-Backup-Database.html#method_download">download()</a>
@@ -541,6 +548,38 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_result">
+        $result
+        <a href="classes/DB-Backup-Database.html#property_result" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">65</span>
+</aside>
+
+        <p class="phpdocumentor-summary">Result</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
+    <span class="phpdocumentor-signature__name">$result</span>
+     = <span class="phpdocumentor-signature__default-value">[]</span></code>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_username">
         $username
         <a href="classes/DB-Backup-Database.html#property_username" class="headerlink"><i class="fas fa-link"></i></a>
@@ -586,7 +625,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">63</span>
+    <span class="phpdocumentor-element-found-in__line">70</span>
 </aside>
 
         <p class="phpdocumentor-summary">Constructor initializes database.</p>
@@ -658,7 +697,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</dd
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">102</span>
+    <span class="phpdocumentor-element-found-in__line">114</span>
 </aside>
 
         <p class="phpdocumentor-summary">Backup the whole database or just some tables
@@ -704,20 +743,22 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">90</span>
+    <span class="phpdocumentor-element-found-in__line">102</span>
 </aside>
 
-    
+        <p class="phpdocumentor-summary">Clean All Backuped Database SQL</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">clean</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">clean</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
-    
+        <section class="phpdocumentor-description"></section>
+
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
+    <span class="phpdocumentor-signature__response_type">void</span>
             &mdash;
             <section class="phpdocumentor-description"></section>
 
@@ -736,7 +777,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">176</span>
+    <span class="phpdocumentor-element-found-in__line">190</span>
 </aside>
 
     
@@ -785,7 +826,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">77</span>
+    <span class="phpdocumentor-element-found-in__line">84</span>
 </aside>
 
     
@@ -817,7 +858,7 @@ Use &#039;*&#039; for whole database or &#039;table1 table2 table3...&#039;.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/DB/Backup_Database.php"><a href="files/src-db-backup-database.html"><abbr title="src/DB/Backup_Database.php">Backup_Database.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">203</span>
 </aside>
 
         <p class="phpdocumentor-summary">Save SQL to file.</p>

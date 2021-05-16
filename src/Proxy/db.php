@@ -12,6 +12,7 @@ class db
    * @var \DB\pdo
    */
   private $pdo = null;
+  private $dbname = 'proxies';
 
   public function __construct(\DB\pdo $pdo)
   {
@@ -20,17 +21,33 @@ class db
       $this->load_proxies_db();
     }
     $this->pdo = $pdo;
+
+    $check = $this->pdo->check_table($this->dbname);
+    if (!$check) {
+      $sql = \Filemanager\file::get(__DIR__ . '/db.sql');
+      $this->pdo->query($sql)->exec();
+    }
   }
 
   public function random_proxy(int $n = 1)
   {
   }
 
+  /**
+   * Get All Inactive Proxies
+   *
+   * @return array|null
+   */
   public function inactive_proxies()
   {
     return $this->pdo->query("SELECT * FROM `proxies` WHERE `status` = 'inactive'")->row_array();
   }
 
+  /**
+   * Load proxies from database
+   *
+   * @return array|null
+   */
   public function load_proxies_db()
   {
     $proxies = $this->pdo

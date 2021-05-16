@@ -19,6 +19,13 @@ if (isset($_REQUEST['tables'])) { // show all tables
    * Instantiate Backup_Database and perform backup.
    */
   $backupDatabase = new Backup_Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  $result = $backupDatabase->backupTables(trim(urldecode($_REQUEST['table'])));
-  exit(json::json($result));
+  $tbl = trim(urldecode($_REQUEST['table']));
+  $result = $backupDatabase->backupTables($tbl);
+  if (!isset($_REQUEST['sql'])) {
+    exit(json::json($result));
+  } else {
+    header('Content-Type: text/plain; charset=utf-8');
+    echo $result[$tbl]['sql'];
+    exit;
+  }
 }
