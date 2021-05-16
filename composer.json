@@ -51,6 +51,7 @@
   "description": "Framework PHPJS full typehinting support with easy helper",
   "license": "MIT",
   "name": "dimaslanjaka/universal-framework",
+  "version": "1.1.0",
   "require": {
     "codeception/codeception": "^4.0",
     "composer/xdebug-handler": "^1.2",
