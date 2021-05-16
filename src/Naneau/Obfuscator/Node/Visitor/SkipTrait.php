@@ -1,21 +1,16 @@
 <?php
 /**
- * SkipTrait.php
- *
- * @package         Obfuscator
- * @subpackage      NodeVisitor
+ * SkipTrait.php.
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
 /**
- * SkipTrait
+ * SkipTrait.
  *
  * Skipping certain classes trait
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 trait SkipTrait
 {
@@ -29,7 +24,8 @@ trait SkipTrait
     /**
      * Should we skip processing?
      *
-     * @param  bool                  $skip
+     * @param bool $skip
+     *
      * @return ScramblePrivateMethod
      **/
     protected function skip($skip = false)

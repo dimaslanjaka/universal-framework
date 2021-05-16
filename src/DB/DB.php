@@ -38,7 +38,7 @@ class DB
       $this->dbh = new PDO('mysql:host=' . $config['host'] . ';dbname=' . $config['database'] . ';charset=utf8', $config['username'], $config['password']);
       $this->dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     } catch (Exception $e) {
-      die('Error establishing a database connection.');
+      exit('Error establishing a database connection.');
     }
   }
 
@@ -134,16 +134,16 @@ class DB
         $count_arr = count($arr);
         $x = 0;
 
-        foreach ($arr as  $param) {
-          if (0 == $x) {
-            $this->where .= ' WHERE ';
-            ++$x;
-          } else {
-            if ($this->isOrWhere) {
-              $this->where .= ' Or ';
-            } else {
-              $this->where .= ' AND ';
-            }
+          foreach ($arr as $param) {
+              if (0 == $x) {
+                  $this->where .= ' WHERE ';
+                  ++$x;
+              } else {
+                  if ($this->isOrWhere) {
+                      $this->where .= ' Or ';
+                  } else {
+                      $this->where .= ' AND ';
+                  }
 
             ++$x;
           }
@@ -219,16 +219,16 @@ class DB
         $count_arr = count($arr);
         $x = 0;
 
-        foreach ($arr as  $param) {
-          if (0 == $x) {
-            $this->where .= ' WHERE ';
-            ++$x;
-          } else {
-            if ($this->isOrWhere) {
-              $this->where .= ' Or ';
-            } else {
-              $this->where .= ' AND ';
-            }
+          foreach ($arr as $param) {
+              if (0 == $x) {
+                  $this->where .= ' WHERE ';
+                  ++$x;
+              } else {
+                  if ($this->isOrWhere) {
+                      $this->where .= ' Or ';
+                  } else {
+                      $this->where .= ' AND ';
+                  }
 
             ++$x;
           }
@@ -355,17 +355,17 @@ class DB
         $count_arr = count($arr);
         $x = 0;
 
-        foreach ($arr as  $param) {
-          if (0 == $x) {
-            ++$x;
-          } else {
-            if ($this->isOrWhere) {
-              $this->where .= ' Or ';
-            } else {
-              $this->where .= ' AND ';
-            }
+          foreach ($arr as $param) {
+              if (0 == $x) {
+                  ++$x;
+              } else {
+                  if ($this->isOrWhere) {
+                      $this->where .= ' Or ';
+                  } else {
+                      $this->where .= ' AND ';
+                  }
 
-            ++$x;
+                  ++$x;
           }
           $count_param = count($param);
           if (1 == $count_param) {
@@ -443,17 +443,17 @@ class DB
         $count_arr = count($arr);
         $x = 0;
 
-        foreach ($arr as  $param) {
-          if (0 == $x) {
-            ++$x;
-          } else {
-            if ($this->isOrWhere) {
-              $this->where .= ' Or ';
-            } else {
-              $this->where .= ' AND ';
-            }
+          foreach ($arr as $param) {
+              if (0 == $x) {
+                  ++$x;
+              } else {
+                  if ($this->isOrWhere) {
+                      $this->where .= ' Or ';
+                  } else {
+                      $this->where .= ' AND ';
+                  }
 
-            ++$x;
+                  ++$x;
           }
           $count_param = count($param);
           if (1 == $count_param) {
@@ -786,9 +786,9 @@ class MareiCollection implements ArrayAccess
   {
     // return (array) get_object_vars($this);
     $array = [];
-    foreach ($this as  $mareiObj) {
-      $array[] = (array) $mareiObj;
-    }
+      foreach ($this as $mareiObj) {
+          $array[] = (array)$mareiObj;
+      }
 
     return $array;
   }
@@ -796,9 +796,9 @@ class MareiCollection implements ArrayAccess
   public function list($field)
   {
     $list = [];
-    foreach ($this as  $item) {
-      $list[] = $item->{$field};
-    }
+      foreach ($this as $item) {
+          $list[] = $item->{$field};
+      }
 
     return $list;
   }
@@ -839,7 +839,7 @@ class MareiCollection implements ArrayAccess
   {
     header('Content-Type: application/json;charset=utf-8');
     // return json_encode(get_object_vars($this));
-    return  $this->toJSON();
+      return $this->toJSON();
   }
 }
 // End Marei Collection Class

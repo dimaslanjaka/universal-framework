@@ -2,25 +2,26 @@
 $element = new HTML\element();
 ?>
 <!doctype html>
-<html lang="en" manifest="" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
+<html lang="en" manifest="" environtment="<?php echo ENVIRONMENT; ?>" cache="<?php echo CONFIG['cache']['key']; ?>">
 
 <head>
-  <?php include __DIR__ . '/meta.php'; ?>
-  <link rel="stylesheet" href="/assets/css/all.min.css">
-  <link rel="stylesheet" href="/node_modules/animate.css/animate.min.css">
-  <!-- Stylesheet -->
-  <link href="<?= path2url(__DIR__ . '/../apotek/dist/css/bootstrap.min.css') ?>" rel="stylesheet">
-  <style>
-    <?php include __DIR__ . '/../apotek/custom/custom.min.css' ?>
-  </style>
+    <?php include __DIR__ . '/meta.php'; ?>
+    <link rel="stylesheet" href="/assets/css/all.min.css">
+    <link rel="stylesheet" href="/node_modules/animate.css/animate.min.css">
+    <!-- Stylesheet -->
+    <link href="<?php echo path2url(__DIR__ . '/../apotek/dist/css/bootstrap.min.css'); ?>" rel="stylesheet">
+    <style>
+        <?php include __DIR__ . '/../apotek/custom/custom.min.css'; ?>
+    </style>
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <a class="navbar-brand" href="#">APOTEK</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -78,39 +79,39 @@ $element = new HTML\element();
         <div class="row">
           <div class="col-md-12">
             <center>
-              <a class="" data-toggle="collapse" href="#translatorCollapser">
-                <i class="fas fa-language"></i>
-              </a>
-              <div class="collapse" id="translatorCollapser">
-                <div class="card card-body">
-                  <div id="google_translate_element"></div>
+                <a class="" data-toggle="collapse" href="#translatorCollapser">
+                    <i class="fas fa-language"></i>
+                </a>
+                <div class="collapse" id="translatorCollapser">
+                    <div class="card card-body">
+                        <div id="google_translate_element"></div>
+                    </div>
                 </div>
-              </div>
             </center>
-            <div class="copyright-text">
-              <p>© <?= date('Y') ?>
-                <a href="#">Apotek</a>. All rights reserved. Created by
-                <a href="https://web-manajemen.blogspot.com">Dimas Lanjaka</a>
-              </p>
-            </div>
+              <div class="copyright-text">
+                  <p>© <?php echo date('Y'); ?>
+                      <a href="#">Apotek</a>. All rights reserved. Created by
+                      <a href="https://web-manajemen.blogspot.com">Dimas Lanjaka</a>
+                  </p>
+              </div>
 
-            <div class="go_top">
-              <span class="icon-arrow-up"></span>
-            </div>
+              <div class="go_top">
+                  <span class="icon-arrow-up"></span>
+              </div>
           </div>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Bootstrap core JavaScript
+<!-- Bootstrap core JavaScript
 ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="<?= path2url(__DIR__ . '/../apotek/dist/js/bootstrap.bundle.js') ?>"></script>
-  <?php
-  include __DIR__ . '/../apotek/script.php';
-  ?>
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="<?php echo path2url(__DIR__ . '/../apotek/dist/js/bootstrap.bundle.js'); ?>"></script>
+<?php
+include __DIR__ . '/../apotek/script.php';
+?>
 </body>
 
 </html>

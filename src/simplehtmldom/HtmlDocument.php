@@ -278,7 +278,8 @@ class HtmlDocument
   public function title()
   {
     $title = $this->find('title', 0);
-    return $title ? $title->innertext : null;
+
+      return $title ? $title->innertext : null;
   }
 
   public function expect($selector, $idx = null, $lowercase = false)
@@ -574,7 +575,8 @@ class HtmlDocument
       }
 
       $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-      return true;
+
+        return true;
     }
 
     // Start tag: https://dev.w3.org/html5/pf-summary/syntax.html#start-tags
@@ -674,7 +676,8 @@ class HtmlDocument
 
       $this->link_nodes($node, true);
       $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-      return true;
+
+        return true;
     }
 
     if (!preg_match('/^\w[\w:-]*$/', $tag)) { // Invalid tag name
@@ -907,7 +910,8 @@ class HtmlDocument
     $node->_[HtmlNode::HDOM_INFO_TEXT] = '</' . $tag . '>';
     $this->link_nodes($node, false);
     $this->char = (++$this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    return true;
+
+      return true;
   }
 
   protected function skip($chars)
@@ -925,7 +929,8 @@ class HtmlDocument
     }
     $this->pos += $len;
     $this->char = ($this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    return substr($this->doc, $pos, $len);
+
+      return substr($this->doc, $pos, $len);
   }
 
   protected function copy_until($chars)
@@ -934,7 +939,8 @@ class HtmlDocument
     $len = strcspn($this->doc, $chars, $pos);
     $this->pos += $len;
     $this->char = ($this->pos < $this->size) ? $this->doc[$this->pos] : null; // next
-    return substr($this->doc, $pos, $len);
+
+      return substr($this->doc, $pos, $len);
   }
 
   protected function copy_until_char($char)

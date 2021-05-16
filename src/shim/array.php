@@ -4,10 +4,8 @@
  * ```php
  * array_filter_recursive(['password'=>'secret_password', 'username'=>'any'], ['password']); //will return without password
  * ```
- * Array filter recursive
+ * Array filter recursive.
  *
- * @param array $array
- * @param array $filterdata
  * @return array
  */
 function array_filter_recursive(array $array, array $filterdata)
@@ -19,6 +17,7 @@ function array_filter_recursive(array $array, array $filterdata)
           unset($single[$filter]);
         }
       }
+
       return $single;
     }, $array);
   }
@@ -43,10 +42,8 @@ function array_unique_recursive(array $array)
 }
 
 /**
- * Check multiple array keys exists
+ * Check multiple array keys exists.
  *
- * @param array $keys
- * @param array $arr
  * @return bool
  */
 function array_keys_exists(array $keys, array $arr)

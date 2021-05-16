@@ -1,18 +1,19 @@
 <?php
 /**
- * bulletproof\utils\resize
+ * bulletproof\utils\resize.
  *
  * Image resize function for bulletproof library
  *
  * PHP support 5.3+
  *
- * @package     bulletproof
  * @version     3.2.0
+ *
  * @author      https://twitter.com/_samayo
- * @link        https://github.com/samayo/bulletproof
+ *
+ * @see        https://github.com/samayo/bulletproof
+ *
  * @license     MIT
  */
-
 
 namespace Bulletproof\Utils;
 
@@ -54,7 +55,7 @@ namespace Bulletproof\Utils;
  * @return     boolean     True on success false on failure
  *
  */
-function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight, $ratio = false, $upsize = true, $cropToSize = false, $quality = array(), $destination = false, $permission = 0755)
+function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight, $ratio = false, $upsize = true, $cropToSize = false, $quality = [], $destination = false, $permission = 0755)
 {
     // Checks whether image cropping is enabled
     if ($cropToSize) {
@@ -65,13 +66,13 @@ function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight,
         if ($thumbnail_aspect_ratio < $source_aspect_ratio) {
             $src_h = $imgHeight;
             $src_w = $imgHeight * $thumbnail_aspect_ratio;
-            $src_x = (int) (($imgWidth - $src_w)/2);
+            $src_x = (int)(($imgWidth - $src_w) / 2);
             $src_y = 0;
         } else {
             $src_w = $imgWidth;
-            $src_h = (int) ($imgWidth / $thumbnail_aspect_ratio);
+            $src_h = (int)($imgWidth / $thumbnail_aspect_ratio);
             $src_x = 0;
-            $src_y = (int) (($imgHeight - $src_h)/2);
+            $src_y = (int)(($imgHeight - $src_h) / 2);
         }
 
         // Checks whether image upsizing is enabled
@@ -82,35 +83,34 @@ function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight,
             // If the given width is larger than the image width, then resize it
             if ($newWidth > $imgWidth) {
                 $newWidth = $imgWidth;
-                $newHeight = (int) ($newWidth / $imgWidth * $imgHeight);
+                $newHeight = (int)($newWidth / $imgWidth * $imgHeight);
                 if ($newHeight > $newHeightOrig) {
                     $newHeight = $newHeightOrig;
                     $src_h = $newHeight;
-                    $src_y = (int) (($imgHeight - $src_h)/2);
+                    $src_y = (int)(($imgHeight - $src_h) / 2);
                 }
 
-                $src_x=0;
+                $src_x = 0;
                 $src_w = $imgWidth;
             }
 
             // If the given height is larger then the image height, then resize it.
             if ($newHeightOrig > $imgHeight) {
                 $newHeight = $imgHeight;
-                $src_y=0;
+                $src_y = 0;
                 $src_h = $imgHeight;
-                $src_w = (int) ($src_h * ( $newWidth / $newHeight ));
-                $src_x = (int) (($imgWidth - $src_w)/2);
+                $src_w = (int)($src_h * ($newWidth / $newHeight));
+                $src_x = (int)(($imgWidth - $src_w) / 2);
             }
         }
     } else {
-
         // First, calculate the height.
-        $height = (int) ($newWidth / $imgWidth * $imgHeight);  //  75
+        $height = (int)($newWidth / $imgWidth * $imgHeight);  //  75
 
         // If the height is too large, set it to the maximum height and calculate the width.
         if ($height > $newHeight) {
             $height = $newHeight;
-            $newWidth = (int) ($height / $imgHeight * $imgWidth);
+            $newWidth = (int)($height / $imgHeight * $imgWidth);
         }
 
         // If we don't allow upsizing check if the new width or height are too big.
@@ -118,28 +118,28 @@ function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight,
             // If the given width is larger than the image width, then resize it
             if ($newWidth > $imgWidth) {
                 $newWidth = $imgWidth;
-                $newHeight = (int) ($newWidth / $imgWidth * $imgHeight);
+                $newHeight = (int)($newWidth / $imgWidth * $imgHeight);
             }
 
             // If the given height is larger then the image height, then resize it.
             if ($newHeight > $imgHeight) {
                 $newHeight = $imgHeight;
-                $newWidth = (int) ($height / $imgHeight * $imgWidth);
+                $newWidth = (int)($height / $imgHeight * $imgWidth);
             }
         }
 
-        if ($ratio == true) {
+        if (true == $ratio) {
             $source_aspect_ratio = $imgWidth / $imgHeight;
             $thumbnail_aspect_ratio = $newWidth / $newHeight;
             if ($imgWidth <= $newWidth && $imgHeight <= $newHeight) {
                 $newWidth = $imgWidth;
                 $newHeight = $imgHeight;
             } elseif ($thumbnail_aspect_ratio > $source_aspect_ratio) {
-                $newWidth = (int) ($newHeight * $source_aspect_ratio);
+                $newWidth = (int)($newHeight * $source_aspect_ratio);
                 $newHeight = $newHeight;
             } else {
                 $newWidth = $newWidth;
-                $newHeight = (int) ($newWidth / $source_aspect_ratio);
+                $newHeight = (int)($newWidth / $source_aspect_ratio);
             }
         }
 
@@ -168,8 +168,8 @@ function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight,
         $src_h
     );
 
-    if ($destination !== false) {  // checks if was destination provided
-        if(substr( $destination, -1 ) == '/' ) { // check whether prowided destination was folder or file.
+    if (false !== $destination) {  // checks if was destination provided
+        if ('/' == substr($destination, -1)) { // check whether prowided destination was folder or file.
             $create = !is_dir($destination) ? @mkdir($destination, $permission, true) : true; // if it was folder, it will crtete it if needed
             if ($create) {
                 $path_parts = pathinfo($image);
@@ -178,56 +178,57 @@ function resize($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight,
                 return false; // TODO: throw error/exception
             }
         }
-
     } else {
         $destination = $image;
     }
 
     $path_parts = pathinfo($destination);
-    $create = !is_dir($path_parts['dirname'].'/') ? @mkdir($path_parts['dirname'].'/', $permission, true) : true;
+    $create = !is_dir($path_parts['dirname'] . '/') ? @mkdir($path_parts['dirname'] . '/', $permission, true) : true;
     if (!$create) {
         return false; // TODO: throw error/exception
     }
 
     switch ($mimeType) {
-        case "jpeg":
-        case "jpg":
+        case 'jpeg':
+        case 'jpg':
             $q = 90; // function's default value - if everything else fails, this is used.
-            if( false !== $image ) {
-                if ((!empty($quality['jpg']['fallback'])) AND ( (int) $quality['jpg']['fallback'] ) AND ( $quality['jpg']['fallback'] > 0 ) AND ( $quality['jpg']['fallback'] <=100 ) ) {
+            if (false !== $image) {
+                if ((!empty($quality['jpg']['fallback'])) and ((int)$quality['jpg']['fallback']) and ($quality['jpg']['fallback'] > 0) and ($quality['jpg']['fallback'] <= 100)) {
                     $q = $quality['jpg']['fallback'];
                 }
 
-                if ((!empty($quality['jpg']['orig'])) AND true ===$quality['jpg']['orig'] ){
-                    if (extension_loaded('imagick')){
+                if ((!empty($quality['jpg']['orig'])) and true === $quality['jpg']['orig']) {
+                    if (extension_loaded('imagick')) {
                         $im = new \Imagick($image);
                         $q = $im->getImageCompressionQuality();
                     }
                 }
 
-                if((!empty($quality['jpg']['max'])) AND $quality['jpg']['max'] < $q ){
+                if ((!empty($quality['jpg']['max'])) and $quality['jpg']['max'] < $q) {
                     $q = $quality['jpg']['max'];
                 }
 
-                if((!empty($quality['jpg']['min'])) AND $quality['jpg']['min'] > $q ){
+                if ((!empty($quality['jpg']['min'])) and $quality['jpg']['min'] > $q) {
                     $q = $quality['jpg']['min'];
                 }
             }
-            return imagejpeg($tmp, $destination, $q );
+
+            return imagejpeg($tmp, $destination, $q);
             break;
-        case "png":
-            if ((!empty($quality['png'])) AND ( (int) $quality['png'] ) AND ( $quality['png'] >= -1 ) AND ( $quality['png'] <=9 ) ) {
+        case 'png':
+            if ((!empty($quality['png'])) and ((int)$quality['png']) and ($quality['png'] >= -1) and ($quality['png'] <= 9)) {
                 $q = $quality['png'];
             } else {
                 $q = -1; // -1 is zlib's default value which is currently ( 11/2018 ) equal to 6
             }
-            return imagepng($tmp, $destination, $q );
+
+            return imagepng($tmp, $destination, $q);
             break;
-        case "gif":
+        case 'gif':
             return imagegif($tmp, $destination);
             break;
         default:
-            throw new \Exception(" Only jpg, jpeg, png and gif files can be resized ");
+            throw new \Exception(' Only jpg, jpeg, png and gif files can be resized ');
             break;
     }
 }

@@ -26,7 +26,8 @@ include_once __DIR__ . '/constants.php';
 include_once __DIR__ . '/Debug.php';
 
 /**
- * HTMLNode class
+ * HTMLNode class.
+ *
  * @property string $innertext
  * @property string|null $title
  * @property string|null $alt
@@ -210,9 +211,9 @@ class HtmlNode
     }
 
     $string .= ' HDOM_INNER_INFO: ';
-    /**
-     * @var mixed
-     */
+      /*
+       * @var mixed
+       */
     if (isset($node)) {
       if (isset($node->_[self::HDOM_INFO_INNER])) {
         $string .= "'" . $node->_[self::HDOM_INFO_INNER] . "'";
@@ -499,14 +500,15 @@ class HtmlNode
     return $ret . '>';
   }
 
-  /**
-   * Element selector
-   *
-   * @param string $selector
-   * @param int $idx
-   * @param boolean $lowercase
-   * @return HtmlNode
-   */
+    /**
+     * Element selector.
+     *
+     * @param string $selector
+     * @param int $idx
+     * @param bool $lowercase
+     *
+     * @return HtmlNode
+     */
   public function find($selector, $idx = null, $lowercase = false)
   {
     $selectors = $this->parse_selector($selector);

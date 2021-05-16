@@ -1,40 +1,46 @@
 <?php
+
 const POST_DEFAULT_FLAG = 0;
 const POST_NOT_EMPTY = 1;
 const POST_NOT_NULL = 2;
 
 /**
  * Post getter.
- * Get post data with fallback value
+ * Get post data with fallback value.
  *
- * @param string $name
  * @param string $fallback
  * @param int $flag flag rule for post getter
+ *
  * @return void
  */
 function getPost(string $name, string $fallback = null, int $flag = POST_DEFAULT_FLAG)
 {
   if (isPost()) {
     if (isset($_POST[$name])) {
-      $thePost = $_POST[$name];
-      if ($flag != POST_DEFAULT_FLAG) {
-        if ($flag == POST_NOT_NULL) {
-          if ($thePost != null) return $thePost;
-        } else if ($flag == POST_NOT_EMPTY) {
-          if (!empty($thePost)) return $thePost;
+        $thePost = $_POST[$name];
+        if (POST_DEFAULT_FLAG != $flag) {
+            if (POST_NOT_NULL == $flag) {
+                if (null != $thePost) {
+                    return $thePost;
+                }
+            } elseif (POST_NOT_EMPTY == $flag) {
+                if (!empty($thePost)) {
+                    return $thePost;
+                }
+            }
+        } else {
+            return $thePost;
         }
-      } else {
-        return $thePost;
-      }
     }
   }
+
   return $fallback;
 }
 
 /**
- * Check if request method is post
+ * Check if request method is post.
  *
- * @return boolean
+ * @return bool
  */
 function isPost()
 {
@@ -42,10 +48,9 @@ function isPost()
 }
 
 /**
- * Check request method
+ * Check request method.
  *
- * @param string $methodName
- * @return boolean
+ * @return bool
  */
 function isRequest(string $methodName)
 {
@@ -53,12 +58,13 @@ function isRequest(string $methodName)
 }
 
 /**
- * Get request value by name ($_REQUEST)
+ * Get request value by name ($_REQUEST).
  */
 function getRequest(string $requestName)
 {
   if (isset($_REQUEST[$requestName])) {
     return $_REQUEST[$requestName];
   }
-  return null;
+
+    return null;
 }

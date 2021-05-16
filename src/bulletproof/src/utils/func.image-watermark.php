@@ -1,40 +1,42 @@
 <?php
 /**
- * bulletproof\utils\watermark
+ * bulletproof\utils\watermark.
  *
  * Image watermark function for bulletproof library
  *
  * PHP support 5.3+
  *
- * @package     bulletproof
  * @version     3.2.0
+ *
  * @author      https://twitter.com/_samayo
- * @link        https://github.com/samayo/bulletproof
+ *
+ * @see        https://github.com/samayo/bulletproof
+ *
  * @license     MIT
  */
+
 namespace Bulletproof\Utils;
 
-function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $watermarkHeight, $watermarkWidth, $position = "center")
+function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $watermarkHeight, $watermarkWidth, $position = 'center')
 {
-
     // Calculate the watermark position
     switch ($position) {
-        case "center":
+        case 'center':
             $marginBottom = round($imgHeight / 2);
             $marginRight = round($imgWidth / 2) - round($watermarkWidth / 2);
             break;
 
-        case "top-left":
+        case 'top-left':
             $marginBottom = round($imgHeight - $watermarkHeight);
             $marginRight = round($imgWidth - $watermarkWidth);
             break;
 
-        case "bottom-left":
+        case 'bottom-left':
             $marginBottom = 5;
             $marginRight = round($imgWidth - $watermarkWidth);
             break;
 
-        case "top-right":
+        case 'top-right':
             $marginBottom = round($imgHeight - $watermarkHeight);
             $marginRight = 5;
             break;
@@ -45,20 +47,19 @@ function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $waterm
             break;
     }
 
-
     $watermark = imagecreatefrompng($watermark);
 
     switch ($mimeType) {
-        case "jpeg":
-        case "jpg":
+        case 'jpeg':
+        case 'jpg':
             $createImage = imagecreatefromjpeg($image);
             break;
 
-        case "png":
+        case 'png':
             $createImage = imagecreatefrompng($image);
             break;
 
-        case "gif":
+        case 'gif':
             $createImage = imagecreatefromgif($image);
             break;
 
@@ -80,23 +81,22 @@ function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $waterm
         imagesy($watermark)
     );
 
-
     switch ($mimeType) {
-        case "jpeg":
-        case "jpg":
+        case 'jpeg':
+        case 'jpg':
             imagejpeg($createImage, $image);
             break;
 
-        case "png":
+        case 'png':
             imagepng($createImage, $image);
             break;
 
-        case "gif":
+        case 'gif':
             imagegif($createImage, $image);
             break;
 
         default:
-            throw new \Exception("A watermark can only be applied to: jpeg, jpg, gif, png images ");
+            throw new \Exception('A watermark can only be applied to: jpeg, jpg, gif, png images ');
             break;
     }
 }

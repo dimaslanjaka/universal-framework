@@ -1,19 +1,18 @@
 <?php
 
 use Filemanager\file;
-use JSON\json;
 use MVC\helper;
 
 if (isset($meta_config)) {
   $c_meta = file::get($meta_config, true);
   if (!isset($c_meta['meta_config'])) {
-    $c_meta['meta_config'] = $meta_config;
-  } else if (is_null($c_meta['meta_config'])) {
-    $c_meta['meta_config'] = $meta_config;
+      $c_meta['meta_config'] = $meta_config;
+  } elseif (is_null($c_meta['meta_config'])) {
+      $c_meta['meta_config'] = $meta_config;
   }
-  if (!file_exists($c_meta['content'])) {
-    $c_meta['content'] = $content;
-  }
+    if (!file_exists($c_meta['content'])) {
+        $c_meta['content'] = $content;
+    }
 }
 
 // @todo Metadata receiver
@@ -72,22 +71,22 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
 ?>
 
 <div class="card m-4 ">
-  <div class="card-body">
-    <h5 class="card-title text-center">Meta Editor</h5>
-    <div class="md-form">
-      <form action="" method="post" class="" id="meta-admin-toolbox-<?= uniqid() ?>">
-        <input type="hidden" name="meta-config" value="<?= $meta_config ?>">
-        <input type="hidden" name="meta-save" value="<?= random_int(1, 20) ?>">
-        <?php
-        foreach ($c_meta as $key => $value) {
-          $typeMeta = 'text';
-          $attributes = [];
-          if (in_array($key, ['published', 'modified'])) {
-            $typeMeta = 'datetime-local';
-            $value = date("Y-m-d\TH:i:s", strtotime($value));
-            $attributes[] = 'step="1"';
-          }
-          if (in_array($key, ['meta_config', 'content'])) {
+    <div class="card-body">
+        <h5 class="card-title text-center">Meta Editor</h5>
+        <div class="md-form">
+            <form action="" method="post" class="" id="meta-admin-toolbox-<?php echo uniqid(); ?>">
+                <input type="hidden" name="meta-config" value="<?php echo $meta_config; ?>">
+                <input type="hidden" name="meta-save" value="<?php echo random_int(1, 20); ?>">
+                <?php
+                foreach ($c_meta as $key => $value) {
+                    $typeMeta = 'text';
+                    $attributes = [];
+                    if (in_array($key, ['published', 'modified'])) {
+                        $typeMeta = 'datetime-local';
+                        $value = date("Y-m-d\TH:i:s", strtotime($value));
+                        $attributes[] = 'step="1"';
+                    }
+                    if (in_array($key, ['meta_config', 'content'])) {
             $attributes[] = 'readonly';
           }
 
@@ -121,17 +120,17 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
         }
         //echo "<pre>" . json::json($_SESSION, false) . "</pre>";
         ?>
-        <div class="form-group mb-2">
-          <button type="submit" class="btn btn-primary">Save meta</button>
+                <div class="form-group mb-2">
+                    <button type="submit" class="btn btn-primary">Save meta</button>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
 </div>
 
 <script async="true">
-  let script = document.createElement('script');
-  script.src = "<?= path2url(__DIR__ . '/admin.min.js') ?>";
-  script.async = false;
-  document.body.append(script); // (*)
+    let script = document.createElement('script');
+    script.src = "<?php echo path2url(__DIR__ . '/admin.min.js'); ?>";
+    script.async = false;
+    document.body.append(script); // (*)
 </script>

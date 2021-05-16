@@ -62,8 +62,8 @@ class router extends themes
   public function no_direct()
   {
     if (1 == count(get_included_files())) {
-      header('Location: /'); // Send to index
-      die('403'); // Must include to stop PHP from continuing
+        header('Location: /'); // Send to index
+        exit('403'); // Must include to stop PHP from continuing
     }
   }
 
@@ -155,8 +155,6 @@ class router extends themes
    * if ($this->is_reqs(['DNT', 'Connection']))
    * ```
    *
-   * @param array $anys
-   *
    * @return bool|string
    */
   public function is_reqs(array $anys)
@@ -180,8 +178,6 @@ class router extends themes
   /**
    * Check if header request has $any.
    *
-   * @param string $any
-   *
    * @return string|null
    */
   public function is_header(string $any)
@@ -191,14 +187,14 @@ class router extends themes
     return array_key_exists($any, $allHeaders) ? $allHeaders[$any] : null;
   }
 
-  /**
-   * Check browser no-cache request (hard reload)
-   *
-   * @return boolean
-   */
+    /**
+     * Check browser no-cache request (hard reload).
+     *
+     * @return bool
+     */
   public function is_hard_reload()
   {
-    return $this->is_header('Cache-Control') == 'no-cache' && $this->is_header('Pragma') == 'no-cache';
+      return 'no-cache' == $this->is_header('Cache-Control') && 'no-cache' == $this->is_header('Pragma');
   }
 
   /**

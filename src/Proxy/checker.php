@@ -6,7 +6,6 @@ use Curl\Curl;
 
 class checker extends Curl
 {
-
   public function __construct($base = 'https://www.google.com')
   {
     parent::__construct($base);

@@ -55,65 +55,71 @@
     }
 
     * {
-      word-wrap: break-word;
-      max-width: 100%;
+        word-wrap: break-word;
+        max-width: 100%;
     }
   </style>
 </head>
 
 <body>
-  <div class="info">
-    <h5>DDoS protection is activated for your IP <a rel="nofollow noopener" href="http://ip-api.com/json/<?= $remote_ip ?>" target="_new"><?= $remote_ip ?></a></h5>
+<div class="info">
+    <h5>DDoS protection is activated for your IP <a rel="nofollow noopener"
+                                                    href="http://ip-api.com/json/<?php echo $remote_ip; ?>"
+                                                    target="_new"><?php echo $remote_ip; ?></a></h5>
     <p>Please click bellow to pass protection,</p>
-    <a href='<?= \MVC\helper::geturl() ?>'>
-      <?= \MVC\helper::geturl() ?>
+    <a href='<?php echo \MVC\helper::geturl(); ?>'>
+        <?php echo \MVC\helper::geturl(); ?>
     </a>
 
 
-    <p>Or you will be automatically redirected to the requested page after <int id="reftime"><?= $redirect_delay ?></int> seconds.</p>
+    <p>Or you will be automatically redirected to the requested page after
+        <int id="reftime"><?php echo $redirect_delay; ?></int>
+        seconds.
+    </p>
     <div id="js_info" style="margin-top: 5px">
-      <p>To <u>continue working</u> with web-site, please make sure that you have <u>enabled JavaScript</u>.</p>
+        <p>To <u>continue working</u> with web-site, please make sure that you have <u>enabled JavaScript</u>.</p>
     </div>
-  </div>
+</div>
 
-  <footer>
+<footer>
     <center>
-      <div class="container">
-        <a href="https://github.com/dimaslanjaka">
-          <img src="https://avatars1.githubusercontent.com/u/12471057?s=400&v=4" style="border-radius: 100%;width:200px;"><br>
+        <div class="container">
+            <a href="https://github.com/dimaslanjaka">
+                <img src="https://avatars1.githubusercontent.com/u/12471057?s=400&v=4"
+                     style="border-radius: 100%;width:200px;"><br>
           Dimas Lanjaka Github
         </a>
         <h1>Author</h1>
         <p class="sign">
           DDoS protection by <span style="color: #49C73B;">W</span><span style="color: #349EBF;">M</span><span style="color: rgb(185, 8, 23);">I</span><br />
           <a href="mailto:dimaslanjaka@gmail.com">dimaslanjaka@gmail.com</a>
-          <noscript>Please enable Javascript to see the requested page.</noscript>
-        </p>
-      </div>
+            <noscript>Please enable Javascript to see the requested page.</noscript>
+            </p>
+        </div>
     </center>
-  </footer>
+</footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="text/javascript">
     //document.getElementById('js_info').style.display = 'none';
     var date = new Date();
-    var days = parseInt('<?= $secure_cookie_days ?>');
+    var days = parseInt('<?php echo $secure_cookie_days; ?>');
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    var cookie_name = '<?= $secure_cookie_label ?>';
-    var cookie_value = '<?= $secure_cookie_key ?>';
+    var cookie_name = '<?php echo $secure_cookie_label; ?>';
+    var cookie_value = '<?php echo $secure_cookie_key; ?>';
 
     document.cookie = cookie_name + "=" + escape(cookie_value) + "; expires = " + date.toGMTString() + "; path=/";
 
-    var timeleft = parseInt('<?= $redirect_delay ?>');
+    var timeleft = parseInt('<?php echo $redirect_delay; ?>');
     var display = document.querySelector('#reftime');
-    startTimer(timeleft, display, function() {
-      window.location.reload(1);
+    startTimer(timeleft, display, function () {
+        window.location.reload(1);
     });
 
     function startTimer(duration, display, callback) {
-      if (!display) {
-        return;
-      }
+        if (!display) {
+            return;
+        }
 
       var timer = duration,
         minutes, seconds;

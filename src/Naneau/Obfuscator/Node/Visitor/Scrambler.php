@@ -1,49 +1,41 @@
 <?php
 /**
- * Scrambler.php
- *
- * @package         Obfuscator
- * @subpackage      NodeVisitor
+ * Scrambler.php.
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
+use InvalidArgumentException;
 use Naneau\Obfuscator\StringScrambler;
-
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
-
-use \InvalidArgumentException;
+use PhpParser\NodeVisitorAbstract;
 
 /**
- * Scrambler
+ * Scrambler.
  *
  * Base class for scrambling visitors
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 abstract class Scrambler extends NodeVisitorAbstract
 {
     /**
-     * The string scrambler
+     * The string scrambler.
      *
      * @var StringScrambler
      **/
     private $scrambler;
 
     /**
-     * Variables to ignore
+     * Variables to ignore.
      *
      * @var string[]
      **/
-    private $ignore = array();
+    private $ignore = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param  StringScrambler $scrambler
      * @return void
      **/
     public function __construct(StringScrambler $scrambler)
@@ -52,10 +44,10 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Scramble a property of a node
+     * Scramble a property of a node.
      *
-     * @param  Node   $node
-     * @param  string $var  property to scramble
+     * @param string $var property to scramble
+     *
      * @return Node
      **/
     protected function scramble(Node $node, $var = 'name')
@@ -69,11 +61,8 @@ abstract class Scrambler extends NodeVisitorAbstract
         }
 
         // Make sure there's something to scramble
-        if (strlen($toScramble) === 0) {
-            throw new InvalidArgumentException(sprintf(
-                '"%s" value empty for node, can not scramble',
-                $var
-            ));
+        if (0 === strlen($toScramble)) {
+            throw new InvalidArgumentException(sprintf('"%s" value empty for node, can not scramble', $var));
         }
 
         // Should we ignore it?
@@ -89,9 +78,10 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Scramble a string
+     * Scramble a string.
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      **/
     protected function scrambleString($string)
@@ -100,7 +90,7 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Get the string scrambler
+     * Get the string scrambler.
      *
      * @return StringScrambler
      */
@@ -110,9 +100,8 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Set the string scrambler
+     * Set the string scrambler.
      *
-     * @param  StringScrambler $scrambler
      * @return RenameParameter
      */
     public function setScrambler(StringScrambler $scrambler)
@@ -123,7 +112,7 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Get variables to ignore
+     * Get variables to ignore.
      *
      * @return string[]
      */
@@ -133,9 +122,10 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Set variables to ignore
+     * Set variables to ignore.
      *
-     * @param  string[] $ignore
+     * @param string[] $ignore
+     *
      * @return parent
      */
     public function setIgnore(array $ignore)
@@ -146,20 +136,22 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
-     * Add a variable name to ignore
+     * Add a variable name to ignore.
      *
-     * @param  string|string[]        $ignore
+     * @param string|string[] $ignore
+     *
      * @return RenameParameterVisitor
      **/
     public function addIgnore($ignore)
     {
         if (is_string($ignore)) {
-            $this->ignore = array_merge($this->ignore, array($ignore));
-        } else if (is_array($ignore)) {
+            $this->ignore = array_merge($this->ignore, [$ignore]);
+        } elseif (is_array($ignore)) {
             $this->ignore = array_merge($this->ignore, $ignore);
         } else {
             throw new InvalidArgumentException('Invalid ignore type passed');
         }
+
         return $this;
     }
 }

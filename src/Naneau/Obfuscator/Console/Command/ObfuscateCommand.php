@@ -1,54 +1,46 @@
 <?php
 /**
- * ObfuscateCommand.php
- *
- * @package         Obfuscator
- * @subpackage      Console
+ * ObfuscateCommand.php.
  */
 
 namespace Naneau\Obfuscator\Console\Command;
 
+use InvalidArgumentException;
 use Naneau\Obfuscator\Container;
-
 use Naneau\Obfuscator\Obfuscator;
 use Naneau\Obfuscator\Obfuscator\Event\File as FileEvent;
 use Naneau\Obfuscator\Obfuscator\Event\FileError as FileErrorEvent;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use \InvalidArgumentException;
-
 /**
- * ObfuscateCommand
+ * ObfuscateCommand.
  *
  * Obfuscating command
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      Console
  */
 class ObfuscateCommand extends Command
 {
     /**
-     * the obfuscator
+     * the obfuscator.
      *
      * @var Obfuscator
      */
     private $obfuscator;
 
     /**
-     * the container
+     * the container.
      *
      * @var Container
      */
     private $container;
 
     /**
-     * Configure the command
+     * Configure the command.
      *
      * @return void
      **/
@@ -90,14 +82,12 @@ class ObfuscateCommand extends Command
                 'See http://php.net/manual/en/ini.core.php#ini.memory-limit'
             );
 
-        $this->setContainer(new Container);
+        $this->setContainer(new Container());
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      *
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
      * @return void
      **/
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -106,15 +96,14 @@ class ObfuscateCommand extends Command
         $this->finalizeContainer($input);
 
         // Change runtime memory
-        if($memory = $input->getOption('memory_limit')) {
-            ini_set("memory_limit", $memory);
+        if ($memory = $input->getOption('memory_limit')) {
+            ini_set('memory_limit', $memory);
         }
         // Input/output dirs
         $inputDirectory = $input->getArgument('input_directory');
         $outputDirectory = $input->getArgument('output_directory');
 
         if (!empty($outputDirectory)) {
-
             $output->writeln(sprintf(
                 'Copying input directory <info>%s</info> to <info>%s</info>',
                 $inputDirectory,
@@ -130,12 +119,12 @@ class ObfuscateCommand extends Command
 
         // Strip whitespace?
         $stripWhitespace = !$input->getOption('leave_whitespace');
-        $ignoreError = !!$input->getOption('ignore_error');
+        $ignoreError = (bool)$input->getOption('ignore_error');
 
         // Show every file
         $this->getObfuscator()->getEventDispatcher()->addListener(
             'obfuscator.file',
-            function(FileEvent $event) use ($output, $directory) {
+            function (FileEvent $event) use ($output, $directory) {
                 $output->writeln(sprintf(
                     'Obfuscating <info>%s</info>',
                     substr($event->getFile(), strlen($directory))
@@ -143,10 +132,10 @@ class ObfuscateCommand extends Command
             }
         );
         // Show error processing file
-        if($ignoreError) {
+        if ($ignoreError) {
             $this->getObfuscator()->getEventDispatcher()->addListener(
                 'obfuscator.file.error',
-                function(FileErrorEvent $event) use ($output, $directory) {
+                function (FileErrorEvent $event) use ($output, $directory) {
                     $output->writeln(sprintf(
                         'Error obfuscating <error>%s</error>',
                         substr($event->getFile(), strlen($directory))
@@ -164,7 +153,7 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Get the container
+     * Get the container.
      *
      * @return Container
      */
@@ -174,9 +163,8 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Set the container
+     * Set the container.
      *
-     * @param Container $container
      * @return ObfuscateCommand
      */
     public function setContainer(Container $container)
@@ -187,7 +175,7 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Get the obfuscator
+     * Get the obfuscator.
      *
      * @return Obfuscator
      */
@@ -197,29 +185,30 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Copy a directory
+     * Copy a directory.
      *
      * @param string $from
      * @param string $to
+     *
      * @return ObfuscateCommand
      **/
     private function copyDir($from, $to)
     {
         // FIXME implement native copy
-        $output = array();
+        $output = [];
         $return = 0;
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        if ('WIN' === strtoupper(substr(PHP_OS, 0, 3))) {
             // WINDOWS
             $command = sprintf('XCOPY "%s" "%s" /hievry', $from, $to);
         } else {
             // *NIX
             $command = sprintf('cp -rf %s %s', $from, $to);
-        }        
+        }
 
         exec($command, $output, $return);
 
-        if ($return !== 0)  {
+        if (0 !== $return) {
             throw new \Exception('Could not copy directory');
         }
 
@@ -227,7 +216,7 @@ class ObfuscateCommand extends Command
     }
 
     /**
-     * Finalize the container
+     * Finalize the container.
      *
      * loads any given config file and compiles the container
      *
@@ -239,10 +228,7 @@ class ObfuscateCommand extends Command
         $config = $input->getOption('config');
         if (!empty($config)) {
             if (!is_readable($config)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Can not read config file "%s"',
-                    $config
-                ));
+                throw new InvalidArgumentException(sprintf('Can not read config file "%s"', $config));
             }
             $this->getContainer()->loadFile($config);
         }

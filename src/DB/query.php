@@ -4,19 +4,19 @@ namespace DB;
 
 class query
 {
-  function and(array $where)
+  public function and(array $where)
   {
-    $where_combine = " WHERE ";
-    $i = 0;
-    $len = count($where);
-    foreach ($where as $key => $value) {
-      $where_combine .= " `$key` = '$value' ";
-      if ($i != $len - 1) {
-        // if not last iteration
-        $where_combine .= " AND ";
-      }
+      $where_combine = ' WHERE ';
+      $i = 0;
+      $len = count($where);
+      foreach ($where as $key => $value) {
+          $where_combine .= " `$key` = '$value' ";
+          if ($i != $len - 1) {
+              // if not last iteration
+              $where_combine .= ' AND ';
+          }
 
-      $i++;
+          ++$i;
     }
   }
 }

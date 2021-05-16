@@ -1,16 +1,17 @@
 <?php
 
 /**
- * php7-mysql-shim
+ * php7-mysql-shim.
  *
  * @author Davey Shafik <me@daveyshafik.com>
  * @copyright Copyright (c) 2017 Davey Shafik
  * @license MIT License
- * @link https://github.com/dshafik/php7-mysql-shim
+ *
+ * @see https://github.com/dshafik/php7-mysql-shim
  */
 
 /**
- * A drop-in replacement for ext/mysql in PHP 7+ using ext/mysqli instead
+ * A drop-in replacement for ext/mysql in PHP 7+ using ext/mysqli instead.
  *
  * This library is meant to be a _stop-gap_. It will be slower than using
  * the native functions directly.
@@ -21,7 +22,6 @@
  */
 
 namespace {
-
   if (!extension_loaded('mysql')) {
     if (!extension_loaded('mysqli')) {
       trigger_error('php7-mysql-shim: ext/mysqli is required', E_USER_ERROR);
@@ -55,32 +55,33 @@ namespace {
       $hash = sha1($hostname . $username . $flags);
       /* persistent connections start with p: */
       /* don't use a cached link for those */
-      if (!$new && $hostname[1] !== ':' && isset(\UniversalFramework\MySQL::$connections[$hash])) {
-        \UniversalFramework\MySQL::$last_connection = \UniversalFramework\MySQL::$connections[$hash]['conn'];
-        \UniversalFramework\MySQL::$connections[$hash]['refcount'] += 1;
-        return \UniversalFramework\MySQL::$connections[$hash]['conn'];
-      }
+        if (!$new && ':' !== $hostname[1] && isset(\UniversalFramework\MySQL::$connections[$hash])) {
+            \UniversalFramework\MySQL::$last_connection = \UniversalFramework\MySQL::$connections[$hash]['conn'];
+            ++\UniversalFramework\MySQL::$connections[$hash]['refcount'];
+
+            return \UniversalFramework\MySQL::$connections[$hash]['conn'];
+        }
 
       /* A custom port can be specified by appending the hostname with :{port} e.g. hostname:3307 */
-      if (preg_match('/^(.+):([\d]+)$/', $hostname, $port_matches) === 1 && $port_matches[1] !== "p") {
-        $hostname = $port_matches[1];
-        $port = (int) $port_matches[2];
-      } else {
-        $port = null;
-      }
+        if (1 === preg_match('/^(.+):([\d]+)$/', $hostname, $port_matches) && 'p' !== $port_matches[1]) {
+            $hostname = $port_matches[1];
+            $port = (int)$port_matches[2];
+        } else {
+            $port = null;
+        }
 
       /* No flags, means we can use mysqli_connect() */
-      if ($flags === 0) {
-        $conn = mysqli_connect($hostname, $username, $password, '', $port);
-        if (!$conn instanceof mysqli) {
-          return false;
-        }
-        \UniversalFramework\MySQL::$last_connection = $conn;
-        $conn->hash = $hash;
-        \UniversalFramework\MySQL::$connections[$hash] = array('refcount' => 1, 'conn' => $conn);
+        if (0 === $flags) {
+            $conn = mysqli_connect($hostname, $username, $password, '', $port);
+            if (!$conn instanceof mysqli) {
+                return false;
+            }
+            \UniversalFramework\MySQL::$last_connection = $conn;
+            $conn->hash = $hash;
+            \UniversalFramework\MySQL::$connections[$hash] = ['refcount' => 1, 'conn' => $conn];
 
-        return $conn;
-      }
+            return $conn;
+        }
 
       /* Flags means we need to use mysqli_real_connect() instead, and handle exceptions */
       try {
@@ -99,13 +100,13 @@ namespace {
 
         // @codeCoverageIgnoreStart
         // PHPUnit turns the warning from mysqli_real_connect into an exception, so this never runs
-        if ($conn === false) {
-          return false;
-        }
+          if (false === $conn) {
+              return false;
+          }
         // @codeCoverageIgnoreEnd
 
-        $conn->hash = $hash;
-        \UniversalFramework\MySQL::$connections[$hash] = array('refcount' => 1, 'conn' => $conn);
+          $conn->hash = $hash;
+          \UniversalFramework\MySQL::$connections[$hash] = ['refcount' => 1, 'conn' => $conn];
 
         return $conn;
       } catch (\Throwable $e) {
@@ -124,30 +125,31 @@ namespace {
       $flags = 0
     ) {
       $hostname = 'p:' . $hostname;
+
       return mysql_connect($hostname, $username, $password, false, $flags);
     }
 
-    function mysql_close(\mysqli $link = null)
-    {
-      $isDefault = ($link === null);
+      function mysql_close(mysqli $link = null)
+      {
+          $isDefault = (null === $link);
 
-      $link = \UniversalFramework\MySQL::getConnection($link, __FUNCTION__);
-      if ($link === null) {
-        // @codeCoverageIgnoreStart
-        // PHPUnit Warning -> Exception
-        return false;
-        // @codeCoverageIgnoreEnd
-      }
+          $link = \UniversalFramework\MySQL::getConnection($link, __FUNCTION__);
+          if (null === $link) {
+              // @codeCoverageIgnoreStart
+              // PHPUnit Warning -> Exception
+              return false;
+              // @codeCoverageIgnoreEnd
+          }
 
       if (isset(\UniversalFramework\MySQL::$connections[$link->hash])) {
-        \UniversalFramework\MySQL::$connections[$link->hash]['refcount'] -= 1;
+          --\UniversalFramework\MySQL::$connections[$link->hash]['refcount'];
       }
 
       $return = true;
-      if (\UniversalFramework\MySQL::$connections[$link->hash]['refcount'] === 0) {
-        $return = mysqli_close($link);
-        unset(\UniversalFramework\MySQL::$connections[$link->hash]);
-      }
+          if (0 === \UniversalFramework\MySQL::$connections[$link->hash]['refcount']) {
+              $return = mysqli_close($link);
+              unset(\UniversalFramework\MySQL::$connections[$link->hash]);
+          }
 
       if ($isDefault) {
         UniversalFramework\MySQL::$last_connection = null;
@@ -156,68 +158,71 @@ namespace {
       return $return;
     }
 
-    function mysql_select_db($databaseName, \mysqli $link = null)
-    {
-      $link = \UniversalFramework\MySQL::getConnection($link);
+      function mysql_select_db($databaseName, mysqli $link = null)
+      {
+          $link = \UniversalFramework\MySQL::getConnection($link);
 
-      return mysqli_query(
-        $link,
-        'USE `' . mysqli_real_escape_string($link, $databaseName) . '`'
-      ) !== false;
-    }
-
-    function mysql_query($query, \mysqli $link = null)
-    {
-      return mysqli_query(\UniversalFramework\MySQL::getConnection($link), $query);
-    }
-
-    function mysql_unbuffered_query($query, \mysqli $link = null)
-    {
-      $link = \UniversalFramework\MySQL::getConnection($link);
-      if (mysqli_real_query($link, $query)) {
-        return mysqli_use_result($link);
+          return false !== mysqli_query(
+                  $link,
+                  'USE `' . mysqli_real_escape_string($link, $databaseName) . '`'
+              );
       }
 
-      return false;
-    }
-
-    function mysql_db_query($databaseName, $query, \mysqli $link = null)
-    {
-      if (mysql_select_db($databaseName, $link)) {
-        return mysql_query($query, $link);
+      function mysql_query($query, mysqli $link = null)
+      {
+          return mysqli_query(\UniversalFramework\MySQL::getConnection($link), $query);
       }
-      return false;
-    }
 
-    function mysql_list_dbs(\mysqli $link = null)
-    {
-      return mysql_query('SHOW DATABASES', $link);
-    }
+      function mysql_unbuffered_query($query, mysqli $link = null)
+      {
+          $link = \UniversalFramework\MySQL::getConnection($link);
+          if (mysqli_real_query($link, $query)) {
+              return mysqli_use_result($link);
+          }
 
-    function mysql_list_tables($databaseName, \mysqli $link = null)
-    {
-      $link = \UniversalFramework\MySQL::getConnection($link);
-      $query = sprintf(
-        'SHOW TABLES FROM `%s`',
-        mysql_real_escape_string($databaseName, $link)
-      );
-      return mysql_query($query, $link);
-    }
+          return false;
+      }
 
-    function mysql_list_fields($databaseName, $tableName, \mysqli $link = null)
-    {
-      $link = \UniversalFramework\MySQL::getConnection($link);
+      function mysql_db_query($databaseName, $query, mysqli $link = null)
+      {
+          if (mysql_select_db($databaseName, $link)) {
+              return mysql_query($query, $link);
+          }
 
-      $query = sprintf(
-        'SHOW COLUMNS FROM `%s`.`%s`',
-        mysqli_real_escape_string($link, $databaseName),
-        mysqli_real_escape_string($link, $tableName)
-      );
+          return false;
+      }
 
-      $result = mysql_query($query, $link);
+      function mysql_list_dbs(mysqli $link = null)
+      {
+          return mysql_query('SHOW DATABASES', $link);
+      }
+
+      function mysql_list_tables($databaseName, mysqli $link = null)
+      {
+          $link = \UniversalFramework\MySQL::getConnection($link);
+          $query = sprintf(
+              'SHOW TABLES FROM `%s`',
+              mysql_real_escape_string($databaseName, $link)
+          );
+
+          return mysql_query($query, $link);
+      }
+
+      function mysql_list_fields($databaseName, $tableName, mysqli $link = null)
+      {
+          $link = \UniversalFramework\MySQL::getConnection($link);
+
+          $query = sprintf(
+              'SHOW COLUMNS FROM `%s`.`%s`',
+              mysqli_real_escape_string($link, $databaseName),
+              mysqli_real_escape_string($link, $tableName)
+          );
+
+          $result = mysql_query($query, $link);
 
       if ($result instanceof \mysqli_result) {
         $result->table = $tableName;
+
         return $result;
       }
 
@@ -227,25 +232,25 @@ namespace {
       // @codeCoverageIgnoreEnd
     }
 
-    function mysql_list_processes(\mysqli $link = null)
-    {
-      return mysql_query('SHOW PROCESSLIST', $link);
-    }
+      function mysql_list_processes(mysqli $link = null)
+      {
+          return mysql_query('SHOW PROCESSLIST', $link);
+      }
 
-    function mysql_error(\mysqli $link = null)
-    {
-      return mysqli_error(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_error(mysqli $link = null)
+      {
+          return mysqli_error(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_errno(\mysqli $link = null)
-    {
-      return mysqli_errno(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_errno(mysqli $link = null)
+      {
+          return mysqli_errno(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_affected_rows(\mysqli $link = null)
-    {
-      return mysqli_affected_rows(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_affected_rows(mysqli $link = null)
+      {
+          return mysqli_affected_rows(\UniversalFramework\MySQL::getConnection($link));
+      }
 
     function mysql_insert_id($link = null) /*|*/
     {
@@ -275,18 +280,18 @@ namespace {
       }
 
       $found = true;
-      if (strpos($field, '.') !== false) {
-        list($table, $name) = explode('.', $field);
-        $i = 0;
-        $found = false;
-        mysqli_field_seek($result, 0);
-        while ($column = mysqli_fetch_field($result)) {
-          if ($column->table === $table && $column->name === $name) {
-            $field = $i;
-            $found = true;
-            break;
-          }
-          $i++;
+        if (false !== strpos($field, '.')) {
+            list($table, $name) = explode('.', $field);
+            $i = 0;
+            $found = false;
+            mysqli_field_seek($result, 0);
+            while ($column = mysqli_fetch_field($result)) {
+                if ($column->table === $table && $column->name === $name) {
+                    $field = $i;
+                    $found = true;
+                    break;
+                }
+                ++$i;
         }
       }
 
@@ -331,6 +336,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_num_fields($result);
     }
 
@@ -341,15 +347,18 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_fetch_row($result) ?: false;
     }
-    /**
-     * Fetch result as assoc array
-     *
-     * @param [type] $result
-     * @param [type] $resultType
-     * @return array|null
-     */
+
+      /**
+       * Fetch result as assoc array.
+       *
+       * @param [type] $result
+       * @param [type] $resultType
+       *
+       * @return array|null
+       */
     function mysql_fetch_array($result, $resultType = MYSQL_BOTH)
     {
       if (!\UniversalFramework\MySQL::checkValidResult($result, __FUNCTION__)) {
@@ -357,15 +366,18 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_fetch_array($result, $resultType) ?: false;
     }
 
-    /**
-     * Fetch a result row as assoc array
-     * @inheritDoc mysqli_fetch_assoc
-     * @param [type] $result
-     * @return array|null
-     */
+      /**
+       * Fetch a result row as assoc array.
+       * {@inheritDoc mysqli_fetch_assoc}
+       *
+       * @param [type] $result
+       *
+       * @return array|null
+       */
     function mysql_fetch_assoc($result) /* : array|null */
     {
       if (!\UniversalFramework\MySQL::checkValidResult($result, __FUNCTION__)) {
@@ -377,19 +389,19 @@ namespace {
       return mysqli_fetch_assoc($result) ?: false;
     }
 
-    function mysql_fetch_object($result, $class = null, array $params = array()) /* : object|null */
-    {
-      if (!\UniversalFramework\MySQL::checkValidResult($result, __FUNCTION__)) {
-        // @codeCoverageIgnoreStart
-        return false;
-        // @codeCoverageIgnoreEnd
-      }
+      function mysql_fetch_object($result, $class = null, array $params = []) /* : object|null */
+      {
+          if (!\UniversalFramework\MySQL::checkValidResult($result, __FUNCTION__)) {
+              // @codeCoverageIgnoreStart
+              return false;
+              // @codeCoverageIgnoreEnd
+          }
 
-      if ($class === null) {
-        $object = mysqli_fetch_object($result);
-      } else {
-        $object = mysqli_fetch_object($result, $class, $params);
-      }
+          if (null === $class) {
+              $object = mysqli_fetch_object($result);
+          } else {
+              $object = mysqli_fetch_object($result, $class, $params);
+          }
 
       return $object ?: false;
     }
@@ -401,6 +413,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_data_seek($result, $offset);
     }
 
@@ -411,6 +424,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_fetch_lengths($result);
     }
 
@@ -421,6 +435,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_fetch_field($result);
     }
 
@@ -431,6 +446,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_field_seek($result, $field);
     }
 
@@ -441,6 +457,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return mysqli_free_result($result);
     }
 
@@ -451,6 +468,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return \UniversalFramework\MySQL::mysqlFieldInfo($result, $field, 'name');
     }
 
@@ -461,6 +479,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return \UniversalFramework\MySQL::mysqlFieldInfo($result, $field, 'table');
     }
 
@@ -471,6 +490,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return \UniversalFramework\MySQL::mysqlFieldInfo($result, $field, 'length');
     }
 
@@ -481,6 +501,7 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return \UniversalFramework\MySQL::mysqlFieldInfo($result, $field, 'type');
     }
 
@@ -491,79 +512,81 @@ namespace {
         return false;
         // @codeCoverageIgnoreEnd
       }
+
       return \UniversalFramework\MySQL::mysqlFieldInfo($result, $field, 'flags');
     }
 
     function mysql_escape_string($unescapedString)
     {
-      if (\UniversalFramework\MySQL::$last_connection === null) {
-        trigger_error(
-          sprintf(
-            '%s() is insecure; use mysql_real_escape_string() instead!',
-            __FUNCTION__
-          ),
-          E_USER_NOTICE
-        );
+        if (null === \UniversalFramework\MySQL::$last_connection) {
+            trigger_error(
+                sprintf(
+                    '%s() is insecure; use mysql_real_escape_string() instead!',
+                    __FUNCTION__
+                ),
+                E_USER_NOTICE
+            );
 
-        return \UniversalFramework\MySQL::escapeString($unescapedString);
-      }
+            return \UniversalFramework\MySQL::escapeString($unescapedString);
+        }
+
       return mysql_real_escape_string($unescapedString, null);
     }
 
-    function mysql_real_escape_string($unescapedString, \mysqli $link = null)
-    {
-      return mysqli_escape_string(\UniversalFramework\MySQL::getConnection($link), $unescapedString);
-    }
+      function mysql_real_escape_string($unescapedString, mysqli $link = null)
+      {
+          return mysqli_escape_string(\UniversalFramework\MySQL::getConnection($link), $unescapedString);
+      }
 
-    function mysql_stat(\mysqli $link = null)
-    {
-      return mysqli_stat(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_stat(mysqli $link = null)
+      {
+          return mysqli_stat(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_thread_id(\mysqli $link = null)
-    {
-      return mysqli_thread_id(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_thread_id(mysqli $link = null)
+      {
+          return mysqli_thread_id(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_client_encoding(\mysqli $link = null)
-    {
-      return mysqli_character_set_name(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_client_encoding(mysqli $link = null)
+      {
+          return mysqli_character_set_name(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_ping(\mysqli $link = null)
-    {
-      return mysqli_ping(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_ping(mysqli $link = null)
+      {
+          return mysqli_ping(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_get_client_info(\mysqli $link = null)
-    {
-      return mysqli_get_client_info(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_get_client_info(mysqli $link = null)
+      {
+          return mysqli_get_client_info(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_get_host_info(\mysqli $link = null)
-    {
-      return mysqli_get_host_info(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_get_host_info(mysqli $link = null)
+      {
+          return mysqli_get_host_info(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_get_proto_info(\mysqli $link = null)
-    {
-      return mysqli_get_proto_info(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_get_proto_info(mysqli $link = null)
+      {
+          return mysqli_get_proto_info(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_get_server_info(\mysqli $link = null)
-    {
-      return mysqli_get_server_info(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_get_server_info(mysqli $link = null)
+      {
+          return mysqli_get_server_info(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_info(\mysqli $link = null)
-    {
-      return mysqli_info(\UniversalFramework\MySQL::getConnection($link));
-    }
+      function mysql_info(mysqli $link = null)
+      {
+          return mysqli_info(\UniversalFramework\MySQL::getConnection($link));
+      }
 
-    function mysql_set_charset($charset, \mysqli $link = null)
-    {
-      return mysqli_set_charset(\UniversalFramework\MySQL::getConnection($link), $charset);
-    }
+      function mysql_set_charset($charset, mysqli $link = null)
+      {
+          return mysqli_set_charset(\UniversalFramework\MySQL::getConnection($link), $charset);
+      }
 
     function mysql_db_name($result, $row, $field = 0)
     {
@@ -665,40 +688,43 @@ namespace {
 
 namespace UniversalFramework {
 
-  use mysqli;
+    use mysqli;
 
-  class MySQL
-  {
-    public static $last_connection = null;
-    public static $connections = array();
-
-    function __construct(mysqli $sql)
+    class MySQL
     {
-      static::$last_connection = $sql;
-    }
+        public static $last_connection = null;
+        public static $connections = [];
 
-    /**
-     * Get mysqli intances
-     *
-     * @param mysqli $link
-     * @param function $func
-     * @return false|mysqli
-     */
+        public function __construct(mysqli $sql)
+        {
+            static::$last_connection = $sql;
+        }
+
+        /**
+         * Get mysqli intances.
+         *
+         * @param mysqli $link
+         * @param function $func
+         *
+         * @return false|mysqli
+         */
     public static function getConnection($link = null, $func = null)
     {
-      if ($link !== null) {
-        static::$last_connection = $link;
-        return $link;
-      }
+        if (null !== $link) {
+            static::$last_connection = $link;
 
-      if (static::$last_connection === null) {
-        $err = 'A link to the server could not be established';
-        if ($func !== null) {
-          $err = $func . '(): no MySQL-Link resource supplied';
+            return $link;
         }
-        trigger_error($err, E_USER_WARNING);
-        return false;
-      }
+
+        if (null === static::$last_connection) {
+            $err = 'A link to the server could not be established';
+            if (null !== $func) {
+                $err = $func . '(): no MySQL-Link resource supplied';
+            }
+            trigger_error($err, E_USER_WARNING);
+
+            return false;
+        }
 
       return static::$last_connection;
     }
@@ -710,10 +736,10 @@ namespace UniversalFramework {
       } catch (\Exception $e) {
         trigger_error(
           sprintf(
-            'mysql_field_%s(): Field %d is invalid for MySQL result index %s',
-            ($what !== 'length') ? $what : 'len',
-            $field,
-            spl_object_hash($result)
+              'mysql_field_%s(): Field %d is invalid for MySQL result index %s',
+              ('length' !== $what) ? $what : 'len',
+              $field,
+              spl_object_hash($result)
           ),
           E_USER_WARNING
         );
@@ -723,13 +749,13 @@ namespace UniversalFramework {
         // @codeCoverageIgnoreEnd
       }
 
-      if ($what === 'type') {
-        return static::getFieldType($field->type);
-      }
+        if ('type' === $what) {
+            return static::getFieldType($field->type);
+        }
 
-      if ($what === 'flags') {
-        return static::getFieldFlags($field->flags);
-      }
+        if ('flags' === $what) {
+            return static::getFieldFlags($field->flags);
+        }
 
       if (isset($field->{$what})) {
         return $field->{$what};
@@ -741,20 +767,21 @@ namespace UniversalFramework {
     public static function checkValidResult($result, $function)
     {
       if (!($result instanceof \mysqli_result)) {
-        if ($function !== 'mysql_fetch_object') {
-          trigger_error(
-            $function . '() expects parameter 1 to be resource, ' . strtolower(gettype($result)) . ' given',
-            E_USER_WARNING
-          );
-        }
+          if ('mysql_fetch_object' !== $function) {
+              trigger_error(
+                  $function . '() expects parameter 1 to be resource, ' . strtolower(gettype($result)) . ' given',
+                  E_USER_WARNING
+              );
+          }
 
-        if ($function === 'mysql_fetch_object') {
-          trigger_error(
-            $function . '(): supplied argument is not a valid MySQL result resource',
-            E_USER_WARNING
-          );
-        }
-        return false;
+          if ('mysql_fetch_object' === $function) {
+              trigger_error(
+                  $function . '(): supplied argument is not a valid MySQL result resource',
+                  E_USER_WARNING
+              );
+          }
+
+          return false;
       }
 
       return true;
@@ -763,9 +790,9 @@ namespace UniversalFramework {
     public static function escapeString($unescapedString)
     {
       $escapedString = '';
-      for ($i = 0, $max = strlen($unescapedString); $i < $max; $i++) {
-        $escapedString .= self::escapeChar($unescapedString[$i]);
-      }
+        for ($i = 0, $max = strlen($unescapedString); $i < $max; ++$i) {
+            $escapedString .= self::escapeChar($unescapedString[$i]);
+        }
 
       return $escapedString;
     }
@@ -773,22 +800,22 @@ namespace UniversalFramework {
     protected static function getFieldFlags($what)
     {
       // Order of flags taken from http://lxr.php.net/xref/PHP_5_6/ext/mysql/php_mysql.c#2507
-      $flags = array(
-        MYSQLI_NOT_NULL_FLAG => 'not_null',
-        MYSQLI_PRI_KEY_FLAG => 'primary_key',
-        MYSQLI_UNIQUE_KEY_FLAG => 'unique_key',
-        MYSQLI_MULTIPLE_KEY_FLAG => 'multiple_key',
-        MYSQLI_BLOB_FLAG => 'blob',
-        MYSQLI_UNSIGNED_FLAG => 'unsigned',
-        MYSQLI_ZEROFILL_FLAG => 'zerofill',
-        MYSQLI_BINARY_FLAG => 'binary',
-        MYSQLI_ENUM_FLAG => 'enum',
-        MYSQLI_SET_FLAG => 'set',
-        MYSQLI_AUTO_INCREMENT_FLAG => 'auto_increment',
-        MYSQLI_TIMESTAMP_FLAG => 'timestamp',
-      );
+        $flags = [
+            MYSQLI_NOT_NULL_FLAG => 'not_null',
+            MYSQLI_PRI_KEY_FLAG => 'primary_key',
+            MYSQLI_UNIQUE_KEY_FLAG => 'unique_key',
+            MYSQLI_MULTIPLE_KEY_FLAG => 'multiple_key',
+            MYSQLI_BLOB_FLAG => 'blob',
+            MYSQLI_UNSIGNED_FLAG => 'unsigned',
+            MYSQLI_ZEROFILL_FLAG => 'zerofill',
+            MYSQLI_BINARY_FLAG => 'binary',
+            MYSQLI_ENUM_FLAG => 'enum',
+            MYSQLI_SET_FLAG => 'set',
+            MYSQLI_AUTO_INCREMENT_FLAG => 'auto_increment',
+            MYSQLI_TIMESTAMP_FLAG => 'timestamp',
+        ];
 
-      $fieldFlags = array();
+        $fieldFlags = [];
       foreach ($flags as $flag => $value) {
         if ($what & $flag) {
           $fieldFlags[] = $value;
@@ -800,17 +827,17 @@ namespace UniversalFramework {
 
     protected static function getFieldType($what)
     {
-      $types = array(
-        MYSQLI_TYPE_STRING => 'string',
-        MYSQLI_TYPE_VAR_STRING => 'string',
-        MYSQLI_TYPE_ENUM => 'string',
-        MYSQLI_TYPE_SET => 'string',
+        $types = [
+            MYSQLI_TYPE_STRING => 'string',
+            MYSQLI_TYPE_VAR_STRING => 'string',
+            MYSQLI_TYPE_ENUM => 'string',
+            MYSQLI_TYPE_SET => 'string',
 
-        MYSQLI_TYPE_LONG => 'int',
-        MYSQLI_TYPE_TINY => 'int',
-        MYSQLI_TYPE_SHORT => 'int',
-        MYSQLI_TYPE_INT24 => 'int',
-        MYSQLI_TYPE_CHAR => 'int',
+            MYSQLI_TYPE_LONG => 'int',
+            MYSQLI_TYPE_TINY => 'int',
+            MYSQLI_TYPE_SHORT => 'int',
+            MYSQLI_TYPE_INT24 => 'int',
+            MYSQLI_TYPE_CHAR => 'int',
         MYSQLI_TYPE_LONGLONG => 'int',
 
         MYSQLI_TYPE_DECIMAL => 'real',
@@ -823,17 +850,17 @@ namespace UniversalFramework {
         MYSQLI_TYPE_LONG_BLOB => 'blob',
         MYSQLI_TYPE_BLOB => 'blob',
 
-        MYSQLI_TYPE_NEWDATE => 'date',
-        MYSQLI_TYPE_DATE => 'date',
-        MYSQLI_TYPE_TIME => 'time',
-        MYSQLI_TYPE_YEAR => 'year',
-        MYSQLI_TYPE_DATETIME => 'datetime',
-        MYSQLI_TYPE_TIMESTAMP => 'timestamp',
+            MYSQLI_TYPE_NEWDATE => 'date',
+            MYSQLI_TYPE_DATE => 'date',
+            MYSQLI_TYPE_TIME => 'time',
+            MYSQLI_TYPE_YEAR => 'year',
+            MYSQLI_TYPE_DATETIME => 'datetime',
+            MYSQLI_TYPE_TIMESTAMP => 'timestamp',
 
-        MYSQLI_TYPE_NULL => 'null',
+            MYSQLI_TYPE_NULL => 'null',
 
-        MYSQLI_TYPE_GEOMETRY => 'geometry',
-      );
+            MYSQLI_TYPE_GEOMETRY => 'geometry',
+        ];
 
       return isset($types[$what]) ? $types[$what] : 'unknown';
     }
@@ -842,13 +869,13 @@ namespace UniversalFramework {
     {
       switch ($char) {
         case "\0":
-          $esc = "\\0";
+            $esc = '\\0';
           break;
         case "\n":
-          $esc = "\\n";
+            $esc = '\\n';
           break;
         case "\r":
-          $esc = "\\r";
+            $esc = '\\r';
           break;
         case '\\':
         case '\'':
@@ -856,7 +883,7 @@ namespace UniversalFramework {
           $esc = "\\{$char}";
           break;
         case "\032":
-          $esc = "\\Z";
+            $esc = '\\Z';
           break;
         default:
           $esc = $char;

@@ -7,9 +7,9 @@
  */
 class SmartDOMXpath extends DOMXpath
 {
-  public function __construct(\DOMDocument $dom)
+  public function __construct(DOMDocument $dom)
   {
-    parent::__construct($dom);
+      parent::__construct($dom);
   }
 
   /**
@@ -27,12 +27,14 @@ class SmartDOMXpath extends DOMXpath
 }
 
 /**
- * Typehinting VSCode Support
+ * Typehinting VSCode Support.
+ *
  * @requires PHP Intelephense VSCode Extension
- * @method bool hasAttribute(string $attribute_name) check if dom element has Attribute
- * @method string|null getAttribute(string $attribute_name) get attribute from dom element
- * @method void setAttribute(string $attribute_name, string $attribute_value) set attribute from dom element
- * @method void removeAttribute(string $attribute_name) remove attribute from dom element
+ *
+ * @method bool        hasAttribute(string $attribute_name)                          check if dom element has Attribute
+ * @method string|null getAttribute(string $attribute_name)                          get attribute from dom element
+ * @method void        setAttribute(string $attribute_name, string $attribute_value) set attribute from dom element
+ * @method void        removeAttribute(string $attribute_name)                       remove attribute from dom element
  */
 class DOMXpathTypehint
 {
@@ -49,11 +51,11 @@ class DOMXpathTypehint
  *
  * @param string $content
  */
-function insertBodyFirst(\SmartDOMXpath $xpath, \DOMNode $content)
+function insertBodyFirst(SmartDOMXpath $xpath, DOMNode $content)
 {
-  $body = $xpath->body();
+    $body = $xpath->body();
 
-  return $body->insertBefore($content, $body->firstChild);
+    return $body->insertBefore($content, $body->firstChild);
 }
 
 /**
@@ -61,11 +63,11 @@ function insertBodyFirst(\SmartDOMXpath $xpath, \DOMNode $content)
  *
  * @param string $content
  */
-function insertBodyLast(\SmartDOMXpath $xpath, \DOMNode $content)
+function insertBodyLast(SmartDOMXpath $xpath, DOMNode $content)
 {
-  $body = $xpath->body();
+    $body = $xpath->body();
 
-  return $body->appendChild($content);
+    return $body->appendChild($content);
 }
 
 /**
@@ -86,17 +88,17 @@ function createText(string $string)
  * ```
  * return instanceof DOMElement.
  */
-function createScript(\DOMDocument $dom, array $opt)
+function createScript(DOMDocument $dom, array $opt)
 {
-  if (!isset($opt['innertext'])) {
-    $opt['innertext'] = '';
-  }
-  $script = $dom->createElement('script', $opt['innertext']);
-  if (isset($opt['src'])) {
-    $script->setAttribute('src', $opt['src']);
-    if (isset($opt['cache'])) {
-      if (defined('CONFIG')) {
-        if (isset(CONFIG['cache']['key'])) {
+    if (!isset($opt['innertext'])) {
+        $opt['innertext'] = '';
+    }
+    $script = $dom->createElement('script', $opt['innertext']);
+    if (isset($opt['src'])) {
+        $script->setAttribute('src', $opt['src']);
+        if (isset($opt['cache'])) {
+            if (defined('CONFIG')) {
+                if (isset(CONFIG['cache']['key'])) {
           $script->setAttribute('src', $opt['src'] . '?' . CONFIG['cache']['key']);
         } else {
           $script->setAttribute('src', $opt['src'] . '?' . md5(serialize(CONFIG)));
@@ -129,30 +131,30 @@ function createScript(\DOMDocument $dom, array $opt)
  *                   ))
  *                   ```
  */
-function createElement(\DOMDocument $dom, array $opt)
+function createElement(DOMDocument $dom, array $opt)
 {
-  $node = null;
-  foreach ($opt as $key => $attributes) {
-    $node = $dom->createElement($key);
-    foreach ($attributes as $key => $value) {
-      $node->setAttribute($key, $value);
+    $node = null;
+    foreach ($opt as $key => $attributes) {
+        $node = $dom->createElement($key);
+        foreach ($attributes as $key => $value) {
+            $node->setAttribute($key, $value);
+        }
     }
-  }
 
-  return $node;
+    return $node;
 }
 
-function createMeta(\DOMDocument $doc)
+function createMeta(DOMDocument $doc)
 {
-  $meta = [
-    ['charset' => 'utf-8'],
-    ['name' => 'dc.creator', 'content' => 'Foo Bar'],
-  ];
+    $meta = [
+        ['charset' => 'utf-8'],
+        ['name' => 'dc.creator', 'content' => 'Foo Bar'],
+    ];
 
-  foreach ($meta as $attributes) {
-    $node = $doc->createElement('meta');
-    foreach ($attributes as $key => $value) {
-      $node->setAttribute($key, $value);
+    foreach ($meta as $attributes) {
+        $node = $doc->createElement('meta');
+        foreach ($attributes as $key => $value) {
+            $node->setAttribute($key, $value);
     }
   }
 }

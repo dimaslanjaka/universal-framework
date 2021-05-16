@@ -9,7 +9,7 @@ class alert
   public $toastr = '';
 
   /**
-   * Chaining initializer
+   * Chaining initializer.
    *
    * @return alert
    */
@@ -47,15 +47,15 @@ class alert
   {
     if (!empty($this->result)) {
       foreach ($this->result as $alert) {
-        if (isset($alert['error'])) {
-          if ($alert['error']) {
-            $this->toastr .= "toastr.error('{$alert['title']}', '{$alert['message']}');";
-          } else {
-            $this->toastr .= "toastr.success('{$alert['title']}', '{$alert['message']}');";
+          if (isset($alert['error'])) {
+              if ($alert['error']) {
+                  $this->toastr .= "toastr.error('{$alert['title']}', '{$alert['message']}');";
+              } else {
+                  $this->toastr .= "toastr.success('{$alert['title']}', '{$alert['message']}');";
+              }
+          } elseif (isset($alert['message'])) {
+              $this->toastr .= "toastr.info('{$alert['title']}', '{$alert['message']}');";
           }
-        } else if (isset($alert['message'])) {
-          $this->toastr .= "toastr.info('{$alert['title']}', '{$alert['message']}');";
-        }
       }
       if (!$scriptTag) {
         echo $this->toastr;

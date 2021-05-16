@@ -4,9 +4,9 @@ namespace HTML\minify\css;
 
 class minifyCSS
 {
-  function __construct(string $css)
+  public function __construct(string $css)
   {
-    return startminify($css);
+      return startminify($css);
   }
 }
 
@@ -15,22 +15,22 @@ $doubleQuoteSequenceFinder = new QuoteSequenceFinder('"');
 $blockCommentFinder = new StringSequenceFinder('/*', '*/');
 function startminify($css)
 {
-  global $minificationStore, $singleQuoteSequenceFinder, $doubleQuoteSequenceFinder, $blockCommentFinder;
-  $css_special_chars = array(
-    $blockCommentFinder, // CSS Comment
-    $singleQuoteSequenceFinder, // single quote escape, e.g. :before{ content: '-';}
-    $doubleQuoteSequenceFinder
-  ); // double quote
-  // pull out everything that needs to be pulled out and saved
-  while ($sequence = getNextSpecialSequence($css, $css_special_chars)) {
-    switch ($sequence->type) {
-      case '/*': // remove comments
-        $css = substr($css, 0, $sequence->start_idx) . substr($css, $sequence->end_idx);
-        break;
-      default: // strings that need to be preservered
-        $placeholder = getNextMinificationPlaceholder();
-        $minificationStore[$placeholder] = substr($css, $sequence->start_idx, $sequence->end_idx -
-          $sequence->start_idx);
+    global $minificationStore, $singleQuoteSequenceFinder, $doubleQuoteSequenceFinder, $blockCommentFinder;
+    $css_special_chars = [
+        $blockCommentFinder, // CSS Comment
+        $singleQuoteSequenceFinder, // single quote escape, e.g. :before{ content: '-';}
+        $doubleQuoteSequenceFinder,
+    ]; // double quote
+    // pull out everything that needs to be pulled out and saved
+    while ($sequence = getNextSpecialSequence($css, $css_special_chars)) {
+        switch ($sequence->type) {
+            case '/*': // remove comments
+                $css = substr($css, 0, $sequence->start_idx) . substr($css, $sequence->end_idx);
+                break;
+            default: // strings that need to be preservered
+                $placeholder = getNextMinificationPlaceholder();
+                $minificationStore[$placeholder] = substr($css, $sequence->start_idx, $sequence->end_idx -
+                    $sequence->start_idx);
         $css = substr($css, 0, $sequence->start_idx) . $placeholder . substr($css, $sequence->end_idx);
     }
   }
@@ -42,13 +42,14 @@ function startminify($css)
   foreach ($minificationStore as $placeholder => $original) {
     $css = str_replace($placeholder, $original, $css);
   }
+
   return trim($css);
 }
 
 function getNextSpecialSequence($string, $sequences)
 {
   // $special_idx is an array of the nearest index for all special characters
-  $special_idx = array();
+    $special_idx = [];
   foreach ($sequences as $finder) {
     $finder->findFirstValue($string);
     if ($finder->isValid()) {
@@ -56,17 +57,19 @@ function getNextSpecialSequence($string, $sequences)
     }
   }
   // if none found, return
-  if (count($special_idx) == 0) {
-    return false;
-  }
+    if (0 == count($special_idx)) {
+        return false;
+    }
   // get first occuring item
   asort($special_idx);
-  return $special_idx[min(array_keys($special_idx))];
+
+    return $special_idx[min(array_keys($special_idx))];
 }
 
-$minificationStore = array();
+$minificationStore = [];
 function getNextMinificationPlaceholder()
 {
   global $minificationStore;
-  return '<-!!-' . sizeof($minificationStore) . '-!!->';
+
+    return '<-!!-' . sizeof($minificationStore) . '-!!->';
 }

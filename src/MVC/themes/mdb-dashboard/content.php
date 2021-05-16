@@ -1,7 +1,5 @@
 <?php
 
-use JSON\json;
-
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
   echo 'title/content required';
@@ -25,38 +23,39 @@ if (!isset($share)) {
   $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
-  e([
-    'error' => true,
-    'message' => 'framework environtment doesnt exists',
-    'current' => __FILE__
-  ]);
+    e([
+        'error' => true,
+        'message' => 'framework environtment doesnt exists',
+        'current' => __FILE__,
+    ]);
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="full-height" manifest="" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
+<html lang="en" class="full-height" manifest="" environtment="<?php echo ENVIRONMENT; ?>"
+      cache="<?php echo CONFIG['cache']['key']; ?>">
 
 <head>
-  <?php
-  include __DIR__ . '/meta.php';
-  ?>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/assets/css/all.min.css">
-  <!-- Bootstrap core CSS -->
-  <link href="/assets/mdb-dashboard/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="/assets/mdb-dashboard/css/mdb.min.css" rel="stylesheet">
-  <!-- Your custom styles (optional) -->
-  <link rel="stylesheet" href="<?= \MVC\helper::get_url_path(__DIR__ . '/css/style.min.css', true); ?>">
-  <link rel="stylesheet" href="/assets/css/bootstrap-utility.css?v=<?= CONFIG['cache']['key'] ?>">
+    <?php
+    include __DIR__ . '/meta.php';
+    ?>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/all.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/mdb-dashboard/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="/assets/mdb-dashboard/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="<?php echo \MVC\helper::get_url_path(__DIR__ . '/css/style.min.css', true); ?>">
+    <link rel="stylesheet" href="/assets/css/bootstrap-utility.css?v=<?php echo CONFIG['cache']['key']; ?>">
 </head>
 
 <body class="fixed-sn mdb-skin">
-  <header>
+<header>
     <?php
     include __DIR__ . '/menu.php';
     ?>
-  </header>
-  <!-- Main Navigation -->
+</header>
+<!-- Main Navigation -->
 
   <main class="mb-3 mt-0 pt-3" style="min-height: 500px;">
     <div class="container-fluid mt-5">

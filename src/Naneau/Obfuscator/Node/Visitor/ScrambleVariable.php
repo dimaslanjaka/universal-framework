@@ -1,59 +1,48 @@
 <?php
 /**
- * ScrambleVariable.php
+ * ScrambleVariable.php.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
 use Naneau\Obfuscator\Node\Visitor\Scrambler as ScramblerVisitor;
 use Naneau\Obfuscator\StringScrambler;
-
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node;
-use PhpParser\Node\Stmt;
-use PhpParser\Node\Param;
-use PhpParser\Node\Stmt\StaticVar;
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\Stmt\Catch_ as CatchStatement;
 use PhpParser\Node\Expr\ClosureUse;
-
-use \InvalidArgumentException;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\Catch_ as CatchStatement;
+use PhpParser\Node\Stmt\StaticVar;
 
 /**
- * ScrambleVariable
+ * ScrambleVariable.
  *
  * Renames parameters
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 class ScrambleVariable extends ScramblerVisitor
 {
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param  StringScrambler $scrambler
      * @return void
      **/
     public function __construct(StringScrambler $scrambler)
     {
         parent::__construct($scrambler);
 
-        $this->setIgnore(array(
+        $this->setIgnore([
             'this', '_SERVER', '_POST', '_GET', '_REQUEST', '_COOKIE',
-            '_SESSION', '_ENV', '_FILES'
-        ));
+            '_SESSION', '_ENV', '_FILES',
+        ]);
     }
 
     /**
-     * Check all variable nodes
+     * Check all variable nodes.
      *
-     * @param  Node $node
      * @return void
      **/
     public function enterNode(Node $node)

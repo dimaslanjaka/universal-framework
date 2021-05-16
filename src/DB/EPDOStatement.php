@@ -177,7 +177,7 @@ class EPDOStatement extends PDOStatement implements LoggerAwareInterface
    */
   public function execute($inputParams = [])
   {
-    /** migration \DB\statement */
+    /* migration \DB\statement */
     $this->_debugValues = $inputParams;
 
     $this->interpolateQuery($inputParams);
@@ -274,7 +274,7 @@ class EPDOStatement extends PDOStatement implements LoggerAwareInterface
 
     $this->debug('Preparing value {value} as string', ['value' => $value]);
 
-    return  $this->_pdo->quote($value['value']);
+      return $this->_pdo->quote($value['value']);
   }
 
   /**

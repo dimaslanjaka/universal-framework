@@ -17,9 +17,9 @@ class config
    */
   private $pdo;
 
-  public function __construct(\User\user $user)
+  public function __construct(user $user)
   {
-    $this->user = $user;
-    $this->pdo = $user->pdo_instance();
+      $this->user = $user;
+      $this->pdo = $user->pdo_instance();
   }
 }

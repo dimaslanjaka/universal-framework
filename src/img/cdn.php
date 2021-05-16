@@ -4,7 +4,7 @@ namespace img;
 
 class cdn
 {
-    static function url2cdn()
+    public static function url2cdn()
     {
     }
 }

@@ -1,37 +1,40 @@
 <?php
 /**
- * bulletproof\utils\crop
+ * bulletproof\utils\crop.
  *
  * Image croping function for bulletproof library
  *
  * PHP support 5.3+
  *
- * @package     bulletproof
  * @version     3.2.0
+ *
  * @author      https://twitter.com/_samayo
- * @link        https://github.com/samayo/bulletproof
+ *
+ * @see        https://github.com/samayo/bulletproof
+ *
  * @license     MIT
  */
+
 namespace Bulletproof\Utils;
 
 function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
 {
     switch ($mimeType) {
-        case "jpg":
-        case "jpeg":
+        case 'jpg':
+        case 'jpeg':
             $imageCreate = imagecreatefromjpeg($image);
             break;
 
-        case "png":
+        case 'png':
             $imageCreate = imagecreatefrompng($image);
             break;
 
-        case "gif":
+        case 'gif':
             $imageCreate = imagecreatefromgif($image);
             break;
 
         default:
-            throw new \Exception(" Only gif, jpg, jpeg and png files can be cropped ");
+            throw new \Exception(' Only gif, jpg, jpeg and png files can be cropped ');
             break;
     }
 
@@ -46,8 +49,8 @@ function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
     }
 
     $temp = imagecreatetruecolor($newWidth, $newHeight);
-    imageAlphaBlending($temp, false);
-    imageSaveAlpha($temp, true);
+    imagealphablending($temp, false);
+    imagesavealpha($temp, true);
     imagecopyresampled(
         $temp,
         $imageCreate,
@@ -61,9 +64,8 @@ function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
         $newHeight
     );
 
-
     if (!$temp) {
-        throw new \Exception("Failed to crop image. Please pass the right parameters");
-    } 
-        imagejpeg($temp, $image);
+        throw new \Exception('Failed to crop image. Please pass the right parameters');
+    }
+    imagejpeg($temp, $image);
 }

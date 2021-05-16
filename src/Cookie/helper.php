@@ -55,13 +55,11 @@ class helper
   /**
    * Set cookie helper.
    *
-   * @param string    $name
-   * @param mixed     $value
+   * @param mixed $value
    * @param int|float|string $expire 1m/1h/1d/1y
-   * @param string    $path
-   * @param string    $domain   default $_SERVER['HTTP_HOST']
-   * @param bool      $secure
-   * @param bool      $httponly
+   * @param string $domain default $_SERVER['HTTP_HOST']
+   * @param bool $secure
+   * @param bool $httponly
    *
    * @return setcookie
    */
@@ -75,15 +73,15 @@ class helper
     }
 
     if (is_string($expire)) {
-      if (endsWith($expire, "h")) {
-        $expire = time() + (toNumber($expire) * 3600);
-      } else if (endsWith($expire, "d")) {
-        $expire = time() + (toNumber($expire) * 86400);
-      } else if (endsWith($expire, "m")) {
-        $expire = time() + (toNumber($expire) * 60);
-      } else if (endsWith($expire, "y")) {
-        $expire = time() + (toNumber($expire) * 31556926); // where 31556926 is total seconds for a year.
-      }
+        if (endsWith($expire, 'h')) {
+            $expire = time() + (toNumber($expire) * 3600);
+        } elseif (endsWith($expire, 'd')) {
+            $expire = time() + (toNumber($expire) * 86400);
+        } elseif (endsWith($expire, 'm')) {
+            $expire = time() + (toNumber($expire) * 60);
+        } elseif (endsWith($expire, 'y')) {
+            $expire = time() + (toNumber($expire) * 31556926); // where 31556926 is total seconds for a year.
+        }
     }
 
     try {
@@ -101,13 +99,14 @@ class helper
     }
   }
 
-  /**
-   * Get Cookie By Name.
-   *
-   * @param string cookie value
-   * * if value is json, auto convert them into Array
-   * @return null|string|array
-   */
+    /**
+     * Get Cookie By Name.
+     *
+     * @param string cookie value
+     * * if value is json, auto convert them into Array
+     *
+     * @return string|array|null
+     */
   public static function get(string $name, bool $AllowEmpty = true)
   {
     $ret = null;
@@ -128,8 +127,6 @@ class helper
 
   /**
    * Destroy all cookies except php session and spesific cookies name.
-   *
-   * @param array $except
    *
    * @return void
    */
@@ -225,17 +222,16 @@ class helper
     return self::set($name, $value, time() + (60 * 60 * $expire), $path, $domain, $secure, $httponly);
   }
 
-  /**
-   * Check cookie exist.
-   *
-   * @param string $name
-   * @param bool   $AllowEmpty if true, will return false if cookie value empty
-   *
-   * @return boolean|null
-   *                      `true` indicated exists,
-   *                      `null` indicated empty value,
-   *                      `false` indicated not set
-   */
+    /**
+     * Check cookie exist.
+     *
+     * @param bool $AllowEmpty if true, will return false if cookie value empty
+     *
+     * @return bool|null
+     *                   `true` indicated exists,
+     *                   `null` indicated empty value,
+     *                   `false` indicated not set
+     */
   public static function has(string $name, bool $AllowEmpty = true)
   {
     $ret = false;
@@ -249,16 +245,13 @@ class helper
     return $ret;
   }
 
-  /**
-   * one time function when cookie name empty.
-   *
-   * @param string   $cookie_name
-   * @param string   $value
-   * @param int      $minutes     minute to be expired
-   * @param callable $callback
-   *
-   * @return void
-   */
+    /**
+     * one time function when cookie name empty.
+     *
+     * @param int $minutes minute to be expired
+     *
+     * @return void
+     */
   public static function one(string $cookie_name, string $value, int $minutes, callable $callback)
   {
     if (!self::has($cookie_name)) {
@@ -271,8 +264,6 @@ class helper
 
   /**
    * Delete cookie.
-   *
-   * @param string $name
    *
    * @return bool true | false | null
    *              * return true if success and exists

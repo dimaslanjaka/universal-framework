@@ -68,7 +68,7 @@ class coupon extends user
       if ($limit < 1) {
         $result['error'] = true;
         $result['message'] = 'Coupon was reached limit';
-        //$this->logout();
+      //$this->logout();
       } else {
         $result['error'] = false;
         $result['message'] = 'Coupon login successfully';
@@ -91,11 +91,11 @@ class coupon extends user
     return $result;
   }
 
-  /**
-   * Coupon login check.
-   *
-   * @return boolean
-   */
+    /**
+     * Coupon login check.
+     *
+     * @return bool
+     */
   public function is_login(bool $token = true)
   {
     if ($token) {
@@ -135,13 +135,13 @@ class coupon extends user
     return \MVC\helper::isLocal();
   }
 
-  /**
-   * Validate coupon token with current session zone divisor.
-   *
-   * @param callable $callback return callback(true|false, $result)
-   *
-   * @return boolean|mixed
-   */
+    /**
+     * Validate coupon token with current session zone divisor.
+     *
+     * @param callable $callback return callback(true|false, $result)
+     *
+     * @return bool|mixed
+     */
   public function coupon_validate(callable $callback = null)
   {
     $this->pdo_required();

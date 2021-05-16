@@ -254,18 +254,17 @@ CONTENT;
  *
  * @return string
  */
-function innerHTML(\DOMNode $element)
+function innerHTML(DOMNode $element)
 {
-  $innerHTML = '';
-  $children = $element->childNodes;
+    $innerHTML = '';
+    $children = $element->childNodes;
 
-  foreach ($children as $child) {
-    $innerHTML .= $element->ownerDocument->saveHTML($child);
-  }
+    foreach ($children as $child) {
+        $innerHTML .= $element->ownerDocument->saveHTML($child);
+    }
 
-  return $innerHTML;
+    return $innerHTML;
 }
-
 
 /**
  * Get HTML Title.
@@ -274,20 +273,21 @@ function innerHTML(\DOMNode $element)
  *
  * @return string
  */
-function getTitle(\SmartDOMDocument $dom)
+function getTitle(SmartDOMDocument $dom)
 {
-  $list = $dom->getElementsByTagName('title');
-  if ($list->length > 0) {
-    return $list->item(0)->textContent;
-  }
+    $list = $dom->getElementsByTagName('title');
+    if ($list->length > 0) {
+        return $list->item(0)->textContent;
+    }
 
-  return __FUNCTION__;
+    return __FUNCTION__;
 }
 
 /**
- * Get function which called current function
+ * Get function which called current function.
  *
- * @param boolean $completeTrace
+ * @param bool $completeTrace
+ *
  * @return string
  */
 function getCallingFunctionName($completeTrace = false)
@@ -296,15 +296,18 @@ function getCallingFunctionName($completeTrace = false)
   if ($completeTrace) {
     $str = '';
     foreach ($trace as $caller) {
-      $str .= " -- Called by {$caller['function']}";
-      if (isset($caller['class']))
-        $str .= " From Class {$caller['class']}";
+        $str .= " -- Called by {$caller['function']}";
+        if (isset($caller['class'])) {
+            $str .= " From Class {$caller['class']}";
+        }
     }
   } else {
-    $caller = $trace[2];
-    $str = "Called by {$caller['function']}";
-    if (isset($caller['class']))
-      $str .= " From Class {$caller['class']}";
+      $caller = $trace[2];
+      $str = "Called by {$caller['function']}";
+      if (isset($caller['class'])) {
+          $str .= " From Class {$caller['class']}";
+      }
   }
-  return $str;
+
+    return $str;
 }

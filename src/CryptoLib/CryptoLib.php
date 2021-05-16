@@ -9,39 +9,38 @@ use Throwable;
 class CryptoLib
 {
     /**
-     * Default setting for generating hash
+     * Default setting for generating hash.
      *
      * @var array
      */
     private $_opts = [
+        /*
+             * Crypto method to encrypt your string with
+             */
+        'method' => 'AES-256-CBC',
 
-        /**
-         * Crypto method to encrypt your string with
-         */
-        'method'             => 'AES-256-CBC',
+        /*
+             * Algorithm to apply while generating password via secrety key
+             */
+        'algorithm' => 'sha256',
 
-        /**
-         * Algorithm to apply while generating password via secrety key
-         */
-        'algorithm'          => 'sha256',
+        /*
+             * Maximum key size
+             */
+        'maxKeySize' => 32,
 
-        /**
-         * Maximum key size
-         */
-        'maxKeySize'         => 32,
+        /*
+             * Maximum IV size
+             */
+        'maxIVSize' => 16,
 
-        /**
-         * Maximum IV size
-         */
-        'maxIVSize'          => 16,
-
-        /**
-         * Number of iterations to generate hash for password
-         */
+        /*
+             * Number of iterations to generate hash for password
+             */
         'numberOfIterations' => 1,
     ];
 
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->_opts = $options + $this->_opts;
     }
@@ -64,12 +63,12 @@ class CryptoLib
             // Invalid method will throw a warning.
             $length = openssl_cipher_iv_length($this->getOptions('method'));
         } catch (Throwable $t) {
-            throw new NotSecureIVGenerated("Unable to generate random IV.");
+            throw new NotSecureIVGenerated('Unable to generate random IV.');
         }
 
         // For any reason if required IV size needs greater value.
         if ($length > strlen($allowedIVString)) {
-            $repeatedIVString = str_repeat($allowedIVString, ceil($length/strlen($allowedIVString)));
+            $repeatedIVString = str_repeat($allowedIVString, ceil($length / strlen($allowedIVString)));
             $allowedIVString .= $repeatedIVString;
         }
 
@@ -79,7 +78,7 @@ class CryptoLib
     public function getComputedHash($key)
     {
         $hash = $key;
-        for ($i = 0; $i < intval($this->getOptions('numberOfIterations')); $i++) {
+        for ($i = 0; $i < intval($this->getOptions('numberOfIterations')); ++$i) {
             $hash = hash($this->getOptions('algorithm'), $hash);
         }
 
@@ -137,5 +136,4 @@ class CryptoLib
             $initVector
         );
     }
-
 }

@@ -77,7 +77,7 @@ class user
   }
 
   /**
-   * Access Management
+   * Access Management.
    *
    * @return access
    */
@@ -114,15 +114,15 @@ class user
    *
    * @return \DB\pdo
    */
-  public function pdo_instance(\DB\pdo $pdo = null)
-  {
-    if ($pdo) {
-      $this->pdo = $pdo;
-      self::$_instance = $this;
-    }
+    public function pdo_instance(pdo $pdo = null)
+    {
+        if ($pdo) {
+            $this->pdo = $pdo;
+            self::$_instance = $this;
+        }
 
-    return $this->pdo;
-  }
+        return $this->pdo;
+    }
 
   /**
    * Static Chain.
@@ -142,10 +142,10 @@ class user
     return self::$_instance;
   }
 
-  public static function setInstance(\User\user $user)
-  {
-    self::$_instance = $user;
-  }
+    public static function setInstance(user $user)
+    {
+        self::$_instance = $user;
+    }
 
   /**
    * Meta instance.
@@ -344,17 +344,17 @@ class user
     $this->pdo->SQL_Exec($q, ['id' => $id]);
   }
 
-  /**
-   * Check user is logged in or redirect them
-   *
-   * @param string $redirect
-   * @return $this
-   */
+    /**
+     * Check user is logged in or redirect them.
+     *
+     * @return $this
+     */
   public function login_required(string $redirect = '/user/login')
   {
     if (!$this->is_login()) {
       \MVC\router::safe_redirect($redirect);
     }
+
     return $this;
   }
 
@@ -371,6 +371,7 @@ class user
   public function generate_password($password)
   {
     $crypt = new crypt();
+
     return $crypt->encrypt(CONFIG['security']['salt'], $password);
   }
 
@@ -540,28 +541,28 @@ class user
     return $chk;
   }
 
-  /**
-   * Check username is exists
-   *
-   * @param string $username
-   * @return boolean
-   */
-  function is_user_exists(string $username)
-  {
-    $check = $this->pdo->query("SELECT * FROM 'userdata';")->row_array();
+    /**
+     * Check username is exists.
+     *
+     * @return bool
+     */
+    public function is_user_exists(string $username)
+    {
+        $check = $this->pdo->query("SELECT * FROM 'userdata';")->row_array();
 
-    return !empty($check);
-  }
+        return !empty($check);
+    }
 
-  /**
-   * Add User To Database
-   *
-   * @param string $username
-   * @param string $password
-   * @param string $name
-   * @param string $role
-   * @return array
-   */
+    /**
+     * Add User To Database.
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $name
+     * @param string $role
+     *
+     * @return array
+     */
   public function register($username, $password, $name = 'user', $role = 'client')
   {
     if ('GET' == $_SERVER['REQUEST_METHOD']) {

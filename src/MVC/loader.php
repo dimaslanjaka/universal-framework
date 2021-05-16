@@ -54,7 +54,8 @@ function fetch_zone(bool $dump = false)
     if ($dump) {
       var_dump('from global');
     }
-    return $GLOBALS['fetch_zone'];
+
+      return $GLOBALS['fetch_zone'];
   }
   $uri = \MVC\helper::get_clean_uri();
   $zone = \MVC\helper::parse_url2(\MVC\helper::geturl());

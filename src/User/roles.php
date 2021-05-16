@@ -16,14 +16,13 @@ if (empty($json)) {
 $json_string = json_encode($json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 file_put_contents($configPath, $json_string);
 
-
 class roles
 {
   private $user = null;
 
-  function __construct(\User\user $u)
+  public function __construct(user $u)
   {
-    $this->user = $u;
+      $this->user = $u;
   }
 
   public function can()

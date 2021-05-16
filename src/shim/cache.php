@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Get page cache
+ * Get page cache.
  *
  * @return string
  */
@@ -17,9 +17,8 @@ function page_cache()
 }
 
 /**
- * Identify cached page by hour
+ * Identify cached page by hour.
  *
- * @param integer $hour
  * @return bool
  */
 function cache_expired(int $hour = 24)
@@ -41,27 +40,28 @@ function cache_expired(int $hour = 24)
 }
 
 /**
- * Render theme
+ * Render theme.
  *
  * @param \MVC\themes $theme
+ *
  * @return void
  */
-function render(\MVC\themes $theme)
+function render(MVC\themes $theme)
 {
-  //global $theme;
-  // render view in theme
-  $theme->render();
+    //global $theme;
+    // render view in theme
+    $theme->render();
 
-  if (!CORS && $theme->meta['theme']) {
-    process_page($theme->meta['obfuscate'], $theme);
-    if ('development' == get_env() && $theme->meta['theme']) {
-      echo '<!--' . get_includes() . '-->';
-    }
+    if (!CORS && $theme->meta['theme']) {
+        process_page($theme->meta['obfuscate'], $theme);
+        if ('development' == get_env() && $theme->meta['theme']) {
+            echo '<!--' . get_includes() . '-->';
+        }
   }
 }
 
 /**
- * Get page identifier
+ * Get page identifier.
  *
  * @return string
  */
@@ -70,25 +70,24 @@ function identifier()
   return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
 }
 
-
 /**
- * Process page to using obfuscate mode or not
+ * Process page to using obfuscate mode or not.
  *
- * @param boolean $obfuscatejs
  * @param \MVC\themes $theme
+ *
  * @return void
  */
-function process_page(bool $obfuscatejs, \MVC\themes $theme)
+function process_page(bool $obfuscatejs, MVC\themes $theme)
 {
-  //global $theme;
-  $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
-  $dom->preserveWhiteSpace = true;
-  $dom->formatOutput = true;
+    //global $theme;
+    $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
+    $dom->preserveWhiteSpace = true;
+    $dom->formatOutput = true;
 
-  $c = ob_get();
+    $c = ob_get();
 
-  if (!$dom->loadHTML($c)) {
-    \HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
+    if (!$dom->loadHTML($c)) {
+        \HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
     echo $c;
 
     return;

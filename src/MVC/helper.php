@@ -430,11 +430,13 @@ class helper
   }
 
   private static $canonical = [];
+
   /**
-   * get canonical url
+   * get canonical url.
    *
    * @param string $url null for current page
-   * @param boolean $whos include host or not (http://domain)
+   * @param bool $whos include host or not (http://domain)
+   *
    * @return void
    */
   public static function get_canonical(string $url = null, bool $whos = true)
@@ -483,10 +485,10 @@ class helper
   {
     $match = preg_match('/127\.0\.0\.0\.1|localhost|^192\.168/s', $_SERVER['HTTP_HOST']) ? true : false;
 
-    $whitelist = array(
-      '127.0.0.1',
-      '::1'
-    );
+      $whitelist = [
+          '127.0.0.1',
+          '::1',
+      ];
 
     if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist)) {
       $match = false;
@@ -930,14 +932,15 @@ class helper
     return join(PHP_EOL, $_SERVER);
   }
 
-  /**
-   * Get URL from local file
-   *
-   * @param string|array $path destinations
-   * * `array` will be looped, which found first, return them
-   * @param boolean $cache
-   * @return string if empty == not found
-   */
+    /**
+     * Get URL from local file.
+     *
+     * @param string|array $path destinations
+     *                            * `array` will be looped, which found first, return them
+     * @param bool $cache
+     *
+     * @return string if empty == not found
+     */
   public static function get_url_path($path, bool $cache = null)
   {
     $load = function (string $path) use ($cache) {
@@ -952,18 +955,18 @@ class helper
         return $ret;
       }
     };
-    if (is_string($path)) {
-      if ($load($path)) {
-        return $load($path);
+      if (is_string($path)) {
+          if ($load($path)) {
+              return $load($path);
+          }
+      } elseif (is_array($path)) {
+          foreach ($path as $dest) {
+              if ($load($dest)) {
+                  return $load($dest);
+                  break;
+              }
+          }
       }
-    } else if (is_array($path)) {
-      foreach ($path as $dest) {
-        if ($load($dest)) {
-          return $load($dest);
-          break;
-        }
-      }
-    }
 
     return '';
   }

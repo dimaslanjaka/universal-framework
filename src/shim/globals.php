@@ -2,7 +2,7 @@
 
 $GLOBALS['globals'] = [];
 /**
- * Global major manipulator
+ * Global major manipulator.
  */
 class globals
 {

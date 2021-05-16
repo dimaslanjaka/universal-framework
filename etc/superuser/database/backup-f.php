@@ -1,6 +1,6 @@
 <?php
 
-use DB\Backup_Database;
+use DB\Backup;
 use JSON\json;
 
 $pdo = pdo();
@@ -18,8 +18,8 @@ if (isset($_REQUEST['tables'])) { // show all tables
   /**
    * Instantiate Backup_Database and perform backup.
    */
-  $backupDatabase = new Backup_Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  $tbl = trim(urldecode($_REQUEST['table']));
+    $backupDatabase = new Backup(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $tbl = trim(urldecode($_REQUEST['table']));
   $result = $backupDatabase->backupTables($tbl);
   if (!isset($_REQUEST['sql'])) {
     exit(json::json($result));

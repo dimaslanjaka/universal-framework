@@ -14,27 +14,28 @@ class blogger
   /**
    * @param \Google\Client|\GoogleExt\client $client
    */
-  function __construct($client)
+  public function __construct($client)
   {
-    $this->service = new Google_Service_Blogger($client);
-    $this->blogs = $this->service->blogs;
-    $this->posts = $this->service->posts;
+      $this->service = new Google_Service_Blogger($client);
+      $this->blogs = $this->service->blogs;
+      $this->posts = $this->service->posts;
   }
 
-  function get_blog_byurl(string $url)
-  {
-    $blog =  $this->service->blogs->getByUrl($url);
-    $this->blogid = $blog->getId();
-    return $blog;
-  }
+    public function get_blog_byurl(string $url)
+    {
+        $blog = $this->service->blogs->getByUrl($url);
+        $this->blogid = $blog->getId();
 
-  function list_posts($limit = 5)
-  {
-    return $this->posts->listPosts($this->blogid, ["maxResults" => $limit]);
-  }
+        return $blog;
+    }
 
-  function set_blog_id($id)
-  {
-    $this->blogid = $id;
-  }
+    public function list_posts($limit = 5)
+    {
+        return $this->posts->listPosts($this->blogid, ['maxResults' => $limit]);
+    }
+
+    public function set_blog_id($id)
+    {
+        $this->blogid = $id;
+    }
 }

@@ -1,37 +1,31 @@
 <?php
 /**
- * The file that handles parsing error events
- *
- * @package         Obfuscator
- * @subpackage      Obfuscator
+ * The file that handles parsing error events.
  */
 
 namespace Naneau\Obfuscator\Obfuscator\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-use Naneau\Obfuscator\Obfuscator\Event\File;
-
 /**
- * FileError
+ * FileError.
  *
  * The file being obfuscated that causes an error
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      Obfuscator
  */
 class FileError extends File
 {
     /**
-     * The error message from Exception
+     * The error message from Exception.
+     *
      * @var string
      **/
     private $errorMessage;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $file
+     *
      * @return void
      **/
     public function __construct($file, $errorMessage)
@@ -41,7 +35,7 @@ class FileError extends File
     }
 
     /**
-     * Get the error message
+     * Get the error message.
      *
      * @return string
      */

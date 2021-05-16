@@ -12,10 +12,10 @@ class access
    */
   private $user;
 
-  public function __construct(\User\user $user)
+  public function __construct(user $user)
   {
-    $this->config = \Filemanager\file::file(__DIR__ . '/config/access/global.json', ['superuser' => '*']);
-    $this->user = $user;
+      $this->config = \Filemanager\file::file(__DIR__ . '/config/access/global.json', ['superuser' => '*']);
+      $this->user = $user;
   }
 
   public function check()

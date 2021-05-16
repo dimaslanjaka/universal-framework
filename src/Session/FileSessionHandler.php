@@ -43,7 +43,7 @@ class FileSessionHandler implements SessionHandlerInterface
 
   public function write($sess_id, $data)
   {
-    return file_put_contents("{$this->sess_path}/{$this->prefix}{$sess_id}{$this->postfix}", $data) === false ? false : true;
+    return false === file_put_contents("{$this->sess_path}/{$this->prefix}{$sess_id}{$this->postfix}", $data) ? false : true;
   }
 
   public function destroy($sess_id)

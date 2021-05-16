@@ -1,45 +1,29 @@
 <?php
 /**
- * ScrambleUse.php
+ * ScrambleUse.php.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
-use Naneau\Obfuscator\Node\Visitor\TrackingRenamerTrait;
-use Naneau\Obfuscator\Node\Visitor\SkipTrait;
-
 use Naneau\Obfuscator\Node\Visitor\Scrambler as ScramblerVisitor;
-
 use PhpParser\Node;
-
-use PhpParser\Node\Name;
-use PhpParser\Node\Name\FullyQualified;
-
-use PhpParser\Node\Param;
-
-use PhpParser\Node\Stmt\Class_ as ClassStatement;
-use PhpParser\Node\Stmt\Use_ as UseStatement;
-use PhpParser\Node\Stmt\UseUse as UseUseStatement;
-use PhpParser\Node\Stmt\StaticVar;
-
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\Instanceof_ as InstanceOfExpression;
+use PhpParser\Node\Expr\New_ as NewExpression;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
-use PhpParser\Node\Expr\New_ as NewExpression;
-use PhpParser\Node\Expr\Instanceof_ as InstanceOfExpression;
-
-use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\Class_ as ClassStatement;
+use PhpParser\Node\Stmt\StaticVar;
+use PhpParser\Node\Stmt\Use_ as UseStatement;
 
 /**
- * ScrambleUse
+ * ScrambleUse.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 class ScrambleUse extends ScramblerVisitor
 {
@@ -47,16 +31,17 @@ class ScrambleUse extends ScramblerVisitor
     use SkipTrait;
 
     /**
-     * Active class
+     * Active class.
      *
      * @var ClassStatement|bool
      **/
     private $classNode;
 
     /**
-     * Before node traversal
+     * Before node traversal.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return array
      **/
     public function beforeTraverse(array $nodes)
@@ -74,9 +59,8 @@ class ScrambleUse extends ScramblerVisitor
     }
 
     /**
-     * Check all variable nodes
+     * Check all variable nodes.
      *
-     * @param  Node $node
      * @return void
      **/
     public function enterNode(Node $node)
@@ -84,7 +68,7 @@ class ScrambleUse extends ScramblerVisitor
         // Class statements
         if ($node instanceof ClassStatement) {
             // Classes that extend another class
-            if ($node->extends !== null) {
+            if (null !== $node->extends) {
                 $extends = $node->extends->toString();
                 if ($this->isRenamed($extends)) {
                     $node->extends = new Name($this->getNewName($extends));
@@ -92,12 +76,10 @@ class ScrambleUse extends ScramblerVisitor
             }
 
             // Classes that implement an interface
-            if ($node->implements !== null && count($node->implements) > 0) {
+            if (null !== $node->implements && count($node->implements) > 0) {
+                $implements = [];
 
-                $implements = array();
-
-                foreach($node->implements as $implementsName) {
-
+                foreach ($node->implements as $implementsName) {
                     // Old name (as string)
                     $oldName = $implementsName->toString();
 
@@ -118,13 +100,13 @@ class ScrambleUse extends ScramblerVisitor
 
         // Param rename
         if ($node instanceof Param && $node->type instanceof Name) {
-
             // Name
             $name = $node->type->toString();
 
             // Has it been renamed?
             if ($this->isRenamed($name)) {
                 $node->type = $this->getNewName($name);
+
                 return $node;
             }
         }
@@ -138,7 +120,6 @@ class ScrambleUse extends ScramblerVisitor
             || $node instanceof NewExpression
             || $node instanceof InstanceOfExpression
         ) {
-
             // We need to be in a class for this to work
             if (empty($this->classNode)) {
                 return;
@@ -159,15 +140,17 @@ class ScrambleUse extends ScramblerVisitor
             // Has it been renamed?
             if ($this->isRenamed($name)) {
                 $node->class = new Name($this->getNewName($name));
+
                 return $node;
             }
         }
     }
 
     /**
-     * Scramble at use statements
+     * Scramble at use statements.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return void
      **/
     private function scanUse(array $nodes)
@@ -175,14 +158,13 @@ class ScrambleUse extends ScramblerVisitor
         foreach ($nodes as $node) {
             // Scramble the private method definitions
             if ($node instanceof UseStatement) {
-                foreach($node->uses as $useNode) {
-
+                foreach ($node->uses as $useNode) {
                     // Record original name and scramble it
                     $originalName = $useNode->name->toString();
 
                     // Prefix all classes with underscores, but don't modify them further
                     $rename =
-                        strpos($originalName, '_') === false
+                        false === strpos($originalName, '_')
                         &&
                         count($useNode->name->parts) > 1;
 
@@ -220,14 +202,13 @@ class ScrambleUse extends ScramblerVisitor
     }
 
     /**
-     * Find (the first) class node in a set of nodes
+     * Find (the first) class node in a set of nodes.
      *
-     * @param array $nodes
      * @return ClassStatement|bool returns falls if no class can be found
      **/
     private function findClass(array $nodes)
     {
-        foreach($nodes as $node) {
+        foreach ($nodes as $node) {
             if ($node instanceof ClassStatement) {
                 return $node;
             }

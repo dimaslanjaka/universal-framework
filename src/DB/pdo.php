@@ -4,9 +4,9 @@ namespace DB;
 
 use JSON\json;
 use MVC\Exception;
+use mysqli as MYSQLi;
 use PDO as GlobalPDO;
 use PDOException;
-use mysqli as MYSQLi;
 
 /*
  function SQL_Connect    ($user, $pass, $dbname, $host = "localhost", $charset = "utf8mb4");
@@ -52,17 +52,17 @@ class pdo
   protected $namedb;
   protected $hostdb;
   protected $charsetdb;
-  /**
-   * MYSQLI Instance
-   *
-   * @var mysqli
-   */
+    /**
+     * MYSQLI Instance.
+     *
+     * @var mysqli
+     */
   protected $mysqli;
-  /**
-   * Shimmer MySQL
-   *
-   * @var \UniversalFramework\MySQL
-   */
+    /**
+     * Shimmer MySQL.
+     *
+     * @var \UniversalFramework\MySQL
+     */
   protected $shimmer;
   /**
    * PDO instance.
@@ -80,13 +80,14 @@ class pdo
     }
   }
 
-  /**
-   * Get enum or set value as associative arrays
-   *
-   * @param string $table
-   * @param string $field
-   * @return array
-   */
+    /**
+     * Get enum or set value as associative arrays.
+     *
+     * @param string $table
+     * @param string $field
+     *
+     * @return array
+     */
   public function get_enum_set_values($table, $field)
   {
     $type = $this->pdo
@@ -95,11 +96,14 @@ class pdo
       preg_match("/^(enum|set)\(\'(.*)\'\)$/", $type['Type'], $matches);
       if (isset($matches[2])) {
         $enum = explode("','", $matches[2]);
+
         return $enum;
       }
     }
+
     return [];
   }
+
   //UPDATE `roles` SET `allow` = 'edit-categories,edit-user,add-user' WHERE `roles`.`id` = 1;
   public function set_multiple_value(string $table, string $field, array $values, string $where)
   {
@@ -108,14 +112,13 @@ class pdo
     $sql = "UPDATE `$table` SET `$field` = '$combine' $where;";
   }
 
-  /**
-   * Add value to SET field
-   *
-   * @param string $table
-   * @param string $field
-   * @param string $new_value
-   * @return array
-   */
+    /**
+     * Add value to SET field.
+     *
+     * @param string $new_value
+     *
+     * @return array
+     */
   public function add_set_value(string $table, string $field, $new_value)
   {
     $sets = ["'$new_value'"];
@@ -125,17 +128,17 @@ class pdo
     ksort($sets);
     $combine = implode(',', array_unique($sets));
     $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+
     return $this->query($sql)->exec();
   }
 
-  /**
-   * Remove value from SET field
-   *
-   * @param string $table
-   * @param string $field
-   * @param string $old_value
-   * @return array
-   */
+    /**
+     * Remove value from SET field.
+     *
+     * @param string $old_value
+     *
+     * @return array
+     */
   public function remove_set_value(string $table, string $field, $old_value)
   {
     $sets = [];
@@ -148,6 +151,7 @@ class pdo
     ksort($sets);
     $combine = implode(',', array_unique($sets));
     $sql = "ALTER TABLE `$table` CHANGE `$field` `$field` SET($combine);";
+
     return $this->query($sql)->exec();
   }
 
@@ -163,39 +167,42 @@ class pdo
     return !empty($check);
   }
 
-  /**
-   * Get mysqli instances
-   *
-   * @return mysqli
-   */
+    /**
+     * Get mysqli instances.
+     *
+     * @return mysqli
+     */
   public function mysqli()
   {
     return $this->mysqli;
   }
 
-  /**
-   * Escape query sql
-   *
-   * @param string $query
-   * @return string
-   */
+    /**
+     * Escape query sql.
+     *
+     * @param string $query
+     *
+     * @return string
+     */
   public function escape(string $query = null)
   {
-    $this->mysqli->query('SET NAMES utf8mb4;');
-    $new_data = $query != null ? $query : $this->query;
+      $this->mysqli->query('SET NAMES utf8mb4;');
+      $new_data = null != $query ? $query : $this->query;
     //$new_data = $this->mysqli->real_escape_string();
     //$new_data = addcslashes($new_data, '%_$');
     //$new_data = htmlspecialchars($new_data, ENT_NOQUOTES);
     $new_data = preg_quote($new_data);
+
     return $new_data;
   }
 
   public function descape(string $query = null)
   {
-    $this->mysqli->query('SET NAMES utf8mb4;');
-    $new_data = $query != null ? $query : $this->query;
+      $this->mysqli->query('SET NAMES utf8mb4;');
+      $new_data = null != $query ? $query : $this->query;
     //$new_data = htmlspecialchars_decode($new_data);
     $new_data = stripcslashes($new_data);
+
     return $new_data;
   }
 
@@ -213,17 +220,17 @@ class pdo
     SELECT @@GLOBAL.time_zone, @@SESSION.time_zone;")->exec();
   }
 
-  /**
-   * Connect PDO.
-   *
-   * @param string $user database user
-   * @param string $pass database password
-   * @param string $dbname database name
-   * @param string $host database host
-   * @param string $charset database charset
-   *
-   * @return \PDO
-   */
+    /**
+     * Connect PDO.
+     *
+     * @param string $user database user
+     * @param string $pass database password
+     * @param string $dbname database name
+     * @param string $host database host
+     * @param string $charset database charset
+     *
+     * @return \PDO
+     */
   public function connect($user, $pass, $dbname, $host = 'localhost', $charset = 'utf8mb4')
   {
     $this->userdb = $user;
@@ -254,15 +261,15 @@ class pdo
     return $pdo;
   }
 
-  /**
-   * Get mysql shimmer instances
-   *
-   * @return \UniversalFramework\MySQL
-   */
-  function shimmer()
-  {
-    return $this->shimmer;
-  }
+    /**
+     * Get mysql shimmer instances.
+     *
+     * @return \UniversalFramework\MySQL
+     */
+    public function shimmer()
+    {
+        return $this->shimmer;
+    }
 
   /**
    * Switch database.
@@ -342,16 +349,17 @@ class pdo
     return $this;
   }
 
-  /**
-   * Clear last queries
-   *
-   * @return $this
-   */
-  function clear()
-  {
-    $this->query = '';
-    return $this;
-  }
+    /**
+     * Clear last queries.
+     *
+     * @return $this
+     */
+    public function clear()
+    {
+        $this->query = '';
+
+        return $this;
+    }
 
   /**
    * Search database by row and keyword.
@@ -507,11 +515,11 @@ class pdo
     return $this;
   }
 
-  /**
-   * Fetch from Queries ($this->query)
-   *
-   * @return array $var['result'] for result
-   */
+    /**
+     * Fetch from Queries ($this->query).
+     *
+     * @return array $var['result'] for result
+     */
   public function fetch()
   {
     $result = ['query' => $this->query, 'error' => true];
@@ -811,12 +819,11 @@ class pdo
     }
   }
 
-  /**
-   * Reset auto increment value for max id from it's table
-   *
-   * @param string $tablename
-   * @return void
-   */
+    /**
+     * Reset auto increment value for max id from it's table.
+     *
+     * @return void
+     */
   public function resetAutoIncrement(string $tablename)
   {
     $sql = "SELECT @max := MAX(ID)+ 1 FROM $tablename;
@@ -887,14 +894,14 @@ class pdo
     return $string;
   }
 
-  /**
-   * Get result as array.
-   *
-   * @param mixed   $value
-   * @param string $filter filter array by key
-   *
-   * @return array|null
-   */
+    /**
+     * Get result as array.
+     *
+     * @param mixed $value
+     * @param string $filter filter array by key
+     *
+     * @return array|null
+     */
   public function row_array($value = false, $filter = null, bool $unique_filter = false)
   {
     $exec = $this->SQL_MultiFetch($this->trim($this->query), $value);

@@ -90,8 +90,6 @@ class captcha extends router
   /**
    * Validate coupon codes.
    *
-   * @param string $captcha
-   *
    * @return void
    */
   public function validate(string $captcha)

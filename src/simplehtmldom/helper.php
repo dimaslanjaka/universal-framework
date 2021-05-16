@@ -21,15 +21,16 @@ if (!defined('HDOM_SMARTY_AS_TEXT')) {
 class helper
 {
   /**
-   * str_get_html
+   * str_get_html.
    *
    * @param [type] $str
-   * @param boolean $lowercase
-   * @param boolean $forceTagsClosed
+   * @param bool $lowercase
+   * @param bool $forceTagsClosed
    * @param [type] $target_charset
-   * @param boolean $stripRN
+   * @param bool $stripRN
    * @param [type] $defaultBRText
    * @param [type] $defaultSpanText
+   *
    * @return HtmlDocument
    */
   public static function str_get_html(

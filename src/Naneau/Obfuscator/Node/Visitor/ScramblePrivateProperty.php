@@ -1,31 +1,21 @@
 <?php
 /**
- * ScramblePrivateProperty.php
+ * ScramblePrivateProperty.php.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
-use Naneau\Obfuscator\Node\Visitor\TrackingRenamerTrait;
-use Naneau\Obfuscator\Node\Visitor\SkipTrait;
-
 use Naneau\Obfuscator\Node\Visitor\Scrambler as ScramblerVisitor;
 use Naneau\Obfuscator\StringScrambler;
-
 use PhpParser\Node;
-
+use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Stmt\Class_ as ClassNode;
 use PhpParser\Node\Stmt\Property;
 
-use PhpParser\Node\Expr\PropertyFetch;
-
-use PhpParser\Node\Expr\Variable;
-
 /**
- * ScramblePrivateProperty
+ * ScramblePrivateProperty.
  *
  * Renames private properties
  *
@@ -34,8 +24,6 @@ use PhpParser\Node\Expr\Variable;
  * See warning for private method scrambler
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 class ScramblePrivateProperty extends ScramblerVisitor
 {
@@ -43,9 +31,8 @@ class ScramblePrivateProperty extends ScramblerVisitor
     use SkipTrait;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param  StringScrambler $scrambler
      * @return void
      **/
     public function __construct(StringScrambler $scrambler)
@@ -54,9 +41,10 @@ class ScramblePrivateProperty extends ScramblerVisitor
     }
 
     /**
-     * Before node traversal
+     * Before node traversal.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return array
      **/
     public function beforeTraverse(array $nodes)
@@ -69,30 +57,30 @@ class ScramblePrivateProperty extends ScramblerVisitor
     }
 
     /**
-     * Check all variable nodes
+     * Check all variable nodes.
      *
-     * @param  Node $node
      * @return void
      **/
     public function enterNode(Node $node)
     {
         if ($node instanceof PropertyFetch) {
-
             if (!is_string($node->name)) {
                 return;
             }
 
             if ($this->isRenamed($node->name)) {
                 $node->name = $this->getNewName($node->name);
+
                 return $node;
             }
         }
     }
 
     /**
-     * Recursively scan for private method definitions and rename them
+     * Recursively scan for private method definitions and rename them.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return void
      **/
     private function scanPropertyDefinitions(array $nodes)
@@ -100,8 +88,7 @@ class ScramblePrivateProperty extends ScramblerVisitor
         foreach ($nodes as $node) {
             // Scramble the private method definitions
             if ($node instanceof Property && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
-                foreach($node->props as $property) {
-
+                foreach ($node->props as $property) {
                     // Record original name and scramble it
                     $originalName = $property->name;
                     $this->scramble($property);
@@ -109,7 +96,6 @@ class ScramblePrivateProperty extends ScramblerVisitor
                     // Record renaming
                     $this->renamed($originalName, $property->name);
                 }
-
             }
 
             // Recurse over child nodes

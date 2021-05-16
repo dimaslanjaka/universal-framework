@@ -48,7 +48,7 @@ class session
 
   public function handle(int $timeout, string $folder = null)
   {
-    $name =  '_' . $timeout . md5(\MVC\helper::getRequestIP() . \MVC\helper::useragent());
+    $name = '_' . $timeout . md5(\MVC\helper::getRequestIP() . \MVC\helper::useragent());
     if (empty(trim($folder)) || !$folder) {
       $folder = \Filemanager\file::folder(__DIR__ . '/sessions');
     }

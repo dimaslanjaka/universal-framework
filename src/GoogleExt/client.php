@@ -3,26 +3,27 @@
 namespace GoogleExt;
 
 use Filemanager\file;
-//use Google_Client;
 use Google\Client as Google_Client;
+
+//use Google_Client;
 
 class client extends Google_Client
 {
-  /**
-   * Google Client Instances.
-   *
-   * @var \Google_Client
-   */
-  private $Client;
-  /**
+    /**
+     * Google Client Instances.
+     *
+     * @var \Google_Client
+     */
+    private $Client;
+    /**
    * Filemanager instance.
    *
    * @var \Filemanager\file
    */
   private $filemanager;
   private $token_folder;
-  private $configuration;
-  public $application_name = "Google Client Library";
+    private $configuration;
+    public $application_name = 'Google Client Library';
 
   public function __construct(array $config = ['token' => ['folder' => __DIR__ . '/token']])
   {
@@ -43,23 +44,30 @@ class client extends Google_Client
     if (isset($_SESSION['google']['login'])) {
       return $_SESSION['google']['login'];
     }
+
     return [];
   }
 
   public static function get_profile_picture()
   {
-    if (!empty(self::get_profile())) {
-      if (isset(self::get_profile()['picture'])) return self::get_profile()['picture'];
-    }
-    return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
+      if (!empty(self::get_profile())) {
+          if (isset(self::get_profile()['picture'])) {
+              return self::get_profile()['picture'];
+          }
+      }
+
+      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
   }
 
   public static function get_profile_name()
   {
-    if (!empty(self::get_profile())) {
-      if (isset(self::get_profile()['name'])) return self::get_profile()['name'];
-    }
-    return 'Login Required';
+      if (!empty(self::get_profile())) {
+          if (isset(self::get_profile()['name'])) {
+              return self::get_profile()['name'];
+          }
+      }
+
+      return 'Login Required';
   }
 
   /**
@@ -68,6 +76,7 @@ class client extends Google_Client
   public function create_auth_url($scope, $redirect)
   {
     $this->custom_client($scope, $redirect);
+
     return $this->createAuthUrl();
   }
 
@@ -83,8 +92,8 @@ class client extends Google_Client
       CONFIG['google']['key']
     );
     $scopes = [
-      'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/userinfo.profile'
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
     ];
     if (is_string($scope)) {
       switch ($scope) {
@@ -118,8 +127,6 @@ class client extends Google_Client
   public function revoke()
   {
     $this->revokeToken();
-
-    $this;
   }
 
   /**
@@ -252,11 +259,12 @@ class client extends Google_Client
     return $output;
   }
 
-  /**
-   * Auto get token from $_GET['code']
-   * And auto refresh token
-   * * @param string $redirect /auth/google
-   */
+    /**
+     * Auto get token from $_GET['code']
+     * And auto refresh token.
+     *
+     * * @param string $redirect /auth/google
+     */
   public function auto_login($redirect)
   {
     $config = $this->configuration;
@@ -287,19 +295,19 @@ class client extends Google_Client
 
     $tokenpath = null;
     if (isset($_SESSION['google']['login'])) {
-      $user = $_SESSION['google']['login'];
-      $tokenpath = $config['token']['folder'] . '/' . $user['email'] . '.json';
-      if (isset($user['email'])) {
-        $email = $user['email'];
-      }
-      // auto refresh token
-      if ($this->isAccessTokenExpired() && isset($user['email']) && $this->getAccessToken()) {
-        $this->fetchAccessTokenWithRefreshToken($this->getRefreshToken());
-        file::file($tokenpath, json_encode($this->getAccessToken()), true);
-      }
-    } else if (isset($this->login_data()['email'])) {
-      $email = $this->login_data()['email'];
-      $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
+        $user = $_SESSION['google']['login'];
+        $tokenpath = $config['token']['folder'] . '/' . $user['email'] . '.json';
+        if (isset($user['email'])) {
+            $email = $user['email'];
+        }
+        // auto refresh token
+        if ($this->isAccessTokenExpired() && isset($user['email']) && $this->getAccessToken()) {
+            $this->fetchAccessTokenWithRefreshToken($this->getRefreshToken());
+            file::file($tokenpath, json_encode($this->getAccessToken()), true);
+        }
+    } elseif (isset($this->login_data()['email'])) {
+        $email = $this->login_data()['email'];
+        $tokenpath = $config['token']['folder'] . '/' . $email . '.json';
     }
 
     if (file_exists($tokenpath)) {

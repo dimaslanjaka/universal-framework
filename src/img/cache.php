@@ -3,7 +3,7 @@
 namespace img;
 
 /**
- * Image Cache Engine
+ * Image Cache Engine.
  */
 class cache
 {
@@ -18,10 +18,10 @@ class cache
     self::$api = new \Extender\request('https://unsplash.it');
   }
 
-  function clean()
-  {
-    $folder = self::$cache_dir;
-  }
+    public function clean()
+    {
+        $folder = self::$cache_dir;
+    }
 
   public static function imageCache(string $url, bool $rewrite = false)
   {
@@ -110,11 +110,11 @@ class cache
      * @todo Fix unecessary characters from url
      */
     $md5 = md5($url);
-    /**
-     * @var string Save cache name generator.
-     *
-     * @return string domain or default
-     */
+      /**
+       * @return string domain or default
+       * @var string save cache name generator
+       *
+       */
     $savedname = function () {
       global $url;
       $savedname = \MVC\helper::url2host($url);

@@ -12,10 +12,10 @@
         "client": "974269993480-30i5epi0r6a9uiafq3rkpgsjuooe2t3q.apps.googleusercontent.com"
     },
     "cache": {
-        "enable": false,
-        "ext": "a4bb0656707f7d6c957afbca67ad155b",
-        "key": "API",
-        "timeout": 60
+      "enable": false,
+      "ext": "6aa95caeec7890ec6b2853d02d17df5d",
+      "key": "API",
+      "timeout": 60
     },
     "htaccess": {
         "cache": true

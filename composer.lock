@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "6e3b8e2adba671a903f0677e5d349360",
-    "packages": [
-        {
-            "name": "ahsankhatri/cryptolib-php",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ahsankhatri/cryptolib-php.git",
-                "reference": "2a8c76cc4083d501d30d49b55daf69719824633e"
-            },
-            "dist": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "41a83ffd937bc8dfb7108bbf5a9ebafe",
+  "packages": [
+    {
+      "name": "ahsankhatri/cryptolib-php",
+      "version": "v1.1.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/ahsankhatri/cryptolib-php.git",
+        "reference": "2a8c76cc4083d501d30d49b55daf69719824633e"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/ahsankhatri/cryptolib-php/zipball/2a8c76cc4083d501d30d49b55daf69719824633e",
                 "reference": "2a8c76cc4083d501d30d49b55daf69719824633e",

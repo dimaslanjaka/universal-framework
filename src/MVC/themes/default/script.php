@@ -1,17 +1,17 @@
 <?php
-if (!defined("THEME_DIR")) {
-  define('THEME_DIR', __DIR__);
+if (!defined('THEME_DIR')) {
+    define('THEME_DIR', __DIR__);
 }
 ?>
-<script src='/node_modules/sweetalert/dist/sweetalert.min.js'></script>
-<script src='/node_modules/toastr/build/toastr.min.js'></script>
-<link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
-<script src='/node_modules/crypto-js/crypto-js.js'></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src='/node_modules/sweetalert/dist/sweetalert.min.js'></script>
+    <script src='/node_modules/toastr/build/toastr.min.js'></script>
+    <link rel="stylesheet" href='/node_modules/toastr/build/toastr.min.css'>
+    <script src='/node_modules/crypto-js/crypto-js.js'></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-<!--script src="<?= path2url(THEME_DIR . '/js/core.min.js') ?>" async></script>
+    <!--script src="<?php echo path2url(THEME_DIR . '/js/core.min.js'); ?>" async></script>
 <script>
-  let scriptsrc = `<?= path2url(THEME_DIR . '/../assets/js/app.min.js') ?>`;
+  let scriptsrc = `<?php echo path2url(THEME_DIR . '/../assets/js/app.min.js'); ?>`;
   let myScript = document.createElement("script");
   myScript.setAttribute("src", scriptsrc);
   document.body.appendChild(myScript);
@@ -20,7 +20,7 @@ if (!defined("THEME_DIR")) {
 $element = new HTML\element();
 // datatables is defined
 if (defined('datatables')) {
-  include THEME_DIR . '/../assets/partial/datatables.php';
+    include THEME_DIR . '/../assets/partial/datatables.php';
 }
 //if select2 defined
 if (defined('select2')) {
@@ -40,12 +40,12 @@ if (defined('materialize')) {
 
 // application javascript
 echo $element->js([
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    THEME_DIR . '/../assets/js/app.min.js', THEME_DIR . '/../assets/js/app.js'
-  ])),
-  \MVC\helper::get_url_path(\MVC\helper::asset_find([
-    THEME_DIR . '/js/core.min.js', THEME_DIR . '/js/core.js'
-  ]))
+    \MVC\helper::get_url_path(\MVC\helper::asset_find([
+        THEME_DIR . '/../assets/js/app.min.js', THEME_DIR . '/../assets/js/app.js',
+    ])),
+    \MVC\helper::get_url_path(\MVC\helper::asset_find([
+        THEME_DIR . '/js/core.min.js', THEME_DIR . '/js/core.js',
+    ])),
 ]);
 
 if (defined('jquery-ui')) {
@@ -62,14 +62,14 @@ $scriptsrc = defined('SCRIPTSRC') ? SCRIPTSRC : (defined('scriptsrc') ? scriptsr
 
 if (null !== $scriptsrc) {
   if (is_string($scriptsrc)) {
-    if (startsWith($scriptsrc, "http")) {
-      echo '<script src="' . $scriptsrc . '"></script>';
-    } else if (file_exists($scriptsrc)) {
-      $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
-      if (!empty(trim($scriptsrc))) {
-        echo '<script src="' . $scriptsrc . '"></script>';
+      if (startsWith($scriptsrc, 'http')) {
+          echo '<script src="' . $scriptsrc . '"></script>';
+      } elseif (file_exists($scriptsrc)) {
+          $scriptsrc = \MVC\helper::get_url_path($scriptsrc, true);
+          if (!empty(trim($scriptsrc))) {
+              echo '<script src="' . $scriptsrc . '"></script>';
+          }
       }
-    }
   } elseif (is_array($scriptsrc)) {
     foreach ($scriptsrc as $src) {
       if (is_string($src)) {
@@ -97,7 +97,6 @@ if (null !== $scriptsrc) {
   define('scriptsrc', []);
   define('SCRIPTSRC', []);
 }
-
 
 /**
  * defined custom style src.

@@ -1,21 +1,22 @@
 <!-- Sidebar navigation -->
 <div id="slide-out" class="side-nav fixed wide slim dynamic-bg">
-  <!-- sn-bg-1 -->
-  <ul class="custom-scrollbar">
-    <!-- Logo -->
-    <li>
-      <div class="logo-wrapper sn-ad-avatar-wrapper">
-        <a href="#"><img src="/assets/img/vs.png" class="rounded-circle"><span><?= $title ?></span></a>
-      </div>
-    </li>
-    <!--/. Logo -->
-    <!-- Side navigation links -->
-    <li>
-      <ul class="collapsible collapsible-accordion">
-        <li><a class="collapsible-header waves-effect arrow-r"><i class="sv-slim-icon fas fa-user"></i> User<i class="fas fa-angle-down rotate-icon"></i></a>
-          <div class="collapsible-body">
-            <ul>
-              <li><a href="#" class="waves-effect d-none">
+    <!-- sn-bg-1 -->
+    <ul class="custom-scrollbar">
+        <!-- Logo -->
+        <li>
+            <div class="logo-wrapper sn-ad-avatar-wrapper">
+                <a href="#"><img src="/assets/img/vs.png" class="rounded-circle"><span><?php echo $title; ?></span></a>
+            </div>
+        </li>
+        <!--/. Logo -->
+        <!-- Side navigation links -->
+        <li>
+            <ul class="collapsible collapsible-accordion">
+                <li><a class="collapsible-header waves-effect arrow-r"><i class="sv-slim-icon fas fa-user"></i> User<i
+                                class="fas fa-angle-down rotate-icon"></i></a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="#" class="waves-effect d-none">
                   <span class="sv-slim"> SL </span>
                   <span class="sv-normal">Submit listing</span></a>
               </li>
@@ -76,13 +77,13 @@
 <!--/. Sidebar navigation -->
 <!-- Navbar -->
 <nav class="navbar dynamic-bg fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
-  <!-- SideNav slide-out button -->
-  <div class="float-left">
-    <a href="#" data-activates="slide-out" class="button-collapse" id="button-collapse"><i class="fas fa-bars"></i></a>
-  </div>
-  <!-- Breadcrumb-->
-  <div class="breadcrumb-dn mr-auto">
-    <p><?= $title; ?></p>
-  </div>
+    <!-- SideNav slide-out button -->
+    <div class="float-left">
+        <a href="#" data-activates="slide-out" class="button-collapse" id="button-collapse"><i class="fas fa-bars"></i></a>
+    </div>
+    <!-- Breadcrumb-->
+    <div class="breadcrumb-dn mr-auto">
+        <p><?php echo $title; ?></p>
+    </div>
 </nav>
 <!-- Navbar -->

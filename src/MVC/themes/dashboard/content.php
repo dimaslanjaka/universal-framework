@@ -23,29 +23,30 @@ if (!isset($share)) {
   $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
-  e([
-    'error' => true,
-    'message' => 'framework environtment doesnt exists',
-    'current' => __FILE__
-  ]);
+    e([
+        'error' => true,
+        'message' => 'framework environtment doesnt exists',
+        'current' => __FILE__,
+    ]);
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="full-height" manifest="" environtment="<?= ENVIRONMENT ?>" cache="<?= CONFIG['cache']['key'] ?>">
+<html lang="en" class="full-height" manifest="" environtment="<?php echo ENVIRONMENT; ?>"
+      cache="<?php echo CONFIG['cache']['key']; ?>">
 
 <head>
-  <?php
-  include __DIR__ . '/meta.php';
-  ?>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/assets/css/all.min.css">
-  <!-- Bootstrap core CSS -->
-  <link href="<?= get_urlpath(__DIR__ . '/core/css/bootstrap.min.css'); ?>" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="<?= get_urlpath(__DIR__ . '/core/css/mdb.min.css'); ?>" rel="stylesheet">
-  <!-- Your custom styles (optional) -->
-  <link rel="stylesheet" href="<?= get_urlpath(__DIR__ . '/css/style.min.css'); ?>">
-  <link href="<?= get_urlpath(__DIR__ . '/core/css/style.min.css'); ?>" rel="stylesheet">
+    <?php
+    include __DIR__ . '/meta.php';
+    ?>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/all.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="<?php echo get_urlpath(__DIR__ . '/core/css/bootstrap.min.css'); ?>" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="<?php echo get_urlpath(__DIR__ . '/core/css/mdb.min.css'); ?>" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="<?php echo get_urlpath(__DIR__ . '/css/style.min.css'); ?>">
+    <link href="<?php echo get_urlpath(__DIR__ . '/core/css/style.min.css'); ?>" rel="stylesheet">
 </head>
 
 <?php include __DIR__ . '/body.php'; ?>

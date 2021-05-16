@@ -5,7 +5,8 @@ namespace Proxy;
 $GLOBALS['proxy_loaded'] = null;
 
 /**
- * Integrate proxies into database
+ * Integrate proxies into database.
+ *
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
 class db
@@ -37,21 +38,21 @@ class db
   {
   }
 
-  /**
-   * Get All Inactive Proxies
-   *
-   * @return array|null
-   */
+    /**
+     * Get All Inactive Proxies.
+     *
+     * @return array|null
+     */
   public function inactive_proxies()
   {
     return $this->pdo->query("SELECT * FROM `proxies` WHERE `status` = 'inactive'")->row_array();
   }
 
-  /**
-   * Load proxies from database
-   *
-   * @return array|null
-   */
+    /**
+     * Load proxies from database.
+     *
+     * @return array|null
+     */
   public function load_proxies_db()
   {
     $proxies = $this->pdo

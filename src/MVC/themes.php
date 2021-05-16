@@ -43,17 +43,17 @@ class themes
     $this->meta = [
       'published' => date('m/j/y g:i A'),
       'modified' => date('m/j/y g:i A'),
-      'thumbnail' => 'https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg',
-      'theme' => true,
-      'title' => $_SERVER['REQUEST_URI'],
-      'share' => false,
-      'desc' => '',
-      'content' => null,
-      'robot' => 'noindex, nofollow',
-      'obfuscate' => false,
-      'cache' => false,
-      'label' => 'default',
-      'meta_config' => $this->config
+        'thumbnail' => 'https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg',
+        'theme' => true,
+        'title' => $_SERVER['REQUEST_URI'],
+        'share' => false,
+        'desc' => '',
+        'content' => null,
+        'robot' => 'noindex, nofollow',
+        'obfuscate' => false,
+        'cache' => false,
+        'label' => 'default',
+        'meta_config' => $this->config,
     ];
 
     $this->root = realpath(__DIR__ . '/../../');
@@ -140,6 +140,7 @@ class themes
   {
     $this->theme = $theme;
     $this->root_theme = helper::platformSlashes($this->root_theme . '/' . $theme);
+
     return $this;
   }
 
@@ -199,17 +200,17 @@ class themes
     return $this;
   }
 
-  /**
-   * Remove root path
-   */
+    /**
+     * Remove root path.
+     */
   public function remove_root($path)
   {
     return str_replace($this->root, '', $path);
   }
 
-  /**
-   * Transform to linux separated file
-   */
+    /**
+     * Transform to linux separated file.
+     */
   public function fix_slash($path)
   {
     return preg_replace('/(\/|\\\\){2,100}/m', '/', $path);
@@ -389,16 +390,16 @@ class themes
     }
   }
 
-  /**
-   * Load admin tools
-   */
-  /*
-  public function load_admin_tools()
-  {
-    if ($this->is_admin()) {
-      $Config = normalize_path(realpath($this->config));
-      include __DIR__ . '/themes/admin.php';
+    /*
+     * Load admin tools
+     */
+    /*
+    public function load_admin_tools()
+    {
+      if ($this->is_admin()) {
+        $Config = normalize_path(realpath($this->config));
+        include __DIR__ . '/themes/admin.php';
+      }
     }
-  }
-  */
+    */
 }

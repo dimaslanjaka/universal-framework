@@ -37,6 +37,7 @@ class user extends \User\user
     if (isset($meta['value'])) {
       return $meta['value'];
     }
-    return [];
+
+      return [];
   }
 }

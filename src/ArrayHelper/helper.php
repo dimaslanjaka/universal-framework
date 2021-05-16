@@ -14,9 +14,6 @@ class helper
    * Unset multiple keys in array.
    *
    * @todo Remove all defined keys in array
-   *
-   * @param array $source
-   * @param array $keys
    */
   public static function unset(array $source, array $keys)
   {
@@ -59,24 +56,22 @@ class helper
     return $result;
   }
 
-  static function recursive_array_search($needle, $haystack)
+  public static function recursive_array_search($needle, $haystack)
   {
-    foreach ($haystack as $key => $value) {
-      $current_key = $key;
-      if ($needle === $value or (is_array($value) && self::recursive_array_search($needle, $value) !== false)) {
-        return $current_key;
+      foreach ($haystack as $key => $value) {
+          $current_key = $key;
+          if ($needle === $value or (is_array($value) && false !== self::recursive_array_search($needle, $value))) {
+              return $current_key;
+          }
       }
-    }
-    return false;
+
+      return false;
   }
 
   /**
    * Check array has All properties.
    *
    * @todo check all keys in array
-   *
-   * @param array $array
-   * @param array $key
    *
    * @return bool
    */
@@ -177,8 +172,6 @@ class helper
   /**
    * Is Associative array.
    *
-   * @param array $source
-   *
    * @return bool
    */
   public static function isAssoc(array $source)
@@ -193,8 +186,6 @@ class helper
   /**
    * Is Sequental array.
    *
-   * @param array $source
-   *
    * @return bool
    */
   public static function isSequent(array $source)
@@ -202,12 +193,13 @@ class helper
     return !self::isAssoc($source);
   }
 
-  /**
-   * IS array or object
-   *
-   * @param array|object $objarr
-   * @return boolean
-   */
+    /**
+     * IS array or object.
+     *
+     * @param array|object $objarr
+     *
+     * @return bool
+     */
   public static function is_iterable($objarr)
   {
     return is_array($objarr) || is_object($objarr);

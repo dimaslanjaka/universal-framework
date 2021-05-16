@@ -29,7 +29,7 @@ class element
   }
 
   /**
-   * Array to element
+   * Array to element.
    *
    * @return \HTML\array2element
    */

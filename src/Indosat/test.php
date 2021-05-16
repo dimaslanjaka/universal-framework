@@ -1,3 +1,7 @@
 <?php
+
 namespace Indosat;
-class test {}
+
+class test
+{
+}

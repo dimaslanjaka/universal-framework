@@ -1,53 +1,51 @@
 <?php
 /**
- * StringScrambler.php
+ * StringScrambler.php.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      Scrambler
  */
 
 namespace Naneau\Obfuscator;
 
 /**
- * StringScrambler
+ * StringScrambler.
  *
  * Scrambles strings
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      Scrambler
  */
 class StringScrambler
 {
     /**
-     * Salt
+     * Salt.
      *
      * @return void
      **/
     private $salt;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param  string $salt optional salt, when left empty (null) semi-random value will be generated
+     * @param string $salt optional salt, when left empty (null) semi-random value will be generated
+     *
      * @return void
      **/
     public function __construct($salt = null)
     {
-        if ($salt === null) {
+        if (null === $salt) {
             $this->setSalt(
-                md5(microtime(true) . rand(0,1))
+                md5(microtime(true) . rand(0, 1))
             );
-        } else { 
-            $this->setSalt($salt); 
+        } else {
+            $this->setSalt($salt);
         }
     }
 
     /**
-     * Scramble a string
+     * Scramble a string.
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      **/
     public function scramble($string)
@@ -56,7 +54,7 @@ class StringScrambler
     }
 
     /**
-     * Get the salt
+     * Get the salt.
      *
      * @return string
      */
@@ -66,9 +64,10 @@ class StringScrambler
     }
 
     /**
-     * Set the salt
+     * Set the salt.
      *
-     * @param  string          $salt
+     * @param string $salt
+     *
      * @return StringScrambler
      */
     public function setSalt($salt)

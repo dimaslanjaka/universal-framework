@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Minify HTML
+ * Minify HTML.
  *
- * @param string $ori
  * @return string
  */
 function htmlmin(string $ori)
@@ -15,10 +14,12 @@ function htmlmin(string $ori)
 
   return $between_tags;
 }
+
 /**
- * Minify inline css from buffer
+ * Minify inline css from buffer.
  *
  * @param string $css
+ *
  * @return string
  */
 function mincss($css)
@@ -42,9 +43,8 @@ function mincss($css)
 // pretext filter and syntax highlighter
 $syntaxHighlighter = null;
 /**
- * Fix <pre/> syntax highlight
+ * Fix <pre/> syntax highlight.
  *
- * @param string $c
  * @return string
  */
 function prefilter(string $c)

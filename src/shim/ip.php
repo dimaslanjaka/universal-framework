@@ -1,9 +1,11 @@
 <?php
 
 /**
- * Detect is localhost
+ * Detect is localhost.
+ *
  * @see https://web-manajemen.blogspot.com/2020/10/php-detect-user-client-ip-xampp-or.html
- * @return boolean
+ *
+ * @return bool
  */
 function isLocalHost()
 {
@@ -16,8 +18,10 @@ function isLocalHost()
 }
 
 /**
- * Get client ip, when getenv supported (maybe cli)
+ * Get client ip, when getenv supported (maybe cli).
+ *
  * @see https://web-manajemen.blogspot.com/2020/10/php-detect-user-client-ip-xampp-or.html
+ *
  * @return string
  */
 function get_client_ip()
@@ -40,9 +44,9 @@ function get_client_ip()
     } elseif (getenv('REMOTE_ADDR')) {
       $ipaddress = $ipaddress = getenv('REMOTE_ADDR');
     } else {
-      /**
-       * Return to method 2
-       */
+        /**
+         * Return to method 2.
+         */
       $ipaddress = get_client_ip2();
     }
   }
@@ -51,8 +55,10 @@ function get_client_ip()
 }
 
 /**
- * Get client ip, when running on webserver
+ * Get client ip, when running on webserver.
+ *
  * @see https://web-manajemen.blogspot.com/2020/10/php-detect-user-client-ip-xampp-or.html
+ *
  * @return void
  */
 function get_client_ip2()
@@ -82,8 +88,10 @@ function get_client_ip2()
 }
 
 /**
- * Get localhost ip
+ * Get localhost ip.
+ *
  * @see https://web-manajemen.blogspot.com/2020/10/php-detect-user-client-ip-xampp-or.html
+ *
  * @return string
  */
 function getLocalIp()

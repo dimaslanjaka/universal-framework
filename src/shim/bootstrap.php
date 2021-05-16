@@ -176,9 +176,10 @@ function pre()
 }
 
 /**
- * Create <pre/> element from arguments
+ * Create <pre/> element from arguments.
  *
  * @param mixed $obj
+ *
  * @return void
  */
 function pretext($obj)
@@ -434,10 +435,8 @@ function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
 }
 
 /**
- * Resolve file. (create if not exists)
+ * Resolve file. (create if not exists).
  *
- * @param string $file
- * @param string $content
  * @return string
  */
 function resolve_file(string $file, string $content = '')

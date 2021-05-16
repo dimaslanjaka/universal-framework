@@ -1,30 +1,22 @@
 <?php
 /**
- * ScramblePrivateMethod.php
+ * ScramblePrivateMethod.php.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 
 namespace Naneau\Obfuscator\Node\Visitor;
 
-use Naneau\Obfuscator\Node\Visitor\TrackingRenamerTrait;
-use Naneau\Obfuscator\Node\Visitor\SkipTrait;
-
 use Naneau\Obfuscator\Node\Visitor\Scrambler as ScramblerVisitor;
-use Naneau\Obfuscator\StringScrambler;
-
 use PhpParser\Node;
-
-use PhpParser\Node\Stmt\Class_ as ClassNode;
-use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Stmt\Class_ as ClassNode;
+use PhpParser\Node\Stmt\ClassMethod;
 
 /**
- * ScramblePrivateMethod
+ * ScramblePrivateMethod.
  *
  * Renames private methods
  *
@@ -37,8 +29,6 @@ use PhpParser\Node\Expr\Variable;
  * renamed private methods, this visitor will rename it.
  *
  * @category        Naneau
- * @package         Obfuscator
- * @subpackage      NodeVisitor
  */
 class ScramblePrivateMethod extends ScramblerVisitor
 {
@@ -46,9 +36,10 @@ class ScramblePrivateMethod extends ScramblerVisitor
     use SkipTrait;
 
     /**
-     * Before node traversal
+     * Before node traversal.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return array
      **/
     public function beforeTraverse(array $nodes)
@@ -63,9 +54,8 @@ class ScramblePrivateMethod extends ScramblerVisitor
     }
 
     /**
-     * Check all variable nodes
+     * Check all variable nodes.
      *
-     * @param  Node $node
      * @return void
      **/
     public function enterNode(Node $node)
@@ -76,7 +66,6 @@ class ScramblePrivateMethod extends ScramblerVisitor
 
         // Scramble calls
         if ($node instanceof MethodCall || $node instanceof StaticCall) {
-
             // Node wasn't renamed
             if (!$this->isRenamed($node->name)) {
                 return;
@@ -88,9 +77,10 @@ class ScramblePrivateMethod extends ScramblerVisitor
     }
 
     /**
-     * Recursively scan for method calls and see if variables are used
+     * Recursively scan for method calls and see if variables are used.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return void
      **/
     private function variableMethodCallsUsed(array $nodes)
@@ -115,9 +105,10 @@ class ScramblePrivateMethod extends ScramblerVisitor
     }
 
     /**
-     * Recursively scan for private method definitions and rename them
+     * Recursively scan for private method definitions and rename them.
      *
-     * @param  Node[] $nodes
+     * @param Node[] $nodes
+     *
      * @return void
      **/
     private function scanMethodDefinitions(array $nodes)
@@ -125,7 +116,6 @@ class ScramblePrivateMethod extends ScramblerVisitor
         foreach ($nodes as $node) {
             // Scramble the private method definitions
             if ($node instanceof ClassMethod && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
-
                 // Record original name and scramble it
                 $originalName = $node->name;
                 $this->scramble($node);

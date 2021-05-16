@@ -169,28 +169,28 @@ if (!isset($share)) {
   <!-- Intro -->
   <div class="card card-intro blue-gradient">
 
-    <div class="card-body white-text rgba-black-light text-center">
+      <div class="card-body white-text rgba-black-light text-center">
 
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center">
+          <!--Grid row-->
+          <div class="row d-flex justify-content-center">
 
-        <!--Grid column-->
-        <div class="col-md-6 wow fadeIn">
+              <!--Grid column-->
+              <div class="col-md-6 wow fadeIn">
 
-          <h1 class="font-weight-bold mb-3 h2"><?= $title; ?>
-          </h1>
+                  <h1 class="font-weight-bold mb-3 h2"><?php echo $title; ?>
+                  </h1>
 
-          <h4 class="mb-2 h5">
-            <?= $desc; ?>
-          </h4>
+                  <h4 class="mb-2 h5">
+                      <?php echo $desc; ?>
+                  </h4>
 
-        </div>
-        <!--Grid column-->
+              </div>
+              <!--Grid column-->
+
+          </div>
+          <!--Grid row-->
 
       </div>
-      <!--Grid row-->
-
-    </div>
 
   </div>
 

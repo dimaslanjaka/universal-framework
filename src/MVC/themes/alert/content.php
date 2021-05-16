@@ -8,22 +8,26 @@ if (!headers_sent()) {
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-  <meta name="apple-mobile-web-app-title" content="CodePen">
-  <link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-  <link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
-  <title><?= $title; ?></title>
-  <script src="https://use.fontawesome.com/faba194bed.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-  <style>
-    @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i,600,700");
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" type="image/png"
+          href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png"/>
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+    <link rel="shortcut icon" type="image/x-icon"
+          href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico"/>
+    <link rel="mask-icon" type=""
+          href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg"
+          color="#111"/>
+    <title><?php echo $title; ?></title>
+    <script src="https://use.fontawesome.com/faba194bed.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,400i,600,700");
 
-    *,
-    :after,
-    :before {
-      box-sizing: border-box;
-      word-wrap: break-word;
+        *,
+        :after,
+        :before {
+            box-sizing: border-box;
+            word-wrap: break-word;
     }
 
     html,
@@ -447,26 +451,26 @@ if (!headers_sent()) {
   <script>
     window.console = window.console || function(t) {};
   </script>
-  <script>
-    if (document.location.search.match(/type=embed/gi)) {
-      window.parent.postMessage("resize", "*");
-    }
-  </script>
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
 </head>
 
 <body translate="no">
-  <section class="section alert-section">
-    <h2 class="title"><?= $title; ?></h2>
+<section class="section alert-section">
+    <h2 class="title"><?php echo $title; ?></h2>
     <div class="alert alert-custom d-none">
-      <div class="alert-container">
-        <div class="alert-icon">
-          <i class="fa fa-warning"></i>
+        <div class="alert-container">
+            <div class="alert-icon">
+                <i class="fa fa-warning"></i>
+            </div>
+            <button type="button" class="close-icon" data-dismiss="alert" aria-label="Close">
+                <span>clear</span>
+            </button>
+            <b class="alert-info">Custom alert:</b> You've got some error prepare for it...
         </div>
-        <button type="button" class="close-icon" data-dismiss="alert" aria-label="Close">
-          <span>clear</span>
-        </button>
-        <b class="alert-info">Custom alert:</b> You've got some error prepare for it...
-      </div>
     </div>
     <div class="alert alert-info d-none">
       <div class="alert-container">
@@ -504,17 +508,17 @@ if (!headers_sent()) {
       </div>
     </div>
     <div class="alert alert-danger">
-      <div class="alert-container">
-        <div class="alert-icon">
-          <i class="fa fa-info-circle"></i>
+        <div class="alert-container">
+            <div class="alert-icon">
+                <i class="fa fa-info-circle"></i>
+            </div>
+            <button type="button" class="close-icon" data-dismiss="alert" aria-label="Close">
+                <span>clear</span>
+            </button>
+            <b class="alert-info"><?php echo $title; ?>:</b> <?php echo $desc; ?>
         </div>
-        <button type="button" class="close-icon" data-dismiss="alert" aria-label="Close">
-          <span>clear</span>
-        </button>
-        <b class="alert-info"><?= $title; ?>:</b> <?= $desc; ?>
-      </div>
     </div>
-  </section>
+</section>
 </body>
 
 </html>

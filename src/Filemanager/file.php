@@ -3,7 +3,6 @@
 namespace Filemanager;
 
 use JSON\json;
-use MVC\Exception;
 
 class file
 {
@@ -25,13 +24,12 @@ class file
    * Flush directory.
    *
    * @todo empty the directory, deleting all files except directory
-   *
-   * @param string $dir
    */
   public static function empty(string $dir)
   {
     if (!file_exists($dir)) {
       \MVC\alert::init()->error('empty folder', $dir . ' not exists');
+
       return;
     }
     $subdir = new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS);
@@ -104,11 +102,10 @@ class file
   /**
    * Create file nested.
    *
-   * @param string $path
-   * @param bool   $create content
-   * @param bool   $force
-   * @param bool   $append
-   * @param bool   $dump
+   * @param bool $create content
+   * @param bool $force
+   * @param bool $append
+   * @param bool $dump
    *
    * @return string
    */
@@ -139,13 +136,14 @@ class file
     //return $fm->_file_($path, $create, $force, $append, $dump);
   }
 
-  public static function write($path, $content = "", $append = false)
-  {
-    if (is_object($content) || is_array($content)) {
-      $content = \JSON\json::json($content, false);
+    public static function write($path, $content = '', $append = false)
+    {
+        if (is_object($content) || is_array($content)) {
+            $content = \JSON\json::json($content, false);
+        }
+
+        return self::file($path, $content, true, $append, false);
     }
-    return self::file($path, $content, true, $append, false);
-  }
 
   public function determineContent($create)
   {
@@ -392,11 +390,11 @@ class file
               if (is_dir($file)) {
                 continue;
               }
-              unlink($dir . $file) or die("couldn't delete $dir$file<br />");
+                unlink($dir . $file) or exit("couldn't delete $dir$file<br />");
             }
           }
         } else {
-          unlink($dir . $file) or die("couldn't delete $dir$file<br />");
+            unlink($dir . $file) or exit("couldn't delete $dir$file<br />");
         }
       }
     }
