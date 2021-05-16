@@ -10,4 +10,4 @@ CREATE TABLE `proxies` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `proxy_port` (`proxy`),
   UNIQUE KEY `ip` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=957 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

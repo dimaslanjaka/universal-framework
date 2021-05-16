@@ -11,5 +11,4 @@ CREATE TABLE `userdata` (
   `last_seen` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COMMENT='User Profile and login information';
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='User Profile and login information';
