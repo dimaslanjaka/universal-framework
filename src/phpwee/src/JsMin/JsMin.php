@@ -75,6 +75,14 @@ class JSMin
     protected $keptComment = '';
 
     /**
+     * @param string $input
+     */
+    public function __construct($input)
+    {
+        $this->input = $input;
+    }
+
+    /**
      * Minify Javascript.
      *
      * @param string $js Javascript to be minified
@@ -86,14 +94,6 @@ class JSMin
         $jsmin = new JSMin($js);
 
         return $jsmin->min();
-    }
-
-    /**
-     * @param string $input
-     */
-    public function __construct($input)
-    {
-        $this->input = $input;
     }
 
     /**
@@ -270,45 +270,6 @@ class JSMin
     }
 
     /**
-     * @return bool
-     */
-    protected function isRegexpLiteral()
-    {
-        if (false !== strpos('(,=:[!&|?+-~*{;', $this->a)) {
-            // we obviously aren't dividing
-            return true;
-        }
-
-        // we have to check for a preceding keyword, and we don't need to pattern
-        // match over the whole output.
-        $recentOutput = substr($this->output, -10);
-
-        // check if return/typeof directly precede a pattern without a space
-        foreach (['return', 'typeof'] as $keyword) {
-            if ($this->a !== substr($keyword, -1)) {
-                // certainly wasn't keyword
-                continue;
-            }
-            if (preg_match('~(^|[\\s\\S])' . substr($keyword, 0, -1) . '$~', $recentOutput, $m)) {
-                if ('' === $m[1] || !$this->isAlphaNum($m[1])) {
-                    return true;
-                }
-            }
-        }
-
-        // check all keywords
-        if (' ' === $this->a || "\n" === $this->a) {
-            if (preg_match('~(^|[\\s\\S])(?:case|else|in|return|typeof)$~', $recentOutput, $m)) {
-                if ('' === $m[1] || !$this->isAlphaNum($m[1])) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Return the next character from stdin. Watch out for lookahead. If the character is a control character,
      * translate it to a space or linefeed.
      *
@@ -350,6 +311,30 @@ class JSMin
     }
 
     /**
+     * Get the next character, skipping over comments. Some comments may be preserved.
+     *
+     * @return string
+     */
+    protected function next()
+    {
+        $get = $this->get();
+        if ('/' === $get) {
+            switch ($this->peek()) {
+                case '/':
+                    $this->consumeSingleLineComment();
+                    $get = "\n";
+                    break;
+                case '*':
+                    $this->consumeMultipleLineComment();
+                    $get = ' ';
+                    break;
+            }
+        }
+
+        return $get;
+    }
+
+    /**
      * Get next char (without getting it). If is ctrl character, translate to a space or newline.
      *
      * @return string
@@ -359,18 +344,6 @@ class JSMin
         $this->lookAhead = $this->get();
 
         return $this->lookAhead;
-    }
-
-    /**
-     * Return true if the character is a letter, digit, underscore, dollar sign, or non-ASCII character.
-     *
-     * @param string $c
-     *
-     * @return bool
-     */
-    protected function isAlphaNum($c)
-    {
-        return preg_match('/^[a-z0-9A-Z_\\$\\\\]$/', $c) || ord($c) > 126;
     }
 
     /**
@@ -429,27 +402,54 @@ class JSMin
     }
 
     /**
-     * Get the next character, skipping over comments. Some comments may be preserved.
-     *
-     * @return string
+     * @return bool
      */
-    protected function next()
+    protected function isRegexpLiteral()
     {
-        $get = $this->get();
-        if ('/' === $get) {
-            switch ($this->peek()) {
-                case '/':
-                    $this->consumeSingleLineComment();
-                    $get = "\n";
-                    break;
-                case '*':
-                    $this->consumeMultipleLineComment();
-                    $get = ' ';
-                    break;
+        if (false !== strpos('(,=:[!&|?+-~*{;', $this->a)) {
+            // we obviously aren't dividing
+            return true;
+        }
+
+        // we have to check for a preceding keyword, and we don't need to pattern
+        // match over the whole output.
+        $recentOutput = substr($this->output, -10);
+
+        // check if return/typeof directly precede a pattern without a space
+        foreach (['return', 'typeof'] as $keyword) {
+            if ($this->a !== substr($keyword, -1)) {
+                // certainly wasn't keyword
+                continue;
+            }
+            if (preg_match('~(^|[\\s\\S])' . substr($keyword, 0, -1) . '$~', $recentOutput, $m)) {
+                if ('' === $m[1] || !$this->isAlphaNum($m[1])) {
+                    return true;
+                }
             }
         }
 
-        return $get;
+        // check all keywords
+        if (' ' === $this->a || "\n" === $this->a) {
+            if (preg_match('~(^|[\\s\\S])(?:case|else|in|return|typeof)$~', $recentOutput, $m)) {
+                if ('' === $m[1] || !$this->isAlphaNum($m[1])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return true if the character is a letter, digit, underscore, dollar sign, or non-ASCII character.
+     *
+     * @param string $c
+     *
+     * @return bool
+     */
+    protected function isAlphaNum($c)
+    {
+        return preg_match('/^[a-z0-9A-Z_\\$\\\\]$/', $c) || ord($c) > 126;
     }
 }
 

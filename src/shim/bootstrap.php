@@ -1,13 +1,15 @@
 <?php
 
+use JSON\json;
+
 /**
  * Include file if exists.
  *
  * @return include|false
  */
-function inc(string $file)
+function inc($file)
 {
-  return file_exists($file) ? include $file : false;
+    return file_exists($file) ? include $file : false;
 }
 
 /**
@@ -17,16 +19,16 @@ function inc(string $file)
  */
 function sort_iterable(array $arrayObj)
 {
-  $arrayObj = array_map(function ($object) {
-    if (\ArrayHelper\helper::is_iterable($object)) {
-      $object = sort_iterable($object);
-    }
+    $arrayObj = array_map(function ($object) {
+        if (\ArrayHelper\helper::is_iterable($object)) {
+            $object = sort_iterable($object);
+        }
 
-    return $object;
-  }, $arrayObj);
-  ksort($arrayObj);
+        return $object;
+    }, $arrayObj);
+    ksort($arrayObj);
 
-  return $arrayObj;
+    return $arrayObj;
 }
 
 /**
@@ -36,14 +38,14 @@ function sort_iterable(array $arrayObj)
  */
 function ev()
 {
-  $args = func_get_args();
-  if (1 == count($args)) {
-    $args = $args[0];
-  }
-  if (!headers_sent()) {
-    header('Content-Type: text/plain; charset=utf-8');
-  }
-  exit(var_dump($args));
+    $args = func_get_args();
+    if (1 == count($args)) {
+        $args = $args[0];
+    }
+    if (!headers_sent()) {
+        header('Content-Type: text/plain; charset=utf-8');
+    }
+    exit(var_dump($args));
 }
 
 /**
@@ -53,15 +55,15 @@ function ev()
  */
 function vd()
 {
-  $args = func_get_args();
-  if (1 == count($args)) {
-    $args = $args[0];
-  }
-  if (ob_get_level()) {
-    ob_end_clean();
-  }
-  var_dump($args);
-  exit;
+    $args = func_get_args();
+    if (1 == count($args)) {
+        $args = $args[0];
+    }
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+    var_dump($args);
+    exit;
 }
 
 /**
@@ -73,8 +75,8 @@ function vd()
  */
 function evj(...$a)
 {
-  \JSON\json::json($a);
-  exit;
+    json::json($a);
+    exit;
 }
 
 /**
@@ -82,9 +84,9 @@ function evj(...$a)
  *
  * @param int $length default 5
  */
-function uid(int $length = 5)
+function uid($length = 5)
 {
-  return bin2hex(openssl_random_pseudo_bytes($length / 2));
+    return bin2hex(openssl_random_pseudo_bytes($length / 2));
 }
 
 /**
@@ -96,9 +98,9 @@ function uid(int $length = 5)
  */
 function clean_string($string)
 {
-  $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
-  return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+    return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
 
 /**
@@ -108,52 +110,52 @@ function clean_string($string)
  */
 function get_urlpath($locations)
 {
-  /**
-   * @var string|null $get
-   */
-  $get = function (string $location) {
-    if (file_exists($location)) {
-      return \MVC\helper::get_url_path($location, true);
+    /**
+     * @var string|null $get
+     */
+    $get = function ($location) {
+        if (file_exists($location)) {
+            return \MVC\helper::get_url_path($location, true);
+        }
+
+        return null;
+    };
+    if (is_string($locations)) {
+        return $get($locations);
+    } elseif (\ArrayHelper\helper::is_iterable($locations)) {
+        foreach ($locations as $location) {
+            $result = $get($location);
+            if ($result) {
+                return $result;
+                break;
+            }
+        }
     }
 
     return null;
-  };
-  if (is_string($locations)) {
-    return $get($locations);
-  } elseif (\ArrayHelper\helper::is_iterable($locations)) {
-    foreach ($locations as $location) {
-      $result = $get($location);
-      if ($result) {
-        return $result;
-        break;
-      }
-    }
-  }
-
-  return null;
 }
 
 /**
  * Include asset with fallback and callback.
  * * if found automatically call include().
  *
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- *
- * @param string        $fn       first file to check
- * @param string        $fn2      fallback file to check
+ * @param string $fn first file to check
+ * @param string $fn2 fallback file to check
  * @param function|null $callback if not exists both, shoul we calling the callback
  *
  * @return void always void
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ *
  */
 function include_asset($fn, $fn2 = null, $callback = null)
 {
-  if (file_exists($fn)) {
-    include $fn;
-  } elseif ($fn2 && file_exists($fn2)) {
-    include $fn2;
-  } elseif (is_callable($callback)) {
-    call_user_func($callback, $fn);
-  }
+    if (file_exists($fn)) {
+        include $fn;
+    } elseif ($fn2 && file_exists($fn2)) {
+        include $fn2;
+    } elseif (is_callable($callback)) {
+        call_user_func($callback, $fn);
+    }
 }
 
 /**
@@ -163,16 +165,16 @@ function include_asset($fn, $fn2 = null, $callback = null)
  */
 function pre()
 {
-  $obj = func_get_args();
-  echo '<pre style="word-wrap: break-word;">';
-  if (count($obj) > 1) {
-    foreach ($obj as $objek) {
-      \JSON\json::json($objek, false, true);
+    $obj = func_get_args();
+    echo '<pre style="word-wrap: break-word;">';
+    if (count($obj) > 1) {
+        foreach ($obj as $objek) {
+            json::json($objek, false, true);
+        }
+    } else {
+        json::json($obj[0], false, true);
     }
-  } else {
-    \JSON\json::json($obj[0], false, true);
-  }
-  echo '</pre>';
+    echo '</pre>';
 }
 
 /**
@@ -184,19 +186,19 @@ function pre()
  */
 function pretext($obj)
 {
-  echo '<pre style="word-wrap: break-word;">';
-  if (is_countable($obj)) {
-    if (count($obj) > 1) {
-      foreach ($obj as $objek) {
-        \JSON\json::json($objek, false, true);
-      }
+    echo '<pre style="word-wrap: break-word;">';
+    if (is_countable($obj)) {
+        if (count($obj) > 1) {
+            foreach ($obj as $objek) {
+                json::json($objek, false, true);
+            }
+        } else {
+            json::json($obj[0], false, true);
+        }
     } else {
-      \JSON\json::json($obj[0], false, true);
+        json::json($obj, false, true);
     }
-  } else {
-    \JSON\json::json($obj, false, true);
-  }
-  echo '</pre>';
+    echo '</pre>';
 }
 
 /**
@@ -206,138 +208,136 @@ function pretext($obj)
  */
 function predump()
 {
-  $obj = func_get_args();
-  echo '<pre style="word-wrap: break-word;">';
-  if (count($obj) > 1) {
-    foreach ($obj as $objek) {
-      var_dump($objek);
+    $obj = func_get_args();
+    echo '<pre style="word-wrap: break-word;">';
+    if (count($obj) > 1) {
+        foreach ($obj as $objek) {
+            var_dump($objek);
+        }
+    } else {
+        var_dump($obj[0]);
     }
-  } else {
-    var_dump($obj[0]);
-  }
-  echo '</pre>';
+    echo '</pre>';
 }
 
 /**
  * Exit JSON.
  *
- * @param mixed $result
- *
  * @return void
  */
 function e()
 {
-  $results = func_get_args();
-  if (count($results) > 1) {
-    foreach ($results as $check) {
-      if (is_string($check) && \JSON\json::is_json($check)) {
-        $check = json_decode($check);
-      }
+    $results = func_get_args();
+    if (count($results) > 1) {
+        foreach ($results as $check) {
+            if (is_string($check) && json::is_json($check)) {
+                $check = json_decode($check);
+            }
+        }
+    } else {
+        $results = $results[0];
     }
-  } else {
-    $results = $results[0];
-  }
-  \JSON\json::json($results);
-  exit;
+    json::json($results);
+    exit;
 }
 
 if (!function_exists('is_json')) {
-  /**
-   * Check is json string.
-   *
-   * @return bool
-   */
-  function is_json(string $string)
-  {
-    return \JSON\json::is_json($string);
-  }
+    /**
+     * Check is json string.
+     *
+     * @return bool
+     */
+    function is_json($string)
+    {
+        return json::is_json($string);
+    }
 }
 
 /**
  * Header redirect.
  */
-function redirect(string $url, bool $exit = true)
+function redirect($url, $exit = true)
 {
-  header("Location: $url");
-  if ($exit) {
-    exit;
-  }
+    header("Location: $url");
+    if ($exit) {
+        exit;
+    }
 }
 
 /**
  * Header redirect advance.
  */
-function safe_redirect(string $url, bool $exit = true)
+function safe_redirect($url, $exit = true)
 {
-  if (!headers_sent()) {
-    return redirect($url, $exit);
-  } else {
-    echo '<script>location.href = `' . $url . '`;</script>';
-  }
-  if ($exit) {
-    exit;
-  }
+    if (!headers_sent()) {
+        return redirect($url, $exit);
+    } else {
+        echo '<script>location.href = `' . $url . '`;</script>';
+    }
+    if ($exit) {
+        exit;
+    }
 }
 
 /**
  * Get latest file from folder.
  *
- * @param array $path             Folder path array list
- * @param bool  $return_timestamp false return filename
+ * @param array $path Folder path array list
+ * @param bool $return_timestamp false return filename
  *                                ```php
  *                                latestFile([__DIR__ . '/src/MVC/', __DIR__ . '/libs/', __DIR__ . '/views/'])
  *                                ```
  */
-function latestFile(array $path, bool $return_timestamp = true)
+function latestFile(array $path, $return_timestamp = true)
 {
-  $timestamp = 0;
-  $file = '';
+    $timestamp = 0;
+    $file = '';
 
-  foreach ($path as $str_path) {
-    if (!is_dir($str_path)) {
-      continue;
+    foreach ($path as $str_path) {
+        if (!is_dir($str_path)) {
+            continue;
+        }
+        $cls_rii = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($str_path),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        $ary_files = [];
+
+        foreach ($cls_rii as $str_fullfilename => $cls_spl) {
+            if ($cls_spl->isFile()) {
+                $ary_files[] = $str_fullfilename;
+            }
+        }
+
+        $ary_files = array_combine(
+            $ary_files,
+            array_map('filemtime', $ary_files)
+        );
+
+        arsort($ary_files);
+        $time = $ary_files[key($ary_files)];
+        if ($time > $timestamp) {
+            $file = key($ary_files);
+            $timestamp = $time;
+        }
     }
-    $cls_rii = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($str_path),
-      \RecursiveIteratorIterator::CHILD_FIRST
-    );
-
-    $ary_files = [];
-
-    foreach ($cls_rii as $str_fullfilename => $cls_spl) {
-      if ($cls_spl->isFile()) {
-        $ary_files[] = $str_fullfilename;
-      }
+    if ($return_timestamp) {
+        return $timestamp;
+    } else {
+        return $file;
     }
-
-    $ary_files = array_combine(
-      $ary_files,
-      array_map('filemtime', $ary_files)
-    );
-
-    arsort($ary_files);
-    $time = $ary_files[key($ary_files)];
-    if ($time > $timestamp) {
-      $file = key($ary_files);
-      $timestamp = $time;
-    }
-  }
-  if ($return_timestamp) {
-    return $timestamp;
-  } else {
-    return $file;
-  }
-  //echo "file:" . $file . "\n";
-  //echo "time:" . $time;
+    //echo "file:" . $file . "\n";
+    //echo "time:" . $time;
 }
 
 /**
  * Disable direct access static php.
  */
-function disable_direct_access_php(string $file)
+function disable_direct_access_php($file)
 {
-  if (!file_exists(dirname($file) . '/.htaccess')) {
-    \Filemanager\file::file(dirname($file) . '/.htaccess', 'RewriteEngine On
+    if (!file_exists(dirname($file) . '/.htaccess')) {
+        \Filemanager\file::file(dirname($file) . '/.htaccess', 'RewriteEngine On
 		RewriteRule ^.*\.php$ - [F,L,NC]
 		<Files (file|class)\.php>
 		order allow,deny
@@ -345,7 +345,7 @@ function disable_direct_access_php(string $file)
 		allow from 127.0.0.1
 		allow from 192.168.0.1
 		</Files>', true);
-  }
+    }
 }
 
 /**
@@ -353,12 +353,12 @@ function disable_direct_access_php(string $file)
  *
  * @return string $dir
  */
-function resolve_dir(string $dir)
+function resolve_dir($dir)
 {
-  $dir = normalize_path($dir);
-  recursive_mkdir($dir);
+    $dir = normalize_path($dir);
+    recursive_mkdir($dir);
 
-  return $dir;
+    return $dir;
 }
 
 /**
@@ -368,17 +368,17 @@ function resolve_dir(string $dir)
  */
 function disable_buffering()
 {
-  // Turn off output buffering
-  ini_set('output_buffering', 'off');
-  // Turn off PHP output compression
-  ini_set('zlib.output_compression', false);
+    // Turn off output buffering
+    ini_set('output_buffering', 'off');
+    // Turn off PHP output compression
+    ini_set('zlib.output_compression', false);
 
-  //Flush (send) the output buffer and turn off output buffering
-  while (@ob_end_flush());
+    //Flush (send) the output buffer and turn off output buffering
+    while (@ob_end_flush()) ;
 
-  // Implicitly flush the buffer(s)
-  ini_set('implicit_flush', true);
-  ob_implicit_flush(true);
+    // Implicitly flush the buffer(s)
+    ini_set('implicit_flush', true);
+    ob_implicit_flush(true);
 }
 
 /**
@@ -386,16 +386,16 @@ function disable_buffering()
  *
  * @return ignore_user_abort|null
  */
-function disable_abort(bool $abort = false)
+function disable_abort($abort = false)
 {
-  if (function_exists('ignore_user_abort')) {
-    return ignore_user_abort($abort);
-  }
+    if (function_exists('ignore_user_abort')) {
+        return ignore_user_abort($abort);
+    }
 }
 
 function is_aborted()
 {
-  return CONNECTION_NORMAL != connection_status();
+    return CONNECTION_NORMAL != connection_status();
 }
 
 /**
@@ -403,35 +403,35 @@ function is_aborted()
  *
  * @return set_time_limit|null
  */
-function set_limit(int $secs = 0)
+function set_limit($secs = 0)
 {
-  if (function_exists('set_time_limit')) {
-    return set_time_limit($secs);
-  }
+    if (function_exists('set_time_limit')) {
+        return set_time_limit($secs);
+    }
 }
 
 /**
  * Create dir recursively.
  *
- * @param int  $permissions
+ * @param int $permissions
  * @param bool $recursive
  */
-function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
+function recursive_mkdir($dest, $permissions = 0755, $recursive = true)
 {
-  if (!is_dir(dirname($dest))) {
-    recursive_mkdir(dirname($dest), $permissions, $recursive);
-  }
-  if (!file_exists($dest)) {
-    try {
-      mkdir($dest, $permissions, $recursive);
-
-      return true;
-    } catch (\Throwable $th) {
-      return false;
+    if (!is_dir(dirname($dest))) {
+        recursive_mkdir(dirname($dest), $permissions, $recursive);
     }
-  } else {
-    return true;
-  }
+    if (!file_exists($dest)) {
+        try {
+            mkdir($dest, $permissions, $recursive);
+
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 /**
@@ -439,17 +439,17 @@ function recursive_mkdir(string $dest, $permissions = 0755, $recursive = true)
  *
  * @return string
  */
-function resolve_file(string $file, string $content = '')
+function resolve_file($file, $content = '')
 {
-  if (!is_dir(dirname($file))) {
-    resolve_dir(dirname($file));
-  }
+    if (!is_dir(dirname($file))) {
+        resolve_dir(dirname($file));
+    }
 
-  if (!file_exists($file)) {
-    file_put_contents($file, $content);
-  }
+    if (!file_exists($file)) {
+        file_put_contents($file, $content);
+    }
 
-  return $file;
+    return $file;
 }
 
 /**
@@ -457,27 +457,27 @@ function resolve_file(string $file, string $content = '')
  *
  * @return string
  */
-function normalize_path(string $path)
+function normalize_path($path)
 {
-  $path = str_replace('\\', '/', $path);
-  $path = preg_replace('|(?<=.)/+|', '/', $path);
-  $path = preg_replace('/\/{2,99}/s', '/', $path);
-  if (':' === substr($path, 1, 1)) {
-    $path = ucfirst($path);
-  }
+    $path = str_replace('\\', '/', $path);
+    $path = preg_replace('|(?<=.)/+|', '/', $path);
+    $path = preg_replace('/\/{2,99}/s', '/', $path);
+    if (':' === substr($path, 1, 1)) {
+        $path = ucfirst($path);
+    }
 
-  return $path;
+    return $path;
 }
 
 /**
  * Remove root from path.
  */
-function remove_root(string $path)
+function remove_root($path)
 {
-  $path = normalize_path($path);
-  $path = str_replace(normalize_path(ROOT), '', $path);
+    $path = normalize_path($path);
+    $path = str_replace(normalize_path(ROOT), '', $path);
 
-  return $path;
+    return $path;
 }
 
 /**
@@ -485,16 +485,16 @@ function remove_root(string $path)
  *
  * @return string|null
  */
-function shell(string $command)
+function shell($command)
 {
-  $output = null;
-  if (function_exists('shell_exec')) {
-    $output = shell_exec($command);
-  } elseif (function_exists('exec')) {
-    exec($command, $output);
-  }
+    $output = null;
+    if (function_exists('shell_exec')) {
+        $output = shell_exec($command);
+    } elseif (function_exists('exec')) {
+        exec($command, $output);
+    }
 
-  return \ArrayHelper\helper::is_iterable($output) ? \JSON\json::json($output, false, false) : $output;
+    return \ArrayHelper\helper::is_iterable($output) ? json::json($output, false, false) : $output;
 }
 
 /**
@@ -504,28 +504,28 @@ function shell(string $command)
  */
 function shell_check()
 {
-  if (function_exists('shell_exec')) {
-    return 'shell_exec';
-  } elseif (function_exists('exec')) {
-    return 'exec';
-  } else {
-    return null;
-  }
+    if (function_exists('shell_exec')) {
+        return 'shell_exec';
+    } elseif (function_exists('exec')) {
+        return 'exec';
+    } else {
+        return null;
+    }
 }
 
 function shell_required($callback)
 {
-  $result = [];
-  if ('string' != gettype(shell_check()) || !\MVC\helper::env('dev')) {
-    $result = ['error' => true, 'message' => 'Cannot execute command here environtment(' . \MVC\helper::env('dev') . ') command(' . gettype(shell_check()) . ')', 'title' => 'Cannot Access This Page'];
-  }
-  if (!empty($result)) {
-    if (headers_sent()) {
-      exit('<div class="alert alert-danger">
+    $result = [];
+    if ('string' != gettype(shell_check()) || !\MVC\helper::env('dev')) {
+        $result = ['error' => true, 'message' => 'Cannot execute command here environtment(' . \MVC\helper::env('dev') . ') command(' . gettype(shell_check()) . ')', 'title' => 'Cannot Access This Page'];
+    }
+    if (!empty($result)) {
+        if (headers_sent()) {
+            exit('<div class="alert alert-danger">
       <span class="alert-title"> ' . $result['title'] . ' </span>
       </div>');
+        }
     }
-  }
 }
 
 /**
@@ -535,63 +535,63 @@ function shell_required($callback)
  * ```
  * Read file contents.
  *
- * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
- *
  * @param mixed $callback if null not exist return this callback
  *
  * @return string|null NULL if not exists
+ * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
+ *
  */
-function read_file(string $path, $callback = null)
+function read_file($path, $callback = null)
 {
-  if (file_exists($path) && is_readable($path)) {
-    if (function_exists('file_get_contents')) {
-      return file_get_contents($path);
-    } else {
-      $handle = fopen($path, 'r');
-      $contents = fread($handle, filesize($path));
-      fclose($handle);
+    if (file_exists($path) && is_readable($path)) {
+        if (function_exists('file_get_contents')) {
+            return file_get_contents($path);
+        } else {
+            $handle = fopen($path, 'r');
+            $contents = fread($handle, filesize($path));
+            fclose($handle);
 
-      return $contents;
+            return $contents;
+        }
     }
-  }
-  if (is_callable($callback)) {
-    return call_user_func($callback, $path);
-  }
+    if (is_callable($callback)) {
+        return call_user_func($callback, $path);
+    }
 
-  return $callback;
+    return $callback;
 }
 
-function write_file(string $path, $content, bool $force = false)
+function write_file($path, $content, $force = false)
 {
-  resolve_dir(dirname($path));
-  if (\ArrayHelper\helper::is_iterable($content)) {
-    $content = json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-  }
-  if ($force || !file_exists($path)) {
-    if (!function_exists('file_put_contents')) {
-      $fh = fopen($path, 'wa+');
-      fwrite($path, $content);
-      fclose($fh);
-    } else {
-      file_put_contents($path, $content);
+    resolve_dir(dirname($path));
+    if (\ArrayHelper\helper::is_iterable($content)) {
+        $content = json_encode($content, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
-  }
+    if ($force || !file_exists($path)) {
+        if (!function_exists('file_put_contents')) {
+            $fh = fopen($path, 'wa+');
+            fwrite($path, $content);
+            fclose($fh);
+        } else {
+            file_put_contents($path, $content);
+        }
+    }
 }
 
 function htmlcomment()
 {
-  return '<comment style="display:none"> ' . json_encode(func_get_args(), JSON_PRETTY_PRINT) . ' </comment>';
+    return '<comment style="display:none"> ' . json_encode(func_get_args(), JSON_PRETTY_PRINT) . ' </comment>';
 }
 
-function parse_newline(string $str)
+function parse_newline($str)
 {
-  $str = str_replace("\r", '', $str);
-  $parsed = explode("\n", $str);
-  if ($parsed) {
-    return $parsed;
-  }
+    $str = str_replace("\r", '', $str);
+    $parsed = explode("\n", $str);
+    if ($parsed) {
+        return $parsed;
+    }
 
-  return [];
+    return [];
 }
 
 /**
@@ -601,38 +601,38 @@ function parse_newline(string $str)
  */
 function ob_get()
 {
-  $content = ob_get_clean();
-  ob_end_clean();
-  ob_start();
+    $content = ob_get_clean();
+    ob_end_clean();
+    ob_start();
 
-  return $content;
+    return $content;
 }
 
 $imageCache = null;
-function imgCDN(string $url)
+function imgCDN($url)
 {
-  global $imageCache;
-  if (!$imageCache) {
-    $imageCache = new \img\cache();
-  }
-  $imageCache->url2cache($url);
+    global $imageCache;
+    if (!$imageCache) {
+        $imageCache = new \img\cache();
+    }
+    $imageCache->url2cache($url);
 }
 
 /**
  * htaccess generator.
  *
- * @param bool $deny        default deny access. default (true)
- * @param bool $DirectPHP   allow direct php access. default (false)
+ * @param bool $deny default deny access. default (true)
+ * @param bool $DirectPHP allow direct php access. default (false)
  * @param bool $allowStatic allow static files access. default (true)
  */
 function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
 {
-  $ht = '';
-  if ($deny) {
-    $ht .= 'deny from all';
-  }
-  if (!$DirectPHP) {
-    $ht .= 'RewriteEngine On
+    $ht = '';
+    if ($deny) {
+        $ht .= 'deny from all';
+    }
+    if (!$DirectPHP) {
+        $ht .= 'RewriteEngine On
     RewriteRule ^.*\.php$ - [F,L,NC]
     <Files (file|class)\.php>
       order allow,deny
@@ -640,14 +640,14 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
       allow from 127.0.0.1
       allow from 192.168.0.1
     </Files>';
-  }
-  if ($allowStatic) {
-    $ht .= '<Files ~ "\.(css|js|png|jpg|svg|jpeg|ico|gif)$">
+    }
+    if ($allowStatic) {
+        $ht .= '<Files ~ "\.(css|js|png|jpg|svg|jpeg|ico|gif)$">
   Allow from all
 </Files>';
-  }
+    }
 
-  return $ht;
+    return $ht;
 }
 
 /**
@@ -659,7 +659,7 @@ function htaccess($deny = true, $DirectPHP = false, $allowStatic = true)
  */
 function is_email($email)
 {
-  return filter_var($email, FILTER_VALIDATE_EMAIL);
+    return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
 /**
@@ -671,7 +671,7 @@ function is_email($email)
  */
 function is_url($url)
 {
-  return filter_var($url, FILTER_VALIDATE_URL);
+    return filter_var($url, FILTER_VALIDATE_URL);
 }
 
 include __DIR__ . '/../MVC/themes/assets/partial/fab.php';

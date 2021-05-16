@@ -3,27 +3,27 @@
 /**
  * Query selector.
  *
- *  @method \DOMNodeList[]|\DOMNode[]|\DOMElement[]|DOMXpathTypehint[]|object query(string $expression, \DOMNode $contextnode, boolean $registerNodeNS)
+ * @method \DOMNodeList[]|\DOMNode[]|\DOMElement[]|DOMXpathTypehint[]|object query($expression, \DOMNode $contextnode, boolean $registerNodeNS)
  */
 class SmartDOMXpath extends DOMXpath
 {
-  public function __construct(DOMDocument $dom)
-  {
-      parent::__construct($dom);
-  }
+    public function __construct(DOMDocument $dom)
+    {
+        parent::__construct($dom);
+    }
 
-  /**
-   * Body Instance
-   * ```html
-   * <!--get--> <body></body>
-   * ```.
-   *
-   * @return \DOMNode|null
-   */
-  public function body()
-  {
-    return $this->query('//body')->item(0);
-  }
+    /**
+     * Body Instance
+     * ```html
+     * <!--get--> <body></body>
+     * ```.
+     *
+     * @return \DOMNode|null
+     */
+    public function body()
+    {
+        return $this->query('//body')->item(0);
+    }
 }
 
 /**
@@ -31,19 +31,19 @@ class SmartDOMXpath extends DOMXpath
  *
  * @requires PHP Intelephense VSCode Extension
  *
- * @method bool        hasAttribute(string $attribute_name)                          check if dom element has Attribute
- * @method string|null getAttribute(string $attribute_name)                          get attribute from dom element
- * @method void        setAttribute(string $attribute_name, string $attribute_value) set attribute from dom element
- * @method void        removeAttribute(string $attribute_name)                       remove attribute from dom element
+ * @method bool        hasAttribute($attribute_name)                          check if dom element has Attribute
+ * @method string|null getAttribute($attribute_name)                          get attribute from dom element
+ * @method void        setAttribute($attribute_name, $attribute_value) set attribute from dom element
+ * @method void        removeAttribute($attribute_name)                       remove attribute from dom element
  */
 class DOMXpathTypehint
 {
-  /**
-   * Inner html element.
-   *
-   * @var string
-   */
-  public $innerHTML;
+    /**
+     * Inner html element.
+     *
+     * @var string
+     */
+    public $innerHTML;
 }
 
 /**
@@ -73,9 +73,9 @@ function insertBodyLast(SmartDOMXpath $xpath, DOMNode $content)
 /**
  * create node text.
  */
-function createText(string $string)
+function createText($string)
 {
-  return new DOMText($string);
+    return new DOMText($string);
 }
 
 /**
@@ -99,26 +99,26 @@ function createScript(DOMDocument $dom, array $opt)
         if (isset($opt['cache'])) {
             if (defined('CONFIG')) {
                 if (isset(CONFIG['cache']['key'])) {
-          $script->setAttribute('src', $opt['src'] . '?' . CONFIG['cache']['key']);
-        } else {
-          $script->setAttribute('src', $opt['src'] . '?' . md5(serialize(CONFIG)));
+                    $script->setAttribute('src', $opt['src'] . '?' . CONFIG['cache']['key']);
+                } else {
+                    $script->setAttribute('src', $opt['src'] . '?' . md5(serialize(CONFIG)));
+                }
+            } else {
+                $script->setAttribute('src', $opt['src'] . '?' . md5(serialize(latestFile([ROOT]))));
+            }
         }
-      } else {
-        $script->setAttribute('src', $opt['src'] . '?' . md5(serialize(latestFile([ROOT]))));
-      }
     }
-  }
-  if (isset($opt['async'])) {
-    $script->setAttribute('async', $opt['async']);
-  }
-  if (isset($opt['defer'])) {
-    $script->setAttribute('defer', $opt['defer']);
-  }
-  if (isset($opt['type'])) {
-    $script->setAttribute('type', $opt['type']);
-  }
+    if (isset($opt['async'])) {
+        $script->setAttribute('async', $opt['async']);
+    }
+    if (isset($opt['defer'])) {
+        $script->setAttribute('defer', $opt['defer']);
+    }
+    if (isset($opt['type'])) {
+        $script->setAttribute('type', $opt['type']);
+    }
 
-  return $script;
+    return $script;
 }
 
 /**
@@ -155,6 +155,6 @@ function createMeta(DOMDocument $doc)
         $node = $doc->createElement('meta');
         foreach ($attributes as $key => $value) {
             $node->setAttribute($key, $value);
+        }
     }
-  }
 }

@@ -23,22 +23,7 @@ class templateParse
     //In this function I start output buffering. This is used so the code that's in there, does not get send to the script.
     //The function includes the input and get's the content and returns it whilst it turns off output buffering.
     //This function is private cause it is called by another function inside the class.
-    private function parseFile($file)
-    {
-        ob_start();
-        include $file;
-        $content = ob_get_contents();
-        ob_end_clean();
 
-        return $content;
-    }
-
-    //This function takes an array and checks how many things are inside of it. If it is above 0 it ocntinues
-    //if it is not, it throws an exception to display an error and does nothing.
-    //Once the array passes, the function does an foreach for each element inside of the array.
-    //First it checks if value of the array is a file that exists, if it is not, it just uses the regular value.
-    //If it is a file, it uses that files content.
-    //Second it goes through the output and replaces the tags inside of the tempalte (the {header} for example. Then saves it.
     public function ParseTemplate($tags = [])
     {
         if (count($tags) > 0) {
@@ -57,6 +42,23 @@ class templateParse
         } else {
             throw new Exception('Error: No tags were provided for replacement');
         }
+    }
+
+    //This function takes an array and checks how many things are inside of it. If it is above 0 it ocntinues
+    //if it is not, it throws an exception to display an error and does nothing.
+    //Once the array passes, the function does an foreach for each element inside of the array.
+    //First it checks if value of the array is a file that exists, if it is not, it just uses the regular value.
+    //If it is a file, it uses that files content.
+    //Second it goes through the output and replaces the tags inside of the tempalte (the {header} for example. Then saves it.
+
+    private function parseFile($file)
+    {
+        ob_start();
+        include $file;
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        return $content;
     }
 
     /**

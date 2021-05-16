@@ -59,6 +59,85 @@ class ScrambleUse extends ScramblerVisitor
     }
 
     /**
+     * Find (the first) class node in a set of nodes.
+     *
+     * @return ClassStatement|bool returns falls if no class can be found
+     **/
+    private function findClass(array $nodes)
+    {
+        foreach ($nodes as $node) {
+            if ($node instanceof ClassStatement) {
+                return $node;
+            }
+
+            if (isset($node->stmts) && is_array($node->stmts)) {
+                $class = $this->findClass($node->stmts);
+
+                if ($class instanceof ClassStatement) {
+                    return $class;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Scramble at use statements.
+     *
+     * @param Node[] $nodes
+     *
+     * @return void
+     **/
+    private function scanUse(array $nodes)
+    {
+        foreach ($nodes as $node) {
+            // Scramble the private method definitions
+            if ($node instanceof UseStatement) {
+                foreach ($node->uses as $useNode) {
+                    // Record original name and scramble it
+                    $originalName = $useNode->name->toString();
+
+                    // Prefix all classes with underscores, but don't modify them further
+                    $rename =
+                        false === strpos($originalName, '_')
+                        &&
+                        count($useNode->name->parts) > 1;
+
+                    if (!$rename) {
+                        $useNode->name = new Name(
+                            '\\' . $useNode->name
+                        );
+
+                        continue;
+                    }
+
+                    // Scramble into new use name
+                    $newName = $this->scrambleString(
+                        $originalName
+                        . '-'
+                        . $useNode->alias
+                    );
+
+                    // Record renaming of full class
+                    $this->renamed($originalName, $newName);
+
+                    // Record renaming of alias
+                    $this->renamed($useNode->alias, $newName);
+
+                    // Set the new alias
+                    $useNode->alias = $newName;
+                }
+            }
+
+            // Recurse over child nodes
+            if (isset($node->stmts) && is_array($node->stmts)) {
+                $this->scanUse($node->stmts);
+            }
+        }
+    }
+
+    /**
      * Check all variable nodes.
      *
      * @return void
@@ -144,84 +223,5 @@ class ScrambleUse extends ScramblerVisitor
                 return $node;
             }
         }
-    }
-
-    /**
-     * Scramble at use statements.
-     *
-     * @param Node[] $nodes
-     *
-     * @return void
-     **/
-    private function scanUse(array $nodes)
-    {
-        foreach ($nodes as $node) {
-            // Scramble the private method definitions
-            if ($node instanceof UseStatement) {
-                foreach ($node->uses as $useNode) {
-                    // Record original name and scramble it
-                    $originalName = $useNode->name->toString();
-
-                    // Prefix all classes with underscores, but don't modify them further
-                    $rename =
-                        false === strpos($originalName, '_')
-                        &&
-                        count($useNode->name->parts) > 1;
-
-                    if (!$rename) {
-                        $useNode->name = new Name(
-                            '\\' . $useNode->name
-                        );
-
-                        continue;
-                    }
-
-                    // Scramble into new use name
-                    $newName = $this->scrambleString(
-                        $originalName
-                        . '-'
-                        . $useNode->alias
-                    );
-
-                    // Record renaming of full class
-                    $this->renamed($originalName, $newName);
-
-                    // Record renaming of alias
-                    $this->renamed($useNode->alias, $newName);
-
-                    // Set the new alias
-                    $useNode->alias = $newName;
-                }
-            }
-
-            // Recurse over child nodes
-            if (isset($node->stmts) && is_array($node->stmts)) {
-                $this->scanUse($node->stmts);
-            }
-        }
-    }
-
-    /**
-     * Find (the first) class node in a set of nodes.
-     *
-     * @return ClassStatement|bool returns falls if no class can be found
-     **/
-    private function findClass(array $nodes)
-    {
-        foreach ($nodes as $node) {
-            if ($node instanceof ClassStatement) {
-                return $node;
-            }
-
-            if (isset($node->stmts) && is_array($node->stmts)) {
-                $class = $this->findClass($node->stmts);
-
-                if ($class instanceof ClassStatement) {
-                    return $class;
-                }
-            }
-        }
-
-        return false;
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use JSON\json;
-
 $class = new GoogleExt\client();
 $class->auto_login('/auth/google');
 //exit(json::json($class->getAccessToken()));
@@ -12,7 +10,7 @@ $client = $class->custom_client('blogger', '/auth/google');
 $service = new GoogleExt\blogger($client);
 
 if (isset($_REQUEST['bid'])) {
-  $blog = $service->set_blog_id($_REQUEST['bid']);
+  $blog = $service->setBlogId($_REQUEST['bid']);
 }
 
 if (isset($_REQUEST['update']) && $class->isValid()) {

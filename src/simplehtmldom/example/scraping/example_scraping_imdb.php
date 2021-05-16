@@ -4,6 +4,7 @@
  * in a custom format.
  */
 include_once '../../HtmlWeb.php';
+
 use simplehtmldom\HtmlWeb;
 
 // Load the page into memory

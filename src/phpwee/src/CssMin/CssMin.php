@@ -590,6 +590,18 @@ class CssVariablesMinifierPlugin extends aCssMinifierPlugin
     }
 
     /**
+     * Sets the variables.
+     *
+     * @param array $variables Variables to set
+     *
+     * @return void
+     */
+    public function setVariables(array $variables)
+    {
+        $this->variables = $variables;
+    }
+
+    /**
      * Implements {@link aCssMinifierPlugin::minify()}.
      *
      * @param aCssToken $token Token to process
@@ -635,18 +647,6 @@ class CssVariablesMinifierPlugin extends aCssMinifierPlugin
             'CssAtPageDeclarationToken',
             'CssRulesetDeclarationToken',
         ];
-    }
-
-    /**
-     * Sets the variables.
-     *
-     * @param array $variables Variables to set
-     *
-     * @return void
-     */
-    public function setVariables(array $variables)
-    {
-        $this->variables = $variables;
     }
 }
 
@@ -912,6 +912,16 @@ class CssStringParserPlugin extends aCssParserPlugin
 class CssSortRulesetPropertiesMinifierFilter extends aCssMinifierFilter
 {
     /**
+     * User defined sort function.
+     *
+     * @return int
+     */
+    public static function userDefinedSort1($a, $b)
+    {
+        return strcmp($a->Property, $b->Property);
+    }
+
+    /**
      * Implements {@link aCssMinifierFilter::filter()}.
      *
      * @param array $tokens Array of objects of type aCssToken
@@ -982,16 +992,6 @@ class CssSortRulesetPropertiesMinifierFilter extends aCssMinifierFilter
 
         return $r;
     }
-
-    /**
-     * User defined sort function.
-     *
-     * @return int
-     */
-    public static function userDefinedSort1($a, $b)
-    {
-        return strcmp($a->Property, $b->Property);
-    }
 }
 
 /**
@@ -1054,6 +1054,13 @@ class CssRulesetStartToken extends aCssRulesetStartToken
 class CssRulesetParserPlugin extends aCssParserPlugin
 {
     /**
+     * Selectors.
+     *
+     * @var array
+     */
+    private $selectors = [];
+
+    /**
      * Implements {@link aCssParserPlugin::getTriggerChars()}.
      *
      * @return array
@@ -1072,13 +1079,6 @@ class CssRulesetParserPlugin extends aCssParserPlugin
     {
         return ['T_DOCUMENT', 'T_AT_MEDIA', 'T_RULESET::SELECTORS', 'T_RULESET', 'T_RULESET_DECLARATION'];
     }
-
-    /**
-     * Selectors.
-     *
-     * @var array
-     */
-    private $selectors = [];
 
     /**
      * Implements {@link aCssParserPlugin::parse()}.
@@ -1466,137 +1466,6 @@ class CssParser
     }
 
     /**
-     * Append a token to the array of tokens.
-     *
-     * @param aCssToken $token Token to append
-     *
-     * @return void
-     */
-    public function appendToken(aCssToken $token)
-    {
-        $this->tokens[] = $token;
-    }
-
-    /**
-     * Clears the current buffer.
-     *
-     * @return void
-     */
-    public function clearBuffer()
-    {
-        $this->buffer = '';
-    }
-
-    /**
-     * Returns and clear the current buffer.
-     *
-     * @param string $trim Chars to use to trim the returned buffer
-     * @param bool $tolower if TRUE the returned buffer will get converted to lower case
-     *
-     * @return string
-     */
-    public function getAndClearBuffer($trim = '', $tolower = false)
-    {
-        $r = $this->getBuffer($trim, $tolower);
-        $this->buffer = '';
-
-        return $r;
-    }
-
-    /**
-     * Returns the current buffer.
-     *
-     * @param string $trim Chars to use to trim the returned buffer
-     * @param bool $tolower if TRUE the returned buffer will get converted to lower case
-     *
-     * @return string
-     */
-    public function getBuffer($trim = '', $tolower = false)
-    {
-        $r = $this->buffer;
-        if ($trim) {
-            $r = trim($r, " \t\n\r\0\x0B" . $trim);
-        }
-        if ($tolower) {
-            $r = strtolower($r);
-        }
-
-        return $r;
-    }
-
-    /**
-     * Returns the current media types state.
-     *
-     * @return array
-     */
-    public function getMediaTypes()
-    {
-        return $this->stateMediaTypes;
-    }
-
-    /**
-     * Returns the CSS source.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return $this->source;
-    }
-
-    /**
-     * Returns the current state.
-     *
-     * @return int The current state
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * Returns a plugin by class name.
-     *
-     * @param string $name Class name of the plugin
-     *
-     * @return aCssParserPlugin
-     */
-    public function getPlugin($class)
-    {
-        static $index = null;
-        if (is_null($index)) {
-            $index = [];
-            for ($i = 0, $l = count($this->plugins); $i < $l; ++$i) {
-                $index[get_class($this->plugins[$i])] = $i;
-            }
-        }
-
-        return isset($index[$class]) ? $this->plugins[$index[$class]] : false;
-    }
-
-    /**
-     * Returns the parsed tokens.
-     *
-     * @return array
-     */
-    public function getTokens()
-    {
-        return $this->tokens;
-    }
-
-    /**
-     * Returns if the current state equals the passed state.
-     *
-     * @param int $state State to compare with the current state
-     *
-     * @return bool TRUE is the state equals to the passed state; FALSE if not
-     */
-    public function isState($state)
-    {
-        return $this->state == $state;
-    }
-
-    /**
      * Parse the CSS source and return a array with parsed tokens.
      *
      * @param string $source CSS source
@@ -1695,6 +1564,165 @@ class CssParser
     }
 
     /**
+     * Append a token to the array of tokens.
+     *
+     * @param aCssToken $token Token to append
+     *
+     * @return void
+     */
+    public function appendToken(aCssToken $token)
+    {
+        $this->tokens[] = $token;
+    }
+
+    /**
+     * Clears the current buffer.
+     *
+     * @return void
+     */
+    public function clearBuffer()
+    {
+        $this->buffer = '';
+    }
+
+    /**
+     * Returns and clear the current buffer.
+     *
+     * @param string $trim Chars to use to trim the returned buffer
+     * @param bool $tolower if TRUE the returned buffer will get converted to lower case
+     *
+     * @return string
+     */
+    public function getAndClearBuffer($trim = '', $tolower = false)
+    {
+        $r = $this->getBuffer($trim, $tolower);
+        $this->buffer = '';
+
+        return $r;
+    }
+
+    /**
+     * Returns the current buffer.
+     *
+     * @param string $trim Chars to use to trim the returned buffer
+     * @param bool $tolower if TRUE the returned buffer will get converted to lower case
+     *
+     * @return string
+     */
+    public function getBuffer($trim = '', $tolower = false)
+    {
+        $r = $this->buffer;
+        if ($trim) {
+            $r = trim($r, " \t\n\r\0\x0B" . $trim);
+        }
+        if ($tolower) {
+            $r = strtolower($r);
+        }
+
+        return $r;
+    }
+
+    /**
+     * Sets/restores the buffer.
+     *
+     * @param string $buffer Buffer to set
+     *
+     * @return void
+     */
+    public function setBuffer($buffer)
+    {
+        $this->buffer = $buffer;
+    }
+
+    /**
+     * Returns the current media types state.
+     *
+     * @return array
+     */
+    public function getMediaTypes()
+    {
+        return $this->stateMediaTypes;
+    }
+
+    /**
+     * Returns the CSS source.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Returns the current state.
+     *
+     * @return int The current state
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Sets the current state in the state stack; equals to {@link CssParser::popState()} + {@link CssParser::pushState()}.
+     *
+     * @param int $state State to set
+     *
+     * @return int
+     */
+    public function setState($state)
+    {
+        $r = array_pop($this->states);
+        array_push($this->states, $state);
+        $this->state = $this->states[count($this->states) - 1];
+
+        return $r;
+    }
+
+    /**
+     * Returns a plugin by class name.
+     *
+     * @param string $name Class name of the plugin
+     *
+     * @return aCssParserPlugin
+     */
+    public function getPlugin($class)
+    {
+        static $index = null;
+        if (is_null($index)) {
+            $index = [];
+            for ($i = 0, $l = count($this->plugins); $i < $l; ++$i) {
+                $index[get_class($this->plugins[$i])] = $i;
+            }
+        }
+
+        return isset($index[$class]) ? $this->plugins[$index[$class]] : false;
+    }
+
+    /**
+     * Returns the parsed tokens.
+     *
+     * @return array
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * Returns if the current state equals the passed state.
+     *
+     * @param int $state State to compare with the current state
+     *
+     * @return bool TRUE is the state equals to the passed state; FALSE if not
+     */
+    public function isState($state)
+    {
+        return $this->state == $state;
+    }
+
+    /**
      * Remove the last state of the state stack and return the removed stack value.
      *
      * @return int Removed state value
@@ -1723,18 +1751,6 @@ class CssParser
     }
 
     /**
-     * Sets/restores the buffer.
-     *
-     * @param string $buffer Buffer to set
-     *
-     * @return void
-     */
-    public function setBuffer($buffer)
-    {
-        $this->buffer = $buffer;
-    }
-
-    /**
      * Set the exclusive state.
      *
      * @param string $exclusive Exclusive state
@@ -1756,22 +1772,6 @@ class CssParser
     public function setMediaTypes(array $mediaTypes)
     {
         $this->stateMediaTypes = $mediaTypes;
-    }
-
-    /**
-     * Sets the current state in the state stack; equals to {@link CssParser::popState()} + {@link CssParser::pushState()}.
-     *
-     * @param int $state State to set
-     *
-     * @return int
-     */
-    public function setState($state)
-    {
-        $r = array_pop($this->states);
-        array_push($this->states, $state);
-        $this->state = $this->states[count($this->states) - 1];
-
-        return $r;
     }
 
     /**
@@ -1996,36 +1996,6 @@ class CssMinifier
     }
 
     /**
-     * Returns the minified Source.
-     *
-     * @return string
-     */
-    public function getMinified()
-    {
-        return $this->minified;
-    }
-
-    /**
-     * Returns a plugin by class name.
-     *
-     * @param string $name Class name of the plugin
-     *
-     * @return aCssMinifierPlugin
-     */
-    public function getPlugin($class)
-    {
-        static $index = null;
-        if (is_null($index)) {
-            $index = [];
-            for ($i = 0, $l = count($this->plugins); $i < $l; ++$i) {
-                $index[get_class($this->plugins[$i])] = $i;
-            }
-        }
-
-        return isset($index[$class]) ? $this->plugins[$index[$class]] : false;
-    }
-
-    /**
      * Minifies the CSS source.
      *
      * @param string $source CSS source
@@ -2091,6 +2061,36 @@ class CssMinifier
         $this->minified = $r;
 
         return $r;
+    }
+
+    /**
+     * Returns the minified Source.
+     *
+     * @return string
+     */
+    public function getMinified()
+    {
+        return $this->minified;
+    }
+
+    /**
+     * Returns a plugin by class name.
+     *
+     * @param string $name Class name of the plugin
+     *
+     * @return aCssMinifierPlugin
+     */
+    public function getPlugin($class)
+    {
+        static $index = null;
+        if (is_null($index)) {
+            $index = [];
+            for ($i = 0, $l = count($this->plugins); $i < $l; ++$i) {
+                $index[get_class($this->plugins[$i])] = $i;
+            }
+        }
+
+        return isset($index[$class]) ? $this->plugins[$index[$class]] : false;
     }
 }
 
@@ -2281,6 +2281,7 @@ class CssMin
         }
     }
 }
+
 // Initialises CssMin
 CssMin::initialise();
 
@@ -3129,48 +3130,6 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
     ];
 
     /**
-     * Implements {@link aCssMinifierFilter::filter()}.
-     *
-     * @param array $tokens Array of objects of type aCssToken
-     *
-     * @return int Count of added, changed or removed tokens; a return value large than 0 will rebuild the array
-     */
-    public function apply(array &$tokens)
-    {
-        $r = 0;
-        $transformations = &$this->transformations;
-        for ($i = 0, $l = count($tokens); $i < $l; ++$i) {
-            if ('CssRulesetDeclarationToken' === get_class($tokens[$i])) {
-                $tProperty = $tokens[$i]->Property;
-                if (isset($transformations[$tProperty])) {
-                    $result = [];
-                    if (is_callable($transformations[$tProperty])) {
-                        $result = call_user_func_array($transformations[$tProperty], [$tokens[$i]]);
-                        if (!is_array($result) && is_object($result)) {
-                            $result = [$result];
-                        }
-                    } else {
-                        $tValue = $tokens[$i]->Value;
-                        $tMediaTypes = $tokens[$i]->MediaTypes;
-                        foreach ($transformations[$tProperty] as $property) {
-                            if (null !== $property) {
-                                $result[] = new CssRulesetDeclarationToken($property, $tValue, $tMediaTypes);
-                            }
-                        }
-                    }
-                    if (count($result) > 0) {
-                        array_splice($tokens, $i + 1, 0, $result);
-                        $i += count($result);
-                        $l += count($result);
-                    }
-                }
-            }
-        }
-
-        return $r;
-    }
-
-    /**
      * Transforms the Internet Explorer specific declaration property "filter" to Internet Explorer 8+ compatible
      * declaratiopn property "-ms-filter".
      *
@@ -3236,6 +3195,48 @@ class CssConvertLevel3PropertiesMinifierFilter extends aCssMinifierFilter
         } else {
             return [];
         }
+    }
+
+    /**
+     * Implements {@link aCssMinifierFilter::filter()}.
+     *
+     * @param array $tokens Array of objects of type aCssToken
+     *
+     * @return int Count of added, changed or removed tokens; a return value large than 0 will rebuild the array
+     */
+    public function apply(array &$tokens)
+    {
+        $r = 0;
+        $transformations = &$this->transformations;
+        for ($i = 0, $l = count($tokens); $i < $l; ++$i) {
+            if ('CssRulesetDeclarationToken' === get_class($tokens[$i])) {
+                $tProperty = $tokens[$i]->Property;
+                if (isset($transformations[$tProperty])) {
+                    $result = [];
+                    if (is_callable($transformations[$tProperty])) {
+                        $result = call_user_func_array($transformations[$tProperty], [$tokens[$i]]);
+                        if (!is_array($result) && is_object($result)) {
+                            $result = [$result];
+                        }
+                    } else {
+                        $tValue = $tokens[$i]->Value;
+                        $tMediaTypes = $tokens[$i]->MediaTypes;
+                        foreach ($transformations[$tProperty] as $property) {
+                            if (null !== $property) {
+                                $result[] = new CssRulesetDeclarationToken($property, $tValue, $tMediaTypes);
+                            }
+                        }
+                    }
+                    if (count($result) > 0) {
+                        array_splice($tokens, $i + 1, 0, $result);
+                        $i += count($result);
+                        $l += count($result);
+                    }
+                }
+            }
+        }
+
+        return $r;
     }
 }
 
@@ -3347,20 +3348,6 @@ class CssConvertHslColorsMinifierPlugin extends aCssMinifierPlugin
     }
 
     /**
-     * Implements {@link aMinifierPlugin::getTriggerTokens()}.
-     *
-     * @return array
-     */
-    public function getTriggerTokens()
-    {
-        return [
-            'CssAtFontFaceDeclarationToken',
-            'CssAtPageDeclarationToken',
-            'CssRulesetDeclarationToken',
-        ];
-    }
-
-    /**
      * Convert a HSL value to hexadecimal notation.
      *
      * Based on: {@link http://www.easyrgb.com/index.php?X=MATH&H=19#text19}.
@@ -3423,6 +3410,20 @@ class CssConvertHslColorsMinifierPlugin extends aCssMinifierPlugin
         }
 
         return $v1;
+    }
+
+    /**
+     * Implements {@link aMinifierPlugin::getTriggerTokens()}.
+     *
+     * @return array
+     */
+    public function getTriggerTokens()
+    {
+        return [
+            'CssAtFontFaceDeclarationToken',
+            'CssAtPageDeclarationToken',
+            'CssRulesetDeclarationToken',
+        ];
     }
 }
 
@@ -3783,6 +3784,13 @@ class CssCommentToken extends aCssToken
 class CssCommentParserPlugin extends aCssParserPlugin
 {
     /**
+     * Stored buffer for restore.
+     *
+     * @var string
+     */
+    private $restoreBuffer = '';
+
+    /**
      * Implements {@link aCssParserPlugin::getTriggerChars()}.
      *
      * @return array
@@ -3801,13 +3809,6 @@ class CssCommentParserPlugin extends aCssParserPlugin
     {
         return false;
     }
-
-    /**
-     * Stored buffer for restore.
-     *
-     * @var string
-     */
-    private $restoreBuffer = '';
 
     /**
      * Implements {@link aCssParserPlugin::parse()}.

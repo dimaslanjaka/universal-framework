@@ -44,6 +44,26 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
+     * Add a variable name to ignore.
+     *
+     * @param string|string[] $ignore
+     *
+     * @return RenameParameterVisitor
+     **/
+    public function addIgnore($ignore)
+    {
+        if (is_string($ignore)) {
+            $this->ignore = array_merge($this->ignore, [$ignore]);
+        } elseif (is_array($ignore)) {
+            $this->ignore = array_merge($this->ignore, $ignore);
+        } else {
+            throw new InvalidArgumentException('Invalid ignore type passed');
+        }
+
+        return $this;
+    }
+
+    /**
      * Scramble a property of a node.
      *
      * @param string $var property to scramble
@@ -78,6 +98,30 @@ abstract class Scrambler extends NodeVisitorAbstract
     }
 
     /**
+     * Get variables to ignore.
+     *
+     * @return string[]
+     */
+    public function getIgnore()
+    {
+        return $this->ignore;
+    }
+
+    /**
+     * Set variables to ignore.
+     *
+     * @param string[] $ignore
+     *
+     * @return parent
+     */
+    public function setIgnore(array $ignore)
+    {
+        $this->ignore = $ignore;
+
+        return $this;
+    }
+
+    /**
      * Scramble a string.
      *
      * @param string $string
@@ -107,50 +151,6 @@ abstract class Scrambler extends NodeVisitorAbstract
     public function setScrambler(StringScrambler $scrambler)
     {
         $this->scrambler = $scrambler;
-
-        return $this;
-    }
-
-    /**
-     * Get variables to ignore.
-     *
-     * @return string[]
-     */
-    public function getIgnore()
-    {
-        return $this->ignore;
-    }
-
-    /**
-     * Set variables to ignore.
-     *
-     * @param string[] $ignore
-     *
-     * @return parent
-     */
-    public function setIgnore(array $ignore)
-    {
-        $this->ignore = $ignore;
-
-        return $this;
-    }
-
-    /**
-     * Add a variable name to ignore.
-     *
-     * @param string|string[] $ignore
-     *
-     * @return RenameParameterVisitor
-     **/
-    public function addIgnore($ignore)
-    {
-        if (is_string($ignore)) {
-            $this->ignore = array_merge($this->ignore, [$ignore]);
-        } elseif (is_array($ignore)) {
-            $this->ignore = array_merge($this->ignore, $ignore);
-        } else {
-            throw new InvalidArgumentException('Invalid ignore type passed');
-        }
 
         return $this;
     }

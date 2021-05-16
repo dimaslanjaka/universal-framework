@@ -7,13 +7,13 @@
  */
 function page_cache()
 {
-  $path = ROOT . '/tmp/html/';
-  $path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
-  $path .= '/' . identifier();
-  $path .= '.html';
-  $path = normalize_path($path);
+    $path = ROOT . '/tmp/html/';
+    $path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
+    $path .= '/' . identifier();
+    $path .= '.html';
+    $path = normalize_path($path);
 
-  return $path;
+    return $path;
 }
 
 /**
@@ -21,22 +21,22 @@ function page_cache()
  *
  * @return bool
  */
-function cache_expired(int $hour = 24)
+function cache_expired($hour = 24)
 {
-  $file_indicator = normalize_path(page_cache());
+    $file_indicator = normalize_path(page_cache());
 
-  if (file_exists($file_indicator)) {
-    $is_24hours = time() - filemtime($file_indicator) > $hour * 3600;
-    if ($is_24hours) {
-      \Filemanager\file::delete($file_indicator);
+    if (file_exists($file_indicator)) {
+        $is_24hours = time() - filemtime($file_indicator) > $hour * 3600;
+        if ($is_24hours) {
+            \Filemanager\file::delete($file_indicator);
 
-      return true;
+            return true;
+        } else {
+            return false; // cache valid
+        }
     } else {
-      return false; // cache valid
+        return true;
     }
-  } else {
-    return true;
-  }
 }
 
 /**
@@ -57,7 +57,7 @@ function render(MVC\themes $theme)
         if ('development' == get_env() && $theme->meta['theme']) {
             echo '<!--' . get_includes() . '-->';
         }
-  }
+    }
 }
 
 /**
@@ -67,7 +67,7 @@ function render(MVC\themes $theme)
  */
 function identifier()
 {
-  return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
+    return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
 }
 
 /**
@@ -77,7 +77,7 @@ function identifier()
  *
  * @return void
  */
-function process_page(bool $obfuscatejs, MVC\themes $theme)
+function process_page($obfuscatejs, MVC\themes $theme)
 {
     //global $theme;
     $dom = new SmartDOMDocument('1.0', 'ISO-8859-15');
@@ -88,65 +88,65 @@ function process_page(bool $obfuscatejs, MVC\themes $theme)
 
     if (!$dom->loadHTML($c)) {
         \HTML\js::var('HTML_ERROR', json_encode(['error' => true, 'message' => 'HTML Optimizer failed']));
-    echo $c;
+        echo $c;
 
-    return;
-  }
-
-  $xpath = new SmartDOMXpath($dom);
-  $title = getTitle($dom);
-
-  $scripts = $xpath->query('//script');
-  if (!empty($scripts)) {
-    foreach ($scripts as $script) {
-      if ($script->hasAttribute('type') && 'application/ld+json' == $script->getAttribute('type')) {
-        $script->innerHTML = json_encode(json_decode(innerHTML($script)));
-      }
+        return;
     }
-  }
 
-  $imgs = $xpath->query('//img');
-  if (!empty($imgs)) {
-    foreach ($imgs as $img) {
-      if (!$img->hasAttribute('title')) {
-        $img->setAttribute('title', $title);
-      }
-      if (!$img->hasAttribute('alt')) {
-        $img->setAttribute('alt', $title);
-      }
-      if (!$img->hasAttribute('rel')) {
-        $img->setAttribute('rel', 'image');
-      }
+    $xpath = new SmartDOMXpath($dom);
+    $title = getTitle($dom);
+
+    $scripts = $xpath->query('//script');
+    if (!empty($scripts)) {
+        foreach ($scripts as $script) {
+            if ($script->hasAttribute('type') && 'application/ld+json' == $script->getAttribute('type')) {
+                $script->innerHTML = json_encode(json_decode(innerHTML($script)));
+            }
+        }
     }
-  }
 
-  $styles = $xpath->query('//style');
-  if (!empty($styles)) {
-    foreach ($styles as $style) {
-      $style->innerHTML = trim(mincss(innerHTML($style)));
+    $imgs = $xpath->query('//img');
+    if (!empty($imgs)) {
+        foreach ($imgs as $img) {
+            if (!$img->hasAttribute('title')) {
+                $img->setAttribute('title', $title);
+            }
+            if (!$img->hasAttribute('alt')) {
+                $img->setAttribute('alt', $title);
+            }
+            if (!$img->hasAttribute('rel')) {
+                $img->setAttribute('rel', 'image');
+            }
+        }
     }
-  }
 
-  $textareas = $xpath->query('//textarea');
-  if (!empty($textareas)) {
-    foreach ($textareas as $area) {
-      $inner = trim(html_entity_decode($area->innerHTML));
-      if (is_json(trim($inner))) {
-        $area->setAttribute('innerhtml', base64_encode(\JSON\json::json($inner, false, false)));
-      }
+    $styles = $xpath->query('//style');
+    if (!empty($styles)) {
+        foreach ($styles as $style) {
+            $style->innerHTML = trim(mincss(innerHTML($style)));
+        }
     }
-  }
 
-  $result = $dom->saveHTML();
-  $result = prefilter(htmlmin($result));
-  resolve_dir(dirname(page_cache()));
-  \Filemanager\file::file(page_cache(), $result, true);
-  /**
-   * @var string Load admin toolbox
-   */
-  $result = str_replace('</html>', '', $result);
-  echo $result;
-  //$theme->load_admin_tools();
+    $textareas = $xpath->query('//textarea');
+    if (!empty($textareas)) {
+        foreach ($textareas as $area) {
+            $inner = trim(html_entity_decode($area->innerHTML));
+            if (is_json(trim($inner))) {
+                $area->setAttribute('innerhtml', base64_encode(\JSON\json::json($inner, false, false)));
+            }
+        }
+    }
 
-  echo '</html>';
+    $result = $dom->saveHTML();
+    $result = prefilter(htmlmin($result));
+    resolve_dir(dirname(page_cache()));
+    \Filemanager\file::file(page_cache(), $result, true);
+    /**
+     * @var string Load admin toolbox
+     */
+    $result = str_replace('</html>', '', $result);
+    echo $result;
+    //$theme->load_admin_tools();
+
+    echo '</html>';
 }

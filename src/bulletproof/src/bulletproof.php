@@ -182,16 +182,6 @@ class Image implements \ArrayAccess
     }
 
     /**
-     * Returns the full path of the image ex 'storage/image.mime'.
-     *
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path = $this->getStorage() . '/' . $this->getName() . '.' . $this->getMime();
-    }
-
-    /**
      * Returns the image size in bytes.
      *
      * @return int
@@ -237,49 +227,6 @@ class Image implements \ArrayAccess
     }
 
     /**
-     * Returns the image mime type.
-     *
-     * @return string|null
-     */
-    public function getMime()
-    {
-        if (!$this->mime) {
-            $this->mime = $this->getImageMime($this->_files['tmp_name']);
-        }
-
-        return $this->mime;
-    }
-
-    /**
-     * Define a mime type for uploading.
-     *
-     * @return $this
-     */
-    public function setMime(array $fileTypes)
-    {
-        $this->mimeTypes = $fileTypes;
-
-        return $this;
-    }
-
-    /**
-     * Gets the real image mime type.
-     *
-     * @param $tmp_name string The upload tmp directory
-     *
-     * @return string|null
-     */
-    protected function getImageMime($tmp_name)
-    {
-        $this->mime = @$this->acceptedMimes[exif_imagetype($tmp_name)];
-        if (!$this->mime) {
-            return null;
-        }
-
-        return $this->mime;
-    }
-
-    /**
      * Returns error string.
      *
      * @return string
@@ -290,120 +237,22 @@ class Image implements \ArrayAccess
     }
 
     /**
-     * Returns the image name.
+     * Validate and save (upload) file.
      *
-     * @return string
+     * @return false|Image
      */
-    public function getName()
+    public function upload()
     {
-        return $this->name;
-    }
-
-    /**
-     * Provide image name if not provided.
-     *
-     * @param null $isNameProvided
-     *
-     * @return $this
-     */
-    public function setName($isNameProvided = null)
-    {
-        if ($isNameProvided) {
-            $this->name = filter_var($isNameProvided, FILTER_SANITIZE_STRING);
-        } else {
-            $this->name = uniqid('', true) . '_' . str_shuffle(implode(range('e', 'q')));
-        }
-
-        return $this;
-    }
-
-    /**
-     * Returns the image width.
-     *
-     * @return int
-     */
-    public function getWidth()
-    {
-        if (null != $this->width) {
-            return $this->width;
-        }
-
-        list($width) = getimagesize($this->_files['tmp_name']);
-
-        return $width;
-    }
-
-    /**
-     * Returns the image height in pixels.
-     *
-     * @return int
-     */
-    public function getHeight()
-    {
-        if (null != $this->height) {
-            return $this->height;
-        }
-
-        list(, $height) = getimagesize($this->_files['tmp_name']);
-
-        return $height;
-    }
-
-    /**
-     * Returns the storage / folder name.
-     *
-     * @return string
-     */
-    public function getStorage()
-    {
-        if (!$this->storage) {
-            $this->setStorage();
-        }
-
-        return $this->storage;
-    }
-
-    /**
-     * Validate directory/permission before creating a folder.
-     *
-     * @param $dir string the folder name to check
-     *
-     * @return bool
-     */
-    private function isDirectoryValid($dir)
-    {
-        return !file_exists($dir) && !is_dir($dir) || is_writable($dir);
-    }
-
-    /**
-     * Creates a storage for upload storage.
-     *
-     * @param $dir string the folder name to create
-     * @param int $permission chmod permission
-     *
-     * @return $this
-     */
-    public function setStorage($dir = 'uploads', $permission = 0666)
-    {
-        $isDirectoryValid = $this->isDirectoryValid($dir);
-
-        if (!$isDirectoryValid) {
-            $this->error = 'Can not create a directory  \'' . $dir . '\', please check write permission';
-
+        if ('' !== $this->error) {
             return false;
         }
 
-        $create = !is_dir($dir) ? @mkdir('' . $dir, (int)$permission, true) : true;
+        $isValid = $this->constraintValidator();
+        $this->setName();
 
-        if (!$create) {
-            $this->error = 'Error! directory \'' . $dir . '\' could not be created';
+        $isSuccess = $isValid && $this->isSaved($this->_files['tmp_name'], $this->getPath());
 
-            return false;
-        }
-
-        $this->storage = $dir;
-
-        return $this;
+        return $isSuccess ? $this : false;
     }
 
     /**
@@ -450,22 +299,52 @@ class Image implements \ArrayAccess
     }
 
     /**
-     * Validate and save (upload) file.
+     * Gets the real image mime type.
      *
-     * @return false|Image
+     * @param $tmp_name string The upload tmp directory
+     *
+     * @return string|null
      */
-    public function upload()
+    protected function getImageMime($tmp_name)
     {
-        if ('' !== $this->error) {
-            return false;
+        $this->mime = @$this->acceptedMimes[exif_imagetype($tmp_name)];
+        if (!$this->mime) {
+            return null;
         }
 
-        $isValid = $this->constraintValidator();
-        $this->setName();
+        return $this->mime;
+    }
 
-        $isSuccess = $isValid && $this->isSaved($this->_files['tmp_name'], $this->getPath());
+    /**
+     * Returns the image width.
+     *
+     * @return int
+     */
+    public function getWidth()
+    {
+        if (null != $this->width) {
+            return $this->width;
+        }
 
-        return $isSuccess ? $this : false;
+        list($width) = getimagesize($this->_files['tmp_name']);
+
+        return $width;
+    }
+
+    /**
+     * Returns the image height in pixels.
+     *
+     * @return int
+     */
+    public function getHeight()
+    {
+        if (null != $this->height) {
+            return $this->height;
+        }
+
+        list(, $height) = getimagesize($this->_files['tmp_name']);
+
+        return $height;
     }
 
     /**
@@ -479,5 +358,126 @@ class Image implements \ArrayAccess
     protected function isSaved($tmp_name, $destination)
     {
         return move_uploaded_file($tmp_name, $destination);
+    }
+
+    /**
+     * Returns the full path of the image ex 'storage/image.mime'.
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path = $this->getStorage() . '/' . $this->getName() . '.' . $this->getMime();
+    }
+
+    /**
+     * Returns the storage / folder name.
+     *
+     * @return string
+     */
+    public function getStorage()
+    {
+        if (!$this->storage) {
+            $this->setStorage();
+        }
+
+        return $this->storage;
+    }
+
+    /**
+     * Creates a storage for upload storage.
+     *
+     * @param $dir string the folder name to create
+     * @param int $permission chmod permission
+     *
+     * @return $this
+     */
+    public function setStorage($dir = 'uploads', $permission = 0666)
+    {
+        $isDirectoryValid = $this->isDirectoryValid($dir);
+
+        if (!$isDirectoryValid) {
+            $this->error = 'Can not create a directory  \'' . $dir . '\', please check write permission';
+
+            return false;
+        }
+
+        $create = !is_dir($dir) ? @mkdir('' . $dir, (int)$permission, true) : true;
+
+        if (!$create) {
+            $this->error = 'Error! directory \'' . $dir . '\' could not be created';
+
+            return false;
+        }
+
+        $this->storage = $dir;
+
+        return $this;
+    }
+
+    /**
+     * Returns the image name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Provide image name if not provided.
+     *
+     * @param null $isNameProvided
+     *
+     * @return $this
+     */
+    public function setName($isNameProvided = null)
+    {
+        if ($isNameProvided) {
+            $this->name = filter_var($isNameProvided, FILTER_SANITIZE_STRING);
+        } else {
+            $this->name = uniqid('', true) . '_' . str_shuffle(implode(range('e', 'q')));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the image mime type.
+     *
+     * @return string|null
+     */
+    public function getMime()
+    {
+        if (!$this->mime) {
+            $this->mime = $this->getImageMime($this->_files['tmp_name']);
+        }
+
+        return $this->mime;
+    }
+
+    /**
+     * Define a mime type for uploading.
+     *
+     * @return $this
+     */
+    public function setMime(array $fileTypes)
+    {
+        $this->mimeTypes = $fileTypes;
+
+        return $this;
+    }
+
+    /**
+     * Validate directory/permission before creating a folder.
+     *
+     * @param $dir string the folder name to check
+     *
+     * @return bool
+     */
+    private function isDirectoryValid($dir)
+    {
+        return !file_exists($dir) && !is_dir($dir) || is_writable($dir);
     }
 }

@@ -1,6 +1,6 @@
 <!-- Footer -->
 <footer class="page-footer font-small dynamic-bg pt-4">
-  <!--sn-bg-1 -->
+    <!--sn-bg-1 -->
 
     <!-- Footer Text -->
     <div class="container-fluid text-center text-md-left">
@@ -24,11 +24,12 @@
             <div class="col-md-6 mb-md-0 mb-3">
 
                 <!-- Content -->
-        <h5 class="text-uppercase font-weight-bold">Information</h5>
-        <p>
-          By accessing this website, you accept our cookie policies. Recommended using browser <b>chrome</b> with <b>disabled LITE mode</b>.
-        <div id="debug-container"></div>
-        </p>
+                <h5 class="text-uppercase font-weight-bold">Information</h5>
+                <p>
+                    By accessing this website, you accept our cookie policies. Recommended using browser <b>chrome</b>
+                    with <b>disabled LITE mode</b>.
+                <div id="debug-container"></div>
+                </p>
 
             </div>
             <!-- Grid column -->

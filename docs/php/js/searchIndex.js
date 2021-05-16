@@ -921,20 +921,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method___construct"
         },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AcURL\u0028\u0029",
+            "name": "cURL",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_cURL"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetServices\u0028\u0029",
+            "name": "getServices",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_getServices"
+        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Acontent\u0028\u0029",
             "name": "content",
             "summary": "Get\u0020contents.",
             "url": "classes/AGC-agc-service-Service.html#method_content"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Astr_get_html\u0028\u0029",
-            "name": "str_get_html",
-            "summary": "alternative\u0020str_get_html.",
-            "url": "classes/AGC-agc-service-Service.html#method_str_get_html"
-        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AremoveElement\u0028\u0029",
             "name": "removeElement",
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_removeElement"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020AGC\u0020URL.",
+            "url": "classes/AGC-agc-service-Service.html#method_set"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetNiche\u0028\u0029",
             "name": "getNiche",
@@ -946,30 +956,40 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_setNiche"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetClass\u0028\u0029",
-            "name": "getClass",
-            "summary": "get\u0020available\u0020Class.",
-            "url": "classes/AGC-agc-service-Service.html#method_getClass"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Afetch_contents\u0028\u0029",
+            "name": "fetch_contents",
+            "summary": "fetch\u0020content\u0020based\u0020file\u0020time\u0020created.",
+            "url": "classes/AGC-agc-service-Service.html#method_fetch_contents"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AisRestrictedDomain\u0028\u0029",
-            "name": "isRestrictedDomain",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_isRestrictedDomain"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Ahtmlcom\u0028\u0029",
+            "name": "htmlcom",
+            "summary": "Generate\u0020html\u0020document.",
+            "url": "classes/AGC-agc-service-Service.html#method_htmlcom"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020AGC\u0020URL.",
-            "url": "classes/AGC-agc-service-Service.html#method_set"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetDate\u0028\u0029",
+            "name": "getDate",
+            "summary": "Get\u0020custom\u0020date\u0020format.",
+            "url": "classes/AGC-agc-service-Service.html#method_getDate"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenSession\u0028\u0029",
-            "name": "genSession",
-            "summary": "Generate\u0020session.",
-            "url": "classes/AGC-agc-service-Service.html#method_genSession"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Astr_get_html\u0028\u0029",
+            "name": "str_get_html",
+            "summary": "alternative\u0020str_get_html.",
+            "url": "classes/AGC-agc-service-Service.html#method_str_get_html"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aencrypt\u0028\u0029",
-            "name": "encrypt",
-            "summary": "Crypto\u0020Encrypt.",
-            "url": "classes/AGC-agc-service-Service.html#method_encrypt"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetHTML\u0028\u0029",
+            "name": "getHTML",
+            "summary": "Parse\u0020HTML\u0020string\u0020into\u0020DOMDocument.",
+            "url": "classes/AGC-agc-service-Service.html#method_getHTML"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003A\u0024title",
+            "name": "title",
+            "summary": "Title\u0020AGC.",
+            "url": "classes/AGC-agc-service-Service.html#property_title"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Averifydom\u0028\u0029",
+            "name": "verifydom",
+            "summary": "Validate\u0020\u0024this\u002D\u003Edom\u0020instance\u0020of\u0020str_get_html.",
+            "url": "classes/AGC-agc-service-Service.html#method_verifydom"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Adecrypt\u0028\u0029",
             "name": "decrypt",
@@ -981,25 +1001,35 @@ Search.appendIndex(
             "summary": "Send\u0020plain\u0020html\u0020to\u0020external\u0020source.",
             "url": "classes/AGC-agc-service-Service.html#method_sendHTML"
         },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenSession\u0028\u0029",
+            "name": "genSession",
+            "summary": "Generate\u0020session.",
+            "url": "classes/AGC-agc-service-Service.html#method_genSession"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aencrypt\u0028\u0029",
+            "name": "encrypt",
+            "summary": "Crypto\u0020Encrypt.",
+            "url": "classes/AGC-agc-service-Service.html#method_encrypt"
+        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Atranslate\u0028\u0029",
             "name": "translate",
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_translate"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AsetTargetLang\u0028\u0029",
-            "name": "setTargetLang",
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003ArandProxy\u0028\u0029",
+            "name": "randProxy",
             "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_setTargetLang"
+            "url": "classes/AGC-agc-service-Service.html#method_randProxy"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetProxy\u0028\u0029",
             "name": "getProxy",
             "summary": "Get\u0020proxy\u0020list.",
             "url": "classes/AGC-agc-service-Service.html#method_getProxy"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003ArandProxy\u0028\u0029",
-            "name": "randProxy",
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AsetTargetLang\u0028\u0029",
+            "name": "setTargetLang",
             "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_randProxy"
+            "url": "classes/AGC-agc-service-Service.html#method_setTargetLang"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AdelProxy\u0028\u0029",
             "name": "delProxy",
@@ -1016,25 +1046,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_setSourceLang"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AcURL\u0028\u0029",
-            "name": "cURL",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_cURL"
-        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AfixImageDom\u0028\u0029",
             "name": "fixImageDom",
             "summary": "Fix\u0020images.",
             "url": "classes/AGC-agc-service-Service.html#method_fixImageDom"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AfixStyle\u0028\u0029",
-            "name": "fixStyle",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_fixStyle"
-        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Abuild_url\u0028\u0029",
             "name": "build_url",
             "summary": "Build\u0020URL\u0020from\u0020parse_url.",
             "url": "classes/AGC-agc-service-Service.html#method_build_url"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AfixStyle\u0028\u0029",
+            "name": "fixStyle",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_fixStyle"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AfixAnchors\u0028\u0029",
             "name": "fixAnchors",
@@ -1051,30 +1076,20 @@ Search.appendIndex(
             "summary": "Remove\u0020itemscope,\u0020itemprop,\u0020itemtype\u0020from\u0020elements.",
             "url": "classes/AGC-agc-service-Service.html#method_fixSchema"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Afetch_contents\u0028\u0029",
-            "name": "fetch_contents",
-            "summary": "fetch\u0020content\u0020based\u0020file\u0020time\u0020created.",
-            "url": "classes/AGC-agc-service-Service.html#method_fetch_contents"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenerateIndex\u0028\u0029",
+            "name": "generateIndex",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_generateIndex"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetDate\u0028\u0029",
-            "name": "getDate",
-            "summary": "Get\u0020custom\u0020date\u0020format.",
-            "url": "classes/AGC-agc-service-Service.html#method_getDate"
-        },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Ahtmlcom\u0028\u0029",
-            "name": "htmlcom",
-            "summary": "Generate\u0020html\u0020document.",
-            "url": "classes/AGC-agc-service-Service.html#method_htmlcom"
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AvalidateContent\u0028\u0029",
+            "name": "validateContent",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_validateContent"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aagc\u0028\u0029",
             "name": "agc",
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_agc"
-        },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenerateIndex\u0028\u0029",
-            "name": "generateIndex",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_generateIndex"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenerateArticle\u0028\u0029",
             "name": "generateArticle",
@@ -1096,25 +1111,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_generateTranslation"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AvalidateContent\u0028\u0029",
-            "name": "validateContent",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_validateContent"
-        },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetHTML\u0028\u0029",
-            "name": "getHTML",
-            "summary": "Parse\u0020HTML\u0020string\u0020into\u0020DOMDocument.",
-            "url": "classes/AGC-agc-service-Service.html#method_getHTML"
-        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aanchors\u0028\u0029",
             "name": "anchors",
             "summary": "get\u0020all\u0020anchors\u0020from\u0020dom.",
             "url": "classes/AGC-agc-service-Service.html#method_anchors"
-        },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003A\u0024title",
-            "name": "title",
-            "summary": "Title\u0020AGC.",
-            "url": "classes/AGC-agc-service-Service.html#property_title"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AfixShare\u0028\u0029",
             "name": "fixShare",
@@ -1126,11 +1126,6 @@ Search.appendIndex(
             "summary": "find\u0020element\u0020in\u0020dom\u0020using\u0020CSS\u0020Selector.",
             "url": "classes/AGC-agc-service-Service.html#method_find"
         },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Averifydom\u0028\u0029",
-            "name": "verifydom",
-            "summary": "Validate\u0020\u0024this\u002D\u003Edom\u0020instance\u0020of\u0020str_get_html.",
-            "url": "classes/AGC-agc-service-Service.html#method_verifydom"
-        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgenerateHash\u0028\u0029",
             "name": "generateHash",
             "summary": "",
@@ -1141,15 +1136,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-agc-service-Service.html#method_getDomainServices"
         },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetClass\u0028\u0029",
+            "name": "getClass",
+            "summary": "get\u0020available\u0020Class.",
+            "url": "classes/AGC-agc-service-Service.html#method_getClass"
+        },                {
+            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AisRestrictedDomain\u0028\u0029",
+            "name": "isRestrictedDomain",
+            "summary": "",
+            "url": "classes/AGC-agc-service-Service.html#method_isRestrictedDomain"
+        },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003Aoutput\u0028\u0029",
             "name": "output",
             "summary": "Fix\u0020output\u0020content.",
             "url": "classes/AGC-agc-service-Service.html#method_output"
-        },                {
-            "fqsen": "\\AGC\\agc_service\\Service\u003A\u003AgetServices\u0028\u0029",
-            "name": "getServices",
-            "summary": "",
-            "url": "classes/AGC-agc-service-Service.html#method_getServices"
         },                {
             "fqsen": "\\AGC\\agc_service\\Service\u003A\u003A\u0024serviceList",
             "name": "serviceList",
@@ -1301,11 +1301,6 @@ Search.appendIndex(
             "summary": "Expands\u0020the\u0020home\u0020directory\u0020alias\u0020\u0027\u007E\u0027\u0020to\u0020the\u0020full\u0020path.",
             "url": "namespaces/default.html#function_expandHomeDirectory"
         },                {
-            "fqsen": "\\get_client_ip\u0028\u0029",
-            "name": "get_client_ip",
-            "summary": "Get\u0020client\u0020ip,\u0020when\u0020getenv\u0020supported\u0020\u0028maybe\u0020cli\u0029.",
-            "url": "namespaces/default.html#function_get_client_ip"
-        },                {
             "fqsen": "\\getClient\u0028\u0029",
             "name": "getClient",
             "summary": "",
@@ -1321,15 +1316,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/agc.html#method___construct"
         },                {
-            "fqsen": "\\agc\u003A\u003Asanitizemail\u0028\u0029",
-            "name": "sanitizemail",
-            "summary": "",
-            "url": "classes/agc.html#method_sanitizemail"
-        },                {
             "fqsen": "\\agc\u003A\u003Ai\u0028\u0029",
             "name": "i",
             "summary": "",
             "url": "classes/agc.html#method_i"
+        },                {
+            "fqsen": "\\agc\u003A\u003Asanitizemail\u0028\u0029",
+            "name": "sanitizemail",
+            "summary": "",
+            "url": "classes/agc.html#method_sanitizemail"
         },                {
             "fqsen": "\\agc\u003A\u003Adownload_site\u0028\u0029",
             "name": "download_site",
@@ -1371,15 +1366,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGCURL.html"
         },                {
-            "fqsen": "\\AGCURL\u003A\u003Acurl\u0028\u0029",
-            "name": "curl",
-            "summary": "",
-            "url": "classes/AGCURL.html#method_curl"
-        },                {
             "fqsen": "\\AGCURL\u003A\u003Aimgcdn\u0028\u0029",
             "name": "imgcdn",
             "summary": "Image\u0020CDN.",
             "url": "classes/AGCURL.html#method_imgcdn"
+        },                {
+            "fqsen": "\\AGCURL\u003A\u003Acurl\u0028\u0029",
+            "name": "curl",
+            "summary": "",
+            "url": "classes/AGCURL.html#method_curl"
         },                {
             "fqsen": "\\AGCJS",
             "name": "AGCJS",
@@ -1476,16 +1471,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Proxy.html"
         },                {
-            "fqsen": "\\Proxy\u003A\u003Ahttp_get_contents\u0028\u0029",
-            "name": "http_get_contents",
-            "summary": "",
-            "url": "classes/Proxy.html#method_http_get_contents"
-        },                {
-            "fqsen": "\\Proxy\u003A\u003Aget_contents\u0028\u0029",
-            "name": "get_contents",
-            "summary": "",
-            "url": "classes/Proxy.html#method_get_contents"
-        },                {
             "fqsen": "\\Proxy\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
@@ -1495,6 +1480,36 @@ Search.appendIndex(
             "name": "initDefaultProxies",
             "summary": "",
             "url": "classes/Proxy.html#method_initDefaultProxies"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003Aadd\u0028\u0029",
+            "name": "add",
+            "summary": "",
+            "url": "classes/Proxy.html#method_add"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003Atimeupdate\u0028\u0029",
+            "name": "timeupdate",
+            "summary": "",
+            "url": "classes/Proxy.html#method_timeupdate"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003Aget_contents\u0028\u0029",
+            "name": "get_contents",
+            "summary": "",
+            "url": "classes/Proxy.html#method_get_contents"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003Ahttp_get_contents\u0028\u0029",
+            "name": "http_get_contents",
+            "summary": "",
+            "url": "classes/Proxy.html#method_http_get_contents"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003AinStore\u0028\u0029",
+            "name": "inStore",
+            "summary": "",
+            "url": "classes/Proxy.html#method_inStore"
+        },                {
+            "fqsen": "\\Proxy\u003A\u003Adump\u0028\u0029",
+            "name": "dump",
+            "summary": "",
+            "url": "classes/Proxy.html#method_dump"
         },                {
             "fqsen": "\\Proxy\u003A\u003AgetProxies\u0028\u0029",
             "name": "getProxies",
@@ -1515,26 +1530,6 @@ Search.appendIndex(
             "name": "getIP",
             "summary": "",
             "url": "classes/Proxy.html#method_getIP"
-        },                {
-            "fqsen": "\\Proxy\u003A\u003Aadd\u0028\u0029",
-            "name": "add",
-            "summary": "",
-            "url": "classes/Proxy.html#method_add"
-        },                {
-            "fqsen": "\\Proxy\u003A\u003AinStore\u0028\u0029",
-            "name": "inStore",
-            "summary": "",
-            "url": "classes/Proxy.html#method_inStore"
-        },                {
-            "fqsen": "\\Proxy\u003A\u003Adump\u0028\u0029",
-            "name": "dump",
-            "summary": "",
-            "url": "classes/Proxy.html#method_dump"
-        },                {
-            "fqsen": "\\Proxy\u003A\u003Atimeupdate\u0028\u0029",
-            "name": "timeupdate",
-            "summary": "",
-            "url": "classes/Proxy.html#method_timeupdate"
         },                {
             "fqsen": "\\Proxy\u003A\u003A\u0024store",
             "name": "store",
@@ -1616,14 +1611,9 @@ Search.appendIndex(
             "summary": "",
             "url": "namespaces/default.html#function_checkssl"
         },                {
-            "fqsen": "\\dimaslanjaka_safelink\u0028\u0029",
-            "name": "dimaslanjaka_safelink",
-            "summary": "",
-            "url": "namespaces/default.html#function_dimaslanjaka_safelink"
-        },                {
             "fqsen": "\\getQuery\u0028\u0029",
             "name": "getQuery",
-            "summary": "",
+            "summary": "Get\u0020Query\u0020Value\u0020From\u0020URL",
             "url": "namespaces/default.html#function_getQuery"
         },                {
             "fqsen": "\\parse_ytID_from_url\u0028\u0029",
@@ -1635,11 +1625,6 @@ Search.appendIndex(
             "name": "file_get_contents_YT",
             "summary": "",
             "url": "namespaces/default.html#function_file_get_contents_YT"
-        },                {
-            "fqsen": "\\getUserIP\u0028\u0029",
-            "name": "getUserIP",
-            "summary": "",
-            "url": "namespaces/default.html#function_getUserIP"
         },                {
             "fqsen": "\\RealSubdir\u0028\u0029",
             "name": "RealSubdir",
@@ -1713,8 +1698,13 @@ Search.appendIndex(
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Generate\u0020index.json.",
             "url": "classes/AGC-loader-gtrans.html#method___construct"
+        },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003AcURL\u0028\u0029",
+            "name": "cURL",
+            "summary": "",
+            "url": "classes/AGC-loader-gtrans.html#method_cURL"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Ai\u0028\u0029",
             "name": "i",
@@ -1736,20 +1726,45 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#method_build_url"
         },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Atranslate\u0028\u0029",
+            "name": "translate",
+            "summary": "",
+            "url": "classes/AGC-loader-gtrans.html#method_translate"
+        },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Abuild_url_2\u0028\u0029",
             "name": "build_url_2",
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#method_build_url_2"
+        },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Aparsetry\u0028\u0029",
+            "name": "parsetry",
+            "summary": "",
+            "url": "classes/AGC-loader-gtrans.html#method_parsetry"
+        },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Arefresh_proxy\u0028\u0029",
+            "name": "refresh_proxy",
+            "summary": "",
+            "url": "classes/AGC-loader-gtrans.html#method_refresh_proxy"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Averify_article\u0028\u0029",
             "name": "verify_article",
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#method_verify_article"
         },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Atranslate\u0028\u0029",
-            "name": "translate",
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Adecode_html\u0028\u0029",
+            "name": "decode_html",
             "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#method_translate"
+            "url": "classes/AGC-loader-gtrans.html#method_decode_html"
+        },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Aclean\u0028\u0029",
+            "name": "clean",
+            "summary": "Cleaning\u0020body\u0020html\u0020tags.",
+            "url": "classes/AGC-loader-gtrans.html#method_clean"
+        },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Agrammar\u0028\u0029",
+            "name": "grammar",
+            "summary": "Fix\u0020grammar.",
+            "url": "classes/AGC-loader-gtrans.html#method_grammar"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Afilter_result\u0028\u0029",
             "name": "filter_result",
@@ -1761,35 +1776,10 @@ Search.appendIndex(
             "summary": "Return\u0020string.",
             "url": "classes/AGC-loader-gtrans.html#method___toString"
         },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Adecode_html\u0028\u0029",
-            "name": "decode_html",
-            "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#method_decode_html"
-        },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Adownload_site\u0028\u0029",
             "name": "download_site",
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#method_download_site"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Agrammar\u0028\u0029",
-            "name": "grammar",
-            "summary": "Fix\u0020grammar.",
-            "url": "classes/AGC-loader-gtrans.html#method_grammar"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Aclean\u0028\u0029",
-            "name": "clean",
-            "summary": "Cleaning\u0020body\u0020html\u0020tags.",
-            "url": "classes/AGC-loader-gtrans.html#method_clean"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Aparsetry\u0028\u0029",
-            "name": "parsetry",
-            "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#method_parsetry"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Arefresh_proxy\u0028\u0029",
-            "name": "refresh_proxy",
-            "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#method_refresh_proxy"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Aaddtitle\u0028\u0029",
             "name": "addtitle",
@@ -1806,35 +1796,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#method_amp"
         },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003AcURL\u0028\u0029",
-            "name": "cURL",
-            "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#method_cURL"
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Afetch_contents\u0028\u0029",
+            "name": "fetch_contents",
+            "summary": "fetch\u0020content\u0020based\u0020file\u0020time\u0020created.",
+            "url": "classes/AGC-loader-gtrans.html#method_fetch_contents"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Acurl_err\u0028\u0029",
             "name": "curl_err",
             "summary": "Handle\u0020curl\u0020error.",
             "url": "classes/AGC-loader-gtrans.html#method_curl_err"
         },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003Afetch_contents\u0028\u0029",
-            "name": "fetch_contents",
-            "summary": "fetch\u0020content\u0020based\u0020file\u0020time\u0020created.",
-            "url": "classes/AGC-loader-gtrans.html#method_fetch_contents"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024curl",
-            "name": "curl",
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024_instance",
+            "name": "_instance",
             "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#property_curl"
+            "url": "classes/AGC-loader-gtrans.html#property__instance"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024string",
             "name": "string",
             "summary": "",
             "url": "classes/AGC-loader-gtrans.html#property_string"
-        },                {
-            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024_instance",
-            "name": "_instance",
-            "summary": "",
-            "url": "classes/AGC-loader-gtrans.html#property__instance"
         },                {
             "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024logtxt",
             "name": "logtxt",
@@ -1856,6 +1836,11 @@ Search.appendIndex(
             "summary": "dom\u0020result.",
             "url": "classes/AGC-loader-gtrans.html#property_fetch_contents_dom"
         },                {
+            "fqsen": "\\AGC\\loader\\gtrans\u003A\u003A\u0024curl",
+            "name": "curl",
+            "summary": "",
+            "url": "classes/AGC-loader-gtrans.html#property_curl"
+        },                {
             "fqsen": "\\AGC\\loader\\agcparser",
             "name": "agcparser",
             "summary": "",
@@ -1871,11 +1856,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/AGC-loader-agcparser.html#method_getInstance"
         },                {
-            "fqsen": "\\AGC\\loader\\agcparser\u003A\u003Aclean_inline_style\u0028\u0029",
-            "name": "clean_inline_style",
-            "summary": "Clean\u0020inline\u0020style\u0020from\u0020tags.",
-            "url": "classes/AGC-loader-agcparser.html#method_clean_inline_style"
-        },                {
             "fqsen": "\\AGC\\loader\\agcparser\u003A\u003Adetecturl\u0028\u0029",
             "name": "detecturl",
             "summary": "",
@@ -1885,6 +1865,11 @@ Search.appendIndex(
             "name": "precode",
             "summary": "",
             "url": "classes/AGC-loader-agcparser.html#method_precode"
+        },                {
+            "fqsen": "\\AGC\\loader\\agcparser\u003A\u003Aclean_inline_style\u0028\u0029",
+            "name": "clean_inline_style",
+            "summary": "Clean\u0020inline\u0020style\u0020from\u0020tags.",
+            "url": "classes/AGC-loader-agcparser.html#method_clean_inline_style"
         },                {
             "fqsen": "\\AGC\\loader\\agcparser\u003A\u003AremoveSchema\u0028\u0029",
             "name": "removeSchema",
@@ -1966,15 +1951,20 @@ Search.appendIndex(
             "summary": "Unset\u0020multiple\u0020keys\u0020in\u0020array.",
             "url": "classes/ArrayHelper-helper.html#method_unset"
         },                {
-            "fqsen": "\\ArrayHelper\\helper\u003A\u003ArecursiveFind\u0028\u0029",
-            "name": "recursiveFind",
-            "summary": "",
-            "url": "classes/ArrayHelper-helper.html#method_recursiveFind"
-        },                {
             "fqsen": "\\ArrayHelper\\helper\u003A\u003Aarray_search\u0028\u0029",
             "name": "array_search",
             "summary": "",
             "url": "classes/ArrayHelper-helper.html#method_array_search"
+        },                {
+            "fqsen": "\\ArrayHelper\\helper\u003A\u003AisAssoc\u0028\u0029",
+            "name": "isAssoc",
+            "summary": "Is\u0020Associative\u0020array.",
+            "url": "classes/ArrayHelper-helper.html#method_isAssoc"
+        },                {
+            "fqsen": "\\ArrayHelper\\helper\u003A\u003ArecursiveFind\u0028\u0029",
+            "name": "recursiveFind",
+            "summary": "",
+            "url": "classes/ArrayHelper-helper.html#method_recursiveFind"
         },                {
             "fqsen": "\\ArrayHelper\\helper\u003A\u003Arecursive_array_search\u0028\u0029",
             "name": "recursive_array_search",
@@ -2015,11 +2005,6 @@ Search.appendIndex(
             "name": "get_value_of_key",
             "summary": "",
             "url": "classes/ArrayHelper-helper.html#method_get_value_of_key"
-        },                {
-            "fqsen": "\\ArrayHelper\\helper\u003A\u003AisAssoc\u0028\u0029",
-            "name": "isAssoc",
-            "summary": "Is\u0020Associative\u0020array.",
-            "url": "classes/ArrayHelper-helper.html#method_isAssoc"
         },                {
             "fqsen": "\\ArrayHelper\\helper\u003A\u003AisSequent\u0028\u0029",
             "name": "isSequent",
@@ -2066,11 +2051,6 @@ Search.appendIndex(
             "summary": "Sets\u0020max\u0020image\u0020height\u0020and\u0020width\u0020limit.",
             "url": "classes/Bulletproof-Image.html#method_setDimension"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetPath\u0028\u0029",
-            "name": "getPath",
-            "summary": "Returns\u0020the\u0020full\u0020path\u0020of\u0020the\u0020image\u0020ex\u0020\u0027storage\/image.mime\u0027.",
-            "url": "classes/Bulletproof-Image.html#method_getPath"
-        },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003AgetSize\u0028\u0029",
             "name": "getSize",
             "summary": "Returns\u0020the\u0020image\u0020size\u0020in\u0020bytes.",
@@ -2086,35 +2066,25 @@ Search.appendIndex(
             "summary": "Returns\u0020a\u0020JSON\u0020format\u0020of\u0020the\u0020image\u0020width,\u0020height,\u0020name,\u0020mime\u0020.",
             "url": "classes/Bulletproof-Image.html#method_getJson"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetMime\u0028\u0029",
-            "name": "getMime",
-            "summary": "Returns\u0020the\u0020image\u0020mime\u0020type.",
-            "url": "classes/Bulletproof-Image.html#method_getMime"
-        },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AsetMime\u0028\u0029",
-            "name": "setMime",
-            "summary": "Define\u0020a\u0020mime\u0020type\u0020for\u0020uploading.",
-            "url": "classes/Bulletproof-Image.html#method_setMime"
-        },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetImageMime\u0028\u0029",
-            "name": "getImageMime",
-            "summary": "Gets\u0020the\u0020real\u0020image\u0020mime\u0020type.",
-            "url": "classes/Bulletproof-Image.html#method_getImageMime"
-        },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003AgetError\u0028\u0029",
             "name": "getError",
             "summary": "Returns\u0020error\u0020string.",
             "url": "classes/Bulletproof-Image.html#method_getError"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetName\u0028\u0029",
-            "name": "getName",
-            "summary": "Returns\u0020the\u0020image\u0020name.",
-            "url": "classes/Bulletproof-Image.html#method_getName"
+            "fqsen": "\\Bulletproof\\Image\u003A\u003Aupload\u0028\u0029",
+            "name": "upload",
+            "summary": "Validate\u0020and\u0020save\u0020\u0028upload\u0029\u0020file.",
+            "url": "classes/Bulletproof-Image.html#method_upload"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AsetName\u0028\u0029",
-            "name": "setName",
-            "summary": "Provide\u0020image\u0020name\u0020if\u0020not\u0020provided.",
-            "url": "classes/Bulletproof-Image.html#method_setName"
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AconstraintValidator\u0028\u0029",
+            "name": "constraintValidator",
+            "summary": "Validate\u0020image\u0020size,\u0020dimension\u0020or\u0020mimetypes.",
+            "url": "classes/Bulletproof-Image.html#method_constraintValidator"
+        },                {
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetImageMime\u0028\u0029",
+            "name": "getImageMime",
+            "summary": "Gets\u0020the\u0020real\u0020image\u0020mime\u0020type.",
+            "url": "classes/Bulletproof-Image.html#method_getImageMime"
         },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003AgetWidth\u0028\u0029",
             "name": "getWidth",
@@ -2126,35 +2096,50 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020image\u0020height\u0020in\u0020pixels.",
             "url": "classes/Bulletproof-Image.html#method_getHeight"
         },                {
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AisSaved\u0028\u0029",
+            "name": "isSaved",
+            "summary": "Final\u0020upload\u0020method\u0020to\u0020be\u0020called,\u0020isolated\u0020for\u0020testing\u0020purposes.",
+            "url": "classes/Bulletproof-Image.html#method_isSaved"
+        },                {
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetPath\u0028\u0029",
+            "name": "getPath",
+            "summary": "Returns\u0020the\u0020full\u0020path\u0020of\u0020the\u0020image\u0020ex\u0020\u0027storage\/image.mime\u0027.",
+            "url": "classes/Bulletproof-Image.html#method_getPath"
+        },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003AgetStorage\u0028\u0029",
             "name": "getStorage",
             "summary": "Returns\u0020the\u0020storage\u0020\/\u0020folder\u0020name.",
             "url": "classes/Bulletproof-Image.html#method_getStorage"
-        },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AisDirectoryValid\u0028\u0029",
-            "name": "isDirectoryValid",
-            "summary": "Validate\u0020directory\/permission\u0020before\u0020creating\u0020a\u0020folder.",
-            "url": "classes/Bulletproof-Image.html#method_isDirectoryValid"
         },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003AsetStorage\u0028\u0029",
             "name": "setStorage",
             "summary": "Creates\u0020a\u0020storage\u0020for\u0020upload\u0020storage.",
             "url": "classes/Bulletproof-Image.html#method_setStorage"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AconstraintValidator\u0028\u0029",
-            "name": "constraintValidator",
-            "summary": "Validate\u0020image\u0020size,\u0020dimension\u0020or\u0020mimetypes.",
-            "url": "classes/Bulletproof-Image.html#method_constraintValidator"
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetName\u0028\u0029",
+            "name": "getName",
+            "summary": "Returns\u0020the\u0020image\u0020name.",
+            "url": "classes/Bulletproof-Image.html#method_getName"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003Aupload\u0028\u0029",
-            "name": "upload",
-            "summary": "Validate\u0020and\u0020save\u0020\u0028upload\u0029\u0020file.",
-            "url": "classes/Bulletproof-Image.html#method_upload"
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AsetName\u0028\u0029",
+            "name": "setName",
+            "summary": "Provide\u0020image\u0020name\u0020if\u0020not\u0020provided.",
+            "url": "classes/Bulletproof-Image.html#method_setName"
         },                {
-            "fqsen": "\\Bulletproof\\Image\u003A\u003AisSaved\u0028\u0029",
-            "name": "isSaved",
-            "summary": "Final\u0020upload\u0020method\u0020to\u0020be\u0020called,\u0020isolated\u0020for\u0020testing\u0020purposes.",
-            "url": "classes/Bulletproof-Image.html#method_isSaved"
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AgetMime\u0028\u0029",
+            "name": "getMime",
+            "summary": "Returns\u0020the\u0020image\u0020mime\u0020type.",
+            "url": "classes/Bulletproof-Image.html#method_getMime"
+        },                {
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AsetMime\u0028\u0029",
+            "name": "setMime",
+            "summary": "Define\u0020a\u0020mime\u0020type\u0020for\u0020uploading.",
+            "url": "classes/Bulletproof-Image.html#method_setMime"
+        },                {
+            "fqsen": "\\Bulletproof\\Image\u003A\u003AisDirectoryValid\u0028\u0029",
+            "name": "isDirectoryValid",
+            "summary": "Validate\u0020directory\/permission\u0020before\u0020creating\u0020a\u0020folder.",
+            "url": "classes/Bulletproof-Image.html#method_isDirectoryValid"
         },                {
             "fqsen": "\\Bulletproof\\Image\u003A\u003A\u0024name",
             "name": "name",
@@ -2346,16 +2331,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Cookie-helper.html#property_domain"
         },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003A__call\u0028\u0029",
-            "name": "__call",
-            "summary": "This\u0020magic\u0020method\u0020is\u0020called\u0020everytime\u0020an\u0020inaccessible\u0020method\u0020is\u0020called\n\u0028either\u0020by\u0020visibility\u0020contrains\u0020or\u0020it\u0020doesn\u0027t\u0020exist\u0029\nHere\u0020we\u0020are\u0020simulating\u0020shared\u0020protected\u0020methods\u0020across\u0020\u0022package\u0022\u0020classes\nThis\u0020method\u0020is\u0020inherited\u0020by\u0020all\u0020child\u0020classes\u0020of\u0020Package.",
-            "url": "classes/Cookie-helper.html#method___call"
-        },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020cookie\u0020helper.",
-            "url": "classes/Cookie-helper.html#method_set"
-        },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "Get\u0020Cookie\u0020By\u0020Name.",
@@ -2366,20 +2341,20 @@ Search.appendIndex(
             "summary": "Destroy\u0020all\u0020cookies\u0020except\u0020php\u0020session\u0020and\u0020spesific\u0020cookies\u0020name.",
             "url": "classes/Cookie-helper.html#method_destroy"
         },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003Aall\u0028\u0029",
-            "name": "all",
+            "fqsen": "\\Cookie\\helper\u003A\u003Aget_current_path\u0028\u0029",
+            "name": "get_current_path",
             "summary": "",
-            "url": "classes/Cookie-helper.html#method_all"
+            "url": "classes/Cookie-helper.html#method_get_current_path"
         },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Aget_current_url\u0028\u0029",
             "name": "get_current_url",
             "summary": "",
             "url": "classes/Cookie-helper.html#method_get_current_url"
         },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003Aget_current_path\u0028\u0029",
-            "name": "get_current_path",
+            "fqsen": "\\Cookie\\helper\u003A\u003Aall\u0028\u0029",
+            "name": "all",
             "summary": "",
-            "url": "classes/Cookie-helper.html#method_get_current_path"
+            "url": "classes/Cookie-helper.html#method_all"
         },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Areconstruct_url\u0028\u0029",
             "name": "reconstruct_url",
@@ -2391,30 +2366,40 @@ Search.appendIndex(
             "summary": "Set\u0020cookie\u0020by\u0020days.",
             "url": "classes/Cookie-helper.html#method_day"
         },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003Amins\u0028\u0029",
-            "name": "mins",
-            "summary": "Set\u0020cookie\u0020by\u0020minutes.",
-            "url": "classes/Cookie-helper.html#method_mins"
+            "fqsen": "\\Cookie\\helper\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020cookie\u0020helper.",
+            "url": "classes/Cookie-helper.html#method_set"
         },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Ahours\u0028\u0029",
             "name": "hours",
             "summary": "Set\u0020cookie\u0020by\u0020hours.",
             "url": "classes/Cookie-helper.html#method_hours"
         },                {
-            "fqsen": "\\Cookie\\helper\u003A\u003Ahas\u0028\u0029",
-            "name": "has",
-            "summary": "Check\u0020cookie\u0020exist.",
-            "url": "classes/Cookie-helper.html#method_has"
-        },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Aone\u0028\u0029",
             "name": "one",
             "summary": "one\u0020time\u0020function\u0020when\u0020cookie\u0020name\u0020empty.",
             "url": "classes/Cookie-helper.html#method_one"
         },                {
+            "fqsen": "\\Cookie\\helper\u003A\u003Ahas\u0028\u0029",
+            "name": "has",
+            "summary": "Check\u0020cookie\u0020exist.",
+            "url": "classes/Cookie-helper.html#method_has"
+        },                {
+            "fqsen": "\\Cookie\\helper\u003A\u003Amins\u0028\u0029",
+            "name": "mins",
+            "summary": "Set\u0020cookie\u0020by\u0020minutes.",
+            "url": "classes/Cookie-helper.html#method_mins"
+        },                {
             "fqsen": "\\Cookie\\helper\u003A\u003Adel\u0028\u0029",
             "name": "del",
             "summary": "Delete\u0020cookie.",
             "url": "classes/Cookie-helper.html#method_del"
+        },                {
+            "fqsen": "\\Cookie\\helper\u003A\u003A__call\u0028\u0029",
+            "name": "__call",
+            "summary": "This\u0020magic\u0020method\u0020is\u0020called\u0020everytime\u0020an\u0020inaccessible\u0020method\u0020is\u0020called\n\u0028either\u0020by\u0020visibility\u0020contrains\u0020or\u0020it\u0020doesn\u0027t\u0020exist\u0029\nHere\u0020we\u0020are\u0020simulating\u0020shared\u0020protected\u0020methods\u0020across\u0020\u0022package\u0022\u0020classes\nThis\u0020method\u0020is\u0020inherited\u0020by\u0020all\u0020child\u0020classes\u0020of\u0020Package.",
+            "url": "classes/Cookie-helper.html#method___call"
         },                {
             "fqsen": "\\Crypto\\Cipher",
             "name": "Cipher",
@@ -2426,25 +2411,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Crypto-Cipher.html#method___construct"
         },                {
-            "fqsen": "\\Crypto\\Cipher\u003A\u003AgetOptions\u0028\u0029",
-            "name": "getOptions",
+            "fqsen": "\\Crypto\\Cipher\u003A\u003Aencrypt\u0028\u0029",
+            "name": "encrypt",
             "summary": "",
-            "url": "classes/Crypto-Cipher.html#method_getOptions"
+            "url": "classes/Crypto-Cipher.html#method_encrypt"
         },                {
-            "fqsen": "\\Crypto\\Cipher\u003A\u003AgenerateRandomIV\u0028\u0029",
-            "name": "generateRandomIV",
+            "fqsen": "\\Crypto\\Cipher\u003A\u003AencryptOrDecrypt\u0028\u0029",
+            "name": "encryptOrDecrypt",
             "summary": "",
-            "url": "classes/Crypto-Cipher.html#method_generateRandomIV"
+            "url": "classes/Crypto-Cipher.html#method_encryptOrDecrypt"
         },                {
             "fqsen": "\\Crypto\\Cipher\u003A\u003AgetComputedHash\u0028\u0029",
             "name": "getComputedHash",
             "summary": "",
             "url": "classes/Crypto-Cipher.html#method_getComputedHash"
         },                {
-            "fqsen": "\\Crypto\\Cipher\u003A\u003Aencrypt\u0028\u0029",
-            "name": "encrypt",
+            "fqsen": "\\Crypto\\Cipher\u003A\u003AgetOptions\u0028\u0029",
+            "name": "getOptions",
             "summary": "",
-            "url": "classes/Crypto-Cipher.html#method_encrypt"
+            "url": "classes/Crypto-Cipher.html#method_getOptions"
         },                {
             "fqsen": "\\Crypto\\Cipher\u003A\u003Adecrypt\u0028\u0029",
             "name": "decrypt",
@@ -2456,15 +2441,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Crypto-Cipher.html#method_encryptPlainTextWithRandomIV"
         },                {
+            "fqsen": "\\Crypto\\Cipher\u003A\u003AgenerateRandomIV\u0028\u0029",
+            "name": "generateRandomIV",
+            "summary": "",
+            "url": "classes/Crypto-Cipher.html#method_generateRandomIV"
+        },                {
             "fqsen": "\\Crypto\\Cipher\u003A\u003AdecryptCipherTextWithRandomIV\u0028\u0029",
             "name": "decryptCipherTextWithRandomIV",
             "summary": "",
             "url": "classes/Crypto-Cipher.html#method_decryptCipherTextWithRandomIV"
-        },                {
-            "fqsen": "\\Crypto\\Cipher\u003A\u003AencryptOrDecrypt\u0028\u0029",
-            "name": "encryptOrDecrypt",
-            "summary": "",
-            "url": "classes/Crypto-Cipher.html#method_encryptOrDecrypt"
         },                {
             "fqsen": "\\Crypto\\Cipher\u003A\u003A\u0024_opts",
             "name": "_opts",
@@ -2541,15 +2526,15 @@ Search.appendIndex(
             "summary": "Decrypt\u0020string.",
             "url": "classes/Crypto-Encryption.html#method_decrypt"
         },                {
-            "fqsen": "\\Crypto\\Encryption\u003A\u003Aencrypt\u0028\u0029",
-            "name": "encrypt",
-            "summary": "Encrypt\u0020string.",
-            "url": "classes/Crypto-Encryption.html#method_encrypt"
-        },                {
             "fqsen": "\\Crypto\\Encryption\u003A\u003AencryptMethodLength\u0028\u0029",
             "name": "encryptMethodLength",
             "summary": "Get\u0020encrypt\u0020method\u0020length\u0020number\u0020\u0028128,\u0020192,\u0020256\u0029.",
             "url": "classes/Crypto-Encryption.html#method_encryptMethodLength"
+        },                {
+            "fqsen": "\\Crypto\\Encryption\u003A\u003Aencrypt\u0028\u0029",
+            "name": "encrypt",
+            "summary": "Encrypt\u0020string.",
+            "url": "classes/Crypto-Encryption.html#method_encrypt"
         },                {
             "fqsen": "\\Crypto\\Encryption\u003A\u003AsetCipherMethod\u0028\u0029",
             "name": "setCipherMethod",
@@ -2576,40 +2561,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Crypto-openssl.html"
         },                {
-            "fqsen": "\\Crypto\\openssl\u003A\u003Aiv_bytes\u0028\u0029",
-            "name": "iv_bytes",
-            "summary": "",
-            "url": "classes/Crypto-openssl.html#method_iv_bytes"
-        },                {
             "fqsen": "\\Crypto\\openssl\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
             "url": "classes/Crypto-openssl.html#method___construct"
-        },                {
-            "fqsen": "\\Crypto\\openssl\u003A\u003Aencrypt\u0028\u0029",
-            "name": "encrypt",
-            "summary": "encrypt\u0020plaintext\u0020string.",
-            "url": "classes/Crypto-openssl.html#method_encrypt"
-        },                {
-            "fqsen": "\\Crypto\\openssl\u003A\u003Adecrypt\u0028\u0029",
-            "name": "decrypt",
-            "summary": "decrypt\u0020encrypted\u0020string.",
-            "url": "classes/Crypto-openssl.html#method_decrypt"
         },                {
             "fqsen": "\\Crypto\\openssl\u003A\u003Ainstance\u0028\u0029",
             "name": "instance",
             "summary": "static\u0020instances.",
             "url": "classes/Crypto-openssl.html#method_instance"
         },                {
-            "fqsen": "\\Crypto\\openssl\u003A\u003A\u0024method",
-            "name": "method",
-            "summary": "",
-            "url": "classes/Crypto-openssl.html#property_method"
+            "fqsen": "\\Crypto\\openssl\u003A\u003Aencrypt\u0028\u0029",
+            "name": "encrypt",
+            "summary": "encrypt\u0020plaintext\u0020string.",
+            "url": "classes/Crypto-openssl.html#method_encrypt"
         },                {
-            "fqsen": "\\Crypto\\openssl\u003A\u003A\u0024key",
-            "name": "key",
+            "fqsen": "\\Crypto\\openssl\u003A\u003Aiv_bytes\u0028\u0029",
+            "name": "iv_bytes",
             "summary": "",
-            "url": "classes/Crypto-openssl.html#property_key"
+            "url": "classes/Crypto-openssl.html#method_iv_bytes"
+        },                {
+            "fqsen": "\\Crypto\\openssl\u003A\u003Adecrypt\u0028\u0029",
+            "name": "decrypt",
+            "summary": "decrypt\u0020encrypted\u0020string.",
+            "url": "classes/Crypto-openssl.html#method_decrypt"
         },                {
             "fqsen": "\\Crypto\\openssl\u003A\u003A\u0024static_key",
             "name": "static_key",
@@ -2621,6 +2596,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Crypto-openssl.html#property__instance"
         },                {
+            "fqsen": "\\Crypto\\openssl\u003A\u003A\u0024method",
+            "name": "method",
+            "summary": "",
+            "url": "classes/Crypto-openssl.html#property_method"
+        },                {
+            "fqsen": "\\Crypto\\openssl\u003A\u003A\u0024key",
+            "name": "key",
+            "summary": "",
+            "url": "classes/Crypto-openssl.html#property_key"
+        },                {
             "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib",
             "name": "CryptoLib",
             "summary": "",
@@ -2631,25 +2616,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method___construct"
         },                {
-            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AgetOptions\u0028\u0029",
-            "name": "getOptions",
+            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003Aencrypt\u0028\u0029",
+            "name": "encrypt",
             "summary": "",
-            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_getOptions"
+            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_encrypt"
         },                {
-            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AgenerateRandomIV\u0028\u0029",
-            "name": "generateRandomIV",
+            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AencryptOrDecrypt\u0028\u0029",
+            "name": "encryptOrDecrypt",
             "summary": "",
-            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_generateRandomIV"
+            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_encryptOrDecrypt"
         },                {
             "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AgetComputedHash\u0028\u0029",
             "name": "getComputedHash",
             "summary": "",
             "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_getComputedHash"
         },                {
-            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003Aencrypt\u0028\u0029",
-            "name": "encrypt",
+            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AgetOptions\u0028\u0029",
+            "name": "getOptions",
             "summary": "",
-            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_encrypt"
+            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_getOptions"
         },                {
             "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003Adecrypt\u0028\u0029",
             "name": "decrypt",
@@ -2661,15 +2646,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_encryptPlainTextWithRandomIV"
         },                {
+            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AgenerateRandomIV\u0028\u0029",
+            "name": "generateRandomIV",
+            "summary": "",
+            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_generateRandomIV"
+        },                {
             "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AdecryptCipherTextWithRandomIV\u0028\u0029",
             "name": "decryptCipherTextWithRandomIV",
             "summary": "",
             "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_decryptCipherTextWithRandomIV"
-        },                {
-            "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003AencryptOrDecrypt\u0028\u0029",
-            "name": "encryptOrDecrypt",
-            "summary": "",
-            "url": "classes/MrShan0-CryptoLib-CryptoLib.html#method_encryptOrDecrypt"
         },                {
             "fqsen": "\\MrShan0\\CryptoLib\\CryptoLib\u003A\u003A\u0024_opts",
             "name": "_opts",
@@ -2706,15 +2691,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-DB.html#method_query"
         },                {
-            "fqsen": "\\DB\\DB\u003A\u003Aexec\u0028\u0029",
-            "name": "exec",
-            "summary": "",
-            "url": "classes/DB-DB.html#method_exec"
-        },                {
             "fqsen": "\\DB\\DB\u003A\u003AresetQuery\u0028\u0029",
             "name": "resetQuery",
             "summary": "",
             "url": "classes/DB-DB.html#method_resetQuery"
+        },                {
+            "fqsen": "\\DB\\DB\u003A\u003Aexec\u0028\u0029",
+            "name": "exec",
+            "summary": "",
+            "url": "classes/DB-DB.html#method_exec"
         },                {
             "fqsen": "\\DB\\DB\u003A\u003Adelete\u0028\u0029",
             "name": "delete",
@@ -2761,15 +2746,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-DB.html#method_get"
         },                {
-            "fqsen": "\\DB\\DB\u003A\u003AQGet\u0028\u0029",
-            "name": "QGet",
-            "summary": "",
-            "url": "classes/DB-DB.html#method_QGet"
-        },                {
             "fqsen": "\\DB\\DB\u003A\u003AassimbleQuery\u0028\u0029",
             "name": "assimbleQuery",
             "summary": "",
             "url": "classes/DB-DB.html#method_assimbleQuery"
+        },                {
+            "fqsen": "\\DB\\DB\u003A\u003AQGet\u0028\u0029",
+            "name": "QGet",
+            "summary": "",
+            "url": "classes/DB-DB.html#method_QGet"
         },                {
             "fqsen": "\\DB\\DB\u003A\u003A\u0024limit",
             "name": "limit",
@@ -2891,16 +2876,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-MareiCollection.html#method_offsetSet"
         },                {
-            "fqsen": "\\DB\\MareiCollection\u003A\u003AtoJSON\u0028\u0029",
-            "name": "toJSON",
-            "summary": "",
-            "url": "classes/DB-MareiCollection.html#method_toJSON"
-        },                {
-            "fqsen": "\\DB\\MareiCollection\u003A\u003AtoArray\u0028\u0029",
-            "name": "toArray",
-            "summary": "",
-            "url": "classes/DB-MareiCollection.html#method_toArray"
-        },                {
             "fqsen": "\\DB\\MareiCollection\u003A\u003Alist\u0028\u0029",
             "name": "list",
             "summary": "",
@@ -2915,6 +2890,11 @@ Search.appendIndex(
             "name": "last",
             "summary": "",
             "url": "classes/DB-MareiCollection.html#method_last"
+        },                {
+            "fqsen": "\\DB\\MareiCollection\u003A\u003AtoArray\u0028\u0029",
+            "name": "toArray",
+            "summary": "",
+            "url": "classes/DB-MareiCollection.html#method_toArray"
         },                {
             "fqsen": "\\DB\\MareiCollection\u003A\u003AoffsetExists\u0028\u0029",
             "name": "offsetExists",
@@ -2941,6 +2921,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-MareiCollection.html#method___toString"
         },                {
+            "fqsen": "\\DB\\MareiCollection\u003A\u003AtoJSON\u0028\u0029",
+            "name": "toJSON",
+            "summary": "",
+            "url": "classes/DB-MareiCollection.html#method_toJSON"
+        },                {
             "fqsen": "\\DB\\EPDOStatement",
             "name": "EPDOStatement",
             "summary": "",
@@ -2961,40 +2946,40 @@ Search.appendIndex(
             "summary": "Overrides\u0020the\u0020default\u0020\\PDOStatement\u0020method\u0020to\u0020add\u0020the\u0020named\u0020parameter\u0020and\u0020it\u0027s\u0020reference\u0020to\u0020the\u0020array\u0020of\u0020bound\nparameters\u0020\u002D\u0020then\u0020accesses\u0020and\u0020returns\u0020parent\u003A\u003AbindParam\u0020method.",
             "url": "classes/DB-EPDOStatement.html#method_bindParam"
         },                {
+            "fqsen": "\\DB\\EPDOStatement\u003A\u003Adebug\u0028\u0029",
+            "name": "debug",
+            "summary": "",
+            "url": "classes/DB-EPDOStatement.html#method_debug"
+        },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003AbindValue\u0028\u0029",
             "name": "bindValue",
             "summary": "Overrides\u0020the\u0020default\u0020\\PDOStatement\u0020method\u0020to\u0020add\u0020the\u0020named\u0020parameter\u0020and\u0020it\u0027s\u0020value\u0020to\u0020the\u0020array\u0020of\u0020bound\u0020values\n\u002D\u0020then\u0020accesses\u0020and\u0020returns\u0020parent\u003A\u003AbindValue\u0020method.",
             "url": "classes/DB-EPDOStatement.html#method_bindValue"
-        },                {
-            "fqsen": "\\DB\\EPDOStatement\u003A\u003AinterpolateQuery\u0028\u0029",
-            "name": "interpolateQuery",
-            "summary": "Copies\u0020\u0024this\u002D\u003EqueryString\u0020then\u0020replaces\u0020bound\u0020markers\u0020with\u0020associated\u0020values\u0020\u0028\u0024this\u002D\u003EqueryString\u0020is\u0020not\u0020modified\nbut\u0020the\u0020resulting\u0020query\u0020string\u0020is\u0020assigned\u0020to\u0020\u0024this\u002D\u003EfullQuery\u0029.",
-            "url": "classes/DB-EPDOStatement.html#method_interpolateQuery"
         },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003Aexecute\u0028\u0029",
             "name": "execute",
             "summary": "Overrides\u0020the\u0020default\u0020\\PDOStatement\u0020method\u0020to\u0020generate\u0020the\u0020full\u0020query\u0020string\u0020\u002D\u0020then\u0020accesses\u0020and\u0020returns\nparent\u003A\u003Aexecute\u0020method.",
             "url": "classes/DB-EPDOStatement.html#method_execute"
         },                {
-            "fqsen": "\\DB\\EPDOStatement\u003A\u003AreplaceMarker\u0028\u0029",
-            "name": "replaceMarker",
-            "summary": "",
-            "url": "classes/DB-EPDOStatement.html#method_replaceMarker"
+            "fqsen": "\\DB\\EPDOStatement\u003A\u003AinterpolateQuery\u0028\u0029",
+            "name": "interpolateQuery",
+            "summary": "Copies\u0020\u0024this\u002D\u003EqueryString\u0020then\u0020replaces\u0020bound\u0020markers\u0020with\u0020associated\u0020values\u0020\u0028\u0024this\u002D\u003EqueryString\u0020is\u0020not\u0020modified\nbut\u0020the\u0020resulting\u0020query\u0020string\u0020is\u0020assigned\u0020to\u0020\u0024this\u002D\u003EfullQuery\u0029.",
+            "url": "classes/DB-EPDOStatement.html#method_interpolateQuery"
         },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003AprepareValue\u0028\u0029",
             "name": "prepareValue",
             "summary": "Prepares\u0020values\u0020for\u0020insertion\u0020into\u0020the\u0020resultant\u0020query\u0020string\u0020\u002D\u0020if\u0020\u0024this\u002D\u003E_pdo\u0020is\u0020a\u0020valid\u0020PDO\u0020object,\u0020we\u0027ll\u0020use\nthat\u0020PDO\u0020driver\u0027s\u0020quote\u0020method\u0020to\u0020prepare\u0020the\u0020query\u0020value.\u0020Otherwise\u003A.",
             "url": "classes/DB-EPDOStatement.html#method_prepareValue"
         },                {
-            "fqsen": "\\DB\\EPDOStatement\u003A\u003Adebug\u0028\u0029",
-            "name": "debug",
-            "summary": "",
-            "url": "classes/DB-EPDOStatement.html#method_debug"
-        },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003Awarn\u0028\u0029",
             "name": "warn",
             "summary": "",
             "url": "classes/DB-EPDOStatement.html#method_warn"
+        },                {
+            "fqsen": "\\DB\\EPDOStatement\u003A\u003AreplaceMarker\u0028\u0029",
+            "name": "replaceMarker",
+            "summary": "",
+            "url": "classes/DB-EPDOStatement.html#method_replaceMarker"
         },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003Aerror\u0028\u0029",
             "name": "error",
@@ -3021,20 +3006,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-EPDOStatement.html#constant_WARNING_USING_ADDSLASHES"
         },                {
-            "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024_pdo",
-            "name": "_pdo",
-            "summary": "",
-            "url": "classes/DB-EPDOStatement.html#property__pdo"
-        },                {
-            "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024logger",
-            "name": "logger",
-            "summary": "",
-            "url": "classes/DB-EPDOStatement.html#property_logger"
-        },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024fullQuery",
             "name": "fullQuery",
             "summary": "",
             "url": "classes/DB-EPDOStatement.html#property_fullQuery"
+        },                {
+            "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024_pdo",
+            "name": "_pdo",
+            "summary": "",
+            "url": "classes/DB-EPDOStatement.html#property__pdo"
         },                {
             "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024boundParams",
             "name": "boundParams",
@@ -3045,6 +3025,11 @@ Search.appendIndex(
             "name": "_debugValues",
             "summary": "Migrate\u0020from\u0020\\DB\\statement.",
             "url": "classes/DB-EPDOStatement.html#property__debugValues"
+        },                {
+            "fqsen": "\\DB\\EPDOStatement\u003A\u003A\u0024logger",
+            "name": "logger",
+            "summary": "",
+            "url": "classes/DB-EPDOStatement.html#property_logger"
         },                {
             "fqsen": "\\DB\\manager",
             "name": "manager",
@@ -3066,10 +3051,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-pdo.html#method___construct"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Aget_enum_set_values\u0028\u0029",
-            "name": "get_enum_set_values",
-            "summary": "Get\u0020enum\u0020or\u0020set\u0020value\u0020as\u0020associative\u0020arrays.",
-            "url": "classes/DB-pdo.html#method_get_enum_set_values"
+            "fqsen": "\\DB\\pdo\u003A\u003Aconnect\u0028\u0029",
+            "name": "connect",
+            "summary": "Connect\u0020PDO.",
+            "url": "classes/DB-pdo.html#method_connect"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003ASQL_Error\u0028\u0029",
+            "name": "SQL_Error",
+            "summary": "PDO\u0020Error.",
+            "url": "classes/DB-pdo.html#method_SQL_Error"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003Aset_multiple_value\u0028\u0029",
             "name": "set_multiple_value",
@@ -3081,6 +3071,41 @@ Search.appendIndex(
             "summary": "Add\u0020value\u0020to\u0020SET\u0020field.",
             "url": "classes/DB-pdo.html#method_add_set_value"
         },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Aget_enum_set_values\u0028\u0029",
+            "name": "get_enum_set_values",
+            "summary": "Get\u0020enum\u0020or\u0020set\u0020value\u0020as\u0020associative\u0020arrays.",
+            "url": "classes/DB-pdo.html#method_get_enum_set_values"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Aexec\u0028\u0029",
+            "name": "exec",
+            "summary": "Automated\u0020Executor.",
+            "url": "classes/DB-pdo.html#method_exec"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003ASQL_Exec\u0028\u0029",
+            "name": "SQL_Exec",
+            "summary": "",
+            "url": "classes/DB-pdo.html#method_SQL_Exec"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003ASQL_LastID\u0028\u0029",
+            "name": "SQL_LastID",
+            "summary": "Get\u0020last\u0020inserted\u0020id.",
+            "url": "classes/DB-pdo.html#method_SQL_LastID"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Atrim\u0028\u0029",
+            "name": "trim",
+            "summary": "",
+            "url": "classes/DB-pdo.html#method_trim"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003AresetQuery\u0028\u0029",
+            "name": "resetQuery",
+            "summary": "Reset\u0020Query.",
+            "url": "classes/DB-pdo.html#method_resetQuery"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003A\u0024query",
+            "name": "query",
+            "summary": "",
+            "url": "classes/DB-pdo.html#property_query"
+        },                {
             "fqsen": "\\DB\\pdo\u003A\u003Aremove_set_value\u0028\u0029",
             "name": "remove_set_value",
             "summary": "Remove\u0020value\u0020from\u0020SET\u0020field.",
@@ -3090,6 +3115,16 @@ Search.appendIndex(
             "name": "check_table",
             "summary": "Check\u0020table\u0020exists.",
             "url": "classes/DB-pdo.html#method_check_table"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Arow_array\u0028\u0029",
+            "name": "row_array",
+            "summary": "Get\u0020result\u0020as\u0020array.",
+            "url": "classes/DB-pdo.html#method_row_array"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003ASQL_MultiFetch\u0028\u0029",
+            "name": "SQL_MultiFetch",
+            "summary": "Multi\u0020fetch\u0020pdo.",
+            "url": "classes/DB-pdo.html#method_SQL_MultiFetch"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003A\u0024mysqli",
             "name": "mysqli",
@@ -3111,11 +3146,6 @@ Search.appendIndex(
             "summary": "Set\u0020MySQL\u0020Timezone.",
             "url": "classes/DB-pdo.html#method_setTimezone"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Aconnect\u0028\u0029",
-            "name": "connect",
-            "summary": "Connect\u0020PDO.",
-            "url": "classes/DB-pdo.html#method_connect"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003A\u0024shimmer",
             "name": "shimmer",
             "summary": "Shimmer\u0020MySQL.",
@@ -3126,11 +3156,6 @@ Search.appendIndex(
             "summary": "Switch\u0020database.",
             "url": "classes/DB-pdo.html#method_switch"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003A\u0024query",
-            "name": "query",
-            "summary": "",
-            "url": "classes/DB-pdo.html#property_query"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003Aprep\u0028\u0029",
             "name": "prep",
             "summary": "",
@@ -3140,11 +3165,6 @@ Search.appendIndex(
             "name": "get_where",
             "summary": "Get\u0020where\u0020parameter\u0020is\u0020equals.",
             "url": "classes/DB-pdo.html#method_get_where"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003AresetQuery\u0028\u0029",
-            "name": "resetQuery",
-            "summary": "Reset\u0020Query.",
-            "url": "classes/DB-pdo.html#method_resetQuery"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003Aselect\u0028\u0029",
             "name": "select",
@@ -3206,25 +3226,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-pdo.html#method_execute"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Aexec\u0028\u0029",
-            "name": "exec",
-            "summary": "Automated\u0020Executor.",
-            "url": "classes/DB-pdo.html#method_exec"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003Aexec2\u0028\u0029",
             "name": "exec2",
             "summary": "",
             "url": "classes/DB-pdo.html#method_exec2"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Atrim\u0028\u0029",
-            "name": "trim",
-            "summary": "",
-            "url": "classes/DB-pdo.html#method_trim"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003Awhere\u0028\u0029",
             "name": "where",
             "summary": "",
             "url": "classes/DB-pdo.html#method_where"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Aequals\u0028\u0029",
+            "name": "equals",
+            "summary": "If\u0020array\u0020data\u0020is\u0020equals.",
+            "url": "classes/DB-pdo.html#method_equals"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003Asort\u0028\u0029",
             "name": "sort",
@@ -3241,30 +3256,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/DB-pdo.html#method_and"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Aequals\u0028\u0029",
-            "name": "equals",
-            "summary": "If\u0020array\u0020data\u0020is\u0020equals.",
-            "url": "classes/DB-pdo.html#method_equals"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003AgetQuery\u0028\u0029",
             "name": "getQuery",
             "summary": "Get\u0020query\u0020result.",
             "url": "classes/DB-pdo.html#method_getQuery"
         },                {
-            "fqsen": "\\DB\\pdo\u003A\u003ASQL_LastID\u0028\u0029",
-            "name": "SQL_LastID",
-            "summary": "Get\u0020last\u0020inserted\u0020id.",
-            "url": "classes/DB-pdo.html#method_SQL_LastID"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003ASQL_Error\u0028\u0029",
-            "name": "SQL_Error",
-            "summary": "PDO\u0020Error.",
-            "url": "classes/DB-pdo.html#method_SQL_Error"
-        },                {
             "fqsen": "\\DB\\pdo\u003A\u003ASQL_Fetch\u0028\u0029",
             "name": "SQL_Fetch",
             "summary": "",
             "url": "classes/DB-pdo.html#method_SQL_Fetch"
+        },                {
+            "fqsen": "\\DB\\pdo\u003A\u003Aparms\u0028\u0029",
+            "name": "parms",
+            "summary": "",
+            "url": "classes/DB-pdo.html#method_parms"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003AresetAutoIncrement\u0028\u0029",
             "name": "resetAutoIncrement",
@@ -3275,26 +3280,6 @@ Search.appendIndex(
             "name": "insert_not_exists",
             "summary": "Check\u0020before\u0020insert\n\u002A\u0020always\u0020equals\u0020validation.",
             "url": "classes/DB-pdo.html#method_insert_not_exists"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Aparms\u0028\u0029",
-            "name": "parms",
-            "summary": "",
-            "url": "classes/DB-pdo.html#method_parms"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003Arow_array\u0028\u0029",
-            "name": "row_array",
-            "summary": "Get\u0020result\u0020as\u0020array.",
-            "url": "classes/DB-pdo.html#method_row_array"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003ASQL_MultiFetch\u0028\u0029",
-            "name": "SQL_MultiFetch",
-            "summary": "Multi\u0020fetch\u0020pdo.",
-            "url": "classes/DB-pdo.html#method_SQL_MultiFetch"
-        },                {
-            "fqsen": "\\DB\\pdo\u003A\u003ASQL_Exec\u0028\u0029",
-            "name": "SQL_Exec",
-            "summary": "",
-            "url": "classes/DB-pdo.html#method_SQL_Exec"
         },                {
             "fqsen": "\\DB\\pdo\u003A\u003Ashow_creation\u0028\u0029",
             "name": "show_creation",
@@ -3386,6 +3371,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Extender-request.html#method___construct"
         },                {
+            "fqsen": "\\Extender\\request\u003A\u003Astatic_request\u0028\u0029",
+            "name": "static_request",
+            "summary": "",
+            "url": "classes/Extender-request.html#method_static_request"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003Arequest\u0028\u0029",
+            "name": "request",
+            "summary": "cURL\u0020shooter\u0020request.",
+            "url": "classes/Extender-request.html#method_request"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003AgetInstance\u0028\u0029",
+            "name": "getInstance",
+            "summary": "",
+            "url": "classes/Extender-request.html#method_getInstance"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003AgetCurlOpt\u0028\u0029",
+            "name": "getCurlOpt",
+            "summary": "",
+            "url": "classes/Extender-request.html#method_getCurlOpt"
+        },                {
             "fqsen": "\\Extender\\request\u003A\u003AdisableSSL\u0028\u0029",
             "name": "disableSSL",
             "summary": "",
@@ -3395,6 +3400,16 @@ Search.appendIndex(
             "name": "execute",
             "summary": "Execute\u0020curl.",
             "url": "classes/Extender-request.html#method_execute"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003Aset_method\u0028\u0029",
+            "name": "set_method",
+            "summary": "",
+            "url": "classes/Extender-request.html#method_set_method"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003Aset_url\u0028\u0029",
+            "name": "set_url",
+            "summary": "",
+            "url": "classes/Extender-request.html#method_set_url"
         },                {
             "fqsen": "\\Extender\\request\u003A\u003Acache_path\u0028\u0029",
             "name": "cache_path",
@@ -3406,50 +3421,20 @@ Search.appendIndex(
             "summary": "Get\u0020cached\u0020content.",
             "url": "classes/Extender-request.html#method_get_cache"
         },                {
-            "fqsen": "\\Extender\\request\u003A\u003Aset_url\u0028\u0029",
-            "name": "set_url",
+            "fqsen": "\\Extender\\request\u003A\u003ADUMPNow\u0028\u0029",
+            "name": "DUMPNow",
             "summary": "",
-            "url": "classes/Extender-request.html#method_set_url"
-        },                {
-            "fqsen": "\\Extender\\request\u003A\u003Aset_method\u0028\u0029",
-            "name": "set_method",
-            "summary": "",
-            "url": "classes/Extender-request.html#method_set_method"
-        },                {
-            "fqsen": "\\Extender\\request\u003A\u003AgetInstance\u0028\u0029",
-            "name": "getInstance",
-            "summary": "",
-            "url": "classes/Extender-request.html#method_getInstance"
-        },                {
-            "fqsen": "\\Extender\\request\u003A\u003Astatic_request\u0028\u0029",
-            "name": "static_request",
-            "summary": "",
-            "url": "classes/Extender-request.html#method_static_request"
+            "url": "classes/Extender-request.html#method_DUMPNow"
         },                {
             "fqsen": "\\Extender\\request\u003A\u003AisDUMPNow\u0028\u0029",
             "name": "isDUMPNow",
             "summary": "",
             "url": "classes/Extender-request.html#method_isDUMPNow"
         },                {
-            "fqsen": "\\Extender\\request\u003A\u003ADUMPNow\u0028\u0029",
-            "name": "DUMPNow",
-            "summary": "",
-            "url": "classes/Extender-request.html#method_DUMPNow"
-        },                {
             "fqsen": "\\Extender\\request\u003A\u003AexitJSON\u0028\u0029",
             "name": "exitJSON",
             "summary": "",
             "url": "classes/Extender-request.html#method_exitJSON"
-        },                {
-            "fqsen": "\\Extender\\request\u003A\u003Arequest\u0028\u0029",
-            "name": "request",
-            "summary": "cURL\u0020shooter\u0020request.",
-            "url": "classes/Extender-request.html#method_request"
-        },                {
-            "fqsen": "\\Extender\\request\u003A\u003AgetCurlOpt\u0028\u0029",
-            "name": "getCurlOpt",
-            "summary": "",
-            "url": "classes/Extender-request.html#method_getCurlOpt"
         },                {
             "fqsen": "\\Extender\\request\u003A\u003Aset_header_array\u0028\u0029",
             "name": "set_header_array",
@@ -3471,11 +3456,6 @@ Search.appendIndex(
             "summary": "Check\u0020array\u0020has\u0020some\u0020string\u0020key.",
             "url": "classes/Extender-request.html#method_has_string_keys"
         },                {
-            "fqsen": "\\Extender\\request\u003A\u003A\u0024result_request",
-            "name": "result_request",
-            "summary": "",
-            "url": "classes/Extender-request.html#property_result_request"
-        },                {
             "fqsen": "\\Extender\\request\u003A\u003A\u0024_instance",
             "name": "_instance",
             "summary": "request\u0020instances.",
@@ -3485,6 +3465,11 @@ Search.appendIndex(
             "name": "cache",
             "summary": "",
             "url": "classes/Extender-request.html#property_cache"
+        },                {
+            "fqsen": "\\Extender\\request\u003A\u003A\u0024result_request",
+            "name": "result_request",
+            "summary": "",
+            "url": "classes/Extender-request.html#property_result_request"
         },                {
             "fqsen": "\\Extender\\request\u003A\u003A\u0024require_content_length",
             "name": "require_content_length",
@@ -3511,15 +3496,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Filemanager-file.html#method___construct"
         },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AwithPath\u0028\u0029",
+            "name": "withPath",
+            "summary": "Initialize\u0020File\u0020\u0028Alternative\u0020Multiple\u0020Constructor\u0029",
+            "url": "classes/Filemanager-file.html#method_withPath"
+        },                {
             "fqsen": "\\Filemanager\\file\u003A\u003Atmp\u0028\u0029",
             "name": "tmp",
-            "summary": "",
+            "summary": "Get\u0020TMP\u0020Folder",
             "url": "classes/Filemanager-file.html#method_tmp"
         },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003Aempty\u0028\u0029",
-            "name": "empty",
+            "fqsen": "\\Filemanager\\file\u003A\u003Afolder\u0028\u0029",
+            "name": "folder",
+            "summary": "",
+            "url": "classes/Filemanager-file.html#method_folder"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AemptyDir\u0028\u0029",
+            "name": "emptyDir",
             "summary": "Flush\u0020directory.",
-            "url": "classes/Filemanager-file.html#method_empty"
+            "url": "classes/Filemanager-file.html#method_emptyDir"
         },                {
             "fqsen": "\\Filemanager\\file\u003A\u003Adelete\u0028\u0029",
             "name": "delete",
@@ -3528,23 +3523,18 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Filemanager\\file\u003A\u003AdeleteDirectory\u0028\u0029",
             "name": "deleteDirectory",
-            "summary": "",
+            "summary": "Delete\u0020Non\u002DEmpty\u0020Directory",
             "url": "classes/Filemanager-file.html#method_deleteDirectory"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003Afolder\u0028\u0029",
-            "name": "folder",
-            "summary": "",
-            "url": "classes/Filemanager-file.html#method_folder"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003Afile\u0028\u0029",
-            "name": "file",
-            "summary": "Create\u0020file\u0020nested.",
-            "url": "classes/Filemanager-file.html#method_file"
         },                {
             "fqsen": "\\Filemanager\\file\u003A\u003Awrite\u0028\u0029",
             "name": "write",
             "summary": "",
             "url": "classes/Filemanager-file.html#method_write"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003Afile\u0028\u0029",
+            "name": "file",
+            "summary": "Create\u0020file\u0020nested.",
+            "url": "classes/Filemanager-file.html#method_file"
         },                {
             "fqsen": "\\Filemanager\\file\u003A\u003AdetermineContent\u0028\u0029",
             "name": "determineContent",
@@ -3556,6 +3546,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Filemanager-file.html#method_remove"
         },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AdeleteFile\u0028\u0029",
+            "name": "deleteFile",
+            "summary": "Delete\u0020file",
+            "url": "classes/Filemanager-file.html#method_deleteFile"
+        },                {
             "fqsen": "\\Filemanager\\file\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "",
@@ -3566,55 +3561,55 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Filemanager-file.html#method_cleanDump"
         },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003A_unlink_\u0028\u0029",
-            "name": "_unlink_",
-            "summary": "",
-            "url": "classes/Filemanager-file.html#method__unlink_"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003A_folder_\u0028\u0029",
-            "name": "_folder_",
-            "summary": "Create\u0020folder\u0020recursively.",
-            "url": "classes/Filemanager-file.html#method__folder_"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003A_folder_x\u0028\u0029",
-            "name": "_folder_x",
-            "summary": "",
-            "url": "classes/Filemanager-file.html#method__folder_x"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003Ais_win\u0028\u0029",
-            "name": "is_win",
-            "summary": "",
-            "url": "classes/Filemanager-file.html#method_is_win"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003A_file_\u0028\u0029",
-            "name": "_file_",
+            "fqsen": "\\Filemanager\\file\u003A\u003AcreateFile\u0028\u0029",
+            "name": "createFile",
             "summary": "Create\u0020file\u0020and\u0020directory\u0020recursively.",
-            "url": "classes/Filemanager-file.html#method__file_"
+            "url": "classes/Filemanager-file.html#method_createFile"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AsmartFilePath\u0028\u0029",
+            "name": "smartFilePath",
+            "summary": "Normalize\u0020Path\u0020To\u0020Linux\u0020Format",
+            "url": "classes/Filemanager-file.html#method_smartFilePath"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AcreateFolder\u0028\u0029",
+            "name": "createFolder",
+            "summary": "Create\u0020folder\u0020recursively.",
+            "url": "classes/Filemanager-file.html#method_createFolder"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003AisWin\u0028\u0029",
+            "name": "isWin",
+            "summary": "Is\u0020Device\u0020Windows\u003F",
+            "url": "classes/Filemanager-file.html#method_isWin"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003Amkdir\u0028\u0029",
+            "name": "mkdir",
+            "summary": "Create\u0020folder\u0020777.",
+            "url": "classes/Filemanager-file.html#method_mkdir"
         },                {
             "fqsen": "\\Filemanager\\file\u003A\u003A__istatic\u0028\u0029",
             "name": "__istatic",
             "summary": "",
             "url": "classes/Filemanager-file.html#method___istatic"
         },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003A_dir_\u0028\u0029",
-            "name": "_dir_",
-            "summary": "Smart\u0020__DIR__.",
-            "url": "classes/Filemanager-file.html#method__dir_"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003AsmartFilePath\u0028\u0029",
-            "name": "smartFilePath",
-            "summary": "Smart\u0020file\u0020path.",
-            "url": "classes/Filemanager-file.html#method_smartFilePath"
-        },                {
-            "fqsen": "\\Filemanager\\file\u003A\u003Amdir\u0028\u0029",
-            "name": "mdir",
-            "summary": "Create\u0020folder\u0020777.",
-            "url": "classes/Filemanager-file.html#method_mdir"
-        },                {
             "fqsen": "\\Filemanager\\file\u003A\u003Adestroy_old_files\u0028\u0029",
             "name": "destroy_old_files",
             "summary": "",
             "url": "classes/Filemanager-file.html#method_destroy_old_files"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003A\u0024content",
+            "name": "content",
+            "summary": "",
+            "url": "classes/Filemanager-file.html#property_content"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003A\u0024modified",
+            "name": "modified",
+            "summary": "",
+            "url": "classes/Filemanager-file.html#property_modified"
+        },                {
+            "fqsen": "\\Filemanager\\file\u003A\u003A\u0024created",
+            "name": "created",
+            "summary": "",
+            "url": "classes/Filemanager-file.html#property_created"
         },                {
             "fqsen": "\\Filemanager\\scan",
             "name": "scan",
@@ -3631,15 +3626,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Filemanager-scan.html#method_getStatic"
         },                {
-            "fqsen": "\\Filemanager\\scan\u003A\u003AscanAllFiles\u0028\u0029",
-            "name": "scanAllFiles",
-            "summary": "",
-            "url": "classes/Filemanager-scan.html#method_scanAllFiles"
-        },                {
             "fqsen": "\\Filemanager\\scan\u003A\u003Ascandir\u0028\u0029",
             "name": "scandir",
             "summary": "",
             "url": "classes/Filemanager-scan.html#method_scandir"
+        },                {
+            "fqsen": "\\Filemanager\\scan\u003A\u003AscanAllFiles\u0028\u0029",
+            "name": "scanAllFiles",
+            "summary": "",
+            "url": "classes/Filemanager-scan.html#method_scanAllFiles"
         },                {
             "fqsen": "\\Filemanager\\scan\u003A\u003A\u0024static",
             "name": "static",
@@ -3661,25 +3656,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-blogger.html#method___construct"
         },                {
-            "fqsen": "\\GoogleExt\\blogger\u003A\u003Aget_blog_byurl\u0028\u0029",
-            "name": "get_blog_byurl",
-            "summary": "",
-            "url": "classes/GoogleExt-blogger.html#method_get_blog_byurl"
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003AbyUrl\u0028\u0029",
+            "name": "byUrl",
+            "summary": "Set\u0020Blog\u0020By\u0020URL",
+            "url": "classes/GoogleExt-blogger.html#method_byUrl"
         },                {
-            "fqsen": "\\GoogleExt\\blogger\u003A\u003Alist_posts\u0028\u0029",
-            "name": "list_posts",
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003AlistPosts\u0028\u0029",
+            "name": "listPosts",
             "summary": "",
-            "url": "classes/GoogleExt-blogger.html#method_list_posts"
+            "url": "classes/GoogleExt-blogger.html#method_listPosts"
         },                {
-            "fqsen": "\\GoogleExt\\blogger\u003A\u003Aset_blog_id\u0028\u0029",
-            "name": "set_blog_id",
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003AsetBlogId\u0028\u0029",
+            "name": "setBlogId",
             "summary": "",
-            "url": "classes/GoogleExt-blogger.html#method_set_blog_id"
+            "url": "classes/GoogleExt-blogger.html#method_setBlogId"
         },                {
-            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024service",
-            "name": "service",
-            "summary": "",
-            "url": "classes/GoogleExt-blogger.html#property_service"
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003AgetPosts\u0028\u0029",
+            "name": "getPosts",
+            "summary": "Get\u0020All\u0020Blogger\u0020Posts",
+            "url": "classes/GoogleExt-blogger.html#method_getPosts"
+        },                {
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003Acurl\u0028\u0029",
+            "name": "curl",
+            "summary": "Blogger\u0020Curl",
+            "url": "classes/GoogleExt-blogger.html#method_curl"
         },                {
             "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024posts",
             "name": "posts",
@@ -3691,10 +3691,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-blogger.html#property_blogs"
         },                {
-            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024blogid",
-            "name": "blogid",
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024blogId",
+            "name": "blogId",
             "summary": "",
-            "url": "classes/GoogleExt-blogger.html#property_blogid"
+            "url": "classes/GoogleExt-blogger.html#property_blogId"
+        },                {
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024service",
+            "name": "service",
+            "summary": "",
+            "url": "classes/GoogleExt-blogger.html#property_service"
+        },                {
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024result_get_post",
+            "name": "result_get_post",
+            "summary": "",
+            "url": "classes/GoogleExt-blogger.html#property_result_get_post"
+        },                {
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024recrawl",
+            "name": "recrawl",
+            "summary": "",
+            "url": "classes/GoogleExt-blogger.html#property_recrawl"
         },                {
             "fqsen": "\\GoogleExt\\client",
             "name": "client",
@@ -3706,15 +3721,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-client.html#method___construct"
         },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003Aget_profile\u0028\u0029",
-            "name": "get_profile",
-            "summary": "",
-            "url": "classes/GoogleExt-client.html#method_get_profile"
-        },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Aget_profile_picture\u0028\u0029",
             "name": "get_profile_picture",
             "summary": "",
             "url": "classes/GoogleExt-client.html#method_get_profile_picture"
+        },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003Aget_profile\u0028\u0029",
+            "name": "get_profile",
+            "summary": "",
+            "url": "classes/GoogleExt-client.html#method_get_profile"
         },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Aget_profile_name\u0028\u0029",
             "name": "get_profile_name",
@@ -3731,6 +3746,31 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-client.html#method_custom_client"
         },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003AsetCredentials\u0028\u0029",
+            "name": "setCredentials",
+            "summary": "Set\u0020default\u0020credentials.",
+            "url": "classes/GoogleExt-client.html#method_setCredentials"
+        },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003Aset_scope\u0028\u0029",
+            "name": "set_scope",
+            "summary": "",
+            "url": "classes/GoogleExt-client.html#method_set_scope"
+        },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003Ais_url\u0028\u0029",
+            "name": "is_url",
+            "summary": "",
+            "url": "classes/GoogleExt-client.html#method_is_url"
+        },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003Aset_offline\u0028\u0029",
+            "name": "set_offline",
+            "summary": "Set\u0020access\u0020token\u0020offline.",
+            "url": "classes/GoogleExt-client.html#method_set_offline"
+        },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003AgetOrigin\u0028\u0029",
+            "name": "getOrigin",
+            "summary": "Get\u0020current\u0020origin\u0020url.",
+            "url": "classes/GoogleExt-client.html#method_getOrigin"
+        },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Ais_login\u0028\u0029",
             "name": "is_login",
             "summary": "Check\u0020user\u0020google\u0020is\u0020login.",
@@ -3740,11 +3780,6 @@ Search.appendIndex(
             "name": "revoke",
             "summary": "Revoke\u0020token.",
             "url": "classes/GoogleExt-client.html#method_revoke"
-        },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003AgetOrigin\u0028\u0029",
-            "name": "getOrigin",
-            "summary": "Get\u0020current\u0020origin\u0020url.",
-            "url": "classes/GoogleExt-client.html#method_getOrigin"
         },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Aget_token_folder\u0028\u0029",
             "name": "get_token_folder",
@@ -3756,30 +3791,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-client.html#method_set_token_folder"
         },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003Aset_scope\u0028\u0029",
-            "name": "set_scope",
-            "summary": "",
-            "url": "classes/GoogleExt-client.html#method_set_scope"
-        },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003Aset_offline\u0028\u0029",
-            "name": "set_offline",
-            "summary": "Set\u0020access\u0020token\u0020offline.",
-            "url": "classes/GoogleExt-client.html#method_set_offline"
-        },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003AsetCredentials\u0028\u0029",
-            "name": "setCredentials",
-            "summary": "Set\u0020default\u0020credentials.",
-            "url": "classes/GoogleExt-client.html#method_setCredentials"
-        },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003AisValid\u0028\u0029",
             "name": "isValid",
             "summary": "Check\u0020if\u0020current\u0020instance\u0020is\u0020valid.",
             "url": "classes/GoogleExt-client.html#method_isValid"
-        },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003Ais_url\u0028\u0029",
-            "name": "is_url",
-            "summary": "",
-            "url": "classes/GoogleExt-client.html#method_is_url"
         },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Acheck_subscriber\u0028\u0029",
             "name": "check_subscriber",
@@ -3791,6 +3806,11 @@ Search.appendIndex(
             "summary": "Auto\u0020get\u0020token\u0020from\u0020\u0024_GET\u005B\u0027code\u0027\u005D\nAnd\u0020auto\u0020refresh\u0020token.",
             "url": "classes/GoogleExt-client.html#method_auto_login"
         },                {
+            "fqsen": "\\GoogleExt\\client\u003A\u003Afetch_user\u0028\u0029",
+            "name": "fetch_user",
+            "summary": "Fetch\u0020user\u0020information\u0020from\u0020google.",
+            "url": "classes/GoogleExt-client.html#method_fetch_user"
+        },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003Alogin_data\u0028\u0029",
             "name": "login_data",
             "summary": "Get\u0020current\u0020user\u0020login\u0020\u0028\u0024_SESSION\u005B\u0027login\u0027\u005D\u0029.",
@@ -3801,10 +3821,10 @@ Search.appendIndex(
             "summary": "Get\u0020current\u0020google\u0020user\u0020data.",
             "url": "classes/GoogleExt-client.html#method_userdata"
         },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003Afetch_user\u0028\u0029",
-            "name": "fetch_user",
-            "summary": "Fetch\u0020user\u0020information\u0020from\u0020google.",
-            "url": "classes/GoogleExt-client.html#method_fetch_user"
+            "fqsen": "\\GoogleExt\\client\u003A\u003A\u0024application_name",
+            "name": "application_name",
+            "summary": "",
+            "url": "classes/GoogleExt-client.html#property_application_name"
         },                {
             "fqsen": "\\GoogleExt\\client\u003A\u003A\u0024Client",
             "name": "Client",
@@ -3826,20 +3846,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-client.html#property_configuration"
         },                {
-            "fqsen": "\\GoogleExt\\client\u003A\u003A\u0024application_name",
-            "name": "application_name",
-            "summary": "",
-            "url": "classes/GoogleExt-client.html#property_application_name"
-        },                {
             "fqsen": "\\GoogleExt\\recaptcha",
             "name": "recaptcha",
             "summary": "",
             "url": "classes/GoogleExt-recaptcha.html"
         },                {
+            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003AverifyCaptchaOld\u0028\u0029",
+            "name": "verifyCaptchaOld",
+            "summary": "",
+            "url": "classes/GoogleExt-recaptcha.html#method_verifyCaptchaOld"
+        },                {
             "fqsen": "\\GoogleExt\\recaptcha\u003A\u003AgetInstance\u0028\u0029",
             "name": "getInstance",
             "summary": "",
             "url": "classes/GoogleExt-recaptcha.html#method_getInstance"
+        },                {
+            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003AverifyCaptcha\u0028\u0029",
+            "name": "verifyCaptcha",
+            "summary": "",
+            "url": "classes/GoogleExt-recaptcha.html#method_verifyCaptcha"
         },                {
             "fqsen": "\\GoogleExt\\recaptcha\u003A\u003Aset_secret\u0028\u0029",
             "name": "set_secret",
@@ -3851,15 +3876,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-recaptcha.html#method_setSecret"
         },                {
-            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003AverifyCaptchaOld\u0028\u0029",
-            "name": "verifyCaptchaOld",
+            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003A\u0024secretKey",
+            "name": "secretKey",
             "summary": "",
-            "url": "classes/GoogleExt-recaptcha.html#method_verifyCaptchaOld"
+            "url": "classes/GoogleExt-recaptcha.html#property_secretKey"
         },                {
-            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003AverifyCaptcha\u0028\u0029",
-            "name": "verifyCaptcha",
+            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003A\u0024_instance",
+            "name": "_instance",
             "summary": "",
-            "url": "classes/GoogleExt-recaptcha.html#method_verifyCaptcha"
+            "url": "classes/GoogleExt-recaptcha.html#property__instance"
         },                {
             "fqsen": "\\GoogleExt\\recaptcha\u003A\u003A\u0024secret",
             "name": "secret",
@@ -3870,16 +3895,6 @@ Search.appendIndex(
             "name": "siteKey",
             "summary": "",
             "url": "classes/GoogleExt-recaptcha.html#property_siteKey"
-        },                {
-            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003A\u0024secretKey",
-            "name": "secretKey",
-            "summary": "",
-            "url": "classes/GoogleExt-recaptcha.html#property_secretKey"
-        },                {
-            "fqsen": "\\GoogleExt\\recaptcha\u003A\u003A\u0024_instance",
-            "name": "_instance",
-            "summary": "",
-            "url": "classes/GoogleExt-recaptcha.html#property__instance"
         },                {
             "fqsen": "\\HTML\\array2element",
             "name": "array2element",
@@ -3911,6 +3926,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-element.html#method_pre"
         },                {
+            "fqsen": "\\HTML\\element\u003A\u003AisArrObj\u0028\u0029",
+            "name": "isArrObj",
+            "summary": "",
+            "url": "classes/HTML-element.html#method_isArrObj"
+        },                {
             "fqsen": "\\HTML\\element\u003A\u003Ahtmlvar_dump\u0028\u0029",
             "name": "htmlvar_dump",
             "summary": "var_dump\u0020inside\u0020pretext.",
@@ -3921,10 +3941,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-element.html#method_script"
         },                {
+            "fqsen": "\\HTML\\element\u003A\u003Aget_local_asset\u0028\u0029",
+            "name": "get_local_asset",
+            "summary": "",
+            "url": "classes/HTML-element.html#method_get_local_asset"
+        },                {
             "fqsen": "\\HTML\\element\u003A\u003Adirect\u0028\u0029",
             "name": "direct",
             "summary": "",
             "url": "classes/HTML-element.html#method_direct"
+        },                {
+            "fqsen": "\\HTML\\element\u003A\u003Afill_attributes\u0028\u0029",
+            "name": "fill_attributes",
+            "summary": "",
+            "url": "classes/HTML-element.html#method_fill_attributes"
         },                {
             "fqsen": "\\HTML\\element\u003A\u003Acss\u0028\u0029",
             "name": "css",
@@ -3941,15 +3971,15 @@ Search.appendIndex(
             "summary": "Proxy\u0020CSS.",
             "url": "classes/HTML-element.html#method_link"
         },                {
-            "fqsen": "\\HTML\\element\u003A\u003Aget_local_asset\u0028\u0029",
-            "name": "get_local_asset",
-            "summary": "",
-            "url": "classes/HTML-element.html#method_get_local_asset"
-        },                {
             "fqsen": "\\HTML\\element\u003A\u003Aprintr\u0028\u0029",
             "name": "printr",
             "summary": "echo\u0020print_r\u0020in\u0020pretext.",
             "url": "classes/HTML-element.html#method_printr"
+        },                {
+            "fqsen": "\\HTML\\element\u003A\u003Acreate\u0028\u0029",
+            "name": "create",
+            "summary": "",
+            "url": "classes/HTML-element.html#method_create"
         },                {
             "fqsen": "\\HTML\\element\u003A\u003Aselect\u0028\u0029",
             "name": "select",
@@ -3961,25 +3991,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-element.html#method_single_create"
         },                {
-            "fqsen": "\\HTML\\element\u003A\u003Acreate\u0028\u0029",
-            "name": "create",
-            "summary": "",
-            "url": "classes/HTML-element.html#method_create"
-        },                {
-            "fqsen": "\\HTML\\element\u003A\u003Afill_attributes\u0028\u0029",
-            "name": "fill_attributes",
-            "summary": "",
-            "url": "classes/HTML-element.html#method_fill_attributes"
-        },                {
             "fqsen": "\\HTML\\element\u003A\u003AouterText\u0028\u0029",
             "name": "outerText",
             "summary": "",
             "url": "classes/HTML-element.html#method_outerText"
         },                {
-            "fqsen": "\\HTML\\element\u003A\u003AisArrObj\u0028\u0029",
-            "name": "isArrObj",
+            "fqsen": "\\HTML\\element\u003A\u003A\u0024static",
+            "name": "static",
             "summary": "",
-            "url": "classes/HTML-element.html#method_isArrObj"
+            "url": "classes/HTML-element.html#property_static"
         },                {
             "fqsen": "\\HTML\\element\u003A\u003A\u0024dom",
             "name": "dom",
@@ -3996,11 +4016,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-element.html#property_encoding"
         },                {
-            "fqsen": "\\HTML\\element\u003A\u003A\u0024static",
-            "name": "static",
-            "summary": "",
-            "url": "classes/HTML-element.html#property_static"
-        },                {
             "fqsen": "\\HTML\\element\u003A\u003A\u0024element",
             "name": "element",
             "summary": "DOMElement.",
@@ -4011,15 +4026,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-js.html"
         },                {
-            "fqsen": "\\HTML\\js\u003A\u003Ajs_str\u0028\u0029",
-            "name": "js_str",
-            "summary": "",
-            "url": "classes/HTML-js.html#method_js_str"
-        },                {
             "fqsen": "\\HTML\\js\u003A\u003Ajs_array\u0028\u0029",
             "name": "js_array",
             "summary": "",
             "url": "classes/HTML-js.html#method_js_array"
+        },                {
+            "fqsen": "\\HTML\\js\u003A\u003Ajs_str\u0028\u0029",
+            "name": "js_str",
+            "summary": "",
+            "url": "classes/HTML-js.html#method_js_str"
         },                {
             "fqsen": "\\HTML\\js\u003A\u003Avar\u0028\u0029",
             "name": "var",
@@ -4031,15 +4046,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-minify-css-MinificationSequenceFinder.html"
         },                {
-            "fqsen": "\\HTML\\minify\\css\\MinificationSequenceFinder\u003A\u003AfindFirstValue\u0028\u0029",
-            "name": "findFirstValue",
-            "summary": "",
-            "url": "classes/HTML-minify-css-MinificationSequenceFinder.html#method_findFirstValue"
-        },                {
             "fqsen": "\\HTML\\minify\\css\\MinificationSequenceFinder\u003A\u003AisValid\u0028\u0029",
             "name": "isValid",
             "summary": "",
             "url": "classes/HTML-minify-css-MinificationSequenceFinder.html#method_isValid"
+        },                {
+            "fqsen": "\\HTML\\minify\\css\\MinificationSequenceFinder\u003A\u003AfindFirstValue\u0028\u0029",
+            "name": "findFirstValue",
+            "summary": "",
+            "url": "classes/HTML-minify-css-MinificationSequenceFinder.html#method_findFirstValue"
         },                {
             "fqsen": "\\HTML\\minify\\css\\MinificationSequenceFinder\u003A\u003A\u0024start_idx",
             "name": "start_idx",
@@ -4171,21 +4186,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/IMEI-imei.html"
         },                {
-            "fqsen": "\\IMEI\\imei\u003A\u003Ais_luhn\u0028\u0029",
-            "name": "is_luhn",
-            "summary": "",
-            "url": "classes/IMEI-imei.html#method_is_luhn"
-        },                {
-            "fqsen": "\\IMEI\\imei\u003A\u003Ais_imei2\u0028\u0029",
-            "name": "is_imei2",
-            "summary": "",
-            "url": "classes/IMEI-imei.html#method_is_imei2"
-        },                {
-            "fqsen": "\\IMEI\\imei\u003A\u003Ais_imei\u0028\u0029",
-            "name": "is_imei",
-            "summary": "",
-            "url": "classes/IMEI-imei.html#method_is_imei"
-        },                {
             "fqsen": "\\IMEI\\imei\u003A\u003Arand_imei\u0028\u0029",
             "name": "rand_imei",
             "summary": "Generates\u0020IMEI\u0020code\u0020valid\u0020and\u0020random\nGenerates\u002014\u0020aleatory\u0020digits.\u0020These\u002014,\u0020multiplies\u0020the\u0020multiples\u0020of\u00202\u0020by\u00202\u0020and\u0020sum\u0020the\u0020result\nThe\u0020result\u0020Must\u0020be\u0020divisible\u0020by\u002010,\nThen\u0020get\u0020the\u0020diference\u0020and\u0020genaretes\u0020the\u0020last\u0020digit.",
@@ -4195,6 +4195,21 @@ Search.appendIndex(
             "name": "intRandom",
             "summary": "",
             "url": "classes/IMEI-imei.html#method_intRandom"
+        },                {
+            "fqsen": "\\IMEI\\imei\u003A\u003Ais_imei2\u0028\u0029",
+            "name": "is_imei2",
+            "summary": "",
+            "url": "classes/IMEI-imei.html#method_is_imei2"
+        },                {
+            "fqsen": "\\IMEI\\imei\u003A\u003Ais_luhn\u0028\u0029",
+            "name": "is_luhn",
+            "summary": "",
+            "url": "classes/IMEI-imei.html#method_is_luhn"
+        },                {
+            "fqsen": "\\IMEI\\imei\u003A\u003Ais_imei\u0028\u0029",
+            "name": "is_imei",
+            "summary": "",
+            "url": "classes/IMEI-imei.html#method_is_imei"
         },                {
             "fqsen": "\\img\\cache",
             "name": "cache",
@@ -4206,30 +4221,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/img-cache.html#method___construct"
         },                {
-            "fqsen": "\\img\\cache\u003A\u003Aclean\u0028\u0029",
-            "name": "clean",
-            "summary": "",
-            "url": "classes/img-cache.html#method_clean"
-        },                {
             "fqsen": "\\img\\cache\u003A\u003AimageCache\u0028\u0029",
             "name": "imageCache",
             "summary": "",
             "url": "classes/img-cache.html#method_imageCache"
         },                {
-            "fqsen": "\\img\\cache\u003A\u003Aurl2cache\u0028\u0029",
-            "name": "url2cache",
-            "summary": "Transform\u0020url\u0020image\u0020to\u0020cache\n\u002A\u0020\u0060schema\u0020data\u0020cache\u0060\n\u0060\u0060\u0060json\n\u007B\u0020\u0022md5\u0022\u003A\u0020\u0022realURL\u0022\u0020\u007D\n\u0060\u0060\u0060.",
-            "url": "classes/img-cache.html#method_url2cache"
+            "fqsen": "\\img\\cache\u003A\u003Asend_cache_header\u0028\u0029",
+            "name": "send_cache_header",
+            "summary": "Send\u0020Cache\u0020Header\u0020for\u0020static\u0020content.",
+            "url": "classes/img-cache.html#method_send_cache_header"
         },                {
             "fqsen": "\\img\\cache\u003A\u003AwriteCache\u0028\u0029",
             "name": "writeCache",
             "summary": "Write\u0020Cache.",
             "url": "classes/img-cache.html#method_writeCache"
         },                {
-            "fqsen": "\\img\\cache\u003A\u003Asend_cache_header\u0028\u0029",
-            "name": "send_cache_header",
-            "summary": "Send\u0020Cache\u0020Header\u0020for\u0020static\u0020content.",
-            "url": "classes/img-cache.html#method_send_cache_header"
+            "fqsen": "\\img\\cache\u003A\u003Aurl2cache\u0028\u0029",
+            "name": "url2cache",
+            "summary": "Transform\u0020url\u0020image\u0020to\u0020cache\n\u002A\u0020\u0060schema\u0020data\u0020cache\u0060\n\u0060\u0060\u0060json\n\u007B\u0020\u0022md5\u0022\u003A\u0020\u0022realURL\u0022\u0020\u007D\n\u0060\u0060\u0060.",
+            "url": "classes/img-cache.html#method_url2cache"
+        },                {
+            "fqsen": "\\img\\cache\u003A\u003Aclean\u0028\u0029",
+            "name": "clean",
+            "summary": "",
+            "url": "classes/img-cache.html#method_clean"
         },                {
             "fqsen": "\\img\\cache\u003A\u003A\u0024saved",
             "name": "saved",
@@ -4281,10 +4296,55 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/JSON-json.html#method_headerJSON"
         },                {
+            "fqsen": "\\JSON\\json\u003A\u003Ajson\u0028\u0029",
+            "name": "json",
+            "summary": "JSON\u0020formatter.",
+            "url": "classes/JSON-json.html#method_json"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Ais_json\u0028\u0029",
+            "name": "is_json",
+            "summary": "Validate\u0020json\u0020string.",
+            "url": "classes/JSON-json.html#method_is_json"
+        },                {
             "fqsen": "\\JSON\\json\u003A\u003Ainit\u0028\u0029",
             "name": "init",
             "summary": "chaining.",
             "url": "classes/JSON-json.html#method_init"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Aassoc\u0028\u0029",
+            "name": "assoc",
+            "summary": "Force\u0020Assoc.",
+            "url": "classes/JSON-json.html#method_assoc"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Abeautify\u0028\u0029",
+            "name": "beautify",
+            "summary": "beautify\u0020JSON.",
+            "url": "classes/JSON-json.html#method_beautify"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Ajsond\u0028\u0029",
+            "name": "jsond",
+            "summary": "JSON\u0020decode\u0020with\u0020verification.",
+            "url": "classes/JSON-json.html#method_jsond"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Ajson_decode\u0028\u0029",
+            "name": "json_decode",
+            "summary": "json_decode\u0020default\u0020assoc.",
+            "url": "classes/JSON-json.html#method_json_decode"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003AisJson\u0028\u0029",
+            "name": "isJson",
+            "summary": "",
+            "url": "classes/JSON-json.html#method_isJson"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003AjsonDecode\u0028\u0029",
+            "name": "jsonDecode",
+            "summary": "",
+            "url": "classes/JSON-json.html#method_jsonDecode"
+        },                {
+            "fqsen": "\\JSON\\json\u003A\u003Ajson_last_error_e\u0028\u0029",
+            "name": "json_last_error_e",
+            "summary": "JSON\u0020error\u0020explanatory.",
+            "url": "classes/JSON-json.html#method_json_last_error_e"
         },                {
             "fqsen": "\\JSON\\json\u003A\u003Aload\u0028\u0029",
             "name": "load",
@@ -4293,53 +4353,13 @@ Search.appendIndex(
         },                {
             "fqsen": "\\JSON\\json\u003A\u003Asave\u0028\u0029",
             "name": "save",
-            "summary": "Save\u0020JSON\u0020from\u0020\u0060load\u0028string\u0020\u0024file,\u0020bool\u0020\u0024assoc\u0020\u003D\u0020false\u0029\u0060.",
+            "summary": "Save\u0020JSON\u0020from\u0020\u0060load\u0028\u0024file,\u0020\u0024assoc\u0020\u003D\u0020false\u0029\u0060.",
             "url": "classes/JSON-json.html#method_save"
         },                {
-            "fqsen": "\\JSON\\json\u003A\u003Aassoc\u0028\u0029",
-            "name": "assoc",
-            "summary": "Force\u0020Assoc.",
-            "url": "classes/JSON-json.html#method_assoc"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Ajson\u0028\u0029",
-            "name": "json",
-            "summary": "JSON\u0020formatter.",
-            "url": "classes/JSON-json.html#method_json"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Abeautify\u0028\u0029",
-            "name": "beautify",
-            "summary": "beautify\u0020JSON.",
-            "url": "classes/JSON-json.html#method_beautify"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Ais_json\u0028\u0029",
-            "name": "is_json",
-            "summary": "Validate\u0020json\u0020string.",
-            "url": "classes/JSON-json.html#method_is_json"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Ajsond\u0028\u0029",
-            "name": "jsond",
-            "summary": "JSON\u0020decode\u0020with\u0020verification.",
-            "url": "classes/JSON-json.html#method_jsond"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Ajson_last_error_e\u0028\u0029",
-            "name": "json_last_error_e",
-            "summary": "JSON\u0020error\u0020explanator.",
-            "url": "classes/JSON-json.html#method_json_last_error_e"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003Ajson_decode\u0028\u0029",
-            "name": "json_decode",
-            "summary": "json_decode\u0020default\u0020assoc.",
-            "url": "classes/JSON-json.html#method_json_decode"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003AjsonDecode\u0028\u0029",
-            "name": "jsonDecode",
+            "fqsen": "\\JSON\\json\u003A\u003A\u0024static",
+            "name": "static",
             "summary": "",
-            "url": "classes/JSON-json.html#method_jsonDecode"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003AisJson\u0028\u0029",
-            "name": "isJson",
-            "summary": "",
-            "url": "classes/JSON-json.html#method_isJson"
+            "url": "classes/JSON-json.html#property_static"
         },                {
             "fqsen": "\\JSON\\json\u003A\u003A\u0024result",
             "name": "result",
@@ -4350,11 +4370,6 @@ Search.appendIndex(
             "name": "file",
             "summary": "",
             "url": "classes/JSON-json.html#property_file"
-        },                {
-            "fqsen": "\\JSON\\json\u003A\u003A\u0024static",
-            "name": "static",
-            "summary": "",
-            "url": "classes/JSON-json.html#property_static"
         },                {
             "fqsen": "\\MVC\\alert",
             "name": "alert",
@@ -4416,11 +4431,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-captcha.html#method_receiver2"
         },                {
-            "fqsen": "\\MVC\\captcha\u003A\u003Adelete_headers\u0028\u0029",
-            "name": "delete_headers",
-            "summary": "",
-            "url": "classes/MVC-captcha.html#method_delete_headers"
-        },                {
             "fqsen": "\\MVC\\captcha\u003A\u003Acreate\u0028\u0029",
             "name": "create",
             "summary": "Create\u0020captcha\u0020ids.",
@@ -4435,6 +4445,11 @@ Search.appendIndex(
             "name": "jpeg",
             "summary": "",
             "url": "classes/MVC-captcha.html#method_jpeg"
+        },                {
+            "fqsen": "\\MVC\\captcha\u003A\u003Adelete_headers\u0028\u0029",
+            "name": "delete_headers",
+            "summary": "",
+            "url": "classes/MVC-captcha.html#method_delete_headers"
         },                {
             "fqsen": "\\MVC\\captcha\u003A\u003A\u0024key",
             "name": "key",
@@ -4461,11 +4476,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-Exception.html#method___construct"
         },                {
-            "fqsen": "\\MVC\\Exception\u003A\u003A__toString\u0028\u0029",
-            "name": "__toString",
-            "summary": "",
-            "url": "classes/MVC-Exception.html#method___toString"
-        },                {
             "fqsen": "\\MVC\\Exception\u003A\u003AgenerateCallTrace\u0028\u0029",
             "name": "generateCallTrace",
             "summary": "",
@@ -4480,6 +4490,11 @@ Search.appendIndex(
             "name": "is_admin",
             "summary": "",
             "url": "classes/MVC-Exception.html#method_is_admin"
+        },                {
+            "fqsen": "\\MVC\\Exception\u003A\u003A__toString\u0028\u0029",
+            "name": "__toString",
+            "summary": "",
+            "url": "classes/MVC-Exception.html#method___toString"
         },                {
             "fqsen": "\\maintenance\u0028\u0029",
             "name": "maintenance",
@@ -4531,15 +4546,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-helper.html#method_require_method"
         },                {
+            "fqsen": "\\MVC\\helper\u003A\u003Aurl2host\u0028\u0029",
+            "name": "url2host",
+            "summary": "transfor\u0020url\u0020to\u0020host\u0020\u0028domain\u0020only\u0029.",
+            "url": "classes/MVC-helper.html#method_url2host"
+        },                {
             "fqsen": "\\MVC\\helper\u003A\u003Ais_url\u0028\u0029",
             "name": "is_url",
             "summary": "is\u0020url\u0020\u003F",
             "url": "classes/MVC-helper.html#method_is_url"
         },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Aurl2host\u0028\u0029",
-            "name": "url2host",
-            "summary": "transfor\u0020url\u0020to\u0020host\u0020\u0028domain\u0020only\u0029.",
-            "url": "classes/MVC-helper.html#method_url2host"
+            "fqsen": "\\MVC\\helper\u003A\u003Aparse_url2\u0028\u0029",
+            "name": "parse_url2",
+            "summary": "Parse\u0020URL\u0020deeper.",
+            "url": "classes/MVC-helper.html#method_parse_url2"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003Ainclude_asset\u0028\u0029",
             "name": "include_asset",
@@ -4555,6 +4575,16 @@ Search.appendIndex(
             "name": "sass",
             "summary": "Sass\u0020Compiler.",
             "url": "classes/MVC-helper.html#method_sass"
+        },                {
+            "fqsen": "\\MVC\\helper\u003A\u003Ais_windows\u0028\u0029",
+            "name": "is_windows",
+            "summary": "Detect\u0020current\u0020OS\u0020is\u0020Windows.",
+            "url": "classes/MVC-helper.html#method_is_windows"
+        },                {
+            "fqsen": "\\MVC\\helper\u003A\u003AfixSlash\u0028\u0029",
+            "name": "fixSlash",
+            "summary": "Fix\u0020path\u0020string\u0020\u0060default\u0020OS\u0060\u0020separate\u0020slash\u0020and\u0020replaced\u0020by\u0020\u0060\/\u0060\n\u002A\u0020WIN\u0020\u0028\\\\\u0029\n\u002A\u0020LINUX\u0020\u0028\/\u0029.",
+            "url": "classes/MVC-helper.html#method_fixSlash"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003Aphp_error_log\u0028\u0029",
             "name": "php_error_log",
@@ -4591,6 +4621,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-helper.html#method_webkit_asset"
         },                {
+            "fqsen": "\\MVC\\helper\u003A\u003Abase_url\u0028\u0029",
+            "name": "base_url",
+            "summary": "Get\u0020path\u0020base\u0020URL\n\u002A\u0020example\u0020\u0028\/cookie\/file.html\u0029\u0020\u002D\u003E\u0020\u0028https\u003A\/\/httpbin.org\/cookie\/file.html\u0029.",
+            "url": "classes/MVC-helper.html#method_base_url"
+        },                {
             "fqsen": "\\MVC\\helper\u003A\u003Aload_asset\u0028\u0029",
             "name": "load_asset",
             "summary": "",
@@ -4600,26 +4635,6 @@ Search.appendIndex(
             "name": "headerExt",
             "summary": "",
             "url": "classes/MVC-helper.html#method_headerExt"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Aparse_url2\u0028\u0029",
-            "name": "parse_url2",
-            "summary": "Parse\u0020URL\u0020deeper.",
-            "url": "classes/MVC-helper.html#method_parse_url2"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003AfixSlash\u0028\u0029",
-            "name": "fixSlash",
-            "summary": "Fix\u0020path\u0020string\u0020\u0060default\u0020OS\u0060\u0020separate\u0020slash\u0020and\u0020replaced\u0020by\u0020\u0060\/\u0060\n\u002A\u0020WIN\u0020\u0028\\\\\u0029\n\u002A\u0020LINUX\u0020\u0028\/\u0029.",
-            "url": "classes/MVC-helper.html#method_fixSlash"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Abase_url\u0028\u0029",
-            "name": "base_url",
-            "summary": "Get\u0020path\u0020base\u0020URL\n\u002A\u0020example\u0020\u0028\/cookie\/file.html\u0029\u0020\u002D\u003E\u0020\u0028https\u003A\/\/httpbin.org\/cookie\/file.html\u0029.",
-            "url": "classes/MVC-helper.html#method_base_url"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Ageturl\u0028\u0029",
-            "name": "geturl",
-            "summary": "Get\u0020current\u0020URL.",
-            "url": "classes/MVC-helper.html#method_geturl"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003AgetOrigin\u0028\u0029",
             "name": "getOrigin",
@@ -4631,15 +4646,15 @@ Search.appendIndex(
             "summary": "get\u0020canonical\u0020url.",
             "url": "classes/MVC-helper.html#method_get_canonical"
         },                {
+            "fqsen": "\\MVC\\helper\u003A\u003Ageturl\u0028\u0029",
+            "name": "geturl",
+            "summary": "Get\u0020current\u0020URL.",
+            "url": "classes/MVC-helper.html#method_geturl"
+        },                {
             "fqsen": "\\MVC\\helper\u003A\u003Aget_clean_uri\u0028\u0029",
             "name": "get_clean_uri",
             "summary": "Get\u0020\u0060request\u0020uri\u0060\u0020without\u0020parameter.",
             "url": "classes/MVC-helper.html#method_get_clean_uri"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003AisLocal\u0028\u0029",
-            "name": "isLocal",
-            "summary": "Check\u0020if\u0020current\u0020is\u0020localhost.",
-            "url": "classes/MVC-helper.html#method_isLocal"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003Asetcookie\u0028\u0029",
             "name": "setcookie",
@@ -4661,11 +4676,6 @@ Search.appendIndex(
             "summary": "Get\u0020request\u0020data\n\u002A\u0020\u0024_GET\u005B\u0024name\u005D\n\u002A\u0020\u0024_REQUEST\u005B\u0024name\u005D\n\u002A\u0020\u0024_POST\u005B\u0024name\u005D.",
             "url": "classes/MVC-helper.html#method_request_data"
         },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Ais_windows\u0028\u0029",
-            "name": "is_windows",
-            "summary": "Detect\u0020current\u0020OS\u0020is\u0020Windows.",
-            "url": "classes/MVC-helper.html#method_is_windows"
-        },                {
             "fqsen": "\\MVC\\helper\u003A\u003AplatformSlashes\u0028\u0029",
             "name": "platformSlashes",
             "summary": "",
@@ -4676,25 +4686,35 @@ Search.appendIndex(
             "summary": "Cors\u0020domain\u0020verify,\u0020detect\u0020AJAX,\u0020and\u0020validate\u0020AJAX\u0020CORS.",
             "url": "classes/MVC-helper.html#method_cors"
         },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Aip_in_range\u0028\u0029",
-            "name": "ip_in_range",
-            "summary": "Check\u0020if\u0020a\u0020given\u0020ip\u0020is\u0020in\u0020a\u0020network.",
-            "url": "classes/MVC-helper.html#method_ip_in_range"
+            "fqsen": "\\MVC\\helper\u003A\u003AisLocal\u0028\u0029",
+            "name": "isLocal",
+            "summary": "Check\u0020if\u0020current\u0020is\u0020localhost.",
+            "url": "classes/MVC-helper.html#method_isLocal"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003Aip_in_multirange\u0028\u0029",
             "name": "ip_in_multirange",
             "summary": "",
             "url": "classes/MVC-helper.html#method_ip_in_multirange"
         },                {
+            "fqsen": "\\MVC\\helper\u003A\u003Aip_in_range\u0028\u0029",
+            "name": "ip_in_range",
+            "summary": "Check\u0020if\u0020a\u0020given\u0020ip\u0020is\u0020in\u0020a\u0020network.",
+            "url": "classes/MVC-helper.html#method_ip_in_range"
+        },                {
             "fqsen": "\\MVC\\helper\u003A\u003Ais_google\u0028\u0029",
             "name": "is_google",
             "summary": "Check\u0020if\u0020request\u0020is\u0020google.",
             "url": "classes/MVC-helper.html#method_is_google"
         },                {
-            "fqsen": "\\MVC\\helper\u003A\u003Aget_client_ip\u0028\u0029",
-            "name": "get_client_ip",
+            "fqsen": "\\MVC\\helper\u003A\u003AgetRequestIP\u0028\u0029",
+            "name": "getRequestIP",
             "summary": "",
-            "url": "classes/MVC-helper.html#method_get_client_ip"
+            "url": "classes/MVC-helper.html#method_getRequestIP"
+        },                {
+            "fqsen": "\\MVC\\helper\u003A\u003AisCloudflare\u0028\u0029",
+            "name": "isCloudflare",
+            "summary": "",
+            "url": "classes/MVC-helper.html#method_isCloudflare"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003A_cloudflare_CheckIP\u0028\u0029",
             "name": "_cloudflare_CheckIP",
@@ -4706,15 +4726,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-helper.html#method__cloudflare_Requests_Check"
         },                {
-            "fqsen": "\\MVC\\helper\u003A\u003AisCloudflare\u0028\u0029",
-            "name": "isCloudflare",
+            "fqsen": "\\MVC\\helper\u003A\u003Aget_client_ip\u0028\u0029",
+            "name": "get_client_ip",
             "summary": "",
-            "url": "classes/MVC-helper.html#method_isCloudflare"
-        },                {
-            "fqsen": "\\MVC\\helper\u003A\u003AgetRequestIP\u0028\u0029",
-            "name": "getRequestIP",
-            "summary": "",
-            "url": "classes/MVC-helper.html#method_getRequestIP"
+            "url": "classes/MVC-helper.html#method_get_client_ip"
         },                {
             "fqsen": "\\MVC\\helper\u003A\u003Auseragent\u0028\u0029",
             "name": "useragent",
@@ -4801,15 +4816,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-router.html#method___construct"
         },                {
-            "fqsen": "\\MVC\\router\u003A\u003Asafe_redirect\u0028\u0029",
-            "name": "safe_redirect",
-            "summary": "Safe\u0020redirect,\u0020support\u0020any\u0020conditions.",
-            "url": "classes/MVC-router.html#method_safe_redirect"
-        },                {
             "fqsen": "\\MVC\\router\u003A\u003Aredirect\u0028\u0029",
             "name": "redirect",
             "summary": "",
             "url": "classes/MVC-router.html#method_redirect"
+        },                {
+            "fqsen": "\\MVC\\router\u003A\u003Asafe_redirect\u0028\u0029",
+            "name": "safe_redirect",
+            "summary": "Safe\u0020redirect,\u0020support\u0020any\u0020conditions.",
+            "url": "classes/MVC-router.html#method_safe_redirect"
         },                {
             "fqsen": "\\MVC\\router\u003A\u003Ano_direct\u0028\u0029",
             "name": "no_direct",
@@ -4846,15 +4861,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-router.html#method_is_post"
         },                {
-            "fqsen": "\\MVC\\router\u003A\u003Ais_header\u0028\u0029",
-            "name": "is_header",
-            "summary": "Check\u0020if\u0020header\u0020request\u0020has\u0020\u0024any.",
-            "url": "classes/MVC-router.html#method_is_header"
-        },                {
             "fqsen": "\\MVC\\router\u003A\u003Ais_hard_reload\u0028\u0029",
             "name": "is_hard_reload",
             "summary": "Check\u0020browser\u0020no\u002Dcache\u0020request\u0020\u0028hard\u0020reload\u0029.",
             "url": "classes/MVC-router.html#method_is_hard_reload"
+        },                {
+            "fqsen": "\\MVC\\router\u003A\u003Ais_header\u0028\u0029",
+            "name": "is_header",
+            "summary": "Check\u0020if\u0020header\u0020request\u0020has\u0020\u0024any.",
+            "url": "classes/MVC-router.html#method_is_header"
         },                {
             "fqsen": "\\MVC\\router\u003A\u003AfindRoute\u0028\u0029",
             "name": "findRoute",
@@ -4871,6 +4886,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-router.html#method_GUID"
         },                {
+            "fqsen": "\\MVC\\router\u003A\u003A\u0024env_status",
+            "name": "env_status",
+            "summary": "",
+            "url": "classes/MVC-router.html#property_env_status"
+        },                {
             "fqsen": "\\MVC\\router\u003A\u003A\u0024root",
             "name": "root",
             "summary": "",
@@ -4885,11 +4905,6 @@ Search.appendIndex(
             "name": "env",
             "summary": "",
             "url": "classes/MVC-router.html#property_env"
-        },                {
-            "fqsen": "\\MVC\\router\u003A\u003A\u0024env_status",
-            "name": "env_status",
-            "summary": "",
-            "url": "classes/MVC-router.html#property_env_status"
         },                {
             "fqsen": "\\fab\u0028\u0029",
             "name": "fab",
@@ -4916,6 +4931,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-themes.html#method_published"
         },                {
+            "fqsen": "\\MVC\\themes\u003A\u003Adate\u0028\u0029",
+            "name": "date",
+            "summary": "",
+            "url": "classes/MVC-themes.html#method_date"
+        },                {
             "fqsen": "\\MVC\\themes\u003A\u003Amodified\u0028\u0029",
             "name": "modified",
             "summary": "",
@@ -4926,25 +4946,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/MVC-themes.html#method_thumbnail"
         },                {
-            "fqsen": "\\MVC\\themes\u003A\u003Adate\u0028\u0029",
-            "name": "date",
-            "summary": "",
-            "url": "classes/MVC-themes.html#method_date"
-        },                {
             "fqsen": "\\MVC\\themes\u003A\u003Alabel\u0028\u0029",
             "name": "label",
             "summary": "Set\u0020Label\u0020Router.",
             "url": "classes/MVC-themes.html#method_label"
         },                {
-            "fqsen": "\\MVC\\themes\u003A\u003Aset\u0028\u0029",
-            "name": "set",
-            "summary": "Set\u0020theme\u0020default.",
-            "url": "classes/MVC-themes.html#method_set"
-        },                {
             "fqsen": "\\MVC\\themes\u003A\u003AsetThemeByZones\u0028\u0029",
             "name": "setThemeByZones",
             "summary": "\u0060\u0060\u0060php\nsetThemeByZones\u0028\u005B\u0020\u0027theme\u002Dname\u0027\u003D\u003E\u005B\u0027zone1\u0027,\u0020\u0027zone2\u0027\u005D,\u0020\u0027another\u002Dtheme\u0027\u003D\u003E\u005B\u0027zone3\u0027,\u0027zone4\u0027\u005D,\u0020\u0027default\u002Dtemplate\u0027\u005D\u0029\n\u0060\u0060\u0060\nSet\u0020theme\u0020by\u0020zone\u0020divider.",
             "url": "classes/MVC-themes.html#method_setThemeByZones"
+        },                {
+            "fqsen": "\\MVC\\themes\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020theme\u0020default.",
+            "url": "classes/MVC-themes.html#method_set"
         },                {
             "fqsen": "\\MVC\\themes\u003A\u003A\u0024view",
             "name": "view",
@@ -4956,45 +4971,45 @@ Search.appendIndex(
             "summary": "Remove\u0020root\u0020path.",
             "url": "classes/MVC-themes.html#method_remove_root"
         },                {
-            "fqsen": "\\MVC\\themes\u003A\u003Afix_slash\u0028\u0029",
-            "name": "fix_slash",
-            "summary": "Transform\u0020to\u0020linux\u0020separated\u0020file.",
-            "url": "classes/MVC-themes.html#method_fix_slash"
-        },                {
             "fqsen": "\\MVC\\themes\u003A\u003Aprepare_config\u0028\u0029",
             "name": "prepare_config",
             "summary": "",
             "url": "classes/MVC-themes.html#method_prepare_config"
-        },                {
-            "fqsen": "\\MVC\\themes\u003A\u003Adump\u0028\u0029",
-            "name": "dump",
-            "summary": "Dump\u0020this\u0020variable.",
-            "url": "classes/MVC-themes.html#method_dump"
         },                {
             "fqsen": "\\MVC\\themes\u003A\u003Ais_admin\u0028\u0029",
             "name": "is_admin",
             "summary": "",
             "url": "classes/MVC-themes.html#method_is_admin"
         },                {
-            "fqsen": "\\MVC\\themes\u003A\u003Arender\u0028\u0029",
-            "name": "render",
-            "summary": "Include\u0020passed\u0020variable.",
-            "url": "classes/MVC-themes.html#method_render"
-        },                {
-            "fqsen": "\\MVC\\themes\u003A\u003AisJSONRequest\u0028\u0029",
-            "name": "isJSONRequest",
-            "summary": "",
-            "url": "classes/MVC-themes.html#method_isJSONRequest"
-        },                {
             "fqsen": "\\MVC\\themes\u003A\u003ANoThemeRequest\u0028\u0029",
             "name": "NoThemeRequest",
             "summary": "",
             "url": "classes/MVC-themes.html#method_NoThemeRequest"
         },                {
+            "fqsen": "\\MVC\\themes\u003A\u003Afix_slash\u0028\u0029",
+            "name": "fix_slash",
+            "summary": "Transform\u0020to\u0020linux\u0020separated\u0020file.",
+            "url": "classes/MVC-themes.html#method_fix_slash"
+        },                {
+            "fqsen": "\\MVC\\themes\u003A\u003Adump\u0028\u0029",
+            "name": "dump",
+            "summary": "Dump\u0020this\u0020variable.",
+            "url": "classes/MVC-themes.html#method_dump"
+        },                {
+            "fqsen": "\\MVC\\themes\u003A\u003Arender\u0028\u0029",
+            "name": "render",
+            "summary": "Include\u0020passed\u0020variable.",
+            "url": "classes/MVC-themes.html#method_render"
+        },                {
             "fqsen": "\\MVC\\themes\u003A\u003Aload_render\u0028\u0029",
             "name": "load_render",
             "summary": "",
             "url": "classes/MVC-themes.html#method_load_render"
+        },                {
+            "fqsen": "\\MVC\\themes\u003A\u003AisJSONRequest\u0028\u0029",
+            "name": "isJSONRequest",
+            "summary": "",
+            "url": "classes/MVC-themes.html#method_isJSONRequest"
         },                {
             "fqsen": "\\MVC\\themes\u003A\u003A\u0024root_theme",
             "name": "root_theme",
@@ -5076,6 +5091,11 @@ Search.appendIndex(
             "summary": "Execute\u0020the\u0020command.",
             "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_execute"
         },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AfinalizeContainer\u0028\u0029",
+            "name": "finalizeContainer",
+            "summary": "Finalize\u0020the\u0020container.",
+            "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_finalizeContainer"
+        },                {
             "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AgetContainer\u0028\u0029",
             "name": "getContainer",
             "summary": "Get\u0020the\u0020container.",
@@ -5086,20 +5106,15 @@ Search.appendIndex(
             "summary": "Set\u0020the\u0020container.",
             "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_setContainer"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AgetObfuscator\u0028\u0029",
-            "name": "getObfuscator",
-            "summary": "Get\u0020the\u0020obfuscator.",
-            "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_getObfuscator"
-        },                {
             "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AcopyDir\u0028\u0029",
             "name": "copyDir",
             "summary": "Copy\u0020a\u0020directory.",
             "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_copyDir"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AfinalizeContainer\u0028\u0029",
-            "name": "finalizeContainer",
-            "summary": "Finalize\u0020the\u0020container.",
-            "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_finalizeContainer"
+            "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003AgetObfuscator\u0028\u0029",
+            "name": "getObfuscator",
+            "summary": "Get\u0020the\u0020obfuscator.",
+            "url": "classes/Naneau-Obfuscator-Console-Command-ObfuscateCommand.html#method_getObfuscator"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Console\\Command\\ObfuscateCommand\u003A\u003A\u0024obfuscator",
             "name": "obfuscator",
@@ -5151,11 +5166,6 @@ Search.appendIndex(
             "summary": "Before\u0020node\u0020traversal.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-ScramblePrivateMethod.html#method_beforeTraverse"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScramblePrivateMethod\u003A\u003AenterNode\u0028\u0029",
-            "name": "enterNode",
-            "summary": "Check\u0020all\u0020variable\u0020nodes.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScramblePrivateMethod.html#method_enterNode"
-        },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScramblePrivateMethod\u003A\u003AvariableMethodCallsUsed\u0028\u0029",
             "name": "variableMethodCallsUsed",
             "summary": "Recursively\u0020scan\u0020for\u0020method\u0020calls\u0020and\u0020see\u0020if\u0020variables\u0020are\u0020used.",
@@ -5165,6 +5175,11 @@ Search.appendIndex(
             "name": "scanMethodDefinitions",
             "summary": "Recursively\u0020scan\u0020for\u0020private\u0020method\u0020definitions\u0020and\u0020rename\u0020them.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-ScramblePrivateMethod.html#method_scanMethodDefinitions"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScramblePrivateMethod\u003A\u003AenterNode\u0028\u0029",
+            "name": "enterNode",
+            "summary": "Check\u0020all\u0020variable\u0020nodes.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScramblePrivateMethod.html#method_enterNode"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScramblePrivateProperty",
             "name": "ScramblePrivateProperty",
@@ -5201,10 +5216,25 @@ Search.appendIndex(
             "summary": "Constructor.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method___construct"
         },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AaddIgnore\u0028\u0029",
+            "name": "addIgnore",
+            "summary": "Add\u0020a\u0020variable\u0020name\u0020to\u0020ignore.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_addIgnore"
+        },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003Ascramble\u0028\u0029",
             "name": "scramble",
             "summary": "Scramble\u0020a\u0020property\u0020of\u0020a\u0020node.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_scramble"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AgetIgnore\u0028\u0029",
+            "name": "getIgnore",
+            "summary": "Get\u0020variables\u0020to\u0020ignore.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_getIgnore"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AsetIgnore\u0028\u0029",
+            "name": "setIgnore",
+            "summary": "Set\u0020variables\u0020to\u0020ignore.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_setIgnore"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AscrambleString\u0028\u0029",
             "name": "scrambleString",
@@ -5220,21 +5250,6 @@ Search.appendIndex(
             "name": "setScrambler",
             "summary": "Set\u0020the\u0020string\u0020scrambler.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_setScrambler"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AgetIgnore\u0028\u0029",
-            "name": "getIgnore",
-            "summary": "Get\u0020variables\u0020to\u0020ignore.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_getIgnore"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AsetIgnore\u0028\u0029",
-            "name": "setIgnore",
-            "summary": "Set\u0020variables\u0020to\u0020ignore.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_setIgnore"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003AaddIgnore\u0028\u0029",
-            "name": "addIgnore",
-            "summary": "Add\u0020a\u0020variable\u0020name\u0020to\u0020ignore.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-Scrambler.html#method_addIgnore"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\Scrambler\u003A\u003A\u0024scrambler",
             "name": "scrambler",
@@ -5256,20 +5271,20 @@ Search.appendIndex(
             "summary": "Before\u0020node\u0020traversal.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_beforeTraverse"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003AenterNode\u0028\u0029",
-            "name": "enterNode",
-            "summary": "Check\u0020all\u0020variable\u0020nodes.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_enterNode"
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003AfindClass\u0028\u0029",
+            "name": "findClass",
+            "summary": "Find\u0020\u0028the\u0020first\u0029\u0020class\u0020node\u0020in\u0020a\u0020set\u0020of\u0020nodes.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_findClass"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003AscanUse\u0028\u0029",
             "name": "scanUse",
             "summary": "Scramble\u0020at\u0020use\u0020statements.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_scanUse"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003AfindClass\u0028\u0029",
-            "name": "findClass",
-            "summary": "Find\u0020\u0028the\u0020first\u0029\u0020class\u0020node\u0020in\u0020a\u0020set\u0020of\u0020nodes.",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_findClass"
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003AenterNode\u0028\u0029",
+            "name": "enterNode",
+            "summary": "Check\u0020all\u0020variable\u0020nodes.",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-ScrambleUse.html#method_enterNode"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\ScrambleUse\u003A\u003A\u0024classNode",
             "name": "classNode",
@@ -5316,15 +5331,15 @@ Search.appendIndex(
             "summary": "Renamed\u0020variables.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-TrackingRenamerTrait.html#property_renamed"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\TrackingRenamerTrait\u003A\u003AisRenamed\u0028\u0029",
-            "name": "isRenamed",
-            "summary": "Has\u0020a\u0020method\u0020been\u0020renamed\u003F",
-            "url": "classes/Naneau-Obfuscator-Node-Visitor-TrackingRenamerTrait.html#method_isRenamed"
-        },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\TrackingRenamerTrait\u003A\u003AgetNewName\u0028\u0029",
             "name": "getNewName",
             "summary": "Get\u0020new\u0020name\u0020of\u0020a\u0020method.",
             "url": "classes/Naneau-Obfuscator-Node-Visitor-TrackingRenamerTrait.html#method_getNewName"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\TrackingRenamerTrait\u003A\u003AisRenamed\u0028\u0029",
+            "name": "isRenamed",
+            "summary": "Has\u0020a\u0020method\u0020been\u0020renamed\u003F",
+            "url": "classes/Naneau-Obfuscator-Node-Visitor-TrackingRenamerTrait.html#method_isRenamed"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Node\\Visitor\\TrackingRenamerTrait\u003A\u003AresetRenamed\u0028\u0029",
             "name": "resetRenamed",
@@ -5386,45 +5401,10 @@ Search.appendIndex(
             "summary": "Strip\u0020whitespace.",
             "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_obfuscate"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetParser\u0028\u0029",
-            "name": "getParser",
-            "summary": "Get\u0020the\u0020parser.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getParser"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetParser\u0028\u0029",
-            "name": "setParser",
-            "summary": "Set\u0020the\u0020parser.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setParser"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetTraverser\u0028\u0029",
-            "name": "getTraverser",
-            "summary": "Get\u0020the\u0020node\u0020traverser.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getTraverser"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetTraverser\u0028\u0029",
-            "name": "setTraverser",
-            "summary": "Set\u0020the\u0020node\u0020traverser.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setTraverser"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetPrettyPrinter\u0028\u0029",
-            "name": "getPrettyPrinter",
-            "summary": "Get\u0020the\u0020\u0022pretty\u0022\u0020printer.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getPrettyPrinter"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetPrettyPrinter\u0028\u0029",
-            "name": "setPrettyPrinter",
-            "summary": "Set\u0020the\u0020\u0022pretty\u0022\u0020printer.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setPrettyPrinter"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetEventDispatcher\u0028\u0029",
-            "name": "getEventDispatcher",
-            "summary": "Get\u0020the\u0020event\u0020dispatcher.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getEventDispatcher"
-        },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetEventDispatcher\u0028\u0029",
-            "name": "setEventDispatcher",
-            "summary": "Set\u0020the\u0020event\u0020dispatcher.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setEventDispatcher"
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetFiles\u0028\u0029",
+            "name": "getFiles",
+            "summary": "Get\u0020the\u0020file\u0020list.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getFiles"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetFileRegex\u0028\u0029",
             "name": "getFileRegex",
@@ -5436,15 +5416,50 @@ Search.appendIndex(
             "summary": "Set\u0020the\u0020regex\u0020for\u0020file\u0020inclusion.",
             "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setFileRegex"
         },                {
-            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetFiles\u0028\u0029",
-            "name": "getFiles",
-            "summary": "Get\u0020the\u0020file\u0020list.",
-            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getFiles"
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetEventDispatcher\u0028\u0029",
+            "name": "getEventDispatcher",
+            "summary": "Get\u0020the\u0020event\u0020dispatcher.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getEventDispatcher"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetEventDispatcher\u0028\u0029",
+            "name": "setEventDispatcher",
+            "summary": "Set\u0020the\u0020event\u0020dispatcher.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setEventDispatcher"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AobfuscateFileContents\u0028\u0029",
             "name": "obfuscateFileContents",
             "summary": "Obfuscate\u0020a\u0020single\u0020file\u0027s\u0020contents.",
             "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_obfuscateFileContents"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetTraverser\u0028\u0029",
+            "name": "getTraverser",
+            "summary": "Get\u0020the\u0020node\u0020traverser.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getTraverser"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetTraverser\u0028\u0029",
+            "name": "setTraverser",
+            "summary": "Set\u0020the\u0020node\u0020traverser.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setTraverser"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetParser\u0028\u0029",
+            "name": "getParser",
+            "summary": "Get\u0020the\u0020parser.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getParser"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetParser\u0028\u0029",
+            "name": "setParser",
+            "summary": "Set\u0020the\u0020parser.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setParser"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AgetPrettyPrinter\u0028\u0029",
+            "name": "getPrettyPrinter",
+            "summary": "Get\u0020the\u0020\u0022pretty\u0022\u0020printer.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_getPrettyPrinter"
+        },                {
+            "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003AsetPrettyPrinter\u0028\u0029",
+            "name": "setPrettyPrinter",
+            "summary": "Set\u0020the\u0020\u0022pretty\u0022\u0020printer.",
+            "url": "classes/Naneau-Obfuscator-Obfuscator.html#method_setPrettyPrinter"
         },                {
             "fqsen": "\\Naneau\\Obfuscator\\Obfuscator\u003A\u003A\u0024parser",
             "name": "parser",
@@ -5576,11 +5591,6 @@ Search.appendIndex(
             "summary": "Config\u0020instance.",
             "url": "classes/Office-loader.html#property_config"
         },                {
-            "fqsen": "\\Office\\loader\u003A\u003A\u0024pdo",
-            "name": "pdo",
-            "summary": "PDO\u0020instance.",
-            "url": "classes/Office-loader.html#property_pdo"
-        },                {
             "fqsen": "\\Office\\loader\u003A\u003A\u0024user",
             "name": "user",
             "summary": "User\u0020instance.",
@@ -5595,6 +5605,11 @@ Search.appendIndex(
             "name": "warehouse",
             "summary": "Warehouse\u0020instance.",
             "url": "classes/Office-loader.html#property_warehouse"
+        },                {
+            "fqsen": "\\Office\\loader\u003A\u003A\u0024pdo",
+            "name": "pdo",
+            "summary": "PDO\u0020instance.",
+            "url": "classes/Office-loader.html#property_pdo"
         },                {
             "fqsen": "\\Office\\user",
             "name": "user",
@@ -5611,15 +5626,15 @@ Search.appendIndex(
             "summary": "Get\u0020office\u0020list\u0020of\u0020current\u0020logged\u0020in\u0020user.",
             "url": "classes/Office-user.html#method_getOffices"
         },                {
-            "fqsen": "\\Office\\user\u003A\u003A\u0024pdo",
-            "name": "pdo",
-            "summary": "PDO\u0020instance.",
-            "url": "classes/Office-user.html#property_pdo"
-        },                {
             "fqsen": "\\Office\\user\u003A\u003A\u0024usermeta",
             "name": "usermeta",
             "summary": "User\u0020meta\u0020instance.",
             "url": "classes/Office-user.html#property_usermeta"
+        },                {
+            "fqsen": "\\Office\\user\u003A\u003A\u0024pdo",
+            "name": "pdo",
+            "summary": "PDO\u0020instance.",
+            "url": "classes/Office-user.html#property_pdo"
         },                {
             "fqsen": "\\print_performance_graph\u0028\u0029",
             "name": "print_performance_graph",
@@ -5866,6 +5881,11 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020variables.",
             "url": "classes/PHPWee-CssVariablesMinifierPlugin.html#method_getVariables"
         },                {
+            "fqsen": "\\PHPWee\\CssVariablesMinifierPlugin\u003A\u003AsetVariables\u0028\u0029",
+            "name": "setVariables",
+            "summary": "Sets\u0020the\u0020variables.",
+            "url": "classes/PHPWee-CssVariablesMinifierPlugin.html#method_setVariables"
+        },                {
             "fqsen": "\\PHPWee\\CssVariablesMinifierPlugin\u003A\u003Aapply\u0028\u0029",
             "name": "apply",
             "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierPlugin\u003A\u003Aminify\u0028\u0029\u007D.",
@@ -5875,11 +5895,6 @@ Search.appendIndex(
             "name": "getTriggerTokens",
             "summary": "Implements\u0020\u007B\u0040link\u0020aMinifierPlugin\u003A\u003AgetTriggerTokens\u0028\u0029\u007D.",
             "url": "classes/PHPWee-CssVariablesMinifierPlugin.html#method_getTriggerTokens"
-        },                {
-            "fqsen": "\\PHPWee\\CssVariablesMinifierPlugin\u003A\u003AsetVariables\u0028\u0029",
-            "name": "setVariables",
-            "summary": "Sets\u0020the\u0020variables.",
-            "url": "classes/PHPWee-CssVariablesMinifierPlugin.html#method_setVariables"
         },                {
             "fqsen": "\\PHPWee\\CssVariablesMinifierPlugin\u003A\u003A\u0024reMatch",
             "name": "reMatch",
@@ -5951,15 +5966,15 @@ Search.appendIndex(
             "summary": "This\u0020\u007B\u0040link\u0020aCssMinifierFilter\u0020minifier\u0020filter\u007D\u0020sorts\u0020the\u0020ruleset\u0020declarations\u0020of\u0020a\u0020ruleset\u0020by\u0020name.",
             "url": "classes/PHPWee-CssSortRulesetPropertiesMinifierFilter.html"
         },                {
-            "fqsen": "\\PHPWee\\CssSortRulesetPropertiesMinifierFilter\u003A\u003Aapply\u0028\u0029",
-            "name": "apply",
-            "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierFilter\u003A\u003Afilter\u0028\u0029\u007D.",
-            "url": "classes/PHPWee-CssSortRulesetPropertiesMinifierFilter.html#method_apply"
-        },                {
             "fqsen": "\\PHPWee\\CssSortRulesetPropertiesMinifierFilter\u003A\u003AuserDefinedSort1\u0028\u0029",
             "name": "userDefinedSort1",
             "summary": "User\u0020defined\u0020sort\u0020function.",
             "url": "classes/PHPWee-CssSortRulesetPropertiesMinifierFilter.html#method_userDefinedSort1"
+        },                {
+            "fqsen": "\\PHPWee\\CssSortRulesetPropertiesMinifierFilter\u003A\u003Aapply\u0028\u0029",
+            "name": "apply",
+            "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierFilter\u003A\u003Afilter\u0028\u0029\u007D.",
+            "url": "classes/PHPWee-CssSortRulesetPropertiesMinifierFilter.html#method_apply"
         },                {
             "fqsen": "\\PHPWee\\CssRulesetStartToken",
             "name": "CssRulesetStartToken",
@@ -6076,6 +6091,11 @@ Search.appendIndex(
             "summary": "Constructer.",
             "url": "classes/PHPWee-CssParser.html#method___construct"
         },                {
+            "fqsen": "\\PHPWee\\CssParser\u003A\u003Aparse\u0028\u0029",
+            "name": "parse",
+            "summary": "Parse\u0020the\u0020CSS\u0020source\u0020and\u0020return\u0020a\u0020array\u0020with\u0020parsed\u0020tokens.",
+            "url": "classes/PHPWee-CssParser.html#method_parse"
+        },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003AappendToken\u0028\u0029",
             "name": "appendToken",
             "summary": "Append\u0020a\u0020token\u0020to\u0020the\u0020array\u0020of\u0020tokens.",
@@ -6096,6 +6116,11 @@ Search.appendIndex(
             "summary": "Returns\u0020the\u0020current\u0020buffer.",
             "url": "classes/PHPWee-CssParser.html#method_getBuffer"
         },                {
+            "fqsen": "\\PHPWee\\CssParser\u003A\u003AsetBuffer\u0028\u0029",
+            "name": "setBuffer",
+            "summary": "Sets\/restores\u0020the\u0020buffer.",
+            "url": "classes/PHPWee-CssParser.html#method_setBuffer"
+        },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003AgetMediaTypes\u0028\u0029",
             "name": "getMediaTypes",
             "summary": "Returns\u0020the\u0020current\u0020media\u0020types\u0020state.",
@@ -6110,6 +6135,11 @@ Search.appendIndex(
             "name": "getState",
             "summary": "Returns\u0020the\u0020current\u0020state.",
             "url": "classes/PHPWee-CssParser.html#method_getState"
+        },                {
+            "fqsen": "\\PHPWee\\CssParser\u003A\u003AsetState\u0028\u0029",
+            "name": "setState",
+            "summary": "Sets\u0020the\u0020current\u0020state\u0020in\u0020the\u0020state\u0020stack\u003B\u0020equals\u0020to\u0020\u007B\u0040link\u0020CssParser\u003A\u003ApopState\u0028\u0029\u007D\u0020\u002B\u0020\u007B\u0040link\u0020CssParser\u003A\u003ApushState\u0028\u0029\u007D.",
+            "url": "classes/PHPWee-CssParser.html#method_setState"
         },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003AgetPlugin\u0028\u0029",
             "name": "getPlugin",
@@ -6126,11 +6156,6 @@ Search.appendIndex(
             "summary": "Returns\u0020if\u0020the\u0020current\u0020state\u0020equals\u0020the\u0020passed\u0020state.",
             "url": "classes/PHPWee-CssParser.html#method_isState"
         },                {
-            "fqsen": "\\PHPWee\\CssParser\u003A\u003Aparse\u0028\u0029",
-            "name": "parse",
-            "summary": "Parse\u0020the\u0020CSS\u0020source\u0020and\u0020return\u0020a\u0020array\u0020with\u0020parsed\u0020tokens.",
-            "url": "classes/PHPWee-CssParser.html#method_parse"
-        },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003ApopState\u0028\u0029",
             "name": "popState",
             "summary": "Remove\u0020the\u0020last\u0020state\u0020of\u0020the\u0020state\u0020stack\u0020and\u0020return\u0020the\u0020removed\u0020stack\u0020value.",
@@ -6141,11 +6166,6 @@ Search.appendIndex(
             "summary": "Adds\u0020a\u0020new\u0020state\u0020onto\u0020the\u0020state\u0020stack.",
             "url": "classes/PHPWee-CssParser.html#method_pushState"
         },                {
-            "fqsen": "\\PHPWee\\CssParser\u003A\u003AsetBuffer\u0028\u0029",
-            "name": "setBuffer",
-            "summary": "Sets\/restores\u0020the\u0020buffer.",
-            "url": "classes/PHPWee-CssParser.html#method_setBuffer"
-        },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003AsetExclusive\u0028\u0029",
             "name": "setExclusive",
             "summary": "Set\u0020the\u0020exclusive\u0020state.",
@@ -6155,11 +6175,6 @@ Search.appendIndex(
             "name": "setMediaTypes",
             "summary": "Set\u0020the\u0020media\u0020types\u0020state.",
             "url": "classes/PHPWee-CssParser.html#method_setMediaTypes"
-        },                {
-            "fqsen": "\\PHPWee\\CssParser\u003A\u003AsetState\u0028\u0029",
-            "name": "setState",
-            "summary": "Sets\u0020the\u0020current\u0020state\u0020in\u0020the\u0020state\u0020stack\u003B\u0020equals\u0020to\u0020\u007B\u0040link\u0020CssParser\u003A\u003ApopState\u0028\u0029\u007D\u0020\u002B\u0020\u007B\u0040link\u0020CssParser\u003A\u003ApushState\u0028\u0029\u007D.",
-            "url": "classes/PHPWee-CssParser.html#method_setState"
         },                {
             "fqsen": "\\PHPWee\\CssParser\u003A\u003AunsetExclusive\u0028\u0029",
             "name": "unsetExclusive",
@@ -6241,6 +6256,11 @@ Search.appendIndex(
             "summary": "Constructer.",
             "url": "classes/PHPWee-CssMinifier.html#method___construct"
         },                {
+            "fqsen": "\\PHPWee\\CssMinifier\u003A\u003Aminify\u0028\u0029",
+            "name": "minify",
+            "summary": "Minifies\u0020the\u0020CSS\u0020source.",
+            "url": "classes/PHPWee-CssMinifier.html#method_minify"
+        },                {
             "fqsen": "\\PHPWee\\CssMinifier\u003A\u003AgetMinified\u0028\u0029",
             "name": "getMinified",
             "summary": "Returns\u0020the\u0020minified\u0020Source.",
@@ -6250,11 +6270,6 @@ Search.appendIndex(
             "name": "getPlugin",
             "summary": "Returns\u0020a\u0020plugin\u0020by\u0020class\u0020name.",
             "url": "classes/PHPWee-CssMinifier.html#method_getPlugin"
-        },                {
-            "fqsen": "\\PHPWee\\CssMinifier\u003A\u003Aminify\u0028\u0029",
-            "name": "minify",
-            "summary": "Minifies\u0020the\u0020CSS\u0020source.",
-            "url": "classes/PHPWee-CssMinifier.html#method_minify"
         },                {
             "fqsen": "\\PHPWee\\CssMinifier\u003A\u003A\u0024filters",
             "name": "filters",
@@ -6471,11 +6486,6 @@ Search.appendIndex(
             "summary": "This\u0020\u007B\u0040link\u0020aCssMinifierFilter\u0020minifier\u0020filter\u007D\u0020triggers\u0020on\u0020CSS\u0020Level\u00203\u0020properties\u0020and\u0020will\u0020add\u0020declaration\u0020tokens\nwith\u0020browser\u002Dspecific\u0020properties.",
             "url": "classes/PHPWee-CssConvertLevel3PropertiesMinifierFilter.html"
         },                {
-            "fqsen": "\\PHPWee\\CssConvertLevel3PropertiesMinifierFilter\u003A\u003Aapply\u0028\u0029",
-            "name": "apply",
-            "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierFilter\u003A\u003Afilter\u0028\u0029\u007D.",
-            "url": "classes/PHPWee-CssConvertLevel3PropertiesMinifierFilter.html#method_apply"
-        },                {
             "fqsen": "\\PHPWee\\CssConvertLevel3PropertiesMinifierFilter\u003A\u003Afilter\u0028\u0029",
             "name": "filter",
             "summary": "Transforms\u0020the\u0020Internet\u0020Explorer\u0020specific\u0020declaration\u0020property\u0020\u0022filter\u0022\u0020to\u0020Internet\u0020Explorer\u00208\u002B\u0020compatible\ndeclaratiopn\u0020property\u0020\u0022\u002Dms\u002Dfilter\u0022.",
@@ -6490,6 +6500,11 @@ Search.appendIndex(
             "name": "whiteSpace",
             "summary": "Transforms\u0020\u0022white\u002Dspace\u003A\u0020pre\u002Dwrap\u0022\u0020into\u0020browser\u0020specific\u0020counterparts.",
             "url": "classes/PHPWee-CssConvertLevel3PropertiesMinifierFilter.html#method_whiteSpace"
+        },                {
+            "fqsen": "\\PHPWee\\CssConvertLevel3PropertiesMinifierFilter\u003A\u003Aapply\u0028\u0029",
+            "name": "apply",
+            "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierFilter\u003A\u003Afilter\u0028\u0029\u007D.",
+            "url": "classes/PHPWee-CssConvertLevel3PropertiesMinifierFilter.html#method_apply"
         },                {
             "fqsen": "\\PHPWee\\CssConvertLevel3PropertiesMinifierFilter\u003A\u003A\u0024transformations",
             "name": "transformations",
@@ -6516,11 +6531,6 @@ Search.appendIndex(
             "summary": "Implements\u0020\u007B\u0040link\u0020aCssMinifierPlugin\u003A\u003Aminify\u0028\u0029\u007D.",
             "url": "classes/PHPWee-CssConvertHslColorsMinifierPlugin.html#method_apply"
         },                {
-            "fqsen": "\\PHPWee\\CssConvertHslColorsMinifierPlugin\u003A\u003AgetTriggerTokens\u0028\u0029",
-            "name": "getTriggerTokens",
-            "summary": "Implements\u0020\u007B\u0040link\u0020aMinifierPlugin\u003A\u003AgetTriggerTokens\u0028\u0029\u007D.",
-            "url": "classes/PHPWee-CssConvertHslColorsMinifierPlugin.html#method_getTriggerTokens"
-        },                {
             "fqsen": "\\PHPWee\\CssConvertHslColorsMinifierPlugin\u003A\u003Ahsl2hex\u0028\u0029",
             "name": "hsl2hex",
             "summary": "Convert\u0020a\u0020HSL\u0020value\u0020to\u0020hexadecimal\u0020notation.",
@@ -6530,6 +6540,11 @@ Search.appendIndex(
             "name": "hue2rgb",
             "summary": "Apply\u0020hue\u0020to\u0020a\u0020rgb\u0020color\u0020value.",
             "url": "classes/PHPWee-CssConvertHslColorsMinifierPlugin.html#method_hue2rgb"
+        },                {
+            "fqsen": "\\PHPWee\\CssConvertHslColorsMinifierPlugin\u003A\u003AgetTriggerTokens\u0028\u0029",
+            "name": "getTriggerTokens",
+            "summary": "Implements\u0020\u007B\u0040link\u0020aMinifierPlugin\u003A\u003AgetTriggerTokens\u0028\u0029\u007D.",
+            "url": "classes/PHPWee-CssConvertHslColorsMinifierPlugin.html#method_getTriggerTokens"
         },                {
             "fqsen": "\\PHPWee\\CssConvertHslColorsMinifierPlugin\u003A\u003A\u0024reMatch",
             "name": "reMatch",
@@ -7061,15 +7076,15 @@ Search.appendIndex(
             "summary": "JSMin.php\u0020\u002D\u0020modified\u0020PHP\u0020implementation\u0020of\u0020Douglas\u0020Crockford\u0027s\u0020JSMin.",
             "url": "classes/PHPWee-JSMin.html"
         },                {
-            "fqsen": "\\PHPWee\\JSMin\u003A\u003Aminify\u0028\u0029",
-            "name": "minify",
-            "summary": "Minify\u0020Javascript.",
-            "url": "classes/PHPWee-JSMin.html#method_minify"
-        },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
             "url": "classes/PHPWee-JSMin.html#method___construct"
+        },                {
+            "fqsen": "\\PHPWee\\JSMin\u003A\u003Aminify\u0028\u0029",
+            "name": "minify",
+            "summary": "Minify\u0020Javascript.",
+            "url": "classes/PHPWee-JSMin.html#method_minify"
         },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003Amin\u0028\u0029",
             "name": "min",
@@ -7081,11 +7096,6 @@ Search.appendIndex(
             "summary": "ACTION_KEEP_A\u0020\u003D\u0020Output\u0020A.\u0020Copy\u0020B\u0020to\u0020A.\u0020Get\u0020the\u0020next\u0020B.",
             "url": "classes/PHPWee-JSMin.html#method_action"
         },                {
-            "fqsen": "\\PHPWee\\JSMin\u003A\u003AisRegexpLiteral\u0028\u0029",
-            "name": "isRegexpLiteral",
-            "summary": "",
-            "url": "classes/PHPWee-JSMin.html#method_isRegexpLiteral"
-        },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "Return\u0020the\u0020next\u0020character\u0020from\u0020stdin.\u0020Watch\u0020out\u0020for\u0020lookahead.\u0020If\u0020the\u0020character\u0020is\u0020a\u0020control\u0020character,\ntranslate\u0020it\u0020to\u0020a\u0020space\u0020or\u0020linefeed.",
@@ -7096,15 +7106,15 @@ Search.appendIndex(
             "summary": "Does\u0020\u0024a\u0020indicate\u0020end\u0020of\u0020input\u003F",
             "url": "classes/PHPWee-JSMin.html#method_isEOF"
         },                {
+            "fqsen": "\\PHPWee\\JSMin\u003A\u003Anext\u0028\u0029",
+            "name": "next",
+            "summary": "Get\u0020the\u0020next\u0020character,\u0020skipping\u0020over\u0020comments.\u0020Some\u0020comments\u0020may\u0020be\u0020preserved.",
+            "url": "classes/PHPWee-JSMin.html#method_next"
+        },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003Apeek\u0028\u0029",
             "name": "peek",
             "summary": "Get\u0020next\u0020char\u0020\u0028without\u0020getting\u0020it\u0029.\u0020If\u0020is\u0020ctrl\u0020character,\u0020translate\u0020to\u0020a\u0020space\u0020or\u0020newline.",
             "url": "classes/PHPWee-JSMin.html#method_peek"
-        },                {
-            "fqsen": "\\PHPWee\\JSMin\u003A\u003AisAlphaNum\u0028\u0029",
-            "name": "isAlphaNum",
-            "summary": "Return\u0020true\u0020if\u0020the\u0020character\u0020is\u0020a\u0020letter,\u0020digit,\u0020underscore,\u0020dollar\u0020sign,\u0020or\u0020non\u002DASCII\u0020character.",
-            "url": "classes/PHPWee-JSMin.html#method_isAlphaNum"
         },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003AconsumeSingleLineComment\u0028\u0029",
             "name": "consumeSingleLineComment",
@@ -7116,10 +7126,15 @@ Search.appendIndex(
             "summary": "Consume\u0020a\u0020multiple\u0020line\u0020comment\u0020from\u0020input\u0020\u0028possibly\u0020retaining\u0020it\u0029.",
             "url": "classes/PHPWee-JSMin.html#method_consumeMultipleLineComment"
         },                {
-            "fqsen": "\\PHPWee\\JSMin\u003A\u003Anext\u0028\u0029",
-            "name": "next",
-            "summary": "Get\u0020the\u0020next\u0020character,\u0020skipping\u0020over\u0020comments.\u0020Some\u0020comments\u0020may\u0020be\u0020preserved.",
-            "url": "classes/PHPWee-JSMin.html#method_next"
+            "fqsen": "\\PHPWee\\JSMin\u003A\u003AisRegexpLiteral\u0028\u0029",
+            "name": "isRegexpLiteral",
+            "summary": "",
+            "url": "classes/PHPWee-JSMin.html#method_isRegexpLiteral"
+        },                {
+            "fqsen": "\\PHPWee\\JSMin\u003A\u003AisAlphaNum\u0028\u0029",
+            "name": "isAlphaNum",
+            "summary": "Return\u0020true\u0020if\u0020the\u0020character\u0020is\u0020a\u0020letter,\u0020digit,\u0020underscore,\u0020dollar\u0020sign,\u0020or\u0020non\u002DASCII\u0020character.",
+            "url": "classes/PHPWee-JSMin.html#method_isAlphaNum"
         },                {
             "fqsen": "\\PHPWee\\JSMin\u003A\u003AORD_LF",
             "name": "ORD_LF",
@@ -7231,6 +7246,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Proxy-db.html#method___construct"
         },                {
+            "fqsen": "\\Proxy\\db\u003A\u003Aload_proxies_db\u0028\u0029",
+            "name": "load_proxies_db",
+            "summary": "Load\u0020proxies\u0020from\u0020database.",
+            "url": "classes/Proxy-db.html#method_load_proxies_db"
+        },                {
             "fqsen": "\\Proxy\\db\u003A\u003Arandom_proxy\u0028\u0029",
             "name": "random_proxy",
             "summary": "",
@@ -7240,11 +7260,6 @@ Search.appendIndex(
             "name": "inactive_proxies",
             "summary": "Get\u0020All\u0020Inactive\u0020Proxies.",
             "url": "classes/Proxy-db.html#method_inactive_proxies"
-        },                {
-            "fqsen": "\\Proxy\\db\u003A\u003Aload_proxies_db\u0028\u0029",
-            "name": "load_proxies_db",
-            "summary": "Load\u0020proxies\u0020from\u0020database.",
-            "url": "classes/Proxy-db.html#method_load_proxies_db"
         },                {
             "fqsen": "\\Proxy\\db\u003A\u003Aload_proxies\u0028\u0029",
             "name": "load_proxies",
@@ -7366,20 +7381,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Session-session.html#method_handle"
         },                {
-            "fqsen": "\\Session\\session\u003A\u003Aconfigure\u0028\u0029",
-            "name": "configure",
+            "fqsen": "\\Session\\session\u003A\u003Anow\u0028\u0029",
+            "name": "now",
             "summary": "",
-            "url": "classes/Session-session.html#method_configure"
-        },                {
-            "fqsen": "\\Session\\session\u003A\u003Astart_timeout\u0028\u0029",
-            "name": "start_timeout",
-            "summary": "",
-            "url": "classes/Session-session.html#method_start_timeout"
-        },                {
-            "fqsen": "\\Session\\session\u003A\u003Adump\u0028\u0029",
-            "name": "dump",
-            "summary": "",
-            "url": "classes/Session-session.html#method_dump"
+            "url": "classes/Session-session.html#method_now"
         },                {
             "fqsen": "\\Session\\session\u003A\u003Ahas\u0028\u0029",
             "name": "has",
@@ -7411,15 +7416,30 @@ Search.appendIndex(
             "summary": "Unset\u0020Session.",
             "url": "classes/Session-session.html#method_unses"
         },                {
+            "fqsen": "\\Session\\session\u003A\u003Aset_session\u0028\u0029",
+            "name": "set_session",
+            "summary": "",
+            "url": "classes/Session-session.html#method_set_session"
+        },                {
+            "fqsen": "\\Session\\session\u003A\u003Astart_timeout\u0028\u0029",
+            "name": "start_timeout",
+            "summary": "",
+            "url": "classes/Session-session.html#method_start_timeout"
+        },                {
+            "fqsen": "\\Session\\session\u003A\u003Aconfigure\u0028\u0029",
+            "name": "configure",
+            "summary": "",
+            "url": "classes/Session-session.html#method_configure"
+        },                {
             "fqsen": "\\Session\\session\u003A\u003Aprotect_session\u0028\u0029",
             "name": "protect_session",
             "summary": "",
             "url": "classes/Session-session.html#method_protect_session"
         },                {
-            "fqsen": "\\Session\\session\u003A\u003Anow\u0028\u0029",
-            "name": "now",
+            "fqsen": "\\Session\\session\u003A\u003Adump\u0028\u0029",
+            "name": "dump",
             "summary": "",
-            "url": "classes/Session-session.html#method_now"
+            "url": "classes/Session-session.html#method_dump"
         },                {
             "fqsen": "\\Session\\session\u003A\u003Ais_sess\u0028\u0029",
             "name": "is_sess",
@@ -7431,20 +7451,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Session-session.html#method_sess"
         },                {
-            "fqsen": "\\Session\\session\u003A\u003Aset_session\u0028\u0029",
-            "name": "set_session",
-            "summary": "",
-            "url": "classes/Session-session.html#method_set_session"
-        },                {
             "fqsen": "\\Session\\session\u003A\u003Aregenerate\u0028\u0029",
             "name": "regenerate",
             "summary": "Regenerates\u0020the\u0020session\u0020ID.",
             "url": "classes/Session-session.html#method_regenerate"
         },                {
-            "fqsen": "\\Session\\session\u003A\u003A\u0024path_defined",
-            "name": "path_defined",
+            "fqsen": "\\Session\\session\u003A\u003A\u0024_instance",
+            "name": "_instance",
             "summary": "",
-            "url": "classes/Session-session.html#property_path_defined"
+            "url": "classes/Session-session.html#property__instance"
         },                {
             "fqsen": "\\Session\\session\u003A\u003A\u0024sessionCookieName",
             "name": "sessionCookieName",
@@ -7461,6 +7476,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Session-session.html#property_cookieDomain"
         },                {
+            "fqsen": "\\Session\\session\u003A\u003A\u0024path_defined",
+            "name": "path_defined",
+            "summary": "",
+            "url": "classes/Session-session.html#property_path_defined"
+        },                {
             "fqsen": "\\Session\\session\u003A\u003A\u0024cookieSecure",
             "name": "cookieSecure",
             "summary": "Cookie\u0020will\u0020only\u0020be\u0020set\u0020if\u0020a\u0020secure\u0020HTTPS\u0020connection\u0020exists.",
@@ -7470,11 +7490,6 @@ Search.appendIndex(
             "name": "sidRegexp",
             "summary": "sid\u0020regex\u0020expression.",
             "url": "classes/Session-session.html#property_sidRegexp"
-        },                {
-            "fqsen": "\\Session\\session\u003A\u003A\u0024_instance",
-            "name": "_instance",
-            "summary": "",
-            "url": "classes/Session-session.html#property__instance"
         },                {
             "fqsen": "\\array_filter_recursive\u0028\u0029",
             "name": "array_filter_recursive",
@@ -7816,6 +7831,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/globals.html#method_once"
         },                {
+            "fqsen": "\\globals\u003A\u003Ahas\u0028\u0029",
+            "name": "has",
+            "summary": "",
+            "url": "classes/globals.html#method_has"
+        },                {
             "fqsen": "\\globals\u003A\u003Aset\u0028\u0029",
             "name": "set",
             "summary": "",
@@ -7826,11 +7846,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/globals.html#method_get"
         },                {
-            "fqsen": "\\globals\u003A\u003Ahas\u0028\u0029",
-            "name": "has",
-            "summary": "",
-            "url": "classes/globals.html#method_has"
-        },                {
             "fqsen": "\\globals\u003A\u003A\u0024name",
             "name": "name",
             "summary": "",
@@ -7840,6 +7855,11 @@ Search.appendIndex(
             "name": "isLocalHost",
             "summary": "Detect\u0020is\u0020localhost.",
             "url": "namespaces/default.html#function_isLocalHost"
+        },                {
+            "fqsen": "\\get_client_ip\u0028\u0029",
+            "name": "get_client_ip",
+            "summary": "Get\u0020client\u0020ip,\u0020when\u0020getenv\u0020supported\u0020\u0028maybe\u0020cli\u0029.",
+            "url": "namespaces/default.html#function_get_client_ip"
         },                {
             "fqsen": "\\get_client_ip2\u0028\u0029",
             "name": "get_client_ip2",
@@ -7856,15 +7876,15 @@ Search.appendIndex(
             "summary": "JavaScript\u002Dlike\u0020HTML\u0020DOM\u0020Element.",
             "url": "classes/JSLikeHTMLElement.html"
         },                {
-            "fqsen": "\\JSLikeHTMLElement\u003A\u003A__set\u0028\u0029",
-            "name": "__set",
-            "summary": "Used\u0020for\u0020setting\u0020innerHTML\u0020like\u0020it\u0027s\u0020done\u0020in\u0020JavaScript\u003A.",
-            "url": "classes/JSLikeHTMLElement.html#method___set"
-        },                {
             "fqsen": "\\JSLikeHTMLElement\u003A\u003A__get\u0028\u0029",
             "name": "__get",
             "summary": "Used\u0020for\u0020getting\u0020innerHTML\u0020like\u0020it\u0027s\u0020done\u0020in\u0020JavaScript\u003A.",
             "url": "classes/JSLikeHTMLElement.html#method___get"
+        },                {
+            "fqsen": "\\JSLikeHTMLElement\u003A\u003A__set\u0028\u0029",
+            "name": "__set",
+            "summary": "Used\u0020for\u0020setting\u0020innerHTML\u0020like\u0020it\u0027s\u0020done\u0020in\u0020JavaScript\u003A.",
+            "url": "classes/JSLikeHTMLElement.html#method___set"
         },                {
             "fqsen": "\\JSLikeHTMLElement\u003A\u003A__toString\u0028\u0029",
             "name": "__toString",
@@ -7956,35 +7976,35 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/SmartDOMDocument.html#method_genHash"
         },                {
-            "fqsen": "\\SmartDOMDocument\u003A\u003A__toString\u0028\u0029",
-            "name": "__toString",
-            "summary": "Adds\u0020an\u0020ability\u0020to\u0020use\u0020the\u0020SmartDOMDocument\u0020object\u0020as\u0020a\u0020string\u0020in\u0020a\u0020string\u0020context.",
-            "url": "classes/SmartDOMDocument.html#method___toString"
+            "fqsen": "\\SmartDOMDocument\u003A\u003AtestHTML\u0028\u0029",
+            "name": "testHTML",
+            "summary": "This\u0020test\u0020functions\u0020shows\u0020an\u0020example\u0020of\u0020SmartDOMDocument\u0020in\u0020action.",
+            "url": "classes/SmartDOMDocument.html#method_testHTML"
         },                {
             "fqsen": "\\SmartDOMDocument\u003A\u003AloadHTML\u0028\u0029",
             "name": "loadHTML",
             "summary": "Load\u0020HTML\u0020with\u0020a\u0020proper\u0020encoding\u0020fix\/hack.",
             "url": "classes/SmartDOMDocument.html#method_loadHTML"
         },                {
+            "fqsen": "\\SmartDOMDocument\u003A\u003A__toString\u0028\u0029",
+            "name": "__toString",
+            "summary": "Adds\u0020an\u0020ability\u0020to\u0020use\u0020the\u0020SmartDOMDocument\u0020object\u0020as\u0020a\u0020string\u0020in\u0020a\u0020string\u0020context.",
+            "url": "classes/SmartDOMDocument.html#method___toString"
+        },                {
             "fqsen": "\\SmartDOMDocument\u003A\u003AsaveHTMLExact\u0028\u0029",
             "name": "saveHTMLExact",
             "summary": "Return\u0020HTML\u0020while\u0020stripping\u0020the\u0020annoying\u0020auto\u002Dadded\u0020\u003Chtml\u003E,\u0020\u003Cbody\u003E,\u0020and\u0020doctype.",
             "url": "classes/SmartDOMDocument.html#method_saveHTMLExact"
         },                {
-            "fqsen": "\\SmartDOMDocument\u003A\u003AtestHTML\u0028\u0029",
-            "name": "testHTML",
-            "summary": "This\u0020test\u0020functions\u0020shows\u0020an\u0020example\u0020of\u0020SmartDOMDocument\u0020in\u0020action.",
-            "url": "classes/SmartDOMDocument.html#method_testHTML"
+            "fqsen": "\\SmartDOMDocument\u003A\u003AquerySelector\u0028\u0029",
+            "name": "querySelector",
+            "summary": "Query\u0020node\u0020by\u0020css\u0020selector.",
+            "url": "classes/SmartDOMDocument.html#method_querySelector"
         },                {
             "fqsen": "\\SmartDOMDocument\u003A\u003AquerySelectorAll\u0028\u0029",
             "name": "querySelectorAll",
             "summary": "Query\u0020nodes\u0020by\u0020css\u0020selector.",
             "url": "classes/SmartDOMDocument.html#method_querySelectorAll"
-        },                {
-            "fqsen": "\\SmartDOMDocument\u003A\u003AquerySelector\u0028\u0029",
-            "name": "querySelector",
-            "summary": "Query\u0020node\u0020by\u0020css\u0020selector.",
-            "url": "classes/SmartDOMDocument.html#method_querySelector"
         },                {
             "fqsen": "\\SmartDOMDocument\u003A\u003Aselector2XPath\u0028\u0029",
             "name": "selector2XPath",
@@ -8071,15 +8091,15 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/templateParse.html#method___construct"
         },                {
-            "fqsen": "\\templateParse\u003A\u003AparseFile\u0028\u0029",
-            "name": "parseFile",
-            "summary": "",
-            "url": "classes/templateParse.html#method_parseFile"
-        },                {
             "fqsen": "\\templateParse\u003A\u003AParseTemplate\u0028\u0029",
             "name": "ParseTemplate",
             "summary": "",
             "url": "classes/templateParse.html#method_ParseTemplate"
+        },                {
+            "fqsen": "\\templateParse\u003A\u003AparseFile\u0028\u0029",
+            "name": "parseFile",
+            "summary": "",
+            "url": "classes/templateParse.html#method_parseFile"
         },                {
             "fqsen": "\\templateParse\u003A\u003Adisplay\u0028\u0029",
             "name": "display",
@@ -8116,15 +8136,25 @@ Search.appendIndex(
             "summary": "Implements\u0020functions\u0020for\u0020debugging\u0020purposes.\u0020Debugging\u0020can\u0020be\u0020enabled\u0020and\ndisabled\u0020on\u0020demand.\u0020Debug\u0020messages\u0020are\u0020send\u0020to\u0020error_log\u0020by\u0020default\u0020but\u0020it\nis\u0020also\u0020possible\u0020to\u0020register\u0020a\u0020custom\u0020debug\u0020handler.",
             "url": "classes/simplehtmldom-Debug.html"
         },                {
+            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Aenable\u0028\u0029",
+            "name": "enable",
+            "summary": "Enables\u0020debug\u0020mode.",
+            "url": "classes/simplehtmldom-Debug.html#method_enable"
+        },                {
+            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Alog\u0028\u0029",
+            "name": "log",
+            "summary": "Adds\u0020a\u0020debug\u0020message\u0020to\u0020error_log\u0020if\u0020debug\u0020mode\u0020is\u0020enabled.\u0020Does\u0020nothing\nif\u0020debug\u0020mode\u0020is\u0020disabled.",
+            "url": "classes/simplehtmldom-Debug.html#method_log"
+        },                {
             "fqsen": "\\simplehtmldom\\Debug\u003A\u003AisEnabled\u0028\u0029",
             "name": "isEnabled",
             "summary": "Checks\u0020whether\u0020debug\u0020mode\u0020is\u0020enabled.",
             "url": "classes/simplehtmldom-Debug.html#method_isEnabled"
         },                {
-            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Aenable\u0028\u0029",
-            "name": "enable",
-            "summary": "Enables\u0020debug\u0020mode.",
-            "url": "classes/simplehtmldom-Debug.html#method_enable"
+            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Alog_trace\u0028\u0029",
+            "name": "log_trace",
+            "summary": "This\u0020is\u0020the\u0020actual\u0020log\u0020function.\u0020It\u0020allows\u0020to\u0020set\u0020a\u0020custom\u0020backtrace\u0020to\neliminate\u0020traces\u0020of\u0020this\u0020class.",
+            "url": "classes/simplehtmldom-Debug.html#method_log_trace"
         },                {
             "fqsen": "\\simplehtmldom\\Debug\u003A\u003Adisable\u0028\u0029",
             "name": "disable",
@@ -8135,16 +8165,6 @@ Search.appendIndex(
             "name": "setDebugHandler",
             "summary": "Sets\u0020the\u0020debug\u0020handler.",
             "url": "classes/simplehtmldom-Debug.html#method_setDebugHandler"
-        },                {
-            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Alog_trace\u0028\u0029",
-            "name": "log_trace",
-            "summary": "This\u0020is\u0020the\u0020actual\u0020log\u0020function.\u0020It\u0020allows\u0020to\u0020set\u0020a\u0020custom\u0020backtrace\u0020to\neliminate\u0020traces\u0020of\u0020this\u0020class.",
-            "url": "classes/simplehtmldom-Debug.html#method_log_trace"
-        },                {
-            "fqsen": "\\simplehtmldom\\Debug\u003A\u003Alog\u0028\u0029",
-            "name": "log",
-            "summary": "Adds\u0020a\u0020debug\u0020message\u0020to\u0020error_log\u0020if\u0020debug\u0020mode\u0020is\u0020enabled.\u0020Does\u0020nothing\nif\u0020debug\u0020mode\u0020is\u0020disabled.",
-            "url": "classes/simplehtmldom-Debug.html#method_log"
         },                {
             "fqsen": "\\simplehtmldom\\Debug\u003A\u003Alog_once\u0028\u0029",
             "name": "log_once",
@@ -8186,15 +8206,90 @@ Search.appendIndex(
             "summary": "HTMLDocument\u0020class.",
             "url": "classes/simplehtmldom-HtmlDocument.html"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A__call\u0028\u0029",
-            "name": "__call",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method___call"
-        },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#method___construct"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aload\u0028\u0029",
+            "name": "load",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_load"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aprepare\u0028\u0029",
+            "name": "prepare",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_prepare"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aremove_noise\u0028\u0029",
+            "name": "remove_noise",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_remove_noise"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Arestore_noise\u0028\u0029",
+            "name": "restore_noise",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_restore_noise"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse\u0028\u0029",
+            "name": "parse",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_until_char\u0028\u0029",
+            "name": "copy_until_char",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_until_char"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Alink_nodes\u0028\u0029",
+            "name": "link_nodes",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_link_nodes"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aread_tag\u0028\u0029",
+            "name": "read_tag",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_read_tag"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Askip\u0028\u0029",
+            "name": "skip",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_skip"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aas_text_node\u0028\u0029",
+            "name": "as_text_node",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_as_text_node"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_until\u0028\u0029",
+            "name": "copy_until",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_until"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_skip\u0028\u0029",
+            "name": "copy_skip",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_skip"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse_attr\u0028\u0029",
+            "name": "parse_attr",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse_attr"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse_charset\u0028\u0029",
+            "name": "parse_charset",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse_charset"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Adecode\u0028\u0029",
+            "name": "decode",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_decode"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A__call\u0028\u0029",
+            "name": "__call",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method___call"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A__debugInfo\u0028\u0029",
             "name": "__debugInfo",
@@ -8205,11 +8300,6 @@ Search.appendIndex(
             "name": "__destruct",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#method___destruct"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aload\u0028\u0029",
-            "name": "load",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_load"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aset_callback\u0028\u0029",
             "name": "set_callback",
@@ -8226,15 +8316,15 @@ Search.appendIndex(
             "summary": "Save\u0020modified\u0020html.",
             "url": "classes/simplehtmldom-HtmlDocument.html#method_save"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Afind\u0028\u0029",
-            "name": "find",
-            "summary": "Find\u0020elements\u0020by\u0020CSS\u0020Selector.",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_find"
-        },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Atitle\u0028\u0029",
             "name": "title",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#method_title"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Afind\u0028\u0029",
+            "name": "find",
+            "summary": "Find\u0020elements\u0020by\u0020CSS\u0020Selector.",
+            "url": "classes/simplehtmldom-HtmlDocument.html#method_find"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aexpect\u0028\u0029",
             "name": "expect",
@@ -8245,76 +8335,6 @@ Search.appendIndex(
             "name": "dump",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#method_dump"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aprepare\u0028\u0029",
-            "name": "prepare",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_prepare"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Adecode\u0028\u0029",
-            "name": "decode",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_decode"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse\u0028\u0029",
-            "name": "parse",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse_charset\u0028\u0029",
-            "name": "parse_charset",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse_charset"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aread_tag\u0028\u0029",
-            "name": "read_tag",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_read_tag"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aparse_attr\u0028\u0029",
-            "name": "parse_attr",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_parse_attr"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Alink_nodes\u0028\u0029",
-            "name": "link_nodes",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_link_nodes"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aas_text_node\u0028\u0029",
-            "name": "as_text_node",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_as_text_node"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Askip\u0028\u0029",
-            "name": "skip",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_skip"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_skip\u0028\u0029",
-            "name": "copy_skip",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_skip"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_until\u0028\u0029",
-            "name": "copy_until",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_until"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Acopy_until_char\u0028\u0029",
-            "name": "copy_until_char",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_copy_until_char"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Aremove_noise\u0028\u0029",
-            "name": "remove_noise",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_remove_noise"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Arestore_noise\u0028\u0029",
-            "name": "restore_noise",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#method_restore_noise"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003Asearch_noise\u0028\u0029",
             "name": "search_noise",
@@ -8411,6 +8431,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#property_size"
         },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024_charset",
+            "name": "_charset",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#property__charset"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024_target_charset",
+            "name": "_target_charset",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#property__target_charset"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024default_br_text",
+            "name": "default_br_text",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#property_default_br_text"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024default_span_text",
+            "name": "default_span_text",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlDocument.html#property_default_span_text"
+        },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024pos",
             "name": "pos",
             "summary": "",
@@ -8461,26 +8501,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/simplehtmldom-HtmlDocument.html#property_token_attr"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024_charset",
-            "name": "_charset",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#property__charset"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024_target_charset",
-            "name": "_target_charset",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#property__target_charset"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024default_br_text",
-            "name": "default_br_text",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#property_default_br_text"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024default_span_text",
-            "name": "default_span_text",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlDocument.html#property_default_span_text"
-        },                {
             "fqsen": "\\simplehtmldom\\HtmlDocument\u003A\u003A\u0024self_closing_tags",
             "name": "self_closing_tags",
             "summary": "",
@@ -8501,15 +8521,15 @@ Search.appendIndex(
             "summary": "HTMLNode\u0020class.",
             "url": "classes/simplehtmldom-HtmlNode.html"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A__call\u0028\u0029",
-            "name": "__call",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method___call"
-        },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method___construct"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A__call\u0028\u0029",
+            "name": "__call",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method___call"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A__debugInfo\u0028\u0029",
             "name": "__debugInfo",
@@ -8520,6 +8540,31 @@ Search.appendIndex(
             "name": "__toString",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method___toString"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aoutertext\u0028\u0029",
+            "name": "outertext",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_outertext"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ainnertext\u0028\u0029",
+            "name": "innertext",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_innertext"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aconvert_text\u0028\u0029",
+            "name": "convert_text",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_convert_text"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_utf8\u0028\u0029",
+            "name": "is_utf8",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_is_utf8"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Amakeup\u0028\u0029",
+            "name": "makeup",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_makeup"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aclear\u0028\u0029",
             "name": "clear",
@@ -8536,70 +8581,20 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_dump_node"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A\u0024parent",
-            "name": "parent",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#property_parent"
-        },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Afind_ancestor_tag\u0028\u0029",
             "name": "find_ancestor_tag",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_find_ancestor_tag"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ainnertext\u0028\u0029",
-            "name": "innertext",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_innertext"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aoutertext\u0028\u0029",
-            "name": "outertext",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_outertext"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_block_element\u0028\u0029",
-            "name": "is_block_element",
-            "summary": "Returns\u0020true\u0020if\u0020the\u0020provided\u0020element\u0020is\u0020a\u0020block\u0020level\u0020element.",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_is_block_element"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_inline_element\u0028\u0029",
-            "name": "is_inline_element",
-            "summary": "Returns\u0020true\u0020if\u0020the\u0020provided\u0020element\u0020is\u0020an\u0020inline\u0020level\u0020element.",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_is_inline_element"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Atext\u0028\u0029",
-            "name": "text",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_text"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Axmltext\u0028\u0029",
-            "name": "xmltext",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_xmltext"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Amakeup\u0028\u0029",
-            "name": "makeup",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_makeup"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Afind\u0028\u0029",
-            "name": "find",
-            "summary": "Element\u0020selector.",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_find"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aexpect\u0028\u0029",
             "name": "expect",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_expect"
         },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aseek\u0028\u0029",
-            "name": "seek",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_seek"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Amatch\u0028\u0029",
-            "name": "match",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_match"
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Afind\u0028\u0029",
+            "name": "find",
+            "summary": "Element\u0020selector.",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_find"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aparse_selector\u0028\u0029",
             "name": "parse_selector",
@@ -8616,6 +8611,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method___set"
         },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Atext\u0028\u0029",
+            "name": "text",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_text"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_block_element\u0028\u0029",
+            "name": "is_block_element",
+            "summary": "Returns\u0020true\u0020if\u0020the\u0020provided\u0020element\u0020is\u0020a\u0020block\u0020level\u0020element.",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_is_block_element"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_inline_element\u0028\u0029",
+            "name": "is_inline_element",
+            "summary": "Returns\u0020true\u0020if\u0020the\u0020provided\u0020element\u0020is\u0020an\u0020inline\u0020level\u0020element.",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_is_inline_element"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Axmltext\u0028\u0029",
+            "name": "xmltext",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_xmltext"
+        },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A__isset\u0028\u0029",
             "name": "__isset",
             "summary": "",
@@ -8625,16 +8640,6 @@ Search.appendIndex(
             "name": "__unset",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method___unset"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aconvert_text\u0028\u0029",
-            "name": "convert_text",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_convert_text"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Ais_utf8\u0028\u0029",
-            "name": "is_utf8",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_is_utf8"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aget_display_size\u0028\u0029",
             "name": "get_display_size",
@@ -8661,6 +8666,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_removeClass"
         },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003AremoveAttribute\u0028\u0029",
+            "name": "removeAttribute",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_removeAttribute"
+        },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003AgetAllAttributes\u0028\u0029",
             "name": "getAllAttributes",
             "summary": "",
@@ -8680,11 +8690,6 @@ Search.appendIndex(
             "name": "hasAttribute",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_hasAttribute"
-        },                {
-            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003AremoveAttribute\u0028\u0029",
-            "name": "removeAttribute",
-            "summary": "",
-            "url": "classes/simplehtmldom-HtmlNode.html#method_removeAttribute"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aremove\u0028\u0029",
             "name": "remove",
@@ -8720,6 +8725,11 @@ Search.appendIndex(
             "name": "parentNode",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_parentNode"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003A\u0024parent",
+            "name": "parent",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#property_parent"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003AchildNodes\u0028\u0029",
             "name": "childNodes",
@@ -8760,6 +8770,16 @@ Search.appendIndex(
             "name": "appendChild",
             "summary": "",
             "url": "classes/simplehtmldom-HtmlNode.html#method_appendChild"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Aseek\u0028\u0029",
+            "name": "seek",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_seek"
+        },                {
+            "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003Amatch\u0028\u0029",
+            "name": "match",
+            "summary": "",
+            "url": "classes/simplehtmldom-HtmlNode.html#method_match"
         },                {
             "fqsen": "\\simplehtmldom\\HtmlNode\u003A\u003AHDOM_TYPE_ELEMENT",
             "name": "HDOM_TYPE_ELEMENT",
@@ -8956,25 +8976,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Typehint-Typehint.html"
         },                {
-            "fqsen": "\\Typehint\\Typehint\u003A\u003A__Constrct\u0028\u0029",
-            "name": "__Constrct",
-            "summary": "",
-            "url": "classes/Typehint-Typehint.html#method___Constrct"
-        },                {
             "fqsen": "\\Typehint\\Typehint\u003A\u003AinitializeHandler\u0028\u0029",
             "name": "initializeHandler",
             "summary": "",
             "url": "classes/Typehint-Typehint.html#method_initializeHandler"
+        },                {
+            "fqsen": "\\Typehint\\Typehint\u003A\u003AhandleTypehint\u0028\u0029",
+            "name": "handleTypehint",
+            "summary": "",
+            "url": "classes/Typehint-Typehint.html#method_handleTypehint"
         },                {
             "fqsen": "\\Typehint\\Typehint\u003A\u003AgetTypehintedArgument\u0028\u0029",
             "name": "getTypehintedArgument",
             "summary": "",
             "url": "classes/Typehint-Typehint.html#method_getTypehintedArgument"
         },                {
-            "fqsen": "\\Typehint\\Typehint\u003A\u003AhandleTypehint\u0028\u0029",
-            "name": "handleTypehint",
+            "fqsen": "\\Typehint\\Typehint\u003A\u003A__Constrct\u0028\u0029",
+            "name": "__Constrct",
             "summary": "",
-            "url": "classes/Typehint-Typehint.html#method_handleTypehint"
+            "url": "classes/Typehint-Typehint.html#method___Constrct"
         },                {
             "fqsen": "\\Typehint\\Typehint\u003A\u003A\u0024Typehints",
             "name": "Typehints",
@@ -8996,25 +9016,25 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/User-access.html#method_check"
         },                {
-            "fqsen": "\\User\\access\u003A\u003AgetAccess\u0028\u0029",
-            "name": "getAccess",
-            "summary": "Get\u0020access\u0020lists.",
-            "url": "classes/User-access.html#method_getAccess"
+            "fqsen": "\\User\\access\u003A\u003Aget_managed_access\u0028\u0029",
+            "name": "get_managed_access",
+            "summary": "Get\u0020list\u0020of\u0020managed\u0020access,\u0020that\u0020requires\u0020spesific\u0020user\u0020roles.",
+            "url": "classes/User-access.html#method_get_managed_access"
         },                {
             "fqsen": "\\User\\access\u003A\u003A\u0024config",
             "name": "config",
             "summary": "",
             "url": "classes/User-access.html#property_config"
         },                {
-            "fqsen": "\\User\\access\u003A\u003Aget_managed_access\u0028\u0029",
-            "name": "get_managed_access",
-            "summary": "Get\u0020list\u0020of\u0020managed\u0020access,\u0020that\u0020requires\u0020spesific\u0020user\u0020roles.",
-            "url": "classes/User-access.html#method_get_managed_access"
-        },                {
             "fqsen": "\\User\\access\u003A\u003Asave\u0028\u0029",
             "name": "save",
             "summary": "Save\u0020new\u0020configuration.",
             "url": "classes/User-access.html#method_save"
+        },                {
+            "fqsen": "\\User\\access\u003A\u003AgetAccess\u0028\u0029",
+            "name": "getAccess",
+            "summary": "Get\u0020access\u0020lists.",
+            "url": "classes/User-access.html#method_getAccess"
         },                {
             "fqsen": "\\User\\access\u003A\u003A\u0024user",
             "name": "user",
@@ -9061,50 +9081,70 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/User-coupon.html#method_set_pdo"
         },                {
-            "fqsen": "\\User\\coupon\u003A\u003Apdo_required\u0028\u0029",
-            "name": "pdo_required",
-            "summary": "Check\u0020pdo\u0020active.",
-            "url": "classes/User-coupon.html#method_pdo_required"
-        },                {
             "fqsen": "\\User\\coupon\u003A\u003Acreate\u0028\u0029",
             "name": "create",
             "summary": "",
             "url": "classes/User-coupon.html#method_create"
+        },                {
+            "fqsen": "\\User\\coupon\u003A\u003Apdo_required\u0028\u0029",
+            "name": "pdo_required",
+            "summary": "Check\u0020pdo\u0020active.",
+            "url": "classes/User-coupon.html#method_pdo_required"
         },                {
             "fqsen": "\\User\\coupon\u003A\u003Acoupon_login\u0028\u0029",
             "name": "coupon_login",
             "summary": "",
             "url": "classes/User-coupon.html#method_coupon_login"
         },                {
-            "fqsen": "\\User\\coupon\u003A\u003Ais_login\u0028\u0029",
-            "name": "is_login",
-            "summary": "Coupon\u0020login\u0020check.",
-            "url": "classes/User-coupon.html#method_is_login"
+            "fqsen": "\\User\\coupon\u003A\u003Agen_token\u0028\u0029",
+            "name": "gen_token",
+            "summary": "Generate\u0020token.",
+            "url": "classes/User-coupon.html#method_gen_token"
         },                {
-            "fqsen": "\\User\\coupon\u003A\u003Alogout\u0028\u0029",
-            "name": "logout",
+            "fqsen": "\\User\\coupon\u003A\u003Acoupon_data\u0028\u0029",
+            "name": "coupon_data",
             "summary": "",
-            "url": "classes/User-coupon.html#method_logout"
-        },                {
-            "fqsen": "\\User\\coupon\u003A\u003Ais_admin\u0028\u0029",
-            "name": "is_admin",
-            "summary": "Check\u0020current\u0020user\u0020is\u0020superadmin.",
-            "url": "classes/User-coupon.html#method_is_admin"
+            "url": "classes/User-coupon.html#method_coupon_data"
         },                {
             "fqsen": "\\User\\coupon\u003A\u003Aset_admin\u0028\u0029",
             "name": "set_admin",
             "summary": "",
             "url": "classes/User-coupon.html#method_set_admin"
         },                {
+            "fqsen": "\\User\\coupon\u003A\u003Acoupon_validate\u0028\u0029",
+            "name": "coupon_validate",
+            "summary": "Validate\u0020coupon\u0020token\u0020with\u0020current\u0020session\u0020zone\u0020divisor.",
+            "url": "classes/User-coupon.html#method_coupon_validate"
+        },                {
+            "fqsen": "\\User\\coupon\u003A\u003Ais_admin\u0028\u0029",
+            "name": "is_admin",
+            "summary": "Check\u0020current\u0020user\u0020is\u0020superadmin.",
+            "url": "classes/User-coupon.html#method_is_admin"
+        },                {
             "fqsen": "\\User\\coupon\u003A\u003Ais_local\u0028\u0029",
             "name": "is_local",
             "summary": "Is\u0020localhost\u0020\u003F",
             "url": "classes/User-coupon.html#method_is_local"
         },                {
-            "fqsen": "\\User\\coupon\u003A\u003Acoupon_validate\u0028\u0029",
-            "name": "coupon_validate",
-            "summary": "Validate\u0020coupon\u0020token\u0020with\u0020current\u0020session\u0020zone\u0020divisor.",
-            "url": "classes/User-coupon.html#method_coupon_validate"
+            "fqsen": "\\User\\coupon\u003A\u003Ais_login\u0028\u0029",
+            "name": "is_login",
+            "summary": "Coupon\u0020login\u0020check.",
+            "url": "classes/User-coupon.html#method_is_login"
+        },                {
+            "fqsen": "\\User\\coupon\u003A\u003A\u0024coupon",
+            "name": "coupon",
+            "summary": "",
+            "url": "classes/User-coupon.html#property_coupon"
+        },                {
+            "fqsen": "\\User\\coupon\u003A\u003Acoupon_limit\u0028\u0029",
+            "name": "coupon_limit",
+            "summary": "Get\u0020current\u0020coupon\u0020limit\u0020value.",
+            "url": "classes/User-coupon.html#method_coupon_limit"
+        },                {
+            "fqsen": "\\User\\coupon\u003A\u003Alogout\u0028\u0029",
+            "name": "logout",
+            "summary": "",
+            "url": "classes/User-coupon.html#method_logout"
         },                {
             "fqsen": "\\User\\coupon\u003A\u003Aadd_success\u0028\u0029",
             "name": "add_success",
@@ -9116,30 +9156,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/User-coupon.html#method_add_log"
         },                {
-            "fqsen": "\\User\\coupon\u003A\u003Acoupon_limit\u0028\u0029",
-            "name": "coupon_limit",
-            "summary": "Get\u0020current\u0020coupon\u0020limit\u0020value.",
-            "url": "classes/User-coupon.html#method_coupon_limit"
-        },                {
-            "fqsen": "\\User\\coupon\u003A\u003A\u0024coupon",
-            "name": "coupon",
-            "summary": "",
-            "url": "classes/User-coupon.html#property_coupon"
-        },                {
-            "fqsen": "\\User\\coupon\u003A\u003Acoupon_data\u0028\u0029",
-            "name": "coupon_data",
-            "summary": "",
-            "url": "classes/User-coupon.html#method_coupon_data"
-        },                {
             "fqsen": "\\User\\coupon\u003A\u003Aredirect\u0028\u0029",
             "name": "redirect",
             "summary": "",
             "url": "classes/User-coupon.html#method_redirect"
-        },                {
-            "fqsen": "\\User\\coupon\u003A\u003Agen_token\u0028\u0029",
-            "name": "gen_token",
-            "summary": "Generate\u0020token.",
-            "url": "classes/User-coupon.html#method_gen_token"
         },                {
             "fqsen": "\\User\\coupon\u003A\u003Ae\u0028\u0029",
             "name": "e",
@@ -9206,10 +9226,40 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/User-user.html#method___construct"
         },                {
+            "fqsen": "\\User\\user\u003A\u003Ais_user_exists\u0028\u0029",
+            "name": "is_user_exists",
+            "summary": "Check\u0020username\u0020is\u0020exists.",
+            "url": "classes/User-user.html#method_is_user_exists"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003Aregister\u0028\u0029",
+            "name": "register",
+            "summary": "Add\u0020User\u0020To\u0020Database.",
+            "url": "classes/User-user.html#method_register"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003Ahide_additional\u0028\u0029",
+            "name": "hide_additional",
+            "summary": "Hidding\u0020additional\u0020information\u0020into\u0020backend\u0020response.",
+            "url": "classes/User-user.html#method_hide_additional"
+        },                {
             "fqsen": "\\User\\user\u003A\u003Ainstance\u0028\u0029",
             "name": "instance",
             "summary": "Current\u0020instance.",
             "url": "classes/User-user.html#method_instance"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003Aget_admin_pattern\u0028\u0029",
+            "name": "get_admin_pattern",
+            "summary": "",
+            "url": "classes/User-user.html#method_get_admin_pattern"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003AgetInstance\u0028\u0029",
+            "name": "getInstance",
+            "summary": "Static\u0020Chain.",
+            "url": "classes/User-user.html#method_getInstance"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003AsetInstance\u0028\u0029",
+            "name": "setInstance",
+            "summary": "",
+            "url": "classes/User-user.html#method_setInstance"
         },                {
             "fqsen": "\\User\\user\u003A\u003A\u0024db",
             "name": "db",
@@ -9231,45 +9281,40 @@ Search.appendIndex(
             "summary": "Get\u0020PDO\u0020Instance.",
             "url": "classes/User-user.html#method_pdo_instance"
         },                {
-            "fqsen": "\\User\\user\u003A\u003AgetInstance\u0028\u0029",
-            "name": "getInstance",
-            "summary": "Static\u0020Chain.",
-            "url": "classes/User-user.html#method_getInstance"
+            "fqsen": "\\User\\user\u003A\u003Acan\u0028\u0029",
+            "name": "can",
+            "summary": "Check\u0020user\u0020can\u0020do\u0020something.",
+            "url": "classes/User-user.html#method_can"
         },                {
-            "fqsen": "\\User\\user\u003A\u003AsetInstance\u0028\u0029",
-            "name": "setInstance",
-            "summary": "",
-            "url": "classes/User-user.html#method_setInstance"
+            "fqsen": "\\User\\user\u003A\u003Ais_login\u0028\u0029",
+            "name": "is_login",
+            "summary": "Check\u0020user\u0020is\u0020login.",
+            "url": "classes/User-user.html#method_is_login"
         },                {
             "fqsen": "\\User\\user\u003A\u003Ameta\u0028\u0029",
             "name": "meta",
             "summary": "Get\u0020\\User\\meta\u0020instance.",
             "url": "classes/User-user.html#method_meta"
         },                {
-            "fqsen": "\\User\\user\u003A\u003Acan\u0028\u0029",
-            "name": "can",
-            "summary": "Check\u0020user\u0020can\u0020do\u0020something.",
-            "url": "classes/User-user.html#method_can"
-        },                {
             "fqsen": "\\User\\user\u003A\u003Apdo_required\u0028\u0029",
             "name": "pdo_required",
             "summary": "Check\u0020pdo\u0020active.",
             "url": "classes/User-user.html#method_pdo_required"
         },                {
-            "fqsen": "\\User\\user\u003A\u003Aget_admin_pattern\u0028\u0029",
-            "name": "get_admin_pattern",
-            "summary": "",
-            "url": "classes/User-user.html#method_get_admin_pattern"
-        },                {
-            "fqsen": "\\User\\user\u003A\u003Ais_admin\u0028\u0029",
-            "name": "is_admin",
-            "summary": "Check\u0020current\u0020user\u0020is\u0020superadmin.",
-            "url": "classes/User-user.html#method_is_admin"
+            "fqsen": "\\User\\user\u003A\u003Auserdata\u0028\u0029",
+            "name": "userdata",
+            "summary": "Get\u0020user\u0020data.",
+            "url": "classes/User-user.html#method_userdata"
         },                {
             "fqsen": "\\User\\user\u003A\u003Aadmin_required\u0028\u0029",
             "name": "admin_required",
             "summary": "If\u0020not\u0020admin\u0020auto\u0020redirect.",
             "url": "classes/User-user.html#method_admin_required"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003Ais_admin\u0028\u0029",
+            "name": "is_admin",
+            "summary": "Check\u0020current\u0020user\u0020is\u0020superadmin.",
+            "url": "classes/User-user.html#method_is_admin"
         },                {
             "fqsen": "\\User\\user\u003A\u003Aget_role\u0028\u0029",
             "name": "get_role",
@@ -9280,11 +9325,6 @@ Search.appendIndex(
             "name": "get_roles",
             "summary": "Get\u0020All\u0020Available\u0020Roles.",
             "url": "classes/User-user.html#method_get_roles"
-        },                {
-            "fqsen": "\\User\\user\u003A\u003Auserdata\u0028\u0029",
-            "name": "userdata",
-            "summary": "Get\u0020user\u0020data.",
-            "url": "classes/User-user.html#method_userdata"
         },                {
             "fqsen": "\\User\\user\u003A\u003Adata\u0028\u0029",
             "name": "data",
@@ -9326,55 +9366,35 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/User-user.html#method_login"
         },                {
-            "fqsen": "\\User\\user\u003A\u003Ahide_additional\u0028\u0029",
-            "name": "hide_additional",
-            "summary": "Hidding\u0020additional\u0020information\u0020into\u0020backend\u0020response.",
-            "url": "classes/User-user.html#method_hide_additional"
-        },                {
             "fqsen": "\\User\\user\u003A\u003Acheck_login\u0028\u0029",
             "name": "check_login",
             "summary": "Check\u0020Login.",
             "url": "classes/User-user.html#method_check_login"
-        },                {
-            "fqsen": "\\User\\user\u003A\u003Ais_login\u0028\u0029",
-            "name": "is_login",
-            "summary": "Check\u0020user\u0020is\u0020login.",
-            "url": "classes/User-user.html#method_is_login"
         },                {
             "fqsen": "\\User\\user\u003A\u003Aupdate_display_name\u0028\u0029",
             "name": "update_display_name",
             "summary": "Update\u0020Display\u0020Name.",
             "url": "classes/User-user.html#method_update_display_name"
         },                {
-            "fqsen": "\\User\\user\u003A\u003Aupdate_role\u0028\u0029",
-            "name": "update_role",
-            "summary": "",
-            "url": "classes/User-user.html#method_update_role"
-        },                {
-            "fqsen": "\\User\\user\u003A\u003Ais_user_exists\u0028\u0029",
-            "name": "is_user_exists",
-            "summary": "Check\u0020username\u0020is\u0020exists.",
-            "url": "classes/User-user.html#method_is_user_exists"
-        },                {
-            "fqsen": "\\User\\user\u003A\u003Aregister\u0028\u0029",
-            "name": "register",
-            "summary": "Add\u0020User\u0020To\u0020Database.",
-            "url": "classes/User-user.html#method_register"
-        },                {
             "fqsen": "\\User\\user\u003A\u003Ajson\u0028\u0029",
             "name": "json",
             "summary": "JSON\u0020formatter.",
             "url": "classes/User-user.html#method_json"
         },                {
-            "fqsen": "\\User\\user\u003A\u003A\u0024admin_pattern",
-            "name": "admin_pattern",
+            "fqsen": "\\User\\user\u003A\u003Aupdate_role\u0028\u0029",
+            "name": "update_role",
             "summary": "",
-            "url": "classes/User-user.html#property_admin_pattern"
+            "url": "classes/User-user.html#method_update_role"
         },                {
             "fqsen": "\\User\\user\u003A\u003A\u0024_instance",
             "name": "_instance",
             "summary": "",
             "url": "classes/User-user.html#property__instance"
+        },                {
+            "fqsen": "\\User\\user\u003A\u003A\u0024admin_pattern",
+            "name": "admin_pattern",
+            "summary": "",
+            "url": "classes/User-user.html#property_admin_pattern"
         },                {
             "fqsen": "\\User\\user\u003A\u003A\u0024dbname",
             "name": "dbname",
@@ -9453,7 +9473,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\DB\\Backup\u003A\u003Adownload\u0028\u0029",
             "name": "download",
-            "summary": "",
+            "summary": "Download\u0020SQL\u0020File\u0020To\u0020Client\u0020Browser",
             "url": "classes/DB-Backup.html#method_download"
         },                {
             "fqsen": "\\DB\\Backup\u003A\u003A\u0024host",
@@ -9500,6 +9520,16 @@ Search.appendIndex(
             "name": "outputFile",
             "summary": "",
             "url": "classes/DB-Backup.html#property_outputFile"
+        },                {
+            "fqsen": "\\GoogleExt\\Translator",
+            "name": "Translator",
+            "summary": "",
+            "url": "classes/GoogleExt-Translator.html"
+        },                {
+            "fqsen": "\\GoogleExt\\Translator\u003A\u003Ainsert\u0028\u0029",
+            "name": "insert",
+            "summary": "Insert\u0020Target\u0020String\u0020To\u0020Be\u0020Translated",
+            "url": "classes/GoogleExt-Translator.html#method_insert"
         },                {
             "fqsen": "\\",
             "name": "\\",

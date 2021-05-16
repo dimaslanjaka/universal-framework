@@ -75,6 +75,7 @@
     "description": "<?php ?>"
   }
 
+
 </script>
 <script type='application/ld+json'>
   {
@@ -110,6 +111,7 @@
       "url": "https://github.com/dimaslanjaka"
     }
   }
+
 </script>
 <script type="application/ld+json">
   {
@@ -141,6 +143,7 @@
       }
     ]
   }
+
 
 </script>
 <!-- Ahref verification -->

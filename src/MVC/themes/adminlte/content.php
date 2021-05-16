@@ -2,25 +2,25 @@
 
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
-  echo 'title/content required';
+    echo 'title/content required';
 
-  return;
+    return;
 }
 
 //$content = $var['content'];
 
 $canonical = isset($var['canonical']) ? $var['canonical'] : (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 if (!isset($desc)) {
-  $desc = isset($var['desc']) ? $var['desc'] : '';
+    $desc = isset($var['desc']) ? $var['desc'] : '';
 }
 if (!isset($fbcomment)) {
-  $fbcomment = isset($var['fbcomment']) ? true : false;
+    $fbcomment = isset($var['fbcomment']) ? true : false;
 }
 if (!isset($title)) {
-  $title = $var['title'];
+    $title = $var['title'];
 }
 if (!isset($share)) {
-  $share = isset($var['share']) ? true : false;
+    $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
     e([
@@ -94,30 +94,30 @@ if (!defined('ENVIRONMENT')) {
                                         echo '<li class="breadcrumb-item"><a href="' . $stack . '">' . $part . '</a></li>';
                                     }
                                 }
+                            }
+                            ?>
+                        </ol>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <?php
+                if (isset($content) && file_exists($content)) {
+                    include $content;
+                } else {
+                    echo '404';
                 }
                 ?>
-              </ol>
             </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-      </div>
-      <!-- /.content-header -->
-
-      <!-- Main content -->
-      <section class="content">
-        <div class="container-fluid">
-          <?php
-          if (isset($content) && file_exists($content)) {
-            include $content;
-          } else {
-              echo '404';
-          }
-          ?>
-        </div>
-      </section>
+        </section>
     </div>
 
     <footer class="main-footer">

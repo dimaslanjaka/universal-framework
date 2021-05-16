@@ -10,17 +10,17 @@
  */
 function array_filter_recursive(array $array, array $filterdata)
 {
-  if (\ArrayHelper\helper::isSequent($array)) {
-    return array_map(function ($single) use ($filterdata) {
-      foreach ($filterdata as $filter) {
-        if (isset($single[$filter])) {
-          unset($single[$filter]);
-        }
-      }
+    if (\ArrayHelper\helper::isSequent($array)) {
+        return array_map(function ($single) use ($filterdata) {
+            foreach ($filterdata as $filter) {
+                if (isset($single[$filter])) {
+                    unset($single[$filter]);
+                }
+            }
 
-      return $single;
-    }, $array);
-  }
+            return $single;
+        }, $array);
+    }
 }
 
 /**
@@ -30,15 +30,15 @@ function array_filter_recursive(array $array, array $filterdata)
  */
 function array_unique_recursive(array $array)
 {
-  $array = array_unique($array, SORT_REGULAR);
+    $array = array_unique($array, SORT_REGULAR);
 
-  foreach ($array as $key => $elem) {
-    if (is_array($elem)) {
-      $array[$key] = array_unique_recursive($elem);
+    foreach ($array as $key => $elem) {
+        if (is_array($elem)) {
+            $array[$key] = array_unique_recursive($elem);
+        }
     }
-  }
 
-  return $array;
+    return $array;
 }
 
 /**
@@ -48,5 +48,5 @@ function array_unique_recursive(array $array)
  */
 function array_keys_exists(array $keys, array $arr)
 {
-  return !array_diff_key(array_flip($keys), $arr);
+    return !array_diff_key(array_flip($keys), $arr);
 }

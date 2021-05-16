@@ -208,9 +208,9 @@ function isob()
  *
  * @return void
  */
-function base(string $path)
+function base($path)
 {
-  return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $path;
+    return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $path;
 }
 
 

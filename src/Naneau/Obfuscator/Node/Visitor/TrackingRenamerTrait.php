@@ -37,6 +37,22 @@ trait TrackingRenamerTrait
     }
 
     /**
+     * Get new name of a method.
+     *
+     * @param string $method
+     *
+     * @return string
+     **/
+    protected function getNewName($method)
+    {
+        if (!$this->isRenamed($method)) {
+            throw new InvalidArgumentException(sprintf('"%s" was not renamed', $method));
+        }
+
+        return $this->renamed[$method];
+    }
+
+    /**
      * Has a method been renamed?
      *
      * @param string $method
@@ -55,22 +71,6 @@ trait TrackingRenamerTrait
         }
 
         return isset($this->renamed[$method]);
-    }
-
-    /**
-     * Get new name of a method.
-     *
-     * @param string $method
-     *
-     * @return string
-     **/
-    protected function getNewName($method)
-    {
-        if (!$this->isRenamed($method)) {
-            throw new InvalidArgumentException(sprintf('"%s" was not renamed', $method));
-        }
-
-        return $this->renamed[$method];
     }
 
     /**

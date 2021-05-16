@@ -24,17 +24,17 @@ namespace simplehtmldom;
  */
 
 if (!defined('\simplehtmldom\DEFAULT_TARGET_CHARSET')) {
-  define('\simplehtmldom\DEFAULT_TARGET_CHARSET', 'UTF-8');
+    define('\simplehtmldom\DEFAULT_TARGET_CHARSET', 'UTF-8');
 }
 if (!defined('\simplehtmldom\DEFAULT_BR_TEXT')) {
-  define('\simplehtmldom\DEFAULT_BR_TEXT', "\r\n");
+    define('\simplehtmldom\DEFAULT_BR_TEXT', "\r\n");
 }
 if (!defined('\simplehtmldom\DEFAULT_SPAN_TEXT')) {
-  define('\simplehtmldom\DEFAULT_SPAN_TEXT', ' ');
+    define('\simplehtmldom\DEFAULT_SPAN_TEXT', ' ');
 }
 if (!defined('\simplehtmldom\MAX_FILE_SIZE')) {
-  define('\simplehtmldom\MAX_FILE_SIZE', 2621440);
+    define('\simplehtmldom\MAX_FILE_SIZE', 2621440);
 }
 if (!defined('\simplehtmldom\HDOM_SMARTY_AS_TEXT')) {
-  define('\simplehtmldom\HDOM_SMARTY_AS_TEXT', 1);
+    define('\simplehtmldom\HDOM_SMARTY_AS_TEXT', 1);
 }
