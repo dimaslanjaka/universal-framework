@@ -143,7 +143,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\get_env\u0028\u0029",
             "name": "get_env",
-            "summary": "Get\u0020current\u0020environtment",
+            "summary": "Get\u0020current\u0020environment",
             "url": "namespaces/default.html#function_get_env"
         },                {
             "fqsen": "\\router\u0028\u0029",

@@ -1,4 +1,11 @@
 <?php
+/**
+ * MVC Router Cache Renderer
+ */
+
+use MVC\helper;
+use MVC\themes;
+use Session\session;
 
 /**
  * Get page cache.
@@ -8,12 +15,10 @@
 function page_cache()
 {
     $path = ROOT . '/tmp/html/';
-    $path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
+    $path .= helper::get_clean_uri(helper::geturl());
     $path .= '/' . identifier();
     $path .= '.html';
-    $path = normalize_path($path);
-
-    return $path;
+    return normalize_path($path);
 }
 
 /**
@@ -42,7 +47,7 @@ function cache_expired($hour = 24)
 /**
  * Render theme.
  *
- * @param \MVC\themes $theme
+ * @param themes $theme
  *
  * @return void
  */
@@ -67,13 +72,14 @@ function render(MVC\themes $theme)
  */
 function identifier()
 {
-    return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
+    return md5(UID . serialize(session::gets(['login', 'coupon'])));
 }
 
 /**
  * Process page to using obfuscate mode or not.
  *
- * @param \MVC\themes $theme
+ * @param $obfuscatejs
+ * @param themes $theme
  *
  * @return void
  */

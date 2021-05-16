@@ -113,6 +113,7 @@ $view = helper::fixSlash(VIEWPATH . $rc->findRoute() . '.php');
 
 // glype proxy
 if ('index/bot/glype/admin' == str_replace('.php', '', $view)) {
+    /** @noinspection PhpIncludeInspection */
     include __DIR__ . '/bot/glype/admin.php';
     exit;
 }
@@ -131,14 +132,16 @@ if (!realpath($view)) {
      */
     $check_next_index = preg_replace('/\.php$/s', '', $view) . '/index.php';
     if ($check_next_index = realpath($check_next_index)) {
-        $check_next_index = \MVC\helper::fixSlash($check_next_index);
+        $check_next_index = helper::fixSlash($check_next_index);
         $check_next_index = preg_replace('/\.php$/s', '', $check_next_index);
         if ($pos_views = strpos($check_next_index, '/views')) {
             $check_next_index = substr($check_next_index, $pos_views + strlen('/views'));
         } elseif ($pos_views = strpos($check_next_index, '/etc')) {
             $check_next_index = substr($check_next_index, $pos_views + strlen('/etc'));
         }
-        die($router->redirect($check_next_index));
+        /** @noinspection PhpUndefinedVariableInspection */
+        $router->redirect($check_next_index);
+        exit;
     }
 
     ////// if router ended with slash (/) below codes will find next index.php or previous file php
@@ -149,20 +152,23 @@ if (!realpath($view)) {
      */
     $check_prev_index = preg_replace('/\/index\.php$/s', '', $view) . '.php';
     if ($check_prev_index = realpath($check_prev_index)) {
-        $check_prev_index = \MVC\helper::fixSlash($check_prev_index);
+        $check_prev_index = helper::fixSlash($check_prev_index);
         $check_prev_index = preg_replace('/\.php$/s', '', $check_prev_index);
         if ($pos_views = strpos($check_prev_index, '/views')) {
             $check_prev_index = substr($check_prev_index, $pos_views + strlen('/views'));
         } elseif ($pos_views = strpos($check_prev_index, '/etc')) {
             $check_prev_index = substr($check_prev_index, $pos_views + strlen('/etc'));
         }
-        die($router->redirect($check_prev_index));
+        /** @noinspection PhpUndefinedVariableInspection */
+        $router->redirect($check_prev_index);
+        exit;
     }
 
     // check if form controller is exist, then include them without rendering template
     $form_c = substr($view, 0, -4) . '-f.php';
     if (file_exists($form_c)) {
         http_response_code(200);
+        /** @noinspection PhpIncludeInspection */
         include $form_c;
         die();
     }
@@ -178,6 +184,7 @@ if (!realpath($view)) {
     // if file exists, set as view
     $theme->view($view);
     /**
+     * @noinspection PhpUndefinedVariableInspection
      * @var bool render if Disabled Cache on browser
      */
     $is_hard_reload = $router->is_hard_reload();
@@ -212,18 +219,23 @@ if (!realpath($view)) {
         // noindex on development mode, for SEO reasons
         header('X-Robots-Tag: noindex, nofollow', true);
     }
-    if (!CORS) {
-        //echo showAlert('bottom');
+
+    /*
+     if (!CORS) {
+        echo showAlert('bottom');
     }
+     */
 
     // No Cache Mode
     header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    // unminify html
-    $theme->render();
-
-    // minified html
-    //render($theme);
+    if (isset($_COOKIE['beautify'])) {
+        // beautify html
+        $theme->render();
+    } else {
+        // minified html
+        render($theme);
+    }
 
     // load admin tools
     //$theme->load_admin_tools();
