@@ -131,6 +131,11 @@ function loadCodemirror(element, mode, theme) {
                 var editor = CodeMirror.fromTextArea(element, {
                     lineNumbers: true,
                     mode: mode,
+                    /*
+                        smartIndent: true,
+                        lineWrapping: true,
+                        showCursorWhenSelecting: true,
+                        matchHighlight: true,*/
                 });
                 loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                     editor.setOption("theme", theme);
@@ -2496,10 +2501,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2596,7 +2601,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             var trackLinks = document.getElementsByTagName("a");
             for (var i = 0, len = trackLinks.length; i < len; i++) {
@@ -2965,7 +2970,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -5836,7 +5841,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.

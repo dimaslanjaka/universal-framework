@@ -8522,4 +8522,25 @@ class ZLIB {
     static decompress(str) {
         var dec = this.atos(pako.ungzip(base64_decode(str)));
         console.log({
-            'ZLIB.decompress': 
+            'ZLIB.decompress': {
+                target: str,
+                result: dec
+            }
+        });
+        return dec;
+    }
+    static compress(str) {
+        var enc = pako.gzip(str, {
+            to: 'string'
+        });
+        enc = base64_encode(enc);
+        console.log({
+            'ZLIB.compress': {
+                target: str,
+                result: enc
+            }
+        });
+        return enc;
+    }
+}
+//# sourceMappingURL=app.js.map
