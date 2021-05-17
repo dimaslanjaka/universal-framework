@@ -50,3 +50,11 @@ function array_keys_exists(array $keys, array $arr)
 {
     return !array_diff_key(array_flip($keys), $arr);
 }
+
+/**
+ * Is array or object ?
+ */
+function is_array_object($arr)
+{
+    return is_array($arr) || is_object($arr);
+}

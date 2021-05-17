@@ -2,7 +2,6 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/AGC" isTestSource="false" packagePrefix="AGC\" />
       <sourceFolder url="file://$MODULE_DIR$/src/Accounting" isTestSource="false" packagePrefix="Accounting\" />
       <sourceFolder url="file://$MODULE_DIR$/src/ArrayHelper" isTestSource="false" packagePrefix="ArrayHelper\" />
@@ -30,8 +29,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/Utils" isTestSource="false" packagePrefix="Utils\" />
       <sourceFolder url="file://$MODULE_DIR$/src/img" isTestSource="false" packagePrefix="img\" />
       <sourceFolder url="file://$MODULE_DIR$/src/simplehtmldom" isTestSource="false" packagePrefix="simplehtmldom\" />
-      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

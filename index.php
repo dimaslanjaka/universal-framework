@@ -229,7 +229,7 @@ if (!realpath($view)) {
     // No Cache Mode
     header('Cache-Status: no-cache(' . __LINE__ . "), hard({$is_hard_reload}), cache_expired({$cache_expired}), no_cache({$no_cache}), cors({$cors})", true);
 
-    if (isset($_COOKIE['beautify'])) {
+    if (isset($_COOKIE['beautify']) || isset($_REQUEST['beautify'])) {
         // beautify html
         $theme->render();
     } else {

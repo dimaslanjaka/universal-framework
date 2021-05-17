@@ -40,7 +40,7 @@ class element
 
     public function pre($content, $options = ['echo' => true])
     {
-        if ($this->isArrObj($content)) {
+        if (is_array_object($content)) {
             $content = json_encode($content, false, true);
         }
         $element = "<pre>$content</pre>";
@@ -49,11 +49,6 @@ class element
         } else {
             return $content;
         }
-    }
-
-    public function isArrObj($str)
-    {
-        return is_array($str) || is_object($str);
     }
 
     /**
@@ -79,6 +74,9 @@ class element
                         return $html;
                     }
                 } else {
+                    if (is_array_object($path)) {
+                        $path = json_encode($path);
+                    }
                     echo "<!-- $path not found -->";
                 }
             } else {
@@ -176,6 +174,9 @@ class element
                         return $html;
                     }
                 } else {
+                    if (is_array_object($path)) {
+                        $path = json_encode($path);
+                    }
                     echo "<!-- $path not found -->";
                 }
             } else {
