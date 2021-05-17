@@ -810,6 +810,41 @@ declare function randomHex(): string;
  */
 declare function openInNewTab(url: string, name: string): void;
 /**
+ * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
+ * @global
+ */
+declare var countries: {
+    name: string;
+    alpha2: string;
+    alpha3: string;
+    num3: string;
+    subregion: string;
+    region: string;
+    continent: string;
+}[];
+/**
+ * Get Countries ISO
+ * @returns
+ */
+declare function getCountries(): {
+    name: string;
+    alpha2: string;
+    alpha3: string;
+    num3: string;
+    subregion: string;
+    region: string;
+    continent: string;
+}[];
+/**
+ * Select2 Country
+ * @requires jQuery
+ * @param el
+ * @param select2Opt Select2 Options
+ * @example
+ * select2Country($("#selectID"), {placeholder:"Select Your Country"})
+ */
+declare function select2Country(el: JQuery<HTMLSelectElement>, select2Opt?: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any>): void;
+/**
  * Disable debugger
  */
 declare function bannedebug(): void;
@@ -1461,3 +1496,4 @@ declare class ZLIB {
     static decompress(str: any): string;
     static compress(str: any): any;
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

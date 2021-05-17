@@ -156,7 +156,9 @@ class core {
     const exists = fs.existsSync(filename);
     if (exists) {
       const output = filename.toString().replace(/\.browserify\.js/s, ".js");
-      exec(`browserify ${filename} -o ${output}`);
+      exec(
+        `browserify -t [ babelify --presets [ es2015 ] ] ${filename} -o ${output}`
+      );
       log.log(
         `${self.filelog(filename.toString())} > ${self.filelog(
           output.toString()
