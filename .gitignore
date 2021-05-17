@@ -25,6 +25,7 @@ sftp.json
 sftp*.json
 #config.json
 *-private*
+.php_cs.cache
 
 # Ignore output builder
 out/*
@@ -102,14 +103,11 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
-# WebStorm #
-######################
-.idea/
+# WebStorm #
+#.idea/
 
 # node & composer
-yarn.lo*
-#package-lock.json
-#composer.lock
+yarn.log
 
 # phpdoc
 .phpdoc/cache/*

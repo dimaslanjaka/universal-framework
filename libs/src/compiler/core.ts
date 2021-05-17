@@ -155,7 +155,7 @@ class core {
     const self = this;
     const exists = fs.existsSync(filename);
     if (exists) {
-      const output = filename.toString().replace(/\.browserify/s, ".js");
+      const output = filename.toString().replace(/\.browserify\.js/s, ".js");
       exec(`browserify ${filename} -o ${output}`);
       log.log(
         `${self.filelog(filename.toString())} > ${self.filelog(
@@ -193,9 +193,7 @@ class core {
                     log.log(
                       `${log
                         .chalk()
-                        .red(
-                          self.filelog(filename.toString())
-                        )} > ${log
+                        .red(self.filelog(filename.toString()))} > ${log
                         .chalk()
                         .blueBright(self.filelog(outputcss))} ${log.success(
                         "success"
@@ -241,9 +239,7 @@ class core {
         })
         .catch(function (e) {
           console.log(
-            `${log.chalk().hex("#1d365d")(
-              self.filelog(filename)
-            )} > ${log
+            `${log.chalk().hex("#1d365d")(self.filelog(filename))} > ${log
               .chalk()
               .blueBright(self.filelog(outputcss))} ${log
               .chalk()
@@ -515,13 +511,11 @@ class core {
                           log.log(
                             `${log
                               .chalk()
-                              .blueBright(
-                                self.filelog(file)
-                              )} > ${log
+                              .blueBright(self.filelog(file))} > ${log
                               .chalk()
-                              .blueBright(
-                                self.filelog(min)
-                              )} ${log.chalk().green("success")}`
+                              .blueBright(self.filelog(min))} ${log
+                              .chalk()
+                              .green("success")}`
                           );
                         } else {
                           callback(true, file, min);

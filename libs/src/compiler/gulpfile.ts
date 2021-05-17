@@ -7,23 +7,17 @@ import path from "path";
 import framework from "../compiler/index";
 import log from "../compiler/log";
 import process from "../compiler/process";
-const root = process.root;
-import jsdoc from "gulp-jsdoc3";
-import { exec, ExecException } from "child_process";
-import { localStorage } from "../node-localstorage/index";
-import { fixDeps } from "./func";
+
 //const spawn = require("child_process").spawn;
 //const argv = require("yargs").argv;
-import { spawn } from "child_process";
+import { exec, ExecException, spawn } from "child_process";
+import { localStorage } from "../node-localstorage/index";
 import * as proc from "process";
+
+const root = process.root;
 
 localStorage.removeItem("compile");
 console.clear();
-
-/**
- * Create Documentation of javascripts
- */
-gulp.task("doc", doc);
 
 /**
  * Build to /src/MVC/themes/assets/js/app.js
@@ -42,6 +36,7 @@ gulp.task("build-clear", function () {
  * @param withoutApp
  */
 function build(withoutApp?: boolean) {
+  /*
   try {
     var packageJson = root + "/package.json";
     if (fs.existsSync(packageJson)) {
@@ -57,6 +52,7 @@ function build(withoutApp?: boolean) {
       });
     }
   } catch (error) {}
+   */
   return createApp(withoutApp ? true : false);
 }
 
@@ -124,16 +120,19 @@ gulp.task("watch", async function () {
             // run documentation builder
             //doc();
           } else {
-            if (/\.(js|scss|css|less)$/s.test(file)) {
+            if (file.endsWith("browserify.js")) {
+              // TODO: Compile Browserify
+              framework.browserify(file);
+            } else if (/\.(js|scss|css|less)$/s.test(file)) {
+              // TODO: Compile js css
               if (!/\.min\.(js|css)$/s.test(file)) {
                 compileAssets(file);
               }
             } else if (file.endsWith(".ts") && !file.endsWith(".d.ts")) {
+              // TODO: Compile ts
               if (!/libs\/|libs\\/s.test(file)) {
                 single_tsCompile(file);
               }
-            } else if (file.endsWith(".browserify")) {
-              framework.browserify(file);
             } else {
               var reason = log.error("undefined");
               if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
@@ -165,6 +164,7 @@ gulp.task("assets-compile", function () {
         return framework.normalize(asset);
       });
   }
+
   var css = framework.readdir(root + "/assets/css");
   css = filter(css);
   var js = framework.readdir(root + "/assets/js");
@@ -172,98 +172,6 @@ gulp.task("assets-compile", function () {
 });
 gulp.task("reload", reload_gulp);
 gulp.task("default", gulp.series(["build", "watch"]));
-
-/**
- * ```regex
- * \\.(jsx|js|ts|tsx|js(doc|x)?)$
- * ```
- * @param cb function callback
- */
-function doc(cb: any = null) {
-  /*const config = {
-    recurseDepth: 10,
-    opts: {
-      template: "node_modules/better-docs",
-    },
-    tags: {
-      allowUnknownTags: true,
-      dictionaries: ["jsdoc", "closure"],
-    },
-    plugins: [
-      "node_modules/better-docs/typescript",
-      "node_modules/better-docs/category",
-      "node_modules/better-docs/component",
-      "plugins/markdown",
-      "plugins/summarize",
-    ],
-    source: {
-      includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      ///include: ["./libs"],
-      //exclude: ["./src"],
-    },
-  };*/
-  const config = {
-    tags: {
-      allowUnknownTags: true,
-      dictionaries: ["jsdoc", "closure"],
-    },
-    source: {
-      include: ["./libs"],
-      includePattern: ".js$",
-      excludePattern: "(node_modules|docs)",
-    },
-    plugins: [
-      "plugins/markdown",
-      "jsdoc-mermaid",
-      "node_modules/better-docs/typescript",
-      "node_modules/better-docs/category",
-      "node_modules/better-docs/component",
-      "node_modules/better-docs/typedef-import",
-    ],
-    opts: {
-      encoding: "utf8",
-      destination: root + "/docs/js/",
-      readme: "readme.md",
-      recurse: true,
-      verbose: true,
-      //tutorials: "./docs-src/tutorials",
-      template: "better-docs",
-    },
-    templates: {
-      cleverLinks: false,
-      monospaceLinks: false,
-      search: true,
-      default: {
-        staticFiles: {
-          //include: ["./docs-src/statics"],
-        },
-      },
-      "better-docs": {
-        name: "Universal Framework Javascript Documentation",
-        //logo: "images/logo.png",
-        title: "Universal Framework Javascript Documentation", // HTML title
-        //css: "style.css",
-        trackingCode: "tracking-code-which-will-go-to-the-HEAD",
-        hideGenerator: false,
-        navLinks: [
-          {
-            label: "Github",
-            href: "https://github.com/dimaslanjaka/universal-framework",
-          },
-          {
-            label: "Example Application",
-            href: "http://github.com/dimaslanjaka/universal-framework",
-          },
-        ],
-      },
-    },
-  };
-  gulp
-    .src(["./libs/**/*.(js|ts|tsx|js(doc|x)?)$"], {
-      read: false,
-    })
-    .pipe(jsdoc(config, cb));
-}
 
 async function reload_gulp(cb: any = null) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
@@ -320,7 +228,7 @@ export function compileAssets(item: string | Buffer): any {
       //console.log(`Minify CSS ${framework.filelog(item)}`);
       framework.minCSS(item);
     } else if (item.endsWith(".js") && !item.endsWith(".min.js")) {
-      if (!item.endsWith(".babel.js")) {
+      if (!item.endsWith(".babel.js") && !item.endsWith("browserify.js")) {
         //console.log(`Minify JS ${framework.filelog(item)}`);
         framework.minJS(item);
         var deleteObfuscated = false;
@@ -380,6 +288,7 @@ export function multiMinify(assets: any[]): any {
 localStorage.removeItem("compile");
 
 var isFirstExecute = true;
+
 /**
  * Create App.js
  * @param withoutView false to not compile views javascripts

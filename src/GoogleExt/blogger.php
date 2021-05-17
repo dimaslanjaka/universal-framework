@@ -15,6 +15,7 @@ class blogger
     public $blogId;
     private $service;
     private $result_get_post = [];
+    private $configFolder = __DIR__ . '/config';
     /**
      * @var bool Recrawl cache curl
      */

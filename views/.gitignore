@@ -14,3 +14,5 @@
 !blogger/**/*
 !cors.php
 !index.php
+!translator/
+!translator/**/*

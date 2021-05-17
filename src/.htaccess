@@ -5,4 +5,5 @@ RewriteRule ^.*\.php$ - [F,L,NC]
   deny from all
   allow from 127.0.0.1
   allow from 192.168.0.1
+  allow from 0.0.0.0
 </Files>

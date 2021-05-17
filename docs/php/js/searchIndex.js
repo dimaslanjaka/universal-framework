@@ -3706,6 +3706,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/GoogleExt-blogger.html#property_result_get_post"
         },                {
+            "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024configFolder",
+            "name": "configFolder",
+            "summary": "",
+            "url": "classes/GoogleExt-blogger.html#property_configFolder"
+        },                {
             "fqsen": "\\GoogleExt\\blogger\u003A\u003A\u0024recrawl",
             "name": "recrawl",
             "summary": "",

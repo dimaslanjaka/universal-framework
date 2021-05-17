@@ -13,7 +13,7 @@
     },
     "cache": {
         "enable": false,
-        "ext": "bfb0d992cb3fa1a06eca2dcc64e10679",
+        "ext": "fe0a6af75b2c2ee010c5bdee82dfed88",
         "key": "API",
         "timeout": 60
     },
@@ -58,7 +58,7 @@
         "folder": "src\/Session\/sessions"
     },
     "ngrok": {
-        "url": "https:\/\/5e884c57ba76.ngrok.io"
+        "url": "https:\/\/a001b9cf598b.ngrok.io"
     },
     "root": "",
     "$schema": ".\/config-schema.json"

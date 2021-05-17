@@ -12,6 +12,7 @@ import chalk from "chalk";
 import dns from "dns";
 import log from "./log";
 import sorter from "./sorter";
+
 require("./consoler");
 
 /**
@@ -244,6 +245,7 @@ export async function fixDeps(pkg: packagejson) {
 
 var execute_is_running = false;
 var execute_dump = [];
+
 /**
  * Execute command schedule
  * @param cmds
@@ -524,6 +526,7 @@ export function async_exec(
 
 localStorage.removeItem("list_package_latest");
 localStorage.removeItem("list_package");
+
 /**
  * Get list packages and fetch latest version
  */

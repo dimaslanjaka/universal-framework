@@ -32,6 +32,15 @@ if (!(typeof module !== "undefined" && module.exports)) {
           });
         });
       };
+
+      $.fn.newTab = function () {
+        var href = $(this).attr("href");
+        var target = $(this).attr("target");
+        $(this).on("click", function (e) {
+          e.preventDefault();
+          openInNewTab(href, target);
+        });
+      };
     })(jQuery);
   }
 }

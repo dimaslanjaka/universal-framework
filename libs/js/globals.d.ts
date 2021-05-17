@@ -17,6 +17,17 @@ interface JQuery extends jQuery {
   materialSelect(): any;
 
   /**
+   * Hyperlink open new tab with custom window name
+   * ```html
+   * <a href="http://example.net" target="nameWindow" id="test">Test</a>
+   * <script>
+   *     $("a#test").newTab();
+   * </script>
+   * ```
+   */
+  newTab(): void;
+
+  /**
    * Tooltip
    * @param action show hide
    */

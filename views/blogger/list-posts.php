@@ -15,11 +15,21 @@ $blog = $service->byUrl($blogUrl);
 ?>
 
 <section>
-    <div class="container">
+    <div class="m-4">
         <div class="text-center">
-            <h5><?= $blog->getName() ?> (<?= $blog->getPosts()->totalItems ?> Posts)</h5>
+            <h5><?= $blog->getName() ?></h5>
         </div>
         <div>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-loader" id="list">
+                        <thead>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
             <?php
             /*
              foreach ($service->listPosts(10) as $post) {
