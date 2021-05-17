@@ -1,0 +1,16 @@
+{
+    "published": "2021-05-17T08:16:00",
+    "modified": "2021-05-17T08:16:00",
+    "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
+    "theme": true,
+    "title": "Translator",
+    "share": false,
+    "desc": "Transform Article To Multiple Languages",
+    "content": "D:\\Workspaces\\PHP\\universal-framework\\views\\tools\\translator.php",
+    "robot": "index, follow",
+    "obfuscate": false,
+    "cache": false,
+    "label": "default",
+    "meta_config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\tools\\translator.json",
+    "comments": false
+}

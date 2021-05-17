@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/AGC" isTestSource="false" packagePrefix="AGC\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Accounting" isTestSource="false" packagePrefix="Accounting\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ArrayHelper" isTestSource="false" packagePrefix="ArrayHelper\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Cookie" isTestSource="false" packagePrefix="Cookie\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Crypto" isTestSource="false" packagePrefix="Crypto\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/DB" isTestSource="false" packagePrefix="DB\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/DDOS" isTestSource="false" packagePrefix="DDOS\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Extender" isTestSource="false" packagePrefix="Extender\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Facebook" isTestSource="false" packagePrefix="Facebook\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Filemanager" isTestSource="false" packagePrefix="Filemanager\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/GoogleExt" isTestSource="false" packagePrefix="GoogleExt\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/HTML" isTestSource="false" packagePrefix="HTML\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/IMEI" isTestSource="false" packagePrefix="IMEI\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Indosat" isTestSource="false" packagePrefix="Indosat\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/JSON" isTestSource="false" packagePrefix="JSON\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/MVC" isTestSource="false" packagePrefix="MVC\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Naneau/Obfuscator" isTestSource="false" packagePrefix="Naneau\Obfuscator\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Netscape" isTestSource="false" packagePrefix="Netscape\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Office" isTestSource="false" packagePrefix="Office\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Proxy" isTestSource="false" packagePrefix="Proxy\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Session" isTestSource="false" packagePrefix="Session\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Telkomsel" isTestSource="false" packagePrefix="Telkomsel\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Typehint" isTestSource="false" packagePrefix="Typehint\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/User" isTestSource="false" packagePrefix="User\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Utils" isTestSource="false" packagePrefix="Utils\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/img" isTestSource="false" packagePrefix="img\" />
+      <sourceFolder url="file://$MODULE_DIR$/src/simplehtmldom" isTestSource="false" packagePrefix="simplehtmldom\" />
+      <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

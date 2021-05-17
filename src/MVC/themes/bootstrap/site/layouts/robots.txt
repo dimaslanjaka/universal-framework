@@ -1,0 +1,10 @@
+# www.robotstxt.org
+
+{{- $allowCrawling := false -}}
+
+{{ if $allowCrawling }}
+# Allow crawling of all content
+{{- end }}
+User-agent: *
+Disallow:{{ if not $allowCrawling }} /{{ end }}
+Sitemap: {{ "/sitemap.xml" | absURL }}
