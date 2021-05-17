@@ -117,6 +117,9 @@ import log from "./log";
 import core from "./core";
 
 class filemanager {
+  /**
+   * Is file/folder exists?
+   */
   static exist(filepath: string) {
     return fs.existsSync(filepath);
   }

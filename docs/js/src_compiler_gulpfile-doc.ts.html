@@ -125,7 +125,7 @@ const root = process.root;
 export function doc(cb: any = null) {
   let outputDir = root + "/docs/js/";
   try {
-    if (fs.existsSync(outputDir)) {
+    if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
     }
   } catch (e) {
