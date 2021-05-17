@@ -58,7 +58,7 @@ export function doc(cb: any = null) {
         //logo: "images/logo.png",
         title: "Universal Framework Javascript Documentation", // HTML title
         //css: "style.css",
-        trackingCode: "tracking-code-which-will-go-to-the-HEAD",
+        trackingCode: "<!--tracking-code-which-will-go-to-the-HEAD-->",
         hideGenerator: false,
         navLinks: [
           {
