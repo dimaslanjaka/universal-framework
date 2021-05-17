@@ -1,5 +1,7 @@
 import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
+import process from "../compiler/process";
+const root = process.root;
 
 /**
  * ```regex
@@ -7,7 +9,7 @@ import jsdoc from "gulp-jsdoc3";
  * ```
  * @param cb function callback
  */
-function doc(cb: any = null) {
+export function doc(cb: any = null) {
   /*const config = {
     recurseDepth: 10,
     opts: {
@@ -92,8 +94,3 @@ function doc(cb: any = null) {
     })
     .pipe(jsdoc(config, cb));
 }
-
-/**
- * Create Documentation of javascripts
- */
-gulp.task("doc", doc);

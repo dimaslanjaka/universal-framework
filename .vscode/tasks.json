@@ -7,7 +7,10 @@
       "isBackground": true,
       "options": {},
       "detail": "Watch Files And Build When modified",
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "dependsOn": [
         {
           "type": "${workspaceFolder}"
@@ -27,7 +30,8 @@
         "instanceLimit": 1,
         "reevaluateOnRerun": true,
         "runOn": "folderOpen"
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "Build Using Typescript Compiler",
