@@ -4,6 +4,7 @@ exports.doc = void 0;
 var tslib_1 = require("tslib");
 var gulp = tslib_1.__importStar(require("gulp"));
 var gulp_jsdoc3_1 = tslib_1.__importDefault(require("gulp-jsdoc3"));
+var fs = tslib_1.__importStar(require("fs"));
 var process_1 = tslib_1.__importDefault(require("../compiler/process"));
 var root = process_1.default.root;
 /**
@@ -14,39 +15,23 @@ var root = process_1.default.root;
  */
 function doc(cb) {
     if (cb === void 0) { cb = null; }
-    /*const config = {
-      recurseDepth: 10,
-      opts: {
-        template: "node_modules/better-docs",
-      },
-      tags: {
-        allowUnknownTags: true,
-        dictionaries: ["jsdoc", "closure"],
-      },
-      plugins: [
-        "node_modules/better-docs/typescript",
-        "node_modules/better-docs/category",
-        "node_modules/better-docs/component",
-        "plugins/markdown",
-        "plugins/summarize",
-      ],
-      source: {
-        includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-        ///include: ["./libs"],
-        //exclude: ["./src"],
-      },
-    };*/
+    var outputDir = root + "/docs/js/";
+    if (fs.existsSync(outputDir)) {
+        fs.unlinkSync(outputDir);
+    }
     var config = {
+        recurseDepth: 10,
         tags: {
             allowUnknownTags: true,
             dictionaries: ["jsdoc", "closure"],
         },
         source: {
-            include: ["./libs"],
-            includePattern: ".js$",
-            excludePattern: "(node_modules|docs)",
+            include: [root + "/libs/js", root + "/libs/src"],
+            includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
+            excludePattern: "(/node_modules|/docs)", //||(^|\\/|\\\\)_
         },
         plugins: [
+            "plugins/summarize",
             "plugins/markdown",
             "jsdoc-mermaid",
             "node_modules/better-docs/typescript",
@@ -56,12 +41,12 @@ function doc(cb) {
         ],
         opts: {
             encoding: "utf8",
-            destination: root + "/docs/js/",
+            destination: outputDir,
             readme: "readme.md",
             recurse: true,
-            verbose: true,
-            //tutorials: "./docs-src/tutorials",
-            template: "better-docs",
+            verbose: false,
+            //tutorials: root + "/docs-src/tutorials",
+            template: "node_modules/better-docs",
         },
         templates: {
             cleverLinks: false,
@@ -99,4 +84,4 @@ function doc(cb) {
         .pipe(gulp_jsdoc3_1.default(config, cb));
 }
 exports.doc = doc;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ3VscGZpbGUtZG9jLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vbGlicy9zcmMvY29tcGlsZXIvZ3VscGZpbGUtZG9jLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSxpREFBNkI7QUFDN0Isb0VBQWdDO0FBQ2hDLHdFQUEwQztBQUMxQyxJQUFNLElBQUksR0FBRyxpQkFBTyxDQUFDLElBQUksQ0FBQztBQUUxQjs7Ozs7R0FLRztBQUNILFNBQWdCLEdBQUcsQ0FBQyxFQUFjO0lBQWQsbUJBQUEsRUFBQSxTQUFjO0lBQ2hDOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7UUFxQkk7SUFDSixJQUFNLE1BQU0sR0FBRztRQUNiLElBQUksRUFBRTtZQUNKLGdCQUFnQixFQUFFLElBQUk7WUFDdEIsWUFBWSxFQUFFLENBQUMsT0FBTyxFQUFFLFNBQVMsQ0FBQztTQUNuQztRQUNELE1BQU0sRUFBRTtZQUNOLE9BQU8sRUFBRSxDQUFDLFFBQVEsQ0FBQztZQUNuQixjQUFjLEVBQUUsTUFBTTtZQUN0QixjQUFjLEVBQUUscUJBQXFCO1NBQ3RDO1FBQ0QsT0FBTyxFQUFFO1lBQ1Asa0JBQWtCO1lBQ2xCLGVBQWU7WUFDZixxQ0FBcUM7WUFDckMsbUNBQW1DO1lBQ25DLG9DQUFvQztZQUNwQyx5Q0FBeUM7U0FDMUM7UUFDRCxJQUFJLEVBQUU7WUFDSixRQUFRLEVBQUUsTUFBTTtZQUNoQixXQUFXLEVBQUUsSUFBSSxHQUFHLFdBQVc7WUFDL0IsTUFBTSxFQUFFLFdBQVc7WUFDbkIsT0FBTyxFQUFFLElBQUk7WUFDYixPQUFPLEVBQUUsSUFBSTtZQUNiLG9DQUFvQztZQUNwQyxRQUFRLEVBQUUsYUFBYTtTQUN4QjtRQUNELFNBQVMsRUFBRTtZQUNULFdBQVcsRUFBRSxLQUFLO1lBQ2xCLGNBQWMsRUFBRSxLQUFLO1lBQ3JCLE1BQU0sRUFBRSxJQUFJO1lBQ1osT0FBTyxFQUFFO2dCQUNQLFdBQVcsRUFBRTtnQkFDWCxrQ0FBa0M7aUJBQ25DO2FBQ0Y7WUFDRCxhQUFhLEVBQUU7Z0JBQ2IsSUFBSSxFQUFFLDhDQUE4QztnQkFDcEQsMEJBQTBCO2dCQUMxQixLQUFLLEVBQUUsOENBQThDO2dCQUNyRCxtQkFBbUI7Z0JBQ25CLFlBQVksRUFBRSx5Q0FBeUM7Z0JBQ3ZELGFBQWEsRUFBRSxLQUFLO2dCQUNwQixRQUFRLEVBQUU7b0JBQ1I7d0JBQ0UsS0FBSyxFQUFFLFFBQVE7d0JBQ2YsSUFBSSxFQUFFLHFEQUFxRDtxQkFDNUQ7b0JBQ0Q7d0JBQ0UsS0FBSyxFQUFFLHFCQUFxQjt3QkFDNUIsSUFBSSxFQUFFLG9EQUFvRDtxQkFDM0Q7aUJBQ0Y7YUFDRjtTQUNGO0tBQ0YsQ0FBQztJQUNGLElBQUk7U0FDRCxHQUFHLENBQUMsQ0FBQyxxQ0FBcUMsQ0FBQyxFQUFFO1FBQzVDLElBQUksRUFBRSxLQUFLO0tBQ1osQ0FBQztTQUNELElBQUksQ0FBQyxxQkFBSyxDQUFDLE1BQU0sRUFBRSxFQUFFLENBQUMsQ0FBQyxDQUFDO0FBQzdCLENBQUM7QUFwRkQsa0JBb0ZDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ3VscGZpbGUtZG9jLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vbGlicy9zcmMvY29tcGlsZXIvZ3VscGZpbGUtZG9jLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7QUFBQSxpREFBNkI7QUFDN0Isb0VBQWdDO0FBQ2hDLDZDQUF5QjtBQUN6Qix3RUFBMEM7QUFDMUMsSUFBTSxJQUFJLEdBQUcsaUJBQU8sQ0FBQyxJQUFJLENBQUM7QUFFMUI7Ozs7O0dBS0c7QUFDSCxTQUFnQixHQUFHLENBQUMsRUFBYztJQUFkLG1CQUFBLEVBQUEsU0FBYztJQUNoQyxJQUFJLFNBQVMsR0FBRyxJQUFJLEdBQUcsV0FBVyxDQUFDO0lBQ25DLElBQUksRUFBRSxDQUFDLFVBQVUsQ0FBQyxTQUFTLENBQUMsRUFBRTtRQUM1QixFQUFFLENBQUMsVUFBVSxDQUFDLFNBQVMsQ0FBQyxDQUFDO0tBQzFCO0lBQ0QsSUFBSSxNQUFNLEdBQUc7UUFDWCxZQUFZLEVBQUUsRUFBRTtRQUNoQixJQUFJLEVBQUU7WUFDSixnQkFBZ0IsRUFBRSxJQUFJO1lBQ3RCLFlBQVksRUFBRSxDQUFDLE9BQU8sRUFBRSxTQUFTLENBQUM7U0FDbkM7UUFDRCxNQUFNLEVBQUU7WUFDTixPQUFPLEVBQUUsQ0FBQyxJQUFJLEdBQUcsVUFBVSxFQUFFLElBQUksR0FBRyxXQUFXLENBQUM7WUFDaEQsY0FBYyxFQUFFLGdDQUFnQztZQUNoRCxjQUFjLEVBQUUsdUJBQXVCLEVBQUUsaUJBQWlCO1NBQzNEO1FBQ0QsT0FBTyxFQUFFO1lBQ1AsbUJBQW1CO1lBQ25CLGtCQUFrQjtZQUNsQixlQUFlO1lBQ2YscUNBQXFDO1lBQ3JDLG1DQUFtQztZQUNuQyxvQ0FBb0M7WUFDcEMseUNBQXlDO1NBQzFDO1FBQ0QsSUFBSSxFQUFFO1lBQ0osUUFBUSxFQUFFLE1BQU07WUFDaEIsV0FBVyxFQUFFLFNBQVM7WUFDdEIsTUFBTSxFQUFFLFdBQVc7WUFDbkIsT0FBTyxFQUFFLElBQUk7WUFDYixPQUFPLEVBQUUsS0FBSztZQUNkLDBDQUEwQztZQUMxQyxRQUFRLEVBQUUsMEJBQTBCO1NBQ3JDO1FBQ0QsU0FBUyxFQUFFO1lBQ1QsV0FBVyxFQUFFLEtBQUs7WUFDbEIsY0FBYyxFQUFFLEtBQUs7WUFDckIsTUFBTSxFQUFFLElBQUk7WUFDWixPQUFPLEVBQUU7Z0JBQ1AsV0FBVyxFQUFFO2dCQUNYLGtDQUFrQztpQkFDbkM7YUFDRjtZQUNELGFBQWEsRUFBRTtnQkFDYixJQUFJLEVBQUUsOENBQThDO2dCQUNwRCwwQkFBMEI7Z0JBQzFCLEtBQUssRUFBRSw4Q0FBOEM7Z0JBQ3JELG1CQUFtQjtnQkFDbkIsWUFBWSxFQUFFLHlDQUF5QztnQkFDdkQsYUFBYSxFQUFFLEtBQUs7Z0JBQ3BCLFFBQVEsRUFBRTtvQkFDUjt3QkFDRSxLQUFLLEVBQUUsUUFBUTt3QkFDZixJQUFJLEVBQUUscURBQXFEO3FCQUM1RDtvQkFDRDt3QkFDRSxLQUFLLEVBQUUscUJBQXFCO3dCQUM1QixJQUFJLEVBQUUsb0RBQW9EO3FCQUMzRDtpQkFDRjthQUNGO1NBQ0Y7S0FDRixDQUFDO0lBRUYsSUFBSTtTQUNELEdBQUcsQ0FBQyxDQUFDLHFDQUFxQyxDQUFDLEVBQUU7UUFDNUMsSUFBSSxFQUFFLEtBQUs7S0FDWixDQUFDO1NBQ0QsSUFBSSxDQUFDLHFCQUFLLENBQUMsTUFBTSxFQUFFLEVBQUUsQ0FBQyxDQUFDLENBQUM7QUFDN0IsQ0FBQztBQXJFRCxrQkFxRUMifQ==

@@ -1,5 +1,6 @@
 import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
+import * as fs from "fs";
 import process from "../compiler/process";
 const root = process.root;
 
@@ -10,39 +11,23 @@ const root = process.root;
  * @param cb function callback
  */
 export function doc(cb: any = null) {
-  /*const config = {
+  let outputDir = root + "/docs/js/";
+  if (fs.existsSync(outputDir)) {
+    fs.unlinkSync(outputDir);
+  }
+  let config = {
     recurseDepth: 10,
-    opts: {
-      template: "node_modules/better-docs",
-    },
     tags: {
       allowUnknownTags: true,
       dictionaries: ["jsdoc", "closure"],
     },
-    plugins: [
-      "node_modules/better-docs/typescript",
-      "node_modules/better-docs/category",
-      "node_modules/better-docs/component",
-      "plugins/markdown",
-      "plugins/summarize",
-    ],
     source: {
+      include: [root + "/libs/js", root + "/libs/src"],
       includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      ///include: ["./libs"],
-      //exclude: ["./src"],
-    },
-  };*/
-  const config = {
-    tags: {
-      allowUnknownTags: true,
-      dictionaries: ["jsdoc", "closure"],
-    },
-    source: {
-      include: ["./libs"],
-      includePattern: ".js$",
-      excludePattern: "(node_modules|docs)",
+      excludePattern: "(/node_modules|/docs)", //||(^|\\/|\\\\)_
     },
     plugins: [
+      "plugins/summarize",
       "plugins/markdown",
       "jsdoc-mermaid",
       "node_modules/better-docs/typescript",
@@ -52,12 +37,12 @@ export function doc(cb: any = null) {
     ],
     opts: {
       encoding: "utf8",
-      destination: root + "/docs/js/",
+      destination: outputDir,
       readme: "readme.md",
       recurse: true,
-      verbose: true,
-      //tutorials: "./docs-src/tutorials",
-      template: "better-docs",
+      verbose: false,
+      //tutorials: root + "/docs-src/tutorials",
+      template: "node_modules/better-docs",
     },
     templates: {
       cleverLinks: false,
@@ -88,6 +73,7 @@ export function doc(cb: any = null) {
       },
     },
   };
+
   gulp
     .src(["./libs/**/*.(js|ts|tsx|js(doc|x)?)$"], {
       read: false,

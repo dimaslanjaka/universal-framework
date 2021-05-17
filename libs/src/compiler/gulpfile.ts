@@ -198,3 +198,5 @@ async function reload_gulp(cb: any = null) {
 }
 
 localStorage.removeItem("compile");
+
+export = gulp;

@@ -149,6 +149,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-typedoc": "^3.0.0",
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^2.0.0",
     "javascript-obfuscator": "^2.12.0",
@@ -157,7 +158,8 @@
     "jsdoc-mermaid": "^1.0.0",
     "less": "^3.13.1",
     "lodash": "^4.17.19",
-    "prettier": "^2.3.0"
+    "prettier": "^2.3.0",
+    "typedoc": "^0.20.36"
   },
   "displayName": "UNIVERSAL FRAMEWORK [PHPJS]",
   "homepage": "https://github.com/dimaslanjaka/universal-framework#readme",
@@ -198,7 +200,6 @@
   },
   "scripts": {
     "postinstall": "",
-    "ngrok": "node ./ngrok.js",
     "start": "gulp build && gulp watch",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
@@ -206,7 +207,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "component-build": "tsc -p tsconfig.formsaver.json",
     "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "ngrok": "node ./ngrok.js",
+    "doc": "gen-phpdoc && gulp doc"
   },
   "version": "3.0.0",
   "snyk": true
