@@ -7,6 +7,12 @@ import core from "./core";
 
 class filemanager {
   /**
+   * Is file/folder exists?
+   */
+  static exist(filepath: string) {
+    return fs.existsSync(filepath);
+  }
+  /**
    * Delete file or directory recursive
    * @param filedir
    * @param async

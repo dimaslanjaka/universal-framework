@@ -2,6 +2,7 @@ import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
 import * as fs from "fs";
 import process from "../compiler/process";
+import filemanager from "./filemanager";
 const root = process.root;
 
 /**
@@ -12,9 +13,14 @@ const root = process.root;
  */
 export function doc(cb: any = null) {
   let outputDir = root + "/docs/js/";
-  if (fs.existsSync(outputDir)) {
-    fs.unlinkSync(outputDir);
+  try {
+    if (filemanager.exist(outputDir)) {
+      filemanager.unlink(outputDir);
+    }
+  } catch (e) {
+    console.log(e);
   }
+
   let config = {
     recurseDepth: 10,
     tags: {
