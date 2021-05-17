@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-tsc -p tsconfig.build.json
-tsc -p tsconfig.precompiler.json
-tsc -p tsconfig.compiler.json

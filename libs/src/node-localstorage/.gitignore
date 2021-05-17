@@ -1,9 +1,0 @@
-.DS_Store
-scratch
-coverage
-.nyc_output
-.play
-node_modules
-.idea
-*.map
-yarn.*

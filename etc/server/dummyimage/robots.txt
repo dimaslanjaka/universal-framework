@@ -1,6 +1,0 @@
-User-Agent: *
-#Allow: /index.php
-#Allow: /source.zip
-#Allow: /readme.txt
-Allow: /*
-#Allow: /$
