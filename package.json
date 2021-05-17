@@ -201,14 +201,14 @@
   },
   "scripts": {
     "postinstall": "",
-    "start": "gulp build && gulp watch",
-    "snyk-protect": "snyk protect",
+    "start": "npx gulp build && npx gulp watch",
+    "snyk-protect": "npx snyk protect",
     "prepublish": "npm run snyk-protect",
     "check": "depcheck ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "component-build": "tsc -p tsconfig.formsaver.json",
-    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.precompiler.json && tsc -p tsconfig.compiler.json",
-    "dev": "gulp watch",
+    "build": "npx tsc -p tsconfig.build.json && npx tsc -p tsconfig.precompiler.json && npx tsc -p tsconfig.compiler.json",
+    "dev": "npm --silent run build && npm --silent run start",
     "ngrok": "node ./ngrok.js",
     "doc": "gen-phpdoc && gulp doc"
   },
