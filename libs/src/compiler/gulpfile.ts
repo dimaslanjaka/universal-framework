@@ -123,17 +123,17 @@ gulp.task("watch", async function () {
             // run documentation builder
             //doc();
           } else {
-            if (/\.(js|scss|css|less)$/s.test(file)) {
-              // TODO: Compile js css
-              if (!/\.min\.(js|css)$/s.test(file)) {
+            if (/\.(js|scss|css|less|ts)$/s.test(file)) {
+              // TODO: Compile js css on change
+              if (!/\.min\.(js|css|ts)$/s.test(file)) {
                 compileAssets(file);
               }
             } else {
               var reason = log.error("undefined");
               if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
-                reason = log.random("Excluded");
+                reason = log.color("brown", "Excluded");
               } else if (/\.(d\.ts)$/s.test(filename_log)) {
-                reason = log.random("Typehint");
+                reason = log.color("cyan", "Typehint");
               }
               log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
             }

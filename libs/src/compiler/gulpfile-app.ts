@@ -1,5 +1,5 @@
 import log from "../compiler/log";
-import { exec, ExecException, spawn } from "child_process";
+import { exec, ExecException } from "child_process";
 import upath from "upath";
 import path from "path";
 import { compileAssets } from "./gulpfile-compiler";
@@ -7,6 +7,7 @@ import { localStorage } from "../node-localstorage/index";
 import process from "../compiler/process";
 import framework from "../compiler/index";
 import config from "../compiler/config";
+
 const root = process.root;
 
 /**

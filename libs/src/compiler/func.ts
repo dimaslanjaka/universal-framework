@@ -1,16 +1,14 @@
 import * as fs from "fs";
-import { exec, spawn, spawnSync, execSync } from "child_process";
+import { exec } from "child_process";
 import * as path from "path";
-import * as Process from "process";
-import * as http from "http";
 import { dirname } from "path";
+import * as Process from "process";
 import { localStorage } from "../node-localstorage/index";
 //const { promisify } = require("util");
 import { promisify } from "util";
 import observatory from "../observatory/lib/observatory";
 import chalk from "chalk";
 import dns from "dns";
-import log from "./log";
 import sorter from "./sorter";
 
 require("./consoler");

@@ -6,6 +6,7 @@ import path from "path";
 import log from "../compiler/log";
 import process from "../compiler/process";
 import core from "./core";
+
 const root = process.root;
 
 /**

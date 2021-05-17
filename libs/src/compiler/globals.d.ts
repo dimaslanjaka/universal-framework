@@ -95,6 +95,7 @@ interface packagejson {
   author?: ArrayOfObject;
   bugs?: ArrayOfObject;
   maintainer?: ArrayOfObject;
+
   [prop: string]: any;
 }
 

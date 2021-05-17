@@ -1,4 +1,4 @@
- class sorter {
+class sorter {
   /**
    * Sort Ascending Recursive
    * @param {Object|Array<any>} object
@@ -16,6 +16,7 @@
     }
     return newObject;
   }
+
   static sortObject(obj: any) {
     return Object.keys(obj)
       .sort()
@@ -24,6 +25,7 @@
         return result;
       }, {});
   }
+
   /**
    * reorder object/array
    * @param {Object} parsed
@@ -51,4 +53,5 @@
     return this.ascending(ordered);
   }
 }
+
 export = sorter;

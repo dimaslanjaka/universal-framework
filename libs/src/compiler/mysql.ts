@@ -1,11 +1,12 @@
-import log from './log';
-import * as mysql from 'mysql';
-import configuration from './config';
+import log from "./log";
+import * as mysql from "mysql";
+import configuration from "./config";
+
 var config = configuration;
 
 function mysql_connection(): null | mysql.Connection {
   var result = null;
-  if (config.hasOwnProperty('database')) {
+  if (config.hasOwnProperty("database")) {
     const database = config.database;
     var con = mysql.createConnection({
       host: database.host,
@@ -18,7 +19,7 @@ function mysql_connection(): null | mysql.Connection {
       if (err) {
         log.log(log.error(err));
       } else {
-        log.log(log.success('Connected!'));
+        log.log(log.success("Connected!"));
         result = con;
       }
     });

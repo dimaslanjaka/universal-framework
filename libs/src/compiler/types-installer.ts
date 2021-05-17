@@ -34,20 +34,19 @@ function installTypes() {
     exec("npm rebuild");
     return;
   }
-  exec(`npm install ${types[0]} --save-dev --prefer-offline`, function (
-    err: { message: string },
-    stdout: any,
-    stderr: any
-  ) {
-    if (!err) {
-      console.log(stdout);
-      console.log(stderr);
-    } else {
-      log.log(log.error(err.message));
+  exec(
+    `npm install ${types[0]} --save-dev --prefer-offline`,
+    function (err: { message: string }, stdout: any, stderr: any) {
+      if (!err) {
+        console.log(stdout);
+        console.log(stderr);
+      } else {
+        log.log(log.error(err.message));
+      }
+      types.shift();
+      installTypes();
     }
-    types.shift();
-    installTypes();
-  });
+  );
 }
 
 /**

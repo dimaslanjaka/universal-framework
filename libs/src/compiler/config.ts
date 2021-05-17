@@ -1,6 +1,7 @@
 import * as process from "process";
 import * as upath from "upath";
 import * as path from "path";
+
 const root = function (): string {
   var appDir = upath
     .normalizeSafe(path.dirname(require.main.filename))

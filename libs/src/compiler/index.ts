@@ -7,16 +7,16 @@ import process from "./process";
 import { backup, fromRoot } from "./../archiver/backup";
 
 class framework extends core {
-  filemanager: filemanager = filemanager;
   static filemanager: filemanager = filemanager;
   static misc = misc.dimas;
-  sorter: sorter = sorter;
   static sorter: sorter = sorter;
-  process: process = process;
   static process: process = process;
   static pathFromRoot = fromRoot;
-  pathFromRoot = fromRoot;
   static backup = backup;
+  filemanager: filemanager = filemanager;
+  sorter: sorter = sorter;
+  process: process = process;
+  pathFromRoot = fromRoot;
   backup = backup;
 }
 

@@ -20,12 +20,14 @@ import less from "less";
 class core {
   static log = log;
   log = log;
+
   /**
    * config.json
    */
   static config() {
     return configuration;
   }
+
   /**
    * filter array after deletion
    * @param arr
@@ -35,6 +37,7 @@ class core {
       return el != null;
     });
   }
+
   /**
    * return Asynchronous function (Promise)
    * @param callback
@@ -47,12 +50,14 @@ class core {
       resolve(true);
     });
   }
+
   /**
    * localStorage NodeJS Version
    */
   static localStorage() {
     return new LocalStorage(`${this.root()}/tmp/storage`);
   }
+
   /**
    * Composer
    * @param dir directory has composer.json
@@ -286,7 +291,7 @@ class core {
    */
   static minify_folder(folder: string) {
     var self = this;
-    var js = new Array();
+    var js = [];
     fs.exists(folder, function (exists) {
       if (exists && fs.lstatSync(folder).isDirectory()) {
         var read = self.readdir(folder, [], []);

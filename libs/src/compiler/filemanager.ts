@@ -12,6 +12,7 @@ class filemanager {
   static exist(filepath: string) {
     return fs.existsSync(filepath);
   }
+
   /**
    * Delete file or directory recursive
    * @param filedir

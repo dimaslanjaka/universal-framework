@@ -65,4 +65,5 @@ function Queue() {
     return queue.length > 0 ? queue[offset] : undefined;
   };
 }
+
 export = Queue;

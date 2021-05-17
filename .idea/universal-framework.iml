@@ -31,6 +31,18 @@
       <sourceFolder url="file://$MODULE_DIR$/src/simplehtmldom" isTestSource="false" packagePrefix="simplehtmldom\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/src/AGC/agc_service" />
+      <excludeFolder url="file://$MODULE_DIR$/src/AGC/loader" />
+      <excludeFolder url="file://$MODULE_DIR$/src/MVC/themes/default/MDB-Pro_4.11.0/dist/src/js/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/src/MVC/themes/default/MDB-Pro_4.11.0/js/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/src/MVC/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/src/Session/sessions" />
+      <excludeFolder url="file://$MODULE_DIR$/views/agc" />
+      <excludeFolder url="file://$MODULE_DIR$/views/ftp" />
+      <excludeFolder url="file://$MODULE_DIR$/.phpdoc" />
+      <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/src/MVC/themes/assets/js" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
