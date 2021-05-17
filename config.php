@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpDefineCanBeReplacedWithConstInspection */
+<?php
+
+/** @noinspection PhpDefineCanBeReplacedWithConstInspection */
 
 /**
  * VSCode require extension php intelephense.
@@ -225,12 +227,8 @@ function isob()
  */
 function base($path)
 {
-<<<<<<< HEAD
     return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http')
         . '://' . $_SERVER['HTTP_HOST'] . $path;
-=======
-    return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $path;
->>>>>>> b6599a978a9b1fe18ebb02b6631e32ab66c795f7
 }
 
 /**

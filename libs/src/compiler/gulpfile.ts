@@ -173,7 +173,12 @@ gulp.task("default", gulp.series(["build", "watch"]));
  */
 gulp.task("doc", doc);
 
-async function reload_gulp(cb: any = null) {
+/**
+ * Reload Gulp
+ * @param cb
+ * @returns
+ */
+async function reload_gulp(cb: Function = null) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
   //proc.exit();
 

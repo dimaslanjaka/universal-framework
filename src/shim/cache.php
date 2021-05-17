@@ -1,4 +1,5 @@
 <?php
+
 /**
  * MVC Router Cache Renderer
  */
@@ -15,19 +16,10 @@ use Session\session;
 function page_cache()
 {
     $path = ROOT . '/tmp/html/';
-<<<<<<< HEAD
     $path .= helper::get_clean_uri(helper::geturl());
     $path .= '/' . identifier();
     $path .= '.html';
     return normalize_path($path);
-=======
-    $path .= \MVC\helper::get_clean_uri(\MVC\helper::geturl());
-    $path .= '/' . identifier();
-    $path .= '.html';
-    $path = normalize_path($path);
-
-    return $path;
->>>>>>> b6599a978a9b1fe18ebb02b6631e32ab66c795f7
 }
 
 /**
@@ -81,11 +73,7 @@ function render(MVC\themes $theme)
  */
 function identifier()
 {
-<<<<<<< HEAD
     return md5(UID . serialize(session::gets(['login', 'coupon'])));
-=======
-    return md5(UID . serialize(\Session\session::gets(['login', 'coupon'])));
->>>>>>> b6599a978a9b1fe18ebb02b6631e32ab66c795f7
 }
 
 /**

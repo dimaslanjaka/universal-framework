@@ -1,6 +1,5 @@
 import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
-import * as fs from "fs";
 import process from "../compiler/process";
 import filemanager from "./filemanager";
 const root = process.root;
