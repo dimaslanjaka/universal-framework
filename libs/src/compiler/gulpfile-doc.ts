@@ -27,7 +27,7 @@ export function doc(cb: any = null) {
       excludePattern: "(/node_modules|/docs)", //||(^|\\/|\\\\)_
     },
     plugins: [
-      "plugins/summarize",
+      //"plugins/summarize",
       "plugins/markdown",
       "jsdoc-mermaid",
       "node_modules/better-docs/typescript",
