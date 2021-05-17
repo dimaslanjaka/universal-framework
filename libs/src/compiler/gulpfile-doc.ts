@@ -24,7 +24,7 @@ export function doc(cb: any = null) {
     source: {
       include: [root + "/libs/js", root + "/libs/src"],
       includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      excludePattern: "(/node_modules|/docs)", //||(^|\\/|\\\\)_
+      excludePattern: "[\\/\\\\]node_modules|docs|dist[\\/\\\\]",
     },
     plugins: [
       //"plugins/summarize",
