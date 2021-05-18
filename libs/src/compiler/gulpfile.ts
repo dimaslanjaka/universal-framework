@@ -1,11 +1,10 @@
 // noinspection RegExpDuplicateAlternationBranch
-
+// noinspection ES6PreferShortImport
+import { LocalStorage } from "../node-localstorage/index";
 import * as gulp from "gulp";
 import framework from "../compiler/index";
 import process from "../compiler/process";
 import * as fs from "fs";
-// noinspection ES6PreferShortImport
-import { localStorage } from "../node-localstorage/index";
 import { createApp } from "./gulpfile-app";
 import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
@@ -14,7 +13,7 @@ import { gulpWatch } from "./gulp-watch";
 
 const root = process.root;
 
-localStorage.removeItem("compile");
+LocalStorage.removeItem("compile");
 console.clear();
 
 /**
@@ -88,4 +87,4 @@ gulp.task("default", gulp.series(["build", "watch"]));
  */
 gulp.task("doc", doc);
 
-localStorage.removeItem("compile");
+LocalStorage.removeItem("compile");

@@ -65,7 +65,17 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
         //logo: "images/logo.png",
         title: "Universal Framework Javascript Documentation", // HTML title
         //css: "style.css",
-        trackingCode: "<!--tracking-code-which-will-go-to-the-HEAD-->",
+        trackingCode: `<script data-ad-client="ca-pub-1165447249910969" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106238155-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106238155-1');
+</script>
+`,
         hideGenerator: false,
         navLinks: [
           {

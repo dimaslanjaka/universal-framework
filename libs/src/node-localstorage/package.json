@@ -23,6 +23,7 @@
   "preferGlobal": false,
   "devDependencies": {
     "@types/node": "^14.14.6",
+    "@types/write-file-atomic": "^3.0.1",
     "coffeescript": "^1.12.7",
     "coffeetape": "^2.0.0",
     "gulp": "^4.0.2",
@@ -44,6 +45,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "gulp-coffee": "^3.0.3",
     "write-file-atomic": "^1.1.4"
   }
 }

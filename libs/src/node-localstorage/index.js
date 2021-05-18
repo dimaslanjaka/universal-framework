@@ -1,6 +1,11 @@
+/**
+ * @type {Storage}
+ */
+let LocalStorage;
+
 if (typeof localStorage === "undefined" || localStorage === null) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const LocalStorage = require("./LocalStorage").LocalStorage;
+  LocalStorage = require("./dist/LocalStorage").LocalStorage;
   //var LocalStorage = require('node-localstorage').LocalStorage;
   if (typeof global != "undefined") {
     global.localStorage = new LocalStorage("./tmp/storage");
@@ -9,4 +14,4 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   }
 }
 module.exports.localStorage = localStorage;
-module.exports.LocalStorage = this.LocalStorage;
+module.exports.LocalStorage = LocalStorage;
