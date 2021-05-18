@@ -48,7 +48,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       readme: "readme.md",
       recurse: true,
       verbose: false,
-      //tutorials: root + "/docs-src/tutorials",
+      tutorials: root + "/docs/statics",
       template: "node_modules/better-docs",
     },
     templates: {
@@ -57,7 +57,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       search: true,
       default: {
         staticFiles: {
-          //include: ["./docs-src/statics"],
+          include: [root + "/docs/statics"],
         },
       },
       "better-docs": {
@@ -76,15 +76,15 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
   gtag('config', 'UA-106238155-1');
 </script>
 `,
-        hideGenerator: false,
+        hideGenerator: true,
         navLinks: [
           {
             label: "Github",
             href: "https://github.com/dimaslanjaka/universal-framework",
           },
           {
-            label: "Example Application",
-            href: "https://github.com/dimaslanjaka/universal-framework",
+            label: "Blog",
+            href: "https://webmanajemen.com",
           },
         ],
       },
