@@ -9,7 +9,7 @@ import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
 import { createApp } from "./gulpfile-app";
 // noinspection ES6PreferShortImport
-import { LocalStorage } from "../node-localstorage/index";
+import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
 
@@ -82,7 +82,7 @@ export async function gulpWatch() {
         }
       }
     };
-    if (LocalStorage.getItem("watch")) return trigger();
+    if (localStorage.getItem("watch")) return trigger();
   });
 }
 

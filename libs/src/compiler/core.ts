@@ -7,7 +7,7 @@ import log from "./log";
 import * as uglifycss from "uglifycss";
 import * as sass from "sass";
 import { exec } from "child_process";
-import { LocalStorage } from "../node-localstorage/index";
+import "../node-localstorage/src/index";
 import configuration from "./config";
 import * as framework from "./framework";
 import filemanager from "./filemanager";
@@ -49,15 +49,6 @@ class core {
       }
       resolve(true);
     });
-  }
-
-  /**
-   * localStorage NodeJS Version
-   */
-  static localStorage() {
-    let storageDir = `${this.root()}/tmp/storage`;
-    if (!filemanager.exist(storageDir)) filemanager.mkdir(storageDir);
-    return new LocalStorage(storageDir);
   }
 
   /**

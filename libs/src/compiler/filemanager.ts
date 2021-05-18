@@ -2,7 +2,6 @@ import rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
 import log from "./log";
-//import { core } from "./core";
 import core from "./core";
 
 class filemanager {
