@@ -3,7 +3,7 @@
     "strict": false,
     "target": "ES6",
     "module": "amd",
-    "declaration": false,
+    "declaration": true,
     "removeComments": false,
     "preserveConstEnums": true,
     "downlevelIteration": true,
@@ -27,11 +27,21 @@
       "ES2019",
       "ES2020"
     ],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": [
+      "node_modules/@types",
+      "src/smartform/src/js/"
+    ]
   },
-  "include": ["./libs/src/smartform/dist/release/bundle.js"],
+  "include": [
+    "./libs/src/smartform/src/js/*"
+  ],
   "typeAcquisition": {
-    "include": ["jQuery", "toastr", "sweetalert", "CryptoJS"]
+    "include": [
+      "jQuery",
+      "toastr",
+      "sweetalert",
+      "CryptoJS"
+    ]
   },
   "exclude": [
     "node_modules",

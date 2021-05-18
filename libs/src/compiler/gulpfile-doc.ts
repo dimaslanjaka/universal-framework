@@ -2,17 +2,19 @@ import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
 import process from "../compiler/process";
 import filemanager from "./filemanager";
+import ts from "gulp-typescript";
 
 const root = process.root;
 
 /**
+ * Better-Docs JSDoc
  * ```regex
  * \\.(jsx|js|ts|tsx|js(doc|x)?)$
  * ```
  * @param cb function callback
  */
-export function doc(cb: any = null) {
-  let outputDir = root + "/docs/js/";
+export function doc(cb: any = null): NodeJS.ReadWriteStream {
+  const outputDir = root + "/docs/js/";
   try {
     if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
@@ -21,7 +23,7 @@ export function doc(cb: any = null) {
     console.log(e);
   }
 
-  let config = {
+  const config = {
     recurseDepth: 10,
     tags: {
       allowUnknownTags: true,
@@ -73,16 +75,20 @@ export function doc(cb: any = null) {
           },
           {
             label: "Example Application",
-            href: "http://github.com/dimaslanjaka/universal-framework",
+            href: "https://github.com/dimaslanjaka/universal-framework",
           },
         ],
       },
     },
   };
 
-  gulp
+  return gulp
     .src(["./libs/**/*.(js|ts|tsx|js(doc|x)?)$"], {
       read: false,
     })
     .pipe(jsdoc(config, cb));
 }
+
+const tsProject = ts.createProject({
+  declaration: true,
+});

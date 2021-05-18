@@ -79,7 +79,7 @@ gulp.task("watch", async function () {
         .join(" ")
   );
 
-  var compiler_runner: any = false;
+  var compiler_runner: NodeJS.Timeout = null;
   var run_watch = gulp
     .watch(files, null)
     .on(
@@ -111,7 +111,7 @@ gulp.task("watch", async function () {
                   `start compile ${log.random("src/MVC/themes/assets/js")}`
                 )
             );
-            if (compiler_runner) {
+            if (compiler_runner != null) {
               log.log(log.error("Compiler still running"));
             } else {
               compiler_runner = setTimeout(function () {
@@ -119,9 +119,6 @@ gulp.task("watch", async function () {
                 compiler_runner = null;
               }, 5000);
             }
-
-            // run documentation builder
-            //doc();
           } else {
             if (/\.(js|scss|css|less|ts)$/s.test(file)) {
               // TODO: Compile js css on change

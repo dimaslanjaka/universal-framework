@@ -886,17 +886,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -945,27 +945,63 @@ declare var element: Element;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-declare function extend_setting_form(...param: any[]): {
-    selectorStatus: string;
-    selectorSave: string;
-    selectorDelete: string;
-    selectorIgnore: string;
-    deleteClear: boolean;
-    saveMessage: string;
-    deleteMessage: string;
-    saveClass: string;
-    deleteClass: string;
-    initClass: string;
-    callbackSave: () => void;
-    callbackDelete: () => void;
-    callbackLoad: () => void;
-};
+declare function copyToClipboard(text: string, el: JQuery<HTMLElement>): void;
+/**
+ * Copy to clipboard
+ */
+declare function copyToClipboard(text: any, el: any): void;
+declare function extend_setting_form(...param: any[]): SettingForm;
+/**
+ * Merge two or more objects together.
+ * (c) 2017 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param   {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
+ * @param   {Object}   objects  The objects to merge together
+ * @returns {Object|SettingForm}            Merged values of defaults and options
+ */
+declare function extend_setting_form(...param: any[]): any | SettingForm;
 declare function formsaver(): void;
-declare function forEach(collection: any, callback: any, scope?: any): void;
-declare function getClosest(elem: any, selector: any): any;
-declare function getDataOptions(options: any): any;
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+declare function formsaver(): void;
+/**
+ * A simple forEach() implementation for Arrays, Objects and NodeLists.
+ * @private
+ * @author Todd Motto
+ * @link   https://github.com/toddmotto/foreach
+ * @param {Array|Object|NodeList} collection Collection of items to iterate
+ * @param {Function}              callback   Callback function for each iteration
+ * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
+ */
+declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
+/**
+ * Get the closest matching element up the DOM tree.
+ * @private
+ * @param  {Element} elem     Starting element
+ * @param  {String}  selector Selector to match against
+ * @return {Boolean|Element}  Returns null if not match found
+ */
+declare function getClosest(elem: Element, selector: string): boolean | Element;
+/**
+ * Convert data-options attribute into an object of key/value pairs
+ * @private
+ * @param {String} options Link-specific options as a data attribute string
+ * @returns {Object}
+ */
+declare function getDataOptions(options: string): any;
+/**
+ * Handle events
+ * @private
+ */
 declare function eventHandler(event: any): void;
+/**
+ * Is Browser (not node)
+ */
 declare var isBrowser: Function;
+/**
+ * Is Node (not browser)
+ */
 declare var isNode: Function;
 declare var settings: any;
 declare var forms: any;
@@ -985,15 +1021,57 @@ declare namespace defaults {
     function callbackLoad(): void;
 }
 declare class formSaver {
-    static saveForm(btn: any, formID: any, options: any, event?: any): void;
-    static deleteForm(btn: any, formID: any, options: any, event?: any): void;
-    loadForm(form: any, options: any): void;
-    destroy(): void;
-    init(options: any): void;
+    /**
+     * Save form data to localStorage
+     * @public
+     * @param  {Element} btn Button that triggers form save
+     * @param  {Element} form The form to save
+     * @param  {Object} options
+     * @param  {Event} event
+     */
+    public static saveForm(btn: Element, formID: any, options: any, event?: Event): void;
+    /**
+     * Remove form data from localStorage
+     * @public
+     * @param  {Element} btn Button that triggers form delete
+     * @param  {Element} form The form to remove from localStorage
+     * @param  {Object} options
+     * @param  {Event} event
+     */
+    public static deleteForm(btn: Element, formID: any, options: any, event?: Event): void;
+    /**
+     * Load form data from localStorage
+     * @public
+     * @param  {Element} form The form to get data for
+     * @param  {Object} options
+     */
+    public loadForm(form: Element, options: any): void;
+    /**
+     * Destroy the current initialization.
+     * @public
+     */
+    public destroy(): void;
+    /**
+     * Initialize Form Saver
+     * @public
+     * @param {Object} options User settings
+     */
+    public init(options: any): void;
+    /**
+     * Auto form saver
+     */
     auto(): void;
 }
+/**
+ * SMARTFORM
+ * @todo save form user input
+ */
+/**
+ * unique id generator
+ * @param length digit number string
+ * @returns random string
+ */
 declare function makeid(length: any): string;
-declare function makeid(length: number): string;
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
@@ -1239,20 +1317,57 @@ declare function recaptcha(): {
      */
     reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
 };
-declare namespace reCaptcha {
-    const gexec_count: number;
-    const key: string;
-    function js(url: string, callback: Function): void;
-    function set_key(key: string): void;
-    function start(): void;
-    function init(): void;
-    const retry_count: number;
-    function exec(action: any, retry: any, callback: any): void;
-    function insert(token: string): void;
-    function distribute_token(token: string): void;
-    function get(): string;
-    function reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function): void;
-}
+declare var reCaptcha: {
+    /**
+     * @type {Number} counter executions
+     */
+    gexec_count: number;
+    key: string;
+    /**
+     * Javascript caller
+     * @param {String} url
+     * @param {Function} callback
+     */
+    js: (url: string, callback: Function) => void;
+    /**
+     * Set recaptcha site key
+     * @param {String} key
+     */
+    set_key: (key: string) => void;
+    /**
+     * Start recaptcha
+     */
+    start: () => void;
+    /**
+     * Initialize Recaptcha by defining jquery
+     */
+    init: () => void;
+    retry_count: number;
+    /**
+     * load or refreshing google recaptcha
+     */
+    exec: (action: any, retry: any, callback: any) => void;
+    /**
+     * Insert reCaptcha Token
+     * @param {String} token
+     */
+    insert: (token: string) => void;
+    /**
+     * Distribute reCaptcha Token
+     * @param {String} token
+     */
+    distribute_token: (token: string) => void;
+    /**
+     * Get token recaptcha
+     */
+    get: () => string;
+    /**
+     * Button Controller
+     * @param {Boolean} reCaptcha_disable
+     * @param {Function} callback
+     */
+    reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
+};
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 interface RequireConfig {
@@ -1378,7 +1493,6 @@ declare function countNewLines(placeholder: string): string | number;
  * @param {Function} callback
  */
 declare function findDups(arr: Array<any>, callback: Function): any;
-declare function makeid(length: any): string;
 /**
  * Auto Generate ID
  * @param {Number} length

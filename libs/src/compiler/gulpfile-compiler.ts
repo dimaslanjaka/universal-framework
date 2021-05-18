@@ -96,5 +96,9 @@ export function single_tsCompile(target: string) {
     declaration: false,
     skipLibCheck: true,
   });
-  return gulp.src(target).pipe(tsProject()).pipe(gulp.dest(dest));
+  return gulp
+    .src(target)
+    .pipe(tsProject())
+    .on("error", console.log)
+    .pipe(gulp.dest(dest));
 }
