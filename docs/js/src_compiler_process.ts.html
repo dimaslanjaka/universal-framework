@@ -69,7 +69,7 @@
                     
                         <a
                             class="link user-link "
-                            href="http://github.com/dimaslanjaka/universal-framework"
+                            href="https://github.com/dimaslanjaka/universal-framework"
                         >
                             Example Application
                         </a>
@@ -115,7 +115,7 @@ import upath from "upath";
 import log from "./log";
 import { MD5 } from "crypto-js";
 import coreProcess from "process";
-
+import core from "./core";
 const savetemp = "./tmp/compiler";
 if (fs.existsSync(savetemp)) {
   filemanager.empty(upath.join(coreProcess.cwd(), savetemp), null);
@@ -126,59 +126,41 @@ class process {
   static verbose: boolean = false;
   static tmp = savetemp;
   /**
+   * process instance `import coreProcess from "process";`
+   */
+  static core = coreProcess;
+
+  /**
+   * Kill All Node Processes
+   */
+  static killNode() {
+    if (core.isWin()) {
+      //taskkill /f /im node.exe
+    } else {
+      //killall node
+    }
+  }
+
+  /**
    * Create lock file
    * @param file
    */
   static lockCreate(file: string) {
     return upath.join(coreProcess.cwd(), this.tmp, MD5(file).toString());
   }
-  /**
-   * lock the process
-   * @param lockfile
-   */
-  private static lockProcess(lockfile: string) {
-    if (this.verbose) {
-      log.log(log.random("locking process"));
-    }
-    if (!upath.resolve(upath.dirname(lockfile))) {
-      filemanager.mkdir(upath.dirname(lockfile));
-    }
-    filemanager.mkfile(lockfile, "lockfile");
-  }
-  /**
-   * release lock process
-   * @param lockfile
-   */
-  private static releaseLock(lockfile: string) {
-    if (this.verbose) {
-      log.log(log.random("releasing process"));
-    }
-    if (fs.existsSync(lockfile)) {
-      filemanager.unlink(lockfile, false);
-    } else {
-      if (this.verbose) {
-        log.log(log.error("process file already deleted"));
-      }
-    }
-  }
+
   /**
    * do process
    * @param lockfile
    * @param callback
    */
-  static doProcess(
-    lockfile: string,
-    options: { verbose: boolean } | any,
-    callback: Function
-  ) {
+  static doProcess(lockfile: string, options: { verbose: boolean } | any, callback: Function) {
     if (typeof options.verbose == "boolean") {
       this.verbose = options.verbose;
     }
     lockfile = process.lockCreate(lockfile);
     if (fs.existsSync(lockfile)) {
-      log.log(
-        log.error(`Process locked (${lockfile}). please provide unique ids.`)
-      );
+      log.log(log.error(`Process locked (${lockfile}). please provide unique ids.`));
       return null;
     }
     const doCall = function () {
@@ -196,6 +178,37 @@ class process {
     load.then(function () {
       process.releaseLock(lockfile);
     });
+  }
+
+  /**
+   * lock the process
+   * @param lockfile
+   */
+  private static lockProcess(lockfile: string) {
+    if (this.verbose) {
+      log.log(log.random("locking process"));
+    }
+    if (!upath.resolve(upath.dirname(lockfile))) {
+      filemanager.mkdir(upath.dirname(lockfile));
+    }
+    filemanager.mkfile(lockfile, "lockfile");
+  }
+
+  /**
+   * release lock process
+   * @param lockfile
+   */
+  private static releaseLock(lockfile: string) {
+    if (this.verbose) {
+      log.log(log.random("releasing process"));
+    }
+    if (fs.existsSync(lockfile)) {
+      filemanager.unlink(lockfile, false);
+    } else {
+      if (this.verbose) {
+        log.log(log.error("process file already deleted"));
+      }
+    }
   }
 }
 

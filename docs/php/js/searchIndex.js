@@ -3861,11 +3861,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/HTML-element.html#method_pre"
         },                {
-            "fqsen": "\\HTML\\element\u003A\u003AisArrObj\u0028\u0029",
-            "name": "isArrObj",
-            "summary": "",
-            "url": "classes/HTML-element.html#method_isArrObj"
-        },                {
             "fqsen": "\\HTML\\element\u003A\u003Ahtmlvar_dump\u0028\u0029",
             "name": "htmlvar_dump",
             "summary": "var_dump\u0020inside\u0020pretext.",
@@ -7441,6 +7436,11 @@ Search.appendIndex(
             "summary": "Check\u0020multiple\u0020array\u0020keys\u0020exists.",
             "url": "namespaces/default.html#function_array_keys_exists"
         },                {
+            "fqsen": "\\is_array_object\u0028\u0029",
+            "name": "is_array_object",
+            "summary": "Is\u0020array\u0020or\u0020object\u0020\u003F",
+            "url": "namespaces/default.html#function_is_array_object"
+        },                {
             "fqsen": "\\inc\u0028\u0029",
             "name": "inc",
             "summary": "Include\u0020file\u0020if\u0020exists.",
@@ -9465,6 +9465,81 @@ Search.appendIndex(
             "name": "insert",
             "summary": "Insert\u0020Target\u0020String\u0020To\u0020Be\u0020Translated",
             "url": "classes/GoogleExt-Translator.html#method_insert"
+        },                {
+            "fqsen": "\\FlattedString",
+            "name": "FlattedString",
+            "summary": "",
+            "url": "classes/FlattedString.html"
+        },                {
+            "fqsen": "\\FlattedString\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/FlattedString.html#method___construct"
+        },                {
+            "fqsen": "\\Flatted",
+            "name": "Flatted",
+            "summary": "",
+            "url": "classes/Flatted.html"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Aparse\u0028\u0029",
+            "name": "parse",
+            "summary": "",
+            "url": "classes/Flatted.html#method_parse"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Astringify\u0028\u0029",
+            "name": "stringify",
+            "summary": "",
+            "url": "classes/Flatted.html#method_stringify"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003AasString\u0028\u0029",
+            "name": "asString",
+            "summary": "",
+            "url": "classes/Flatted.html#method_asString"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Aindex\u0028\u0029",
+            "name": "index",
+            "summary": "",
+            "url": "classes/Flatted.html#method_index"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Akeys\u0028\u0029",
+            "name": "keys",
+            "summary": "",
+            "url": "classes/Flatted.html#method_keys"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Aloop\u0028\u0029",
+            "name": "loop",
+            "summary": "",
+            "url": "classes/Flatted.html#method_loop"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Arelate\u0028\u0029",
+            "name": "relate",
+            "summary": "",
+            "url": "classes/Flatted.html#method_relate"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Aref\u0028\u0029",
+            "name": "ref",
+            "summary": "",
+            "url": "classes/Flatted.html#method_ref"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Atransform\u0028\u0029",
+            "name": "transform",
+            "summary": "",
+            "url": "classes/Flatted.html#method_transform"
+        },                {
+            "fqsen": "\\Flatted\u003A\u003Awrap\u0028\u0029",
+            "name": "wrap",
+            "summary": "",
+            "url": "classes/Flatted.html#method_wrap"
+        },                {
+            "fqsen": "\\console",
+            "name": "console",
+            "summary": "",
+            "url": "classes/console.html"
+        },                {
+            "fqsen": "\\console\u003A\u003Aassert\u0028\u0029",
+            "name": "assert",
+            "summary": "",
+            "url": "classes/console.html#method_assert"
         },                {
             "fqsen": "\\",
             "name": "\\",

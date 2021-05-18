@@ -69,7 +69,7 @@
                     
                         <a
                             class="link user-link "
-                            href="http://github.com/dimaslanjaka/universal-framework"
+                            href="https://github.com/dimaslanjaka/universal-framework"
                         >
                             Example Application
                         </a>
@@ -117,6 +117,7 @@ import path from "path";
 import log from "../compiler/log";
 import process from "../compiler/process";
 import core from "./core";
+
 const root = process.root;
 
 /**
@@ -206,7 +207,11 @@ export function single_tsCompile(target: string) {
     declaration: false,
     skipLibCheck: true,
   });
-  return gulp.src(target).pipe(tsProject()).pipe(gulp.dest(dest));
+  return gulp
+    .src(target)
+    .pipe(tsProject())
+    .on("error", console.log)
+    .pipe(gulp.dest(dest));
 }
 </code></pre>
         </article>

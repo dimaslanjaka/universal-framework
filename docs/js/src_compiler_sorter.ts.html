@@ -69,7 +69,7 @@
                     
                         <a
                             class="link user-link "
-                            href="http://github.com/dimaslanjaka/universal-framework"
+                            href="https://github.com/dimaslanjaka/universal-framework"
                         >
                             Example Application
                         </a>
@@ -109,7 +109,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code> class sorter {
+            <pre class="prettyprint source linenums"><code>class sorter {
   /**
    * Sort Ascending Recursive
    * @param {Object|Array&lt;any>} object
@@ -127,6 +127,7 @@
     }
     return newObject;
   }
+
   static sortObject(obj: any) {
     return Object.keys(obj)
       .sort()
@@ -135,6 +136,7 @@
         return result;
       }, {});
   }
+
   /**
    * reorder object/array
    * @param {Object} parsed
@@ -162,7 +164,9 @@
     return this.ascending(ordered);
   }
 }
-export = sorter;</code></pre>
+
+export = sorter;
+</code></pre>
         </article>
     </section>
 
