@@ -3,6 +3,7 @@ import jsdoc from "gulp-jsdoc3";
 import process from "../compiler/process";
 import filemanager from "./filemanager";
 import ts from "gulp-typescript";
+import merge from "merge2";
 
 const root = process.root;
 
@@ -99,12 +100,16 @@ export function dummyTypeDoc() {
     filemanager.unlink(outDir);
   }
   const tsProject = ts.createProject("tsconfig.json", {
-    module: "amd",
-    outFile: "dist/dts/types.d.ts",
+    //module: "amd",
+    esModuleInterop: true,
+    skipLibCheck: true,
+    //outFile: "dist/dts/types.d.ts",
     declaration: true,
     allowJs: true,
-    noEmitJs: true,
+    noEmit: true,
+    emitDeclarationOnly: true,
+    declarationDir: outDir,
   });
-  return gulp.src(["libs/**/*.ts"]).pipe(tsProject()).pipe(gulp.dest("dist/dts"));
-  //return merge([tResult.dts.pipe(gulp.dest("dist/dts/"))]);
+
+  return merge([gulp.src(["libs/js/*.ts"]).pipe(tsProject()).pipe(gulp.dest(outDir))]);
 }

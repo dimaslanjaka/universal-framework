@@ -1,8 +1,10 @@
+// noinspection TypeScriptRedundantGenericType
+
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
  */
-var countries = [
+const countries = [
   {
     name: "Afghanistan",
     alpha2: "AF",
@@ -2191,28 +2193,23 @@ function getCountries() {
  * select2Country($("#selectID"), {placeholder:"Select Your Country"})
  */
 function select2Country(
-  el: JQuery<HTMLSelectElement>,
-  select2Opt: Select2.Options<
-    Select2.DataFormat | Select2.GroupedDataFormat,
-    any
-  > = {}
+  el: JQuery<HTMLSelectElement> | JQuery<HTMLElement>,
+  select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}
 ) {
   "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css".CSS();
   const isoCountries = [];
   countries.forEach(function (country) {
-    isoCountries.add(
-      Object.assign(country, { id: country.alpha2, text: country.name })
-    );
+    isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
   });
 
-  let defaultOpt = {
+  const defaultOpt = {
     placeholder: "Select a country",
     templateResult: function (country) {
       //console.log(country);
       if (!country.id) {
         return country.text;
       }
-      var $country = $(
+      const $country = $(
         '<span class="flag-icon flag-icon-' +
           country.id.toString().toLowerCase() +
           ' flag-icon-squared"></span>' +
@@ -2225,7 +2222,8 @@ function select2Country(
     data: isoCountries,
   };
 
-  el.select2(Object.assign(defaultOpt, select2Opt));
+  const newOpt: any = Object.assign(defaultOpt, select2Opt);
+  el.select2(newOpt);
 }
 
 if (typeof module !== "undefined" && module.exports) {

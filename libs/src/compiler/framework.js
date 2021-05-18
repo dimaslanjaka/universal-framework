@@ -3428,6 +3428,7 @@ function openInNewTab(url, name) {
         win.focus();
     }
 }
+// noinspection TypeScriptRedundantGenericType
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
@@ -5642,7 +5643,8 @@ function select2Country(el, select2Opt) {
         },
         data: isoCountries,
     };
-    el.select2(Object.assign(defaultOpt, select2Opt));
+    var newOpt = Object.assign(defaultOpt, select2Opt);
+    el.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
     module.exports.countries = countries;

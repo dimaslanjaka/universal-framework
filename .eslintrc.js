@@ -1,6 +1,12 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   parser: "@typescript-eslint/parser", // Specifies the ESLint parser
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
+    jquery: true,
+  },
   parserOptions: {
     ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
     sourceType: "module", // Allows for the use of imports
@@ -20,5 +26,6 @@ module.exports = {
     // Disable `export function functionName()....`
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/triple-slash-reference": "off",
   },
 };

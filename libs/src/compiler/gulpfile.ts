@@ -157,7 +157,7 @@ gulp.task("default", gulp.series(["build", "watch"]));
  */
 gulp.task("doc", doc);
 
-gulp.task("dummy.dts", dummyTypeDoc);
+//gulp.task("dts", dummyTypeDoc);
 
 /**
  * Reload Gulp

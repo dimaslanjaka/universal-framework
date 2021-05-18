@@ -6,12 +6,12 @@
     "module": "CommonJS",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "tmp/js",
+    "outDir": "dist/dts",
     "moduleResolution": "Node",
     "allowJs": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./libs/typings",
+      "./libs/src",
       "./libs/js"
     ],
     "types": [
@@ -19,7 +19,8 @@
       "jquery",
       "requirejs",
       "node",
-      "select2"
+      "select2",
+      "toastr"
     ],
     "target": "ES5",
     "lib": [
@@ -46,6 +47,7 @@
   "exclude": [
     "node_modules",
     "**/node_modules/*",
+    "**/node_modules/**",
     "./src",
     "./vendor",
     "./tmp",

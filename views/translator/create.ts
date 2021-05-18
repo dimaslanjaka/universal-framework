@@ -1,11 +1,11 @@
-/// <reference path="../../libs/js/globals.d.ts" />
-/// <reference path="../../libs/js/jQueryPlugin-formsaver.d.ts" />
+// noinspection JSAnnotator
+/// <reference path="../../src/MVC/themes/assets/js/app.d.ts" />
 
 $("textarea").autoHeight();
 formsaver();
 select2Country($("[select2-country]"));
 $("form").on("submit", function (e) {
   e.preventDefault();
-  let data = $(this).serialize();
+  const data = $(this).serialize();
   console.log(data);
 });
