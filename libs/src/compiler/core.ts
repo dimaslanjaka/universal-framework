@@ -55,7 +55,9 @@ class core {
    * localStorage NodeJS Version
    */
   static localStorage() {
-    return new LocalStorage(`${this.root()}/tmp/storage`);
+    let storageDir = `${this.root()}/tmp/storage`;
+    if (!filemanager.exist(storageDir)) filemanager.mkdir(storageDir);
+    return new LocalStorage(storageDir);
   }
 
   /**
@@ -63,10 +65,7 @@ class core {
    * @param dir directory has composer.json
    * @param type
    */
-  static composer(
-    dir: string,
-    type: "update" | "install" | "validate" | "upgrade" | "self-update"
-  ) {
+  static composer(dir: string, type: "update" | "install" | "validate" | "upgrade" | "self-update") {
     if (type) {
       exec(
         `cd ${dir} && php libs/bin/composer/composer.phar ${type}`,
@@ -90,11 +89,7 @@ class core {
    * @param [filelist]
    * @return
    */
-  static readdir(
-    dir: string,
-    filelist: string[] = null,
-    exclude: Array<string | RegExp> = null
-  ): Array<any> {
+  static readdir(dir: string, filelist: string[] = null, exclude: Array<string | RegExp> = null): Array<any> {
     if (!dir) return null;
     var self = this;
     if (!dir.toString().endsWith("/")) {
@@ -145,9 +140,7 @@ class core {
    */
   static filelog(file: string) {
     return path.join(
-      core
-        .normalize(path.dirname(file))
-        .replace(core.normalize(process.cwd()), ""),
+      core.normalize(path.dirname(file)).replace(core.normalize(process.cwd()), ""),
       path.basename(file)
     );
   }
@@ -161,14 +154,8 @@ class core {
     const exists = fs.existsSync(filename);
     if (exists) {
       const output = filename.toString().replace(/\.browserify\.js/s, ".js");
-      exec(
-        `browserify -t [ babelify --presets [ es2015 ] ] ${filename} -o ${output}`
-      );
-      log.log(
-        `${self.filelog(filename.toString())} > ${self.filelog(
-          output.toString()
-        )} ${log.success("success")}`
-      );
+      exec(`browserify -t [ babelify --presets [ es2015 ] ] ${filename} -o ${output}`);
+      log.log(`${self.filelog(filename.toString())} > ${self.filelog(output.toString())} ${log.success("success")}`);
     }
   }
 
@@ -183,10 +170,7 @@ class core {
       if (exists) {
         var output = filename.toString().replace(/\.scss/s, ".css");
         var outputcss = output;
-        if (
-          /\.scss$/s.test(filename.toString()) &&
-          !/\.min\.scss$/s.test(filename.toString())
-        ) {
+        if (/\.scss$/s.test(filename.toString()) && !/\.min\.scss$/s.test(filename.toString())) {
           sass.render(
             {
               file: filename.toString(),
@@ -198,13 +182,9 @@ class core {
                 fs.writeFile(outputcss, result.css.toString(), function (err) {
                   if (!err) {
                     log.log(
-                      `${log
+                      `${log.chalk().red(self.filelog(filename.toString()))} > ${log
                         .chalk()
-                        .red(self.filelog(filename.toString()))} > ${log
-                        .chalk()
-                        .blueBright(self.filelog(outputcss))} ${log.success(
-                        "success"
-                      )}`
+                        .blueBright(self.filelog(outputcss))} ${log.success("success")}`
                     );
                     core.minCSS(output, null);
                   } else {
@@ -236,10 +216,7 @@ class core {
         .then(function (output) {
           fs.writeFileSync(outputcss, output.css, { encoding: "utf-8" });
           log.log(
-            `${log
-              .chalk()
-              .hex("#1d365d")
-              .bgWhite(self.filelog(filename))} > ${log
+            `${log.chalk().hex("#1d365d").bgWhite(self.filelog(filename))} > ${log
               .chalk()
               .blueBright(self.filelog(outputcss))} ${log.success("success")}`
           );
@@ -248,9 +225,7 @@ class core {
           console.log(
             `${log.chalk().hex("#1d365d")(self.filelog(filename))} > ${log
               .chalk()
-              .blueBright(self.filelog(outputcss))} ${log
-              .chalk()
-              .redBright("failed")}`
+              .blueBright(self.filelog(outputcss))} ${log.chalk().redBright("failed")}`
           );
         });
     }
@@ -332,19 +307,11 @@ class core {
               controlFlowFlattening: true,
             });
 
-            fs.writeFile(
-              output,
-              obfuscationResult.getObfuscatedCode(),
-              function (err) {
-                if (!err) {
-                  log.log(
-                    `${self.filelog(filejs)} > ${self.filelog(
-                      output
-                    )} ${log.success("success")}`
-                  );
-                }
+            fs.writeFile(output, obfuscationResult.getObfuscatedCode(), function (err) {
+              if (!err) {
+                log.log(`${self.filelog(filejs)} > ${self.filelog(output)} ${log.success("success")}`);
               }
-            );
+            });
           }
         }
       );
@@ -427,26 +394,17 @@ class core {
               var output = self.filelog(min);
               if (terserResult.error) {
                 log.log(
-                  `${log.chalk().yellow(input)} > ${log
-                    .chalk()
-                    .yellowBright(output)} ${log.chalk().red("fail")}`
+                  `${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.chalk().red("fail")}`
                 );
                 fs.exists(min, function (ex) {
                   if (ex) {
                     filemanager.unlink(min, false);
-                    log.log(
-                      log.chalk().yellowBright(core.filelog(min)) +
-                        log.chalk().redBright(" deleted")
-                    );
+                    log.log(log.chalk().yellowBright(core.filelog(min)) + log.chalk().redBright(" deleted"));
                   }
                 });
               } else {
                 fs.writeFileSync(min, terserResult.code, "utf8");
-                log.log(
-                  `${log.chalk().yellow(input)} > ${log
-                    .chalk()
-                    .yellowBright(output)} ${log.success("success")}`
-                );
+                log.log(`${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.success("success")}`);
               }
             }
           });
@@ -471,9 +429,7 @@ class core {
    * @returns {string|null}
    */
   static normalize(path: string): string | null {
-    return typeof slash(path) == "string"
-      ? slash(path).replace(/\/{2,99}/s, "/")
-      : null;
+    return typeof slash(path) == "string" ? slash(path).replace(/\/{2,99}/s, "/") : null;
   }
 
   /**
@@ -516,13 +472,9 @@ class core {
                       if (!err) {
                         if (typeof callback != "function") {
                           log.log(
-                            `${log
+                            `${log.chalk().blueBright(self.filelog(file))} > ${log
                               .chalk()
-                              .blueBright(self.filelog(file))} > ${log
-                              .chalk()
-                              .blueBright(self.filelog(min))} ${log
-                              .chalk()
-                              .green("success")}`
+                              .blueBright(self.filelog(min))} ${log.chalk().green("success")}`
                           );
                         } else {
                           callback(true, file, min);

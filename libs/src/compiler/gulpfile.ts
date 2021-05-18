@@ -10,7 +10,7 @@ import process from "../compiler/process";
 import * as fs from "fs";
 //const spawn = require("child_process").spawn;
 //const argv = require("yargs").argv;
-import { spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
 import { localStorage } from "../node-localstorage/index";
 import * as proc from "process";
@@ -18,6 +18,7 @@ import { createApp } from "./gulpfile-app";
 import { compileAssets } from "./gulpfile-compiler";
 import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
+import "../../js/_Prototype-Array";
 
 const root = process.root;
 
@@ -80,7 +81,7 @@ gulp.task("watch", async function () {
         .join(" ")
   );
 
-  let compiler_runner: NodeJS.Timeout = null;
+  let watch_timer: NodeJS.Timeout = null;
   return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
     const trigger = function () {
       file = framework.normalize(path.resolve(file.toString()));
@@ -91,18 +92,24 @@ gulp.task("watch", async function () {
       const filename_log = framework.filelog(file);
 
       if (is_Lib) {
-        const isCompiler = file.includes("/libs/compiler/");
+        const isCompiler = /[\/\\]libs[\/\\]src[\/\\]compiler[\/\\]/s.test(file);
+        /**
+         * Exclude framework.js app.js and map js
+         */
         const isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
-        if (isCompiler || isFramework) return;
-        //console.log(file, isFramework);
-        log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
-        log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
-        if (compiler_runner != null) {
-          log.log(log.error("Compiler still running"));
-        } else {
-          compiler_runner = setTimeout(function () {
-            createApp(true);
-            compiler_runner = null;
+        const isFormsaver = /[\/\\]libs[\/\\]src[\/\\]smarform[\/\\]/s.test(file);
+        if (isFramework) return;
+
+        if (watch_timer == null) {
+          log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
+          log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
+          watch_timer = setTimeout(async function () {
+            await createApp(true);
+            watch_timer = null;
+            if (isCompiler || isFormsaver) {
+              // TODO: reload gulp
+              await reload_gulp();
+            }
           }, 5000);
         }
       } else {
@@ -158,7 +165,7 @@ gulp.task("default", gulp.series(["build", "watch"]));
  */
 gulp.task("doc", doc);
 
-//gulp.task("dts", dummyTypeDoc);
+let reload_timeout = null;
 
 /**
  * Reload Gulp
@@ -166,28 +173,54 @@ gulp.task("doc", doc);
  * @returns
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function reload_gulp(cb: Function = null) {
+export async function reload_gulp() {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
   //proc.exit();
 
   if (proc.env.process_restarting) {
     delete proc.env.process_restarting;
     // Give old process one second to shut down before continuing ...
-    setTimeout(reload_gulp, 1000);
+    reload_timeout = setTimeout(reload_gulp, 1000);
     //reload_gulp();
     //proc.exit();
     return;
   }
 
+  console.clear();
   console.log("reloading gulp");
   //console.log(proc.argv[0]);
   //console.log(proc.argv.slice(1));
 
+  var children: ChildProcessWithoutNullStreams[] = [];
+
+  process.core.on("exit", function () {
+    console.log("killing", children.length, "child processes");
+    children.forEach(function (child) {
+      child.kill();
+    });
+  });
+
+  var cleanExit = function () {
+    process.core.exit();
+  };
+  process.core.on("SIGINT", cleanExit); // catch ctrl-c
+  process.core.on("SIGTERM", cleanExit); // catch kill
+
+  let out: any, err: any;
   // Restart process ...
-  spawn(proc.argv[0], proc.argv.slice(1), {
-    env: { process_restarting: "1" },
-    stdio: "ignore",
-  }).unref();
+  if (!children.isEmpty()) {
+    if (typeof children[0] != "undefined") {
+      children[0].kill();
+    }
+  }
+  children.push(
+    spawn(proc.argv[0], proc.argv.slice(1), {
+      env: { process_restarting: "1" },
+      //stdio: "ignore",
+      detached: true,
+      stdio: ["ignore", out, err],
+    }) //.unref()
+  );
 }
 
 localStorage.removeItem("compile");

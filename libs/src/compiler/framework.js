@@ -1339,6 +1339,7 @@ function array_shuffle(a) {
     }
     return a;
 }
+/// <reference path="./globals.d.ts" />
 Array.prototype.shuffle = function () {
     var i = this.length, j, temp;
     if (i == 0)

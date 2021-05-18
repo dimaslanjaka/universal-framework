@@ -1,3 +1,5 @@
+/// <reference path="./globals.d.ts" />
+
 Array.prototype.shuffle = function () {
   var i = this.length,
     j: number,
@@ -125,10 +127,7 @@ Array.prototype.exists = function (n: number) {
 if (!Array.prototype.hasOwnProperty("every")) {
   Array.prototype.every = function (fun: any /*, thisp */) {
     "use strict";
-    var t: { [x: string]: any; length: number },
-      len: number,
-      i: string | number,
-      thisp: any;
+    var t: { [x: string]: any; length: number }, len: number, i: string | number, thisp: any;
 
     if (this == null) {
       throw new TypeError();

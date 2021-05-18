@@ -4,7 +4,7 @@ import upath from "upath";
 import log from "./log";
 import { MD5 } from "crypto-js";
 import coreProcess from "process";
-
+import core from "./core";
 const savetemp = "./tmp/compiler";
 if (fs.existsSync(savetemp)) {
   filemanager.empty(upath.join(coreProcess.cwd(), savetemp), null);
@@ -14,6 +14,21 @@ class process {
   static root = coreProcess.cwd();
   static verbose: boolean = false;
   static tmp = savetemp;
+  /**
+   * process instance `import coreProcess from "process";`
+   */
+  static core = coreProcess;
+
+  /**
+   * Kill All Node Processes
+   */
+  static killNode() {
+    if (core.isWin()) {
+      //taskkill /f /im node.exe
+    } else {
+      //killall node
+    }
+  }
 
   /**
    * Create lock file
@@ -28,19 +43,13 @@ class process {
    * @param lockfile
    * @param callback
    */
-  static doProcess(
-    lockfile: string,
-    options: { verbose: boolean } | any,
-    callback: Function
-  ) {
+  static doProcess(lockfile: string, options: { verbose: boolean } | any, callback: Function) {
     if (typeof options.verbose == "boolean") {
       this.verbose = options.verbose;
     }
     lockfile = process.lockCreate(lockfile);
     if (fs.existsSync(lockfile)) {
-      log.log(
-        log.error(`Process locked (${lockfile}). please provide unique ids.`)
-      );
+      log.log(log.error(`Process locked (${lockfile}). please provide unique ids.`));
       return null;
     }
     const doCall = function () {
