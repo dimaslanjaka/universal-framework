@@ -54,9 +54,10 @@ PHP framework with powerful functions
 - Cached Mode
 - Obfuscate Mode
 
-# Built-in Command
+# Usages And Tutorials
 
-- Docs coming soon
+[JS Docs](https://dimaslanjaka.github.io/universal-framework/js/index.html)
+[PHP Docs](https://dimaslanjaka.github.io/universal-framework/php/index.html)
 
 # Feature
 
