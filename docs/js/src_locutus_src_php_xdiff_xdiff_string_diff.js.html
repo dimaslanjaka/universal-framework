@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script data-ad-client="ca-pub-1165447249910969" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106238155-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106238155-1');
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Universal Framework Javascript Documentation src/locutus/src/php/xdiff/xdiff_string_diff.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Universal Framework Javascript Documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/dimaslanjaka/universal-framework"
+                        >
+                            Github
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/dimaslanjaka/universal-framework"
+                        >
+                            Example Application
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ajaxScheduler.html">ajaxScheduler</a></li><li><a href="Cookies.html">Cookies</a></li><li><a href="core.html">core</a></li><li><a href="GeneratorID.html">GeneratorID</a></li><li><a href="ip.html">ip</a></li><li><a href="Timer.html">Timer</a></li><li><a href="user.html">user</a></li><li><a href="ZLIB.html">ZLIB</a></li></ul><h3>Interfaces</h3><ul><li><a href="Array.html">Array</a></li><li><a href="createElementOpt.html">createElementOpt</a></li><li><a href="HTMLElement.html">HTMLElement</a></li><li><a href="HTMLScriptElement.html">HTMLScriptElement</a></li><li><a href="String.html">String</a></li><li><a href="Window.html">Window</a></li></ul><h3>Global</h3><ul><li><a href="global.html#___call">___call</a></li><li><a href="global.html#__call">__call</a></li><li><a href="global.html#_expand">_expand</a></li><li><a href="global.html#aesDecrypt">aesDecrypt</a></li><li><a href="global.html#aesEncrypt">aesEncrypt</a></li><li><a href="global.html#aform">aform</a></li><li><a href="global.html#AJAX">AJAX</a></li><li><a href="global.html#AjaxForm">AjaxForm</a></li><li><a href="global.html#ajaxRun">ajaxRun</a></li><li><a href="global.html#ajx">ajx</a></li><li><a href="global.html#analys">analys</a></li><li><a href="global.html#array_keys">array_keys</a></li><li><a href="global.html#array_rand">array_rand</a></li><li><a href="global.html#array_remove">array_remove</a></li><li><a href="global.html#array_shuffle">array_shuffle</a></li><li><a href="global.html#array_unique">array_unique</a></li><li><a href="global.html#array_unset">array_unset</a></li><li><a href="global.html#asset">asset</a></li><li><a href="global.html#async">async</a></li><li><a href="global.html#async_exec">async_exec</a></li><li><a href="global.html#async_process">async_process</a></li><li><a href="global.html#async_this">async_this</a></li><li><a href="global.html#autoHeight_">autoHeight_</a></li><li><a href="global.html#bannedebug">bannedebug</a></li><li><a href="global.html#Base64">Base64</a></li><li><a href="global.html#base64_decode">base64_decode</a></li><li><a href="global.html#base64_encode">base64_encode</a></li><li><a href="global.html#base64_valid">base64_valid</a></li><li><a href="global.html#binl2rstr">binl2rstr</a></li><li><a href="global.html#binlMD5">binlMD5</a></li><li><a href="global.html#bitRotateLeft">bitRotateLeft</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#calculateDistance">calculateDistance</a></li><li><a href="global.html#calculatorDistance">calculatorDistance</a></li><li><a href="global.html#call_user_func">call_user_func</a></li><li><a href="global.html#compileAssets">compileAssets</a></li><li><a href="global.html#config_builder">config_builder</a></li><li><a href="global.html#copyToClipboard">copyToClipboard</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#countNewLines">countNewLines</a></li><li><a href="global.html#countries">countries</a></li><li><a href="global.html#createAlert">createAlert</a></li><li><a href="global.html#createApp">createApp</a></li><li><a href="global.html#createElement">createElement</a></li><li><a href="global.html#createJSON">createJSON</a></li><li><a href="global.html#createStyle">createStyle</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#CryptoD">CryptoD</a></li><li><a href="global.html#CryptoE">CryptoE</a></li><li><a href="global.html#CryptoK">CryptoK</a></li><li><a href="global.html#datatables_colums_options">datatables_colums_options</a></li><li><a href="global.html#datatables_init">datatables_init</a></li><li><a href="global.html#datatables_optimize">datatables_optimize</a></li><li><a href="global.html#debug_detect">debug_detect</a></li><li><a href="global.html#doc">doc</a></li><li><a href="global.html#dumpAjax">dumpAjax</a></li><li><a href="global.html#elm">elm</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#exec">exec</a></li><li><a href="global.html#execute">execute</a></li><li><a href="global.html#EXIT_CODE%255Bundefined%255D">EXIT_CODE[undefined]</a></li><li><a href="global.html#extend_setting_form">extend_setting_form</a></li><li><a href="global.html#findDups">findDups</a></li><li><a href="global.html#fixDeps">fixDeps</a></li><li><a href="global.html#forceSSL">forceSSL</a></li><li><a href="global.html#foreach">foreach</a></li><li><a href="global.html#formatNewLines">formatNewLines</a></li><li><a href="global.html#formsaver">formsaver</a></li><li><a href="global.html#framework">framework</a></li><li><a href="global.html#generateRandomString">generateRandomString</a></li><li><a href="global.html#get_currency_symbol">get_currency_symbol</a></li><li><a href="global.html#get_unique_id">get_unique_id</a></li><li><a href="global.html#getAnyClass">getAnyClass</a></li><li><a href="global.html#getCountries">getCountries</a></li><li><a href="global.html#getFuncName">getFuncName</a></li><li><a href="global.html#getKey">getKey</a></li><li><a href="global.html#getLatestVersion">getLatestVersion</a></li><li><a href="global.html#getLocationHash">getLocationHash</a></li><li><a href="global.html#getNativeClass">getNativeClass</a></li><li><a href="global.html#geToken">geToken</a></li><li><a href="global.html#getParameterByName">getParameterByName</a></li><li><a href="global.html#getRandom">getRandom</a></li><li><a href="global.html#gexec">gexec</a></li><li><a href="global.html#guid">guid</a></li><li><a href="global.html#height">height</a></li><li><a href="global.html#hexHMACMD5">hexHMACMD5</a></li><li><a href="global.html#hexMD5">hexMD5</a></li><li><a href="global.html#http_build_query">http_build_query</a></li><li><a href="global.html#in_array">in_array</a></li><li><a href="global.html#inArray">inArray</a></li><li><a href="global.html#indicatorAjax">indicatorAjax</a></li><li><a href="global.html#inputrp">inputrp</a></li><li><a href="global.html#is_development">is_development</a></li><li><a href="global.html#is_localhost">is_localhost</a></li><li><a href="global.html#isBrowser">isBrowser</a></li><li><a href="global.html#isJSON">isJSON</a></li><li><a href="global.html#isMobile">isMobile</a></li><li><a href="global.html#isnode">isnode</a></li><li><a href="global.html#isNode">isNode</a></li><li><a href="global.html#isOffline">isOffline</a></li><li><a href="global.html#jAjax">jAjax</a></li><li><a href="global.html#JavaScriptCaller">JavaScriptCaller</a></li><li><a href="global.html#json_decode">json_decode</a></li><li><a href="global.html#L">L</a></li><li><a href="global.html#list_package">list_package</a></li><li><a href="global.html#load_datatables">load_datatables</a></li><li><a href="global.html#load_disqus">load_disqus</a></li><li><a href="global.html#load_module">load_module</a></li><li><a href="global.html#load_requirejs">load_requirejs</a></li><li><a href="global.html#loadCodemirror">loadCodemirror</a></li><li><a href="global.html#loadCSS">loadCSS</a></li><li><a href="global.html#LoadScript">LoadScript</a></li><li><a href="global.html#LocalStorage">LocalStorage</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#md5">md5</a></li><li><a href="global.html#md5cmn">md5cmn</a></li><li><a href="global.html#md5ff">md5ff</a></li><li><a href="global.html#md5gg">md5gg</a></li><li><a href="global.html#md5hh">md5hh</a></li><li><a href="global.html#md5ii">md5ii</a></li><li><a href="global.html#module_exists">module_exists</a></li><li><a href="global.html#multiMinify">multiMinify</a></li><li><a href="global.html#object_join">object_join</a></li><li><a href="global.html#onlyUnique">onlyUnique</a></li><li><a href="global.html#openInNewTab">openInNewTab</a></li><li><a href="global.html#pagination_up">pagination_up</a></li><li><a href="global.html#parse_proxy">parse_proxy</a></li><li><a href="global.html#parseNumber">parseNumber</a></li><li><a href="global.html#parsePackageString">parsePackageString</a></li><li><a href="global.html#prepEntities">prepEntities</a></li><li><a href="global.html#pseudo_builder">pseudo_builder</a></li><li><a href="global.html#Queue">Queue</a></li><li><a href="global.html#random_rgba">random_rgba</a></li><li><a href="global.html#rawHMACMD5">rawHMACMD5</a></li><li><a href="global.html#rawMD5">rawMD5</a></li><li><a href="global.html#readdir">readdir</a></li><li><a href="global.html#readFile">readFile</a></li><li><a href="global.html#recaptcha">recaptcha</a></li><li><a href="global.html#reload_gulp">reload_gulp</a></li><li><a href="global.html#resolve_dir">resolve_dir</a></li><li><a href="global.html#restrict_mode">restrict_mode</a></li><li><a href="global.html#rstr2binl">rstr2binl</a></li><li><a href="global.html#rstr2hex">rstr2hex</a></li><li><a href="global.html#rstrHMACMD5">rstrHMACMD5</a></li><li><a href="global.html#rstrMD5">rstrMD5</a></li><li><a href="global.html#safeAdd">safeAdd</a></li><li><a href="global.html#salt">salt</a></li><li><a href="global.html#select2Country">select2Country</a></li><li><a href="global.html#setEventListener">setEventListener</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#single_tsCompile">single_tsCompile</a></li><li><a href="global.html#socket">socket</a></li><li><a href="global.html#stacktrace">stacktrace</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#str2rstrUTF8">str2rstrUTF8</a></li><li><a href="global.html#tafocus">tafocus</a></li><li><a href="global.html#template">template</a></li><li><a href="global.html#textAreas">textAreas</a></li><li><a href="global.html#toogleClass">toogleClass</a></li><li><a href="global.html#trycatch">trycatch</a></li><li><a href="global.html#typescriptCompiler">typescriptCompiler</a></li><li><a href="global.html#uniqid">uniqid</a></li><li><a href="global.html#userJSDecrypt">userJSDecrypt</a></li><li><a href="global.html#userJSEncrypt">userJSEncrypt</a></li><li><a href="global.html#uuidv4">uuidv4</a></li><li><a href="global.html#views">views</a></li><li><a href="global.html#writeFile">writeFile</a></li><li><a href="global.html#writenow">writenow</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>src/locutus/src/php/xdiff/xdiff_string_diff.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>module.exports = function xdiff_string_diff (oldData, newData, contextLines, minimal) { // eslint-disable-line camelcase
+  //  discuss at: https://locutus.io/php/xdiff_string_diff
+  // original by: Brett Zamir (https://brett-zamir.me)
+  //    based on: Imgen Tata (https://www.myipdf.com/)
+  // bugfixed by: Imgen Tata (https://www.myipdf.com/)
+  // improved by: Brett Zamir (https://brett-zamir.me)
+  //      note 1: The minimal argument is not currently supported
+  //   example 1: xdiff_string_diff('', 'Hello world!')
+  //   returns 1: '@@ -0,0 +1,1 @@\n+Hello world!'
+
+  // (This code was done by Imgen Tata; I have only reformatted for use in Locutus)
+
+  // See https://en.wikipedia.org/wiki/Diff#Unified_format
+  var i = 0
+  var j = 0
+  var k = 0
+  var oriHunkStart
+  var newHunkStart
+  var oriHunkEnd
+  var newHunkEnd
+  var oriHunkLineNo
+  var newHunkLineNo
+  var oriHunkSize
+  var newHunkSize
+  var MAX_CONTEXT_LINES = Number.POSITIVE_INFINITY // Potential configuration
+  var MIN_CONTEXT_LINES = 0
+  var DEFAULT_CONTEXT_LINES = 3
+  var HEADER_PREFIX = '@@ ' //
+  var HEADER_SUFFIX = ' @@'
+  var ORIGINAL_INDICATOR = '-'
+  var NEW_INDICATOR = '+'
+  var RANGE_SEPARATOR = ','
+  var CONTEXT_INDICATOR = ' '
+  var DELETION_INDICATOR = '-'
+  var ADDITION_INDICATOR = '+'
+  var oriLines
+  var newLines
+  var NEW_LINE = '\n'
+
+  var _trim = function (text) {
+    if (typeof text !== 'string') {
+      throw new Error('String parameter required')
+    }
+
+    return text.replace(/(^\s*)|(\s*$)/g, '')
+  }
+
+  var _verifyType = function (type) {
+    var args = arguments
+    var argsLen = arguments.length
+    var basicTypes = ['number', 'boolean', 'string', 'function', 'object', 'undefined']
+    var basicType
+    var i
+    var j
+    var typeOfType = typeof type
+    if (typeOfType !== 'string' &amp;&amp; typeOfType !== 'function') {
+      throw new Error('Bad type parameter')
+    }
+
+    if (argsLen &lt; 2) {
+      throw new Error('Too few arguments')
+    }
+
+    if (typeOfType === 'string') {
+      type = _trim(type)
+
+      if (type === '') {
+        throw new Error('Bad type parameter')
+      }
+
+      for (j = 0; j &lt; basicTypes.length; j++) {
+        basicType = basicTypes[j]
+
+        if (basicType === type) {
+          for (i = 1; i &lt; argsLen; i++) {
+            if (typeof args[i] !== type) {
+              throw new Error('Bad type')
+            }
+          }
+
+          return
+        }
+      }
+
+      throw new Error('Bad type parameter')
+    }
+
+    // Not basic type. we need to use instanceof operator
+    for (i = 1; i &lt; argsLen; i++) {
+      if (!(args[i] instanceof type)) {
+        throw new Error('Bad type')
+      }
+    }
+  }
+
+  var _hasValue = function (array, value) {
+    var i
+    _verifyType(Array, array)
+
+    for (i = 0; i &lt; array.length; i++) {
+      if (array[i] === value) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  var _areTypeOf = function (type) {
+    var args = arguments
+    var argsLen = arguments.length
+    var basicTypes = ['number', 'boolean', 'string', 'function', 'object', 'undefined']
+    var basicType
+    var i
+    var j
+    var typeOfType = typeof type
+
+    if (typeOfType !== 'string' &amp;&amp; typeOfType !== 'function') {
+      throw new Error('Bad type parameter')
+    }
+
+    if (argsLen &lt; 2) {
+      throw new Error('Too few arguments')
+    }
+
+    if (typeOfType === 'string') {
+      type = _trim(type)
+
+      if (type === '') {
+        return false
+      }
+
+      for (j = 0; j &lt; basicTypes.length; j++) {
+        basicType = basicTypes[j]
+
+        if (basicType === type) {
+          for (i = 1; i &lt; argsLen; i++) {
+            if (typeof args[i] !== type) {
+              return false
+            }
+          }
+
+          return true
+        }
+      }
+
+      throw new Error('Bad type parameter')
+    }
+
+    // Not basic type. we need to use instanceof operator
+    for (i = 1; i &lt; argsLen; i++) {
+      if (!(args[i] instanceof type)) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  var _getInitializedArray = function (arraySize, initValue) {
+    var array = []
+    var i
+    _verifyType('number', arraySize)
+
+    for (i = 0; i &lt; arraySize; i++) {
+      array.push(initValue)
+    }
+
+    return array
+  }
+
+  var _splitIntoLines = function (text) {
+    _verifyType('string', text)
+
+    if (text === '') {
+      return []
+    }
+    return text.split('\n')
+  }
+
+  var _isEmptyArray = function (obj) {
+    return _areTypeOf(Array, obj) &amp;&amp; obj.length === 0
+  }
+
+  /**
+   * Finds longest common sequence between two sequences
+   * @see {@link https://wordaligned.org/articles/longest-common-subsequence}
+   */
+  var _findLongestCommonSequence = function (seq1, seq2, seq1IsInLcs, seq2IsInLcs) {
+    if (!_areTypeOf(Array, seq1, seq2)) {
+      throw new Error('Array parameters are required')
+    }
+
+    // Deal with edge case
+    if (_isEmptyArray(seq1) || _isEmptyArray(seq2)) {
+      return []
+    }
+
+    // Function to calculate lcs lengths
+    var lcsLens = function (xs, ys) {
+      var i
+      var j
+      var prev
+      var curr = _getInitializedArray(ys.length + 1, 0)
+
+      for (i = 0; i &lt; xs.length; i++) {
+        prev = curr.slice(0)
+        for (j = 0; j &lt; ys.length; j++) {
+          if (xs[i] === ys[j]) {
+            curr[j + 1] = prev[j] + 1
+          } else {
+            curr[j + 1] = Math.max(curr[j], prev[j + 1])
+          }
+        }
+      }
+
+      return curr
+    }
+
+    // Function to find lcs and fill in the array to indicate the optimal longest common sequence
+    var _findLcs = function (xs, xidx, xIsIn, ys) {
+      var i
+      var xb
+      var xe
+      var llB
+      var llE
+      var pivot
+      var max
+      var yb
+      var ye
+      var nx = xs.length
+      var ny = ys.length
+
+      if (nx === 0) {
+        return []
+      }
+      if (nx === 1) {
+        if (_hasValue(ys, xs[0])) {
+          xIsIn[xidx] = true
+          return [xs[0]]
+        }
+        return []
+      }
+      i = Math.floor(nx / 2)
+      xb = xs.slice(0, i)
+      xe = xs.slice(i)
+      llB = lcsLens(xb, ys)
+      llE = lcsLens(xe.slice(0)
+        .reverse(), ys.slice(0)
+        .reverse())
+
+      pivot = 0
+      max = 0
+      for (j = 0; j &lt;= ny; j++) {
+        if (llB[j] + llE[ny - j] > max) {
+          pivot = j
+          max = llB[j] + llE[ny - j]
+        }
+      }
+      yb = ys.slice(0, pivot)
+      ye = ys.slice(pivot)
+      return _findLcs(xb, xidx, xIsIn, yb).concat(_findLcs(xe, xidx + i, xIsIn, ye))
+    }
+
+    // Fill in seq1IsInLcs to find the optimal longest common subsequence of first sequence
+    _findLcs(seq1, 0, seq1IsInLcs, seq2)
+    // Fill in seq2IsInLcs to find the optimal longest common subsequence
+    // of second sequence and return the result
+    return _findLcs(seq2, 0, seq2IsInLcs, seq1)
+  }
+
+  // First, check the parameters
+  if (_areTypeOf('string', oldData, newData) === false) {
+    return false
+  }
+
+  if (oldData === newData) {
+    return ''
+  }
+
+  if (typeof contextLines !== 'number' ||
+    contextLines > MAX_CONTEXT_LINES ||
+    contextLines &lt; MIN_CONTEXT_LINES) {
+    contextLines = DEFAULT_CONTEXT_LINES
+  }
+
+  oriLines = _splitIntoLines(oldData)
+  newLines = _splitIntoLines(newData)
+  var oriLen = oriLines.length
+  var newLen = newLines.length
+  var oriIsInLcs = _getInitializedArray(oriLen, false)
+  var newIsInLcs = _getInitializedArray(newLen, false)
+  var lcsLen = _findLongestCommonSequence(oriLines, newLines, oriIsInLcs, newIsInLcs).length
+  var unidiff = ''
+
+  if (lcsLen === 0) {
+    // No common sequence
+    unidiff = [
+      HEADER_PREFIX,
+      ORIGINAL_INDICATOR,
+      (oriLen > 0 ? '1' : '0'),
+      RANGE_SEPARATOR,
+      oriLen,
+      ' ',
+      NEW_INDICATOR,
+      (newLen > 0 ? '1' : '0'),
+      RANGE_SEPARATOR,
+      newLen,
+      HEADER_SUFFIX
+    ].join('')
+
+    for (i = 0; i &lt; oriLen; i++) {
+      unidiff += NEW_LINE + DELETION_INDICATOR + oriLines[i]
+    }
+
+    for (j = 0; j &lt; newLen; j++) {
+      unidiff += NEW_LINE + ADDITION_INDICATOR + newLines[j]
+    }
+
+    return unidiff
+  }
+
+  var leadingContext = []
+  var trailingContext = []
+  var actualLeadingContext = []
+  var actualTrailingContext = []
+
+  // Regularize leading context by the contextLines parameter
+  var regularizeLeadingContext = function (context) {
+    if (context.length === 0 || contextLines === 0) {
+      return []
+    }
+
+    var contextStartPos = Math.max(context.length - contextLines, 0)
+
+    return context.slice(contextStartPos)
+  }
+
+  // Regularize trailing context by the contextLines parameter
+  var regularizeTrailingContext = function (context) {
+    if (context.length === 0 || contextLines === 0) {
+      return []
+    }
+
+    return context.slice(0, Math.min(contextLines, context.length))
+  }
+
+  // Skip common lines in the beginning
+  while (i &lt; oriLen &amp;&amp; oriIsInLcs[i] === true &amp;&amp; newIsInLcs[i] === true) {
+    leadingContext.push(oriLines[i])
+    i++
+  }
+
+  j = i
+  // The index in the longest common sequence
+  k = i
+  oriHunkStart = i
+  newHunkStart = j
+  oriHunkEnd = i
+  newHunkEnd = j
+
+  while (i &lt; oriLen || j &lt; newLen) {
+    while (i &lt; oriLen &amp;&amp; oriIsInLcs[i] === false) {
+      i++
+    }
+    oriHunkEnd = i
+
+    while (j &lt; newLen &amp;&amp; newIsInLcs[j] === false) {
+      j++
+    }
+    newHunkEnd = j
+
+    // Find the trailing context
+    trailingContext = []
+    while (i &lt; oriLen &amp;&amp; oriIsInLcs[i] === true &amp;&amp; j &lt; newLen &amp;&amp; newIsInLcs[j] === true) {
+      trailingContext.push(oriLines[i])
+      k++
+      i++
+      j++
+    }
+
+    if (k >= lcsLen || // No more in longest common lines
+      trailingContext.length >= 2 * contextLines) {
+      // Context break found
+      if (trailingContext.length &lt; 2 * contextLines) {
+        // It must be last block of common lines but not a context break
+        trailingContext = []
+
+        // Force break out
+        i = oriLen
+        j = newLen
+
+        // Update hunk ends to force output to the end
+        oriHunkEnd = oriLen
+        newHunkEnd = newLen
+      }
+
+      // Output the diff hunk
+
+      // Trim the leading and trailing context block
+      actualLeadingContext = regularizeLeadingContext(leadingContext)
+      actualTrailingContext = regularizeTrailingContext(trailingContext)
+
+      oriHunkStart -= actualLeadingContext.length
+      newHunkStart -= actualLeadingContext.length
+      oriHunkEnd += actualTrailingContext.length
+      newHunkEnd += actualTrailingContext.length
+
+      oriHunkLineNo = oriHunkStart + 1
+      newHunkLineNo = newHunkStart + 1
+      oriHunkSize = oriHunkEnd - oriHunkStart
+      newHunkSize = newHunkEnd - newHunkStart
+
+      // Build header
+      unidiff += [
+        HEADER_PREFIX,
+        ORIGINAL_INDICATOR,
+        oriHunkLineNo,
+        RANGE_SEPARATOR,
+        oriHunkSize,
+        ' ',
+        NEW_INDICATOR,
+        newHunkLineNo,
+        RANGE_SEPARATOR,
+        newHunkSize,
+        HEADER_SUFFIX,
+        NEW_LINE
+      ].join('')
+
+      // Build the diff hunk content
+      while (oriHunkStart &lt; oriHunkEnd || newHunkStart &lt; newHunkEnd) {
+        if (oriHunkStart &lt; oriHunkEnd &amp;&amp;
+          oriIsInLcs[oriHunkStart] === true &amp;&amp;
+          newIsInLcs[newHunkStart] === true) {
+          // The context line
+          unidiff += CONTEXT_INDICATOR + oriLines[oriHunkStart] + NEW_LINE
+          oriHunkStart++
+          newHunkStart++
+        } else if (oriHunkStart &lt; oriHunkEnd &amp;&amp; oriIsInLcs[oriHunkStart] === false) {
+          // The deletion line
+          unidiff += DELETION_INDICATOR + oriLines[oriHunkStart] + NEW_LINE
+          oriHunkStart++
+        } else if (newHunkStart &lt; newHunkEnd &amp;&amp; newIsInLcs[newHunkStart] === false) {
+          // The additional line
+          unidiff += ADDITION_INDICATOR + newLines[newHunkStart] + NEW_LINE
+          newHunkStart++
+        }
+      }
+
+      // Update hunk position and leading context
+      oriHunkStart = i
+      newHunkStart = j
+      leadingContext = trailingContext
+    }
+  }
+
+  // Trim the trailing new line if it exists
+  if (unidiff.length > 0 &amp;&amp; unidiff.charAt(unidiff.length) === NEW_LINE) {
+    unidiff = unidiff.slice(0, -1)
+  }
+
+  return unidiff
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>
