@@ -89,6 +89,22 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
     .pipe(jsdoc(config, cb));
 }
 
-const tsProject = ts.createProject({
-  declaration: true,
-});
+/**
+ * Generate Documentation Typescript Only (Without Emit JS),
+ * for completion single ts files in view directory
+ */
+export function dummyTypeDoc() {
+  const outDir = "dist/dts/";
+  if (filemanager.exist(outDir)) {
+    filemanager.unlink(outDir);
+  }
+  const tsProject = ts.createProject("tsconfig.json", {
+    module: "amd",
+    outFile: "dist/dts/types.d.ts",
+    declaration: true,
+    allowJs: true,
+    noEmitJs: true,
+  });
+  return gulp.src(["libs/**/*.ts"]).pipe(tsProject()).pipe(gulp.dest("dist/dts"));
+  //return merge([tResult.dts.pipe(gulp.dest("dist/dts/"))]);
+}

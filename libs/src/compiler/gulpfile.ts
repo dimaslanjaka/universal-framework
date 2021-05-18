@@ -1,3 +1,5 @@
+// noinspection RegExpDuplicateAlternationBranch
+
 import * as gulp from "gulp";
 import config from "../compiler/config";
 import upath from "upath";
@@ -13,7 +15,7 @@ import { localStorage } from "../node-localstorage/index";
 import * as proc from "process";
 import { createApp } from "./gulpfile-app";
 import { compileAssets } from "./gulpfile-compiler";
-import { doc } from "./gulpfile-doc";
+import { doc, dummyTypeDoc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
 
 const root = process.root;
@@ -37,26 +39,24 @@ gulp.task("build-clear", function () {
  * Build Project
  * @param withoutApp
  */
-function build(withoutApp?: boolean) {
-  return createApp(withoutApp ? true : false);
+export function build(withoutApp?: boolean) {
+  return createApp(withoutApp);
 }
 
-function reorderPkg() {
+export function reorderPkg() {
   try {
-    var packageJson = root + "/package.json";
+    const packageJson = root + "/package.json";
     if (fs.existsSync(packageJson)) {
-      var json_pkg = JSON.parse(fs.readFileSync(packageJson).toString());
+      const json_pkg = JSON.parse(fs.readFileSync(packageJson).toString());
       fixDeps(json_pkg).then(function (json) {
-        fs.writeFileSync(
-          root + "/package.json",
-          JSON.stringify(json, null, 2),
-          {
-            encoding: "utf-8",
-          }
-        );
+        fs.writeFileSync(root + "/package.json", JSON.stringify(json, null, 2), {
+          encoding: "utf-8",
+        });
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // watch libs/js/**/* and views
@@ -79,67 +79,50 @@ gulp.task("watch", async function () {
         .join(" ")
   );
 
-  var compiler_runner: NodeJS.Timeout = null;
-  var run_watch = gulp
-    .watch(files, null)
-    .on(
-      "change",
-      function (file: string | Buffer | import("url").URL | string[]) {
-        const trigger = function () {
-          file = framework.normalize(path.resolve(file.toString()));
-          /**
-           * Check is library compiler or source compiler
-           */
-          const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
-          const filename_log = framework.filelog(file);
+  let compiler_runner: NodeJS.Timeout = null;
+  return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
+    const trigger = function () {
+      file = framework.normalize(path.resolve(file.toString()));
+      /**
+       * Check is library compiler or source compiler
+       */
+      const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
+      const filename_log = framework.filelog(file);
 
-          if (is_Lib) {
-            var isCompiler = file.includes("/libs/compiler/");
-            var isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(
-              file
-            );
-            if (isCompiler || isFramework) return;
-            //console.log(file, isFramework);
-            log.log(
-              log.random("Library compiler triggered by ") +
-                log.random(framework.filelog(file))
-            );
-            log.log(
-              log
-                .chalk()
-                .yellow(
-                  `start compile ${log.random("src/MVC/themes/assets/js")}`
-                )
-            );
-            if (compiler_runner != null) {
-              log.log(log.error("Compiler still running"));
-            } else {
-              compiler_runner = setTimeout(function () {
-                createApp(true);
-                compiler_runner = null;
-              }, 5000);
-            }
-          } else {
-            if (/\.(js|scss|css|less|ts)$/s.test(file)) {
-              // TODO: Compile js css on change
-              if (!/\.min\.(js|css|ts)$/s.test(file)) {
-                compileAssets(file);
-              }
-            } else {
-              var reason = log.error("undefined");
-              if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
-                reason = log.color("brown", "Excluded");
-              } else if (/\.(d\.ts)$/s.test(filename_log)) {
-                reason = log.color("cyan", "Typehint");
-              }
-              log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
-            }
+      if (is_Lib) {
+        const isCompiler = file.includes("/libs/compiler/");
+        const isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
+        if (isCompiler || isFramework) return;
+        //console.log(file, isFramework);
+        log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
+        log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
+        if (compiler_runner != null) {
+          log.log(log.error("Compiler still running"));
+        } else {
+          compiler_runner = setTimeout(function () {
+            createApp(true);
+            compiler_runner = null;
+          }, 5000);
+        }
+      } else {
+        if (/\.(js|scss|css|less|ts)$/s.test(file)) {
+          // TODO: Compile js css on change
+          if (!/\.min\.(js|css|ts)$/s.test(file)) {
+            compileAssets(file);
           }
-        };
-        return trigger();
+        } else {
+          let reason = log.error("undefined");
+          if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
+            reason = log.color("brown", "Excluded");
+          } else if (/\.(d\.ts)$/s.test(filename_log)) {
+            reason = log.color("cyan", "Typehint");
+          }
+          log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
+        }
       }
-    );
-  return run_watch;
+    };
+    return trigger();
+  });
 });
 
 gulp.task("assets-compile", function () {
@@ -149,7 +132,7 @@ gulp.task("assets-compile", function () {
         return (
           /\.(js|scss|css|sass|less)$/.test(item) &&
           !/\.min\.(js|css)$/.test(item) &&
-          !/\-ori|\-original|\-backup|\.bak/s.test(item)
+          !/-ori|-original|-backup|\.bak/s.test(item)
         );
       })
       .map(function (asset) {
@@ -157,12 +140,16 @@ gulp.task("assets-compile", function () {
       });
   }
 
-  var css = framework.readdir(root + "/assets/css");
+  let css = framework.readdir(root + "/assets/css");
+  // noinspection JSUnusedAssignment
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   css = filter(css);
-  var js = framework.readdir(root + "/assets/js");
+  let js = framework.readdir(root + "/assets/js");
+  // noinspection JSUnusedAssignment
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   js = filter(js);
 });
-//gulp.task("reload", reload_gulp);
+
 gulp.task("default", gulp.series(["build", "watch"]));
 
 /**
@@ -170,12 +157,15 @@ gulp.task("default", gulp.series(["build", "watch"]));
  */
 gulp.task("doc", doc);
 
+gulp.task("dummy.dts", dummyTypeDoc);
+
 /**
  * Reload Gulp
  * @param cb
  * @returns
  */
-async function reload_gulp(cb: Function = null) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function reload_gulp(cb: Function = null) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
   //proc.exit();
 
@@ -200,5 +190,3 @@ async function reload_gulp(cb: Function = null) {
 }
 
 localStorage.removeItem("compile");
-
-export = gulp;
