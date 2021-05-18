@@ -2,7 +2,6 @@ $("textarea").autoHeight();
 formsaver();
 select2Country($("[select2-country]"));
 
-
 $("form").on("submit", function (e) {
   e.preventDefault();
   const data = $(this).serialize();

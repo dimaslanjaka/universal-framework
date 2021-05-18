@@ -90,5 +90,7 @@
   },
   "scripts": {
     "php-cs-fixer": "php-cs-fixer fix src --config=./.php_cs.dist"
+  },
+  "require-dev": {
   }
 }

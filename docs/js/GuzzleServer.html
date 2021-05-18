@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +15,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Universal Framework Javascript Documentation src/observatory/ts/out.ts</title>
+  <title>Universal Framework Javascript Documentation GuzzleServer</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -125,64 +123,158 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Source</p>
-                    <h1>src/observatory/ts/out.ts</h1>
+                    <p>Class</p>
+                    <h1>GuzzleServer</h1>
                 </header>
                 
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+        <h2><span class="attribs"><span class="type-signature"></span></span>GuzzleServer<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
 
-import chalk from "chalk";
-import OS from "os";
-import settings from "./settings";
-import stripAnsi from "strip-ansi";
+<article>
+    <div class="container-overview">
+    
+        
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
 
-/**
- * figure out how many lines a string of text will use
- * @param text
- * @returns {number}
- */
-function height(text: any): number {
-  // todo: text might include \n
-  return Math.ceil(ln(text) / process.stdout.columns);
-}
 
-function writeln(currentLine: number, text: string) {
-  currentLine += height(text);
-  write(text + OS.EOL);
-  return currentLine;
-}
+    
+    <h4 class="name" id="GuzzleServer">
+        <a class="href-link" href="#GuzzleServer">#</a>
+        
+        <span class="code-name">
+            
+                new GuzzleServer<span class="signature">()</span><span class="type-signature"></span>
+            
+        </span>
+    </h4>
+    
 
-function write(text: string) {
-  if (settings.write) {
-    settings.write(text);
-  }
-}
+    
+    
+    <div class="description">
+        <script type="text/javascript" src="https://unpkg.com/mermaid@7.1.0/dist/mermaid.min.js"></script><p>Guzzle node.js server</p>
+    </div>
+    
 
-function ln(text: any) {
-  //return chalk.stripColor(text || '').length;
-  return stripAnsi(text || "").length;
-}
 
-function padding(n: number) {
-  return n > 0 ? new Array(n).join(" ") : "";
-}
 
-export = {
-  height: height,
-  writeln: writeln,
-  write: write,
-  ln: ln,
-  padding: padding,
-};
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="src_phpdoc-md_vendor_guzzle_guzzle_tests_Guzzle_Tests_Http_server.js.html" class="button">View Source</a>
+            <span>
+                <a href="src_phpdoc-md_vendor_guzzle_guzzle_tests_Guzzle_Tests_Http_server.js.html">src/phpdoc-md/vendor/guzzle/guzzle/tests/Guzzle/Tests/Http/server.js</a>, <a href="src_phpdoc-md_vendor_guzzle_guzzle_tests_Guzzle_Tests_Http_server.js.html#line34">line 34</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        
+    
+    </div>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
