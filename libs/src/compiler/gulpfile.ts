@@ -11,11 +11,12 @@ import * as fs from "fs";
 //const spawn = require("child_process").spawn;
 //const argv = require("yargs").argv;
 import { spawn } from "child_process";
+// noinspection ES6PreferShortImport
 import { localStorage } from "../node-localstorage/index";
 import * as proc from "process";
 import { createApp } from "./gulpfile-app";
 import { compileAssets } from "./gulpfile-compiler";
-import { doc, dummyTypeDoc } from "./gulpfile-doc";
+import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
 
 const root = process.root;

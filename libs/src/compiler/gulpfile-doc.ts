@@ -2,8 +2,6 @@ import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
 import process from "../compiler/process";
 import filemanager from "./filemanager";
-import ts from "gulp-typescript";
-import merge from "merge2";
 
 const root = process.root;
 
@@ -88,28 +86,4 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       read: false,
     })
     .pipe(jsdoc(config, cb));
-}
-
-/**
- * Generate Documentation Typescript Only (Without Emit JS),
- * for completion single ts files in view directory
- */
-export function dummyTypeDoc() {
-  const outDir = "dist/dts/";
-  if (filemanager.exist(outDir)) {
-    filemanager.unlink(outDir);
-  }
-  const tsProject = ts.createProject("tsconfig.json", {
-    //module: "amd",
-    esModuleInterop: true,
-    skipLibCheck: true,
-    //outFile: "dist/dts/types.d.ts",
-    declaration: true,
-    allowJs: true,
-    noEmit: true,
-    emitDeclarationOnly: true,
-    declarationDir: outDir,
-  });
-
-  return merge([gulp.src(["libs/js/*.ts"]).pipe(tsProject()).pipe(gulp.dest(outDir))]);
 }
