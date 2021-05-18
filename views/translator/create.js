@@ -6,5 +6,11 @@ select2Country($("[select2-country]"));
 $("form").on("submit", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
-    console.log(data);
+    $.ajax({
+        url: location.href,
+        data: data,
+        success: function (res) {
+            console.log(res);
+        }
+    });
 });

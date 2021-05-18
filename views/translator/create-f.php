@@ -16,5 +16,5 @@ if (isset($_POST['new'])) {
     <div id="agc-body">$body</div>
 </div>
 HTML;
-
+    e($_POST);
 }
