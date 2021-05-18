@@ -102,16 +102,6 @@ declare class formSaver {
     auto(): void;
 }
 /**
- * SMARTFORM
- * @todo save form user input
- */
-/**
- * unique id generator
- * @param length digit number string
- * @returns random string
- */
-declare var makeid: (length: number) => string;
-/**
  * check if running in browser
  */
 declare var isBrowser: Function;

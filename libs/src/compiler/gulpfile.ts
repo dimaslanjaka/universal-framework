@@ -13,7 +13,6 @@ import * as fs from "fs";
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
 import { localStorage } from "../node-localstorage/index";
-import * as proc from "process";
 import { createApp } from "./gulpfile-app";
 import { compileAssets } from "./gulpfile-compiler";
 import { doc } from "./gulpfile-doc";
@@ -105,10 +104,12 @@ gulp.task("watch", async function () {
           log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
           watch_timer = setTimeout(async function () {
             await createApp(true);
-            watch_timer = null;
+
             if (isCompiler || isFormsaver) {
               // TODO: reload gulp
-              await reload_gulp();
+              await reload_gulp(function () {
+                watch_timer = null;
+              });
             }
           }, 5000);
         }
@@ -173,23 +174,23 @@ let reload_timeout = null;
  * @returns
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function reload_gulp() {
+export async function reload_gulp(cb: () => any) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
-  //proc.exit();
+  //process.core.exit();
 
-  if (proc.env.process_restarting) {
-    delete proc.env.process_restarting;
+  if (process.core.env.process_restarting) {
+    delete process.core.env.process_restarting;
     // Give old process one second to shut down before continuing ...
     reload_timeout = setTimeout(reload_gulp, 1000);
     //reload_gulp();
-    //proc.exit();
+    process.core.exit();
     return;
   }
 
   console.clear();
   console.log("reloading gulp");
-  //console.log(proc.argv[0]);
-  //console.log(proc.argv.slice(1));
+  //console.log(process.core.argv[0]);
+  //console.log(process.core.argv.slice(1));
 
   var children: ChildProcessWithoutNullStreams[] = [];
 
@@ -209,18 +210,21 @@ export async function reload_gulp() {
   let out: any, err: any;
   // Restart process ...
   if (!children.isEmpty()) {
-    if (typeof children[0] != "undefined") {
-      children[0].kill();
-    }
+    children[0].kill();
   }
   children.push(
-    spawn(proc.argv[0], proc.argv.slice(1), {
+    spawn(process.core.argv[0], process.core.argv.slice(1), {
       env: { process_restarting: "1" },
       //stdio: "ignore",
       detached: true,
       stdio: ["ignore", out, err],
     }) //.unref()
   );
+  children[0].unref();
+
+  if (typeof cb == "function") {
+    cb();
+  }
 }
 
 localStorage.removeItem("compile");

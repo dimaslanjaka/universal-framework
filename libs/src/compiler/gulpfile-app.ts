@@ -18,6 +18,13 @@ export async function createApp(withoutView: boolean) {
   var exists = localStorage.getItem("compile");
   if (!exists) {
     localStorage.setItem("compile", "running");
+
+    // compile required assets
+    await typescriptCompiler("tsconfig.formsaver.json", root + "/libs/src/smartform").catch(function (err) {
+      log.log(log.error(err));
+    });
+
+    // compile assets
     var target = upath.normalizeSafe(upath.resolve(upath.join(root, "src/MVC/themes/assets/js/app.js")));
     await typescriptCompiler("tsconfig.build.json", root + "/").catch(function (err) {
       log.log(log.error(err));
@@ -26,9 +33,6 @@ export async function createApp(withoutView: boolean) {
       log.log(log.error(err));
     });
     await typescriptCompiler("tsconfig.compiler.json", root + "/libs/").catch(function (err) {
-      log.log(log.error(err));
-    });
-    await typescriptCompiler("tsconfig.formsaver.json", root + "/libs/").catch(function (err) {
       log.log(log.error(err));
     });
 
