@@ -33,7 +33,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
     source: {
       include: [root + "/libs/js", root + "/libs/src"],
       includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor[\\/\\\\]",
+      excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor|demo|example[\\/\\\\]",
     },
     plugins: [
       //"plugins/summarize",

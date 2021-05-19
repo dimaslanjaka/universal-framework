@@ -33,7 +33,7 @@
     "comments": true,
     "strings": true
   },
-  "editor.renameOnType": true,
+  "editor.linkedEditing": true,
   "editor.wordWrap": "on",
   "eslint.packageManager": "npm",
   "explorer.autoReveal": true,
@@ -47,6 +47,7 @@
   "files.exclude": {
     ".vscode": false,
     "**/node_modules": true,
+    "**/vendor": true,
     "**/tmp": true,
     "**/*.min.js": true,
     "**/*.min.css": true,
