@@ -169,7 +169,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
     },
     source: {
       include: [root + "/libs/js", root + "/libs/src"],
-      includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
+      includePattern: "\\.(md|jsx|js|ts|tsx|js(doc|x)?)$",
       excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor|demo|example[\\/\\\\]",
     },
     plugins: [
@@ -191,7 +191,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       template: "node_modules/better-docs",
     },
     templates: {
-      cleverLinks: false,
+      cleverLinks: true,
       monospaceLinks: false,
       search: true,
       default: {

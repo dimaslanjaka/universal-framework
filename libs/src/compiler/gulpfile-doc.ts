@@ -54,7 +54,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       template: "node_modules/better-docs",
     },
     templates: {
-      cleverLinks: false,
+      cleverLinks: true,
       monospaceLinks: false,
       search: true,
       default: {
