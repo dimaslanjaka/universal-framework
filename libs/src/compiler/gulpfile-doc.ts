@@ -14,6 +14,7 @@ const root = process.root;
  */
 export function doc(cb: any = null): NodeJS.ReadWriteStream {
   const outputDir = root + "/docs/js/";
+  /*
   try {
     if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
@@ -21,6 +22,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
   } catch (e) {
     console.log(e);
   }
+  */
 
   const config = {
     recurseDepth: 10,

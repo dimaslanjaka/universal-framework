@@ -56,9 +56,9 @@ PHP framework with powerful functions
 
 # Usages And Tutorials
 
-| JS                                                                                |                                        PHP                                         |
-| --------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------: |
-| [Documentation](https://dimaslanjaka.github.io/universal-framework/js/index.html) | [Documentation](https://dimaslanjaka.github.io/universal-framework/php/index.html) |
+| JS                                                                     |                                   PHP                                   |
+| ---------------------------------------------------------------------- | :---------------------------------------------------------------------: |
+| [Documentation](https://dimaslanjaka.github.io/universal-framework/js) | [Documentation](https://dimaslanjaka.github.io/universal-framework/php) |
 
 # Feature
 

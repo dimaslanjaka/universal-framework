@@ -87,7 +87,7 @@
       "php-cs-fixer fix src --config=./.php_cs.dist"
     ],
     "doc": [
-      "phpdoc --ansi"
+      "phpdoc --ansi && php docs/data/templates/markdown/fix.php"
     ]
   },
   "require-dev": {
