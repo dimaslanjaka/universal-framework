@@ -1,7 +1,7 @@
 import * as gulp from "gulp";
 import jsdoc from "gulp-jsdoc3";
 import process from "../compiler/process";
-import filemanager from "./filemanager";
+//import filemanager from "./filemanager";
 
 const root = process.root;
 
@@ -33,7 +33,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
     source: {
       include: [root + "/libs/js", root + "/libs/src"],
       includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      excludePattern: "[\\/\\\\]node_modules|docs|dist[\\/\\\\]",
+      excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor[\\/\\\\]",
     },
     plugins: [
       //"plugins/summarize",
