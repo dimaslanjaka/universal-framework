@@ -28,35 +28,35 @@ include_once __DIR__ . '/HtmlDocument.php';
 include_once __DIR__ . '/HtmlNode.php';
 
 if (!defined('DEFAULT_TARGET_CHARSET') && defined('\simplehtmldom\DEFAULT_TARGET_CHARSET')) {
-    define('DEFAULT_TARGET_CHARSET', \simplehtmldom\DEFAULT_TARGET_CHARSET);
+  define('DEFAULT_TARGET_CHARSET', \simplehtmldom\DEFAULT_TARGET_CHARSET);
 }
 
 if (!defined('DEFAULT_BR_TEXT') && defined('\simplehtmldom\DEFAULT_BR_TEXT')) {
-    define('DEFAULT_BR_TEXT', \simplehtmldom\DEFAULT_BR_TEXT);
+  define('DEFAULT_BR_TEXT', \simplehtmldom\DEFAULT_BR_TEXT);
 }
 
 if (!defined('DEFAULT_SPAN_TEXT') && defined('\simplehtmldom\DEFAULT_SPAN_TEXT')) {
-    define('DEFAULT_SPAN_TEXT', \simplehtmldom\DEFAULT_SPAN_TEXT);
+  define('DEFAULT_SPAN_TEXT', \simplehtmldom\DEFAULT_SPAN_TEXT);
 }
 
 if (!defined('MAX_FILE_SIZE') && defined('\simplehtmldom\MAX_FILE_SIZE')) {
-    define('MAX_FILE_SIZE', \simplehtmldom\MAX_FILE_SIZE);
+  define('MAX_FILE_SIZE', \simplehtmldom\MAX_FILE_SIZE);
 }
 
 if (!defined('DEFAULT_TARGET_CHARSET')) {
-    define('DEFAULT_TARGET_CHARSET', 'UTF-8');
+  define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 }
 if (!defined('DEFAULT_BR_TEXT')) {
-    define('DEFAULT_BR_TEXT', "\r\n");
+  define('DEFAULT_BR_TEXT', "\r\n");
 }
 if (!defined('DEFAULT_SPAN_TEXT')) {
-    define('DEFAULT_SPAN_TEXT', ' ');
+  define('DEFAULT_SPAN_TEXT', ' ');
 }
 if (!defined('MAX_FILE_SIZE')) {
-    define('MAX_FILE_SIZE', 2621440);
+  define('MAX_FILE_SIZE', 2621440);
 }
 if (!defined('HDOM_SMARTY_AS_TEXT')) {
-    define('HDOM_SMARTY_AS_TEXT', 1);
+  define('HDOM_SMARTY_AS_TEXT', 1);
 }
 
 define('HDOM_TYPE_ELEMENT', \simplehtmldom\HtmlNode::HDOM_TYPE_ELEMENT);
@@ -86,15 +86,15 @@ class_alias('\simplehtmldom\HtmlDocument', 'simple_html_dom', true);
  */
 class simple_html_dom // extends HtmlDocument
 {
-    public $innertext;
-    public $outertext;
+  public $innertext;
+  public $outertext;
 
-    public function __construct()
-    {
-        //parent::__construct();
-    }
+  public function __construct()
+  {
+    //parent::__construct();
+  }
 
-    public function file_get_html(
+  public function file_get_html(
         $url,
         $use_include_path = false,
         $context = null,
@@ -106,13 +106,12 @@ class simple_html_dom // extends HtmlDocument
         $stripRN = true,
         $defaultBRText = \simplehtmldom\DEFAULT_BR_TEXT,
         $defaultSpanText = \simplehtmldom\DEFAULT_SPAN_TEXT
-    )
-    {
-        if ($maxLen <= 0) {
-            $maxLen = \simplehtmldom\MAX_FILE_SIZE;
-        }
+    ) {
+    if ($maxLen <= 0) {
+      $maxLen = \simplehtmldom\MAX_FILE_SIZE;
+    }
 
-        $dom = new HtmlDocument(
+    $dom = new HtmlDocument(
             null,
             $lowercase,
             $forceTagsClosed,
@@ -122,7 +121,7 @@ class simple_html_dom // extends HtmlDocument
             $defaultSpanText
         );
 
-        $contents = file_get_contents(
+    $contents = file_get_contents(
             $url,
             $use_include_path,
             $context,
@@ -130,16 +129,16 @@ class simple_html_dom // extends HtmlDocument
             $maxLen + 1 // Load extra byte for limit check
         );
 
-        if (empty($contents) || strlen($contents) > $maxLen) {
-            $dom->clear();
+    if (empty($contents) || strlen($contents) > $maxLen) {
+      $dom->clear();
 
-            return false;
-        }
-
-        return $dom->load($contents, $lowercase, $stripRN);
+      return false;
     }
 
-    public function str_get_html(
+    return $dom->load($contents, $lowercase, $stripRN);
+  }
+
+  public function str_get_html(
         $str,
         $lowercase = true,
         $forceTagsClosed = true,
@@ -147,9 +146,8 @@ class simple_html_dom // extends HtmlDocument
         $stripRN = true,
         $defaultBRText = DEFAULT_BR_TEXT,
         $defaultSpanText = DEFAULT_SPAN_TEXT
-    )
-    {
-        $dom = new HtmlDocument(
+    ) {
+    $dom = new HtmlDocument(
             null,
             $lowercase,
             $forceTagsClosed,
@@ -159,18 +157,18 @@ class simple_html_dom // extends HtmlDocument
             $defaultSpanText
         );
 
-        if (empty($str) || strlen($str) > MAX_FILE_SIZE) {
-            $dom->clear();
+    if (empty($str) || strlen($str) > MAX_FILE_SIZE) {
+      $dom->clear();
 
-            return false;
-        }
-
-        return $dom->load($str, $lowercase, $stripRN);
+      return false;
     }
+
+    return $dom->load($str, $lowercase, $stripRN);
+  }
 }
 
 /** @codeCoverageIgnore */
 function dump_html_tree($node, $show_attr = true, $deep = 0)
 {
-    $node->dump($node);
+  $node->dump($node);
 }

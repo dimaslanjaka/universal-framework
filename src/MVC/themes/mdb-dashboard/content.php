@@ -2,32 +2,32 @@
 
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
-    echo 'title/content required';
+  echo 'title/content required';
 
-    return;
+  return;
 }
 
 //$content = $var['content'];
 
 $canonical = isset($var['canonical']) ? $var['canonical'] : (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 if (!isset($desc)) {
-    $desc = isset($var['desc']) ? $var['desc'] : '';
+  $desc = isset($var['desc']) ? $var['desc'] : '';
 }
 if (!isset($fbcomment)) {
-    $fbcomment = isset($var['fbcomment']) ? true : false;
+  $fbcomment = isset($var['fbcomment']) ? true : false;
 }
 if (!isset($title)) {
-    $title = $var['title'];
+  $title = $var['title'];
 }
 if (!isset($share)) {
-    $share = isset($var['share']) ? true : false;
+  $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
-    e([
-        'error' => true,
-        'message' => 'framework environtment doesnt exists',
-        'current' => __FILE__,
-    ]);
+  e([
+    'error' => true,
+    'message' => 'framework environtment doesnt exists',
+    'current' => __FILE__,
+  ]);
 }
 ?>
 <!DOCTYPE html>
@@ -61,15 +61,15 @@ if (!defined('ENVIRONMENT')) {
     <div class="container-fluid mt-5">
         <?php
         if (isset($content) && file_exists($content)) {
-            if (isset($_SESSION['var']['content']) && isset($_SESSION['var']['meta_config'])) {
-                if ($_SESSION['var']['content'] != $content && !file_exists($_SESSION['var']['content'])) {
-                    $_SESSION['var']['content'] = $content;
-                    //file_put_contents($_SESSION['var']['meta_config'], json::json($_SESSION['var'], false));
-                }
+          if (isset($_SESSION['var']['content']) && isset($_SESSION['var']['meta_config'])) {
+            if ($_SESSION['var']['content'] != $content && !file_exists($_SESSION['var']['content'])) {
+              $_SESSION['var']['content'] = $content;
+              //file_put_contents($_SESSION['var']['meta_config'], json::json($_SESSION['var'], false));
             }
-            include $content;
+          }
+          include $content;
         } else {
-            echo '404';
+          echo '404';
         }
         ?>
     </div>
@@ -77,7 +77,7 @@ if (!defined('ENVIRONMENT')) {
     <section>
         <?php
         if (is_admin()) {
-            include __DIR__ . '/../meta-editor.php';
+          include __DIR__ . '/../meta-editor.php';
         }
         ?>
     </section>

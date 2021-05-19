@@ -35,9 +35,9 @@ HTML;
 $html = (new HtmlDocument())->load($doc);
 
 foreach ($html->find('ul') as $ul) {
-    foreach ($ul->find('li') as $li) {
-        echo $li->innertext . '<br>' . PHP_EOL;
-    }
+  foreach ($ul->find('li') as $li) {
+    echo $li->innertext . '<br>' . PHP_EOL;
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -54,9 +54,9 @@ HTML;
 $html = (new HtmlDocument())->load($doc);
 
 foreach ($html->find('input[type=checkbox]') as $checkbox) {
-    if ($checkbox->checked) {
-        echo $checkbox->name . ' is checked<br>' . PHP_EOL;
-    } else {
-        echo $checkbox->name . ' is not checked<br>' . PHP_EOL;
-    }
+  if ($checkbox->checked) {
+    echo $checkbox->name . ' is checked<br>' . PHP_EOL;
+  } else {
+    echo $checkbox->name . ' is not checked<br>' . PHP_EOL;
+  }
 }

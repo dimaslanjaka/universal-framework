@@ -7,8 +7,8 @@
   Directories and files from where will be extracted the documentation;
   where your PHP sources are. -->
   <files>
-    <!-- In this case, the soures to document are in the `demo/` dir-->
-    <directory>demo</directory>
+    <!-- Source document php -->
+    <directory>src</directory>
     <!-- You can include as many <directory> you need. And also, specific files
     by using <file> tag-->
     <!-- <file>vendor/cakephp/utility/Text.php</file> -->
@@ -23,10 +23,7 @@
   </transformer>
 
   <transformations>
-    <!-- [3] Directory where the template.xml is. In this case, the template.xml file is in that directory -->
-    <template name="data/templates/vuepress" />
-    <!-- But in your Composer project, you should use the following line instead of the previous one. -->
-    <!-- <template name="vendor/nelson6e65/phpdoc-vuepress/data/templates/vuepress" /> -->
+    <template name="vendor/nelson6e65/phpdoc-vuepress/data/templates/vuepress" />
   </transformations>
 
   <parser>
@@ -37,5 +34,11 @@
     <!-- Directory where to put the cache. This can be set to any directory.
          Remember ignore it by Git -->
     <target>tmp/phpdoc/api-cache</target>
+
+    <extensions>
+      <extension>module</extension>
+      <extension>inc</extension>
+      <extension>php</extension>
+    </extensions>
   </parser>
 </phpdoc>

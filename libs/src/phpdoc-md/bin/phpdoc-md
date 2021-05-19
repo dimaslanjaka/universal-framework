@@ -1,0 +1,81 @@
+#!/usr/bin/env php
+<?php namespace Clean\PhpDocMd;
+
+use ReflectionClass;
+const CONFIG_FILENAME = '.phpdoc-md';
+
+/** @noinspection PhpIncludeInspection */
+require 'vendor/autoload.php';
+
+$verbose = in_array('-v', $argv);
+
+if (in_array('-h', $argv)) {
+    echo <<<INFOBLOCK
+Usage: phpdoc-md [options]
+
+Options:
+ -h    Display this help message
+ -v    Verbose output
+INFOBLOCK;
+    exit;
+}
+
+// Step 1. check if config file exists
+if (file_exists(CONFIG_FILENAME)) {
+    /** @noinspection PhpIncludeInspection */
+    $config = require CONFIG_FILENAME;
+} else {
+    error('Unable to load .phpdoc-md configuration file');
+}
+
+
+// Step 2. Create README parser for configured markdown output format
+switch ($config->format) {
+    case 'github':
+        $readme = new Markdown\GitHub\Readme($config->rootNamespace);
+        break;
+    case 'stash':
+    case 'bitbucket':
+        $readme = new Markdown\Stash\Readme($config->rootNamespace);
+        break;
+    default:
+        error(sprintf("Unknown markdown format '%s'. Only 'github' or 'bitbucket' allowed. Check your .phpdoc-md config file", $config->format));
+}
+
+
+// Step 3. Iterate thru 'classes' defined inside config file to generate documentation
+foreach ($config->classes as $className) {
+    try {
+        $reflection = new ReflectionClass($className);
+        $parser = getClassInfoParser($config->format, $reflection);
+
+        $destDir = getDestinationDirectory($reflection, $config->rootNamespace, $config->destDirectory);
+        $destFile = sprintf('%s.md', $reflection->getShortName());
+
+        info(sprintf('Generating %s/%s from %s', $destDir, $destFile, $className), $verbose);
+
+        file_exists($destDir) || mkdir($destDir, 0777, true);
+        file_put_contents($destDir . DIRECTORY_SEPARATOR . $destFile, $parser);
+
+        $readme->addLink(
+            removeRootNamespace($reflection->getName(), $config->rootNamespace),
+            namespaceToPath(
+                removeRootNamespace(
+                    $reflection->getName(),
+                    $config->rootNamespace
+                )
+            ) . '.md'
+        );
+    } catch (\RuntimeException $e) {
+        error($e->getMessage());
+    } catch (\ReflectionException $e) {
+        error($e->getMessage());
+    }
+
+}
+
+// Step 4. generate main README.md with all links to generated docs files
+info(sprintf('Generating %s/README.md - documentation entry point', $config->destDirectory), $verbose);
+file_put_contents($config->destDirectory . '/README.md', $readme);
+info('All done', $verbose);
+

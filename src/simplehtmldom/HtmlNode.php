@@ -28,7 +28,7 @@ include_once __DIR__ . '/Debug.php';
 /**
  * HTMLNode class.
  *
- * @property string $innertext
+ * @property string      $innertext
  * @property string|null $title
  * @property string|null $alt
  * @property string|null $src
@@ -38,49 +38,49 @@ include_once __DIR__ . '/Debug.php';
  */
 class HtmlNode
 {
-    const HDOM_TYPE_ELEMENT = 1;
-    const HDOM_TYPE_COMMENT = 2;
-    const HDOM_TYPE_TEXT = 3;
-    const HDOM_TYPE_ROOT = 5;
-    const HDOM_TYPE_UNKNOWN = 6;
-    const HDOM_TYPE_CDATA = 7;
+  const HDOM_TYPE_ELEMENT = 1;
+  const HDOM_TYPE_COMMENT = 2;
+  const HDOM_TYPE_TEXT = 3;
+  const HDOM_TYPE_ROOT = 5;
+  const HDOM_TYPE_UNKNOWN = 6;
+  const HDOM_TYPE_CDATA = 7;
 
-    const HDOM_QUOTE_DOUBLE = 0;
-    const HDOM_QUOTE_SINGLE = 1;
-    const HDOM_QUOTE_NO = 3;
+  const HDOM_QUOTE_DOUBLE = 0;
+  const HDOM_QUOTE_SINGLE = 1;
+  const HDOM_QUOTE_NO = 3;
 
-    const HDOM_INFO_BEGIN = 0;
-    const HDOM_INFO_END = 1;
-    const HDOM_INFO_QUOTE = 2;
-    const HDOM_INFO_SPACE = 3;
-    const HDOM_INFO_TEXT = 4;
-    const HDOM_INFO_INNER = 5;
-    const HDOM_INFO_OUTER = 6;
-    const HDOM_INFO_ENDSPACE = 7;
+  const HDOM_INFO_BEGIN = 0;
+  const HDOM_INFO_END = 1;
+  const HDOM_INFO_QUOTE = 2;
+  const HDOM_INFO_SPACE = 3;
+  const HDOM_INFO_TEXT = 4;
+  const HDOM_INFO_INNER = 5;
+  const HDOM_INFO_OUTER = 6;
+  const HDOM_INFO_ENDSPACE = 7;
 
-    public $nodetype = self::HDOM_TYPE_TEXT;
-    public $tag = 'text';
-    public $attr = [];
-    public $children = [];
-    public $nodes = [];
-    public $parent = null;
-    public $_ = [];
-    private $dom = null;
+  public $nodetype = self::HDOM_TYPE_TEXT;
+  public $tag = 'text';
+  public $attr = [];
+  public $children = [];
+  public $nodes = [];
+  public $parent = null;
+  public $_ = [];
+  private $dom = null;
 
-    public function __construct($dom)
-    {
-        if (null === $dom) {
-            return $this;
-        }
-
-        $this->dom = $dom;
-        $dom->nodes[] = $this;
+  public function __construct($dom)
+  {
+    if (null === $dom) {
+      return $this;
     }
 
-    public function __call($func, $args)
-    {
-        // Allow users to call methods with lower_case syntax
-        switch ($func) {
+    $this->dom = $dom;
+    $dom->nodes[] = $this;
+  }
+
+  public function __call($func, $args)
+  {
+    // Allow users to call methods with lower_case syntax
+    switch ($func) {
             case 'children':
                 $actual_function = 'childNodes';
                 break;
@@ -106,16 +106,16 @@ class HtmlNode
                 );
         }
 
-        // phpcs:ignore Generic.Files.LineLength
-        Debug::log(__CLASS__ . '->' . $func . '() has been deprecated and will be removed in the next major version of simplehtmldom. Use ' . __CLASS__ . '->' . $actual_function . '() instead.');
+    // phpcs:ignore Generic.Files.LineLength
+    Debug::log(__CLASS__ . '->' . $func . '() has been deprecated and will be removed in the next major version of simplehtmldom. Use ' . __CLASS__ . '->' . $actual_function . '() instead.');
 
-        return call_user_func_array([$this, $actual_function], $args);
-    }
+    return call_user_func_array([$this, $actual_function], $args);
+  }
 
-    public function __debugInfo()
-    {
-        // Translate node type to human-readable form
-        switch ($this->nodetype) {
+  public function __debugInfo()
+  {
+    // Translate node type to human-readable form
+    switch ($this->nodetype) {
             case self::HDOM_TYPE_ELEMENT:
                 $nodetype = "HDOM_TYPE_ELEMENT ($this->nodetype)";
                 break;
@@ -136,191 +136,191 @@ class HtmlNode
                 $nodetype = "HDOM_TYPE_UNKNOWN ($this->nodetype)";
         }
 
-        return [
-            'nodetype' => $nodetype,
-            'tag' => $this->tag,
-            'attributes' => empty($this->attr) ? 'none' : $this->attr,
-            'nodes' => empty($this->nodes) ? 'none' : $this->nodes,
-        ];
+    return [
+      'nodetype' => $nodetype,
+      'tag' => $this->tag,
+      'attributes' => empty($this->attr) ? 'none' : $this->attr,
+      'nodes' => empty($this->nodes) ? 'none' : $this->nodes,
+    ];
+  }
+
+  public function __toString()
+  {
+    return $this->outertext();
+  }
+
+  public function outertext()
+  {
+    if ('root' === $this->tag) {
+      return $this->innertext();
     }
 
-    public function __toString()
-    {
-        return $this->outertext();
+    // todo: What is the use of this callback? Remove?
+    if ($this->dom && null !== $this->dom->callback) {
+      call_user_func_array($this->dom->callback, [$this]);
     }
 
-    public function outertext()
-    {
-        if ('root' === $this->tag) {
-            return $this->innertext();
-        }
-
-        // todo: What is the use of this callback? Remove?
-        if ($this->dom && null !== $this->dom->callback) {
-            call_user_func_array($this->dom->callback, [$this]);
-        }
-
-        if (isset($this->_[self::HDOM_INFO_OUTER])) {
-            return $this->convert_text($this->_[self::HDOM_INFO_OUTER]);
-        }
-
-        if (isset($this->_[self::HDOM_INFO_TEXT])) {
-            return $this->convert_text($this->_[self::HDOM_INFO_TEXT]);
-        }
-
-        $ret = '';
-
-        if (isset($this->_[self::HDOM_INFO_BEGIN])) {
-            $ret = $this->makeup();
-        }
-
-        if (isset($this->_[self::HDOM_INFO_INNER])) {
-            // todo: <br> should either never have self::HDOM_INFO_INNER or always
-            if ('br' !== $this->tag) {
-                $ret .= $this->_[self::HDOM_INFO_INNER];
-            }
-        }
-
-        if ($this->nodes) {
-            foreach ($this->nodes as $n) {
-                $ret .= $n->outertext();
-            }
-        }
-
-        if (isset($this->_[self::HDOM_INFO_END]) && 0 != $this->_[self::HDOM_INFO_END]) {
-            $ret .= '</' . $this->tag . '>';
-        }
-
-        return $this->convert_text($ret);
+    if (isset($this->_[self::HDOM_INFO_OUTER])) {
+      return $this->convert_text($this->_[self::HDOM_INFO_OUTER]);
     }
 
-    public function innertext()
-    {
-        if (isset($this->_[self::HDOM_INFO_INNER])) {
-            $ret = $this->_[self::HDOM_INFO_INNER];
-        } elseif (isset($this->_[self::HDOM_INFO_TEXT])) {
-            $ret = $this->_[self::HDOM_INFO_TEXT];
-        } else {
-            $ret = '';
-        }
-
-        foreach ($this->nodes as $n) {
-            $ret .= $n->outertext();
-        }
-
-        return $this->convert_text($ret);
+    if (isset($this->_[self::HDOM_INFO_TEXT])) {
+      return $this->convert_text($this->_[self::HDOM_INFO_TEXT]);
     }
 
-    public function convert_text($text)
-    {
+    $ret = '';
+
+    if (isset($this->_[self::HDOM_INFO_BEGIN])) {
+      $ret = $this->makeup();
+    }
+
+    if (isset($this->_[self::HDOM_INFO_INNER])) {
+      // todo: <br> should either never have self::HDOM_INFO_INNER or always
+      if ('br' !== $this->tag) {
+        $ret .= $this->_[self::HDOM_INFO_INNER];
+      }
+    }
+
+    if ($this->nodes) {
+      foreach ($this->nodes as $n) {
+        $ret .= $n->outertext();
+      }
+    }
+
+    if (isset($this->_[self::HDOM_INFO_END]) && 0 != $this->_[self::HDOM_INFO_END]) {
+      $ret .= '</' . $this->tag . '>';
+    }
+
+    return $this->convert_text($ret);
+  }
+
+  public function innertext()
+  {
+    if (isset($this->_[self::HDOM_INFO_INNER])) {
+      $ret = $this->_[self::HDOM_INFO_INNER];
+    } elseif (isset($this->_[self::HDOM_INFO_TEXT])) {
+      $ret = $this->_[self::HDOM_INFO_TEXT];
+    } else {
+      $ret = '';
+    }
+
+    foreach ($this->nodes as $n) {
+      $ret .= $n->outertext();
+    }
+
+    return $this->convert_text($ret);
+  }
+
+  public function convert_text($text)
+  {
+    $converted_text = $text;
+
+    $sourceCharset = '';
+    $targetCharset = '';
+
+    if ($this->dom) {
+      $sourceCharset = strtoupper($this->dom->_charset);
+      $targetCharset = strtoupper($this->dom->_target_charset);
+    }
+
+    if (!empty($sourceCharset) && !empty($targetCharset)) {
+      if (strtoupper($sourceCharset) === strtoupper($targetCharset)) {
         $converted_text = $text;
-
-        $sourceCharset = '';
-        $targetCharset = '';
-
-        if ($this->dom) {
-            $sourceCharset = strtoupper($this->dom->_charset);
-            $targetCharset = strtoupper($this->dom->_target_charset);
-        }
-
-        if (!empty($sourceCharset) && !empty($targetCharset)) {
-            if (strtoupper($sourceCharset) === strtoupper($targetCharset)) {
-                $converted_text = $text;
-            } elseif (('UTF-8' === strtoupper($targetCharset)) && (self::is_utf8($text))) {
-                Debug::log_once('The source charset was incorrectly detected as ' . $sourceCharset . ' but should have been UTF-8');
-                $converted_text = $text;
-            } else {
-                $converted_text = iconv($sourceCharset, $targetCharset, $text);
-            }
-        }
-
-        // Lets make sure that we don't have that silly BOM issue with any of the utf-8 text we output.
-        if ('UTF-8' === $targetCharset) {
-            if ("\xef\xbb\xbf" === substr($converted_text, 0, 3)) {
-                $converted_text = substr($converted_text, 3);
-            }
-
-            if ("\xef\xbb\xbf" === substr($converted_text, -3)) {
-                $converted_text = substr($converted_text, 0, -3);
-            }
-        }
-
-        return $converted_text;
+      } elseif (('UTF-8' === strtoupper($targetCharset)) && (self::is_utf8($text))) {
+        Debug::log_once('The source charset was incorrectly detected as ' . $sourceCharset . ' but should have been UTF-8');
+        $converted_text = $text;
+      } else {
+        $converted_text = iconv($sourceCharset, $targetCharset, $text);
+      }
     }
 
-    public static function is_utf8($str)
-    {
-        $c = 0;
-        $b = 0;
-        $bits = 0;
-        $len = strlen($str);
-        for ($i = 0; $i < $len; ++$i) {
-            $c = ord($str[$i]);
-            if ($c > 128) {
-                if (($c >= 254)) {
-                    return false;
-                } elseif ($c >= 252) {
-                    $bits = 6;
-                } elseif ($c >= 248) {
-                    $bits = 5;
-                } elseif ($c >= 240) {
-                    $bits = 4;
-                } elseif ($c >= 224) {
-                    $bits = 3;
-                } elseif ($c >= 192) {
-                    $bits = 2;
-                } else {
-                    return false;
-                }
-                if (($i + $bits) > $len) {
-                    return false;
-                }
-                while ($bits > 1) {
-                    ++$i;
-                    $b = ord($str[$i]);
-                    if ($b < 128 || $b > 191) {
-                        return false;
-                    }
-                    --$bits;
-                }
-            }
-        }
+    // Lets make sure that we don't have that silly BOM issue with any of the utf-8 text we output.
+    if ('UTF-8' === $targetCharset) {
+      if ("\xef\xbb\xbf" === substr($converted_text, 0, 3)) {
+        $converted_text = substr($converted_text, 3);
+      }
 
-        return true;
+      if ("\xef\xbb\xbf" === substr($converted_text, -3)) {
+        $converted_text = substr($converted_text, 0, -3);
+      }
     }
 
-    public function makeup()
-    {
-        // text, comment, unknown
-        if (isset($this->_[self::HDOM_INFO_TEXT])) {
-            return $this->_[self::HDOM_INFO_TEXT];
+    return $converted_text;
+  }
+
+  public static function is_utf8($str)
+  {
+    $c = 0;
+    $b = 0;
+    $bits = 0;
+    $len = strlen($str);
+    for ($i = 0; $i < $len; ++$i) {
+      $c = ord($str[$i]);
+      if ($c > 128) {
+        if (($c >= 254)) {
+          return false;
+        } elseif ($c >= 252) {
+          $bits = 6;
+        } elseif ($c >= 248) {
+          $bits = 5;
+        } elseif ($c >= 240) {
+          $bits = 4;
+        } elseif ($c >= 224) {
+          $bits = 3;
+        } elseif ($c >= 192) {
+          $bits = 2;
+        } else {
+          return false;
+        }
+        if (($i + $bits) > $len) {
+          return false;
+        }
+        while ($bits > 1) {
+          ++$i;
+          $b = ord($str[$i]);
+          if ($b < 128 || $b > 191) {
+            return false;
+          }
+          --$bits;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  public function makeup()
+  {
+    // text, comment, unknown
+    if (isset($this->_[self::HDOM_INFO_TEXT])) {
+      return $this->_[self::HDOM_INFO_TEXT];
+    }
+
+    $ret = '<' . $this->tag;
+
+    foreach ($this->attr as $key => $val) {
+      // skip removed attribute
+      if (null === $val || false === $val) {
+        continue;
+      }
+
+      if (isset($this->_[self::HDOM_INFO_SPACE][$key])) {
+        $ret .= $this->_[self::HDOM_INFO_SPACE][$key][0];
+      } else {
+        $ret .= ' ';
+      }
+
+      //no value attr: nowrap, checked selected...
+      if (true === $val) {
+        $ret .= $key;
+      } else {
+        if (isset($this->_[self::HDOM_INFO_QUOTE][$key])) {
+          $quote_type = $this->_[self::HDOM_INFO_QUOTE][$key];
+        } else {
+          $quote_type = self::HDOM_QUOTE_DOUBLE;
         }
 
-        $ret = '<' . $this->tag;
-
-        foreach ($this->attr as $key => $val) {
-            // skip removed attribute
-            if (null === $val || false === $val) {
-                continue;
-            }
-
-            if (isset($this->_[self::HDOM_INFO_SPACE][$key])) {
-                $ret .= $this->_[self::HDOM_INFO_SPACE][$key][0];
-            } else {
-                $ret .= ' ';
-            }
-
-            //no value attr: nowrap, checked selected...
-            if (true === $val) {
-                $ret .= $key;
-            } else {
-                if (isset($this->_[self::HDOM_INFO_QUOTE][$key])) {
-                    $quote_type = $this->_[self::HDOM_INFO_QUOTE][$key];
-                } else {
-                    $quote_type = self::HDOM_QUOTE_DOUBLE;
-                }
-
-                switch ($quote_type) {
+        switch ($quote_type) {
                     case self::HDOM_QUOTE_SINGLE:
                         $quote = '\'';
                         $val = htmlentities($val, ENT_QUOTES, $this->dom->target_charset);
@@ -334,367 +334,367 @@ class HtmlNode
                         $val = htmlentities($val, ENT_COMPAT, $this->dom->target_charset);
                 }
 
-                $ret .= $key
+        $ret .= $key
                     . (isset($this->_[self::HDOM_INFO_SPACE][$key]) ? $this->_[self::HDOM_INFO_SPACE][$key][1] : '')
                     . '='
                     . (isset($this->_[self::HDOM_INFO_SPACE][$key]) ? $this->_[self::HDOM_INFO_SPACE][$key][2] : '')
                     . $quote
                     . $val
                     . $quote;
-            }
-        }
-
-        if (isset($this->_[self::HDOM_INFO_ENDSPACE])) {
-            $ret .= $this->_[self::HDOM_INFO_ENDSPACE];
-        }
-
-        return $ret . '>';
+      }
     }
 
-    public function clear()
-    {
-        unset($this->dom, $this->parent); // Break link to origin
+    if (isset($this->_[self::HDOM_INFO_ENDSPACE])) {
+      $ret .= $this->_[self::HDOM_INFO_ENDSPACE];
+    }
+
+    return $ret . '>';
+  }
+
+  public function clear()
+  {
+    unset($this->dom, $this->parent); // Break link to origin
         // Break link to branch
+  }
+
+  /** @codeCoverageIgnore */
+  public function dump($show_attr = true, $depth = 0)
+  {
+    echo str_repeat("\t", $depth) . $this->tag;
+
+    if ($show_attr && count($this->attr) > 0) {
+      echo '(';
+      foreach ($this->attr as $k => $v) {
+        echo "[$k]=>\"$v\", ";
+      }
+      echo ')';
     }
 
-    /** @codeCoverageIgnore */
-    public function dump($show_attr = true, $depth = 0)
-    {
-        echo str_repeat("\t", $depth) . $this->tag;
+    echo "\n";
 
-        if ($show_attr && count($this->attr) > 0) {
-            echo '(';
-            foreach ($this->attr as $k => $v) {
-                echo "[$k]=>\"$v\", ";
-            }
-            echo ')';
-        }
+    if ($this->nodes) {
+      foreach ($this->nodes as $node) {
+        $node->dump($show_attr, $depth + 1);
+      }
+    }
+  }
 
-        echo "\n";
+  /** @codeCoverageIgnore */
+  public function dump_node($echo = true)
+  {
+    $string = $this->tag;
 
-        if ($this->nodes) {
-            foreach ($this->nodes as $node) {
-                $node->dump($show_attr, $depth + 1);
-            }
-        }
+    if (count($this->attr) > 0) {
+      $string .= '(';
+      foreach ($this->attr as $k => $v) {
+        $string .= "[$k]=>\"$v\", ";
+      }
+      $string .= ')';
     }
 
-    /** @codeCoverageIgnore */
-    public function dump_node($echo = true)
-    {
-        $string = $this->tag;
-
-        if (count($this->attr) > 0) {
-            $string .= '(';
-            foreach ($this->attr as $k => $v) {
-                $string .= "[$k]=>\"$v\", ";
-            }
-            $string .= ')';
-        }
-
-        if (count($this->_) > 0) {
-            $string .= ' $_ (';
-            foreach ($this->_ as $k => $v) {
-                if (is_array($v)) {
-                    $string .= "[$k]=>(";
-                    foreach ($v as $k2 => $v2) {
-                        $string .= "[$k2]=>\"$v2\", ";
-                    }
-                    $string .= ')';
-                } else {
-                    $string .= "[$k]=>\"$v\", ";
-                }
-            }
-            $string .= ')';
-        }
-
-        if (isset($this->text)) {
-            $string .= " text: ({$this->text})";
-        }
-
-        $string .= ' HDOM_INNER_INFO: ';
-        /*
-         * @var mixed
-         */
-        if (isset($node)) {
-            if (isset($node->_[self::HDOM_INFO_INNER])) {
-                $string .= "'" . $node->_[self::HDOM_INFO_INNER] . "'";
-            } else {
-                $string .= ' NULL ';
-            }
-        }
-
-        $string .= ' children: ' . count($this->children);
-        $string .= ' nodes: ' . count($this->nodes);
-        $string .= "\n";
-
-        if ($echo) {
-            echo $string;
-
-            return;
+    if (count($this->_) > 0) {
+      $string .= ' $_ (';
+      foreach ($this->_ as $k => $v) {
+        if (is_array($v)) {
+          $string .= "[$k]=>(";
+          foreach ($v as $k2 => $v2) {
+            $string .= "[$k2]=>\"$v2\", ";
+          }
+          $string .= ')';
         } else {
-            return $string;
+          $string .= "[$k]=>\"$v\", ";
         }
+      }
+      $string .= ')';
     }
 
-    public function find_ancestor_tag($tag)
-    {
-        if (null === $this->parent) {
-            return null;
-        }
-
-        $ancestor = $this->parent;
-
-        while (!is_null($ancestor)) {
-            if ($ancestor->tag === $tag) {
-                break;
-            }
-
-            $ancestor = $ancestor->parent;
-        }
-
-        return $ancestor;
+    if (isset($this->text)) {
+      $string .= " text: ({$this->text})";
     }
 
-    public function expect($selector, $idx = null, $lowercase = false)
-    {
-        return $this->find($selector, $idx, $lowercase) ?: null;
-    }
-
-    /**
-     * Element selector.
-     *
-     * @param string $selector
-     * @param int $idx
-     * @param bool $lowercase
-     *
-     * @return HtmlNode
+    $string .= ' HDOM_INNER_INFO: ';
+    /*
+     * @var mixed
      */
-    public function find($selector, $idx = null, $lowercase = false)
-    {
-        $selectors = $this->parse_selector($selector);
-        if (0 === ($count = count($selectors))) {
-            return [];
-        }
-        $found_keys = [];
-
-        // find each selector
-        for ($c = 0; $c < $count; ++$c) {
-            // The change on the below line was documented on the sourceforge
-            // code tracker id 2788009
-            // used to be: if (($levle=count($selectors[0]))===0) return array();
-            if (0 === ($levle = count($selectors[$c]))) {
-                Debug::log_once('Empty selector (' . $selector . ') matches nothing.');
-
-                return [];
-            }
-
-            if (!isset($this->_[self::HDOM_INFO_BEGIN])) {
-                Debug::log_once('Invalid operation. The current node has no start tag.');
-
-                return [];
-            }
-
-            $head = [$this->_[self::HDOM_INFO_BEGIN] => 1];
-            $cmd = ' '; // Combinator
-
-            // handle descendant selectors, no recursive!
-            for ($l = 0; $l < $levle; ++$l) {
-                $ret = [];
-
-                foreach ($head as $k => $v) {
-                    $n = (-1 === $k) ? $this->dom->root : $this->dom->nodes[$k];
-                    //PaperG - Pass this optional parameter on to the seek function.
-                    $n->seek($selectors[$c][$l], $ret, $cmd, $lowercase);
-                }
-
-                $head = $ret;
-                $cmd = $selectors[$c][$l][6]; // Next Combinator
-            }
-
-            foreach ($head as $k => $v) {
-                if (!isset($found_keys[$k])) {
-                    $found_keys[$k] = 1;
-                }
-            }
-        }
-
-        // sort keys
-        ksort($found_keys);
-
-        $found = [];
-        foreach ($found_keys as $k => $v) {
-            $found[] = $this->dom->nodes[$k];
-        }
-
-        // return nth-element or array
-        if (is_null($idx)) {
-            return $found;
-        } elseif ($idx < 0) {
-            $idx = count($found) + $idx;
-        }
-
-        return (isset($found[$idx])) ? $found[$idx] : null;
+    if (isset($node)) {
+      if (isset($node->_[self::HDOM_INFO_INNER])) {
+        $string .= "'" . $node->_[self::HDOM_INFO_INNER] . "'";
+      } else {
+        $string .= ' NULL ';
+      }
     }
 
-    protected function parse_selector($selector_string)
-    {
-        /**
-         * Pattern of CSS selectors, modified from mootools (https://mootools.net/).
-         *
-         * Paperg: Add the colon to the attribute, so that it properly finds
-         * <tag attr:ibute="something" > like google does.
-         *
-         * Note: if you try to look at this attribute, you MUST use getAttribute
-         * since $dom->x:y will fail the php syntax check.
-         *
-         * Notice the \[ starting the attribute? and the @? following? This
-         * implies that an attribute can begin with an @ sign that is not
-         * captured. This implies that an html attribute specifier may start
-         * with an @ sign that is NOT captured by the expression. Farther study
-         * is required to determine of this should be documented or removed.
-         *
-         * Matches selectors in this order:
-         *
-         * [0] - full match
-         *
-         * [1] - pseudo selector
-         *     (?:\:(\w+)\()?
-         *     Matches the pseudo selector (optional)
-         *
-         * [2] - tag name
-         *     ([\w:\*-]*)
-         *     Matches the tag name consisting of zero or more words, colons,
-         *     asterisks and hyphens.
-         *
-         * [3] - pseudo selector
-         *     (?:\:(\w+)\()?
-         *     Matches the pseudo selector (optional)
-         *
-         * [4] - id name
-         *     (?:\#([\w-]+))
-         *     Optionally matches a id name, consisting of an "#" followed by
-         *     the id name (one or more words and hyphens).
-         *
-         * [5] - class names (including dots)
-         *     (?:\.([\w\.-]+))?
-         *     Optionally matches a list of classs, consisting of an "."
-         *     followed by the class name (one or more words and hyphens)
-         *     where multiple classes can be chained (i.e. ".foo.bar.baz")
-         *
-         * [6] - attributes
-         *     ((?:\[@?(?:!?[\w:-]+)(?:(?:[!*^$|~]?=)[\"']?(?:.*?)[\"']?)?(?:\s*?(?:[iIsS])?)?\])+)?
-         *     Optionally matches the attributes list
-         *
-         * [7] - separator
-         *     ([\/, >+~]+)
-         *     Matches the selector list separator
-         */
-        // phpcs:ignore Generic.Files.LineLength
-        $pattern = "/(?:\:(\w+)\()?([\w:\*-]*)(?:\:(\w+)\()?(?:\#([\w-]+))?(?:|\.([\w\.-]+))?((?:\[@?(?:!?[\w:-]+)(?:(?:[!*^$|~]?=)[\"']?(?:.*?)[\"']?)?(?:\s*?(?:[iIsS])?)?\])+)?(?:\))?(?:\))?([\/, >+~]+)/is";
+    $string .= ' children: ' . count($this->children);
+    $string .= ' nodes: ' . count($this->nodes);
+    $string .= "\n";
 
-        preg_match_all(
+    if ($echo) {
+      echo $string;
+
+      return;
+    } else {
+      return $string;
+    }
+  }
+
+  public function find_ancestor_tag($tag)
+  {
+    if (null === $this->parent) {
+      return null;
+    }
+
+    $ancestor = $this->parent;
+
+    while (!is_null($ancestor)) {
+      if ($ancestor->tag === $tag) {
+        break;
+      }
+
+      $ancestor = $ancestor->parent;
+    }
+
+    return $ancestor;
+  }
+
+  public function expect($selector, $idx = null, $lowercase = false)
+  {
+    return $this->find($selector, $idx, $lowercase) ?: null;
+  }
+
+  /**
+   * Element selector.
+   *
+   * @param string $selector
+   * @param int    $idx
+   * @param bool   $lowercase
+   *
+   * @return HtmlNode
+   */
+  public function find($selector, $idx = null, $lowercase = false)
+  {
+    $selectors = $this->parse_selector($selector);
+    if (0 === ($count = count($selectors))) {
+      return [];
+    }
+    $found_keys = [];
+
+    // find each selector
+    for ($c = 0; $c < $count; ++$c) {
+      // The change on the below line was documented on the sourceforge
+      // code tracker id 2788009
+      // used to be: if (($levle=count($selectors[0]))===0) return array();
+      if (0 === ($levle = count($selectors[$c]))) {
+        Debug::log_once('Empty selector (' . $selector . ') matches nothing.');
+
+        return [];
+      }
+
+      if (!isset($this->_[self::HDOM_INFO_BEGIN])) {
+        Debug::log_once('Invalid operation. The current node has no start tag.');
+
+        return [];
+      }
+
+      $head = [$this->_[self::HDOM_INFO_BEGIN] => 1];
+      $cmd = ' '; // Combinator
+
+      // handle descendant selectors, no recursive!
+      for ($l = 0; $l < $levle; ++$l) {
+        $ret = [];
+
+        foreach ($head as $k => $v) {
+          $n = (-1 === $k) ? $this->dom->root : $this->dom->nodes[$k];
+          //PaperG - Pass this optional parameter on to the seek function.
+          $n->seek($selectors[$c][$l], $ret, $cmd, $lowercase);
+        }
+
+        $head = $ret;
+        $cmd = $selectors[$c][$l][6]; // Next Combinator
+      }
+
+      foreach ($head as $k => $v) {
+        if (!isset($found_keys[$k])) {
+          $found_keys[$k] = 1;
+        }
+      }
+    }
+
+    // sort keys
+    ksort($found_keys);
+
+    $found = [];
+    foreach ($found_keys as $k => $v) {
+      $found[] = $this->dom->nodes[$k];
+    }
+
+    // return nth-element or array
+    if (is_null($idx)) {
+      return $found;
+    } elseif ($idx < 0) {
+      $idx = count($found) + $idx;
+    }
+
+    return (isset($found[$idx])) ? $found[$idx] : null;
+  }
+
+  protected function parse_selector($selector_string)
+  {
+    /**
+     * Pattern of CSS selectors, modified from mootools (https://mootools.net/).
+     *
+     * Paperg: Add the colon to the attribute, so that it properly finds
+     * <tag attr:ibute="something" > like google does.
+     *
+     * Note: if you try to look at this attribute, you MUST use getAttribute
+     * since $dom->x:y will fail the php syntax check.
+     *
+     * Notice the \[ starting the attribute? and the @? following? This
+     * implies that an attribute can begin with an @ sign that is not
+     * captured. This implies that an html attribute specifier may start
+     * with an @ sign that is NOT captured by the expression. Farther study
+     * is required to determine of this should be documented or removed.
+     *
+     * Matches selectors in this order:
+     *
+     * [0] - full match
+     *
+     * [1] - pseudo selector
+     *     (?:\:(\w+)\()?
+     *     Matches the pseudo selector (optional)
+     *
+     * [2] - tag name
+     *     ([\w:\*-]*)
+     *     Matches the tag name consisting of zero or more words, colons,
+     *     asterisks and hyphens.
+     *
+     * [3] - pseudo selector
+     *     (?:\:(\w+)\()?
+     *     Matches the pseudo selector (optional)
+     *
+     * [4] - id name
+     *     (?:\#([\w-]+))
+     *     Optionally matches a id name, consisting of an "#" followed by
+     *     the id name (one or more words and hyphens).
+     *
+     * [5] - class names (including dots)
+     *     (?:\.([\w\.-]+))?
+     *     Optionally matches a list of classs, consisting of an "."
+     *     followed by the class name (one or more words and hyphens)
+     *     where multiple classes can be chained (i.e. ".foo.bar.baz")
+     *
+     * [6] - attributes
+     *     ((?:\[@?(?:!?[\w:-]+)(?:(?:[!*^$|~]?=)[\"']?(?:.*?)[\"']?)?(?:\s*?(?:[iIsS])?)?\])+)?
+     *     Optionally matches the attributes list
+     *
+     * [7] - separator
+     *     ([\/, >+~]+)
+     *     Matches the selector list separator
+     */
+    // phpcs:ignore Generic.Files.LineLength
+    $pattern = "/(?:\:(\w+)\()?([\w:\*-]*)(?:\:(\w+)\()?(?:\#([\w-]+))?(?:|\.([\w\.-]+))?((?:\[@?(?:!?[\w:-]+)(?:(?:[!*^$|~]?=)[\"']?(?:.*?)[\"']?)?(?:\s*?(?:[iIsS])?)?\])+)?(?:\))?(?:\))?([\/, >+~]+)/is";
+
+    preg_match_all(
             $pattern,
             trim($selector_string) . ' ', // Add final ' ' as pseudo separator
             $matches,
             PREG_SET_ORDER
         );
 
-        $selectors = [];
-        $result = [];
+    $selectors = [];
+    $result = [];
 
-        foreach ($matches as $m) {
-            $m[0] = trim($m[0]);
+    foreach ($matches as $m) {
+      $m[0] = trim($m[0]);
 
-            // Skip NoOps
-            if ('' === $m[0] || '/' === $m[0] || '//' === $m[0]) {
-                continue;
-            }
+      // Skip NoOps
+      if ('' === $m[0] || '/' === $m[0] || '//' === $m[0]) {
+        continue;
+      }
 
-            array_shift($m);
+      array_shift($m);
 
-            // Convert to lowercase
-            if ($this->dom->lowercase) {
-                $m[1] = strtolower($m[1]);
-            }
+      // Convert to lowercase
+      if ($this->dom->lowercase) {
+        $m[1] = strtolower($m[1]);
+      }
 
-            // Extract classes
-            if ('' !== $m[4]) {
-                $m[4] = explode('.', $m[4]);
-            }
+      // Extract classes
+      if ('' !== $m[4]) {
+        $m[4] = explode('.', $m[4]);
+      }
 
-            /* Extract attributes (pattern based on the pattern above!)
+      /* Extract attributes (pattern based on the pattern above!)
 
-             * [0] - full match
-             * [1] - attribute name
-             * [2] - attribute expression
-             * [3] - attribute value
-             * [4] - case sensitivity
-             *
-             * Note: Attributes can be negated with a "!" prefix to their name
-             */
-            if ('' !== $m[5]) {
-                preg_match_all(
+       * [0] - full match
+       * [1] - attribute name
+       * [2] - attribute expression
+       * [3] - attribute value
+       * [4] - case sensitivity
+       *
+       * Note: Attributes can be negated with a "!" prefix to their name
+       */
+      if ('' !== $m[5]) {
+        preg_match_all(
                     "/\[@?(!?[\w:-]+)(?:([!*^$|~]?=)[\"']?(.*?)[\"']?)?(?:\s+?([iIsS])?)?\]/is",
                     trim($m[5]),
                     $attributes,
                     PREG_SET_ORDER
                 );
 
-                // Replace element by array
-                $m[5] = [];
+        // Replace element by array
+        $m[5] = [];
 
-                foreach ($attributes as $att) {
-                    // Skip empty matches
-                    if ('' === trim($att[0])) {
-                        continue;
-                    }
+        foreach ($attributes as $att) {
+          // Skip empty matches
+          if ('' === trim($att[0])) {
+            continue;
+          }
 
-                    $inverted = (isset($att[1][0]) && '!' === $att[1][0]);
-                    $m[5][] = [
-                        $inverted ? substr($att[1], 1) : $att[1], // Name
-                        (isset($att[2])) ? $att[2] : '', // Expression
-                        (isset($att[3])) ? $att[3] : '', // Value
-                        $inverted, // Inverted Flag
-                        (isset($att[4])) ? strtolower($att[4]) : '', // Case-Sensitivity
-                    ];
-                }
-            }
+          $inverted = (isset($att[1][0]) && '!' === $att[1][0]);
+          $m[5][] = [
+            $inverted ? substr($att[1], 1) : $att[1], // Name
+            (isset($att[2])) ? $att[2] : '', // Expression
+            (isset($att[3])) ? $att[3] : '', // Value
+            $inverted, // Inverted Flag
+            (isset($att[4])) ? strtolower($att[4]) : '', // Case-Sensitivity
+          ];
+        }
+      }
 
-            // Sanitize Separator
+      // Sanitize Separator
             if ('' !== $m[6] && '' === trim($m[6])) { // Descendant Separator
                 $m[6] = ' ';
             } else { // Other Separator
-                $m[6] = trim($m[6]);
+              $m[6] = trim($m[6]);
             }
 
-            // Clear Separator if it's a Selector List
-            if ($is_list = (',' === $m[6])) {
-                $m[6] = '';
-            }
+      // Clear Separator if it's a Selector List
+      if ($is_list = (',' === $m[6])) {
+        $m[6] = '';
+      }
 
-            $result[] = $m;
+      $result[] = $m;
 
-            if ($is_list) { // Selector List
-                $selectors[] = $result;
-                $result = [];
-            }
-        }
-
-        if (count($result) > 0) {
-            $selectors[] = $result;
-        }
-
-        return $selectors;
+      if ($is_list) { // Selector List
+        $selectors[] = $result;
+        $result = [];
+      }
     }
 
-    public function __get($name)
-    {
-        if (isset($this->attr[$name])) {
-            return $this->convert_text($this->attr[$name]);
-        }
+    if (count($result) > 0) {
+      $selectors[] = $result;
+    }
 
-        switch ($name) {
+    return $selectors;
+  }
+
+  public function __get($name)
+  {
+    if (isset($this->attr[$name])) {
+      return $this->convert_text($this->attr[$name]);
+    }
+
+    switch ($name) {
             case 'outertext':
                 return $this->outertext();
             case 'innertext':
@@ -705,137 +705,137 @@ class HtmlNode
                 return $this->xmltext();
         }
 
-        return false;
-    }
+    return false;
+  }
 
-    public function __set($name, $value)
-    {
-        switch ($name) {
+  public function __set($name, $value)
+  {
+    switch ($name) {
             case 'outertext':
                 $this->_[self::HDOM_INFO_OUTER] = $value;
                 break;
             case 'innertext':
                 if (isset($this->_[self::HDOM_INFO_TEXT])) {
-                    $this->_[self::HDOM_INFO_TEXT] = '';
+                  $this->_[self::HDOM_INFO_TEXT] = '';
                 }
                 $this->_[self::HDOM_INFO_INNER] = $value;
                 break;
             default:
                 $this->attr[$name] = $value;
         }
+  }
+
+  public function text($trim = true)
+  {
+    $ret = '';
+
+    if ('script' === strtolower($this->tag)) {
+      $ret = '';
+    } elseif ('style' === strtolower($this->tag)) {
+      $ret = '';
+    } elseif (self::HDOM_TYPE_COMMENT === $this->nodetype) {
+      $ret = '';
+    } elseif (self::HDOM_TYPE_CDATA === $this->nodetype) {
+      $ret = $this->_[self::HDOM_INFO_INNER];
+    } elseif (self::HDOM_TYPE_UNKNOWN === $this->nodetype) {
+      $ret = '';
+    } elseif (isset($this->_[self::HDOM_INFO_INNER])) {
+      $ret = $this->_[self::HDOM_INFO_INNER];
+    } elseif (self::HDOM_TYPE_TEXT === $this->nodetype) {
+      $ret = $this->_[self::HDOM_INFO_TEXT];
     }
 
-    public function text($trim = true)
-    {
-        $ret = '';
+    if (is_null($this->nodes)) {
+      return '';
+    }
 
-        if ('script' === strtolower($this->tag)) {
-            $ret = '';
-        } elseif ('style' === strtolower($this->tag)) {
-            $ret = '';
-        } elseif (self::HDOM_TYPE_COMMENT === $this->nodetype) {
-            $ret = '';
-        } elseif (self::HDOM_TYPE_CDATA === $this->nodetype) {
-            $ret = $this->_[self::HDOM_INFO_INNER];
-        } elseif (self::HDOM_TYPE_UNKNOWN === $this->nodetype) {
-            $ret = '';
-        } elseif (isset($this->_[self::HDOM_INFO_INNER])) {
-            $ret = $this->_[self::HDOM_INFO_INNER];
-        } elseif (self::HDOM_TYPE_TEXT === $this->nodetype) {
-            $ret = $this->_[self::HDOM_INFO_TEXT];
+    foreach ($this->nodes as $n) {
+      if ($this->is_block_element($n)) {
+        $block = ltrim($this->convert_text($n->text(false)));
+
+        if (empty($block)) {
+          continue;
         }
 
-        if (is_null($this->nodes)) {
-            return '';
+        $ret = rtrim($ret) . "\n\n" . $block;
+      } elseif ($this->is_inline_element($n)) {
+        // todo: <br> introduces code smell because no space but \n
+        if ('br' === strtolower($n->tag)) {
+          $ret .= $this->dom->default_br_text ?: DEFAULT_BR_TEXT;
+        } else {
+          $inline = ltrim($this->convert_text($n->text(false)));
+
+          if (empty($inline)) {
+            continue;
+          }
+
+          $ret = $ret . $this->convert_text($n->text(false));
         }
-
-        foreach ($this->nodes as $n) {
-            if ($this->is_block_element($n)) {
-                $block = ltrim($this->convert_text($n->text(false)));
-
-                if (empty($block)) {
-                    continue;
-                }
-
-                $ret = rtrim($ret) . "\n\n" . $block;
-            } elseif ($this->is_inline_element($n)) {
-                // todo: <br> introduces code smell because no space but \n
-                if ('br' === strtolower($n->tag)) {
-                    $ret .= $this->dom->default_br_text ?: DEFAULT_BR_TEXT;
-                } else {
-                    $inline = ltrim($this->convert_text($n->text(false)));
-
-                    if (empty($inline)) {
-                        continue;
-                    }
-
-                    $ret = $ret . $this->convert_text($n->text(false));
-                }
-            } else {
-                $ret .= $this->convert_text($n->text(false));
-            }
-        }
-
-        // Reduce whitespace at start/end to a single (or none) space
-        $ret = preg_replace('/[ \t\n\r\0\x0B\xC2\xA0]+$/u', $trim ? '' : ' ', $ret);
-        $ret = preg_replace('/^[ \t\n\r\0\x0B\xC2\xA0]+/u', $trim ? '' : ' ', $ret);
-
-        return $ret;
+      } else {
+        $ret .= $this->convert_text($n->text(false));
+      }
     }
 
-    /**
-     * Returns true if the provided element is a block level element.
-     *
-     * @see https://www.w3resource.com/html/HTML-block-level-and-inline-elements.php
-     */
-    protected function is_block_element($node)
-    {
-        // todo: When we have the utility class this should be moved there
-        return in_array(strtolower($node->tag), [
-            'p',
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-            'ol', 'ul',
-            'pre',
-            'address',
-            'blockquote',
-            'dl',
-            'div',
-            'fieldset',
-            'form',
-            'hr',
-            'noscript',
-            'table',
-        ]);
-    }
+    // Reduce whitespace at start/end to a single (or none) space
+    $ret = preg_replace('/[ \t\n\r\0\x0B\xC2\xA0]+$/u', $trim ? '' : ' ', $ret);
+    $ret = preg_replace('/^[ \t\n\r\0\x0B\xC2\xA0]+/u', $trim ? '' : ' ', $ret);
 
-    /**
-     * Returns true if the provided element is an inline level element.
-     *
-     * @see https://www.w3resource.com/html/HTML-block-level-and-inline-elements.php
-     */
-    protected function is_inline_element($node)
-    {
-        // todo: When we have the utility class this should be moved there
-        return in_array(strtolower($node->tag), [
-            'b', 'big', 'i', 'small', 'tt',
-            'abbr', 'acronym', 'cite', 'code', 'dfn', 'em', 'kbd', 'strong', 'samp', 'var',
-            'a', 'bdo', 'br', 'img', 'map', 'object', 'q', 'script', 'span', 'sub', 'sup',
-            'button', 'input', 'label', 'select', 'textarea',
-        ]);
-    }
+    return $ret;
+  }
 
-    public function xmltext()
-    {
-        $ret = $this->innertext();
-        $ret = str_ireplace('<![CDATA[', '', $ret);
-        $ret = str_replace(']]>', '', $ret);
+  /**
+   * Returns true if the provided element is a block level element.
+   *
+   * @see https://www.w3resource.com/html/HTML-block-level-and-inline-elements.php
+   */
+  protected function is_block_element($node)
+  {
+    // todo: When we have the utility class this should be moved there
+    return in_array(strtolower($node->tag), [
+      'p',
+      'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+      'ol', 'ul',
+      'pre',
+      'address',
+      'blockquote',
+      'dl',
+      'div',
+      'fieldset',
+      'form',
+      'hr',
+      'noscript',
+      'table',
+    ]);
+  }
 
-        return $ret;
-    }
+  /**
+   * Returns true if the provided element is an inline level element.
+   *
+   * @see https://www.w3resource.com/html/HTML-block-level-and-inline-elements.php
+   */
+  protected function is_inline_element($node)
+  {
+    // todo: When we have the utility class this should be moved there
+    return in_array(strtolower($node->tag), [
+      'b', 'big', 'i', 'small', 'tt',
+      'abbr', 'acronym', 'cite', 'code', 'dfn', 'em', 'kbd', 'strong', 'samp', 'var',
+      'a', 'bdo', 'br', 'img', 'map', 'object', 'q', 'script', 'span', 'sub', 'sup',
+      'button', 'input', 'label', 'select', 'textarea',
+    ]);
+  }
 
-    public function __isset($name)
-    {
-        switch ($name) {
+  public function xmltext()
+  {
+    $ret = $this->innertext();
+    $ret = str_ireplace('<![CDATA[', '', $ret);
+    $ret = str_replace(']]>', '', $ret);
+
+    return $ret;
+  }
+
+  public function __isset($name)
+  {
+    switch ($name) {
             case 'outertext':
                 return true;
             case 'innertext':
@@ -844,538 +844,538 @@ class HtmlNode
                 return true;
         }
 
-        return isset($this->attr[$name]);
+    return isset($this->attr[$name]);
+  }
+
+  public function __unset($name)
+  {
+    if (isset($this->attr[$name])) {
+      unset($this->attr[$name]);
+    }
+  }
+
+  public function get_display_size()
+  {
+    $width = -1;
+    $height = -1;
+
+    if ('img' !== $this->tag) {
+      return false;
     }
 
-    public function __unset($name)
-    {
-        if (isset($this->attr[$name])) {
-            unset($this->attr[$name]);
-        }
+    // See if there is aheight or width attribute in the tag itself.
+    if (isset($this->attr['width'])) {
+      $width = $this->attr['width'];
     }
 
-    public function get_display_size()
-    {
-        $width = -1;
-        $height = -1;
+    if (isset($this->attr['height'])) {
+      $height = $this->attr['height'];
+    }
 
-        if ('img' !== $this->tag) {
-            return false;
-        }
+    // Now look for an inline style.
+    if (isset($this->attr['style'])) {
+      // Thanks to user gnarf from stackoverflow for this regular expression.
+      $attributes = [];
 
-        // See if there is aheight or width attribute in the tag itself.
-        if (isset($this->attr['width'])) {
-            $width = $this->attr['width'];
-        }
-
-        if (isset($this->attr['height'])) {
-            $height = $this->attr['height'];
-        }
-
-        // Now look for an inline style.
-        if (isset($this->attr['style'])) {
-            // Thanks to user gnarf from stackoverflow for this regular expression.
-            $attributes = [];
-
-            preg_match_all(
+      preg_match_all(
                 '/([\w-]+)\s*:\s*([^;]+)\s*;?/',
                 $this->attr['style'],
                 $matches,
                 PREG_SET_ORDER
             );
 
-            foreach ($matches as $match) {
-                $attributes[$match[1]] = $match[2];
-            }
+      foreach ($matches as $match) {
+        $attributes[$match[1]] = $match[2];
+      }
 
-            // If there is a width in the style attributes:
-            if (isset($attributes['width']) && -1 == $width) {
-                // check that the last two characters are px (pixels)
-                if ('px' === strtolower(substr($attributes['width'], -2))) {
-                    $proposed_width = substr($attributes['width'], 0, -2);
-                    // Now make sure that it's an integer and not something stupid.
-                    if (filter_var($proposed_width, FILTER_VALIDATE_INT)) {
-                        $width = $proposed_width;
-                    }
-                }
-            }
-
-            // If there is a width in the style attributes:
-            if (isset($attributes['height']) && -1 == $height) {
-                // check that the last two characters are px (pixels)
-                if ('px' == strtolower(substr($attributes['height'], -2))) {
-                    $proposed_height = substr($attributes['height'], 0, -2);
-                    // Now make sure that it's an integer and not something stupid.
-                    if (filter_var($proposed_height, FILTER_VALIDATE_INT)) {
-                        $height = $proposed_height;
-                    }
-                }
-            }
+      // If there is a width in the style attributes:
+      if (isset($attributes['width']) && -1 == $width) {
+        // check that the last two characters are px (pixels)
+        if ('px' === strtolower(substr($attributes['width'], -2))) {
+          $proposed_width = substr($attributes['width'], 0, -2);
+          // Now make sure that it's an integer and not something stupid.
+          if (filter_var($proposed_width, FILTER_VALIDATE_INT)) {
+            $width = $proposed_width;
+          }
         }
+      }
 
-        // Future enhancement:
-        // Look in the tag to see if there is a class or id specified that has
-        // a height or width attribute to it.
-
-        // Far future enhancement
-        // Look at all the parent tags of this image to see if they specify a
-        // class or id that has an img selector that specifies a height or width
-        // Note that in this case, the class or id will have the img subselector
-        // for it to apply to the image.
-
-        // ridiculously far future development
-        // If the class or id is specified in a SEPARATE css file thats not on
-        // the page, go get it and do what we were just doing for the ones on
-        // the page.
-
-        $result = [
-            'height' => $height,
-            'width' => $width,
-        ];
-
-        return $result;
-    }
-
-    public function save($filepath = '')
-    {
-        $ret = $this->outertext();
-
-        if ('' !== $filepath) {
-            file_put_contents($filepath, $ret, LOCK_EX);
+      // If there is a width in the style attributes:
+      if (isset($attributes['height']) && -1 == $height) {
+        // check that the last two characters are px (pixels)
+        if ('px' == strtolower(substr($attributes['height'], -2))) {
+          $proposed_height = substr($attributes['height'], 0, -2);
+          // Now make sure that it's an integer and not something stupid.
+          if (filter_var($proposed_height, FILTER_VALIDATE_INT)) {
+            $height = $proposed_height;
+          }
         }
-
-        return $ret;
+      }
     }
 
-    public function addClass($class)
-    {
-        if (is_string($class)) {
-            $class = explode(' ', $class);
+    // Future enhancement:
+    // Look in the tag to see if there is a class or id specified that has
+    // a height or width attribute to it.
+
+    // Far future enhancement
+    // Look at all the parent tags of this image to see if they specify a
+    // class or id that has an img selector that specifies a height or width
+    // Note that in this case, the class or id will have the img subselector
+    // for it to apply to the image.
+
+    // ridiculously far future development
+    // If the class or id is specified in a SEPARATE css file thats not on
+    // the page, go get it and do what we were just doing for the ones on
+    // the page.
+
+    $result = [
+      'height' => $height,
+      'width' => $width,
+    ];
+
+    return $result;
+  }
+
+  public function save($filepath = '')
+  {
+    $ret = $this->outertext();
+
+    if ('' !== $filepath) {
+      file_put_contents($filepath, $ret, LOCK_EX);
+    }
+
+    return $ret;
+  }
+
+  public function addClass($class)
+  {
+    if (is_string($class)) {
+      $class = explode(' ', $class);
+    }
+
+    if (is_array($class)) {
+      foreach ($class as $c) {
+        if (isset($this->class)) {
+          if ($this->hasClass($c)) {
+            continue;
+          } else {
+            $this->class .= ' ' . $c;
+          }
+        } else {
+          $this->class = $c;
         }
+      }
+    }
+  }
 
-        if (is_array($class)) {
-            foreach ($class as $c) {
-                if (isset($this->class)) {
-                    if ($this->hasClass($c)) {
-                        continue;
-                    } else {
-                        $this->class .= ' ' . $c;
-                    }
-                } else {
-                    $this->class = $c;
-                }
-            }
+  public function hasClass($class)
+  {
+    if (is_string($class)) {
+      if (isset($this->class)) {
+        return in_array($class, explode(' ', $this->class), true);
+      }
+    }
+
+    return false;
+  }
+
+  public function removeClass($class = null)
+  {
+    if (!isset($this->class)) {
+      return;
+    }
+
+    if (is_null($class)) {
+      $this->removeAttribute('class');
+
+      return;
+    }
+
+    if (is_string($class)) {
+      $class = explode(' ', $class);
+    }
+
+    if (is_array($class)) {
+      $class = array_diff(explode(' ', $this->class), $class);
+      if (empty($class)) {
+        $this->removeAttribute('class');
+      } else {
+        $this->class = implode(' ', $class);
+      }
+    }
+  }
+
+  public function removeAttribute($name)
+  {
+    unset($this->$name);
+  }
+
+  public function getAllAttributes()
+  {
+    return $this->attr;
+  }
+
+  public function getAttribute($name)
+  {
+    return $this->$name;
+  }
+
+  public function setAttribute($name, $value)
+  {
+    $this->$name = $value;
+  }
+
+  public function hasAttribute($name)
+  {
+    return isset($this->$name);
+  }
+
+  public function remove()
+  {
+    if ($this->parent) {
+      $this->parent->removeChild($this);
+    }
+  }
+
+  public function removeChild($node)
+  {
+    foreach ($node->children as $child) {
+      $node->removeChild($child);
+    }
+
+    // No need to re-index node->children because it is about to be removed!
+
+    foreach ($node->nodes as $entity) {
+      $enidx = array_search($entity, $node->nodes, true);
+      $edidx = array_search($entity, $node->dom->nodes, true);
+
+      if (false !== $enidx) {
+        unset($node->nodes[$enidx]);
+      }
+
+      if (false !== $edidx) {
+        unset($node->dom->nodes[$edidx]);
+      }
+    }
+
+    // No need to re-index node->nodes because it is about to be removed!
+
+    $nidx = array_search($node, $this->nodes, true);
+    $cidx = array_search($node, $this->children, true);
+    $didx = array_search($node, $this->dom->nodes, true);
+
+    if (false !== $nidx) {
+      unset($this->nodes[$nidx]);
+    }
+
+    $this->nodes = array_values($this->nodes);
+
+    if (false !== $cidx) {
+      unset($this->children[$cidx]);
+    }
+
+    $this->children = array_values($this->children);
+
+    if (false !== $didx) {
+      unset($this->dom->nodes[$didx]);
+    }
+
+    // Do not re-index dom->nodes because nodes point to other nodes in the
+    // array explicitly!
+
+    $node->clear();
+  }
+
+  public function getElementById($id)
+  {
+    return $this->find("#$id", 0);
+  }
+
+  public function getElementsById($id, $idx = null)
+  {
+    return $this->find("#$id", $idx);
+  }
+
+  public function getElementByTagName($name)
+  {
+    return $this->find($name, 0);
+  }
+
+  public function getElementsByTagName($name, $idx = null)
+  {
+    return $this->find($name, $idx);
+  }
+
+  public function parentNode()
+  {
+    return $this->parent();
+  }
+
+  public function parent($parent = null)
+  {
+    // I am SURE that this doesn't work properly.
+    // It fails to unset the current node from it's current parents nodes or
+    // children list first.
+    if (null !== $parent) {
+      $this->parent = $parent;
+      $this->parent->nodes[] = $this;
+      $this->parent->children[] = $this;
+    }
+
+    return $this->parent;
+  }
+
+  public function childNodes($idx = -1)
+  {
+    if (-1 === $idx) {
+      return $this->children;
+    }
+
+    if (isset($this->children[$idx])) {
+      return $this->children[$idx];
+    }
+
+    return null;
+  }
+
+  public function firstChild()
+  {
+    if (count($this->children) > 0) {
+      return $this->children[0];
+    }
+
+    return null;
+  }
+
+  public function lastChild()
+  {
+    if (count($this->children) > 0) {
+      return end($this->children);
+    }
+
+    return null;
+  }
+
+  public function nextSibling()
+  {
+    if (null === $this->parent) {
+      return null;
+    }
+
+    $idx = array_search($this, $this->parent->children, true);
+
+    if (false !== $idx && isset($this->parent->children[$idx + 1])) {
+      return $this->parent->children[$idx + 1];
+    }
+
+    return null;
+  }
+
+  public function previousSibling()
+  {
+    if (null === $this->parent) {
+      return null;
+    }
+
+    $idx = array_search($this, $this->parent->children, true);
+
+    if (false !== $idx && $idx > 0) {
+      return $this->parent->children[$idx - 1];
+    }
+
+    return null;
+  }
+
+  public function hasChildNodes()
+  {
+    return !empty($this->children);
+  }
+
+  public function nodeName()
+  {
+    return $this->tag;
+  }
+
+  public function appendChild($node)
+  {
+    $node->parent = $this;
+    $this->nodes[] = $node;
+    $this->children[] = $node;
+
+    if ($this->dom) { // Attach current node to DOM (recursively)
+      $children = [$node];
+
+      while ($children) {
+        $child = array_pop($children);
+        $children = array_merge($children, $child->children);
+
+        $this->dom->nodes[] = $child;
+        $child->dom = $this->dom;
+        $child->_[self::HDOM_INFO_BEGIN] = count($this->dom->nodes) - 1;
+        $child->_[self::HDOM_INFO_END] = $child->_[self::HDOM_INFO_BEGIN];
+      }
+
+      $this->dom->root->_[self::HDOM_INFO_END] = count($this->dom->nodes) - 1;
+    }
+
+    return $this;
+  }
+
+  protected function seek($selector, &$ret, $parent_cmd, $lowercase = false)
+  {
+    list($ps_selector, $tag, $ps_element, $id, $class, $attributes, $cmb) = $selector;
+    $nodes = [];
+
+    if (' ' === $parent_cmd) { // Descendant Combinator
+      // Find parent closing tag if the current element doesn't have a closing
+      // tag (i.e. void element)
+      $end = (!empty($this->_[self::HDOM_INFO_END])) ? $this->_[self::HDOM_INFO_END] : 0;
+      if (0 == $end && $this->parent) {
+        $parent = $this->parent;
+        while (null !== $parent && !isset($parent->_[self::HDOM_INFO_END])) {
+          --$end;
+          $parent = $parent->parent;
         }
-    }
+        $end += $parent->_[self::HDOM_INFO_END];
+      }
 
-    public function hasClass($class)
-    {
-        if (is_string($class)) {
-            if (isset($this->class)) {
-                return in_array($class, explode(' ', $this->class), true);
-            }
-        }
+      if (0 === $end) {
+        $end = count($this->dom->nodes);
+      }
 
-        return false;
-    }
+      // Get list of target nodes
+      $nodes_start = $this->_[self::HDOM_INFO_BEGIN] + 1;
 
-    public function removeClass($class = null)
-    {
-        if (!isset($this->class)) {
-            return;
-        }
-
-        if (is_null($class)) {
-            $this->removeAttribute('class');
-
-            return;
-        }
-
-        if (is_string($class)) {
-            $class = explode(' ', $class);
-        }
-
-        if (is_array($class)) {
-            $class = array_diff(explode(' ', $this->class), $class);
-            if (empty($class)) {
-                $this->removeAttribute('class');
-            } else {
-                $this->class = implode(' ', $class);
-            }
-        }
-    }
-
-    public function removeAttribute($name)
-    {
-        unset($this->$name);
-    }
-
-    public function getAllAttributes()
-    {
-        return $this->attr;
-    }
-
-    public function getAttribute($name)
-    {
-        return $this->$name;
-    }
-
-    public function setAttribute($name, $value)
-    {
-        $this->$name = $value;
-    }
-
-    public function hasAttribute($name)
-    {
-        return isset($this->$name);
-    }
-
-    public function remove()
-    {
-        if ($this->parent) {
-            $this->parent->removeChild($this);
-        }
-    }
-
-    public function removeChild($node)
-    {
-        foreach ($node->children as $child) {
-            $node->removeChild($child);
-        }
-
-        // No need to re-index node->children because it is about to be removed!
-
-        foreach ($node->nodes as $entity) {
-            $enidx = array_search($entity, $node->nodes, true);
-            $edidx = array_search($entity, $node->dom->nodes, true);
-
-            if (false !== $enidx) {
-                unset($node->nodes[$enidx]);
-            }
-
-            if (false !== $edidx) {
-                unset($node->dom->nodes[$edidx]);
-            }
-        }
-
-        // No need to re-index node->nodes because it is about to be removed!
-
-        $nidx = array_search($node, $this->nodes, true);
-        $cidx = array_search($node, $this->children, true);
-        $didx = array_search($node, $this->dom->nodes, true);
-
-        if (false !== $nidx) {
-            unset($this->nodes[$nidx]);
-        }
-
-        $this->nodes = array_values($this->nodes);
-
-        if (false !== $cidx) {
-            unset($this->children[$cidx]);
-        }
-
-        $this->children = array_values($this->children);
-
-        if (false !== $didx) {
-            unset($this->dom->nodes[$didx]);
-        }
-
-        // Do not re-index dom->nodes because nodes point to other nodes in the
-        // array explicitly!
-
-        $node->clear();
-    }
-
-    public function getElementById($id)
-    {
-        return $this->find("#$id", 0);
-    }
-
-    public function getElementsById($id, $idx = null)
-    {
-        return $this->find("#$id", $idx);
-    }
-
-    public function getElementByTagName($name)
-    {
-        return $this->find($name, 0);
-    }
-
-    public function getElementsByTagName($name, $idx = null)
-    {
-        return $this->find($name, $idx);
-    }
-
-    public function parentNode()
-    {
-        return $this->parent();
-    }
-
-    public function parent($parent = null)
-    {
-        // I am SURE that this doesn't work properly.
-        // It fails to unset the current node from it's current parents nodes or
-        // children list first.
-        if (null !== $parent) {
-            $this->parent = $parent;
-            $this->parent->nodes[] = $this;
-            $this->parent->children[] = $this;
-        }
-
-        return $this->parent;
-    }
-
-    public function childNodes($idx = -1)
-    {
-        if (-1 === $idx) {
-            return $this->children;
-        }
-
-        if (isset($this->children[$idx])) {
-            return $this->children[$idx];
-        }
-
-        return null;
-    }
-
-    public function firstChild()
-    {
-        if (count($this->children) > 0) {
-            return $this->children[0];
-        }
-
-        return null;
-    }
-
-    public function lastChild()
-    {
-        if (count($this->children) > 0) {
-            return end($this->children);
-        }
-
-        return null;
-    }
-
-    public function nextSibling()
-    {
-        if (null === $this->parent) {
-            return null;
-        }
-
-        $idx = array_search($this, $this->parent->children, true);
-
-        if (false !== $idx && isset($this->parent->children[$idx + 1])) {
-            return $this->parent->children[$idx + 1];
-        }
-
-        return null;
-    }
-
-    public function previousSibling()
-    {
-        if (null === $this->parent) {
-            return null;
-        }
-
-        $idx = array_search($this, $this->parent->children, true);
-
-        if (false !== $idx && $idx > 0) {
-            return $this->parent->children[$idx - 1];
-        }
-
-        return null;
-    }
-
-    public function hasChildNodes()
-    {
-        return !empty($this->children);
-    }
-
-    public function nodeName()
-    {
-        return $this->tag;
-    }
-
-    public function appendChild($node)
-    {
-        $node->parent = $this;
-        $this->nodes[] = $node;
-        $this->children[] = $node;
-
-        if ($this->dom) { // Attach current node to DOM (recursively)
-            $children = [$node];
-
-            while ($children) {
-                $child = array_pop($children);
-                $children = array_merge($children, $child->children);
-
-                $this->dom->nodes[] = $child;
-                $child->dom = $this->dom;
-                $child->_[self::HDOM_INFO_BEGIN] = count($this->dom->nodes) - 1;
-                $child->_[self::HDOM_INFO_END] = $child->_[self::HDOM_INFO_BEGIN];
-            }
-
-            $this->dom->root->_[self::HDOM_INFO_END] = count($this->dom->nodes) - 1;
-        }
-
-        return $this;
-    }
-
-    protected function seek($selector, &$ret, $parent_cmd, $lowercase = false)
-    {
-        list($ps_selector, $tag, $ps_element, $id, $class, $attributes, $cmb) = $selector;
-        $nodes = [];
-
-        if (' ' === $parent_cmd) { // Descendant Combinator
-            // Find parent closing tag if the current element doesn't have a closing
-            // tag (i.e. void element)
-            $end = (!empty($this->_[self::HDOM_INFO_END])) ? $this->_[self::HDOM_INFO_END] : 0;
-            if (0 == $end && $this->parent) {
-                $parent = $this->parent;
-                while (null !== $parent && !isset($parent->_[self::HDOM_INFO_END])) {
-                    --$end;
-                    $parent = $parent->parent;
-                }
-                $end += $parent->_[self::HDOM_INFO_END];
-            }
-
-            if (0 === $end) {
-                $end = count($this->dom->nodes);
-            }
-
-            // Get list of target nodes
-            $nodes_start = $this->_[self::HDOM_INFO_BEGIN] + 1;
-
-            // remove() makes $this->dom->nodes non-contiguous; use what is left.
-            $nodes = array_intersect_key(
+      // remove() makes $this->dom->nodes non-contiguous; use what is left.
+      $nodes = array_intersect_key(
                 $this->dom->nodes,
                 array_flip(range($nodes_start, $end))
             );
-        } elseif ('>' === $parent_cmd) { // Child Combinator
-            $nodes = $this->children;
-        } elseif (
+    } elseif ('>' === $parent_cmd) { // Child Combinator
+      $nodes = $this->children;
+    } elseif (
             '+' === $parent_cmd
             && $this->parent
             && in_array($this, $this->parent->children)
         ) { // Next-Sibling Combinator
-            $index = array_search($this, $this->parent->children, true) + 1;
-            if ($index < count($this->parent->children)) {
-                $nodes[] = $this->parent->children[$index];
-            }
-        } elseif (
+      $index = array_search($this, $this->parent->children, true) + 1;
+      if ($index < count($this->parent->children)) {
+        $nodes[] = $this->parent->children[$index];
+      }
+    } elseif (
             '~' === $parent_cmd
             && $this->parent
             && in_array($this, $this->parent->children)
         ) { // Subsequent Sibling Combinator
-            $index = array_search($this, $this->parent->children, true);
-            $nodes = array_slice($this->parent->children, $index);
+      $index = array_search($this, $this->parent->children, true);
+      $nodes = array_slice($this->parent->children, $index);
+    }
+
+    // Go throgh each element starting at this element until the end tag
+    // Note: If this element is a void tag, any previous void element is
+    // skipped.
+    foreach ($nodes as $node) {
+      $pass = true;
+
+      // Skip root nodes
+      if (!$node->parent) {
+        unset($node);
+        continue;
+      }
+
+      // Handle 'text' selector
+      if ($pass && 'text' === $tag) {
+        if ('text' === $node->tag) {
+          $ret[array_search($node, $this->dom->nodes, true)] = 1;
         }
 
-        // Go throgh each element starting at this element until the end tag
-        // Note: If this element is a void tag, any previous void element is
-        // skipped.
-        foreach ($nodes as $node) {
-            $pass = true;
+        if (isset($node->_[self::HDOM_INFO_INNER])) {
+          $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
+        }
 
-            // Skip root nodes
-            if (!$node->parent) {
-                unset($node);
-                continue;
+        unset($node);
+        continue;
+      }
+
+      // Handle 'cdata' selector
+      if ($pass && 'cdata' === $tag) {
+        if ('cdata' === $node->tag) {
+          $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
+        }
+
+        unset($node);
+        continue;
+      }
+
+      // Handle 'comment'
+      if ($pass && 'comment' === $tag && 'comment' === $node->tag) {
+        $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
+        unset($node);
+        continue;
+      }
+
+      // Skip if node isn't a child node (i.e. text nodes)
+      if ($pass && !in_array($node, $node->parent->children, true)) {
+        unset($node);
+        continue;
+      }
+
+      // Skip if tag doesn't match
+      if ($pass && '' !== $tag && $tag !== $node->tag && '*' !== $tag) {
+        $pass = false;
+      }
+
+      // Skip if ID doesn't exist
+      if ($pass && '' !== $id && !isset($node->attr['id'])) {
+        $pass = false;
+      }
+
+      // Check if ID matches
+      if ($pass && '' !== $id && isset($node->attr['id'])) {
+        // Note: Only consider the first ID (as browsers do)
+        $node_id = explode(' ', trim($node->attr['id']))[0];
+
+        if ($id !== $node_id) {
+          $pass = false;
+        }
+      }
+
+      // Check if all class(es) exist
+      if ($pass && '' !== $class && is_array($class) && !empty($class)) {
+        if (isset($node->attr['class'])) {
+          // Apply the same rules for the pattern and attribute value
+          // Attribute values must not contain control characters other than space
+          // https://www.w3.org/TR/html/dom.html#text-content
+          // https://www.w3.org/TR/html/syntax.html#attribute-values
+          // https://www.w3.org/TR/xml/#AVNormalize
+          $node_classes = preg_replace("/[\r\n\t\s]+/u", ' ', $node->attr['class']);
+          $node_classes = trim($node_classes);
+          $node_classes = explode(' ', $node_classes);
+
+          if ($lowercase) {
+            $node_classes = array_map('strtolower', $node_classes);
+          }
+
+          foreach ($class as $c) {
+            if (!in_array($c, $node_classes)) {
+              $pass = false;
+              break;
             }
+          }
+        } else {
+          $pass = false;
+        }
+      }
 
-            // Handle 'text' selector
-            if ($pass && 'text' === $tag) {
-                if ('text' === $node->tag) {
-                    $ret[array_search($node, $this->dom->nodes, true)] = 1;
-                }
-
-                if (isset($node->_[self::HDOM_INFO_INNER])) {
-                    $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
-                }
-
-                unset($node);
-                continue;
-            }
-
-            // Handle 'cdata' selector
-            if ($pass && 'cdata' === $tag) {
-                if ('cdata' === $node->tag) {
-                    $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
-                }
-
-                unset($node);
-                continue;
-            }
-
-            // Handle 'comment'
-            if ($pass && 'comment' === $tag && 'comment' === $node->tag) {
-                $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
-                unset($node);
-                continue;
-            }
-
-            // Skip if node isn't a child node (i.e. text nodes)
-            if ($pass && !in_array($node, $node->parent->children, true)) {
-                unset($node);
-                continue;
-            }
-
-            // Skip if tag doesn't match
-            if ($pass && '' !== $tag && $tag !== $node->tag && '*' !== $tag) {
-                $pass = false;
-            }
-
-            // Skip if ID doesn't exist
-            if ($pass && '' !== $id && !isset($node->attr['id'])) {
-                $pass = false;
-            }
-
-            // Check if ID matches
-            if ($pass && '' !== $id && isset($node->attr['id'])) {
-                // Note: Only consider the first ID (as browsers do)
-                $node_id = explode(' ', trim($node->attr['id']))[0];
-
-                if ($id !== $node_id) {
-                    $pass = false;
-                }
-            }
-
-            // Check if all class(es) exist
-            if ($pass && '' !== $class && is_array($class) && !empty($class)) {
-                if (isset($node->attr['class'])) {
-                    // Apply the same rules for the pattern and attribute value
-                    // Attribute values must not contain control characters other than space
-                    // https://www.w3.org/TR/html/dom.html#text-content
-                    // https://www.w3.org/TR/html/syntax.html#attribute-values
-                    // https://www.w3.org/TR/xml/#AVNormalize
-                    $node_classes = preg_replace("/[\r\n\t\s]+/u", ' ', $node->attr['class']);
-                    $node_classes = trim($node_classes);
-                    $node_classes = explode(' ', $node_classes);
-
-                    if ($lowercase) {
-                        $node_classes = array_map('strtolower', $node_classes);
-                    }
-
-                    foreach ($class as $c) {
-                        if (!in_array($c, $node_classes)) {
-                            $pass = false;
-                            break;
-                        }
-                    }
-                } else {
-                    $pass = false;
-                }
-            }
-
-            // Check attributes
-            if (
+      // Check attributes
+      if (
                 $pass
                 && '' !== $attributes
                 && is_array($attributes)
                 && !empty($attributes)
             ) {
-                foreach ($attributes as $a) {
-                    list(
+        foreach ($attributes as $a) {
+          list(
                         $att_name,
                         $att_expr,
                         $att_val,
@@ -1383,125 +1383,125 @@ class HtmlNode
                         $att_case_sensitivity
                         ) = $a;
 
-                    // Handle indexing attributes (i.e. "[2]")
-                    /*
-                     * Note: This is not supported by the CSS Standard but adds
-                     * the ability to select items compatible to XPath (i.e.
-                     * the 3rd element within it's parent).
-                     *
-                     * Note: This doesn't conflict with the CSS Standard which
-                     * doesn't work on numeric attributes anyway.
-                     */
-                    if (
+          // Handle indexing attributes (i.e. "[2]")
+          /*
+           * Note: This is not supported by the CSS Standard but adds
+           * the ability to select items compatible to XPath (i.e.
+           * the 3rd element within it's parent).
+           *
+           * Note: This doesn't conflict with the CSS Standard which
+           * doesn't work on numeric attributes anyway.
+           */
+          if (
                         is_numeric($att_name)
                         && '' === $att_expr
                         && '' === $att_val
                     ) {
-                        $count = 0;
+            $count = 0;
 
-                        // Find index of current element in parent
-                        foreach ($node->parent->children as $c) {
-                            if ($c->tag === $node->tag) {
-                                ++$count;
-                            }
-                            if ($c === $node) {
-                                break;
-                            }
-                        }
+            // Find index of current element in parent
+            foreach ($node->parent->children as $c) {
+              if ($c->tag === $node->tag) {
+                ++$count;
+              }
+              if ($c === $node) {
+                break;
+              }
+            }
 
-                        // If this is the correct node, continue with next
-                        // attribute
-                        if ($count === (int)$att_name) {
-                            continue;
-                        }
-                    }
+            // If this is the correct node, continue with next
+            // attribute
+            if ($count === (int) $att_name) {
+              continue;
+            }
+          }
 
-                    // Check attribute availability
+          // Check attribute availability
                     if ($att_inv) { // Attribute should NOT be set
                         if (isset($node->attr[$att_name])) {
-                            $pass = false;
-                            break;
+                          $pass = false;
+                          break;
                         }
                     } else { // Attribute should be set
-                        // todo: "plaintext" is not a valid CSS selector!
-                        if (
+                      // todo: "plaintext" is not a valid CSS selector!
+                      if (
                             'plaintext' !== $att_name
                             && !isset($node->attr[$att_name])
                         ) {
-                            $pass = false;
-                            break;
-                        }
+                        $pass = false;
+                        break;
+                      }
                     }
 
-                    // Continue with next attribute if expression isn't defined
-                    if ('' === $att_expr) {
-                        continue;
-                    }
+          // Continue with next attribute if expression isn't defined
+          if ('' === $att_expr) {
+            continue;
+          }
 
-                    // If they have told us that this is a "plaintext"
-                    // search then we want the plaintext of the node - right?
-                    // todo "plaintext" is not a valid CSS selector!
-                    if ('plaintext' === $att_name) {
-                        $nodeKeyValue = $node->text();
-                    } else {
-                        $nodeKeyValue = $node->attr[$att_name];
-                    }
+          // If they have told us that this is a "plaintext"
+          // search then we want the plaintext of the node - right?
+          // todo "plaintext" is not a valid CSS selector!
+          if ('plaintext' === $att_name) {
+            $nodeKeyValue = $node->text();
+          } else {
+            $nodeKeyValue = $node->attr[$att_name];
+          }
 
-                    // If lowercase is set, do a case insensitive test of
-                    // the value of the selector.
-                    if ($lowercase) {
-                        $check = $this->match(
+          // If lowercase is set, do a case insensitive test of
+          // the value of the selector.
+          if ($lowercase) {
+            $check = $this->match(
                             $att_expr,
                             strtolower($att_val),
                             strtolower($nodeKeyValue),
                             $att_case_sensitivity
                         );
-                    } else {
-                        $check = $this->match(
+          } else {
+            $check = $this->match(
                             $att_expr,
                             $att_val,
                             $nodeKeyValue,
                             $att_case_sensitivity
                         );
-                    }
+          }
 
-                    $check = 'not' === $ps_element ? !$check : $check;
+          $check = 'not' === $ps_element ? !$check : $check;
 
-                    if (!$check) {
-                        $pass = false;
-                        break;
-                    }
-                }
-            }
-
-            // Found a match. Add to list and clear node
-            $pass = 'not' === $ps_selector ? !$pass : $pass;
-            if ($pass) {
-                $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
-            }
-            unset($node);
+          if (!$check) {
+            $pass = false;
+            break;
+          }
         }
+      }
+
+      // Found a match. Add to list and clear node
+      $pass = 'not' === $ps_selector ? !$pass : $pass;
+      if ($pass) {
+        $ret[$node->_[self::HDOM_INFO_BEGIN]] = 1;
+      }
+      unset($node);
+    }
+  }
+
+  protected function match($exp, $pattern, $value, $case_sensitivity)
+  {
+    if ('i' === $case_sensitivity) {
+      $pattern = strtolower($pattern);
+      $value = strtolower($value);
     }
 
-    protected function match($exp, $pattern, $value, $case_sensitivity)
-    {
-        if ('i' === $case_sensitivity) {
-            $pattern = strtolower($pattern);
-            $value = strtolower($value);
-        }
+    // Apply the same rules for the pattern and attribute value
+    // Attribute values must not contain control characters other than space
+    // https://www.w3.org/TR/html/dom.html#text-content
+    // https://www.w3.org/TR/html/syntax.html#attribute-values
+    // https://www.w3.org/TR/xml/#AVNormalize
+    $pattern = preg_replace("/[\r\n\t\s]+/u", ' ', $pattern);
+    $pattern = trim($pattern);
 
-        // Apply the same rules for the pattern and attribute value
-        // Attribute values must not contain control characters other than space
-        // https://www.w3.org/TR/html/dom.html#text-content
-        // https://www.w3.org/TR/html/syntax.html#attribute-values
-        // https://www.w3.org/TR/xml/#AVNormalize
-        $pattern = preg_replace("/[\r\n\t\s]+/u", ' ', $pattern);
-        $pattern = trim($pattern);
+    $value = preg_replace("/[\r\n\t\s]+/u", ' ', $value);
+    $value = trim($value);
 
-        $value = preg_replace("/[\r\n\t\s]+/u", ' ', $value);
-        $value = trim($value);
-
-        switch ($exp) {
+    switch ($exp) {
             case '=':
                 return $value === $pattern;
             case '!=':
@@ -1534,8 +1534,8 @@ class HtmlNode
                 return in_array($pattern, explode(' ', trim($value)), true);
         }
 
-        Debug::log('Unhandled attribute selector: ' . $exp . '!');
+    Debug::log('Unhandled attribute selector: ' . $exp . '!');
 
-        return false;
-    }
+    return false;
+  }
 }

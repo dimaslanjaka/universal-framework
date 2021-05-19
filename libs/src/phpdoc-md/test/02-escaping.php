@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../../vendor/autoload.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 
 use phpDocumentor\Reflection\DocBlockFactory;
 
@@ -43,5 +43,7 @@ $receivedDocComment = <<<DOCCOMMENT
  */
 DOCCOMMENT;
 
-// Render it using the default PassthroughFormatter
+// Render it using the default PassthroughsFormatter
 $foundDescription = $description->render();
+header('Content-Type: text/plain; charset=utf-8');
+echo $foundDescription;

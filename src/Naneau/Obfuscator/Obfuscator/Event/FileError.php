@@ -14,33 +14,33 @@ namespace Naneau\Obfuscator\Obfuscator\Event;
  */
 class FileError extends File
 {
-    /**
-     * The error message from Exception.
-     *
-     * @var string
-     **/
-    private $errorMessage;
+  /**
+   * The error message from Exception.
+   *
+   * @var string
+   **/
+  private $errorMessage;
 
-    /**
-     * Constructor.
-     *
-     * @param string $file
-     *
-     * @return void
-     **/
-    public function __construct($file, $errorMessage)
-    {
-        parent::setFile($file);
-        $this->errorMessage = $errorMessage;
-    }
+  /**
+   * Constructor.
+   *
+   * @param string $file
+   *
+   * @return void
+   **/
+  public function __construct($file, $errorMessage)
+  {
+    parent::setFile($file);
+    $this->errorMessage = $errorMessage;
+  }
 
-    /**
-     * Get the error message.
-     *
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
-    }
+  /**
+   * Get the error message.
+   *
+   * @return string
+   */
+  public function getErrorMessage()
+  {
+    return $this->errorMessage;
+  }
 }

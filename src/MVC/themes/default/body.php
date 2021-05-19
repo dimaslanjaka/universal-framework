@@ -44,16 +44,16 @@
 
 <?php
 if (isset($content) && file_exists($content)) {
-    include $content;
+  include $content;
 } else {
-    echo '404';
+  echo '404';
 }
 ?>
 
 <section>
     <?php
     if (is_admin()) {
-        include __DIR__ . '/../meta-editor.php';
+      include __DIR__ . '/../meta-editor.php';
     }
     ?>
 </section>

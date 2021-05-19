@@ -9,32 +9,32 @@ const POST_NOT_NULL = 2;
  * Get post data with fallback value.
  *
  * @param string $fallback
- * @param int $flag flag rule for post getter
+ * @param int    $flag     flag rule for post getter
  *
  * @return void
  */
 function getPost($name, $fallback = null, $flag = POST_DEFAULT_FLAG)
 {
-    if (isPost()) {
-        if (isset($_POST[$name])) {
-            $thePost = $_POST[$name];
-            if (POST_DEFAULT_FLAG != $flag) {
-                if (POST_NOT_NULL == $flag) {
-                    if (null != $thePost) {
-                        return $thePost;
-                    }
-                } elseif (POST_NOT_EMPTY == $flag) {
-                    if (!empty($thePost)) {
-                        return $thePost;
-                    }
-                }
-            } else {
-                return $thePost;
-            }
+  if (isPost()) {
+    if (isset($_POST[$name])) {
+      $thePost = $_POST[$name];
+      if (POST_DEFAULT_FLAG != $flag) {
+        if (POST_NOT_NULL == $flag) {
+          if (null != $thePost) {
+            return $thePost;
+          }
+        } elseif (POST_NOT_EMPTY == $flag) {
+          if (!empty($thePost)) {
+            return $thePost;
+          }
         }
+      } else {
+        return $thePost;
+      }
     }
+  }
 
-    return $fallback;
+  return $fallback;
 }
 
 /**
@@ -44,7 +44,7 @@ function getPost($name, $fallback = null, $flag = POST_DEFAULT_FLAG)
  */
 function isPost()
 {
-    return isRequest('post');
+  return isRequest('post');
 }
 
 /**
@@ -54,7 +54,7 @@ function isPost()
  */
 function isRequest($methodName)
 {
-    return $_SERVER['REQUEST_METHOD'] == strtoupper($methodName);
+  return $_SERVER['REQUEST_METHOD'] == strtoupper($methodName);
 }
 
 /**
@@ -62,9 +62,9 @@ function isRequest($methodName)
  */
 function getRequest($requestName)
 {
-    if (isset($_REQUEST[$requestName])) {
-        return $_REQUEST[$requestName];
-    }
+  if (isset($_REQUEST[$requestName])) {
+    return $_REQUEST[$requestName];
+  }
 
-    return null;
+  return null;
 }

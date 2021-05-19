@@ -5,9 +5,9 @@
     <div class="container-fluid mt-5">
         <?php
         if (isset($content) && file_exists($content)) {
-            include $content;
+          include $content;
         } else {
-            echo '404';
+          echo '404';
         }
         ?>
     </div>

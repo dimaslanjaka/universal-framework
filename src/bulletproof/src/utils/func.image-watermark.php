@@ -19,8 +19,8 @@ namespace Bulletproof\Utils;
 
 function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $watermarkHeight, $watermarkWidth, $position = 'center')
 {
-    // Calculate the watermark position
-    switch ($position) {
+  // Calculate the watermark position
+  switch ($position) {
         case 'center':
             $marginBottom = round($imgHeight / 2);
             $marginRight = round($imgWidth / 2) - round($watermarkWidth / 2);
@@ -47,9 +47,9 @@ function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $waterm
             break;
     }
 
-    $watermark = imagecreatefrompng($watermark);
+  $watermark = imagecreatefrompng($watermark);
 
-    switch ($mimeType) {
+  switch ($mimeType) {
         case 'jpeg':
         case 'jpg':
             $createImage = imagecreatefromjpeg($image);
@@ -68,9 +68,9 @@ function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $waterm
             break;
     }
 
-    $sx = imagesx($watermark);
-    $sy = imagesy($watermark);
-    imagecopy(
+  $sx = imagesx($watermark);
+  $sy = imagesy($watermark);
+  imagecopy(
         $createImage,
         $watermark,
         imagesx($createImage) - $sx - $marginRight,
@@ -81,7 +81,7 @@ function watermark($image, $mimeType, $imgWidth, $imgHeight, $watermark, $waterm
         imagesy($watermark)
     );
 
-    switch ($mimeType) {
+  switch ($mimeType) {
         case 'jpeg':
         case 'jpg':
             imagejpeg($createImage, $image);

@@ -1,0 +1,108 @@
+<?php
+function normalize($text)
+{
+    return preg_replace('/^_/', '\_', $text);
+}
+
+?>
+# <?= $this->className ?>
+
+<?= $this->classDescription->short ?>
+
+<?php if ($this->classDescription->long) : ?>
+
+    <?= $this->classDescription->long ?>
+<?php endif ?>
+
+<?php if ($interfaces = $this->interfaces): ?>
+    ## Implements:
+    <?= join(', ', $interfaces); ?>
+<?php endif ?>
+
+
+<?php if ($this->parentClass): ?>
+    ## Extend:
+
+    <?= $this->parentClass ?>
+<?php endif ?>
+
+## Methods
+
+| Name | Description |
+| ---- | ----------- |
+<?php foreach ($this->methods as $name => $info) : ?>
+    |
+    <a href="#<?= $this->classShortName ?>-<?= $name ?>"><?= normalize($name) ?></a> | <?= normalize($info->shortDescription) ?> |
+<?php endforeach ?>
+
+<?php if ($this->inheritedMethods): ?>
+    ## Inherited methods
+
+    | Name | Description |
+    |------|-------------|
+    <?php foreach ($this->inheritedMethods as $name => $info) : ?>
+        <?php if (isset($info->doclink)): ?>
+            | [<?= normalize($name) ?>](<?= $info->doclink ?>) | <?= normalize($info->shortDescription) ?: '-' ?> |
+        <?php else: ?>
+            | <?= normalize($name) ?> | <?= normalize($info->shortDescription) ?: '-' ?> |
+        <?php endif ?>
+    <?php endforeach ?>
+<?php endif ?>
+
+
+<?php foreach ($this->methods as $name => $info) : ?>
+
+    ### <?= $this->classShortName ?>::<?= $name ?> <a href="#<?= $this->classShortName ?>-<?= $name ?>"
+                                                      name="<?= $this->classShortName ?>-<?= $name ?>">&#xB6;</a>
+
+    **Description**
+
+    ```php
+    <?= $info->visibility ?> <?= $name ?> (<?= join(', ', $info->argumentsList) ?: 'void' ?>)
+    ```
+
+    <?= $info->shortDescription ?>
+
+    <?= str_replace("\n", "  \n", $info->longDescription) ?>
+
+    **Parameters**
+
+    <?php if (!$info->argumentsDescription) : ?>
+        `This function has no parameters.`
+    <?php else : ?>
+        <?php foreach ($info->argumentsDescription as $param) : ?>
+            * `(<?= $param->type ?>) <?= $param->name ?>`
+            <?php if (!empty(trim($param->desc))) : ?>
+                : <?= str_replace("\n", "  \n", $param->desc) ?>
+            <?php endif ?>
+        <?php endforeach ?>
+    <?php endif ?>
+
+    **Return Values**
+
+    <?php foreach ($info->returnValue as $param) : ?>
+        `<?= $param->type ?>`
+
+        <?php if (!empty(trim($param->desc))) : ?>
+            > <?= str_replace("\n", "  \n", $param->desc) ?>
+        <?php endif ?>
+
+    <?php endforeach ?>
+
+    <?php if ($info->throwsExceptions) : ?>
+
+        **Throws Exceptions**
+
+        <?php foreach ($info->throwsExceptions as $param) : ?>
+
+            `<?= $param->type ?>`
+            <?php if (!empty(trim($param->desc))) : ?>
+                > <?= str_replace("\n", "  \n", $param->desc) ?>
+            <?php endif ?>
+
+        <?php endforeach ?>
+    <?php endif ?>
+
+    <hr/>
+
+<?php endforeach ?>

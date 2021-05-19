@@ -19,7 +19,7 @@ namespace Bulletproof\Utils;
 
 function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
 {
-    switch ($mimeType) {
+  switch ($mimeType) {
         case 'jpg':
         case 'jpeg':
             $imageCreate = imagecreatefromjpeg($image);
@@ -38,20 +38,20 @@ function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
             break;
     }
 
-    // The image offsets/coordination to crop the image.
-    $widthTrim = ceil(($imgWidth - $newWidth) / 2);
-    $heightTrim = ceil(($imgHeight - $newHeight) / 2);
+  // The image offsets/coordination to crop the image.
+  $widthTrim = ceil(($imgWidth - $newWidth) / 2);
+  $heightTrim = ceil(($imgHeight - $newHeight) / 2);
 
-    // Can't crop to a bigger size, ex:
-    // an image with 100X100 can not be cropped to 200X200. Image can only be cropped to smaller size.
-    if ($widthTrim < 0 && $heightTrim < 0) {
-        return;
-    }
+  // Can't crop to a bigger size, ex:
+  // an image with 100X100 can not be cropped to 200X200. Image can only be cropped to smaller size.
+  if ($widthTrim < 0 && $heightTrim < 0) {
+    return;
+  }
 
-    $temp = imagecreatetruecolor($newWidth, $newHeight);
-    imagealphablending($temp, false);
-    imagesavealpha($temp, true);
-    imagecopyresampled(
+  $temp = imagecreatetruecolor($newWidth, $newHeight);
+  imagealphablending($temp, false);
+  imagesavealpha($temp, true);
+  imagecopyresampled(
         $temp,
         $imageCreate,
         0,
@@ -64,8 +64,8 @@ function crop($image, $mimeType, $imgWidth, $imgHeight, $newWidth, $newHeight)
         $newHeight
     );
 
-    if (!$temp) {
-        throw new \Exception('Failed to crop image. Please pass the right parameters');
-    }
-    imagejpeg($temp, $image);
+  if (!$temp) {
+    throw new \Exception('Failed to crop image. Please pass the right parameters');
+  }
+  imagejpeg($temp, $image);
 }

@@ -60,13 +60,13 @@
 </style>
 <?php
 if (isset($var['css']) && $var['css'] && file_exists($var['css'])) {
-    echo '<style>';
-    include $var['css'];
-    echo '</style>';
+  echo '<style>';
+  include $var['css'];
+  echo '</style>';
 }
 if ($contentCSS = preg_replace('/\.php$/s', '.css', $content)) {
-    echo '<style>';
-    \MVC\helper::include_asset($contentCSS);
-    echo '</style>';
+  echo '<style>';
+  \MVC\helper::include_asset($contentCSS);
+  echo '</style>';
 }
 ?>

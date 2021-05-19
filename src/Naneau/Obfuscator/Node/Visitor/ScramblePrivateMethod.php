@@ -32,102 +32,102 @@ use PhpParser\Node\Stmt\ClassMethod;
  */
 class ScramblePrivateMethod extends ScramblerVisitor
 {
-    use TrackingRenamerTrait;
-    use SkipTrait;
+  use TrackingRenamerTrait;
+  use SkipTrait;
 
-    /**
-     * Before node traversal.
-     *
-     * @param Node[] $nodes
-     *
-     * @return array
-     **/
-    public function beforeTraverse(array $nodes)
-    {
-        $this
+  /**
+   * Before node traversal.
+   *
+   * @param Node[] $nodes
+   *
+   * @return array
+   **/
+  public function beforeTraverse(array $nodes)
+  {
+    $this
             ->resetRenamed()
             ->skip($this->variableMethodCallsUsed($nodes));
 
-        $this->scanMethodDefinitions($nodes);
+    $this->scanMethodDefinitions($nodes);
 
-        return $nodes;
+    return $nodes;
+  }
+
+  /**
+   * Recursively scan for method calls and see if variables are used.
+   *
+   * @param Node[] $nodes
+   *
+   * @return void
+   **/
+  private function variableMethodCallsUsed(array $nodes)
+  {
+    foreach ($nodes as $node) {
+      if ($node instanceof MethodCall && $node->name instanceof Variable) {
+        // A method call uses a Variable as its name
+        return true;
+      }
+
+      // Recurse over child nodes
+      if (isset($node->stmts) && is_array($node->stmts)) {
+        $used = $this->variableMethodCallsUsed($node->stmts);
+
+        if ($used) {
+          return true;
+        }
+      }
     }
 
-    /**
-     * Recursively scan for method calls and see if variables are used.
-     *
-     * @param Node[] $nodes
-     *
-     * @return void
-     **/
-    private function variableMethodCallsUsed(array $nodes)
-    {
-        foreach ($nodes as $node) {
-            if ($node instanceof MethodCall && $node->name instanceof Variable) {
-                // A method call uses a Variable as its name
-                return true;
-            }
+    return false;
+  }
 
-            // Recurse over child nodes
-            if (isset($node->stmts) && is_array($node->stmts)) {
-                $used = $this->variableMethodCallsUsed($node->stmts);
+  /**
+   * Recursively scan for private method definitions and rename them.
+   *
+   * @param Node[] $nodes
+   *
+   * @return void
+   **/
+  private function scanMethodDefinitions(array $nodes)
+  {
+    foreach ($nodes as $node) {
+      // Scramble the private method definitions
+      if ($node instanceof ClassMethod && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
+        // Record original name and scramble it
+        $originalName = $node->name;
+        $this->scramble($node);
 
-                if ($used) {
-                    return true;
-                }
-            }
-        }
+        // Record renaming
+        $this->renamed($originalName, $node->name);
+      }
 
-        return false;
+      // Recurse over child nodes
+      if (isset($node->stmts) && is_array($node->stmts)) {
+        $this->scanMethodDefinitions($node->stmts);
+      }
+    }
+  }
+
+  /**
+   * Check all variable nodes.
+   *
+   * @return void
+   **/
+  public function enterNode(Node $node)
+  {
+    if ($this->shouldSkip()) {
+      return;
     }
 
-    /**
-     * Recursively scan for private method definitions and rename them.
-     *
-     * @param Node[] $nodes
-     *
-     * @return void
-     **/
-    private function scanMethodDefinitions(array $nodes)
-    {
-        foreach ($nodes as $node) {
-            // Scramble the private method definitions
-            if ($node instanceof ClassMethod && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
-                // Record original name and scramble it
-                $originalName = $node->name;
-                $this->scramble($node);
+    // Scramble calls
+    if ($node instanceof MethodCall || $node instanceof StaticCall) {
+      // Node wasn't renamed
+      if (!$this->isRenamed($node->name)) {
+        return;
+      }
 
-                // Record renaming
-                $this->renamed($originalName, $node->name);
-            }
-
-            // Recurse over child nodes
-            if (isset($node->stmts) && is_array($node->stmts)) {
-                $this->scanMethodDefinitions($node->stmts);
-            }
-        }
+      // Scramble usage
+      return $this->scramble($node);
     }
-
-    /**
-     * Check all variable nodes.
-     *
-     * @return void
-     **/
-    public function enterNode(Node $node)
-    {
-        if ($this->shouldSkip()) {
-            return;
-        }
-
-        // Scramble calls
-        if ($node instanceof MethodCall || $node instanceof StaticCall) {
-            // Node wasn't renamed
-            if (!$this->isRenamed($node->name)) {
-                return;
-            }
-
-            // Scramble usage
-            return $this->scramble($node);
-        }
-    }
+  }
 }

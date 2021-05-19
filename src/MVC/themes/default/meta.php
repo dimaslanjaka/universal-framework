@@ -23,14 +23,14 @@
 <link rel="manifest" href="/assets/img/metador/manifest.json">
 <meta name="description" content="<?php echo $desc; ?>"/>
 <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
-<link rel="canonical" href="<?php echo(isset($canonical) ? $canonical : '/'); ?>"/>
+<link rel="canonical" href="<?php echo isset($canonical) ? $canonical : '/'; ?>"/>
 <meta property="og:type" content="website"/>
 <meta content='182383652179465' property='fb:app_id'/>
 <meta content='100001995776790' property='fb:admins'/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:title" content="<?php echo $title; ?> - WMI"/>
 <meta property="og:description" content="<?php echo $desc; ?>"/>
-<meta property="og:url" content="<?php echo(isset($canonical) ? $canonical : '/'); ?>"/>
+<meta property="og:url" content="<?php echo isset($canonical) ? $canonical : '/'; ?>"/>
 <meta property="og:site_name" content="WMI GitLabs"/>
 <meta property="og:image" content="<?php echo $thumbnail; ?>"/>
 <meta property="og:image:secure_url" content="<?php echo $thumbnail; ?>"/>
@@ -62,7 +62,7 @@
     "@context": "http://schema.org",
     "@type": "Website",
     "name": "<?php echo $title; ?> - WMI GitLabs",
-    "url": "<?php echo(isset($canonical) ? $canonical : '/'); ?>",
+    "url": "<?php echo isset($canonical) ? $canonical : '/'; ?>",
     "sameAs": [
       "https://www.facebook.com/dimaslanjaka1",
       "https://twitter.com/WManajemen",
@@ -85,7 +85,7 @@
     "@type": "BlogPosting",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "<?php echo(isset($canonical) ? $canonical : '/'); ?>"
+      "@id": "<?php echo isset($canonical) ? $canonical : '/'; ?>"
     },
     "headline": "<?php echo $title; ?>",
     "description": "<?php echo $desc; ?>",
@@ -139,7 +139,7 @@
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "<?php echo(isset($canonical) ? $canonical : '/'); ?>",
+          "@id": "<?php echo isset($canonical) ? $canonical : '/'; ?>",
           "name": "<?php echo $title; ?>"
         }
       }

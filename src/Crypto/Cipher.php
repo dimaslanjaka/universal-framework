@@ -8,132 +8,132 @@ use Throwable;
 
 class Cipher
 {
-    /**
-     * Default setting for generating hash.
-     *
-     * @var array
-     */
-    private $_opts = [
-        /*
+  /**
+   * Default setting for generating hash.
+   *
+   * @var array
+   */
+  private $_opts = [
+    /*
              * Crypto method to encrypt your string with
              */
-        'method' => 'AES-256-CBC',
+    'method' => 'AES-256-CBC',
 
-        /*
+    /*
              * Algorithm to apply while generating password via secrety key
              */
-        'algorithm' => 'sha256',
+    'algorithm' => 'sha256',
 
-        /*
+    /*
              * Maximum key size
              */
-        'maxKeySize' => 32,
+    'maxKeySize' => 32,
 
-        /*
+    /*
              * Maximum IV size
              */
-        'maxIVSize' => 16,
+    'maxIVSize' => 16,
 
-        /*
+    /*
              * Number of iterations to generate hash for password
              */
-        'numberOfIterations' => 1,
-    ];
+    'numberOfIterations' => 1,
+  ];
 
-    public function __construct(array $options = [])
-    {
-        $this->_opts = $options + $this->_opts;
-    }
+  public function __construct(array $options = [])
+  {
+    $this->_opts = $options + $this->_opts;
+  }
 
-    public function encrypt($plainText, $key, $initVector)
-    {
-        return $this->encryptOrDecrypt('encrypt', $plainText, $key, $initVector);
-    }
+  public function encrypt($plainText, $key, $initVector)
+  {
+    return $this->encryptOrDecrypt('encrypt', $plainText, $key, $initVector);
+  }
 
-    private function encryptOrDecrypt($mode, $string, $key, $initVector)
-    {
-        $password = substr($this->getComputedHash($key), 0, intval($this->getOptions('maxKeySize')));
+  private function encryptOrDecrypt($mode, $string, $key, $initVector)
+  {
+    $password = substr($this->getComputedHash($key), 0, intval($this->getOptions('maxKeySize')));
 
-        if ('encrypt' === $mode) {
-            return base64_encode(openssl_encrypt(
+    if ('encrypt' === $mode) {
+      return base64_encode(openssl_encrypt(
                 $string,
                 $this->getOptions('method'),
                 $password,
                 OPENSSL_RAW_DATA,
                 $initVector
             ));
-        }
+    }
 
-        return openssl_decrypt(
+    return openssl_decrypt(
             base64_decode($string),
             $this->getOptions('method'),
             $password,
             OPENSSL_RAW_DATA,
             $initVector
         );
+  }
+
+  public function getComputedHash($key)
+  {
+    $hash = $key;
+    for ($i = 0; $i < intval($this->getOptions('numberOfIterations')); ++$i) {
+      $hash = hash($this->getOptions('algorithm'), $hash);
     }
 
-    public function getComputedHash($key)
-    {
-        $hash = $key;
-        for ($i = 0; $i < intval($this->getOptions('numberOfIterations')); ++$i) {
-            $hash = hash($this->getOptions('algorithm'), $hash);
-        }
+    return $hash;
+  }
 
-        return $hash;
+  public function getOptions($key = '')
+  {
+    if ($key) {
+      return $this->_opts[$key];
     }
 
-    public function getOptions($key = '')
-    {
-        if ($key) {
-            return $this->_opts[$key];
-        }
+    return $this->_opts;
+  }
 
-        return $this->_opts;
+  public function decrypt($encryptedText, $key, $initVector)
+  {
+    $plainText = $this->encryptOrDecrypt('decrypt', $encryptedText, $key, $initVector);
+
+    if (false === $plainText) {
+      throw new UnableToDecrypt('Unable to decrypt your encrypted string.');
     }
 
-    public function decrypt($encryptedText, $key, $initVector)
-    {
-        $plainText = $this->encryptOrDecrypt('decrypt', $encryptedText, $key, $initVector);
+    return $plainText;
+  }
 
-        if (false === $plainText) {
-            throw new UnableToDecrypt('Unable to decrypt your encrypted string.');
-        }
+  public function encryptPlainTextWithRandomIV($plainText, $key)
+  {
+    return $this->encryptOrDecrypt('encrypt', $this->generateRandomIV() . $plainText, $key, $this->generateRandomIV());
+  }
 
-        return $plainText;
+  public function generateRandomIV()
+  {
+    // We need to generate our IV by following characters
+    $allowedIVString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
+
+    try {
+      // Invalid method will throw a warning.
+      $length = openssl_cipher_iv_length($this->getOptions('method'));
+    } catch (Throwable $t) {
+      throw new NotSecureIVGenerated('Unable to generate random IV.');
     }
 
-    public function encryptPlainTextWithRandomIV($plainText, $key)
-    {
-        return $this->encryptOrDecrypt('encrypt', $this->generateRandomIV() . $plainText, $key, $this->generateRandomIV());
+    // For any reason if required IV size needs greater value.
+    if ($length > strlen($allowedIVString)) {
+      $repeatedIVString = str_repeat($allowedIVString, ceil($length / strlen($allowedIVString)));
+      $allowedIVString .= $repeatedIVString;
     }
 
-    public function generateRandomIV()
-    {
-        // We need to generate our IV by following characters
-        $allowedIVString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
+    return substr(str_shuffle($allowedIVString), 0, $length);
+  }
 
-        try {
-            // Invalid method will throw a warning.
-            $length = openssl_cipher_iv_length($this->getOptions('method'));
-        } catch (Throwable $t) {
-            throw new NotSecureIVGenerated('Unable to generate random IV.');
-        }
-
-        // For any reason if required IV size needs greater value.
-        if ($length > strlen($allowedIVString)) {
-            $repeatedIVString = str_repeat($allowedIVString, ceil($length / strlen($allowedIVString)));
-            $allowedIVString .= $repeatedIVString;
-        }
-
-        return substr(str_shuffle($allowedIVString), 0, $length);
-    }
-
-    public function decryptCipherTextWithRandomIV($cipherText, $key)
-    {
-        return substr(
+  public function decryptCipherTextWithRandomIV($cipherText, $key)
+  {
+    return substr(
             $this->encryptOrDecrypt('decrypt', $cipherText, $key, $this->generateRandomIV()),
             intval($this->getOptions('maxIVSize'))
         );
-    }
+  }
 }

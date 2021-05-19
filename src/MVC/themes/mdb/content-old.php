@@ -2,25 +2,25 @@
 
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
-    echo 'title/content required';
+  echo 'title/content required';
 
-    return;
+  return;
 }
 
 //$content = $var['content'];
 
 $canonical = isset($var['canonical']) ? $var['canonical'] : (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 if (!isset($desc)) {
-    $desc = isset($var['desc']) ? $var['desc'] : '';
+  $desc = isset($var['desc']) ? $var['desc'] : '';
 }
 if (!isset($fbcomment)) {
-    $fbcomment = isset($var['fbcomment']) ? true : false;
+  $fbcomment = isset($var['fbcomment']) ? true : false;
 }
 if (!isset($title)) {
-    $title = $var['title'];
+  $title = $var['title'];
 }
 if (!isset($share)) {
-    $share = isset($var['share']) ? true : false;
+  $share = isset($var['share']) ? true : false;
 }
 ?>
 <!DOCTYPE html>
@@ -178,8 +178,8 @@ if (!isset($share)) {
 
 <?php
 if (isset($share) && $share) {
-    include __DIR__ . '/share.php';
-}
+      include __DIR__ . '/share.php';
+    }
 ?>
 
 <!-- Intro -->
@@ -223,9 +223,9 @@ if (isset($share) && $share) {
     <div class="container">
         <?php
         if (isset($content) && file_exists($content)) {
-            include $content;
+          include $content;
         } else {
-            echo '404';
+          echo '404';
         }
         ?>
     </div>
@@ -382,73 +382,73 @@ if (isset($share) && $share) {
 $element = new HTML\element();
 // datatables is defined
 if (defined('datatables')) {
-    echo $element->css([
-        '/assets/mdb/css/addons/datatables.min.css',
-    ]);
-    echo $element->js([
-        '/assets/mdb/js/addons/datatables.min.js',
-        '/assets/mdb/js/addons/datatables-select.min.js',
-    ]);
+  echo $element->css([
+    '/assets/mdb/css/addons/datatables.min.css',
+  ]);
+  echo $element->js([
+    '/assets/mdb/js/addons/datatables.min.js',
+    '/assets/mdb/js/addons/datatables-select.min.js',
+  ]);
 }
 //if select2 defined
 if (defined('select2')) {
-    echo $element->css(['/node_modules/select/dist/css/select2.min.css']);
-    echo $element->js(['/node_modules/select/dist/js/select2.min.js']);
-    $element->link([
-        [__DIR__ . '/assets/style.select2.min.css', __DIR__ . '/assets/style.select2.css'],
-    ], true, true, 'stylesheet');
-    $element->script([
-        [__DIR__ . '/assets/select2.parser.min.js', __DIR__ . '/assets/select2.parser.js'],
-    ], true, true);
+  echo $element->css(['/node_modules/select/dist/css/select2.min.css']);
+  echo $element->js(['/node_modules/select/dist/js/select2.min.js']);
+  $element->link([
+    [__DIR__ . '/assets/style.select2.min.css', __DIR__ . '/assets/style.select2.css'],
+  ], true, true, 'stylesheet');
+  $element->script([
+    [__DIR__ . '/assets/select2.parser.min.js', __DIR__ . '/assets/select2.parser.js'],
+  ], true, true);
 }
 //if materialize defined
 if (defined('materialize')) {
-    echo $element->css([
-        //'/node_modules/materialize-css/dist/css/materialize.min.css',
-        'https://fonts.googleapis.com/icon?family=Material+Icons',
-    ]);
-    //echo $element->js(['/node_modules/materialize-css/dist/js/materialize.min.js']);
+  echo $element->css([
+    //'/node_modules/materialize-css/dist/css/materialize.min.css',
+    'https://fonts.googleapis.com/icon?family=Material+Icons',
+  ]);
+  //echo $element->js(['/node_modules/materialize-css/dist/js/materialize.min.js']);
 }
 // default javascript
 echo $element->js([
-    '/node_modules/sweetalert/dist/sweetalert.min.js',
-    '/node_modules/crypto-js/crypto-js.js',
-    '/node_modules/toastr/build/toastr.min.js',
+  '/node_modules/sweetalert/dist/sweetalert.min.js',
+  '/node_modules/crypto-js/crypto-js.js',
+  '/node_modules/toastr/build/toastr.min.js',
 ]);
 //default css
 echo $element->css(['/node_modules/toastr/build/toastr.min.css']);
 // include content javascript
 if (isset($content) && file_exists($content)) {
-    $contentCSS = preg_replace('/\.php$/s', '.css', $content);
-    $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
-    echo '<style>';
-    \MVC\helper::include_asset($contentMinCSS, $contentCSS);
-    echo '</style>';
+  $contentCSS = preg_replace('/\.php$/s', '.css', $content);
+  $contentMinCSS = preg_replace('/\.php$/s', '.min.css', $content);
+  echo '<style>';
+  \MVC\helper::include_asset($contentMinCSS, $contentCSS);
+  echo '</style>';
 }
 // defined custom script
 if (defined('SCRIPTSRC')) {
-    $element->script(SCRIPTSRC, true, true);
+  $element->script(SCRIPTSRC, true, true);
 } else {
-    define('SCRIPTSRC', []);
+  define('SCRIPTSRC', []);
 }
 
 // defined custom script
 if (defined('STYLESRC')) {
-    $element->link(STYLESRC, true, true);
+  $element->link(STYLESRC, true, true);
 } else {
-    define('STYLESRC', []);
+  define('STYLESRC', []);
 }
 
 if (defined('STYLE')) {
-    echo '<style>';
-    foreach (STYLE as $style) {
-        if (is_string($style)) {
-            \MVC\helper::include_asset($style);
-        }
+  echo '<style>';
+  foreach (STYLE as $style) {
+    if (is_string($style)) {
+      \MVC\helper::include_asset($style);
     }
-    echo '</style>';
+  }
+  echo '</style>';
 } else {
-    define('STYLE', []);
+  define('STYLE', []);
 }
 ?>
 
@@ -467,27 +467,27 @@ if (defined('STYLE')) {
         __DIR__ . '/../assets/js/custom-ajax.js'
     );
     if (isset($content) && file_exists($content)) {
-        \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
-        if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
-            include $var['script'];
-        }
-        if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
-            include $var['js'];
-        }
-        $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
-        $contentJS = preg_replace('/\.php$/s', '.js', $content);
-        \MVC\helper::include_asset($contentMinJS, $contentJS);
+      \MVC\helper::include_asset(__DIR__ . '/js/core.min.js', __DIR__ . '/js/core.js');
+      if (isset($var['script']) && $var['script'] && file_exists($var['script'])) {
+        include $var['script'];
+      }
+      if (isset($var['js']) && $var['js'] && file_exists($var['js'])) {
+        include $var['js'];
+      }
+      $contentMinJS = preg_replace('/\.php$/s', '.min.js', $content);
+      $contentJS = preg_replace('/\.php$/s', '.js', $content);
+      \MVC\helper::include_asset($contentMinJS, $contentJS);
     }
     if (defined('uidjs')) {
-        echo '/*UID JS included*/';
-        \MVC\uid::include_uid_js();
+      echo '/*UID JS included*/';
+      \MVC\uid::include_uid_js();
     }
     if (defined('SCRIPT')) {
-        foreach (SCRIPT as $primary => $secondary) {
-            \MVC\helper::include_asset($primary, $secondary);
-        }
+      foreach (SCRIPT as $primary => $secondary) {
+        \MVC\helper::include_asset($primary, $secondary);
+      }
     } else {
-        define('SCRIPT', '');
+      define('SCRIPT', '');
     }
     \MVC\helper::include_asset(
         __DIR__ . '/js/footer.min.js',

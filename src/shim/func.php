@@ -17,34 +17,34 @@
  */
 function cors()
 {
-    if (!headers_sent()) {
-        return;
+  if (!headers_sent()) {
+    return;
+  }
+
+  // Allow from any origin
+  if (isset($_SERVER['HTTP_ORIGIN'])) {
+    // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
+    // you want to allow, and if so:
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+  }
+
+  // Access-Control headers are received during OPTIONS requests
+  if ('OPTIONS' == $_SERVER['REQUEST_METHOD']) {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+      // may also be using PUT, PATCH, HEAD etc
+      header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
     }
 
-    // Allow from any origin
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
-        // you want to allow, and if so:
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+      header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
     }
 
-    // Access-Control headers are received during OPTIONS requests
-    if ('OPTIONS' == $_SERVER['REQUEST_METHOD']) {
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
-            // may also be using PUT, PATCH, HEAD etc
-            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-        }
+    exit(0);
+  }
 
-        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
-            header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
-        }
-
-        exit(0);
-    }
-
-    //echo "You have CORS!";
+  //echo "You have CORS!";
 }
 
 /**
@@ -57,9 +57,9 @@ function cors()
  */
 function startsWith($haystack, $needle)
 {
-    $length = strlen($needle);
+  $length = strlen($needle);
 
-    return substr($haystack, 0, $length) === $needle;
+  return substr($haystack, 0, $length) === $needle;
 }
 
 /**
@@ -72,12 +72,12 @@ function startsWith($haystack, $needle)
  */
 function endsWith($haystack, $needle)
 {
-    $length = strlen($needle);
-    if (!$length) {
-        return true;
-    }
+  $length = strlen($needle);
+  if (!$length) {
+    return true;
+  }
 
-    return substr($haystack, -$length) === $needle;
+  return substr($haystack, -$length) === $needle;
 }
 
 /**
@@ -89,25 +89,25 @@ function endsWith($haystack, $needle)
  */
 function toNumber($val)
 {
-    if (is_string($val)) {
-        if (preg_match('/^\d*\.?\d*$/m', $val, $matches)) {
-            $val = $matches[0];
-        } elseif (preg_match('/^\d*\.?\d*/m', $val, $matches)) {
-            $val = $matches[0];
-        }
+  if (is_string($val)) {
+    if (preg_match('/^\d*\.?\d*$/m', $val, $matches)) {
+      $val = $matches[0];
+    } elseif (preg_match('/^\d*\.?\d*/m', $val, $matches)) {
+      $val = $matches[0];
     }
-    if (is_numeric($val)) {
-        $int = (int)$val;
-        $float = (float)$val;
+  }
+  if (is_numeric($val)) {
+    $int = (int) $val;
+    $float = (float) $val;
 
-        $val = ($int == $float) ? $int : $float;
+    $val = ($int == $float) ? $int : $float;
 
-        return $val;
-    } else {
-        trigger_error("Cannot cast $val to a number", E_USER_WARNING);
+    return $val;
+  } else {
+    trigger_error("Cannot cast $val to a number", E_USER_WARNING);
 
-        return null;
-    }
+    return null;
+  }
 }
 
 /**
@@ -120,15 +120,15 @@ function toNumber($val)
  */
 function path2url($file, $Protocol = null)
 {
-    $file = realpath($file);
-    //var_dump($file);
-    if (null == $Protocol) {
-        $Protocol = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://';
-    }
-    if ($file) {
-        return $Protocol . $_SERVER['HTTP_HOST'] . fixurl(str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath($file)));
-    }
-    //echo debug_backtrace()[1]['function'];
+  $file = realpath($file);
+  //var_dump($file);
+  if (null == $Protocol) {
+    $Protocol = (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://';
+  }
+  if ($file) {
+    return $Protocol . $_SERVER['HTTP_HOST'] . fixurl(str_replace(fixpath($_SERVER['DOCUMENT_ROOT']), '', fixpath($file)));
+  }
+  //echo debug_backtrace()[1]['function'];
 }
 
 /**
@@ -136,7 +136,7 @@ function path2url($file, $Protocol = null)
  */
 function getOrigin($path)
 {
-    return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]$path";
+  return (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]$path";
 }
 
 /**
@@ -146,9 +146,9 @@ function getOrigin($path)
  */
 function fixurl($url)
 {
-    $remove_backslash = preg_replace('/[\/\\\\]{2,100}/m', '/', $url);
+  $remove_backslash = preg_replace('/[\/\\\\]{2,100}/m', '/', $url);
 
-    return str_replace('\\', '/', $remove_backslash);
+  return str_replace('\\', '/', $remove_backslash);
 }
 
 /**
@@ -158,11 +158,11 @@ function fixurl($url)
  */
 function fixpath($subject)
 {
-    $replace = (DIRECTORY_SEPARATOR === '\\')
+  $replace = (DIRECTORY_SEPARATOR === '\\')
         ? str_replace('/', '\\', $subject)
         : str_replace('\\', '/', $subject);
 
-    return preg_replace('/[\/\\\\]{2,100}/m', DIRECTORY_SEPARATOR, $replace);
+  return preg_replace('/[\/\\\\]{2,100}/m', DIRECTORY_SEPARATOR, $replace);
 }
 
 /**
@@ -175,13 +175,13 @@ function fixpath($subject)
  */
 function write($file, $content, $append = false)
 {
-    if (!file_exists(dirname($file))) {
-        mkdir(dirname($file));
-    }
-    if (file_exists($file)) {
-        delete($file);
-    }
-    file_put_contents($file, $content, ($append ? FILE_APPEND : 0));
+  if (!file_exists(dirname($file))) {
+    mkdir(dirname($file));
+  }
+  if (file_exists($file)) {
+    delete($file);
+  }
+  file_put_contents($file, $content, ($append ? FILE_APPEND : 0));
 }
 
 /**
@@ -194,11 +194,11 @@ function write($file, $content, $append = false)
  */
 function delete($object)
 {
-    if (is_file($object) || is_dir($object)) {
-        unlink($object);
-    } elseif (is_array($object) || is_object($object)) {
-        unset($object);
-    }
+  if (is_file($object) || is_dir($object)) {
+    unlink($object);
+  } elseif (is_array($object) || is_object($object)) {
+    unset($object);
+  }
 }
 
 /**
@@ -208,19 +208,19 @@ function delete($object)
  */
 function get_includes()
 {
-    $included = array_values(array_filter(array_map(function ($arr) {
-        if (is_string($arr)) {
-            if (strpos($arr, 'vendor')) {
-                return '';
-            }
-        }
+  $included = array_values(array_filter(array_map(function ($arr) {
+    if (is_string($arr)) {
+      if (strpos($arr, 'vendor')) {
+        return '';
+      }
+    }
 
-        return $arr;
-    }, get_included_files())));
-    $included[] = 'total included files: ' . count(get_included_files());
-    $inc = \JSON\json::json($included, false, false);
+    return $arr;
+  }, get_included_files())));
+  $included[] = 'total included files: ' . count(get_included_files());
+  $inc = \JSON\json::json($included, false, false);
 
-    return $inc;
+  return $inc;
 }
 
 /**
@@ -228,7 +228,7 @@ function get_includes()
  */
 function is_session($sessionName)
 {
-    return isset($_SESSION[$sessionName]);
+  return isset($_SESSION[$sessionName]);
 }
 
 /**
@@ -236,9 +236,9 @@ function is_session($sessionName)
  */
 function get_session($sessionName)
 {
-    if (is_session($sessionName)) {
-        return $_SESSION[$sessionName];
-    }
+  if (is_session($sessionName)) {
+    return $_SESSION[$sessionName];
+  }
 }
 
 /**
@@ -246,7 +246,7 @@ function get_session($sessionName)
  */
 function set_session($name, $value)
 {
-    $_SESSION[$name] = $value;
+  $_SESSION[$name] = $value;
 }
 
 /**
@@ -254,16 +254,16 @@ function set_session($name, $value)
  */
 function parse_url2($url, $encoded = false)
 {
-    if ($encoded) {
-        $url = urldecode($url);
-    }
-    $url = html_entity_decode($url);
-    $parts = parse_url($url);
-    if (isset($parts['query'])) {
-        parse_str($parts['query'], $query);
-        $parts['original_query'] = $parts['query'];
-        $parts['query'] = $query;
-    }
+  if ($encoded) {
+    $url = urldecode($url);
+  }
+  $url = html_entity_decode($url);
+  $parts = parse_url($url);
+  if (isset($parts['query'])) {
+    parse_str($parts['query'], $query);
+    $parts['original_query'] = $parts['query'];
+    $parts['query'] = $query;
+  }
 
-    return array_merge($parts);
+  return array_merge($parts);
 }

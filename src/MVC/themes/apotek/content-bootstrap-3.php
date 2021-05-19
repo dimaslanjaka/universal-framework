@@ -66,9 +66,9 @@ $element = new HTML\element();
 <main role="main" class="container">
     <?php
     if (isset($content) && file_exists($content)) {
-        include $content;
+      include $content;
     } else {
-        echo '404';
+      echo '404';
     }
     ?>
 </main>

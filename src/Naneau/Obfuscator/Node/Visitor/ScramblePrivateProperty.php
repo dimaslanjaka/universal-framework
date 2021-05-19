@@ -27,81 +27,81 @@ use PhpParser\Node\Stmt\Property;
  */
 class ScramblePrivateProperty extends ScramblerVisitor
 {
-    use TrackingRenamerTrait;
-    use SkipTrait;
+  use TrackingRenamerTrait;
+  use SkipTrait;
 
-    /**
-     * Constructor.
-     *
-     * @return void
-     **/
-    public function __construct(StringScrambler $scrambler)
-    {
-        parent::__construct($scrambler);
-    }
+  /**
+   * Constructor.
+   *
+   * @return void
+   **/
+  public function __construct(StringScrambler $scrambler)
+  {
+    parent::__construct($scrambler);
+  }
 
-    /**
-     * Before node traversal.
-     *
-     * @param Node[] $nodes
-     *
-     * @return array
-     **/
-    public function beforeTraverse(array $nodes)
-    {
-        $this
+  /**
+   * Before node traversal.
+   *
+   * @param Node[] $nodes
+   *
+   * @return array
+   **/
+  public function beforeTraverse(array $nodes)
+  {
+    $this
             ->resetRenamed()
             ->scanPropertyDefinitions($nodes);
 
-        return $nodes;
+    return $nodes;
+  }
+
+  /**
+   * Check all variable nodes.
+   *
+   * @return void
+   **/
+  public function enterNode(Node $node)
+  {
+    if ($node instanceof PropertyFetch) {
+      if (!is_string($node->name)) {
+        return;
+      }
+
+      if ($this->isRenamed($node->name)) {
+        $node->name = $this->getNewName($node->name);
+
+        return $node;
+      }
     }
+  }
 
-    /**
-     * Check all variable nodes.
-     *
-     * @return void
-     **/
-    public function enterNode(Node $node)
-    {
-        if ($node instanceof PropertyFetch) {
-            if (!is_string($node->name)) {
-                return;
-            }
+  /**
+   * Recursively scan for private method definitions and rename them.
+   *
+   * @param Node[] $nodes
+   *
+   * @return void
+   **/
+  private function scanPropertyDefinitions(array $nodes)
+  {
+    foreach ($nodes as $node) {
+      // Scramble the private method definitions
+      if ($node instanceof Property && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
+        foreach ($node->props as $property) {
+          // Record original name and scramble it
+          $originalName = $property->name;
+          $this->scramble($property);
 
-            if ($this->isRenamed($node->name)) {
-                $node->name = $this->getNewName($node->name);
-
-                return $node;
-            }
+          // Record renaming
+          $this->renamed($originalName, $property->name);
         }
+      }
+
+      // Recurse over child nodes
+      if (isset($node->stmts) && is_array($node->stmts)) {
+        $this->scanPropertyDefinitions($node->stmts);
+      }
     }
-
-    /**
-     * Recursively scan for private method definitions and rename them.
-     *
-     * @param Node[] $nodes
-     *
-     * @return void
-     **/
-    private function scanPropertyDefinitions(array $nodes)
-    {
-        foreach ($nodes as $node) {
-            // Scramble the private method definitions
-            if ($node instanceof Property && ($node->type & ClassNode::MODIFIER_PRIVATE)) {
-                foreach ($node->props as $property) {
-                    // Record original name and scramble it
-                    $originalName = $property->name;
-                    $this->scramble($property);
-
-                    // Record renaming
-                    $this->renamed($originalName, $property->name);
-                }
-            }
-
-            // Recurse over child nodes
-            if (isset($node->stmts) && is_array($node->stmts)) {
-                $this->scanPropertyDefinitions($node->stmts);
-            }
-        }
-    }
+  }
 }

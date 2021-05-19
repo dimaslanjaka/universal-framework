@@ -2,32 +2,32 @@
 
 $var = $_SESSION['var'];
 if (!isset($var['title']) && !isset($var['content'])) {
-    echo 'title/content required';
+  echo 'title/content required';
 
-    return;
+  return;
 }
 
 //$content = $var['content'];
 
 $canonical = isset($var['canonical']) ? $var['canonical'] : (isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS'] ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?');
 if (!isset($desc)) {
-    $desc = isset($var['desc']) ? $var['desc'] : '';
+  $desc = isset($var['desc']) ? $var['desc'] : '';
 }
 if (!isset($fbcomment)) {
-    $fbcomment = isset($var['fbcomment']) ? true : false;
+  $fbcomment = isset($var['fbcomment']) ? true : false;
 }
 if (!isset($title)) {
-    $title = $var['title'];
+  $title = $var['title'];
 }
 if (!isset($share)) {
-    $share = isset($var['share']) ? true : false;
+  $share = isset($var['share']) ? true : false;
 }
 if (!defined('ENVIRONMENT')) {
-    e([
-        'error' => true,
-        'message' => 'framework environtment doesnt exists',
-        'current' => __FILE__,
-    ]);
+  e([
+    'error' => true,
+    'message' => 'framework environtment doesnt exists',
+    'current' => __FILE__,
+  ]);
 }
 ?>
 <!DOCTYPE html>
@@ -82,18 +82,18 @@ if (!defined('ENVIRONMENT')) {
                             <?php
                             $uri = \MVC\helper::get_clean_uri();
                             if (false !== strpos($uri, '/')) {
-                                $exp = explode('/', $uri);
-                                $stack = '/';
-                                for ($i = 0; $i < count($exp); ++$i) {
-                                    $part = $exp[$i];
+                              $exp = explode('/', $uri);
+                              $stack = '/';
+                              for ($i = 0; $i < count($exp); ++$i) {
+                                $part = $exp[$i];
 
-                                    if (count($exp) == $i) {
-                                        echo '<li class="breadcrumb-item active">' . $title . '</li>';
-                                    } elseif (!empty($part)) {
-                                        $stack .= $part . '/';
-                                        echo '<li class="breadcrumb-item"><a href="' . $stack . '">' . $part . '</a></li>';
-                                    }
+                                if (count($exp) == $i) {
+                                  echo '<li class="breadcrumb-item active">' . $title . '</li>';
+                                } elseif (!empty($part)) {
+                                  $stack .= $part . '/';
+                                  echo '<li class="breadcrumb-item"><a href="' . $stack . '">' . $part . '</a></li>';
                                 }
+                              }
                             }
                             ?>
                         </ol>
@@ -111,9 +111,9 @@ if (!defined('ENVIRONMENT')) {
             <div class="container-fluid">
                 <?php
                 if (isset($content) && file_exists($content)) {
-                    include $content;
+                  include $content;
                 } else {
-                    echo '404';
+                  echo '404';
                 }
                 ?>
             </div>

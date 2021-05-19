@@ -19,139 +19,139 @@ use PhpParser\NodeVisitorAbstract;
  */
 abstract class Scrambler extends NodeVisitorAbstract
 {
-    /**
-     * The string scrambler.
-     *
-     * @var StringScrambler
-     **/
-    private $scrambler;
+  /**
+   * The string scrambler.
+   *
+   * @var StringScrambler
+   **/
+  private $scrambler;
 
-    /**
-     * Variables to ignore.
-     *
-     * @var string[]
-     **/
-    private $ignore = [];
+  /**
+   * Variables to ignore.
+   *
+   * @var string[]
+   **/
+  private $ignore = [];
 
-    /**
-     * Constructor.
-     *
-     * @return void
-     **/
-    public function __construct(StringScrambler $scrambler)
-    {
-        $this->setScrambler($scrambler);
+  /**
+   * Constructor.
+   *
+   * @return void
+   **/
+  public function __construct(StringScrambler $scrambler)
+  {
+    $this->setScrambler($scrambler);
+  }
+
+  /**
+   * Add a variable name to ignore.
+   *
+   * @param string|string[] $ignore
+   *
+   * @return RenameParameterVisitor
+   **/
+  public function addIgnore($ignore)
+  {
+    if (is_string($ignore)) {
+      $this->ignore = array_merge($this->ignore, [$ignore]);
+    } elseif (is_array($ignore)) {
+      $this->ignore = array_merge($this->ignore, $ignore);
+    } else {
+      throw new InvalidArgumentException('Invalid ignore type passed');
     }
 
-    /**
-     * Add a variable name to ignore.
-     *
-     * @param string|string[] $ignore
-     *
-     * @return RenameParameterVisitor
-     **/
-    public function addIgnore($ignore)
-    {
-        if (is_string($ignore)) {
-            $this->ignore = array_merge($this->ignore, [$ignore]);
-        } elseif (is_array($ignore)) {
-            $this->ignore = array_merge($this->ignore, $ignore);
-        } else {
-            throw new InvalidArgumentException('Invalid ignore type passed');
-        }
+    return $this;
+  }
 
-        return $this;
+  /**
+   * Scramble a property of a node.
+   *
+   * @param string $var property to scramble
+   *
+   * @return Node
+   **/
+  protected function scramble(Node $node, $var = 'name')
+  {
+    // String/value to scramble
+    $toScramble = $node->$var;
+
+    // We ignore to scramble if it's not string (ex: a variable variable name)
+    if (!is_string($toScramble)) {
+      return;
     }
 
-    /**
-     * Scramble a property of a node.
-     *
-     * @param string $var property to scramble
-     *
-     * @return Node
-     **/
-    protected function scramble(Node $node, $var = 'name')
-    {
-        // String/value to scramble
-        $toScramble = $node->$var;
-
-        // We ignore to scramble if it's not string (ex: a variable variable name)
-        if (!is_string($toScramble)) {
-            return;
-        }
-
-        // Make sure there's something to scramble
-        if (0 === strlen($toScramble)) {
-            throw new InvalidArgumentException(sprintf('"%s" value empty for node, can not scramble', $var));
-        }
-
-        // Should we ignore it?
-        if (in_array($toScramble, $this->getIgnore())) {
-            return $node;
-        }
-
-        // Prefix with 'p' so we dont' start with an number
-        $node->$var = $this->scrambleString($toScramble);
-
-        // Return the node
-        return $node;
+    // Make sure there's something to scramble
+    if (0 === strlen($toScramble)) {
+      throw new InvalidArgumentException(sprintf('"%s" value empty for node, can not scramble', $var));
     }
 
-    /**
-     * Get variables to ignore.
-     *
-     * @return string[]
-     */
-    public function getIgnore()
-    {
-        return $this->ignore;
+    // Should we ignore it?
+    if (in_array($toScramble, $this->getIgnore())) {
+      return $node;
     }
 
-    /**
-     * Set variables to ignore.
-     *
-     * @param string[] $ignore
-     *
-     * @return parent
-     */
-    public function setIgnore(array $ignore)
-    {
-        $this->ignore = $ignore;
+    // Prefix with 'p' so we dont' start with an number
+    $node->$var = $this->scrambleString($toScramble);
 
-        return $this;
-    }
+    // Return the node
+    return $node;
+  }
 
-    /**
-     * Scramble a string.
-     *
-     * @param string $string
-     *
-     * @return string
-     **/
-    protected function scrambleString($string)
-    {
-        return 's' . $this->getScrambler()->scramble($string);
-    }
+  /**
+   * Get variables to ignore.
+   *
+   * @return string[]
+   */
+  public function getIgnore()
+  {
+    return $this->ignore;
+  }
 
-    /**
-     * Get the string scrambler.
-     *
-     * @return StringScrambler
-     */
-    public function getScrambler()
-    {
-        return $this->scrambler;
-    }
+  /**
+   * Set variables to ignore.
+   *
+   * @param string[] $ignore
+   *
+   * @return parent
+   */
+  public function setIgnore(array $ignore)
+  {
+    $this->ignore = $ignore;
 
-    /**
-     * Set the string scrambler.
-     *
-     * @return RenameParameter
-     */
-    public function setScrambler(StringScrambler $scrambler)
-    {
-        $this->scrambler = $scrambler;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Scramble a string.
+   *
+   * @param string $string
+   *
+   * @return string
+   **/
+  protected function scrambleString($string)
+  {
+    return 's' . $this->getScrambler()->scramble($string);
+  }
+
+  /**
+   * Get the string scrambler.
+   *
+   * @return StringScrambler
+   */
+  public function getScrambler()
+  {
+    return $this->scrambler;
+  }
+
+  /**
+   * Set the string scrambler.
+   *
+   * @return RenameParameter
+   */
+  public function setScrambler(StringScrambler $scrambler)
+  {
+    $this->scrambler = $scrambler;
+
+    return $this;
+  }
 }

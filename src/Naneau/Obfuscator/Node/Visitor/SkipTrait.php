@@ -14,34 +14,34 @@ namespace Naneau\Obfuscator\Node\Visitor;
  */
 trait SkipTrait
 {
-    /**
-     * Skip processing?
-     *
-     * @var bool
-     **/
-    private $skip = false;
+  /**
+   * Skip processing?
+   *
+   * @var bool
+   **/
+  private $skip = false;
 
-    /**
-     * Should we skip processing?
-     *
-     * @param bool $skip
-     *
-     * @return ScramblePrivateMethod
-     **/
-    protected function skip($skip = false)
-    {
-        $this->skip = $skip;
+  /**
+   * Should we skip processing?
+   *
+   * @param bool $skip
+   *
+   * @return ScramblePrivateMethod
+   **/
+  protected function skip($skip = false)
+  {
+    $this->skip = $skip;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Should we skip processing?
-     *
-     * @return bool
-     **/
-    protected function shouldSkip()
-    {
-        return $this->skip;
-    }
+  /**
+   * Should we skip processing?
+   *
+   * @return bool
+   **/
+  protected function shouldSkip()
+  {
+    return $this->skip;
+  }
 }

@@ -11,7 +11,7 @@ $html = $doc->load('https://www.google.com/');
 
 // Remove all images and inputs from the DOM
 foreach ($html->find('img, input') as $element) {
-    $element->remove();
+  $element->remove();
 }
 
 echo $html;

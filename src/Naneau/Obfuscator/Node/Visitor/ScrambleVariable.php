@@ -25,41 +25,41 @@ use PhpParser\Node\Stmt\StaticVar;
  */
 class ScrambleVariable extends ScramblerVisitor
 {
-    /**
-     * Constructor.
-     *
-     * @return void
-     **/
-    public function __construct(StringScrambler $scrambler)
-    {
-        parent::__construct($scrambler);
+  /**
+   * Constructor.
+   *
+   * @return void
+   **/
+  public function __construct(StringScrambler $scrambler)
+  {
+    parent::__construct($scrambler);
 
-        $this->setIgnore([
-            'this', '_SERVER', '_POST', '_GET', '_REQUEST', '_COOKIE',
-            '_SESSION', '_ENV', '_FILES',
-        ]);
+    $this->setIgnore([
+      'this', '_SERVER', '_POST', '_GET', '_REQUEST', '_COOKIE',
+      '_SESSION', '_ENV', '_FILES',
+    ]);
+  }
+
+  /**
+   * Check all variable nodes.
+   *
+   * @return void
+   **/
+  public function enterNode(Node $node)
+  {
+    // Function param or variable use
+    if ($node instanceof Param || $node instanceof StaticVar || $node instanceof Variable) {
+      return $this->scramble($node);
     }
 
-    /**
-     * Check all variable nodes.
-     *
-     * @return void
-     **/
-    public function enterNode(Node $node)
-    {
-        // Function param or variable use
-        if ($node instanceof Param || $node instanceof StaticVar || $node instanceof Variable) {
-            return $this->scramble($node);
-        }
-
-        // try {} catch () {}
-        if ($node instanceof CatchStatement) {
-            return $this->scramble($node, 'var');
-        }
-
-        // Function() use ($x, $y) {}
-        if ($node instanceof ClosureUse) {
-            return $this->scramble($node, 'var');
-        }
+    // try {} catch () {}
+    if ($node instanceof CatchStatement) {
+      return $this->scramble($node, 'var');
     }
+
+    // Function() use ($x, $y) {}
+    if ($node instanceof ClosureUse) {
+      return $this->scramble($node, 'var');
+    }
+  }
 }

@@ -16,18 +16,18 @@ require_once 'src/JsMin/JsMin.php';
 
 class Minify
 {
-    public static function html($html)
-    {
-        return HtmlMin::minify($html);
-    }
+  public static function html($html)
+  {
+    return HtmlMin::minify($html);
+  }
 
-    public static function css($css)
-    {
-        return CssMin::minify($css);
-    }
+  public static function css($css)
+  {
+    return CssMin::minify($css);
+  }
 
-    public static function js($js)
-    {
-        return JsMin::minify($js);
-    }
+  public static function js($js)
+  {
+    return JsMin::minify($js);
+  }
 }

@@ -217,7 +217,8 @@
     "build": "npx tsc -p tsconfig.build.json && npx tsc -p tsconfig.precompiler.json && npx tsc -p tsconfig.compiler.json",
     "dev": "npm --silent run build && npm --silent run start",
     "ngrok": "node ./ngrok.js",
-    "doc": "gen-phpdoc && gulp doc"
+    "doc": "gen-phpdoc && gulp doc",
+    "phpdoc": "./vendor/bin/phpdoc"
   },
   "version": "3.0.0",
   "snyk": true
