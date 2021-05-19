@@ -57,7 +57,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       search: true,
       default: {
         staticFiles: {
-          include: [root + "/docs/statics"],
+          include: [root + "/docs/statics", root + "/docs/php"],
         },
       },
       "better-docs": {

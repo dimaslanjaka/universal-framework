@@ -150,5 +150,6 @@
   },
   "typescript.updateImportsOnFileMove.enabled": "never",
   "workbench.editor.limit.enabled": true,
-  "debug.allowBreakpointsEverywhere": true
+  "debug.allowBreakpointsEverywhere": true,
+  "taskExplorer.enableSideBar": true
 }
