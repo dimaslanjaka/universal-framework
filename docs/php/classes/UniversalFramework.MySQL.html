@@ -1,0 +1,240 @@
+# [Universal Framework PHP Documentation](../home.md)
+
+# Class: \UniversalFramework\MySQL
+### Namespace: [\UniversalFramework](../namespaces/UniversalFramework.html)
+---
+---
+### Constants
+* No constants found
+---
+### Properties
+* [public $last_connection](../classes/UniversalFramework.MySQL.html#property_last_connection)
+* [public $connections](../classes/UniversalFramework.MySQL.html#property_connections)
+---
+### Methods
+* [public __construct()](../classes/UniversalFramework.MySQL.html#method___construct)
+* [public getConnection()](../classes/UniversalFramework.MySQL.html#method_getConnection)
+* [public mysqlFieldInfo()](../classes/UniversalFramework.MySQL.html#method_mysqlFieldInfo)
+* [public checkValidResult()](../classes/UniversalFramework.MySQL.html#method_checkValidResult)
+* [public escapeString()](../classes/UniversalFramework.MySQL.html#method_escapeString)
+* [protected getFieldType()](../classes/UniversalFramework.MySQL.html#method_getFieldType)
+* [protected getFieldFlags()](../classes/UniversalFramework.MySQL.html#method_getFieldFlags)
+* [protected escapeChar()](../classes/UniversalFramework.MySQL.html#method_escapeChar)
+---
+### Details
+* File: [shim\mysql.php](../files/shim.mysql.html)
+* Package: Default
+* Class Hierarchy:
+  * \UniversalFramework\MySQL
+---
+## Properties
+<a name="property_last_connection"></a>
+#### public $last_connection : 
+---
+**Type:** 
+
+**Details:**
+
+
+<a name="property_connections"></a>
+#### public $connections : 
+---
+**Type:** 
+
+**Details:**
+
+
+
+---
+## Methods
+<a name="method___construct" class="anchor"></a>
+#### public __construct() 
+
+```
+public __construct(\mysqli  $sql) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code>\mysqli</code> | $sql  |  |
+
+
+
+
+<a name="method_getConnection" class="anchor"></a>
+#### public getConnection() : false&amp;#124;\mysqli
+
+```
+Static public getConnection(\mysqli  $link = null, \UniversalFramework\function  $func = null) : false&amp;#124;\mysqli
+```
+
+**Summary**
+
+Get mysqli intances.
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code>\mysqli</code> | $link  |  |
+| <code>\UniversalFramework\function</code> | $func  |  |
+
+**Returns:** false&#124;\mysqli
+
+
+<a name="method_mysqlFieldInfo" class="anchor"></a>
+#### public mysqlFieldInfo() 
+
+```
+Static public mysqlFieldInfo(\mysqli_result  $result,   $field,   $what) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code>\mysqli_result</code> | $result  |  |
+| <code></code> | $field  |  |
+| <code></code> | $what  |  |
+
+
+
+
+<a name="method_checkValidResult" class="anchor"></a>
+#### public checkValidResult() 
+
+```
+Static public checkValidResult(  $result,   $function) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code></code> | $result  |  |
+| <code></code> | $function  |  |
+
+
+
+
+<a name="method_escapeString" class="anchor"></a>
+#### public escapeString() 
+
+```
+Static public escapeString(  $unescapedString) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code></code> | $unescapedString  |  |
+
+
+
+
+<a name="method_getFieldType" class="anchor"></a>
+#### protected getFieldType() 
+
+```
+Static protected getFieldType(  $what) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code></code> | $what  |  |
+
+
+
+
+<a name="method_getFieldFlags" class="anchor"></a>
+#### protected getFieldFlags() 
+
+```
+Static protected getFieldFlags(  $what) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code></code> | $what  |  |
+
+
+
+
+<a name="method_escapeChar" class="anchor"></a>
+#### protected escapeChar() 
+
+```
+Static protected escapeChar(  $char) 
+```
+
+**Details:**
+* Inherited From: [\UniversalFramework\MySQL](../classes/UniversalFramework.MySQL.html)
+##### Parameters:
+| Type | Name | Description |
+| ---- | ---- | ----------- |
+| <code></code> | $char  |  |
+
+
+
+
+
+---
+
+### Top Namespaces
+
+* [\Accounting](../namespaces/Accounting.html.md)
+* [\AGC](../namespaces/AGC.html.md)
+* [\agc_service](../namespaces/agc_service.html.md)
+* [\Bulletproof](../namespaces/Bulletproof.html.md)
+* [\Cookie](../namespaces/Cookie.html.md)
+* [\Crypto](../namespaces/Crypto.html.md)
+* [\DB](../namespaces/DB.html.md)
+* [\DDOS](../namespaces/DDOS.html.md)
+* [\Extender](../namespaces/Extender.html.md)
+* [\Facebook](../namespaces/Facebook.html.md)
+* [\Filemanager](../namespaces/Filemanager.html.md)
+* [\GoogleExt](../namespaces/GoogleExt.html.md)
+* [\HTML](../namespaces/HTML.html.md)
+* [\IMEI](../namespaces/IMEI.html.md)
+* [\img](../namespaces/img.html.md)
+* [\Indosat](../namespaces/Indosat.html.md)
+* [\JSON](../namespaces/JSON.html.md)
+* [\MrShan0](../namespaces/MrShan0.html.md)
+* [\MVC](../namespaces/MVC.html.md)
+* [\Naneau](../namespaces/Naneau.html.md)
+* [\Netscape](../namespaces/Netscape.html.md)
+* [\Office](../namespaces/Office.html.md)
+* [\PHPWee](../namespaces/PHPWee.html.md)
+* [\Proxy](../namespaces/Proxy.html.md)
+* [\Session](../namespaces/Session.html.md)
+* [\simplehtmldom](../namespaces/simplehtmldom.html.md)
+* [\Telkomsel](../namespaces/Telkomsel.html.md)
+* [\TestBootstrap](../namespaces/TestBootstrap.html.md)
+* [\Typehint](../namespaces/Typehint.html.md)
+* [\UniversalFramework](../namespaces/UniversalFramework.html.md)
+* [\User](../namespaces/User.html.md)
+
+---
+
+### Reports
+* [Errors - 1884](../reports/errors.md)
+* [Markers - 8](../reports/markers.md)
+* [Deprecated - 0](../reports/deprecated.md)
+
+---
+
+This document was automatically generated from source code comments on 2021-05-19 using [phpDocumentor](http://www.phpdoc.org/) and [fr3nch13/phpdoc-markdown](https://github.com/fr3nch13/phpdoc-markdown)

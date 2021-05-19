@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+  <author>Nelson Martell</author>
+  <email>nelson6e65@gmail.com</email>
+  <version>1.0.0</version>
+  <copyright>2018-2021 © Nelson Martell</copyright>
+  <description>Template for generating your PHP API documentation in a pretty VuePress format</description>
+
+  <transformations>
+    <!-- Assets -->
+    <transformation query="copy" writer="FileIo" source="templates/vuepress/.assets" artifact=".assets"/>
+
+    <!-- Pages -->
+    <transformation writer="twig" source="templates/vuepress/index.md.twig" artifact="README.md" />
+    <transformation writer="twig" source="templates/vuepress/classes.md.twig" artifact="classes.md" />
+    <transformation writer="twig" source="templates/vuepress/interfaces.md.twig" artifact="interfaces.md" />
+    <transformation writer="twig" source="templates/vuepress/traits.md.twig" artifact="traits.md" />
+    <transformation writer="twig" source="templates/vuepress/functions.md.twig" artifact="functions.md" />
+    <transformation writer="twig" source="templates/vuepress/constants.md.twig" artifact="constants.md" />
+  </transformations>
+  <parameters>
+    <parameter key="twig-debug">true</parameter>
+  </parameters>
+</template>

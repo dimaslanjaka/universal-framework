@@ -1,0 +1,11 @@
+{% extends "_index.md.twig" %}
+
+{% block title %}Classes{% endblock %}
+
+{% block content %}
+{% for namespace in project.indexes.namespaces|sort_asc  %}
+    {%- for class in namespace.classes|sort_asc %}
+        {{ include('_struct/class.md.twig') }}
+    {%- endfor %}
+{% endfor %}
+{% endblock %}

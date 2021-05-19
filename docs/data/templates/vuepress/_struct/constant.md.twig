@@ -1,0 +1,21 @@
+
+{% set elem = constant %}
+## {{ include('_blocks/name.md.twig') }} {{ include('_blocks/badges.md.twig') }}
+
+{{ constant.summary|replace({'#### ': '- ', '### ': '- ', '## ': '- ', '# ': '- ',})|raw }}
+
+```php
+{{ constant.name }} = {{ constant.value|raw }};
+```
+
+**Type:** **`{{ constant.types|default(['mixed'])|sort_asc|join('`** | **`')}}`**
+
+### Description
+
+{% if constant.description %}
+{{ constant.description|replace({'#### ': '- ', '### ': '- ', '## ': '- ', '# ': '- ',})|raw }}
+{% else %}
+> No description.
+{% endif %}
+
+{{ include('_tables/metadata.md.twig', { elem: constant }) }}

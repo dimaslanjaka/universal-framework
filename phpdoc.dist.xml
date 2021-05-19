@@ -19,11 +19,11 @@
     Directory where the generate documentation files be. Set it according to
     your VuePress config. In this case, it will be used the route `/demo`,
     but you can use any you want -->
-    <target>docs-src/php</target>
+    <target>docs/php</target>
   </transformer>
 
   <transformations>
-    <template name="vendor/nelson6e65/phpdoc-vuepress/data/templates/vuepress" />
+    <template name="docs/data/templates/markdown" />
   </transformations>
 
   <parser>

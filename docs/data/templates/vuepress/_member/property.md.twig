@@ -1,0 +1,35 @@
+
+:::
+{%- if property.visibility == 'protected' %}
+    {{- 'warning ' -}}
+{% elseif property.visibility == 'public' %}
+    {{- 'tip ' -}}
+{% else %}
+    {{- 'danger ' -}}
+{% endif -%}
+
+    {{ include('_blocks/anchor-ref-property.md.twig') }}
+    {{- '$' ~ property.name }} {{ include('_blocks/badges.md.twig', { elem: property }) }}
+-----
+
+{{ property.summary|replace({'#### ': '- ', '### ': '- ', '## ': '- ', '# ': '- ',})|raw }}
+
+
+{# property signature #}
+```php
+{{ property.visibility }}{% if property.static %} static{% endif %} ${{ property.name }}
+{%- if property.default is not same as(null) %} = {{ property.default|raw }}{% endif %};
+```
+
+***Types:***
+- `{{ property.types|default(['mixed'])|join('`\n-`') }}`
+
+{% if property.description is not empty %}
+***Description:***
+
+{{ property.description|replace({'#### ': '- ', '### ': '- ', '## ': '- ', '# ': '- ',})|raw }}
+{% endif %}
+
+{{ include('_tables/metadata.md.twig', { elem: property }) }}
+
+:::

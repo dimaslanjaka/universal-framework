@@ -1,0 +1,25 @@
+
+/* Remove padding and background in <code> used in the structs title */
+h2 code,
+h3 code,
+h4 code,
+h5 code {
+  background: none !important;
+  padding: 0 !important;
+}
+
+table {
+  width: 100%;
+  display: table;
+}
+
+thead > tr > th:first-child {
+  width: 16%;
+}
+
+/* Remove padding and background in <code> used in the tables */
+td code,
+th code {
+  background: none;
+  padding: 0;
+}
