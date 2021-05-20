@@ -12,7 +12,7 @@ const config = {
   contentLoading: true,
 
   // Directory where will be generated the HTML files by VuePress
-  dest: "docs/",
+  dest: "docs/php",
 
   // Base URL. Useful for GitHub pages.
   base: "/universal-framework/",
@@ -44,7 +44,7 @@ const config = {
     nav: [
       {text: "Guide", link: "/guide/"},
       {text: "PHP", link: "/php/"},
-      {text: "JS", link: "/universal-framework/js/"},
+      {text: "JS", link: "/js/"},
     ],
 
     sidebar: {
@@ -97,7 +97,7 @@ const config = {
 
     // Repository configurations
     repo: "dimaslanjaka/universal-framework",
-    docsDir: "docs-src",
+    docsDir: "docs",
     editLinks: false,
   },
 

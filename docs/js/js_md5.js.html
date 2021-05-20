@@ -1,0 +1,565 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script data-ad-client="ca-pub-1165447249910969" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106238155-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106238155-1');
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Universal Framework Javascript Documentation js/md5.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Universal Framework Javascript Documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                <div class="dropdown is-hoverable is-right">
+                    <a class="dropdown-trigger link">
+                        Tutorials
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                        
+                            <a class="dropdown-item" href="tutorial-node-localstorage.html">
+                                node-localstorage
+                            </a>
+                        
+                        </div>
+                    </div>
+                </div>
+                
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/dimaslanjaka/universal-framework"
+                        >
+                            Github
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://git.webmanajemen.com/universal-framework/php"
+                        >
+                            PHP API
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="https://webmanajemen.com"
+                        >
+                            Blog
+                        </a>
+                    
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="ajaxScheduler.html">ajaxScheduler</a></li><li><a href="Cookies.html">Cookies</a></li><li><a href="core.html">core</a></li><li><a href="GeneratorID.html">GeneratorID</a></li><li><a href="ip.html">ip</a></li><li><a href="Timer.html">Timer</a></li><li><a href="user.html">user</a></li><li><a href="ZLIB.html">ZLIB</a></li></ul><h3>Interfaces</h3><ul><li><a href="Array.html">Array</a></li><li><a href="createElementOpt.html">createElementOpt</a></li><li><a href="HTMLScriptElement.html">HTMLScriptElement</a></li><li><a href="String.html">String</a></li><li><a href="Window.html">Window</a></li></ul><h3>Global</h3><ul><li><a href="global.html#___call">___call</a></li><li><a href="global.html#__call">__call</a></li><li><a href="global.html#aesDecrypt">aesDecrypt</a></li><li><a href="global.html#aesEncrypt">aesEncrypt</a></li><li><a href="global.html#aform">aform</a></li><li><a href="global.html#AJAX">AJAX</a></li><li><a href="global.html#AjaxForm">AjaxForm</a></li><li><a href="global.html#ajaxRun">ajaxRun</a></li><li><a href="global.html#ajx">ajx</a></li><li><a href="global.html#analys">analys</a></li><li><a href="global.html#array_keys">array_keys</a></li><li><a href="global.html#array_rand">array_rand</a></li><li><a href="global.html#array_remove">array_remove</a></li><li><a href="global.html#array_shuffle">array_shuffle</a></li><li><a href="global.html#array_unique">array_unique</a></li><li><a href="global.html#array_unset">array_unset</a></li><li><a href="global.html#asset">asset</a></li><li><a href="global.html#async">async</a></li><li><a href="global.html#async_exec">async_exec</a></li><li><a href="global.html#async_process">async_process</a></li><li><a href="global.html#async_this">async_this</a></li><li><a href="global.html#autoHeight_">autoHeight_</a></li><li><a href="global.html#bannedebug">bannedebug</a></li><li><a href="global.html#Base64">Base64</a></li><li><a href="global.html#base64_decode">base64_decode</a></li><li><a href="global.html#base64_encode">base64_encode</a></li><li><a href="global.html#base64_valid">base64_valid</a></li><li><a href="global.html#binl2rstr">binl2rstr</a></li><li><a href="global.html#binlMD5">binlMD5</a></li><li><a href="global.html#bitRotateLeft">bitRotateLeft</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#call_user_func">call_user_func</a></li><li><a href="global.html#compileAssets">compileAssets</a></li><li><a href="global.html#config_builder">config_builder</a></li><li><a href="global.html#copyToClipboard">copyToClipboard</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#countNewLines">countNewLines</a></li><li><a href="global.html#countries">countries</a></li><li><a href="global.html#createAlert">createAlert</a></li><li><a href="global.html#createApp">createApp</a></li><li><a href="global.html#createElement">createElement</a></li><li><a href="global.html#createJSON">createJSON</a></li><li><a href="global.html#createStyle">createStyle</a></li><li><a href="global.html#CryptoD">CryptoD</a></li><li><a href="global.html#CryptoE">CryptoE</a></li><li><a href="global.html#CryptoK">CryptoK</a></li><li><a href="global.html#datatables_colums_options">datatables_colums_options</a></li><li><a href="global.html#datatables_init">datatables_init</a></li><li><a href="global.html#datatables_optimize">datatables_optimize</a></li><li><a href="global.html#debug_detect">debug_detect</a></li><li><a href="global.html#doc">doc</a></li><li><a href="global.html#dumpAjax">dumpAjax</a></li><li><a href="global.html#elm">elm</a></li><li><a href="global.html#empty">empty</a></li><li><a href="global.html#execute">execute</a></li><li><a href="global.html#extend_setting_form">extend_setting_form</a></li><li><a href="global.html#findDups">findDups</a></li><li><a href="global.html#fixDeps">fixDeps</a></li><li><a href="global.html#forceSSL">forceSSL</a></li><li><a href="global.html#foreach">foreach</a></li><li><a href="global.html#formatNewLines">formatNewLines</a></li><li><a href="global.html#formsaver">formsaver</a></li><li><a href="global.html#framework">framework</a></li><li><a href="global.html#generateRandomString">generateRandomString</a></li><li><a href="global.html#get_currency_symbol">get_currency_symbol</a></li><li><a href="global.html#get_unique_id">get_unique_id</a></li><li><a href="global.html#getAnyClass">getAnyClass</a></li><li><a href="global.html#getCountries">getCountries</a></li><li><a href="global.html#getFuncName">getFuncName</a></li><li><a href="global.html#getKey">getKey</a></li><li><a href="global.html#getLatestVersion">getLatestVersion</a></li><li><a href="global.html#getLocationHash">getLocationHash</a></li><li><a href="global.html#getNativeClass">getNativeClass</a></li><li><a href="global.html#geToken">geToken</a></li><li><a href="global.html#getParameterByName">getParameterByName</a></li><li><a href="global.html#getRandom">getRandom</a></li><li><a href="global.html#gexec">gexec</a></li><li><a href="global.html#guid">guid</a></li><li><a href="global.html#hexHMACMD5">hexHMACMD5</a></li><li><a href="global.html#hexMD5">hexMD5</a></li><li><a href="global.html#http_build_query">http_build_query</a></li><li><a href="global.html#in_array">in_array</a></li><li><a href="global.html#inArray">inArray</a></li><li><a href="global.html#indicatorAjax">indicatorAjax</a></li><li><a href="global.html#inputrp">inputrp</a></li><li><a href="global.html#is_development">is_development</a></li><li><a href="global.html#is_localhost">is_localhost</a></li><li><a href="global.html#isBrowser">isBrowser</a></li><li><a href="global.html#isJSON">isJSON</a></li><li><a href="global.html#isMobile">isMobile</a></li><li><a href="global.html#isnode">isnode</a></li><li><a href="global.html#isNode">isNode</a></li><li><a href="global.html#isOffline">isOffline</a></li><li><a href="global.html#jAjax">jAjax</a></li><li><a href="global.html#JavaScriptCaller">JavaScriptCaller</a></li><li><a href="global.html#json_decode">json_decode</a></li><li><a href="global.html#L">L</a></li><li><a href="global.html#list_package">list_package</a></li><li><a href="global.html#load_datatables">load_datatables</a></li><li><a href="global.html#load_disqus">load_disqus</a></li><li><a href="global.html#load_module">load_module</a></li><li><a href="global.html#load_requirejs">load_requirejs</a></li><li><a href="global.html#loadCodemirror">loadCodemirror</a></li><li><a href="global.html#loadCSS">loadCSS</a></li><li><a href="global.html#LoadScript">LoadScript</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#md5">md5</a></li><li><a href="global.html#md5cmn">md5cmn</a></li><li><a href="global.html#md5ff">md5ff</a></li><li><a href="global.html#md5gg">md5gg</a></li><li><a href="global.html#md5hh">md5hh</a></li><li><a href="global.html#md5ii">md5ii</a></li><li><a href="global.html#module_exists">module_exists</a></li><li><a href="global.html#multiMinify">multiMinify</a></li><li><a href="global.html#object_join">object_join</a></li><li><a href="global.html#onlyUnique">onlyUnique</a></li><li><a href="global.html#openInNewTab">openInNewTab</a></li><li><a href="global.html#pagination_up">pagination_up</a></li><li><a href="global.html#parse_proxy">parse_proxy</a></li><li><a href="global.html#parseNumber">parseNumber</a></li><li><a href="global.html#parsePackageString">parsePackageString</a></li><li><a href="global.html#prepEntities">prepEntities</a></li><li><a href="global.html#pseudo_builder">pseudo_builder</a></li><li><a href="global.html#Queue">Queue</a></li><li><a href="global.html#random_rgba">random_rgba</a></li><li><a href="global.html#rawHMACMD5">rawHMACMD5</a></li><li><a href="global.html#rawMD5">rawMD5</a></li><li><a href="global.html#readFile">readFile</a></li><li><a href="global.html#recaptcha">recaptcha</a></li><li><a href="global.html#reload_gulp">reload_gulp</a></li><li><a href="global.html#resolve_dir">resolve_dir</a></li><li><a href="global.html#restrict_mode">restrict_mode</a></li><li><a href="global.html#rstr2binl">rstr2binl</a></li><li><a href="global.html#rstr2hex">rstr2hex</a></li><li><a href="global.html#rstrHMACMD5">rstrHMACMD5</a></li><li><a href="global.html#rstrMD5">rstrMD5</a></li><li><a href="global.html#safeAdd">safeAdd</a></li><li><a href="global.html#salt">salt</a></li><li><a href="global.html#select2Country">select2Country</a></li><li><a href="global.html#setEventListener">setEventListener</a></li><li><a href="global.html#shuffle">shuffle</a></li><li><a href="global.html#single_tsCompile">single_tsCompile</a></li><li><a href="global.html#socket">socket</a></li><li><a href="global.html#stacktrace">stacktrace</a></li><li><a href="global.html#storage">storage</a></li><li><a href="global.html#str2rstrUTF8">str2rstrUTF8</a></li><li><a href="global.html#tafocus">tafocus</a></li><li><a href="global.html#textAreas">textAreas</a></li><li><a href="global.html#toogleClass">toogleClass</a></li><li><a href="global.html#trycatch">trycatch</a></li><li><a href="global.html#typescriptCompiler">typescriptCompiler</a></li><li><a href="global.html#uniqid">uniqid</a></li><li><a href="global.html#userJSDecrypt">userJSDecrypt</a></li><li><a href="global.html#userJSEncrypt">userJSEncrypt</a></li><li><a href="global.html#uuidv4">uuidv4</a></li><li><a href="global.html#views">views</a></li><li><a href="global.html#writeFile">writeFile</a></li><li><a href="global.html#writenow">writenow</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>js/md5.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * JavaScript MD5
+ * https://github.com/blueimp/JavaScript-MD5
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ *
+ * Based on
+ * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+ * Digest Algorithm, as defined in RFC 1321.
+ * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for more info.
+ */
+
+/* global define */
+
+/* eslint-disable strict */
+
+/**
+ * Add integers, wrapping at 2^32.
+ * This uses 16-bit operations internally to work around bugs in interpreters.
+ *
+ * @param {number} x First integer
+ * @param {number} y Second integer
+ * @returns {number} Sum
+ */
+function safeAdd(x, y) {
+  var lsw = (x &amp; 0xffff) + (y &amp; 0xffff);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw &lt;&lt; 16) | (lsw &amp; 0xffff);
+}
+
+/**
+ * Bitwise rotate a 32-bit number to the left.
+ *
+ * @param {number} num 32-bit number
+ * @param {number} cnt Rotation count
+ * @returns {number} Rotated number
+ */
+function bitRotateLeft(num, cnt) {
+  return (num &lt;&lt; cnt) | (num >>> (32 - cnt));
+}
+
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} q q
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5cmn(q, a, b, x, s, t) {
+  return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5ff(a, b, c, d, x, s, t) {
+  return md5cmn((b &amp; c) | (~b &amp; d), a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5gg(a, b, c, d, x, s, t) {
+  return md5cmn((b &amp; d) | (c &amp; ~d), a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5hh(a, b, c, d, x, s, t) {
+  return md5cmn(b ^ c ^ d, a, b, x, s, t);
+}
+/**
+ * Basic operation the algorithm uses.
+ *
+ * @param {number} a a
+ * @param {number} b b
+ * @param {number} c c
+ * @param {number} d d
+ * @param {number} x x
+ * @param {number} s s
+ * @param {number} t t
+ * @returns {number} Result
+ */
+function md5ii(a, b, c, d, x, s, t) {
+  return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+}
+
+/**
+ * Calculate the MD5 of an array of little-endian words, and a bit length.
+ *
+ * @param {Array} x Array of little-endian words
+ * @param {number} len Bit length
+ * @returns {Array&lt;number>} MD5 Array
+ */
+function binlMD5(x, len) {
+  /* append padding */
+  x[len >> 5] |= 0x80 &lt;&lt; len % 32;
+  x[(((len + 64) >>> 9) &lt;&lt; 4) + 14] = len;
+
+  var i;
+  var olda;
+  var oldb;
+  var oldc;
+  var oldd;
+  var a = 1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d = 271733878;
+
+  for (i = 0; i &lt; x.length; i += 16) {
+    olda = a;
+    oldb = b;
+    oldc = c;
+    oldd = d;
+
+    a = md5ff(a, b, c, d, x[i], 7, -680876936);
+    d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+    c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+    b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+    a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+    d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+    c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+    b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+    a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+    d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+    c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+    b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+    a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+    d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+    c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+    b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+
+    a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+    d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+    c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+    b = md5gg(b, c, d, a, x[i], 20, -373897302);
+    a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+    d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+    c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+    b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+    a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+    d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+    c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+    b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+    a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+    d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+    c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+    b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+    a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+    d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+    c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+    b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+    a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+    d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+    c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+    b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+    a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+    d = md5hh(d, a, b, c, x[i], 11, -358537222);
+    c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+    b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+    a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+    d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+    c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+    b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+
+    a = md5ii(a, b, c, d, x[i], 6, -198630844);
+    d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+    c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+    b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+    a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+    d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+    c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+    b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+    a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+    d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+    c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+    b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+    a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+    d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+    c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+    b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+
+    a = safeAdd(a, olda);
+    b = safeAdd(b, oldb);
+    c = safeAdd(c, oldc);
+    d = safeAdd(d, oldd);
+  }
+  return [a, b, c, d];
+}
+
+/**
+ * Convert an array of little-endian words to a string
+ *
+ * @param {Array&lt;number>} input MD5 Array
+ * @returns {string} MD5 string
+ */
+function binl2rstr(input) {
+  var i;
+  var output = "";
+  var length32 = input.length * 32;
+  for (i = 0; i &lt; length32; i += 8) {
+    output += String.fromCharCode((input[i >> 5] >>> i % 32) &amp; 0xff);
+  }
+  return output;
+}
+
+/**
+ * Convert a raw string to an array of little-endian words
+ * Characters >255 have their high-byte silently ignored.
+ *
+ * @param {string} input Raw input string
+ * @returns {Array&lt;number>} Array of little-endian words
+ */
+function rstr2binl(input) {
+  var i;
+  var output = [];
+  output[(input.length >> 2) - 1] = undefined;
+  for (i = 0; i &lt; output.length; i += 1) {
+    output[i] = 0;
+  }
+  var length8 = input.length * 8;
+  for (i = 0; i &lt; length8; i += 8) {
+    output[i >> 5] |= (input.charCodeAt(i / 8) &amp; 0xff) &lt;&lt; i % 32;
+  }
+  return output;
+}
+
+/**
+ * Calculate the MD5 of a raw string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+function rstrMD5(s) {
+  return binl2rstr(binlMD5(rstr2binl(s), s.length * 8));
+}
+
+/**
+ * Calculates the HMAC-MD5 of a key and some data (raw strings)
+ *
+ * @param {string} key HMAC key
+ * @param {string} data Raw input string
+ * @returns {string} Raw MD5 string
+ */
+function rstrHMACMD5(key, data) {
+  var i;
+  var bkey = rstr2binl(key);
+  var ipad = [];
+  var opad = [];
+  var hash;
+  ipad[15] = opad[15] = undefined;
+  if (bkey.length > 16) {
+    bkey = binlMD5(bkey, key.length * 8);
+  }
+  for (i = 0; i &lt; 16; i += 1) {
+    ipad[i] = bkey[i] ^ 0x36363636;
+    opad[i] = bkey[i] ^ 0x5c5c5c5c;
+  }
+  hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+  return binl2rstr(binlMD5(opad.concat(hash), 512 + 128));
+}
+
+/**
+ * Convert a raw string to a hex string
+ *
+ * @param {string} input Raw input string
+ * @returns {string} Hex encoded string
+ */
+function rstr2hex(input) {
+  var hexTab = "0123456789abcdef";
+  var output = "";
+  var x;
+  var i;
+  for (i = 0; i &lt; input.length; i += 1) {
+    x = input.charCodeAt(i);
+    output += hexTab.charAt((x >>> 4) &amp; 0x0f) + hexTab.charAt(x &amp; 0x0f);
+  }
+  return output;
+}
+
+/**
+ * Encode a string as UTF-8
+ *
+ * @param {string} input Input string
+ * @returns {string} UTF8 string
+ */
+function str2rstrUTF8(input) {
+  return unescape(encodeURIComponent(input));
+}
+
+/**
+ * Encodes input string as raw MD5 string
+ *
+ * @param {string} s Input string
+ * @returns {string} Raw MD5 string
+ */
+function rawMD5(s) {
+  return rstrMD5(str2rstrUTF8(s));
+}
+/**
+ * Encodes input string as Hex encoded string
+ *
+ * @param {string} s Input string
+ * @returns {string} Hex encoded string
+ */
+function hexMD5(s) {
+  return rstr2hex(rawMD5(s));
+}
+/**
+ * Calculates the raw HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+function rawHMACMD5(k, d) {
+  return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d));
+}
+/**
+ * Calculates the Hex encoded HMAC-MD5 for the given key and data
+ *
+ * @param {string} k HMAC key
+ * @param {string} d Input string
+ * @returns {string} Raw MD5 string
+ */
+function hexHMACMD5(k, d) {
+  return rstr2hex(rawHMACMD5(k, d));
+}
+
+/**
+ * Calculates MD5 value for a given string.
+ * If a key is provided, calculates the HMAC-MD5 value.
+ * Returns a Hex encoded string unless the raw argument is given.
+ *
+ * @param {string} string Input string
+ * @param {string} [key] HMAC key
+ * @param {boolean} [raw] Raw output switch
+ * @returns {string} MD5 output
+ */
+function md5(string, key, raw) {
+  if (!key) {
+    if (!raw) {
+      return hexMD5(string);
+    }
+    return rawMD5(string);
+  }
+  if (!raw) {
+    return hexHMACMD5(key, string);
+  }
+  return rawHMACMD5(key, string);
+}
+
+/*
+  if (typeof define === "function" &amp;&amp; define.amd) {
+    define(function () {
+      return md5;
+    });
+  } else if (typeof module === "object" &amp;&amp; module.exports) {
+    module.exports = md5;
+  } else {
+    $.md5 = md5;
+  }
+*/
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>
