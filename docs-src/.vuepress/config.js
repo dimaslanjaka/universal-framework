@@ -44,7 +44,7 @@ const config = {
     nav: [
       {text: "Guide", link: "/guide/"},
       {text: "PHP", link: "/php/"},
-      {text: "JS", link: "/js/"},
+      {text: "JS", link: "https://dimaslanjaka.github.io/universal-framework/js/"},
     ],
 
     sidebar: {
