@@ -103,6 +103,12 @@ const config = {
       },
     },
   },
+
+  // extra watch files
+  extraWatchFiles: [
+    '.vuepress/public/style.css', // Relative path usage
+    //'/path/to/bar.js'   // Absolute path usage
+  ]
 };
 module.exports = config;
 
