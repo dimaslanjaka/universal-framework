@@ -1,8 +1,8 @@
 import * as gulp from "gulp";
-import jsdoc from "gulp-jsdoc3";
+//import { jsdoc } from "../gulp-jsdoc3/src/gulp-jsdoc";
 import process from "../compiler/process";
-//import filemanager from "./filemanager";
-
+import filemanager from "./filemanager";
+import jsdoc from "gulp-jsdoc3";
 const root = process.root;
 
 /**
@@ -13,8 +13,7 @@ const root = process.root;
  * @param cb function callback
  */
 export function doc(cb: any = null): NodeJS.ReadWriteStream {
-  const outputDir = root + "/docs/js/";
-  /*
+  const outputDir = root + "/docs-src/js/";
   try {
     if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
@@ -22,7 +21,6 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
   } catch (e) {
     console.log(e);
   }
-  */
 
   const config = {
     recurseDepth: 10,
@@ -31,9 +29,9 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       dictionaries: ["jsdoc", "closure"],
     },
     source: {
-      include: [root + "/libs/js", root + "/libs/src"],
+      include: [root + "/libs/js", root + "/libs/src/compiler"],
       includePattern: "\\.(jsx|js|ts|tsx|js(doc|x)?)$",
-      excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor|demo|example[\\/\\\\]",
+      excludePattern: "[\\/\\\\]node_modules|docs|dist|vendor|demo|example[\\/\\\\]|node_modules",
     },
     plugins: [
       //"plugins/summarize",
@@ -50,7 +48,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       readme: "readme.md",
       recurse: true,
       verbose: false,
-      tutorials: root + "/docs/statics",
+      tutorials: root + "/docs-src/statics",
       template: "node_modules/better-docs",
     },
     templates: {
@@ -59,7 +57,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       search: true,
       default: {
         staticFiles: {
-          include: [root + "/docs/statics", root + "/docs/php"],
+          include: [root + "/docs-src/statics"],
         },
       },
       "better-docs": {

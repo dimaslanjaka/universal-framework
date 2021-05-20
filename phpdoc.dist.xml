@@ -7,8 +7,18 @@
   Directories and files from where will be extracted the documentation;
   where your PHP sources are. -->
   <files>
+    <!--
+    <directory>src/shim</directory>
+    -->
     <!-- Source document php -->
-    <directory>src</directory>
+    <directory>src/DB</directory>
+    <directory>src/Filemanager</directory>
+    <directory>src/GoogleExt</directory>
+    <directory>src/HTML</directory>
+    <directory>src/JSON</directory>
+    <directory>src/MVC</directory>
+    <directory>src/Session</directory>
+    <directory>src/simplehtmldom</directory>
     <!-- You can include as many <directory> you need. And also, specific files
     by using <file> tag-->
     <!-- <file>vendor/cakephp/utility/Text.php</file> -->
@@ -19,11 +29,11 @@
     Directory where the generate documentation files be. Set it according to
     your VuePress config. In this case, it will be used the route `/demo`,
     but you can use any you want -->
-    <target>docs/php</target>
+    <target>docs-src/php</target>
   </transformer>
 
   <transformations>
-    <template name="docs/data/templates/markdown" />
+    <template name="docs-src/data/templates/vuepress" />
   </transformations>
 
   <parser>

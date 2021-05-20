@@ -202,7 +202,7 @@ function pretext($obj)
 }
 
 /**
- * var_dump in <pre/>.
+ * var_dump in pre.
  *
  * @return void
  */
@@ -298,9 +298,9 @@ function latestFile(array $path, $return_timestamp = true)
       continue;
     }
     $cls_rii = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($str_path),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
+      new \RecursiveDirectoryIterator($str_path),
+      \RecursiveIteratorIterator::CHILD_FIRST
+    );
 
     $ary_files = [];
 
@@ -311,9 +311,9 @@ function latestFile(array $path, $return_timestamp = true)
     }
 
     $ary_files = array_combine(
-            $ary_files,
-            array_map('filemtime', $ary_files)
-        );
+      $ary_files,
+      array_map('filemtime', $ary_files)
+    );
 
     arsort($ary_files);
     $time = $ary_files[key($ary_files)];
@@ -328,7 +328,7 @@ function latestFile(array $path, $return_timestamp = true)
     return $file;
   }
   //echo "file:" . $file . "\n";
-    //echo "time:" . $time;
+  //echo "time:" . $time;
 }
 
 /**

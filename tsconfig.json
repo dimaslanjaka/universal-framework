@@ -1,5 +1,6 @@
 /*
  * VSCode Typehinting Module
+ * Set Filetype JSON with Comments to disable errors of this files
  */
 {
   "compilerOptions": {
@@ -9,31 +10,11 @@
     "outDir": "dist/dts",
     "moduleResolution": "Node",
     "allowJs": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./libs/src",
-      "./libs/js"
-    ],
-    "types": [
-      "datatables.net",
-      "jquery",
-      "requirejs",
-      "node",
-      "select2",
-      "toastr"
-    ],
+    "noEmit": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/vuepress-types/types", "./libs/js"],
+    "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr"],
     "target": "ES5",
-    "lib": [
-      "DOM",
-      "ES5",
-      "ES6",
-      "ES2015",
-      "ES2016",
-      "ES2017",
-      "ES2018",
-      "ES2019",
-      "ES2020"
-    ]
+    "lib": ["DOM", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"]
   },
   "include": [
     "./libs/src/**/*",

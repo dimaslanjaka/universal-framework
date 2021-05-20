@@ -10,6 +10,7 @@ config-m3.php
 /config-m3.php
 darkit.sql
 /exclude
+/dist/phpdoc-vuepress
 
 # Ignore trash from hashing
 hash_*
