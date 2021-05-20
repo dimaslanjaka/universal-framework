@@ -230,10 +230,10 @@
     "component-build": "tsc -p tsconfig.formsaver.json",
     "build": "npx tsc -p tsconfig.build.json && npx tsc -p tsconfig.precompiler.json && npx tsc -p tsconfig.compiler.json",
     "ngrok": "node ./ngrok.js",
-    "doc": "npm run --silent doc:del && npm --silent run build && gulp doc && npm run --silent doc:build && npm run --silent doc:del",
+    "doc": "npm run --silent doc:del && npm run --silent doc:build && npm run --silent doc:del",
     "doc:del": "rm -rf ./docs-src/php && rm -rf ./docs-src/.vuepress/public/js",
-    "doc:dev": "node ./node_modules/vuepress/cli.js dev docs-src",
-    "doc:build": "composer run-script doc && node ./node_modules/vuepress/cli.js build docs-src"
+    "doc:dev": "npm run --silent doc:build && node ./node_modules/vuepress/cli.js dev docs-src",
+    "doc:build": "composer run-script doc && npm --silent run build && gulp doc && node ./node_modules/vuepress/cli.js build docs-src"
   },
   "version": "3.0.0",
   "snyk": true
