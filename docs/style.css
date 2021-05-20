@@ -1,4 +1,5 @@
-[alt="logo"] {
+.logo {
   height: 50px !important;
   width: 50px !important;
+  display: inline-block;
 }
