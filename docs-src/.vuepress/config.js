@@ -37,7 +37,7 @@ const config = {
     sidebarDepth: 4,
     nav: [
       { text: "Guide", link: "/guide/" },
-      { text: "JS API", link: "/js/" },
+      { text: "JS API", link: "/js/index.html" },
     ],
 
     sidebar: {
