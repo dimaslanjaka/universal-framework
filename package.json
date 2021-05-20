@@ -232,7 +232,7 @@
     "dev": "npm --silent run build && npm --silent run start",
     "ngrok": "node ./ngrok.js",
     "doc": "composer run-script doc",
-    "doc:js": "npx vuepress-jsdoc -c ./jsdoc.json --source=./libs/js --dist=./docs-src/js --title=JS --exclude=**/*/*.test.js,class.js --partials=./docs-src/jsdoc/partials/*.hbs",
+    "doc:js": "node --max-old-space-size=4096 ./node_modules/vuepress-jsdoc/bin/vuepress-jsdoc.js -c ./docs-src/js/jsdoc.json --source=./libs/js --dist=./docs-src/js --title=JS --exclude=**/*/*.test.js,class.js --partials=./docs-src/jsdoc/partials/*.hbs",
     "doc:dev": "node --max-old-space-size=4096 ./node_modules/vuepress/cli.js dev docs-src",
     "doc:build": "node --max-old-space-size=4096 ./node_modules/vuepress/cli.js build docs-src"
   },
