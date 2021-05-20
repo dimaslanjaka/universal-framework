@@ -80,7 +80,8 @@
     "psr/log": "^1.0",
     "stichoza/google-translate-php": "^4.0",
     "ext-libxml": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "ext-intl": "*"
   },
   "scripts": {
     "php-cs-fixer": [

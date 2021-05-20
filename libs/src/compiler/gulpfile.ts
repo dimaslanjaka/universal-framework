@@ -82,6 +82,6 @@ gulp.task("assets-compile", function () {
 gulp.task("default", gulp.series(["build", "watch"]));
 
 /**
- * Create Documentation of javascripts
+ * Create Documentation of javascript's
  */
 gulp.task("doc", doc);

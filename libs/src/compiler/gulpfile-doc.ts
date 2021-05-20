@@ -13,7 +13,7 @@ const root = process.root;
  * @param cb function callback
  */
 export function doc(cb: any = null): NodeJS.ReadWriteStream {
-  const outputDir = root + "/docs-src/js/";
+  const outputDir = root + "/docs/js/";
   try {
     if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
@@ -81,6 +81,10 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
           {
             label: "Github",
             href: "https://github.com/dimaslanjaka/universal-framework",
+          },
+          {
+            label: "PHP API",
+            href: "https://git.webmanajemen.com/universal-framework/php",
           },
           {
             label: "Blog",

@@ -1,12 +1,21 @@
+/*
+ const { sidebarTree } = require("../js/code/config");
+ const jsSidebar = sidebarTree("JS");
+ jsSidebar["/js/code/"] = jsSidebar["/code/"];
+ delete jsSidebar["/code/"];
+ */
+
 /**
  * @typedef {import("vuepress-types").SiteConfig}
  */
-var config = {
+const config = {
+  contentLoading: true,
+
   // Directory where will be generated the HTML files by VuePress
   dest: "docs/",
 
   // Base URL. Useful for GitHub pages.
-  base: "/universal-framework/docs/",
+  base: "/universal-framework/",
 
   // Title of your project
   title: "Universal Framework Documentation",
@@ -18,23 +27,24 @@ var config = {
   cache: false,
 
   head: [
-    ["link", { rel: "icon", href: "/favicon.svg" }], // Custom favicon
+    ["link", {rel: "icon", href: "/favicon.svg"}], // Custom favicon
   ],
 
   // Plugins config
   plugins: {
     "@vuepress/google-analytics": {
-      ga: "UA-58599811-1", // GoogleAnalytics ID (optional. use your own ga)
+      ga: "UA-106238155-1", // GoogleAnalytics ID (optional. use your own ga)
     },
     "@vuepress/back-to-top": {},
     //"vuepress-plugin-typescript": {},
   },
 
   themeConfig: {
+    sidebarDepth: 4,
     nav: [
-      { text: "Guide", link: "/guide/" },
-      { text: "PHP", link: "/php/" },
-      { text: "JS", link: "/js/" },
+      {text: "Guide", link: "/guide/"},
+      {text: "PHP", link: "/php/"},
+      {text: "JS", link: "/universal-framework/js/"},
     ],
 
     sidebar: {
@@ -61,7 +71,6 @@ var config = {
           title: "PHP API Documentation",
           collapsable: true,
           children: [
-            //
             "", // Ref. to the `README.md` file
             "classes", // Ref. to the `classes.md` file
             "interfaces", // Ref. to the `interfaces.md` file
@@ -71,6 +80,7 @@ var config = {
           ],
         },
       ],
+
       "/": [""],
     },
 
@@ -78,10 +88,8 @@ var config = {
 
     markdown: {
       lineNumbers: false,
-      toc: { includeLevel: [1, 2, 3] },
+      toc: {includeLevel: [1, 2, 3]},
     },
-
-    sidebarDepth: 3,
 
     lastUpdated: true,
 

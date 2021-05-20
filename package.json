@@ -222,16 +222,15 @@
   "scripts": {
     "preinstall": "cd libs/src/gulp-jsdoc3 && npm install && npm run build",
     "postinstall": "",
-    "start": "npx gulp build && npx gulp watch",
+    "start": "npm --silent run build && npx gulp build && npx gulp watch",
     "snyk-protect": "npx snyk protect",
     "prepublish": "npm run snyk-protect",
     "check": "depcheck ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "component-build": "tsc -p tsconfig.formsaver.json",
     "build": "npx tsc -p tsconfig.build.json && npx tsc -p tsconfig.precompiler.json && npx tsc -p tsconfig.compiler.json",
-    "dev": "npm --silent run build && npm --silent run start",
     "ngrok": "node ./ngrok.js",
-    "doc": "composer run-script doc",
+    "doc": "composer run-script doc && npm --silent run doc:js",
     "doc:js": "node --max-old-space-size=4096 ./node_modules/vuepress-jsdoc/bin/vuepress-jsdoc.js -c ./docs-src/js/jsdoc.json --source=./libs/js --dist=./docs-src/js --title=JS --exclude=**/*/*.test.js,class.js --partials=./docs-src/jsdoc/partials/*.hbs",
     "doc:dev": "node --max-old-space-size=4096 ./node_modules/vuepress/cli.js dev docs-src",
     "doc:build": "node --max-old-space-size=4096 ./node_modules/vuepress/cli.js build docs-src"

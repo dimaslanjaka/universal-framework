@@ -2,8 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/docs-src/data/templates/new_black" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libs/src/phpdoc-md" vcs="" />
-    <mapping directory="$PROJECT_DIR$/libs/src/phpdoc-vuepress" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/src/phpdoc-vuepress" vcs="" />
     <mapping directory="$PROJECT_DIR$/libs/src/smartform" vcs="Git" />
   </component>
 </project>
