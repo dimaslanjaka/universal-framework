@@ -1,11 +1,5 @@
-/*
- const { sidebarTree } = require("../js/code/config");
- const jsSidebar = sidebarTree("JS");
- jsSidebar["/js/code/"] = jsSidebar["/code/"];
- delete jsSidebar["/code/"];
- */
-
 /**
+ * For JS {@see ../../libs/src/compiler/gulpfile-doc.ts}
  * @typedef {import("vuepress-types").SiteConfig}
  */
 const config = {
@@ -27,7 +21,7 @@ const config = {
   cache: false,
 
   head: [
-    ["link", {rel: "icon", href: "/favicon.svg"}], // Custom favicon
+    ["link", { rel: "icon", href: "/favicon.svg" }], // Custom favicon
   ],
 
   // Plugins config
@@ -42,9 +36,8 @@ const config = {
   themeConfig: {
     sidebarDepth: 4,
     nav: [
-      {text: "Guide", link: "/guide/"},
-      {text: "PHP", link: "/php/"},
-      {text: "JS", link: "https://dimaslanjaka.github.io/universal-framework/js/"},
+      { text: "Guide", link: "/guide/" },
+      { text: "JS API", link: "/js/" },
     ],
 
     sidebar: {
@@ -88,7 +81,7 @@ const config = {
 
     markdown: {
       lineNumbers: false,
-      toc: {includeLevel: [1, 2, 3]},
+      toc: { includeLevel: [1, 2, 3] },
     },
 
     lastUpdated: true,

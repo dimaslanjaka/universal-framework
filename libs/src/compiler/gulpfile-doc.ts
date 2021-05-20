@@ -13,7 +13,7 @@ const root = process.root;
  * @param cb function callback
  */
 export function doc(cb: any = null): NodeJS.ReadWriteStream {
-  const outputDir = root + "/docs/js/";
+  const outputDir = root + "/docs-src/.vuepress/public/js/";
   try {
     if (filemanager.exist(outputDir)) {
       filemanager.unlink(outputDir);
@@ -62,7 +62,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
       },
       "better-docs": {
         name: "Universal Framework Javascript Documentation",
-        //logo: "images/logo.png",
+        logo: "/hero.svg",
         title: "Universal Framework Javascript Documentation", // HTML title
         //css: "style.css",
         trackingCode: `<script data-ad-client="ca-pub-1165447249910969" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -84,7 +84,7 @@ export function doc(cb: any = null): NodeJS.ReadWriteStream {
           },
           {
             label: "PHP API",
-            href: "https://git.webmanajemen.com/universal-framework/php",
+            href: "/universal-framework/php",
           },
           {
             label: "Blog",
