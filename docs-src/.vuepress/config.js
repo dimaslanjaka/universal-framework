@@ -6,7 +6,7 @@ const config = {
   contentLoading: true,
 
   // Directory where will be generated the HTML files by VuePress
-  dest: "docs/php",
+  dest: "docs",
 
   // Base URL. Useful for GitHub pages.
   base: "/universal-framework/",
@@ -15,7 +15,7 @@ const config = {
   title: "Universal Framework Documentation",
 
   // Description of your project
-  description: "Usages, Tutorials, And Documentation of all php codes in universal framework phpjs",
+  description: "Usages, Tutorials, And Documentation of all php codes in universal framework php js",
 
   // no cache
   cache: false,
