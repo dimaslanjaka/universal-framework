@@ -1,43 +1,3 @@
-const glob = require("glob");
-let markdownFiles = glob.sync("docs-src/php/**/*.md").map((f) => "/" + f);
-var defaultSidebar = {
-  "/guide/": [
-    // Normal documentation sidebar
-    {
-      title: "Guide",
-      collapsable: true,
-      children: [
-        // Normal pages
-        "",
-        "getting-started",
-        "configuration",
-      ],
-    },
-  ],
-
-  // Your API documentation sidebar
-  // Here is where will be generated your files (`docs/demo/` in this case).
-  // This is the directory you configured in your `phpdoc.dist.xml` as target
-  // directory (or `-t` option of phpdoc)
-  "/php/": [
-    {
-      title: "PHP API Documentation",
-      collapsable: true,
-      children: [
-        //
-        "", // Ref. to the `README.md` file
-        "classes", // Ref. to the `classes.md` file
-        "interfaces", // Ref. to the `interfaces.md` file
-        "traits", // Ref. to the `traits.md` file
-        "functions", // Ref. to the `functions.md` file
-        "constants", // Ref. to the `constants.md` file
-      ],
-    },
-  ],
-  "/": [""],
-};
-defaultSidebar = Object.assign(defaultSidebar, markdownFiles);
-
 /**
  * @typedef {import("vuepress-types").SiteConfig}
  */
@@ -46,7 +6,7 @@ var config = {
   dest: "docs/",
 
   // Base URL. Useful for GitHub pages.
-  base: "/docs/",
+  base: "/universal-framework/docs/",
 
   // Title of your project
   title: "Universal Framework Documentation",
@@ -67,7 +27,7 @@ var config = {
       ga: "UA-58599811-1", // GoogleAnalytics ID (optional. use your own ga)
     },
     "@vuepress/back-to-top": {},
-    "vuepress-plugin-typescript": {},
+    //"vuepress-plugin-typescript": {},
   },
 
   themeConfig: {
@@ -77,7 +37,42 @@ var config = {
       { text: "JS", link: "/js/" },
     ],
 
-    sidebar: defaultSidebar,
+    sidebar: {
+      "/guide/": [
+        // Normal documentation sidebar
+        {
+          title: "Guide",
+          collapsable: true,
+          children: [
+            // Normal pages
+            "",
+            "getting-started",
+            "configuration",
+          ],
+        },
+      ],
+
+      // Your API documentation sidebar
+      // Here is where will be generated your files (`docs/demo/` in this case).
+      // This is the directory you configured in your `phpdoc.dist.xml` as target
+      // directory (or `-t` option of phpdoc)
+      "/php/": [
+        {
+          title: "PHP API Documentation",
+          collapsable: true,
+          children: [
+            //
+            "", // Ref. to the `README.md` file
+            "classes", // Ref. to the `classes.md` file
+            "interfaces", // Ref. to the `interfaces.md` file
+            "traits", // Ref. to the `traits.md` file
+            "functions", // Ref. to the `functions.md` file
+            "constants", // Ref. to the `constants.md` file
+          ],
+        },
+      ],
+      "/": [""],
+    },
 
     // You can ignore the following optional customizations --------------------
 
@@ -111,3 +106,4 @@ var config = {
 module.exports = config;
 
 //node --max_old_space_size=6096 ./node_modules/vuepress/cli.js dev docs-src
+//node --max-old-space-size=4096 ./node_modules/vuepress/cli.js dev docs-src

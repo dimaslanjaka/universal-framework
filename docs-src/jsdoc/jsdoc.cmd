@@ -1,0 +1,1 @@
+npx vuepress-jsdoc -c ./jsdoc.json --source=./src --dist=./docs-src/js --title=API --exclude=**/*/*.test.js,class.js --partials=./docs-src/jsdoc/partials/*.hbs

@@ -1,0 +1,35 @@
+{
+  "plugins": [
+    "node_modules/jsdoc-babel",
+    "plugins/markdown",
+    "jsdoc-mermaid",
+    "node_modules/better-docs/typescript",
+    "node_modules/better-docs/category",
+    "node_modules/better-docs/component",
+    "node_modules/better-docs/typedef-import"
+  ],
+  "babel": {
+    "extensions": ["ts", "tsx"],
+    "ignore": ["**/*.(test|spec).ts"],
+    "babelrc": false,
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": { "node": true }
+        }
+      ],
+      "@babel/preset-typescript"
+    ],
+    "plugins": ["@babel/plugin-proposal-class-properties", "@babel/proposal-object-rest-spread"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "recurseDepth": 10,
+  "source": {
+    "includePattern": ".+\\.(js|ts)(doc|x)?$",
+    "excludePattern": ".+\\.(test|spec).ts"
+  }
+}
