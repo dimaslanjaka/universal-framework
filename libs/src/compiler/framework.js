@@ -136,6 +136,11 @@ function loadCodemirror(element, mode, theme) {
                     var editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
+                        /*
+                            smartIndent: true,
+                            lineWrapping: true,
+                            showCursorWhenSelecting: true,
+                            matchHighlight: true,*/
                     });
                     loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                         editor.setOption("theme", theme);
@@ -2600,10 +2605,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2700,7 +2705,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             var trackLinks = document.getElementsByTagName("a");
             var _loop_1 = function () {
@@ -2914,7 +2919,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -5814,7 +5819,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
@@ -6808,35 +6813,26 @@ if (!isnode()) {
         $.fn[pluginName].getters = ["complete", "error"];
     })(jQuery, window, document, undefined);
 }
-var reCaptcha = /** @class */ (function () {
-    function reCaptcha() {
-        /**
-         * @property counter executions
-         */
-        this.gexec_count = 0;
-        /**
-         * @property site key recaptcha
-         */
-        this.key = "";
-        this.retry_count = 0;
-    }
+var reCaptcha = {
+    /**
+     * @type {Number} counter executions
+     */
+    gexec_count: 0,
+    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
     /**
      * Set recaptcha site key
-     * @param key
-     * @returns
+     * @param {String} key
      */
-    reCaptcha.prototype.set_key = function (key) {
-        this.key = key;
-        return this;
-    };
+    set_key: function (key) {
+        reCaptcha.key = key;
+    },
     /**
      * Start recaptcha
      */
-    reCaptcha.prototype.start = function () {
-        var thisClass = this;
-        thisClass.reCaptcha_buttons(true, function () {
+    start: function () {
+        reCaptcha.reCaptcha_buttons(true, function () {
             LoadScript({
-                url: "https://www.google.com/recaptcha/api.js?render=" + thisClass.key + "&render=explicit",
+                url: "https://www.google.com/recaptcha/api.js?render=" + reCaptcha.key + "&render=explicit",
                 callback: function () {
                     grecaptcha.ready(function () {
                         var msg = "first_start_" +
@@ -6844,33 +6840,33 @@ var reCaptcha = /** @class */ (function () {
                                 .replace(/[^a-zA-Z0-9 ]/g, "_")
                                 .replace(/\_{2,99}/g, "_")
                                 .replace(/\_$/g, "");
-                        thisClass.exec(msg);
+                        reCaptcha.exec(msg);
                     });
                 },
             });
         });
-    };
+    },
     /**
      * Initialize Recaptcha by defining jquery
      */
-    reCaptcha.prototype.init = function () {
+    init: function () {
         if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
             LoadScript({
                 url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-                callback: this.start,
+                callback: reCaptcha.start,
             });
         }
         else {
-            this.start();
+            reCaptcha.start();
         }
-    };
+    },
+    retry_count: 0,
     /**
      * load or refreshing google recaptcha
      */
-    reCaptcha.prototype.exec = function (action, retry, callback) {
+    exec: function (action, retry, callback) {
         if (retry === void 0) { retry = false; }
         if (callback === void 0) { callback = null; }
-        var thisClass = this;
         //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == "function") {
             gtag("event", "recaptcha", {
@@ -6885,7 +6881,7 @@ var reCaptcha = /** @class */ (function () {
                 toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
             for (var index_2 = 0; index_2 < 3; index_2++) {
-                this.exec(action, true);
+                reCaptcha.exec(action, true);
                 if (index_2 == 3 - 1) {
                     toastr.error("recaptcha has reached limit", "captcha information");
                 }
@@ -6900,8 +6896,8 @@ var reCaptcha = /** @class */ (function () {
                 toastr.success("recaptcha loaded successfully", "captcha information");
             }
         }
-        this.gexec_count++;
-        var execute = grecaptcha.execute(this.key, {
+        reCaptcha.gexec_count++;
+        var execute = grecaptcha.execute(reCaptcha.key, {
             action: action || "location.href",
         });
         if (!execute) {
@@ -6918,40 +6914,39 @@ var reCaptcha = /** @class */ (function () {
              * @param {String} token
              */
             function (token) {
-                thisClass.reCaptcha_buttons(false, null);
-                console.info(token);
-                thisClass.insert(token);
+                reCaptcha.reCaptcha_buttons(false, null);
+                //console.info(token);
+                reCaptcha.insert(token);
                 if (typeof callback == "function") {
                     callback(token);
                 }
             });
         }
-    };
+    },
     /**
      * Insert reCaptcha Token
      * @param {String} token
      */
-    reCaptcha.prototype.insert = function (token) {
-        var thisClass = this;
-        //Cookies.set("token", token, 1, "d");
+    insert: function (token) {
+        //framework().sc("token", token, 1);
         if (typeof jQuery == "undefined") {
             console.log("jQuery Not Loaded");
             LoadScript({
                 url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
                 callback: function () {
-                    thisClass.distribute_token(token);
+                    reCaptcha.distribute_token(token);
                 },
             });
         }
         else {
-            this.distribute_token(token);
+            reCaptcha.distribute_token(token);
         }
-    };
+    },
     /**
      * Distribute reCaptcha Token
-     * @param token
+     * @param {String} token
      */
-    reCaptcha.prototype.distribute_token = function (token) {
+    distribute_token: function (token) {
         var form = $("form");
         form.each(function (i, el) {
             var fg = $(this).find('[name="g-recaptcha-response"]');
@@ -6963,24 +6958,24 @@ var reCaptcha = /** @class */ (function () {
                 fg.val(token);
             }
         });
-    };
+    },
     /**
      * Get token recaptcha
      */
-    reCaptcha.prototype.get = function () {
+    get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
             var vr = gr[0].getAttribute("value");
             return vr;
         }
         return null;
-    };
+    },
     /**
      * Button Controller
      * @param {Boolean} reCaptcha_disable
      * @param {Function} callback
      */
-    reCaptcha.prototype.reCaptcha_buttons = function (reCaptcha_disable, callback) {
+    reCaptcha_buttons: function (reCaptcha_disable, callback) {
         //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
         $('button,[type="submit"],input')
             .not('[data-recaptcha="no-action"]')
@@ -6999,16 +6994,13 @@ var reCaptcha = /** @class */ (function () {
         if (typeof callback == "function") {
             callback();
         }
-    };
-    return reCaptcha;
-}());
+    },
+};
 /**
  * Hidden reCaptcha v3 object initializer
  */
 function recaptcha() {
-    var recap = new reCaptcha();
-    recap.set_key(siteConfig.google.recaptcha.key);
-    return recap;
+    return reCaptcha;
 }
 var requirejs_vendor = "/node_modules";
 var require_config = {

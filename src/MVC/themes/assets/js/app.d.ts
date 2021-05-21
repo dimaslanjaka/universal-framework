@@ -883,17 +883,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
+    "160": string;
+    "161": string;
+    "162": string;
+    "163": string;
+    "164": string;
+    "165": string;
+    "166": string;
+    "167": string;
+    "168": string;
+    "169": string;
+    "8364": string;
 };
 /**
  * php equivalent http_build_query
@@ -997,7 +997,7 @@ declare function formsaver(): void;
  * @param {Function}              callback   Callback function for each iteration
  * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
+declare function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
 /**
  * Get the closest matching element up the DOM tree.
  * @private
@@ -1282,59 +1282,99 @@ interface JQueryStatic {
      */
     (selector: string, context?: Element | JQuery | string): JQuery;
 }
-declare class reCaptcha {
+declare const reCaptcha: {
     /**
-     * @property counter executions
+     * @type {Number} counter executions
      */
     gexec_count: number;
-    /**
-     * @property site key recaptcha
-     */
     key: string;
     /**
      * Set recaptcha site key
-     * @param key
-     * @returns
+     * @param {String} key
      */
-    set_key(key: string): this;
+    set_key: (key: string) => void;
     /**
      * Start recaptcha
      */
-    start(): void;
+    start: () => void;
     /**
      * Initialize Recaptcha by defining jquery
      */
-    init(): void;
-    private retry_count;
+    init: () => void;
+    retry_count: number;
     /**
      * load or refreshing google recaptcha
      */
-    exec(action: any, retry?: boolean, callback?: (arg0: string) => void): void;
+    exec: (action: any, retry?: boolean, callback?: (arg0: string) => void) => void;
     /**
      * Insert reCaptcha Token
      * @param {String} token
      */
-    insert(token: string): void;
+    insert: (token: string) => void;
     /**
      * Distribute reCaptcha Token
-     * @param token
+     * @param {String} token
      */
-    distribute_token(token: string): void;
+    distribute_token: (token: string) => void;
     /**
      * Get token recaptcha
      */
-    get(): string | null;
+    get: () => string;
     /**
      * Button Controller
      * @param {Boolean} reCaptcha_disable
      * @param {Function} callback
      */
-    reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function): void;
-}
+    reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
+};
 /**
  * Hidden reCaptcha v3 object initializer
  */
-declare function recaptcha(): reCaptcha;
+declare function recaptcha(): {
+    /**
+     * @type {Number} counter executions
+     */
+    gexec_count: number;
+    key: string;
+    /**
+     * Set recaptcha site key
+     * @param {String} key
+     */
+    set_key: (key: string) => void;
+    /**
+     * Start recaptcha
+     */
+    start: () => void;
+    /**
+     * Initialize Recaptcha by defining jquery
+     */
+    init: () => void;
+    retry_count: number;
+    /**
+     * load or refreshing google recaptcha
+     */
+    exec: (action: any, retry?: boolean, callback?: (arg0: string) => void) => void;
+    /**
+     * Insert reCaptcha Token
+     * @param {String} token
+     */
+    insert: (token: string) => void;
+    /**
+     * Distribute reCaptcha Token
+     * @param {String} token
+     */
+    distribute_token: (token: string) => void;
+    /**
+     * Get token recaptcha
+     */
+    get: () => string;
+    /**
+     * Button Controller
+     * @param {Boolean} reCaptcha_disable
+     * @param {Function} callback
+     */
+    reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
+};
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 interface RequireConfig {

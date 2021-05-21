@@ -109,6 +109,11 @@ function loadCodemirror(element, mode, theme) {
                     const editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
+                        /*
+                            smartIndent: true,
+                            lineWrapping: true,
+                            showCursorWhenSelecting: true,
+                            matchHighlight: true,*/
                     });
                     loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
                         editor.setOption("theme", theme);
@@ -2559,10 +2564,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2658,7 +2663,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             var trackLinks = document.getElementsByTagName("a");
             for (var i = 0, len = trackLinks.length; i < len; i++) {
@@ -2867,7 +2872,7 @@ class dimas {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -5751,7 +5756,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
@@ -7398,35 +7403,26 @@ if (!isnode()) {
         $.fn[pluginName].getters = ["complete", "error"];
     })(jQuery, window, document, undefined);
 }
-class reCaptcha {
-    constructor() {
-        /**
-         * @property counter executions
-         */
-        this.gexec_count = 0;
-        /**
-         * @property site key recaptcha
-         */
-        this.key = "";
-        this.retry_count = 0;
-    }
+const reCaptcha = {
+    /**
+     * @type {Number} counter executions
+     */
+    gexec_count: 0,
+    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
     /**
      * Set recaptcha site key
-     * @param key
-     * @returns
+     * @param {String} key
      */
-    set_key(key) {
-        this.key = key;
-        return this;
-    }
+    set_key: function (key) {
+        reCaptcha.key = key;
+    },
     /**
      * Start recaptcha
      */
-    start() {
-        const thisClass = this;
-        thisClass.reCaptcha_buttons(true, function () {
+    start: function () {
+        reCaptcha.reCaptcha_buttons(true, function () {
             LoadScript({
-                url: "https://www.google.com/recaptcha/api.js?render=" + thisClass.key + "&render=explicit",
+                url: "https://www.google.com/recaptcha/api.js?render=" + reCaptcha.key + "&render=explicit",
                 callback: function () {
                     grecaptcha.ready(function () {
                         var msg = "first_start_" +
@@ -7434,31 +7430,31 @@ class reCaptcha {
                                 .replace(/[^a-zA-Z0-9 ]/g, "_")
                                 .replace(/\_{2,99}/g, "_")
                                 .replace(/\_$/g, "");
-                        thisClass.exec(msg);
+                        reCaptcha.exec(msg);
                     });
                 },
             });
         });
-    }
+    },
     /**
      * Initialize Recaptcha by defining jquery
      */
-    init() {
+    init: function () {
         if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
             LoadScript({
                 url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-                callback: this.start,
+                callback: reCaptcha.start,
             });
         }
         else {
-            this.start();
+            reCaptcha.start();
         }
-    }
+    },
+    retry_count: 0,
     /**
      * load or refreshing google recaptcha
      */
-    exec(action, retry = false, callback = null) {
-        let thisClass = this;
+    exec: function (action, retry = false, callback = null) {
         //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == "function") {
             gtag("event", "recaptcha", {
@@ -7473,7 +7469,7 @@ class reCaptcha {
                 toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
             for (let index = 0; index < 3; index++) {
-                this.exec(action, true);
+                reCaptcha.exec(action, true);
                 if (index == 3 - 1) {
                     toastr.error("recaptcha has reached limit", "captcha information");
                 }
@@ -7488,8 +7484,8 @@ class reCaptcha {
                 toastr.success("recaptcha loaded successfully", "captcha information");
             }
         }
-        this.gexec_count++;
-        var execute = grecaptcha.execute(this.key, {
+        reCaptcha.gexec_count++;
+        var execute = grecaptcha.execute(reCaptcha.key, {
             action: action || "location.href",
         });
         if (!execute) {
@@ -7506,40 +7502,39 @@ class reCaptcha {
              * @param {String} token
              */
             function (token) {
-                thisClass.reCaptcha_buttons(false, null);
-                console.info(token);
-                thisClass.insert(token);
+                reCaptcha.reCaptcha_buttons(false, null);
+                //console.info(token);
+                reCaptcha.insert(token);
                 if (typeof callback == "function") {
                     callback(token);
                 }
             });
         }
-    }
+    },
     /**
      * Insert reCaptcha Token
      * @param {String} token
      */
-    insert(token) {
-        const thisClass = this;
-        //Cookies.set("token", token, 1, "d");
+    insert: function (token) {
+        //framework().sc("token", token, 1);
         if (typeof jQuery == "undefined") {
             console.log("jQuery Not Loaded");
             LoadScript({
                 url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
                 callback: function () {
-                    thisClass.distribute_token(token);
+                    reCaptcha.distribute_token(token);
                 },
             });
         }
         else {
-            this.distribute_token(token);
+            reCaptcha.distribute_token(token);
         }
-    }
+    },
     /**
      * Distribute reCaptcha Token
-     * @param token
+     * @param {String} token
      */
-    distribute_token(token) {
+    distribute_token: function (token) {
         var form = $("form");
         form.each(function (i, el) {
             var fg = $(this).find('[name="g-recaptcha-response"]');
@@ -7551,24 +7546,24 @@ class reCaptcha {
                 fg.val(token);
             }
         });
-    }
+    },
     /**
      * Get token recaptcha
      */
-    get() {
+    get: function () {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
             var vr = gr[0].getAttribute("value");
             return vr;
         }
         return null;
-    }
+    },
     /**
      * Button Controller
      * @param {Boolean} reCaptcha_disable
      * @param {Function} callback
      */
-    reCaptcha_buttons(reCaptcha_disable, callback) {
+    reCaptcha_buttons: function (reCaptcha_disable, callback) {
         //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
         $('button,[type="submit"],input')
             .not('[data-recaptcha="no-action"]')
@@ -7587,15 +7582,13 @@ class reCaptcha {
         if (typeof callback == "function") {
             callback();
         }
-    }
-}
+    },
+};
 /**
  * Hidden reCaptcha v3 object initializer
  */
 function recaptcha() {
-    const recap = new reCaptcha();
-    recap.set_key(siteConfig.google.recaptcha.key);
-    return recap;
+    return reCaptcha;
 }
 const requirejs_vendor = "/node_modules";
 const require_config = {

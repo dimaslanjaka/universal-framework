@@ -1,31 +1,25 @@
-class reCaptcha {
+const reCaptcha = {
   /**
-   * @property counter executions
+   * @type {Number} counter executions
    */
-  gexec_count: number = 0;
-  /**
-   * @property site key recaptcha
-   */
-  key: string = "";
+  gexec_count: 0,
+  key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
 
   /**
    * Set recaptcha site key
-   * @param key
-   * @returns
+   * @param {String} key
    */
-  set_key(key: string): this {
-    this.key = key;
-    return this;
-  }
+  set_key: function (key: string) {
+    reCaptcha.key = key;
+  },
 
   /**
    * Start recaptcha
    */
-  start(): void {
-    const thisClass = this;
-    thisClass.reCaptcha_buttons(true, function () {
+  start: function () {
+    reCaptcha.reCaptcha_buttons(true, function () {
       LoadScript({
-        url: "https://www.google.com/recaptcha/api.js?render=" + thisClass.key + "&render=explicit",
+        url: "https://www.google.com/recaptcha/api.js?render=" + reCaptcha.key + "&render=explicit",
         callback: function () {
           grecaptcha.ready(function () {
             var msg =
@@ -34,34 +28,31 @@ class reCaptcha {
                 .replace(/[^a-zA-Z0-9 ]/g, "_")
                 .replace(/\_{2,99}/g, "_")
                 .replace(/\_$/g, "");
-            thisClass.exec(msg);
+            reCaptcha.exec(msg);
           });
         },
       });
     });
-  }
+  },
 
   /**
    * Initialize Recaptcha by defining jquery
    */
-  init() {
+  init: function () {
     if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
       LoadScript({
         url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-        callback: this.start,
+        callback: reCaptcha.start,
       });
     } else {
-      this.start();
+      reCaptcha.start();
     }
-  }
-
-  private retry_count = 0;
-
+  },
+  retry_count: 0,
   /**
    * load or refreshing google recaptcha
    */
-  exec(action: any, retry: boolean = false, callback: (arg0: string) => void = null) {
-    let thisClass = this;
+  exec: function (action: any, retry: boolean = false, callback: (arg0: string) => void = null) {
     //console.log('gtag is ' + typeof gtag);
     if (typeof gtag == "function") {
       gtag("event", "recaptcha", {
@@ -75,7 +66,7 @@ class reCaptcha {
         toastr.error("recaptcha not loaded, retrying...", "captcha information");
       }
       for (let index = 0; index < 3; index++) {
-        this.exec(action, true);
+        reCaptcha.exec(action, true);
         if (index == 3 - 1) {
           toastr.error("recaptcha has reached limit", "captcha information");
         }
@@ -88,8 +79,8 @@ class reCaptcha {
         toastr.success("recaptcha loaded successfully", "captcha information");
       }
     }
-    this.gexec_count++;
-    var execute = grecaptcha.execute(this.key, {
+    reCaptcha.gexec_count++;
+    var execute = grecaptcha.execute(reCaptcha.key, {
       action: action || "location.href",
     });
     if (!execute) {
@@ -106,40 +97,39 @@ class reCaptcha {
          * @param {String} token
          */
         function (token: string) {
-          thisClass.reCaptcha_buttons(false, null);
-          console.info(token);
-          thisClass.insert(token);
+          reCaptcha.reCaptcha_buttons(false, null);
+          //console.info(token);
+          reCaptcha.insert(token);
           if (typeof callback == "function") {
             callback(token);
           }
         }
       );
     }
-  }
+  },
   /**
    * Insert reCaptcha Token
    * @param {String} token
    */
-  insert(token: string) {
-    const thisClass = this;
-    //Cookies.set("token", token, 1, "d");
+  insert: function (token: string) {
+    //framework().sc("token", token, 1);
     if (typeof jQuery == "undefined") {
       console.log("jQuery Not Loaded");
       LoadScript({
         url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
         callback: function () {
-          thisClass.distribute_token(token);
+          reCaptcha.distribute_token(token);
         },
       });
     } else {
-      this.distribute_token(token);
+      reCaptcha.distribute_token(token);
     }
-  }
+  },
   /**
    * Distribute reCaptcha Token
-   * @param token
+   * @param {String} token
    */
-  distribute_token(token: string): void {
+  distribute_token: function (token: string) {
     var form = $("form");
     form.each(function (i, el) {
       var fg = $(this).find('[name="g-recaptcha-response"]');
@@ -150,24 +140,24 @@ class reCaptcha {
         fg.val(token);
       }
     });
-  }
+  },
   /**
    * Get token recaptcha
    */
-  get(): string | null {
+  get: function () {
     var gr = $('input[name="g-recaptcha-response"]');
     if (gr.length) {
       var vr = gr[0].getAttribute("value");
       return vr;
     }
     return null;
-  }
+  },
   /**
    * Button Controller
    * @param {Boolean} reCaptcha_disable
    * @param {Function} callback
    */
-  reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function) {
+  reCaptcha_buttons: function (reCaptcha_disable: boolean, callback: Function) {
     //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
     $('button,[type="submit"],input')
       .not('[data-recaptcha="no-action"]')
@@ -186,14 +176,12 @@ class reCaptcha {
     if (typeof callback == "function") {
       callback();
     }
-  }
-}
+  },
+};
 
 /**
  * Hidden reCaptcha v3 object initializer
  */
-function recaptcha(): reCaptcha {
-  const recap = new reCaptcha();
-  recap.set_key(siteConfig.google.recaptcha.key);
-  return recap;
+function recaptcha() {
+  return reCaptcha;
 }
