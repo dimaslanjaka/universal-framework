@@ -1026,6 +1026,28 @@ function object_join(obj) {
     })
         .join(",");
 }
+/**
+ * Extend Object
+ * @param arg1
+ * @param arg2
+ * @returns
+ */
+function extend_object(arg1, arg2) {
+    var result = {};
+    for (var prop in arg1) {
+        if (arg1.hasOwnProperty(prop)) {
+            // error when using --strictNullChecks
+            result[prop] = arg1[prop];
+        }
+    }
+    for (var prop in arg2) {
+        if (arg2.hasOwnProperty(prop)) {
+            // error when using --strictNullChecks
+            result[prop] = arg2[prop];
+        }
+    }
+    return result;
+}
 /* eslint-disable */
 /// <reference path="./_Prototype-String.ts"/>
 /// <reference path="./_Prototype-Object.ts"/>
@@ -5834,6 +5856,7 @@ function prepEntities(str) {
     });
 }
 /// <reference path="./_Prototype-Array.ts" />
+/// <reference path="./_Prototype-Object.ts" />
 /**
  * php equivalent http_build_query
  * @param obj
@@ -5901,14 +5924,22 @@ var LoadScriptLoaded = [];
  * @param urls
  * @param callback
  */
-function LoadScript(option) {
+function LoadScript(config) {
     var urls = [];
-    if (typeof option.url == "string") {
-        urls.add(option.url);
+    if (typeof config.url == "string") {
+        urls.add(config.url);
     }
-    else if (Array.isArray(option.url)) {
-        urls.addAll(option.url);
+    else if (Array.isArray(config.url)) {
+        urls.addAll(config.url);
     }
+    var defaultConfig = {
+        url: [],
+        options: {
+            type: "text/javascript",
+        },
+        callback: null,
+    };
+    config = Object.assign(defaultConfig, config);
     console.log("Script in queue " + urls.length);
     /**
      * Callback onreadystatechange
@@ -5916,50 +5947,58 @@ function LoadScript(option) {
      * @param event
      */
     var callthis = function (event) {
-        console.log(this.readyState, event);
+        //console.log(this.readyState, event);
         // remove first url
         urls.shift();
         if (!urls.length) {
-            option.callback();
+            config.callback();
         }
         else if (urls.length) {
             LoadScript({
                 url: urls,
-                options: option.options,
-                callback: option.callback,
+                options: config.options,
+                callback: config.callback,
             });
         }
-        LoadScriptLoaded[urls[0]]["status"] = true;
+        //LoadScriptLoaded[urls[0]]["status"] = true;
     };
     if (!urls.isEmpty()) {
-        var script = document.createElement("script");
+        var script_1 = document.createElement("script");
         // script src from first url
-        script.src = urls[0];
-        // add attriubutes options
-        if (typeof option.options.async == "boolean") {
-            script.async = option.options.async;
-        }
-        if (typeof option.options.defer == "boolean") {
-            script.defer = option.options.defer;
-        }
-        if (typeof option.options.type == "string") {
-            script.type = option.options.type;
+        script_1.src = urls[0];
+        LoadScriptLoaded[urls[0]] = {
+            status: undefined,
+            onerror: undefined,
+            onabort: undefined,
+            oncancel: undefined,
+        };
+        if (typeof config.options == "object") {
+            // add attriubutes options
+            if (config.options.hasOwnProperty("async")) {
+                script_1.async = config.options.async;
+            }
+            if (config.options.hasOwnProperty("defer")) {
+                script_1.defer = config.options.defer;
+            }
+            if (config.options.hasOwnProperty("type")) {
+                script_1.type = config.options.type;
+            }
         }
         //console.info(`loading script(${script.src})`);
-        script.onload = script.onreadystatechange = callthis;
-        script.onerror = function () {
-            LoadScriptLoaded[script.src]["onerror"] = false;
-            console.error("error while loading " + script.src);
+        script_1.onload = script_1.onreadystatechange = callthis;
+        script_1.onerror = function () {
+            LoadScriptLoaded[script_1.src]["onerror"] = false;
+            console.error("error while loading " + script_1.src);
         };
-        script.onabort = function () {
-            LoadScriptLoaded[script.src]["onabort"] = false;
-            console.error("error while loading " + script.src);
+        script_1.onabort = function () {
+            LoadScriptLoaded[script_1.src]["onabort"] = false;
+            console.error("error while loading " + script_1.src);
         };
-        script.oncancel = function () {
-            LoadScriptLoaded[script.src]["oncancel"] = false;
-            console.error("error while loading " + script.src);
+        script_1.oncancel = function () {
+            LoadScriptLoaded[script_1.src]["oncancel"] = false;
+            console.error("error while loading " + script_1.src);
         };
-        document.body.appendChild(script);
+        document.body.appendChild(script_1);
     }
     return LoadScriptLoaded;
 }
@@ -6794,10 +6833,10 @@ var reCaptcha = /** @class */ (function () {
      * Start recaptcha
      */
     reCaptcha.prototype.start = function () {
-        var self = this;
-        this.reCaptcha_buttons(true, function () {
+        var thisClass = this;
+        thisClass.reCaptcha_buttons(true, function () {
             LoadScript({
-                url: "https://www.google.com/recaptcha/api.js?render=" + self.key + "&render=explicit",
+                url: "https://www.google.com/recaptcha/api.js?render=" + thisClass.key + "&render=explicit",
                 callback: function () {
                     grecaptcha.ready(function () {
                         var msg = "first_start_" +
@@ -6805,7 +6844,7 @@ var reCaptcha = /** @class */ (function () {
                                 .replace(/[^a-zA-Z0-9 ]/g, "_")
                                 .replace(/\_{2,99}/g, "_")
                                 .replace(/\_$/g, "");
-                        this.exec(msg);
+                        thisClass.exec(msg);
                     });
                 },
             });
@@ -6816,7 +6855,10 @@ var reCaptcha = /** @class */ (function () {
      */
     reCaptcha.prototype.init = function () {
         if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
-            LoadScript({ url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", callback: this.start });
+            LoadScript({
+                url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+                callback: this.start,
+            });
         }
         else {
             this.start();
@@ -6826,7 +6868,9 @@ var reCaptcha = /** @class */ (function () {
      * load or refreshing google recaptcha
      */
     reCaptcha.prototype.exec = function (action, retry, callback) {
+        if (retry === void 0) { retry = false; }
         if (callback === void 0) { callback = null; }
+        var thisClass = this;
         //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == "function") {
             gtag("event", "recaptcha", {
@@ -6874,9 +6918,9 @@ var reCaptcha = /** @class */ (function () {
              * @param {String} token
              */
             function (token) {
-                this.reCaptcha_buttons(false, null);
-                //console.info(token);
-                this.insert(token);
+                thisClass.reCaptcha_buttons(false, null);
+                console.info(token);
+                thisClass.insert(token);
                 if (typeof callback == "function") {
                     callback(token);
                 }
@@ -6888,13 +6932,14 @@ var reCaptcha = /** @class */ (function () {
      * @param {String} token
      */
     reCaptcha.prototype.insert = function (token) {
-        Cookies.set("token", token, 1, "d");
+        var thisClass = this;
+        //Cookies.set("token", token, 1, "d");
         if (typeof jQuery == "undefined") {
             console.log("jQuery Not Loaded");
             LoadScript({
                 url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
                 callback: function () {
-                    this.distribute_token(token);
+                    thisClass.distribute_token(token);
                 },
             });
         }

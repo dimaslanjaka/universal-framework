@@ -1,4 +1,5 @@
 /// <reference path="./_Prototype-Array.ts" />
+/// <reference path="./_Prototype-Object.ts" />
 
 /**
  * php equivalent http_build_query
@@ -73,7 +74,7 @@ interface HTMLScriptAttribute {
    * @example
    * {type: "text/javascript"} // type="text/javascript"
    */
-  type: "application/json" | "text/plain" | "application/javascript" | "text/javascript";
+  type?: "application/json" | "text/plain" | "application/javascript" | "text/javascript";
 }
 
 interface LoadScriptOptions {
@@ -88,19 +89,28 @@ interface LoadScriptOptions {
   callback?: null | Function;
 }
 
-const LoadScriptLoaded = [];
+const LoadScriptLoaded: any[] = [];
 /**
  * Load script asynchronously
  * @param urls
  * @param callback
  */
-function LoadScript(option: LoadScriptOptions) {
-  let urls = [];
-  if (typeof option.url == "string") {
-    urls.add(option.url);
-  } else if (Array.isArray(option.url)) {
-    urls.addAll(option.url);
+function LoadScript(config: LoadScriptOptions): typeof LoadScriptLoaded {
+  let urls: string[] = [];
+  if (typeof config.url == "string") {
+    urls.add(config.url);
+  } else if (Array.isArray(config.url)) {
+    urls.addAll(config.url);
   }
+
+  const defaultConfig: LoadScriptOptions = {
+    url: [],
+    options: {
+      type: "text/javascript",
+    },
+    callback: null,
+  };
+  config = Object.assign(defaultConfig, config);
 
   console.log(`Script in queue ${urls.length}`);
   /**
@@ -109,39 +119,47 @@ function LoadScript(option: LoadScriptOptions) {
    * @param event
    */
   const callthis = function (event?: Event) {
-    console.log(this.readyState, event);
+    //console.log(this.readyState, event);
 
     // remove first url
     urls.shift();
 
     if (!urls.length) {
-      option.callback();
+      config.callback();
     } else if (urls.length) {
       LoadScript({
         url: urls,
-        options: option.options,
-        callback: option.callback,
+        options: config.options,
+        callback: config.callback,
       });
     }
 
-    LoadScriptLoaded[urls[0]]["status"] = true;
+    //LoadScriptLoaded[urls[0]]["status"] = true;
   };
 
   if (!urls.isEmpty()) {
-    var script = document.createElement("script");
+    const script = document.createElement("script");
 
     // script src from first url
     script.src = urls[0];
+    LoadScriptLoaded[urls[0]] = {
+      status: undefined,
+      onerror: undefined,
+      onabort: undefined,
+      oncancel: undefined,
+    };
 
-    // add attriubutes options
-    if (typeof option.options.async == "boolean") {
-      script.async = option.options.async;
-    }
-    if (typeof option.options.defer == "boolean") {
-      script.defer = option.options.defer;
-    }
-    if (typeof option.options.type == "string") {
-      script.type = option.options.type;
+    if (typeof config.options == "object") {
+      // add attriubutes options
+      if (config.options.hasOwnProperty("async")) {
+        script.async = config.options.async;
+      }
+      if (config.options.hasOwnProperty("defer")) {
+        script.defer = config.options.defer;
+      }
+      if (config.options.hasOwnProperty("type")) {
+        script.type = config.options.type;
+      }
     }
 
     //console.info(`loading script(${script.src})`);

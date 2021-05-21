@@ -227,6 +227,13 @@ declare function storage(): STORAGE;
  * @returns Joined string
  */
 declare function object_join(obj: object): string;
+/**
+ * Extend Object
+ * @param arg1
+ * @param arg2
+ * @returns
+ */
+declare function extend_object<T1 extends object, T2 extends object>(arg1: T1, arg2: T2): T1 & T2;
 interface ipapi_response {
     ip: "114.4.83.195";
     city: "Jakarta";
@@ -914,7 +921,7 @@ interface HTMLScriptAttribute {
      * @example
      * {type: "text/javascript"} // type="text/javascript"
      */
-    type: "application/json" | "text/plain" | "application/javascript" | "text/javascript";
+    type?: "application/json" | "text/plain" | "application/javascript" | "text/javascript";
 }
 interface LoadScriptOptions {
     url: string | string[];
@@ -933,7 +940,7 @@ declare const LoadScriptLoaded: any[];
  * @param urls
  * @param callback
  */
-declare function LoadScript(option: LoadScriptOptions): any[];
+declare function LoadScript(config: LoadScriptOptions): typeof LoadScriptLoaded;
 /**
  * Load CSS async
  * @param href
@@ -1302,7 +1309,7 @@ declare class reCaptcha {
     /**
      * load or refreshing google recaptcha
      */
-    exec(action: any, retry: boolean, callback?: (arg0: string) => void): void;
+    exec(action: any, retry?: boolean, callback?: (arg0: string) => void): void;
     /**
      * Insert reCaptcha Token
      * @param {String} token

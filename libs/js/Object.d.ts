@@ -20,6 +20,11 @@ interface Object {
 interface ObjectConstructor {
   [pair: any]: any;
   /**
+   * Is Object Has Property of key ?
+   * @param key
+   */
+  hasOwnProperty(key:any): boolean;
+  /**
    * check if has child and go for callback
    * @param str  match child property
    * @param callback function callback

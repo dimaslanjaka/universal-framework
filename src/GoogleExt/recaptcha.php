@@ -9,8 +9,8 @@ class recaptcha
 {
   public static $secretKey;
   private static $_instance = null;
-  public $secret = '6LeLW-MUAAAAADaHQWVpUV5CqjNymO0cu_gbL0vv';
-  public $siteKey = '6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie';
+  public $secret = CONFIG['google']['recaptcha']['key'];
+  public $siteKey = CONFIG['google']['recaptcha']['secret'];
 
   public static function verifyCaptchaOld($callback = null, $error = null)
   {
@@ -62,12 +62,12 @@ class recaptcha
     }
     // Verify captcha
     $post_data = http_build_query(
-            [
-              'secret' => self::getInstance()->secret,
-              'response' => $_POST['g-recaptcha-response'],
-              'remoteip' => $_SERVER['REMOTE_ADDR'],
-            ]
-        );
+      [
+        'secret' => self::getInstance()->secret,
+        'response' => $_POST['g-recaptcha-response'],
+        'remoteip' => $_SERVER['REMOTE_ADDR'],
+      ]
+    );
     $opts = [
       'http' => [
         'method' => 'POST',

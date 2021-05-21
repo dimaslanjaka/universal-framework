@@ -22,10 +22,10 @@ class reCaptcha {
    * Start recaptcha
    */
   start(): void {
-    const self = this;
-    this.reCaptcha_buttons(true, function () {
+    const thisClass = this;
+    thisClass.reCaptcha_buttons(true, function () {
       LoadScript({
-        url: "https://www.google.com/recaptcha/api.js?render=" + self.key + "&render=explicit",
+        url: "https://www.google.com/recaptcha/api.js?render=" + thisClass.key + "&render=explicit",
         callback: function () {
           grecaptcha.ready(function () {
             var msg =
@@ -34,7 +34,7 @@ class reCaptcha {
                 .replace(/[^a-zA-Z0-9 ]/g, "_")
                 .replace(/\_{2,99}/g, "_")
                 .replace(/\_$/g, "");
-            this.exec(msg);
+            thisClass.exec(msg);
           });
         },
       });
@@ -46,7 +46,10 @@ class reCaptcha {
    */
   init() {
     if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
-      LoadScript({ url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", callback: this.start });
+      LoadScript({
+        url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+        callback: this.start,
+      });
     } else {
       this.start();
     }
@@ -57,7 +60,8 @@ class reCaptcha {
   /**
    * load or refreshing google recaptcha
    */
-  exec(action: any, retry: boolean, callback: (arg0: string) => void = null) {
+  exec(action: any, retry: boolean = false, callback: (arg0: string) => void = null) {
+    let thisClass = this;
     //console.log('gtag is ' + typeof gtag);
     if (typeof gtag == "function") {
       gtag("event", "recaptcha", {
@@ -102,9 +106,9 @@ class reCaptcha {
          * @param {String} token
          */
         function (token: string) {
-          this.reCaptcha_buttons(false, null);
-          //console.info(token);
-          this.insert(token);
+          thisClass.reCaptcha_buttons(false, null);
+          console.info(token);
+          thisClass.insert(token);
           if (typeof callback == "function") {
             callback(token);
           }
@@ -117,13 +121,14 @@ class reCaptcha {
    * @param {String} token
    */
   insert(token: string) {
-    Cookies.set("token", token, 1, "d");
+    const thisClass = this;
+    //Cookies.set("token", token, 1, "d");
     if (typeof jQuery == "undefined") {
       console.log("jQuery Not Loaded");
       LoadScript({
         url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
         callback: function () {
-          this.distribute_token(token);
+          thisClass.distribute_token(token);
         },
       });
     } else {
