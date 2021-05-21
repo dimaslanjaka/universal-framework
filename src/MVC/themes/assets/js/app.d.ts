@@ -55,8 +55,10 @@ declare class Cookies {
      * Create cookie expiring in days
      * @param name cookie name
      * @param value cookie value
-     * @param days days to expire
+     * @param expire
      * @param expire_type d = days, m = minutes, s = seconds, default seconds
+     * @param path
+     * @param callback
      */
     static set(name: string, value: any, expire: number | string, expire_type?: string | null, path?: string | any | null, callback?: any | Function | null): any;
     /**
@@ -271,6 +273,10 @@ declare class ip {
      * });
      */
     init(callback: Function): void;
+    /**
+     * Check if the ip has been applied
+     * @private
+     */
     private static status;
     /**
      * Checks ip
@@ -283,6 +289,9 @@ declare class ip {
      * @returns {String} ip or callback
      */
     static get(callback?: Function): string;
+    /**
+     * Retrieve ip from ipapi.co
+     */
     static ipapi(): JQuery.jqXHR<any>;
     static l2io(): JQuery.jqXHR<any>;
     static cloudflare(): JQuery.jqXHR<any>;
@@ -298,6 +307,10 @@ declare function get_unique_id(): string | Object;
  * @param url url target, null for current location.href
  */
 declare function getParameterByName(name: string, url: string | null): string;
+/**
+ * Autofill datetime-local value
+ */
+declare function datetimelocal(v?: string | number): void;
 /**
  * @class Timer constructor
  * @example
@@ -384,6 +397,17 @@ declare interface Number {
      */
     AddZero(add: number, target: string): number;
 }
+/**
+ * Odd or Even (Ganjil Genap);
+ * @param n
+ * @param type odd or even
+ */
+declare function oddoreven(n: string, type: string): boolean;
+/**
+ * strpad / startwith zero [0]
+ * @param {number} val
+ */
+declare function strpad(val: number): string | number;
 interface Console {
     olog: {
         (...data: any[]): void;
@@ -615,21 +639,9 @@ declare function analys(event_action: string, event_label: string, event_categor
 declare var gtagID: string;
 declare var create_gtagscript: HTMLScriptElement;
 declare var gtag: any;
-declare var ORIGIN: any;
-declare var IP: string;
+declare let ORIGIN: any;
+declare let IP: string;
 declare class dimas {
-    /**
-     * Disabling button
-     * @param t element of button
-     * @param V
-     */
-    disable_button(t: JQuery<any> | HTMLButtonElement, V?: any): void;
-    /**
-     * Enabling button
-     * @param t element of button
-     * @param V
-     */
-    enable_button(t: JQuery<any> | HTMLButtonElement, V?: any): void;
     /**
      * get current url without querystrings
      */
@@ -678,10 +690,6 @@ declare class dimas {
      */
     async(callback: any): Promise<unknown>;
     /**
-     * Rupiah currency auto format
-     */
-    rp(angka: number, prefix?: string | any): string;
-    /**
      * Check if variable is number / numeric
      * @param {String|Number} v
      */
@@ -697,39 +705,6 @@ declare class dimas {
      * @param callback callback function
      */
     isURLReachable(url: string, callback: (arg0: boolean, arg1: string) => any): void;
-    /**
-     * strpad / startwith zero [0]
-     * @param {number} val
-     */
-    strpad(val: number): string | number;
-    /**
-     * Autofill datetime-local value
-     */
-    datetimelocal(v?: string | number): void;
-    /**
-     * Get cookie
-     * @param string name cookie
-     */
-    gc(name: string): string;
-    /**
-     * Odd or Even (Ganjil Genap);
-     * @param type odd or even
-     */
-    oddoreven(n: string, type: string): boolean;
-    /**
-     * Set cookie
-     * @param {String} name
-     * @param {any} value
-     * @param {number} hours
-     */
-    sc(name: string, value: any, hours: number): void;
-    allcookies(): {
-        [key: string]: any;
-    };
-    /**
-     * Remove Cookie
-     */
-    rc(name: string): void;
     /**
      * Get Query name from current url
      */
@@ -761,9 +736,7 @@ declare class dimas {
         port: string;
         pathname: string;
         search: string;
-        searchObject: {
-            [key: string]: any;
-        };
+        searchObject: {};
         hash: string;
         protohost: string;
     };
@@ -809,6 +782,16 @@ declare function randomHex(): string;
  * @param name
  */
 declare function openInNewTab(url: string, name: string): void;
+/**
+ * Disabling button
+ * @param t element of button
+ */
+declare function disable_button(t: JQuery<any> | HTMLButtonElement): void;
+/**
+ * Enabling button
+ * @param t element of button
+ */
+declare function enable_button(t: JQuery<any> | HTMLButtonElement): void;
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
@@ -941,6 +924,10 @@ declare function setInputFilter(textbox: any, inputFilter: any): void;
 declare var INPT: NodeListOf<Element>;
 declare var index: number;
 declare var element: Element;
+/**
+ * Rupiah currency auto format
+ */
+declare function rp(angka: number, prefix?: string | any): string;
 /**
  * Auto height textarea
  */

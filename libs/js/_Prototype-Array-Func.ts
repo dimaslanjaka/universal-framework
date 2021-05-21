@@ -13,7 +13,7 @@ function array_rand(arrays: any[], unique: any) {
   if (unique) {
     arrays = array_unique(arrays);
   }
-  var index = Math.floor(Math.random() * arrays.length);
+  const index = Math.floor(Math.random() * arrays.length);
   return {
     index: index,
     value: arrays[index],
@@ -36,8 +36,8 @@ function array_unique(arrays: any[]) {
  * @param {String|number} key
  */
 function array_unset(arrayName: { [x: string]: any }, key: any) {
-  var x: string | number;
-  var tmpArray = new Array();
+  let x: string | number;
+  const tmpArray = [];
   for (x in arrayName) {
     if (x != key) {
       tmpArray[x] = arrayName[x];
@@ -55,7 +55,7 @@ function array_unset(arrayName: { [x: string]: any }, key: any) {
  * console.log(arr); //return random
  */
 function shuffle(array: Array<any>) {
-  var currentIndex = array.length,
+  let currentIndex = array.length,
     temporaryValue: any,
     randomIndex: number;
 
@@ -76,8 +76,8 @@ function shuffle(array: Array<any>) {
 
 function arrayCompare(a1: Array<any>, a2: Array<any>) {
   if (a1.length != a2.length) return false;
-  var length = a2.length;
-  for (var i = 0; i < length; i++) {
+  const length = a2.length;
+  for (let i = 0; i < length; i++) {
     if (a1[i] !== a2[i]) return false;
   }
   return true;
@@ -89,8 +89,8 @@ function arrayCompare(a1: Array<any>, a2: Array<any>) {
  * @param haystack
  */
 function inArray(needle: any, haystack: Array<any>) {
-  var length = haystack.length;
-  for (var i = 0; i < length; i++) {
+  const length = haystack.length;
+  for (let i = 0; i < length; i++) {
     if (typeof haystack[i] == "object") {
       if (arrayCompare(haystack[i], needle)) return true;
     } else {
@@ -122,7 +122,7 @@ function array_keys(haystack: any) {
  * @param a items An array containing the items.
  */
 function array_shuffle(a: Array<any>) {
-  var j: number, x: any, i: number;
+  let j: number, x: any, i: number;
   for (i = a.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
     x = a[i];
@@ -130,4 +130,12 @@ function array_shuffle(a: Array<any>) {
     a[j] = x;
   }
   return a;
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    array_shuffle,
+    array_keys,
+    in_array,
+  };
 }

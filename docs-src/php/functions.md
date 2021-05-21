@@ -266,7 +266,7 @@ function dump_html_tree( mixed $node, mixed $show_attr = true, mixed $deep = 0 )
 <div class="page-edit">
     <div class="last-updated">
         <span class="prefix">Auto-generated at: </span>
-        <span class="time">2021-05-21, 1:54 AM</span>
+        <span class="time">2021-05-21, 3:02 AM</span>
     </div>
 </div>
 

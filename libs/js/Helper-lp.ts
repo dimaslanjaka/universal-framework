@@ -1,5 +1,6 @@
-/// <reference path="_Prototype-String.ts"/>
-/// <reference path="_Prototype-Object.ts"/>
+/* eslint-disable */
+/// <reference path="./_Prototype-String.ts"/>
+/// <reference path="./_Prototype-Object.ts"/>
 
 interface ipapi_response {
   ip: "114.4.83.195";
@@ -28,8 +29,10 @@ interface ipapi_response {
   asn: "AS4761";
   org: "INDOSAT Internet Network Provider";
 }
+
 const cookie_ip = "ip".rot13();
 const cookie_indicator = "status_ip".rot13();
+
 /**
  * IP Address class
  * @class get, check, validate ip address
@@ -52,6 +55,10 @@ class ip {
     callback.bind(this)();
   }
 
+  /**
+   * Check if the ip has been applied
+   * @private
+   */
   private static status() {
     //if (value != null) if (!value.isEmpty()) ip.save(value);
     return Cookies.has(cookie_indicator);
@@ -67,8 +74,8 @@ class ip {
     if (!this.status()) await this.l2io();
 
     /*if (this.status()) {
-      console.log(this.get(null));
-    } */
+         console.log(this.get(null));
+         } */
   }
 
   /**
@@ -77,9 +84,9 @@ class ip {
    * @returns {String} ip or callback
    */
   static get(callback: Function = null): string {
-    this.check();
+    this.check().then(function () {});
     //console.log(this.status(null));
-    var ips = this.storage.get(cookie_ip);
+    const ips = this.storage.get(cookie_ip);
     //ips = Cookies.get(cookie_ip);
     if (typeof callback == "function") {
       return callback(ips);
@@ -87,6 +94,9 @@ class ip {
     return ips;
   }
 
+  /**
+   * Retrieve ip from ipapi.co
+   */
   static ipapi() {
     return $.ajax({
       proxy: false,
@@ -123,7 +133,7 @@ class ip {
       url: "//www.cloudflare.com/cdn-cgi/trace",
       success: function (str) {
         const regex = /ip\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gm;
-        let m: RegExpExecArray = regex.exec(str);
+        const m: RegExpExecArray = regex.exec(str);
         if (m != null) {
           if (m.length > 0) {
             ip.save(m[1]);
@@ -158,7 +168,8 @@ function get_unique_id() {
   }
 
   if (isnode()) {
-    var mac = JSON.stringify(require("os").networkInterfaces(), null, 2)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mac = JSON.stringify(require("os").networkInterfaces(), null, 2)
       .match(/"mac": ".*?"/g)
       .toString()
       .match(/\w\w:\w\w:\w\w:\w\w:\w\w:\w\w/g);

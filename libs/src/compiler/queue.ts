@@ -17,8 +17,8 @@
  */
 function Queue() {
   // initialise the queue and offset
-  var queue = [];
-  var offset = 0;
+  let queue = [];
+  let offset = 0;
 
   // Returns the length of the queue.
   this.getLength = function () {
@@ -46,7 +46,7 @@ function Queue() {
     if (queue.length == 0) return undefined;
 
     // store the item at the front of the queue
-    var item = queue[offset];
+    const item = queue[offset];
 
     // increment the offset and remove the free space if necessary
     if (++offset * 2 >= queue.length) {

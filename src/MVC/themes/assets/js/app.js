@@ -135,14 +135,14 @@ class Cookies {
      */
     static get(c_name) {
         if (document.cookie.length > 0) {
-            var c_start = document.cookie.indexOf(c_name + "=");
+            let c_start = document.cookie.indexOf(c_name + "=");
             if (c_start != -1) {
                 c_start = c_start + c_name.length + 1;
-                var c_end = document.cookie.indexOf(";", c_start);
+                let c_end = document.cookie.indexOf(";", c_start);
                 if (c_end == -1) {
                     c_end = document.cookie.length;
                 }
-                var cookie = unescape(document.cookie.substring(c_start, c_end));
+                const cookie = unescape(document.cookie.substring(c_start, c_end));
                 try {
                     return this.decompress(cookie);
                 }
@@ -168,12 +168,14 @@ class Cookies {
      * Create cookie expiring in days
      * @param name cookie name
      * @param value cookie value
-     * @param days days to expire
+     * @param expire
      * @param expire_type d = days, m = minutes, s = seconds, default seconds
+     * @param path
+     * @param callback
      */
     static set(name, value, expire, expire_type = null, path = "/", callback = null) {
-        var expires;
-        var date = new Date();
+        let expires;
+        const date = new Date();
         if (expire_type != null && typeof expire == "number") {
             //console.log("expire instance of number");
             if (/^d$|day/s.test(expire_type)) {
@@ -209,7 +211,7 @@ class Cookies {
         else {
             expires = "";
         }
-        var cookie_path = "/";
+        let cookie_path = "/";
         if (typeof path == "string") {
             if (path.length > 0) {
                 cookie_path = path;
@@ -218,10 +220,11 @@ class Cookies {
         /*value = JSON.stringify(value);
         value = base64_encode(JSON.stringify(value));*/
         value = this.compress(value);
-        var formatted = name + "=" + value + expires + "; path=" + cookie_path;
-        //console.info(`cookie formated: ` + formatted);
+        const formatted = name + "=" + value + expires + "; path=" + cookie_path;
+        console.info(`cookie formatted: ` + formatted);
         document.cookie = formatted;
         if (typeof callback == "function") {
+            // eslint-disable-next-line prefer-rest-params
             return callback(arguments);
         }
         return this.get(name);
@@ -237,10 +240,10 @@ class Cookies {
      * Get all cookies
      */
     static all() {
-        var pairs = document.cookie.split(";");
-        var cookies = {};
-        for (var i = 0; i < pairs.length; i++) {
-            var pair = pairs[i].split("=");
+        const pairs = document.cookie.split(";");
+        const cookies = {};
+        for (let i = 0; i < pairs.length; i++) {
+            const pair = pairs[i].split("=");
             cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
             /*
             try {
@@ -840,7 +843,7 @@ function storage() {
 }
 /// <reference path="globals.d.ts" />
 String.prototype.parse_url = function () {
-    var parser = document.createElement("a"), searchObject, queries, split, i;
+    let parser = document.createElement("a"), searchObject, queries, split, i;
     // Let the browser do the work
     parser.href = this.toString();
     // Convert query string to object
@@ -865,10 +868,10 @@ String.prototype.parse_url = function () {
  * Load css
  */
 String.prototype.CSS = function () {
-    var e = document.createElement("link");
+    const e = document.createElement("link");
     e.rel = "stylesheet";
     e.href = this.toString();
-    var n = document.getElementsByTagName("head")[0];
+    const n = document.getElementsByTagName("head")[0];
     window.addEventListener
         ? window.addEventListener("load", function () {
             n.parentNode.insertBefore(e, n);
@@ -885,8 +888,8 @@ String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/gm, "");
 };
 String.prototype.hexE = function () {
-    var hex, i;
-    var result = "";
+    let hex, i;
+    let result = "";
     for (i = 0; i < this.length; i++) {
         hex = this.charCodeAt(i).toString(16);
         result += ("000" + hex).slice(-4);
@@ -894,9 +897,9 @@ String.prototype.hexE = function () {
     return result;
 };
 String.prototype.hexD = function () {
-    var j;
-    var hexes = this.match(/.{1,4}/g) || [];
-    var back = "";
+    let j;
+    const hexes = this.match(/.{1,4}/g) || [];
+    let back = "";
     for (j = 0; j < hexes.length; j++) {
         back += String.fromCharCode(parseInt(hexes[j], 16));
     }
@@ -915,9 +918,7 @@ String.prototype.truncate = function (n, useWordBoundary) {
         return this;
     }
     const subString = this.substr(0, n - 1); // the original check
-    return ((useWordBoundary
-        ? subString.substr(0, subString.lastIndexOf(" "))
-        : subString) + "&hellip;");
+    return (useWordBoundary ? subString.substr(0, subString.lastIndexOf(" ")) : subString) + "&hellip;";
 };
 String.prototype.isEmpty = function () {
     if (this != null || typeof this != "undefined") {
@@ -983,8 +984,9 @@ function object_join(obj) {
     })
         .join(",");
 }
-/// <reference path="_Prototype-String.ts"/>
-/// <reference path="_Prototype-Object.ts"/>
+/* eslint-disable */
+/// <reference path="./_Prototype-String.ts"/>
+/// <reference path="./_Prototype-Object.ts"/>
 const cookie_ip = "ip".rot13();
 const cookie_indicator = "status_ip".rot13();
 /**
@@ -1006,6 +1008,10 @@ class ip {
         // do something async and call the callback:
         callback.bind(this)();
     }
+    /**
+     * Check if the ip has been applied
+     * @private
+     */
     static status() {
         //if (value != null) if (!value.isEmpty()) ip.save(value);
         return Cookies.has(cookie_indicator);
@@ -1022,8 +1028,8 @@ class ip {
             if (!this.status())
                 yield this.l2io();
             /*if (this.status()) {
-              console.log(this.get(null));
-            } */
+                 console.log(this.get(null));
+                 } */
         });
     }
     /**
@@ -1032,15 +1038,19 @@ class ip {
      * @returns {String} ip or callback
      */
     static get(callback = null) {
-        this.check();
-        //console.log(this.status(null));
-        var ips = this.storage.get(cookie_ip);
-        //ips = Cookies.get(cookie_ip);
-        if (typeof callback == "function") {
-            return callback(ips);
+        if (this.check()) {
+            //console.log(this.status(null));
+            const ips = this.storage.get(cookie_ip);
+            //ips = Cookies.get(cookie_ip);
+            if (typeof callback == "function") {
+                return callback(ips);
+            }
+            return ips;
         }
-        return ips;
     }
+    /**
+     * Retrieve ip from ipapi.co
+     */
     static ipapi() {
         return $.ajax({
             proxy: false,
@@ -1075,7 +1085,7 @@ class ip {
             url: "//www.cloudflare.com/cdn-cgi/trace",
             success: function (str) {
                 const regex = /ip\=(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/gm;
-                let m = regex.exec(str);
+                const m = regex.exec(str);
                 if (m != null) {
                     if (m.length > 0) {
                         ip.save(m[1]);
@@ -1108,7 +1118,8 @@ function get_unique_id() {
         }
     }
     if (isnode()) {
-        var mac = JSON.stringify(require("os").networkInterfaces(), null, 2)
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const mac = JSON.stringify(require("os").networkInterfaces(), null, 2)
             .match(/"mac": ".*?"/g)
             .toString()
             .match(/\w\w:\w\w:\w\w:\w\w:\w\w:\w\w/g);
@@ -1147,6 +1158,21 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 /**
+ * Autofill datetime-local value
+ */
+function datetimelocal(v) {
+    const d = !v ? new Date() : new Date(v);
+    $("input[type=datetime-local]").val(d.getFullYear() +
+        "-" +
+        this.strpad(d.getMonth() + 1) +
+        "-" +
+        this.strpad(d.getDate()) +
+        "T" +
+        this.strpad(d.getHours()) +
+        ":" +
+        this.strpad(d.getMinutes()));
+}
+/**
  * @class Timer constructor
  * @example
  * const time = new Timer(() => console.log('hi'), 1000);
@@ -1175,7 +1201,7 @@ function array_rand(arrays, unique) {
     if (unique) {
         arrays = array_unique(arrays);
     }
-    var index = Math.floor(Math.random() * arrays.length);
+    const index = Math.floor(Math.random() * arrays.length);
     return {
         index: index,
         value: arrays[index],
@@ -1196,8 +1222,8 @@ function array_unique(arrays) {
  * @param {String|number} key
  */
 function array_unset(arrayName, key) {
-    var x;
-    var tmpArray = new Array();
+    let x;
+    const tmpArray = [];
     for (x in arrayName) {
         if (x != key) {
             tmpArray[x] = arrayName[x];
@@ -1214,7 +1240,7 @@ function array_unset(arrayName, key) {
  * console.log(arr); //return random
  */
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
         // Pick a remaining element...
@@ -1230,8 +1256,8 @@ function shuffle(array) {
 function arrayCompare(a1, a2) {
     if (a1.length != a2.length)
         return false;
-    var length = a2.length;
-    for (var i = 0; i < length; i++) {
+    const length = a2.length;
+    for (let i = 0; i < length; i++) {
         if (a1[i] !== a2[i])
             return false;
     }
@@ -1243,8 +1269,8 @@ function arrayCompare(a1, a2) {
  * @param haystack
  */
 function inArray(needle, haystack) {
-    var length = haystack.length;
-    for (var i = 0; i < length; i++) {
+    const length = haystack.length;
+    for (let i = 0; i < length; i++) {
         if (typeof haystack[i] == "object") {
             if (arrayCompare(haystack[i], needle))
                 return true;
@@ -1276,7 +1302,7 @@ function array_keys(haystack) {
  * @param a items An array containing the items.
  */
 function array_shuffle(a) {
-    var j, x, i;
+    let j, x, i;
     for (i = a.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
         x = a[i];
@@ -1284,6 +1310,13 @@ function array_shuffle(a) {
         a[j] = x;
     }
     return a;
+}
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        array_shuffle,
+        array_keys,
+        in_array,
+    };
 }
 /// <reference path="./globals.d.ts" />
 Array.prototype.shuffle = function () {
@@ -1441,20 +1474,51 @@ function datetime_local(date) {
     return new Date(date).toJSON().slice(0, 19);
 }
 Number.prototype.getMS = function (type) {
-    var self = this;
+    const self = this;
     return this * 60 * 1000;
 };
 Number.prototype.addHour = function (source) {
-    var self = this;
-    var Hour = this * 60 * 1000; /* ms */
+    const self = this;
+    const Hour = this * 60 * 1000; /* ms */
     if (!source)
         source = new Date();
     return new Date(source.getTime() + Hour).getTime();
 };
 Number.prototype.AddZero = function (b, c) {
-    var l = String(b || 10).length - String(this).length + 1;
+    const l = String(b || 10).length - String(this).length + 1;
     return l > 0 ? new Array(l).join(c || "0") + this : this;
 };
+/**
+ * Odd or Even (Ganjil Genap);
+ * @param n
+ * @param type odd or even
+ */
+function oddoreven(n, type) {
+    if (!type) {
+        type = "odd";
+    }
+    const time = !n ? new Date().getDay() : Number(n);
+    if (!/^-?\d+jQuery/.test(time.toString())) {
+        alert("arguments is not number, please remove quote");
+        return null;
+    }
+    const hasil = time % 2;
+    const rType = /^(odd|ganjil)$/.test(type) ? "1" : "0";
+    //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
+    return hasil.toString() == rType.toString();
+}
+/**
+ * strpad / startwith zero [0]
+ * @param {number} val
+ */
+function strpad(val) {
+    if (val >= 10) {
+        return val;
+    }
+    else {
+        return "0" + val;
+    }
+}
 if (typeof console != "undefined") {
     if (typeof console.log != "undefined") {
         console.olog = console.log;
@@ -2612,50 +2676,18 @@ if (!(typeof module !== "undefined" && module.exports)) {
         return gtag("event", event_action, conf);
     }
 }
-var ORIGIN = null;
+/// <reference path="_Prototype-String.ts" />
+let ORIGIN;
 if (isnode()) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const process = require("process");
     ORIGIN = process.cwd();
 }
 else {
     ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
-var IP;
+let IP;
 class dimas {
-    /**
-     * Disabling button
-     * @param t element of button
-     * @param V
-     */
-    disable_button(t, V = null) {
-        var el;
-        if (t instanceof jQuery) {
-            el = t.get();
-        }
-        else if (t instanceof HTMLButtonElement) {
-            el = t;
-        }
-        if (typeof el != "undefined") {
-            el.setAttribute("disabled", "true");
-        }
-    }
-    /**
-     * Enabling button
-     * @param t element of button
-     * @param V
-     */
-    enable_button(t, V = null) {
-        var el;
-        if (t instanceof jQuery) {
-            el = t.get();
-        }
-        else if (t instanceof HTMLButtonElement) {
-            el = t;
-        }
-        if (typeof el != "undefined") {
-            el.removeAttribute("disabled");
-        }
-    }
     static setIp(ip) {
         this.ip = ip;
         IP = ip;
@@ -2691,27 +2723,11 @@ class dimas {
         });
     }
     /**
-     * Rupiah currency auto format
-     */
-    rp(angka, prefix = null) {
-        if (!prefix) {
-            prefix = "Rp. ";
-        }
-        var number_string = angka.toString().replace(/[^,\d]/g, ""), split = number_string.split(","), sisa = split[0].length % 3, rupiah = split[0].substr(0, sisa), ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-        if (ribuan) {
-            var separator = sisa ? "." : "";
-            rupiah += separator + ribuan.join(".");
-        }
-        rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-        return !prefix ? rupiah : prefix + " " + rupiah;
-    }
-    /**
      * Check if variable is number / numeric
      * @param {String|Number} v
      */
     isNumber(v) {
-        return (!isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
-            /^\d+$/.test(v.toString()));
+        return !isNaN(parseInt(v.toString()) - parseFloat(v.toString())) && /^\d+$/.test(v.toString());
     }
     /**
      * Check if valid url
@@ -2738,7 +2754,7 @@ class dimas {
      */
     isURLReachable(url, callback) {
         if (this.isURL(url)) {
-            var myRequest = new Request(url);
+            const myRequest = new Request(url);
             fetch(myRequest).then(function (response) {
                 console.log(`${response.status} - ${url}`);
                 if (response.status == 200) {
@@ -2748,107 +2764,13 @@ class dimas {
         }
     }
     /**
-     * strpad / startwith zero [0]
-     * @param {number} val
-     */
-    strpad(val) {
-        if (val >= 10) {
-            return val;
-        }
-        else {
-            return "0" + val;
-        }
-    }
-    /**
-     * Autofill datetime-local value
-     */
-    datetimelocal(v) {
-        var d = !v ? new Date() : new Date(v);
-        $("input[type=datetime-local]").val(d.getFullYear() +
-            "-" +
-            this.strpad(d.getMonth() + 1) +
-            "-" +
-            this.strpad(d.getDate()) +
-            "T" +
-            this.strpad(d.getHours()) +
-            ":" +
-            this.strpad(d.getMinutes()));
-    }
-    /**
-     * Get cookie
-     * @param string name cookie
-     */
-    gc(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(";");
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == " ") {
-                c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) {
-                    return c.substring(nameEQ.length, c.length);
-                }
-            }
-        }
-        return null;
-    }
-    /**
-     * Odd or Even (Ganjil Genap);
-     * @param type odd or even
-     */
-    oddoreven(n, type) {
-        if (!type) {
-            type = "odd";
-        }
-        var time = !n ? new Date().getDay() : Number(n);
-        if (!/^-{0,1}\d+jQuery/.test(time.toString())) {
-            alert("arguments is not number, please remove quote");
-            return null;
-        }
-        var hasil = time % 2;
-        var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
-        //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
-        return hasil.toString() == type.toString();
-    }
-    /**
-     * Set cookie
-     * @param {String} name
-     * @param {any} value
-     * @param {number} hours
-     */
-    sc(name, value, hours) {
-        var expires = "";
-        if (hours) {
-            var date = new Date();
-            date.setTime(date.getTime() + hours * 3600 * 1000);
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    }
-    allcookies() {
-        var pairs = document.cookie.split(";");
-        var cookies = {};
-        for (var i = 0; i < pairs.length; i++) {
-            var pair = pairs[i].split("=");
-            var str = pair[0].trim();
-            cookies[str] = unescape(pair.slice(1).join("="));
-        }
-        return cookies;
-    }
-    /**
-     * Remove Cookie
-     */
-    rc(name) {
-        document.cookie = name + "=; Max-Age=-99999999;";
-    }
-    /**
      * Get Query name from current url
      */
     getquery(variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
             if (pair[0] == variable) {
                 return pair[1];
             }
@@ -2856,17 +2778,18 @@ class dimas {
         return false;
     }
     recode(content, passcode) {
-        var result = [];
-        var str = "";
-        var codesArr = JSON.parse(content);
-        var passLen = passcode.length;
-        for (var i = 0; i < codesArr.length; i++) {
-            var passOffset = i % passLen;
-            var calAscii = codesArr[i] - passcode.charCodeAt(passOffset);
+        let i;
+        const result = [];
+        let str = "";
+        const codesArr = JSON.parse(content);
+        const passLen = passcode.length;
+        for (i = 0; i < codesArr.length; i++) {
+            const passOffset = i % passLen;
+            const calAscii = codesArr[i] - passcode.charCodeAt(passOffset);
             result.push(calAscii);
         }
-        for (var i = 0; i < result.length; i++) {
-            var ch = String.fromCharCode(result[i]);
+        for (i = 0; i < result.length; i++) {
+            const ch = String.fromCharCode(result[i]);
             str += ch;
         }
         return str;
@@ -2877,8 +2800,8 @@ class dimas {
      * @param {Function} callback
      */
     js(url, callback) {
-        var pel = document.body || document.head;
-        var script = document.createElement("script");
+        const pel = document.body || document.head;
+        const script = document.createElement("script");
         script.type = "text/javascript";
         script.src = url;
         if (typeof callback == "function")
@@ -2891,7 +2814,7 @@ class dimas {
      * @param {JQuery} elm
      */
     pctdRUN(elm) {
-        var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
+        const tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5, bs = elm.data("base") ? elm.data("base") : "bg-info", bw = elm.data("warning") ? elm.data("warning") : "bg-danger", bc = elm.data("success") ? elm.data("success") : "bg-success", countdown = elm.progressBarTimer({
             warningThreshold: 5,
             timeLimit: tl,
             // base style
@@ -2910,11 +2833,11 @@ class dimas {
             // 0 = default height
             height: 0,
             onFinish() {
-                var callback = elm.data("callback");
+                const callback = elm.data("callback");
                 if (callback) {
-                    var xn = window[callback];
+                    const xn = window[callback];
                     if (typeof xn == "function") {
-                        var x = eval(callback);
+                        const x = eval(callback);
                         x();
                     }
                     else {
@@ -2935,10 +2858,9 @@ class dimas {
      * @param {JQuery} elm
      */
     pctd(elm) {
-        var t = this;
         if (typeof progressBarTimer == "undefined") {
             this.js("https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js", function () {
-                t.pctdRUN(elm);
+                this.pctdRUN(elm);
             });
         }
         else {
@@ -2951,26 +2873,7 @@ class dimas {
      * Parseurl just like as parse_url at php
      */
     parseurl(url) {
-        var parser = document.createElement("a"), searchObject = {}, queries, split, i;
-        // Let the browser do the work
-        parser.href = url;
-        // Convert query string to object
-        queries = parser.search.replace(/^\?/, "").split("&");
-        for (i = 0; i < queries.length; i++) {
-            split = queries[i].split("=");
-            searchObject[split[0]] = split[1];
-        }
-        return {
-            protocol: parser.protocol,
-            host: parser.host,
-            hostname: parser.hostname,
-            port: parser.port,
-            pathname: parser.pathname,
-            search: parser.search,
-            searchObject: searchObject,
-            hash: parser.hash,
-            protohost: parser.protocol + "//" + parser.host,
-        };
+        return url.parse_url();
     }
 }
 /**
@@ -3005,7 +2908,7 @@ dimas.captcha = {
                 this.captcha.get(header_name);
             }, 60000);
         }
-        var ua = md5(navigator.userAgent).rot13();
+        const ua = md5(navigator.userAgent).rot13();
         $.ajax({
             url: this.url + "?login=" + guid(),
             method: "POST",
@@ -3018,6 +2921,7 @@ dimas.captcha = {
             jsonpCallback: "framework().captcha.jspCallback",
         });
     },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     callback(arg) { },
     /**
      * Captcha JSONP callback
@@ -3039,7 +2943,7 @@ dimas.captcha = {
         }
         this.captcha.listener_started = new Date().toISOString();
         return $(document).on("focus", "form[captcha]", function (e) {
-            var captcha = $(this).find('[name="captcha"]');
+            let captcha = $(this).find('[name="captcha"]');
             if (!captcha.length) {
                 $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
                 captcha = $(this).find('[name="captcha"]');
@@ -3047,8 +2951,8 @@ dimas.captcha = {
             if (captcha.length) {
                 captcha.val(storage().get("captcha").rot13());
             }
-            var form = captcha.parents("form");
-            var button = form.find('[type="submit"]');
+            const form = captcha.parents("form");
+            const button = form.find('[type="submit"]');
             form.one("submit", function (e) {
                 e.preventDefault();
                 console.log("submit with captcha");
@@ -3074,10 +2978,10 @@ class app {
         this.base = path;
     }
     static direct(...args) {
-        var scripts = document.querySelectorAll("script[src]");
-        var last = scripts[scripts.length - 1];
-        var lastsrc = last.getAttribute("src");
-        var parsed = framework().parseurl(lastsrc);
+        const scripts = document.querySelectorAll("script[src]");
+        const last = scripts[scripts.length - 1];
+        const lastsrc = last.getAttribute("src");
+        const parsed = framework().parseurl(lastsrc);
         args.forEach(function (src) {
             this.js(`${app.base}${src}${parsed.search}`, function () {
                 console.log(`${src} engine inbound`);
@@ -3085,10 +2989,10 @@ class app {
         });
     }
     static load(...args) {
-        var scripts = document.querySelectorAll("script[src]");
-        var last = scripts[scripts.length - 1];
-        var lastsrc = last.getAttribute("src");
-        var parsed = framework().parseurl(lastsrc);
+        const scripts = document.querySelectorAll("script[src]");
+        const last = scripts[scripts.length - 1];
+        const lastsrc = last.getAttribute("src");
+        const parsed = framework().parseurl(lastsrc);
         args.forEach(function (key, index) {
             console.log(key, app.base);
             let src = "";
@@ -3365,6 +3269,39 @@ function openInNewTab(url, name) {
     if (typeof url != "undefined" && typeof name != "undefined") {
         var win = window.open(url, name);
         win.focus();
+    }
+}
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/**
+ * Disabling button
+ * @param t element of button
+ */
+function disable_button(t) {
+    let el;
+    if (t instanceof jQuery) {
+        el = t.get();
+    }
+    else if (t instanceof HTMLButtonElement) {
+        el = t;
+    }
+    if (typeof el != "undefined") {
+        el.setAttribute("disabled", "true");
+    }
+}
+/**
+ * Enabling button
+ * @param t element of button
+ */
+function enable_button(t) {
+    let el;
+    if (t instanceof jQuery) {
+        el = t.get();
+    }
+    else if (t instanceof HTMLButtonElement) {
+        el = t;
+    }
+    if (typeof el != "undefined") {
+        el.removeAttribute("disabled");
     }
 }
 // noinspection TypeScriptRedundantGenericType
@@ -6063,21 +6000,23 @@ if (!(typeof module !== "undefined" && module.exports)) {
 }
 if (!(typeof module !== "undefined" && module.exports)) {
     /** Format Rupiah */
-    var inputrp = $('[id="format-rupiah"]');
+    const inputrp = $('[id="format-rupiah"]');
     if (inputrp.length) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         inputrp.on("keyup keydown change", function (e) {
-            var t = $(this);
-            var v = t.val().toString();
-            var n = t.next(".form-text, #rupiah");
+            const t = $(this);
+            const v = t.val().toString();
+            const n = t.next(".form-text, #rupiah");
+            let V;
             if (framework().isNumber(v.toString())) {
-                var V = framework().rp(parseNumber(v));
+                V = rp(parseNumber(v));
                 t.css("border-color", "green");
-                framework().enable_button(t, V);
+                enable_button(t);
             }
             else {
-                var V = "Bukan nomor";
+                V = "Bukan nomor";
                 t.css("border-color", "red");
-                framework().disable_button(t, V);
+                disable_button(t);
             }
             if (n.length) {
                 n.text(V);
@@ -6087,6 +6026,28 @@ if (!(typeof module !== "undefined" && module.exports)) {
             }
         });
     }
+}
+/**
+ * Rupiah currency auto format
+ */
+function rp(angka, prefix = null) {
+    if (!prefix) {
+        prefix = "Rp. ";
+    }
+    // eslint-disable-next-line prefer-const
+    let number_string = angka.toString().replace(/[^,\d]/g, ""), 
+    // eslint-disable-next-line prefer-const
+    split = number_string.split(","), 
+    // eslint-disable-next-line prefer-const
+    sisa = split[0].length % 3, rupiah = split[0].substr(0, sisa), 
+    // eslint-disable-next-line prefer-const
+    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    if (ribuan) {
+        const separator = sisa ? "." : "";
+        rupiah += separator + ribuan.join(".");
+    }
+    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    return !prefix ? rupiah : prefix + " " + rupiah;
 }
 /**
  * Auto height textarea
@@ -8710,7 +8671,7 @@ function socket_check() {
 }
 if (typeof window != "undefined") {
     ip.storage = new STORAGE();
-    dimas.setIp(ip.get());
+    //dimas.setIp(ip.get());
     //console.log(`ip ${dimas.ip}`);
 }
 /**

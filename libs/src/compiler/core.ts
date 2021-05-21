@@ -82,11 +82,11 @@ class core {
    */
   static readdir(dir: string, filelist: string[] = null, exclude: Array<string | RegExp> = null): Array<any> {
     if (!dir) return null;
-    var self = this;
+    const self = this;
     if (!dir.toString().endsWith("/")) {
       dir += "/";
     }
-    var files = fs.readdirSync(dir);
+    const files = fs.readdirSync(dir);
     filelist = filelist || [];
     files.forEach(function (file) {
       if (fs.statSync(dir + file).isDirectory()) {
@@ -98,11 +98,11 @@ class core {
     if (exclude && exclude.length) {
       exclude.forEach(function (ex) {
         filelist = filelist.filter(function (item) {
-          var allow = null;
+          let allow = null;
           if (ex instanceof RegExp) {
             allow = !ex.test(item);
           } else {
-            var matches = item.indexOf(ex) !== -1;
+            const matches = item.indexOf(ex) !== -1;
             allow = !matches;
           }
           //console.log(allow, ex);
@@ -118,7 +118,7 @@ class core {
    * Is Node or CommonJS Browser
    */
   static isNode() {
-    var isNode = false;
+    let isNode = false;
     if (typeof module !== "undefined" && module.exports) {
       isNode = true;
     }
@@ -159,8 +159,8 @@ class core {
     const exists = fs.existsSync(filename);
     if (exists) {
       if (exists) {
-        var output = filename.toString().replace(/\.scss/s, ".css");
-        var outputcss = output;
+        const output = filename.toString().replace(/\.scss/s, ".css");
+        const outputcss = output;
         if (/\.scss$/s.test(filename.toString()) && !/\.min\.scss$/s.test(filename.toString())) {
           sass.render(
             {
@@ -200,8 +200,8 @@ class core {
     const self = this;
     const exists = fs.existsSync(filename);
     if (exists) {
-      var outputcss = filename.toString().replace(/\.less/s, ".css");
-      var source = fs.readFileSync(filename).toString();
+      const outputcss = filename.toString().replace(/\.less/s, ".css");
+      const source = fs.readFileSync(filename).toString();
       less
         .render(source, { sourceMap: { sourceMapFileInline: true } })
         .then(function (output) {
@@ -231,7 +231,7 @@ class core {
   static compileLESS(from: string, to: string) {
     from = path.join(__dirname, from);
     to = path.join(__dirname, to);
-    var self = this;
+    const self = this;
     fs.readFile(from, function (err, data) {
       if (err) return;
     });
@@ -242,9 +242,9 @@ class core {
    * @returns {string} posix/unix path format
    */
   static root(): string {
-    var appDir = slash(path.dirname(require.main.filename)).toString();
+    let appDir = slash(path.dirname(require.main.filename)).toString();
     if (/\/libs\/compiler$/s.test(appDir)) {
-      var split = appDir.split("/");
+      let split = appDir.split("/");
       split = split.slice(0, -2);
       appDir = split.join("/");
     }
@@ -256,11 +256,12 @@ class core {
    * @param {string} folder
    */
   static minify_folder(folder: string) {
-    var self = this;
-    var js = [];
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+    const js = [];
     fs.exists(folder, function (exists) {
       if (exists && fs.lstatSync(folder).isDirectory()) {
-        var read = self.readdir(folder, [], []);
+        const read = self.readdir(folder, [], []);
         if (Array.isArray(read)) {
           read.forEach((file) => {
             if (!/\.min\.js$/s.test(file) && /\.js$/s.test(file)) {
@@ -285,7 +286,7 @@ class core {
   static obfuscate(filejs: string) {
     const self = this;
     if (!/\.obfuscated\.js$/s.test(filejs) && filejs.endsWith(".js")) {
-      var output = filejs.replace(/\.js/s, ".obfuscated.js");
+      const output = filejs.replace(/\.js/s, ".obfuscated.js");
       fs.readFile(
         filejs,
         {
@@ -293,7 +294,7 @@ class core {
         },
         function (err, data) {
           if (!err) {
-            var obfuscationResult = JavaScriptObfuscator.obfuscate(data, {
+            const obfuscationResult = JavaScriptObfuscator.obfuscate(data, {
               compact: true,
               controlFlowFlattening: true,
             });
@@ -314,6 +315,7 @@ class core {
    * @param {string} file
    */
   static minJS(file: string) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     if (!file) {
       return;
@@ -323,7 +325,7 @@ class core {
       log.log(log.error(`${file} minJS Not Allowed`));
       return;
     }
-    var min = file.replace(/\.js$/s, ".min.js");
+    const min = file.replace(/\.js$/s, ".min.js");
     //log(min);
     if (!fs.existsSync(file)) {
       log.log(log.random(file) + log.error(" not found"));
@@ -381,8 +383,8 @@ class core {
                 },
               });
 
-              var input = self.filelog(file);
-              var output = self.filelog(min);
+              const input = self.filelog(file);
+              const output = self.filelog(min);
               if (terserResult.error) {
                 log.log(
                   `${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.chalk().red("fail")}`
@@ -439,7 +441,7 @@ class core {
     const self = this;
     fs.exists(file, function (exists) {
       if (exists && !/\.min\.css$/s.test(file) && /\.css$/s.test(file)) {
-        var min = file.replace(/\.css/s, ".min.css");
+        const min = file.replace(/\.css/s, ".min.css");
         fs.readFile(
           file,
           {
@@ -449,7 +451,7 @@ class core {
             if (!err) {
               fs.writeFile(min, data, function (err) {
                 if (!err) {
-                  var minified = uglifycss.processFiles([min], {
+                  const minified = uglifycss.processFiles([min], {
                     maxLineLen: 500,
                     expandVars: true,
                   });

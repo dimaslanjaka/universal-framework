@@ -1,54 +1,27 @@
-var ORIGIN = null as any;
+/// <reference path="_Prototype-String.ts" />
+
+let ORIGIN: any;
 if (isnode()) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const process = require("process");
   ORIGIN = process.cwd();
 } else {
   ORIGIN = location.protocol + "//" + location.host + location.pathname;
 }
-var IP: string;
+let IP: string;
 
 class dimas {
-  /**
-   * Disabling button
-   * @param t element of button
-   * @param V
-   */
-  disable_button(t: JQuery<any> | HTMLButtonElement, V: any = null) {
-    var el: HTMLButtonElement;
-    if (t instanceof jQuery) {
-      el = t.get();
-    } else if (t instanceof HTMLButtonElement) {
-      el = t;
-    }
-    if (typeof el != "undefined") {
-      el.setAttribute("disabled", "true");
-    }
-  }
-  /**
-   * Enabling button
-   * @param t element of button
-   * @param V
-   */
-  enable_button(t: JQuery<any> | HTMLButtonElement, V: any = null) {
-    var el: HTMLButtonElement;
-    if (t instanceof jQuery) {
-      el = t.get();
-    } else if (t instanceof HTMLButtonElement) {
-      el = t;
-    }
-    if (typeof el != "undefined") {
-      el.removeAttribute("disabled");
-    }
-  }
   /**
    * get current url without querystrings
    */
   static url = ORIGIN;
   static ip: any = null;
+
   static setIp(ip: any) {
     this.ip = ip;
     IP = ip;
   }
+
   static getIp() {
     return this.ip;
   }
@@ -80,7 +53,7 @@ class dimas {
           this.captcha.get(header_name);
         }, 60000);
       }
-      var ua = md5(navigator.userAgent).rot13();
+      const ua = md5(navigator.userAgent).rot13();
 
       $.ajax({
         url: this.url + "?login=" + guid(),
@@ -95,6 +68,7 @@ class dimas {
       });
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     callback(arg?: any) {},
 
     /**
@@ -117,18 +91,16 @@ class dimas {
       }
       this.captcha.listener_started = new Date().toISOString();
       return $(document).on("focus", "form[captcha]", function (e) {
-        var captcha = $(this).find('[name="captcha"]');
+        let captcha = $(this).find('[name="captcha"]');
         if (!captcha.length) {
-          $(this).append(
-            '<input type="hidden" name="captcha" id="' + guid() + '" />'
-          );
+          $(this).append('<input type="hidden" name="captcha" id="' + guid() + '" />');
           captcha = $(this).find('[name="captcha"]');
         }
         if (captcha.length) {
           captcha.val(storage().get("captcha").rot13());
         }
-        var form = captcha.parents("form");
-        var button = form.find('[type="submit"]');
+        const form = captcha.parents("form");
+        const button = form.find('[type="submit"]');
         form.one("submit", function (e) {
           e.preventDefault();
           console.log("submit with captcha");
@@ -172,36 +144,11 @@ class dimas {
   }
 
   /**
-   * Rupiah currency auto format
-   */
-  rp(angka: number, prefix: string | any = null) {
-    if (!prefix) {
-      prefix = "Rp. ";
-    }
-    var number_string = angka.toString().replace(/[^,\d]/g, ""),
-      split = number_string.split(","),
-      sisa = split[0].length % 3,
-      rupiah = split[0].substr(0, sisa),
-      ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-    if (ribuan) {
-      var separator = sisa ? "." : "";
-
-      rupiah += separator + ribuan.join(".");
-    }
-
-    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-    return !prefix ? rupiah : prefix + " " + rupiah;
-  }
-
-  /**
    * Check if variable is number / numeric
    * @param {String|Number} v
    */
   isNumber(v: string | number) {
-    return (
-      !isNaN(parseInt(v.toString()) - parseFloat(v.toString())) &&
-      /^\d+$/.test(v.toString())
-    );
+    return !isNaN(parseInt(v.toString()) - parseFloat(v.toString())) && /^\d+$/.test(v.toString());
   }
 
   /**
@@ -230,7 +177,7 @@ class dimas {
    */
   isURLReachable(url: string, callback: (arg0: boolean, arg1: string) => any) {
     if (this.isURL(url)) {
-      var myRequest = new Request(url);
+      const myRequest = new Request(url);
 
       fetch(myRequest).then(function (response) {
         console.log(`${response.status} - ${url}`);
@@ -242,120 +189,13 @@ class dimas {
   }
 
   /**
-   * strpad / startwith zero [0]
-   * @param {number} val
-   */
-  strpad(val: number) {
-    if (val >= 10) {
-      return val;
-    } else {
-      return "0" + val;
-    }
-  }
-
-  /**
-   * Autofill datetime-local value
-   */
-  datetimelocal(v?: string | number) {
-    var d = !v ? new Date() : new Date(v);
-    $("input[type=datetime-local]").val(
-      d.getFullYear() +
-        "-" +
-        this.strpad(d.getMonth() + 1) +
-        "-" +
-        this.strpad(d.getDate()) +
-        "T" +
-        this.strpad(d.getHours()) +
-        ":" +
-        this.strpad(d.getMinutes())
-    );
-  }
-
-  /**
-   * Get cookie
-   * @param string name cookie
-   */
-  gc(name: string) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(";");
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) {
-          return c.substring(nameEQ.length, c.length);
-        }
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Odd or Even (Ganjil Genap);
-   * @param type odd or even
-   */
-  oddoreven(n: string, type: string) {
-    if (!type) {
-      type = "odd";
-    }
-    var time = !n ? new Date().getDay() : Number(n);
-
-    if (!/^-{0,1}\d+jQuery/.test(time.toString())) {
-      alert("arguments is not number, please remove quote");
-      return null;
-    }
-
-    var hasil = time % 2;
-
-    var type = /^(odd|ganjil)$/.test(type) ? "1" : "0";
-    //return hasil == (type == ('odd' || 'ganjil') ? 1 : 0);
-
-    return hasil.toString() == type.toString();
-  }
-
-  /**
-   * Set cookie
-   * @param {String} name
-   * @param {any} value
-   * @param {number} hours
-   */
-  sc(name: string, value: any, hours: number) {
-    var expires = "";
-    if (hours) {
-      var date = new Date();
-      date.setTime(date.getTime() + hours * 3600 * 1000);
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-  }
-
-  allcookies() {
-    var pairs = document.cookie.split(";");
-    var cookies: { [key: string]: any } = {};
-    for (var i = 0; i < pairs.length; i++) {
-      var pair = pairs[i].split("=");
-      var str: string = pair[0].trim();
-      cookies[str] = unescape(pair.slice(1).join("="));
-    }
-    return cookies;
-  }
-
-  /**
-   * Remove Cookie
-   */
-  rc(name: string): void {
-    document.cookie = name + "=; Max-Age=-99999999;";
-  }
-
-  /**
    * Get Query name from current url
    */
   getquery(variable: any) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split("=");
+    const query = window.location.search.substring(1);
+    const vars = query.split("&");
+    for (let i = 0; i < vars.length; i++) {
+      const pair = vars[i].split("=");
       if (pair[0] == variable) {
         return pair[1];
       }
@@ -364,17 +204,20 @@ class dimas {
   }
 
   recode(content: string, passcode: string) {
-    var result = [];
-    var str = "";
-    var codesArr = JSON.parse(content);
-    var passLen = passcode.length;
-    for (var i = 0; i < codesArr.length; i++) {
-      var passOffset = i % passLen;
-      var calAscii = codesArr[i] - passcode.charCodeAt(passOffset);
+    let i;
+    const result = [];
+    let str = "";
+    const codesArr = JSON.parse(content);
+    const passLen = passcode.length;
+
+    for (i = 0; i < codesArr.length; i++) {
+      const passOffset = i % passLen;
+      const calAscii = codesArr[i] - passcode.charCodeAt(passOffset);
       result.push(calAscii);
     }
-    for (var i = 0; i < result.length; i++) {
-      var ch = String.fromCharCode(result[i]);
+
+    for (i = 0; i < result.length; i++) {
+      const ch = String.fromCharCode(result[i]);
       str += ch;
     }
     return str;
@@ -386,8 +229,8 @@ class dimas {
    * @param {Function} callback
    */
   js(url: string, callback: Function | any) {
-    var pel = document.body || document.head;
-    var script = document.createElement("script");
+    const pel = document.body || document.head;
+    const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = url;
     if (typeof callback == "function") script.onreadystatechange = callback;
@@ -401,7 +244,7 @@ class dimas {
    * @param {JQuery} elm
    */
   pctdRUN(elm: JQuery) {
-    var tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5,
+    const tl = parseInt(elm.attr("countdown")) > 0 ? elm.attr("countdown") : 5,
       bs = elm.data("base") ? elm.data("base") : "bg-info",
       bw = elm.data("warning") ? elm.data("warning") : "bg-danger",
       bc = elm.data("success") ? elm.data("success") : "bg-success",
@@ -431,11 +274,11 @@ class dimas {
         // 0 = default height
         height: 0,
         onFinish() {
-          var callback = elm.data("callback");
+          const callback = elm.data("callback");
           if (callback) {
-            var xn = window[callback];
+            const xn = window[callback];
             if (typeof xn == "function") {
-              var x = eval(callback);
+              const x = eval(callback);
               x();
             } else {
               console.log(callback + " isn't function ");
@@ -456,13 +299,11 @@ class dimas {
    * @param {JQuery} elm
    */
   pctd(elm: JQuery) {
-    var t = this;
-
     if (typeof progressBarTimer == "undefined") {
       this.js(
         "https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js",
         function () {
-          t.pctdRUN(elm);
+          this.pctdRUN(elm);
         }
       );
     } else {
@@ -476,30 +317,7 @@ class dimas {
    * Parseurl just like as parse_url at php
    */
   parseurl(url: string) {
-    var parser = document.createElement("a"),
-      searchObject: { [key: string]: any } = {},
-      queries: string[],
-      split: any[],
-      i: number;
-    // Let the browser do the work
-    parser.href = url;
-    // Convert query string to object
-    queries = parser.search.replace(/^\?/, "").split("&");
-    for (i = 0; i < queries.length; i++) {
-      split = queries[i].split("=");
-      searchObject[split[0]] = split[1];
-    }
-    return {
-      protocol: parser.protocol,
-      host: parser.host,
-      hostname: parser.hostname,
-      port: parser.port,
-      pathname: parser.pathname,
-      search: parser.search,
-      searchObject: searchObject,
-      hash: parser.hash,
-      protohost: parser.protocol + "//" + parser.host,
-    };
+    return url.parse_url();
   }
 }
 
@@ -512,15 +330,16 @@ function framework() {
 
 class app {
   static base = "/src/MVC/themes/assets/js/";
+
   static setbase(path: string) {
     this.base = path;
   }
 
   static direct(...args: string[]) {
-    var scripts = document.querySelectorAll("script[src]");
-    var last = scripts[scripts.length - 1];
-    var lastsrc = last.getAttribute("src");
-    var parsed = framework().parseurl(lastsrc);
+    const scripts = document.querySelectorAll("script[src]");
+    const last = scripts[scripts.length - 1];
+    const lastsrc = last.getAttribute("src");
+    const parsed = framework().parseurl(lastsrc);
     args.forEach(function (src) {
       this.js(`${app.base}${src}${parsed.search}`, function () {
         console.log(`${src} engine inbound`);
@@ -529,13 +348,13 @@ class app {
   }
 
   static load(...args: any[]) {
-    var scripts = document.querySelectorAll("script[src]");
-    var last = scripts[scripts.length - 1];
-    var lastsrc = last.getAttribute("src");
-    var parsed = framework().parseurl(lastsrc);
+    const scripts = document.querySelectorAll("script[src]");
+    const last = scripts[scripts.length - 1];
+    const lastsrc = last.getAttribute("src");
+    const parsed = framework().parseurl(lastsrc);
     args.forEach(function (key, index) {
       console.log(key, app.base);
-      let src: string = "";
+      let src = "";
       if (/^(ajx|ajaxjQuery|ajxjquery|ajquery)$/s.test(key)) {
         src = "ajaxJquery.js";
       } else if (/^(ajv|ajaxVanilla|ajaxv|avanilla)$/s.test(key)) {

@@ -17,14 +17,14 @@ class Cookies {
    */
   static get(c_name: string): string | Object | null {
     if (document.cookie.length > 0) {
-      var c_start = document.cookie.indexOf(c_name + "=");
+      let c_start = document.cookie.indexOf(c_name + "=");
       if (c_start != -1) {
         c_start = c_start + c_name.length + 1;
-        var c_end = document.cookie.indexOf(";", c_start);
+        let c_end = document.cookie.indexOf(";", c_start);
         if (c_end == -1) {
           c_end = document.cookie.length;
         }
-        var cookie = unescape(document.cookie.substring(c_start, c_end));
+        const cookie = unescape(document.cookie.substring(c_start, c_end));
         try {
           return this.decompress(cookie);
         } catch (e) {
@@ -51,8 +51,10 @@ class Cookies {
    * Create cookie expiring in days
    * @param name cookie name
    * @param value cookie value
-   * @param days days to expire
+   * @param expire
    * @param expire_type d = days, m = minutes, s = seconds, default seconds
+   * @param path
+   * @param callback
    */
   static set(
     name: string,
@@ -62,8 +64,8 @@ class Cookies {
     path: string | any | null = "/",
     callback: any | Function | null = null
   ) {
-    var expires: string;
-    var date = new Date();
+    let expires: string;
+    const date = new Date();
     if (expire_type != null && typeof expire == "number") {
       //console.log("expire instance of number");
       if (/^d$|day/s.test(expire_type)) {
@@ -79,9 +81,7 @@ class Cookies {
     } else if (typeof expire == "string") {
       //console.log(`expire instance of string`);
       if (/d$|day/s.test(expire)) {
-        date.setTime(
-          date.getTime() + parseNumber(expire) * 24 * 60 * 60 * 1000
-        );
+        date.setTime(date.getTime() + parseNumber(expire) * 24 * 60 * 60 * 1000);
       } else if (/m$|minute/s.test(expire)) {
         date.setTime(date.getTime() + parseNumber(expire) * 60 * 1000);
       } else if (/s$|second/s.test(expire)) {
@@ -93,7 +93,7 @@ class Cookies {
     } else {
       expires = "";
     }
-    var cookie_path = "/";
+    let cookie_path = "/";
     if (typeof path == "string") {
       if (path.length > 0) {
         cookie_path = path;
@@ -102,10 +102,11 @@ class Cookies {
     /*value = JSON.stringify(value);
     value = base64_encode(JSON.stringify(value));*/
     value = this.compress(value);
-    var formatted = name + "=" + value + expires + "; path=" + cookie_path;
-    //console.info(`cookie formated: ` + formatted);
+    const formatted = name + "=" + value + expires + "; path=" + cookie_path;
+    console.info(`cookie formatted: ` + formatted);
     document.cookie = formatted;
     if (typeof callback == "function") {
+      // eslint-disable-next-line prefer-rest-params
       return callback(arguments);
     }
     return this.get(name);
@@ -123,10 +124,10 @@ class Cookies {
    * Get all cookies
    */
   static all() {
-    var pairs = document.cookie.split(";");
-    var cookies = {};
-    for (var i = 0; i < pairs.length; i++) {
-      var pair = pairs[i].split("=");
+    const pairs = document.cookie.split(";");
+    const cookies = {};
+    for (let i = 0; i < pairs.length; i++) {
+      const pair = pairs[i].split("=");
       cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
       /*
       try {
