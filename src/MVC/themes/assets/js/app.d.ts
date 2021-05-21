@@ -724,12 +724,6 @@ declare class dimas {
     getquery(variable: any): string | false;
     recode(content: string, passcode: string): string;
     /**
-     * Get js file from url
-     * @param {String} url
-     * @param {Function} callback
-     */
-    js(url: string, callback: Function | any): void;
-    /**
      * Countdown trigger
      * @param {JQuery} elm
      */
@@ -1290,12 +1284,6 @@ declare class reCaptcha {
      * @property site key recaptcha
      */
     key: string;
-    /**
-     * Javascript caller
-     * @param url
-     * @param callback
-     */
-    js(url: string, callback: () => void): void;
     /**
      * Set recaptcha site key
      * @param key

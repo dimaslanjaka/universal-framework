@@ -9,38 +9,6 @@ class reCaptcha {
   key: string = "";
 
   /**
-   * Javascript caller
-   * @param url
-   * @param callback
-   */
-  js(url: string, callback: () => void): void {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-
-    if (script.readyState) {
-      //IE
-      script.onreadystatechange = function () {
-        if (script.readyState == "loaded" || script.readyState == "complete") {
-          script.onreadystatechange = null;
-          if (typeof callback == "function") {
-            callback();
-          }
-        }
-      };
-    } else {
-      //Others
-      script.onload = function () {
-        if (typeof callback == "function") {
-          callback();
-        }
-      };
-    }
-
-    script.src = url;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  }
-
-  /**
    * Set recaptcha site key
    * @param key
    * @returns
@@ -54,9 +22,10 @@ class reCaptcha {
    * Start recaptcha
    */
   start(): void {
+    const self = this;
     this.reCaptcha_buttons(true, function () {
       LoadScript({
-        url: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
+        url: "https://www.google.com/recaptcha/api.js?render=" + self.key + "&render=explicit",
         callback: function () {
           grecaptcha.ready(function () {
             var msg =

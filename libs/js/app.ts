@@ -224,22 +224,6 @@ class dimas {
   }
 
   /**
-   * Get js file from url
-   * @param {String} url
-   * @param {Function} callback
-   */
-  js(url: string, callback: Function | any) {
-    const pel = document.body || document.head;
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
-    if (typeof callback == "function") script.onreadystatechange = callback;
-
-    script.onload = callback;
-    pel.appendChild(script);
-  }
-
-  /**
    * Countdown trigger
    * @param {JQuery} elm
    */

@@ -2808,21 +2808,6 @@ class dimas {
         return str;
     }
     /**
-     * Get js file from url
-     * @param {String} url
-     * @param {Function} callback
-     */
-    js(url, callback) {
-        const pel = document.body || document.head;
-        const script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = url;
-        if (typeof callback == "function")
-            script.onreadystatechange = callback;
-        script.onload = callback;
-        pel.appendChild(script);
-    }
-    /**
      * Countdown trigger
      * @param {JQuery} elm
      */
@@ -7387,36 +7372,6 @@ class reCaptcha {
         this.retry_count = 0;
     }
     /**
-     * Javascript caller
-     * @param url
-     * @param callback
-     */
-    js(url, callback) {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        if (script.readyState) {
-            //IE
-            script.onreadystatechange = function () {
-                if (script.readyState == "loaded" || script.readyState == "complete") {
-                    script.onreadystatechange = null;
-                    if (typeof callback == "function") {
-                        callback();
-                    }
-                }
-            };
-        }
-        else {
-            //Others
-            script.onload = function () {
-                if (typeof callback == "function") {
-                    callback();
-                }
-            };
-        }
-        script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
-    }
-    /**
      * Set recaptcha site key
      * @param key
      * @returns
@@ -7429,9 +7384,10 @@ class reCaptcha {
      * Start recaptcha
      */
     start() {
+        const self = this;
         this.reCaptcha_buttons(true, function () {
             LoadScript({
-                url: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
+                url: "https://www.google.com/recaptcha/api.js?render=" + self.key + "&render=explicit",
                 callback: function () {
                     grecaptcha.ready(function () {
                         var msg = "first_start_" +

@@ -2855,21 +2855,6 @@ var dimas = /** @class */ (function () {
         return str;
     };
     /**
-     * Get js file from url
-     * @param {String} url
-     * @param {Function} callback
-     */
-    dimas.prototype.js = function (url, callback) {
-        var pel = document.body || document.head;
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = url;
-        if (typeof callback == "function")
-            script.onreadystatechange = callback;
-        script.onload = callback;
-        pel.appendChild(script);
-    };
-    /**
      * Countdown trigger
      * @param {JQuery} elm
      */
@@ -6797,36 +6782,6 @@ var reCaptcha = /** @class */ (function () {
         this.retry_count = 0;
     }
     /**
-     * Javascript caller
-     * @param url
-     * @param callback
-     */
-    reCaptcha.prototype.js = function (url, callback) {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        if (script.readyState) {
-            //IE
-            script.onreadystatechange = function () {
-                if (script.readyState == "loaded" || script.readyState == "complete") {
-                    script.onreadystatechange = null;
-                    if (typeof callback == "function") {
-                        callback();
-                    }
-                }
-            };
-        }
-        else {
-            //Others
-            script.onload = function () {
-                if (typeof callback == "function") {
-                    callback();
-                }
-            };
-        }
-        script.src = url;
-        document.getElementsByTagName("head")[0].appendChild(script);
-    };
-    /**
      * Set recaptcha site key
      * @param key
      * @returns
@@ -6839,9 +6794,10 @@ var reCaptcha = /** @class */ (function () {
      * Start recaptcha
      */
     reCaptcha.prototype.start = function () {
+        var self = this;
         this.reCaptcha_buttons(true, function () {
             LoadScript({
-                url: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
+                url: "https://www.google.com/recaptcha/api.js?render=" + self.key + "&render=explicit",
                 callback: function () {
                     grecaptcha.ready(function () {
                         var msg = "first_start_" +
