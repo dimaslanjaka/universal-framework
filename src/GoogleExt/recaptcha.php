@@ -46,6 +46,38 @@ class recaptcha
   }
 
   /**
+   * Undocumented function
+   *
+   * @param string $token
+   * @param callable $callback
+   * @return void
+   */
+  public function verify($token, $callback)
+  {
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    // post request to server
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = array('secret' => $this->secret, 'response' => $token);
+    $options = array(
+      'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data)
+      )
+    );
+    $context  = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
+    $responseKeys = json_decode($response, true);
+    return call_user_func(
+      $callback,
+      (isset($responseKeys["success"]) && $responseKeys["success"]),
+      $responseKeys,
+      $token
+    );
+  }
+
+  /**
    * Verify Recaptcha
    *
    * @param callable $callback

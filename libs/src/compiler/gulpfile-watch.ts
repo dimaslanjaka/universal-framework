@@ -7,7 +7,7 @@ import log from "../compiler/log";
 import process from "../compiler/process";
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
-import { createApp } from "./gulpfile-app";
+import { createApp, multiMinify, views } from "./gulpfile-app";
 // noinspection ES6PreferShortImport
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
@@ -32,7 +32,7 @@ export async function gulpWatch() {
         .join(" ")
   );
 
-  let watch_timer: NodeJS.Timeout = null;
+  let watch_timer = null;
   return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
     const trigger = function () {
       file = framework.normalize(path.resolve(file.toString()));
@@ -82,8 +82,22 @@ export async function gulpWatch() {
         }
       }
     };
-    if (localStorage.getItem("watch")) return trigger();
+    return trigger();
+
+    //if (localStorage.getItem("watch"))
   });
+}
+
+export function watch2(done: () => void) {
+  gulp.watch(["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"], async function (done) {
+    await multiMinify(views());
+    done();
+  });
+  gulp.watch(["./libs/js/**/*", "./libs/src/**/*"], async function (done) {
+    await createApp(true);
+    done();
+  });
+  done();
 }
 
 let reload_timeout = null;

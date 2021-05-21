@@ -28,3 +28,5 @@ console.error = (function () {
   };
 })();
  */
+
+//import "../../js/_console";

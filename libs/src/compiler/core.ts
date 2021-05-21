@@ -476,11 +476,11 @@ class core {
                     }
                   );
                 } else {
-                  log.log(log.chalk().red(err));
+                  console.error(err);
                 }
               });
             } else {
-              log.log(log.chalk().red(err));
+              console.error(err);
             }
           }
         );

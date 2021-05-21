@@ -883,17 +883,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -997,7 +997,7 @@ declare function formsaver(): void;
  * @param {Function}              callback   Callback function for each iteration
  * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-declare function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
+declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
 /**
  * Get the closest matching element up the DOM tree.
  * @private
@@ -1288,11 +1288,12 @@ declare const reCaptcha: {
      */
     gexec_count: number;
     key: string;
+    api: string;
     /**
      * Set recaptcha site key
      * @param {String} key
      */
-    set_key: (key: string) => void;
+    set_key: (key: string) => any;
     /**
      * Start recaptcha
      */
@@ -1336,11 +1337,12 @@ declare function recaptcha(): {
      */
     gexec_count: number;
     key: string;
+    api: string;
     /**
      * Set recaptcha site key
      * @param {String} key
      */
-    set_key: (key: string) => void;
+    set_key: (key: string) => any;
     /**
      * Start recaptcha
      */

@@ -8,7 +8,7 @@ import * as fs from "fs";
 import { createApp } from "./gulpfile-app";
 import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
-import { gulpWatch } from "./gulp-watch";
+import { gulpWatch, watch2 } from "./gulpfile-watch";
 
 const root = process.root;
 
@@ -52,7 +52,7 @@ export function reorderPkg() {
 }
 
 // watch libs/js/**/* and views
-gulp.task("watch", gulpWatch);
+gulp.task("watch", watch2);
 
 gulp.task("assets-compile", function () {
   function filter(views: any[]) {

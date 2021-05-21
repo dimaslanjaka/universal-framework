@@ -136,11 +136,6 @@ function loadCodemirror(element, mode, theme) {
                     var editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
-                        /*
-                            smartIndent: true,
-                            lineWrapping: true,
-                            showCursorWhenSelecting: true,
-                            matchHighlight: true,*/
                     });
                     loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                         editor.setOption("theme", theme);
@@ -2605,10 +2600,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
+        class: iconMap[severity],
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
+        class: alertClasses.join(" "),
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2705,7 +2700,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
+                cookie_expires: 28 * 24 * 60 * 60,
             });
             var trackLinks = document.getElementsByTagName("a");
             var _loop_1 = function () {
@@ -2919,7 +2914,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent", // or 'seconds' => 23/60
+                type: "percent",
             },
             autoStart: true,
         });
@@ -5819,7 +5814,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
+    "8364": "&euro;",
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
@@ -6818,13 +6813,16 @@ var reCaptcha = {
      * @type {Number} counter executions
      */
     gexec_count: 0,
-    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
+    key: siteConfig.google.recaptcha.key,
+    api: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
     /**
      * Set recaptcha site key
      * @param {String} key
      */
     set_key: function (key) {
         reCaptcha.key = key;
+        reCaptcha.api = "https://www.google.com/recaptcha/api.js?render=" + key + "&render=explicit";
+        return reCaptcha;
     },
     /**
      * Start recaptcha
@@ -6888,7 +6886,7 @@ var reCaptcha = {
             }
             return;
         }
-        else if (retry) {
+        if (retry) {
             if (typeof toastr == "undefined") {
                 console.info("recaptcha loaded successfully");
             }
@@ -6915,7 +6913,7 @@ var reCaptcha = {
              */
             function (token) {
                 reCaptcha.reCaptcha_buttons(false, null);
-                //console.info(token);
+                console.info(token);
                 reCaptcha.insert(token);
                 if (typeof callback == "function") {
                     callback(token);

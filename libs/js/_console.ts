@@ -1,3 +1,4 @@
+/// <reference path="./aacaller.ts" />
 /**
  * @file Console Controller
  */

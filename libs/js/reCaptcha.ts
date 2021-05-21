@@ -3,7 +3,8 @@ const reCaptcha = {
    * @type {Number} counter executions
    */
   gexec_count: 0,
-  key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
+  key: siteConfig.google.recaptcha.key,
+  api: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
 
   /**
    * Set recaptcha site key
@@ -11,6 +12,8 @@ const reCaptcha = {
    */
   set_key: function (key: string) {
     reCaptcha.key = key;
+    reCaptcha.api = "https://www.google.com/recaptcha/api.js?render=" + key + "&render=explicit";
+    return reCaptcha;
   },
 
   /**
@@ -59,6 +62,7 @@ const reCaptcha = {
         action: action,
       });
     }
+
     if (typeof grecaptcha == "undefined" || typeof grecaptcha.execute != "function") {
       if (typeof toastr == "undefined") {
         console.error("recaptcha not loaded");
@@ -72,13 +76,16 @@ const reCaptcha = {
         }
       }
       return;
-    } else if (retry) {
+    }
+
+    if (retry) {
       if (typeof toastr == "undefined") {
         console.info("recaptcha loaded successfully");
       } else {
         toastr.success("recaptcha loaded successfully", "captcha information");
       }
     }
+
     reCaptcha.gexec_count++;
     var execute = grecaptcha.execute(reCaptcha.key, {
       action: action || "location.href",
@@ -98,7 +105,7 @@ const reCaptcha = {
          */
         function (token: string) {
           reCaptcha.reCaptcha_buttons(false, null);
-          //console.info(token);
+          console.info(token);
           reCaptcha.insert(token);
           if (typeof callback == "function") {
             callback(token);

@@ -39,16 +39,14 @@ class log {
   }
 
   static number(msg: any) {
-    return log.hex(
-      log.rand(["#7CFC00", "#7FFF00", "#ADFF2F", "#808000", "#98FB98"]),
-      msg
-    );
+    return log.hex(log.rand(["#7CFC00", "#7FFF00", "#ADFF2F", "#808000", "#98FB98"]), msg);
   }
 
   /**
    * Chalk instance
+   * @returns Chalk instance
    */
-  static chalk(): chalk.Chalk {
+  static chalk() {
     return chalk;
   }
 
@@ -131,9 +129,9 @@ class log {
   static prettyprint(args: any) {
     if (typeof args == "boolean") {
       if (args) {
-        args = chalk.greenBright(args);
+        args = chalk.greenBright("true");
       } else {
-        args = chalk.redBright(args);
+        args = chalk.redBright("false");
       }
     } else if (typeof args == "string") {
       args = chalk.hex("#c4750e")(args);

@@ -87,11 +87,7 @@ if (isnode()) {
  * @param context
  * @param args
  */
-function call_user_func(
-  functionName: string,
-  context: Window & typeof globalThis,
-  args: any
-) {
+function call_user_func(functionName: string, context: Window & typeof globalThis, args: any) {
   var args = Array.prototype.slice.call(arguments, 2);
   var namespaces = functionName.split(".");
   var func = namespaces.pop();
@@ -146,9 +142,7 @@ if (isnode()) {
  * check empty
  * @param str
  */
-function empty(
-  str: string | object | Array<any> | boolean | null | undefined | number
-) {
+function empty(str: string | object | Array<any> | boolean | null | undefined | number) {
   var type = typeof str;
   if (typeof str == "boolean" || typeof str == "undefined" || str == null) {
     return true;
@@ -184,10 +178,7 @@ if (isnode()) {
  * Is Development Mode
  */
 function is_development() {
-  return (
-    document.getElementsByTagName("html")[0].getAttribute("environtment") ==
-    "development"
-  );
+  return document.getElementsByTagName("html")[0].getAttribute("environtment") == "development";
 }
 
 if (isnode()) {
@@ -199,6 +190,7 @@ if (isnode()) {
 /**
  * Generate random string with length
  * @param length length to generate
+ * @global
  * @see https://dev.to/oyetoket/fastest-way-to-generate-random-strings-in-javascript-2k5a
  */
 const generateRandomString = function (length = 6) {
@@ -207,8 +199,6 @@ const generateRandomString = function (length = 6) {
 
 if (isnode()) {
   module.exports.generateRandomString = generateRandomString;
-} else {
-  global.generateRandomString = generateRandomString;
 }
 
 /**
@@ -217,11 +207,7 @@ if (isnode()) {
  * @param suffix
  */
 function uniqid(prefix: any, suffix: any) {
-  return (
-    (prefix ? prefix : "") +
-    generateRandomString() +
-    (suffix ? suffix : "")
-  ).toString();
+  return ((prefix ? prefix : "") + generateRandomString() + (suffix ? suffix : "")).toString();
 }
 
 if (isnode()) {
@@ -258,13 +244,8 @@ function onlyUnique(value: any, index: any, self: any[]) {
  */
 function parseNumber(total_amount_string: string) {
   var total_amount_int: string = "";
-  if (
-    typeof total_amount_string != "undefined" ||
-    total_amount_string != null
-  ) {
-    total_amount_int = parseFloat(
-      total_amount_string.replace(/,/g, ".")
-    ).toFixed(2);
+  if (typeof total_amount_string != "undefined" || total_amount_string != null) {
+    total_amount_int = parseFloat(total_amount_string.replace(/,/g, ".")).toFixed(2);
   }
   return parseFloat(total_amount_int);
 }
