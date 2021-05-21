@@ -7,14 +7,16 @@ use JSON\json;
 
 class recaptcha
 {
-  public static $secretKey;
-  private static $_instance = null;
-  public $secret = CONFIG['google']['recaptcha']['key'];
-  public $siteKey = CONFIG['google']['recaptcha']['secret'];
+  /**
+   * Secret Key (Default from config.json)
+   *
+   * @var string
+   */
+  public static $secretKey = CONFIG['google']['recaptcha']['secret'];
 
-  public function verifyCaptchaOld($callback = null, $error = null)
+  private function verifyCaptchaOld($callback = null, $error = null)
   {
-    $opt['url'] = 'https://www.google.com/recaptcha/api/siteverify?secret=' . self::getInstance()->secret . '&response=' . $_REQUEST['g-recaptcha-response'];
+    $opt['url'] = 'https://www.google.com/recaptcha/api/siteverify?secret=' . recaptcha::$secretKey . '&response=' . $_REQUEST['g-recaptcha-response'];
 
     $req = request::static_request($opt);
 
@@ -36,17 +38,8 @@ class recaptcha
     }
   }
 
-  public static function getInstance()
-  {
-    if (null === self::$_instance) {
-      self::$_instance = new self();
-    }
-
-    return self::$_instance;
-  }
-
   /**
-   * Undocumented function
+   * Verify Recaptcha
    *
    * @param string $token
    * @param callable $callback
@@ -58,7 +51,7 @@ class recaptcha
 
     // post request to server
     $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = array('secret' => $this->secret, 'response' => $token);
+    $data = array('secret' => recaptcha::$secretKey, 'response' => $token);
     $options = array(
       'http' => array(
         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -69,6 +62,7 @@ class recaptcha
     $context  = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
     $responseKeys = json_decode($response, true);
+
     return call_user_func(
       $callback,
       (isset($responseKeys["success"]) && $responseKeys["success"]),
@@ -83,7 +77,7 @@ class recaptcha
    * @param callable $callback
    * @return void
    */
-  public function verifyCaptcha($callback)
+  private function verifyCaptcha($callback)
   {
     if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
       $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
@@ -127,15 +121,5 @@ class recaptcha
     } else {
       return call_user_func($callback, true);
     }
-  }
-
-  public function set_secret($key)
-  {
-    $this->secret = $key;
-  }
-
-  public function setSecret($key)
-  {
-    $this->set_secret($key);
   }
 }

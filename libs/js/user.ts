@@ -34,11 +34,13 @@ class user {
   }
   /**
    * fetch userdata
+   * @param callback
+   * @returns
    */
   fetch(callback: Function | null) {
     const ini = this;
     return $.ajax({
-      url: "/user",
+      url: "/server/user",
       method: "POST",
       silent: true,
       indicator: false,

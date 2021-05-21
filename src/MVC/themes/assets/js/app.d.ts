@@ -1478,6 +1478,8 @@ declare class user {
     get(key: string): any;
     /**
      * fetch userdata
+     * @param callback
+     * @returns
      */
     fetch(callback: Function | null): JQuery.jqXHR<any>;
 }

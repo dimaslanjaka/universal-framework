@@ -1,4 +1,6 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
+
+/** @noinspection DuplicatedCode */
 
 /*if (count($_COOKIE) <= 50) {
   foreach ($_COOKIE as $key => $val) {
@@ -99,12 +101,14 @@ switch (get_zone()) {
             exit;
         }
         break;
+
     case 'superuser': // superuser framework
     case 'server': //server framework
         //set folder etc for root views
         $view_folder = 'etc';
         break;
 }
+
 $view_folder = "{$application_folder}/{$view_folder}/";
 define('VIEWPATH', $view_folder);
 

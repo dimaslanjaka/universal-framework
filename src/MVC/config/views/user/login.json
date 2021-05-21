@@ -1,14 +1,17 @@
 {
-    "published": "07/11/20 3:20 PM",
-    "modified": "07/11/20 3:20 PM",
+    "published": "2020-07-11T15:20:00",
+    "modified": "2020-07-11T15:20:00",
     "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
     "theme": true,
-    "title": "/user/login",
+    "title": "Login",
     "share": false,
     "desc": "",
-    "content": "\\views\\user\\login.php",
+    "content": "D:\\Workspaces\\PHP\\universal-framework\\views\\user\\login.php",
     "robot": "noindex, nofollow",
     "obfuscate": false,
     "cache": false,
-    "label": "default"
+    "label": "default",
+    "meta_config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\user\\login.json",
+    "g-recaptcha-response": "03AGdBq27imgBeIlXdKMt7WNvQQrMG1sBcv_uQt9s1tHdtw25rsK1y_In0D-fgWrb7UWtQqcBR4pT_il_I-ZgyaTWttKcHcpAj2iCbZHgmoatwbn-6KTah0DjVDNEmpe3XU2dsU7KRSfH0Rv0gCOIQIMTcVhiC5aJhqBbk44M2WYuiSwzGTr8YH8wK_2Wxn0Ezcxpx_kise-chIOewnJquFisMiBRwJ20K9QpcfNGDmO_Kj7_MmZ0bItxdm5u9wyUpNWCusDqZohFTg2gpZ_BLKlEnPpY9xfGhrR2RmX4Eaudx48MhaeuP5SarxHKyqcg4mrUaLZhS1USEM56vniaFwWIHc8JqsUW7tutvT8kBmR3U-94lyuVjfwBPpVhxXG3xFQ2F5z_6sfV9USPzKhZKABVLy1Xitch_b-h9iwwvh_eouVRWmCxrEOX3bUwbaUtko2nbYJxv4NAiLuvha8mqil4t-xNR7gLb4w",
+    "comments": false
 }

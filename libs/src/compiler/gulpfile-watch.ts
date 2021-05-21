@@ -4,7 +4,7 @@ import upath from "upath";
 import path from "path";
 import framework from "../compiler/index";
 import log from "../compiler/log";
-import process from "../compiler/process";
+//import process from "../compiler/process";
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
 import { createApp, multiMinify, views } from "./gulpfile-app";
@@ -59,11 +59,9 @@ export async function gulpWatch() {
 
             if (isCompiler || isFormsaver) {
               // TODO: reload gulp
-              await reload_gulp(function () {
-                watch_timer = null;
-              });
+              reload_gulp();
             }
-          }, 5000);
+          }, 1000);
         }
       } else {
         if (/\.(js|scss|css|less|ts)$/s.test(file)) {
@@ -89,13 +87,16 @@ export async function gulpWatch() {
 }
 
 export function watch2(done: () => void) {
-  gulp.watch(["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"], async function (done) {
-    await multiMinify(views());
-    done();
-  });
-  gulp.watch(["./libs/js/**/*", "./libs/src/**/*"], async function (done) {
+  const ext = ".{js|css|sass|less|scss}";
+  gulp.watch(
+    ["./src/MVC/**/*" + ext, "./etc/**/*" + ext, "./" + config.app.views + "/**/*" + ext, "**.min" + ext],
+    async function (done) {
+      await multiMinify(views());
+      done();
+    }
+  );
+  gulp.watch(["./libs/js/**/*" + ext, "./libs/src/**/*" + ext], async function (done) {
     await createApp(true);
-    process_restarter();
     done();
   });
   done();
@@ -103,33 +104,27 @@ export function watch2(done: () => void) {
 
 let reload_timeout = null;
 
-/**
- * Reload Gulp
- * @param cb
- * @returns
- */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function reload_gulp(cb: () => any) {
+export async function reload_gulp(cb: () => any = null) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
-  //process.core.exit();
+  //process.exit();
 
-  if (process.core.env.process_restarting) {
-    delete process.core.env.process_restarting;
+  if (process.env.process_restarting) {
+    delete process.env.process_restarting;
     // Give old process one second to shut down before continuing ...
     reload_timeout = setTimeout(reload_gulp, 1000);
     //reload_gulp();
-    process.core.exit();
-    return;
+    process.exit();
   }
 
   console.clear();
   console.log("reloading gulp");
-  //console.log(process.core.argv[0]);
-  //console.log(process.core.argv.slice(1));
+  //console.log(process.argv[0]);
+  //console.log(process.argv.slice(1));
 
   var children: ChildProcessWithoutNullStreams[] = [];
 
-  process.core.on("exit", function () {
+  process.on("exit", function () {
     console.log("killing", children.length, "child processes");
     children.forEach(function (child) {
       child.kill();
@@ -137,18 +132,20 @@ export async function reload_gulp(cb: () => any) {
   });
 
   var cleanExit = function () {
-    process.core.exit();
+    process.exit();
   };
-  process.core.on("SIGINT", cleanExit); // catch ctrl-c
-  process.core.on("SIGTERM", cleanExit); // catch kill
+  process.on("SIGINT", cleanExit); // catch ctrl-c
+  process.on("SIGTERM", cleanExit); // catch kill
 
   let out: any, err: any;
   // Restart process ...
   if (!children.isEmpty()) {
     children[0].kill();
+    children.shift();
   }
+
   children.push(
-    spawn(process.core.argv[0], process.core.argv.slice(1), {
+    spawn(process.argv[0], process.argv.slice(1), {
       env: { process_restarting: "1" },
       //stdio: "ignore",
       detached: true,
@@ -160,24 +157,4 @@ export async function reload_gulp(cb: () => any) {
   if (typeof cb == "function") {
     cb();
   }
-}
-
-//var spawn = require("child_process").spawn;
-export function process_restarter() {
-  if (process.core.env.hasOwnProperty("process_restarting")) {
-    console.log("restarting...");
-    delete process.core.env.process_restarting;
-    // Give old process one second to shut down before continuing ...
-    setTimeout(process_restarter, 1000);
-    return;
-  }
-
-  // ...
-
-  // Restart process ...
-  spawn(process.core.argv[0], process.core.argv.slice(1), {
-    env: { process_restarting: "1" },
-    stdio: "ignore",
-    detached: true,
-  }).unref();
 }

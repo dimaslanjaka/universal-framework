@@ -20,12 +20,7 @@ var userdata = new user();
 userdata.fetch(function (res) {
   if (typeof res == "object") {
     if (res.hasOwnProperty("username")) {
-      var div = document.createElement("div");
-      div.innerHTML = `<a href="/dashboard">Go Here</a>`;
-      swal({
-        title: "You has logged in",
-        content: div,
-      });
+      toastr.success(`<a href='/user/dashboard'>Go to Dashboard</a>`, "You has logged in", { timeOut: 5000 });
       console.log(res);
     }
   }

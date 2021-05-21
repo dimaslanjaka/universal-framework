@@ -7542,11 +7542,13 @@ var user = /** @class */ (function () {
     };
     /**
      * fetch userdata
+     * @param callback
+     * @returns
      */
     user.prototype.fetch = function (callback) {
         var ini = this;
         return $.ajax({
-            url: "/user",
+            url: "/server/user",
             method: "POST",
             silent: true,
             indicator: false,

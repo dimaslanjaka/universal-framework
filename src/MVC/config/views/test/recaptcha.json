@@ -1,15 +1,16 @@
 {
-    "published": "05/21/21 9:26 PM",
-    "modified": "05/21/21 9:26 PM",
+    "published": "2021-05-21T21:26:00",
+    "modified": "2021-05-21T21:26:00",
     "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
     "theme": true,
-    "title": "/test/recaptcha",
+    "title": "Recaptcha Testing",
     "share": false,
     "desc": "",
-    "content": "\\views\\test\\recaptcha.php",
+    "content": "D:\\Workspaces\\PHP\\universal-framework\\views\\test\\recaptcha.php",
     "robot": "noindex, nofollow",
     "obfuscate": false,
     "cache": false,
     "label": "default",
-    "meta_config": null
+    "meta_config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\test\\recaptcha.json",
+    "comments": false
 }
