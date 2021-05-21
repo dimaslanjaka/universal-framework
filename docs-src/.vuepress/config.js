@@ -18,7 +18,7 @@ const config = {
   description: "Usages, Tutorials, And Documentation of all php codes in universal framework php js",
 
   // no cache
-  cache: false,
+  // cache: false,
 
   head: [
     ["link", { rel: "icon", href: "/favicon.svg" }], // Custom favicon
@@ -37,7 +37,7 @@ const config = {
     sidebarDepth: 4,
     nav: [
       { text: "Guide", link: "/guide/" },
-      { text: "JS API", link: "/js/index.html" },
+      { text: "JS API", link: "/js/" },
     ],
 
     sidebar: {
