@@ -12,7 +12,7 @@ class recaptcha
   public $secret = CONFIG['google']['recaptcha']['key'];
   public $siteKey = CONFIG['google']['recaptcha']['secret'];
 
-  public static function verifyCaptchaOld($callback = null, $error = null)
+  public function verifyCaptchaOld($callback = null, $error = null)
   {
     $opt['url'] = 'https://www.google.com/recaptcha/api/siteverify?secret=' . self::getInstance()->secret . '&response=' . $_REQUEST['g-recaptcha-response'];
 
@@ -45,7 +45,13 @@ class recaptcha
     return self::$_instance;
   }
 
-  public static function verifyCaptcha($callback)
+  /**
+   * Verify Recaptcha
+   *
+   * @param callable $callback
+   * @return void
+   */
+  public function verifyCaptcha($callback)
   {
     if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
       $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
@@ -63,7 +69,7 @@ class recaptcha
     // Verify captcha
     $post_data = http_build_query(
       [
-        'secret' => self::getInstance()->secret,
+        'secret' => $this->secret,
         'response' => $_POST['g-recaptcha-response'],
         'remoteip' => $_SERVER['REMOTE_ADDR'],
       ]

@@ -4,7 +4,8 @@ if (isset($_REQUEST['user']) && isset($_REQUEST['pass'])) {
   $username = $_REQUEST['user'];
   $password = $_REQUEST['pass'];
   if (isset($_REQUEST['g-recaptcha-response'])) {
-    GoogleExt\recaptcha::verifyCaptcha(function () use ($username, $password) {
+    $recaptcha = new GoogleExt\recaptcha();
+    $recaptcha->verifyCaptcha(function () use ($username, $password) {
       dologin($username, $password);
     });
   } else {
