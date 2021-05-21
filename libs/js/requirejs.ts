@@ -7,35 +7,19 @@ const require_config: RequireConfig = {
     "jquery-migrate": "//code.jquery.com/jquery-migrate-git.min",
 
     //DataTables
-    "datatables.net":
-      requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
-    "datatables.net-bs4":
-      requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
-    "datatables.net-autofill":
-      requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
-    "datatables.net-buttons":
-      requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
-    "datatables.net-buttons-html5":
-      requirejs_vendor + "/datatables.net-buttons/js/buttons.html5.min",
-    "datatables.net-buttons-flash":
-      requirejs_vendor + "/datatables.net-buttons/js/buttons.flash.min",
-    "datatables.net-buttons-print":
-      requirejs_vendor + "/datatables.net-buttons/js/buttons.print.min",
-    "datatables.net-colreorder":
-      requirejs_vendor +
-      "/datatables.net-colreorder/js/dataTables.colReorder.min",
-    "datatables.net-rowreorder":
-      requirejs_vendor +
-      "/datatables.net-rowreorder/js/dataTables.rowReorder.min",
-    "datatables.net-scroller":
-      requirejs_vendor + "/datatables.net-scroller/js/dataTables.scroller.min",
-    "datatables.net-select":
-      requirejs_vendor + "/datatables.net-select/js/dataTables.select.min",
-    "datatables.net-responsive":
-      requirejs_vendor +
-      "/datatables.net-responsive/js/dataTables.responsive.min",
-    "datatables.net-editor":
-      "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
+    "datatables.net": requirejs_vendor + "/datatables.net/js/jquery.dataTables.min",
+    "datatables.net-bs4": requirejs_vendor + "/datatables.net-bs4/js/datatables.bootstrap4.min",
+    "datatables.net-autofill": requirejs_vendor + "/datatables.net-autofill/js/dataTables.autoFill.min",
+    "datatables.net-buttons": requirejs_vendor + "/datatables.net-buttons/js/dataTables.buttons.min",
+    "datatables.net-buttons-html5": requirejs_vendor + "/datatables.net-buttons/js/buttons.html5.min",
+    "datatables.net-buttons-flash": requirejs_vendor + "/datatables.net-buttons/js/buttons.flash.min",
+    "datatables.net-buttons-print": requirejs_vendor + "/datatables.net-buttons/js/buttons.print.min",
+    "datatables.net-colreorder": requirejs_vendor + "/datatables.net-colreorder/js/dataTables.colReorder.min",
+    "datatables.net-rowreorder": requirejs_vendor + "/datatables.net-rowreorder/js/dataTables.rowReorder.min",
+    "datatables.net-scroller": requirejs_vendor + "/datatables.net-scroller/js/dataTables.scroller.min",
+    "datatables.net-select": requirejs_vendor + "/datatables.net-select/js/dataTables.select.min",
+    "datatables.net-responsive": requirejs_vendor + "/datatables.net-responsive/js/dataTables.responsive.min",
+    "datatables.net-editor": "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
 
     //select2
     select2: requirejs_vendor + "/select2/dist/js/select2.full.min",
@@ -130,10 +114,13 @@ function load_module(name: string | string[], callback: Function) {
   }
   //console.log(scripts_List);
   if (!style_List.length) {
-    LoadScript(scripts_List, callback);
+    LoadScript({ url: scripts_List, callback: callback });
   } else {
-    LoadScript(scripts_List, function () {
-      loadCSS(style_List, callback);
+    LoadScript({
+      url: scripts_List,
+      callback: function () {
+        loadCSS(style_List, callback);
+      },
     });
   }
 }
@@ -143,8 +130,8 @@ function load_module(name: string | string[], callback: Function) {
  * @param callback
  */
 function load_datatables(callback: Function) {
-  LoadScript(
-    [
+  LoadScript({
+    url: [
       "/assets/mdb-dashboard/js/addons/datatables.min.js",
       "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
       //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
@@ -153,7 +140,10 @@ function load_datatables(callback: Function) {
       "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
       "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
     ],
-    function () {
+    options: {
+      type: "text/javascript",
+    },
+    callback: function () {
       loadCSS(
         [
           "/src/MVC/themes/assets/partial/datatables.min.css",
@@ -183,8 +173,8 @@ function load_datatables(callback: Function) {
           callback();
         }
       });
-    }
-  );
+    },
+  });
 }
 
 var datatables_ignited = false;
@@ -276,9 +266,7 @@ function datatables_optimize(id: string, callback?: Function) {
  */
 function pagination_up(target: JQuery) {
   if (!(target instanceof jQuery)) {
-    return console.error(
-      getFuncName() + " target element not instance of jQuery"
-    );
+    return console.error(getFuncName() + " target element not instance of jQuery");
   }
   target.on("page.dt", function () {
     $("html, body").animate(
@@ -297,22 +285,11 @@ function pagination_up(target: JQuery) {
  * @param data
  * @param exclude
  */
-function datatables_colums_options(
-  data?: DataTables.ColumnSettings,
-  exclude?: string[]
-) {
-  if (
-    !data.hasOwnProperty("defaultContent") &&
-    exclude &&
-    !exclude.includes("defaultContent")
-  ) {
+function datatables_colums_options(data?: DataTables.ColumnSettings, exclude?: string[]) {
+  if (!data.hasOwnProperty("defaultContent") && exclude && !exclude.includes("defaultContent")) {
     data.defaultContent = "<i>Not set</i>";
   }
-  if (
-    !data.hasOwnProperty("render") &&
-    exclude &&
-    !exclude.includes("render")
-  ) {
+  if (!data.hasOwnProperty("render") && exclude && !exclude.includes("render")) {
     data.render = function (data, type, row, meta) {
       if (["string", "number"].includes(typeof data) || Array.isArray(data)) {
         if (!data.length) {

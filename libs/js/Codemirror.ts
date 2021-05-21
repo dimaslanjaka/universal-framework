@@ -4,11 +4,7 @@
  * @param mode
  * @param theme
  */
-function loadCodemirror(
-  element: HTMLTextAreaElement,
-  mode: string | string[],
-  theme: string
-) {
+function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], theme: string) {
   if (!(element instanceof HTMLTextAreaElement)) {
     console.error("element must be instanceof HTMLTextAreaElement");
     return null;
@@ -48,21 +44,28 @@ function loadCodemirror(
     var theme = themes[Math.floor(Math.random() * themes.length)];
   }
   framework().async(function () {
-    LoadScript(scripts, function () {
-      loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-        const editor = CodeMirror.fromTextArea(element, {
-          lineNumbers: true,
-          mode: mode,
-          /*
-              smartIndent: true,
-              lineWrapping: true,
-              showCursorWhenSelecting: true,
-              matchHighlight: true,*/
+    const conf: LoadScriptOptions = {
+      url: scripts,
+      options: {
+        type: "text/javascript"
+      },
+      callback: function () {
+        loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
+          const editor = CodeMirror.fromTextArea(element, {
+            lineNumbers: true,
+            mode: mode,
+            /*
+                smartIndent: true,
+                lineWrapping: true,
+                showCursorWhenSelecting: true,
+                matchHighlight: true,*/
+          });
+          loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
+            editor.setOption("theme", theme);
+          });
         });
-        loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
-          editor.setOption("theme", theme);
-        });
-      });
-    });
+      },
+    };
+    LoadScript(conf);
   });
 }

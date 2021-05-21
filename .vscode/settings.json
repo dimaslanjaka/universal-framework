@@ -152,5 +152,12 @@
   "typescript.updateImportsOnFileMove.enabled": "never",
   "workbench.editor.limit.enabled": true,
   "debug.allowBreakpointsEverywhere": true,
-  "taskExplorer.enableSideBar": true
+  "taskExplorer.enableSideBar": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.debug": true,
+  "eslint.run": "onSave",
+  "eslint.trace.server": "messages",
+  "eslint.options": { "configFile": "./.eslintrc.js" }
 }

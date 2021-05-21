@@ -99,22 +99,24 @@ function loadCodemirror(element, mode, theme) {
         var theme = themes[Math.floor(Math.random() * themes.length)];
     }
     framework().async(function () {
-        LoadScript(scripts, function () {
-            loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-                const editor = CodeMirror.fromTextArea(element, {
-                    lineNumbers: true,
-                    mode: mode,
-                    /*
-                        smartIndent: true,
-                        lineWrapping: true,
-                        showCursorWhenSelecting: true,
-                        matchHighlight: true,*/
+        const conf = {
+            url: scripts,
+            options: {
+                type: "text/javascript"
+            },
+            callback: function () {
+                loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
+                    const editor = CodeMirror.fromTextArea(element, {
+                        lineNumbers: true,
+                        mode: mode,
+                    });
+                    loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
+                        editor.setOption("theme", theme);
+                    });
                 });
-                loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
-                    editor.setOption("theme", theme);
-                });
-            });
-        });
+            },
+        };
+        LoadScript(conf);
     });
 }
 /**
@@ -987,6 +989,7 @@ function object_join(obj) {
 /* eslint-disable */
 /// <reference path="./_Prototype-String.ts"/>
 /// <reference path="./_Prototype-Object.ts"/>
+// noinspection JSAnnotator
 const cookie_ip = "ip".rot13();
 const cookie_indicator = "status_ip".rot13();
 /**
@@ -1038,15 +1041,14 @@ class ip {
      * @returns {String} ip or callback
      */
     static get(callback = null) {
-        if (this.check()) {
-            //console.log(this.status(null));
-            const ips = this.storage.get(cookie_ip);
-            //ips = Cookies.get(cookie_ip);
-            if (typeof callback == "function") {
-                return callback(ips);
-            }
-            return ips;
+        this.check().then(function () { });
+        //console.log(this.status(null));
+        const ips = this.storage.get(cookie_ip);
+        //ips = Cookies.get(cookie_ip);
+        if (typeof callback == "function") {
+            return callback(ips);
         }
+        return ips;
     }
     /**
      * Retrieve ip from ipapi.co
@@ -1065,6 +1067,9 @@ class ip {
             },
         });
     }
+    /**
+     * Retrieve api from l2.io
+     */
     static l2io() {
         return $.ajax({
             proxy: false,
@@ -1079,6 +1084,9 @@ class ip {
             },
         });
     }
+    /**
+     * Retrieve ip from cloudflare.com
+     */
     static cloudflare() {
         return $.ajax({
             proxy: false,
@@ -1094,6 +1102,11 @@ class ip {
             },
         });
     }
+    /**
+     * Save ip to cookie and localstorage
+     * @param ip
+     * @private
+     */
     static save(ip) {
         Cookies.set(cookie_ip, ip, "1h", null, location.pathname);
         Cookies.set(cookie_indicator, String(ip), 5, "m", location.pathname, null);
@@ -1519,6 +1532,10 @@ function strpad(val) {
         return "0" + val;
     }
 }
+const siteConfig = { "google": { "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI", "recaptcha": { "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" }, "analystics": { "id": "UA-106238155-1" } } };
+/**
+ * @file Console Controller
+ */
 if (typeof console != "undefined") {
     if (typeof console.log != "undefined") {
         console.olog = console.log;
@@ -1638,12 +1655,7 @@ function stacktrace() {
     function st2(f) {
         return !f
             ? []
-            : st2(f.caller).concat([
-                f.toString().split("(")[0].substring(9) +
-                    "(" +
-                    f.arguments.join(",") +
-                    ")",
-            ]);
+            : st2(f.caller).concat([f.toString().split("(")[0].substring(9) + "(" + f.arguments.join(",") + ")"]);
     }
     return st2(arguments.callee.caller);
 }
@@ -2525,10 +2537,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
+        class: iconMap[severity],
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
+        class: alertClasses.join(" "),
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2598,11 +2610,11 @@ function createStyle(css, attributes = null) {
         style.appendChild(document.createTextNode(css));
     }
 }
+/// <reference path="./globals.d.ts" />
 if (!(typeof module !== "undefined" && module.exports)) {
-    var gtagID = "UA-106238155-1";
+    var gtagID = siteConfig.google.recaptcha.key;
     var create_gtagscript = document.createElement("script");
-    create_gtagscript.src =
-        "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
+    create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
     create_gtagscript.async = true;
     document.getElementsByTagName("body")[0].appendChild(create_gtagscript);
     var gtag = null;
@@ -2624,15 +2636,16 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
+                cookie_expires: 28 * 24 * 60 * 60,
             });
             var trackLinks = document.getElementsByTagName("a");
             for (var i = 0, len = trackLinks.length; i < len; i++) {
-                trackLinks[i].onclick = function () {
-                    if (!/^\#/gm.test(this.href) && !empty(this.href)) {
+                const singleLink = trackLinks[i];
+                singleLink.onclick = function () {
+                    if (!/^\#/gm.test(singleLink.href) && !empty(singleLink.href)) {
                         gtag("event", "click", {
                             event_category: "outbound",
-                            event_label: this.href,
+                            event_label: singleLink.href,
                             transport_type: "beacon",
                         });
                     }
@@ -2643,12 +2656,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
             elem.addEventListener("click", function(event) {
               var data = null;
               var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
-              
+      
               dump = document.getElementById('positionTrack');
-              
+      
               if (dump) {
                 data = this.tagName + '(' + clickon + ')';
-                
+      
                 dump.textContent = data;
               }
               gtag("event", "ClickPosition", {
@@ -2847,7 +2860,7 @@ class dimas {
             },
             label: {
                 show: true,
-                type: "percent", // or 'seconds' => 23/60
+                type: "percent",
             },
             autoStart: true,
         });
@@ -2859,8 +2872,11 @@ class dimas {
      */
     pctd(elm) {
         if (typeof progressBarTimer == "undefined") {
-            this.js("https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js", function () {
-                this.pctdRUN(elm);
+            LoadScript({
+                url: "https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js",
+                callback: function () {
+                    this.pctdRUN(elm);
+                },
             });
         }
         else {
@@ -2983,8 +2999,11 @@ class app {
         const lastsrc = last.getAttribute("src");
         const parsed = framework().parseurl(lastsrc);
         args.forEach(function (src) {
-            this.js(`${app.base}${src}${parsed.search}`, function () {
-                console.log(`${src} engine inbound`);
+            LoadScript({
+                url: `${app.base}${src}${parsed.search}`,
+                callback: function () {
+                    console.log(`${src} engine inbound`);
+                },
             });
         });
     }
@@ -3003,8 +3022,11 @@ class app {
                 src = "ajaxVanilla.js";
             }
             if (src != "") {
-                this.js(`${app.base}${src}${parsed.search}`, function () {
-                    console.log(`${src} engine inbound`);
+                LoadScript({
+                    url: `${app.base}${src}${parsed.search}`,
+                    callback: function () {
+                        console.log(`${src} engine inbound`);
+                    },
                 });
             }
         });
@@ -5665,8 +5687,12 @@ function load_disqus(disqus_shortname) {
     var disqus_trigger = $("#disqus_trigger"), disqus_target = $("#disqus_thread");
     // Load script asynchronously only when the trigger and target exist
     if (disqus_target.length) {
-        framework().js("//" + disqus_shortname + ".disqus.com/embed.js", null);
-        disqus_trigger.remove();
+        LoadScript({
+            url: "//" + disqus_shortname + ".disqus.com/embed.js",
+            callback: function () {
+                disqus_trigger.remove();
+            },
+        });
     }
     else {
         if (typeof toastr != "undefined") {
@@ -5718,7 +5744,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
+    "8364": "&euro;",
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
@@ -5759,6 +5785,7 @@ function prepEntities(str) {
         return rep;
     });
 }
+/// <reference path="./_Prototype-Array.ts" />
 /**
  * php equivalent http_build_query
  * @param obj
@@ -5820,54 +5847,73 @@ function json_decode(obj) {
 if (isnode()) {
     module.exports = isJSON;
 }
+const LoadScriptLoaded = [];
 /**
  * Load script asynchronously
  * @param urls
  * @param callback
  */
-function LoadScript(urls, callback) {
-    var loaded = [];
-    if (typeof urls == "string") {
-        urls = [urls];
+function LoadScript(option) {
+    let urls = [];
+    if (typeof option.url == "string") {
+        urls.add(option.url);
     }
-    if (!urls) {
-        console.error("LoadScript must be load an javascript url");
+    else if (Array.isArray(option.url)) {
+        urls.addAll(option.url);
     }
-    if (Array.isArray(urls)) {
-        var lists = urls;
-        //console.log(`Script in queue ${lists.length}`);
-        const callthis = function (event) {
-            console.log(this.readyState, event);
-            loaded.push(true);
-            lists.shift();
-            if (!lists.length) {
-                callback();
-            }
-            if (lists.length) {
-                LoadScript(lists, callback);
-            }
-        };
+    console.log(`Script in queue ${urls.length}`);
+    /**
+     * Callback onreadystatechange
+     * @description queue javascript calls
+     * @param event
+     */
+    const callthis = function (event) {
+        console.log(this.readyState, event);
+        // remove first url
+        urls.shift();
+        if (!urls.length) {
+            option.callback();
+        }
+        else if (urls.length) {
+            LoadScript({
+                url: urls,
+                options: option.options,
+                callback: option.callback,
+            });
+        }
+        LoadScriptLoaded[urls[0]]["status"] = true;
+    };
+    if (!urls.isEmpty()) {
         var script = document.createElement("script");
-        script.type = "text/javascript";
+        // script src from first url
         script.src = urls[0];
-        script.async = true;
-        script.defer = true;
+        // add attriubutes options
+        if (typeof option.options.async == "boolean") {
+            script.async = option.options.async;
+        }
+        if (typeof option.options.defer == "boolean") {
+            script.defer = option.options.defer;
+        }
+        if (typeof option.options.type == "string") {
+            script.type = option.options.type;
+        }
         //console.info(`loading script(${script.src})`);
         script.onload = script.onreadystatechange = callthis;
         script.onerror = function () {
-            loaded.push(false);
+            LoadScriptLoaded[script.src]["onerror"] = false;
             console.error(`error while loading ${script.src}`);
         };
         script.onabort = function () {
-            loaded.push(false);
+            LoadScriptLoaded[script.src]["onabort"] = false;
             console.error(`error while loading ${script.src}`);
         };
         script.oncancel = function () {
-            loaded.push(false);
+            LoadScriptLoaded[script.src]["oncancel"] = false;
             console.error(`error while loading ${script.src}`);
         };
         document.body.appendChild(script);
     }
+    return LoadScriptLoaded;
 }
 /**
  * Load CSS async
@@ -7328,18 +7374,24 @@ if (!isnode()) {
         $.fn[pluginName].getters = ["complete", "error"];
     })(jQuery, window, document, undefined);
 }
-var reCaptcha = {
-    /**
-     * @type {Number} counter executions
-     */
-    gexec_count: 0,
-    key: "6LeLW-MUAAAAALgiXAKP0zo2oslXXbCy57CjFcie",
+class reCaptcha {
+    constructor() {
+        /**
+         * @property counter executions
+         */
+        this.gexec_count = 0;
+        /**
+         * @property site key recaptcha
+         */
+        this.key = "";
+        this.retry_count = 0;
+    }
     /**
      * Javascript caller
-     * @param {String} url
-     * @param {Function} callback
+     * @param url
+     * @param callback
      */
-    js: function (url, callback) {
+    js(url, callback) {
         var script = document.createElement("script");
         script.type = "text/javascript";
         if (script.readyState) {
@@ -7363,57 +7415,58 @@ var reCaptcha = {
         }
         script.src = url;
         document.getElementsByTagName("head")[0].appendChild(script);
-    },
+    }
     /**
      * Set recaptcha site key
-     * @param {String} key
+     * @param key
+     * @returns
      */
-    set_key: function (key) {
-        reCaptcha.key = key;
-    },
+    set_key(key) {
+        this.key = key;
+        return this;
+    }
     /**
      * Start recaptcha
      */
-    start: function () {
-        reCaptcha.reCaptcha_buttons(true, function () {
-            reCaptcha.js("https://www.google.com/recaptcha/api.js?render=" +
-                reCaptcha.key +
-                "&render=explicit", function () {
-                grecaptcha.ready(function () {
-                    var msg = "first_start_" +
-                        location.href
-                            .replace(/[^a-zA-Z0-9 ]/g, "_")
-                            .replace(/\_{2,99}/g, "_")
-                            .replace(/\_$/g, "");
-                    reCaptcha.exec(msg);
-                });
+    start() {
+        this.reCaptcha_buttons(true, function () {
+            LoadScript({
+                url: "https://www.google.com/recaptcha/api.js?render=" + this.key + "&render=explicit",
+                callback: function () {
+                    grecaptcha.ready(function () {
+                        var msg = "first_start_" +
+                            location.href
+                                .replace(/[^a-zA-Z0-9 ]/g, "_")
+                                .replace(/\_{2,99}/g, "_")
+                                .replace(/\_$/g, "");
+                        this.exec(msg);
+                    });
+                },
             });
         });
-    },
+    }
     /**
      * Initialize Recaptcha by defining jquery
      */
-    init: function () {
+    init() {
         if (typeof jQuery == "undefined" || typeof jQuery == "undefined") {
-            reCaptcha.js("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", reCaptcha.start);
+            LoadScript({ url: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js", callback: this.start });
         }
         else {
-            reCaptcha.start();
+            this.start();
         }
-    },
-    retry_count: 0,
+    }
     /**
      * load or refreshing google recaptcha
      */
-    exec: function (action, retry, callback) {
+    exec(action, retry, callback = null) {
         //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == "function") {
             gtag("event", "recaptcha", {
                 action: action,
             });
         }
-        if (typeof grecaptcha == "undefined" ||
-            typeof grecaptcha.execute != "function") {
+        if (typeof grecaptcha == "undefined" || typeof grecaptcha.execute != "function") {
             if (typeof toastr == "undefined") {
                 console.error("recaptcha not loaded");
             }
@@ -7421,7 +7474,7 @@ var reCaptcha = {
                 toastr.error("recaptcha not loaded, retrying...", "captcha information");
             }
             for (let index = 0; index < 3; index++) {
-                reCaptcha.exec(action, true);
+                this.exec(action, true);
                 if (index == 3 - 1) {
                     toastr.error("recaptcha has reached limit", "captcha information");
                 }
@@ -7436,8 +7489,8 @@ var reCaptcha = {
                 toastr.success("recaptcha loaded successfully", "captcha information");
             }
         }
-        reCaptcha.gexec_count++;
-        var execute = grecaptcha.execute(reCaptcha.key, {
+        this.gexec_count++;
+        var execute = grecaptcha.execute(this.key, {
             action: action || "location.href",
         });
         if (!execute) {
@@ -7454,67 +7507,68 @@ var reCaptcha = {
              * @param {String} token
              */
             function (token) {
-                reCaptcha.reCaptcha_buttons(false, null);
+                this.reCaptcha_buttons(false, null);
                 //console.info(token);
-                reCaptcha.insert(token);
+                this.insert(token);
                 if (typeof callback == "function") {
                     callback(token);
                 }
             });
         }
-    },
+    }
     /**
      * Insert reCaptcha Token
      * @param {String} token
      */
-    insert: function (token) {
-        framework().sc("token", token, 1);
+    insert(token) {
+        Cookies.set("token", token, 1, "d");
         if (typeof jQuery == "undefined") {
             console.log("jQuery Not Loaded");
-            reCaptcha.js("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", function () {
-                reCaptcha.distribute_token(token);
+            LoadScript({
+                url: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
+                callback: function () {
+                    this.distribute_token(token);
+                },
             });
         }
         else {
-            reCaptcha.distribute_token(token);
+            this.distribute_token(token);
         }
-    },
+    }
     /**
      * Distribute reCaptcha Token
-     * @param {String} token
+     * @param token
      */
-    distribute_token: function (token) {
+    distribute_token(token) {
         var form = $("form");
         form.each(function (i, el) {
             var fg = $(this).find('[name="g-recaptcha-response"]');
             console.log(fg.length);
             if (!fg.length) {
-                $('<input type="hidden" readonly value="' +
-                    token +
-                    '" name="g-recaptcha-response">').appendTo($(this));
+                $('<input type="hidden" readonly value="' + token + '" name="g-recaptcha-response">').appendTo($(this));
             }
             else {
                 fg.val(token);
             }
         });
-    },
+    }
     /**
      * Get token recaptcha
      */
-    get: function () {
+    get() {
         var gr = $('input[name="g-recaptcha-response"]');
         if (gr.length) {
             var vr = gr[0].getAttribute("value");
             return vr;
         }
         return null;
-    },
+    }
     /**
      * Button Controller
      * @param {Boolean} reCaptcha_disable
      * @param {Function} callback
      */
-    reCaptcha_buttons: function (reCaptcha_disable, callback) {
+    reCaptcha_buttons(reCaptcha_disable, callback) {
         //toastr.info((reCaptcha_disable ? "disabling" : "enabling") + " button", "Recaptcha initialize");
         $('button,[type="submit"],input')
             .not('[data-recaptcha="no-action"]')
@@ -7533,13 +7587,15 @@ var reCaptcha = {
         if (typeof callback == "function") {
             callback();
         }
-    },
-};
+    }
+}
 /**
  * Hidden reCaptcha v3 object initializer
  */
 function recaptcha() {
-    return reCaptcha;
+    const recap = new reCaptcha();
+    recap.set_key(siteConfig.google.recaptcha.key);
+    return recap;
 }
 const requirejs_vendor = "/node_modules";
 const require_config = {
@@ -7556,14 +7612,11 @@ const require_config = {
         "datatables.net-buttons-html5": requirejs_vendor + "/datatables.net-buttons/js/buttons.html5.min",
         "datatables.net-buttons-flash": requirejs_vendor + "/datatables.net-buttons/js/buttons.flash.min",
         "datatables.net-buttons-print": requirejs_vendor + "/datatables.net-buttons/js/buttons.print.min",
-        "datatables.net-colreorder": requirejs_vendor +
-            "/datatables.net-colreorder/js/dataTables.colReorder.min",
-        "datatables.net-rowreorder": requirejs_vendor +
-            "/datatables.net-rowreorder/js/dataTables.rowReorder.min",
+        "datatables.net-colreorder": requirejs_vendor + "/datatables.net-colreorder/js/dataTables.colReorder.min",
+        "datatables.net-rowreorder": requirejs_vendor + "/datatables.net-rowreorder/js/dataTables.rowReorder.min",
         "datatables.net-scroller": requirejs_vendor + "/datatables.net-scroller/js/dataTables.scroller.min",
         "datatables.net-select": requirejs_vendor + "/datatables.net-select/js/dataTables.select.min",
-        "datatables.net-responsive": requirejs_vendor +
-            "/datatables.net-responsive/js/dataTables.responsive.min",
+        "datatables.net-responsive": requirejs_vendor + "/datatables.net-responsive/js/dataTables.responsive.min",
         "datatables.net-editor": "https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min",
         //select2
         select2: requirejs_vendor + "/select2/dist/js/select2.full.min",
@@ -7653,11 +7706,14 @@ function load_module(name, callback) {
     }
     //console.log(scripts_List);
     if (!style_List.length) {
-        LoadScript(scripts_List, callback);
+        LoadScript({ url: scripts_List, callback: callback });
     }
     else {
-        LoadScript(scripts_List, function () {
-            loadCSS(style_List, callback);
+        LoadScript({
+            url: scripts_List,
+            callback: function () {
+                loadCSS(style_List, callback);
+            },
         });
     }
 }
@@ -7666,41 +7722,47 @@ function load_module(name, callback) {
  * @param callback
  */
 function load_datatables(callback) {
-    LoadScript([
-        "/assets/mdb-dashboard/js/addons/datatables.min.js",
-        "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
-        //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
-        "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
-        "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
-        "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
-        "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
-    ], function () {
-        loadCSS([
-            "/src/MVC/themes/assets/partial/datatables.min.css",
-            "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
-            "/assets/mdb-dashboard/css/addons/datatables.min.css",
-            "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
-            "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
-        ], null);
-        datatables_init().then(function () {
-            var dtl = $(".dataTables_length");
-            var toolbar = $("div.dt-toolbar");
-            var button = $("button.dt-button").not(".btn");
-            setTimeout(function () {
-                if (button.length) {
-                    button.addClass("btn btn-info");
+    LoadScript({
+        url: [
+            "/assets/mdb-dashboard/js/addons/datatables.min.js",
+            "/assets/mdb-dashboard/js/addons/datatables-select.min.js",
+            //"/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js",
+            "/node_modules/datatables.net-rowreorder/js/dataTables.rowReorder.min.js",
+            "/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js",
+            "/node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+            "/node_modules/datatables.net-buttons/js/buttons.print.min.js",
+        ],
+        options: {
+            type: "text/javascript",
+        },
+        callback: function () {
+            loadCSS([
+                "/src/MVC/themes/assets/partial/datatables.min.css",
+                "/assets/mdb-dashboard/css/addons/datatables-select.min.css",
+                "/assets/mdb-dashboard/css/addons/datatables.min.css",
+                "https://cdn.datatables.net/responsive/2.2.5/css/responsive.dataTables.min.css",
+                "https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.dataTables.min.css",
+            ], null);
+            datatables_init().then(function () {
+                var dtl = $(".dataTables_length");
+                var toolbar = $("div.dt-toolbar");
+                var button = $("button.dt-button").not(".btn");
+                setTimeout(function () {
+                    if (button.length) {
+                        button.addClass("btn btn-info");
+                    }
+                    if (dtl.length) {
+                        dtl.addClass("bs-select");
+                    }
+                    if (toolbar.length) {
+                        toolbar.html(``);
+                    }
+                }, 5000);
+                if (typeof callback == "function") {
+                    callback();
                 }
-                if (dtl.length) {
-                    dtl.addClass("bs-select");
-                }
-                if (toolbar.length) {
-                    toolbar.html(``);
-                }
-            }, 5000);
-            if (typeof callback == "function") {
-                callback();
-            }
-        });
+            });
+        },
     });
 }
 var datatables_ignited = false;
@@ -7807,14 +7869,10 @@ function pagination_up(target) {
  * @param exclude
  */
 function datatables_colums_options(data, exclude) {
-    if (!data.hasOwnProperty("defaultContent") &&
-        exclude &&
-        !exclude.includes("defaultContent")) {
+    if (!data.hasOwnProperty("defaultContent") && exclude && !exclude.includes("defaultContent")) {
         data.defaultContent = "<i>Not set</i>";
     }
-    if (!data.hasOwnProperty("render") &&
-        exclude &&
-        !exclude.includes("render")) {
+    if (!data.hasOwnProperty("render") && exclude && !exclude.includes("render")) {
         data.render = function (data, type, row, meta) {
             if (["string", "number"].includes(typeof data) || Array.isArray(data)) {
                 if (!data.length) {

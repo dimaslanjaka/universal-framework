@@ -22,6 +22,14 @@ const config = {
 
   head: [
     ["link", { rel: "icon", href: "/favicon.svg" }], // Custom favicon
+    [
+      "script",
+      {
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        async: "true",
+        "data-ad-client": "ca-pub-1165447249910969",
+      },
+    ],
   ],
 
   // Plugins config
@@ -106,9 +114,9 @@ const config = {
 
   // extra watch files
   extraWatchFiles: [
-    '.vuepress/public/style.css', // Relative path usage
+    ".vuepress/public/style.css", // Relative path usage
     //'/path/to/bar.js'   // Absolute path usage
-  ]
+  ],
 };
 module.exports = config;
 

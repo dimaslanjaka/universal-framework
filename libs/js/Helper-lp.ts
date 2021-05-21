@@ -1,6 +1,7 @@
 /* eslint-disable */
 /// <reference path="./_Prototype-String.ts"/>
 /// <reference path="./_Prototype-Object.ts"/>
+// noinspection JSAnnotator
 
 interface ipapi_response {
   ip: "114.4.83.195";
@@ -112,6 +113,9 @@ class ip {
     });
   }
 
+  /**
+   * Retrieve api from l2.io
+   */
   static l2io() {
     return $.ajax({
       proxy: false,
@@ -127,6 +131,9 @@ class ip {
     });
   }
 
+  /**
+   * Retrieve ip from cloudflare.com
+   */
   static cloudflare() {
     return $.ajax({
       proxy: false,
@@ -143,6 +150,11 @@ class ip {
     });
   }
 
+  /**
+   * Save ip to cookie and localstorage
+   * @param ip
+   * @private
+   */
   private static save(ip: string) {
     Cookies.set(cookie_ip, ip, "1h", null, location.pathname);
     Cookies.set(cookie_indicator, String(ip), 5, "m", location.pathname, null);

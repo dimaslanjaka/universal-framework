@@ -5,6 +5,7 @@
     "module": "amd",
     "declaration": true,
     "removeComments": false,
+    "esModuleInterop": true,
     "preserveConstEnums": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -16,31 +17,14 @@
     "sourceMap": true,
     "watch": false,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "importHelpers": true,
-    "lib": [
-      "DOM",
-      "ESNext",
-      "ES2015",
-      "ES2016",
-      "ES2017",
-      "ES2018",
-      "ES2019",
-      "ES2020"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "lib": ["DOM", "ESNext", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"],
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": [
-    "./libs/js/**/*"
-  ],
+  "include": ["./libs/js/**/*"],
   "typeAcquisition": {
-    "include": [
-      "jQuery",
-      "toastr",
-      "sweetalert",
-      "CryptoJS"
-    ]
+    "include": ["jQuery", "toastr", "sweetalert", "CryptoJS", "sass", "less"]
   },
   "exclude": [
     "node_modules",
@@ -50,6 +34,7 @@
     "**/tmp/**",
     "**/assets/**",
     "**/views/**",
-    "**.min.js"
+    "**.min.js",
+    "libs/src/**"
   ]
 }

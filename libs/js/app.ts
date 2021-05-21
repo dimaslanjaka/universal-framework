@@ -300,12 +300,12 @@ class dimas {
    */
   pctd(elm: JQuery) {
     if (typeof progressBarTimer == "undefined") {
-      this.js(
-        "https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js",
-        function () {
+      LoadScript({
+        url: "https://cdn.jsdelivr.net/gh/dimaslanjaka/Web-Manajemen@master/js/jquery.progressBarTimer.js",
+        callback: function () {
           this.pctdRUN(elm);
-        }
-      );
+        },
+      });
     } else {
       window.onload = function (params: any) {
         this.pctdRUN(elm);
@@ -341,8 +341,11 @@ class app {
     const lastsrc = last.getAttribute("src");
     const parsed = framework().parseurl(lastsrc);
     args.forEach(function (src) {
-      this.js(`${app.base}${src}${parsed.search}`, function () {
-        console.log(`${src} engine inbound`);
+      LoadScript({
+        url: `${app.base}${src}${parsed.search}`,
+        callback: function () {
+          console.log(`${src} engine inbound`);
+        },
       });
     });
   }
@@ -362,8 +365,11 @@ class app {
       }
 
       if (src != "") {
-        this.js(`${app.base}${src}${parsed.search}`, function () {
-          console.log(`${src} engine inbound`);
+        LoadScript({
+          url: `${app.base}${src}${parsed.search}`,
+          callback: function () {
+            console.log(`${src} engine inbound`);
+          },
         });
       }
     });

@@ -11,8 +11,12 @@ function load_disqus(disqus_shortname: string) {
 
   // Load script asynchronously only when the trigger and target exist
   if (disqus_target.length) {
-    framework().js("//" + disqus_shortname + ".disqus.com/embed.js", null);
-    disqus_trigger.remove();
+    LoadScript({
+      url: "//" + disqus_shortname + ".disqus.com/embed.js",
+      callback: function () {
+        disqus_trigger.remove();
+      },
+    });
   } else {
     if (typeof toastr != "undefined") {
       toastr.error("disqus container not exists", "disqus comment");

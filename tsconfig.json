@@ -6,27 +6,33 @@
   "compilerOptions": {
     "module": "CommonJS",
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "outDir": "dist/dts",
-    "moduleResolution": "Node",
+    "rootDir": "./",
+    "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/vuepress-types/types", "./libs/js"],
-    "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr"],
+    "checkJs": true,
+    "typeRoots": ["./node_modules/@types", "./libs/js"],
+    "types": [
+      "datatables.net",
+      "jquery",
+      "requirejs",
+      "node",
+      "select2",
+      "toastr",
+      "sweetalert",
+      "sweetalert2",
+      "vuepress-types"
+    ],
     "target": "ES5",
     "lib": ["DOM", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"]
   },
-  "include": [
-    "./libs/src/**/*",
-    "./libs/js/**/*",
-    "./etc/**/*",
-    "./views/**/*",
-    "./views/inventory/warehouses/**/*",
-    "./src/MVC/themes/**/*",
-    "./assets/node/**/*"
-  ],
+  "include": ["*.json", "./libs/**/*", "./etc/**/*", "./views/**/*", "./src/MVC/themes/**/*", "./assets/node/**/*"],
   "exclude": [
     "node_modules",
+    "./src/MVC/themes/assets/js",
     "**/node_modules/*",
     "**/node_modules/**",
     "./src",
@@ -40,7 +46,6 @@
     "./libs/compiler/**/*",
     "./libs/src/compiler/framework.js",
     "./libs/compiler/framework.js",
-    "**/framework.js",
     "./libs/src/observatory/lib/**/*"
   ]
 }

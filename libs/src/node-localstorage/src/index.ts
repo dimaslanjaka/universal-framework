@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 
 import { LocalStorage } from "../dist/LocalStorage";
 LocalStorage.prototype.hasItem = function (key: string) {

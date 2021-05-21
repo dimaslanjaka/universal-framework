@@ -293,8 +293,19 @@ declare class ip {
      * Retrieve ip from ipapi.co
      */
     static ipapi(): JQuery.jqXHR<any>;
+    /**
+     * Retrieve api from l2.io
+     */
     static l2io(): JQuery.jqXHR<any>;
+    /**
+     * Retrieve ip from cloudflare.com
+     */
     static cloudflare(): JQuery.jqXHR<any>;
+    /**
+     * Save ip to cookie and localstorage
+     * @param ip
+     * @private
+     */
     private static save;
 }
 /**
@@ -408,6 +419,20 @@ declare function oddoreven(n: string, type: string): boolean;
  * @param {number} val
  */
 declare function strpad(val: number): string | number;
+declare const siteConfig: {
+    google: {
+        key: string;
+        recaptcha: {
+            key: string;
+        };
+        analystics: {
+            id: string;
+        };
+    };
+};
+/**
+ * @file Console Controller
+ */
 interface Console {
     olog: {
         (...data: any[]): void;
@@ -627,18 +652,6 @@ options: React.CSSProperties | string): void;
  * @param css
  */
 declare function createStyle(css: string, attributes?: {}): void;
-/**
- * Google analystic reporter
- * @param {String} event_action
- * @param {string} event_label
- * @param {string} event_category
- * @param {string} event_value
- * @param {Function|any} event_callback
- */
-declare function analys(event_action: string, event_label: string, event_category: string, event_value: string, event_callback: Function | any): any;
-declare var gtagID: string;
-declare var create_gtagscript: HTMLScriptElement;
-declare var gtag: any;
 declare let ORIGIN: any;
 declare let IP: string;
 declare class dimas {
@@ -869,17 +882,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -899,12 +912,34 @@ declare function forceSSL(): void;
  * @param  obj
  */
 declare function json_decode(obj: string): any;
+interface HTMLScriptAttribute {
+    async?: boolean;
+    defer?: boolean;
+    /**
+     * Script Type
+     * @example
+     * {type: "text/javascript"} // type="text/javascript"
+     */
+    type: "application/json" | "text/plain" | "application/javascript" | "text/javascript";
+}
+interface LoadScriptOptions {
+    url: string | string[];
+    /**
+     * Html script attributes
+     */
+    options?: HTMLScriptAttribute | null;
+    /**
+     * Callback after all scripts loaded
+     */
+    callback?: null | Function;
+}
+declare const LoadScriptLoaded: any[];
 /**
  * Load script asynchronously
  * @param urls
  * @param callback
  */
-declare function LoadScript(urls: string | string[], callback: null | Function): void;
+declare function LoadScript(option: LoadScriptOptions): any[];
 /**
  * Load CSS async
  * @param href
@@ -961,7 +996,7 @@ declare function formsaver(): void;
  * @param {Function}              callback   Callback function for each iteration
  * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-declare function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
+declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
 /**
  * Get the closest matching element up the DOM tree.
  * @private
@@ -1246,74 +1281,65 @@ interface JQueryStatic {
      */
     (selector: string, context?: Element | JQuery | string): JQuery;
 }
-/**
- * Hidden reCaptcha v3 object initializer
- */
-declare function recaptcha(): {
+declare class reCaptcha {
     /**
-     * @type {Number} counter executions
+     * @property counter executions
      */
     gexec_count: number;
+    /**
+     * @property site key recaptcha
+     */
     key: string;
     /**
      * Javascript caller
-     * @param {String} url
-     * @param {Function} callback
+     * @param url
+     * @param callback
      */
-    js: (url: string, callback: Function) => void;
+    js(url: string, callback: () => void): void;
     /**
      * Set recaptcha site key
-     * @param {String} key
+     * @param key
+     * @returns
      */
-    set_key: (key: string) => void;
+    set_key(key: string): this;
     /**
      * Start recaptcha
      */
-    start: () => void;
+    start(): void;
     /**
      * Initialize Recaptcha by defining jquery
      */
-    init: () => void;
-    retry_count: number;
+    init(): void;
+    private retry_count;
     /**
      * load or refreshing google recaptcha
      */
-    exec: (action: any, retry: any, callback: any) => void;
+    exec(action: any, retry: boolean, callback?: (arg0: string) => void): void;
     /**
      * Insert reCaptcha Token
      * @param {String} token
      */
-    insert: (token: string) => void;
+    insert(token: string): void;
     /**
      * Distribute reCaptcha Token
-     * @param {String} token
+     * @param token
      */
-    distribute_token: (token: string) => void;
+    distribute_token(token: string): void;
     /**
      * Get token recaptcha
      */
-    get: () => string;
+    get(): string | null;
     /**
      * Button Controller
      * @param {Boolean} reCaptcha_disable
      * @param {Function} callback
      */
-    reCaptcha_buttons: (reCaptcha_disable: boolean, callback: Function) => void;
-};
-declare namespace reCaptcha {
-    const gexec_count: number;
-    const key: string;
-    function js(url: string, callback: Function): void;
-    function set_key(key: string): void;
-    function start(): void;
-    function init(): void;
-    const retry_count: number;
-    function exec(action: any, retry: any, callback: any): void;
-    function insert(token: string): void;
-    function distribute_token(token: string): void;
-    function get(): string;
-    function reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function): void;
+    reCaptcha_buttons(reCaptcha_disable: boolean, callback: Function): void;
 }
+/**
+ * Hidden reCaptcha v3 object initializer
+ */
+declare function recaptcha(): reCaptcha;
 declare const requirejs_vendor = "/node_modules";
 declare const require_config: RequireConfig;
 interface RequireConfig {

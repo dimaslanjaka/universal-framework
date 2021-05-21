@@ -1,3 +1,7 @@
+/**
+ * @file Console Controller
+ */
+
 interface Console {
   olog: {
     (...data: any[]): void;
@@ -92,9 +96,7 @@ if (typeof module == "undefined") {
       if (typeof console_callback == "function") {
         console_callback(input);
       } else {
-        $("#debugConsole").append(
-          "<p> <kbd>" + typeof input + "</kbd> " + input + "</p>"
-        );
+        $("#debugConsole").append("<p> <kbd>" + typeof input + "</kbd> " + input + "</p>");
       }
     }
   };
@@ -138,12 +140,7 @@ function stacktrace() {
   function st2(f: Function) {
     return !f
       ? []
-      : st2(f.caller).concat([
-          f.toString().split("(")[0].substring(9) +
-            "(" +
-            f.arguments.join(",") +
-            ")",
-        ]);
+      : st2(f.caller).concat([f.toString().split("(")[0].substring(9) + "(" + f.arguments.join(",") + ")"]);
   }
   return st2(arguments.callee.caller);
 }

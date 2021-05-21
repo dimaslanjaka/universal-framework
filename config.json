@@ -9,11 +9,18 @@
     "google": {
         "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI",
         "secret": "hr0fWpSvBv3gkR3eMD93j6qS",
-        "client": "974269993480-30i5epi0r6a9uiafq3rkpgsjuooe2t3q.apps.googleusercontent.com"
+        "client": "974269993480-30i5epi0r6a9uiafq3rkpgsjuooe2t3q.apps.googleusercontent.com",
+        "recaptcha": {
+            "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF",
+            "secret": "6LdSg5gUAAAAAL7aiyHjXKArlkF0R7HAlA99oMYG"
+        },
+        "analystics": {
+            "id": "UA-106238155-1"
+        }
     },
     "cache": {
         "enable": false,
-        "ext": "fcbfbce70c18ea0500ce1cb2c181ecbf",
+        "ext": "5da0b76143e08376dfcb37ee6ffb8245",
         "key": "API",
         "timeout": 60
     },

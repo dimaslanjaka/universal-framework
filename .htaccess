@@ -41,3 +41,18 @@ RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
         Header set Expires "Thu, 1 Jan 1970 00:00:00 GMT"
     </IfModule>
 </FilesMatch>
+
+<FilesMatch "\.(?:inc|ini|sh|py|java|jar|har|json|bat|zip|tgz|tar|rar|txt|htaccess)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+<FilesMatch ".*\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map)$">
+  Order Allow,Deny
+  Allow from all
+</FilesMatch>
+
+<FilesMatch "(manifest\.json)$">
+  Order Allow,Deny
+  Allow from all
+</FilesMatch>
