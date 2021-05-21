@@ -136,6 +136,11 @@ function loadCodemirror(element, mode, theme) {
                     var editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
+                        /*
+                            smartIndent: true,
+                            lineWrapping: true,
+                            showCursorWhenSelecting: true,
+                            matchHighlight: true,*/
                     });
                     loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                         editor.setOption("theme", theme);
@@ -1609,132 +1614,6 @@ function strpad(val) {
     }
 }
 var siteConfig = { "google": { "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI", "recaptcha": { "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" }, "analystics": { "id": "UA-106238155-1" } } };
-/**
- * @file Console Controller
- */
-if (typeof console != "undefined") {
-    if (typeof console.log != "undefined") {
-        console.olog = console.log;
-    }
-    else {
-        console.olog = function () { };
-    }
-}
-if (typeof module == "undefined") {
-    console.log = function () {
-        var log = console.olog;
-        var stack = new Error().stack;
-        /**
-         * Get Caller Location
-         */
-        var file = stack.split("\n")[2].split("/")[4].split("?")[0];
-        /**
-         * Get Caller Line
-         */
-        var line; //= stack.split("\n")[2].split(":")[5];
-        var getline = stack.split("\n")[2].split(":");
-        if (getline.exists(5)) {
-            line = parseNumber(getline[5]);
-            //log("number found in index 5", getline[5]);
-        }
-        else if (getline.exists(4)) {
-            line = parseNumber(getline[4]);
-            //log("number found in index 4", getline[4]);
-        }
-        else if (getline.exists(3)) {
-            line = parseNumber(getline[3]);
-            //log("number found in index 3", getline[3]);
-        }
-        /**
-         * Get Caller Function Name
-         */
-        var caller;
-        var caller_str = stack.split("\n")[2];
-        var regex = /at\s(.*)\s\(/gm;
-        caller = regex.exec(caller_str);
-        if (caller != null && caller.length) {
-            caller = caller[1];
-        }
-        /**
-         * Create Prefix Log
-         */
-        var append = "";
-        if (typeof file != "undefined") {
-            append += file + "/";
-        }
-        if (caller != null && typeof caller != "undefined") {
-            append += caller + "/";
-        }
-        if (typeof line != "undefined") {
-            append += line + ":";
-        }
-        var input = [];
-        if (arguments.length == 1) {
-            input = arguments[0];
-        }
-        else {
-            for (var index_1 = 0; index_1 < arguments.length; index_1++) {
-                var arg = arguments[index_1];
-                input.push(arg);
-            }
-        }
-        var args;
-        if (Array.hasOwnProperty("from")) {
-            args = Array.from(arguments); // ES5
-        }
-        else {
-            args = Array.prototype.slice.call(arguments);
-        }
-        args.unshift(append);
-        log.apply(console, args);
-        if (typeof jQuery != "undefined") {
-            if (!$("#debugConsole").length) {
-                $("body").append('<div id="debugConsole" style="display:none"></div>');
-            }
-            if (typeof console_callback == "function") {
-                console_callback(input);
-            }
-            else {
-                $("#debugConsole").append("<p> <kbd>" + typeof input + "</kbd> " + input + "</p>");
-            }
-        }
-    };
-}
-else {
-    /**
-     * Consoler
-     */
-    [
-        ["warn", "\x1b[35m"],
-        ["error", "\x1b[31m"],
-        ["log", "\x1b[2m"],
-    ].forEach(function (pair) {
-        var method = pair[0], reset = "\x1b[0m", color = "\x1b[36m" + pair[1];
-        console[method] = console[method].bind(console, color, method.toUpperCase() + " [" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds() + "]", reset);
-    });
-    console.error = (function () {
-        var error = console.error;
-        return function (exception) {
-            if (typeof exception.stack !== "undefined") {
-                error.call(console, exception.stack);
-            }
-            else {
-                error.apply(console, arguments);
-            }
-        };
-    })();
-}
-/**
- * Get stacktrace
- */
-function stacktrace() {
-    function st2(f) {
-        return !f
-            ? []
-            : st2(f.caller).concat([f.toString().split("(")[0].substring(9) + "(" + f.arguments.join(",") + ")"]);
-    }
-    return st2(arguments.callee.caller);
-}
 var isNode = typeof process === "object" && typeof window === "undefined";
 var root;
 (function () {
@@ -1914,8 +1793,7 @@ else {
  * Is Development Mode
  */
 function is_development() {
-    return (document.getElementsByTagName("html")[0].getAttribute("environtment") ==
-        "development");
+    return document.getElementsByTagName("html")[0].getAttribute("environtment") == "development";
 }
 if (isnode()) {
     module.exports.is_development = is_development;
@@ -1926,6 +1804,7 @@ else {
 /**
  * Generate random string with length
  * @param length length to generate
+ * @global
  * @see https://dev.to/oyetoket/fastest-way-to-generate-random-strings-in-javascript-2k5a
  */
 var generateRandomString = function (length) {
@@ -1935,18 +1814,13 @@ var generateRandomString = function (length) {
 if (isnode()) {
     module.exports.generateRandomString = generateRandomString;
 }
-else {
-    global.generateRandomString = generateRandomString;
-}
 /**
  * Create uniqueid with prefix or suffix
  * @param prefix
  * @param suffix
  */
 function uniqid(prefix, suffix) {
-    return ((prefix ? prefix : "") +
-        generateRandomString() +
-        (suffix ? suffix : "")).toString();
+    return ((prefix ? prefix : "") + generateRandomString() + (suffix ? suffix : "")).toString();
 }
 if (isnode()) {
     module.exports.uniqid = uniqid;
@@ -1981,8 +1855,7 @@ function onlyUnique(value, index, self) {
  */
 function parseNumber(total_amount_string) {
     var total_amount_int = "";
-    if (typeof total_amount_string != "undefined" ||
-        total_amount_string != null) {
+    if (typeof total_amount_string != "undefined" || total_amount_string != null) {
         total_amount_int = parseFloat(total_amount_string.replace(/,/g, ".")).toFixed(2);
     }
     return parseFloat(total_amount_int);
@@ -1990,6 +1863,133 @@ function parseNumber(total_amount_string) {
 function typedKeys(o) {
     // type cast should be safe because that's what really Object.keys() does
     return Object.keys(o);
+}
+/// <reference path="./aacaller.ts" />
+/**
+ * @file Console Controller
+ */
+if (typeof console != "undefined") {
+    if (typeof console.log != "undefined") {
+        console.olog = console.log;
+    }
+    else {
+        console.olog = function () { };
+    }
+}
+if (typeof module == "undefined") {
+    console.log = function () {
+        var log = console.olog;
+        var stack = new Error().stack;
+        /**
+         * Get Caller Location
+         */
+        var file = stack.split("\n")[2].split("/")[4].split("?")[0];
+        /**
+         * Get Caller Line
+         */
+        var line; //= stack.split("\n")[2].split(":")[5];
+        var getline = stack.split("\n")[2].split(":");
+        if (getline.exists(5)) {
+            line = parseNumber(getline[5]);
+            //log("number found in index 5", getline[5]);
+        }
+        else if (getline.exists(4)) {
+            line = parseNumber(getline[4]);
+            //log("number found in index 4", getline[4]);
+        }
+        else if (getline.exists(3)) {
+            line = parseNumber(getline[3]);
+            //log("number found in index 3", getline[3]);
+        }
+        /**
+         * Get Caller Function Name
+         */
+        var caller;
+        var caller_str = stack.split("\n")[2];
+        var regex = /at\s(.*)\s\(/gm;
+        caller = regex.exec(caller_str);
+        if (caller != null && caller.length) {
+            caller = caller[1];
+        }
+        /**
+         * Create Prefix Log
+         */
+        var append = "";
+        if (typeof file != "undefined") {
+            append += file + "/";
+        }
+        if (caller != null && typeof caller != "undefined") {
+            append += caller + "/";
+        }
+        if (typeof line != "undefined") {
+            append += line + ":";
+        }
+        var input = [];
+        if (arguments.length == 1) {
+            input = arguments[0];
+        }
+        else {
+            for (var index_1 = 0; index_1 < arguments.length; index_1++) {
+                var arg = arguments[index_1];
+                input.push(arg);
+            }
+        }
+        var args;
+        if (Array.hasOwnProperty("from")) {
+            args = Array.from(arguments); // ES5
+        }
+        else {
+            args = Array.prototype.slice.call(arguments);
+        }
+        args.unshift(append);
+        log.apply(console, args);
+        if (typeof jQuery != "undefined") {
+            if (!$("#debugConsole").length) {
+                $("body").append('<div id="debugConsole" style="display:none"></div>');
+            }
+            if (typeof console_callback == "function") {
+                console_callback(input);
+            }
+            else {
+                $("#debugConsole").append("<p> <kbd>" + typeof input + "</kbd> " + input + "</p>");
+            }
+        }
+    };
+}
+else {
+    /**
+     * Consoler
+     */
+    [
+        ["warn", "\x1b[35m"],
+        ["error", "\x1b[31m"],
+        ["log", "\x1b[2m"],
+    ].forEach(function (pair) {
+        var method = pair[0], reset = "\x1b[0m", color = "\x1b[36m" + pair[1];
+        console[method] = console[method].bind(console, color, method.toUpperCase() + " [" + new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds() + "]", reset);
+    });
+    console.error = (function () {
+        var error = console.error;
+        return function (exception) {
+            if (typeof exception.stack !== "undefined") {
+                error.call(console, exception.stack);
+            }
+            else {
+                error.apply(console, arguments);
+            }
+        };
+    })();
+}
+/**
+ * Get stacktrace
+ */
+function stacktrace() {
+    function st2(f) {
+        return !f
+            ? []
+            : st2(f.caller).concat([f.toString().split("(")[0].substring(9) + "(" + f.arguments.join(",") + ")"]);
+    }
+    return st2(arguments.callee.caller);
 }
 /**
  * Begin global toastr options
@@ -2600,10 +2600,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2700,7 +2700,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             var trackLinks = document.getElementsByTagName("a");
             var _loop_1 = function () {
@@ -2914,7 +2914,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -5814,7 +5814,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.

@@ -437,20 +437,6 @@ declare const siteConfig: {
         };
     };
 };
-/**
- * @file Console Controller
- */
-interface Console {
-    olog: {
-        (...data: any[]): void;
-        (message?: any, ...optionalParams: any[]): void;
-    };
-}
-declare var console_callback: any;
-/**
- * Get stacktrace
- */
-declare function stacktrace(): any;
 declare var isNode: boolean;
 declare var root: any;
 declare var global: any;
@@ -508,6 +494,7 @@ declare function is_development(): boolean;
 /**
  * Generate random string with length
  * @param length length to generate
+ * @global
  * @see https://dev.to/oyetoket/fastest-way-to-generate-random-strings-in-javascript-2k5a
  */
 declare const generateRandomString: (length?: number) => string;
@@ -531,6 +518,20 @@ declare function onlyUnique(value: any, index: any, self: any[]): boolean;
  */
 declare function parseNumber(total_amount_string: string): number;
 declare function typedKeys<T>(o: T): (keyof T)[];
+/**
+ * @file Console Controller
+ */
+interface Console {
+    olog: {
+        (...data: any[]): void;
+        (message?: any, ...optionalParams: any[]): void;
+    };
+}
+declare var console_callback: any;
+/**
+ * Get stacktrace
+ */
+declare function stacktrace(): any;
 declare function pageid(length: number): string;
 declare const randstr: (length?: number) => string;
 /**
@@ -883,17 +884,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
+    "160": string;
+    "161": string;
+    "162": string;
+    "163": string;
+    "164": string;
+    "165": string;
+    "166": string;
+    "167": string;
+    "168": string;
+    "169": string;
+    "8364": string;
 };
 /**
  * php equivalent http_build_query
@@ -997,7 +998,7 @@ declare function formsaver(): void;
  * @param {Function}              callback   Callback function for each iteration
  * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
+declare function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
 /**
  * Get the closest matching element up the DOM tree.
  * @private

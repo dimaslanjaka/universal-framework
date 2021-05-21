@@ -17,7 +17,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Universal Framework Javascript Documentation src/compiler/gulp-watch.ts</title>
+  <title>Universal Framework Javascript Documentation src/compiler/gulpfile-watch.ts</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -133,7 +133,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>src/compiler/gulp-watch.ts</h1>
+                    <h1>src/compiler/gulpfile-watch.ts</h1>
                 </header>
                 
 
@@ -151,7 +151,7 @@ import log from "../compiler/log";
 import process from "../compiler/process";
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
-import { createApp } from "./gulpfile-app";
+import { createApp, multiMinify, views } from "./gulpfile-app";
 // noinspection ES6PreferShortImport
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
@@ -176,7 +176,7 @@ export async function gulpWatch() {
         .join(" ")
   );
 
-  let watch_timer: NodeJS.Timeout = null;
+  let watch_timer = null;
   return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
     const trigger = function () {
       file = framework.normalize(path.resolve(file.toString()));
@@ -226,8 +226,23 @@ export async function gulpWatch() {
         }
       }
     };
-    if (localStorage.getItem("watch")) return trigger();
+    return trigger();
+
+    //if (localStorage.getItem("watch"))
   });
+}
+
+export function watch2(done: () => void) {
+  gulp.watch(["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"], async function (done) {
+    await multiMinify(views());
+    done();
+  });
+  gulp.watch(["./libs/js/**/*", "./libs/src/**/*"], async function (done) {
+    await createApp(true);
+    process_restarter();
+    done();
+  });
+  done();
 }
 
 let reload_timeout = null;
@@ -289,6 +304,26 @@ export async function reload_gulp(cb: () => any) {
   if (typeof cb == "function") {
     cb();
   }
+}
+
+//var spawn = require("child_process").spawn;
+export function process_restarter() {
+  if (process.core.env.hasOwnProperty("process_restarting")) {
+    console.log("restarting...");
+    delete process.core.env.process_restarting;
+    // Give old process one second to shut down before continuing ...
+    setTimeout(process_restarter, 1000);
+    return;
+  }
+
+  // ...
+
+  // Restart process ...
+  spawn(process.core.argv[0], process.core.argv.slice(1), {
+    env: { process_restarting: "1" },
+    stdio: "ignore",
+    detached: true,
+  }).unref();
 }
 </code></pre>
         </article>

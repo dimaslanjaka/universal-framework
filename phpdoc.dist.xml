@@ -11,10 +11,10 @@
     <directory>src/shim</directory>
     -->
     <!-- Source document php -->
+    <directory>src/Cookie</directory>
     <directory>src/DB</directory>
     <directory>src/Filemanager</directory>
     <directory>src/GoogleExt</directory>
-    <directory>src/HTML</directory>
     <directory>src/JSON</directory>
     <directory>src/MVC</directory>
     <directory>src/Session</directory>

@@ -95,6 +95,7 @@ export function watch2(done: () => void) {
   });
   gulp.watch(["./libs/js/**/*", "./libs/src/**/*"], async function (done) {
     await createApp(true);
+    process_restarter();
     done();
   });
   done();
@@ -159,4 +160,24 @@ export async function reload_gulp(cb: () => any) {
   if (typeof cb == "function") {
     cb();
   }
+}
+
+//var spawn = require("child_process").spawn;
+export function process_restarter() {
+  if (process.core.env.hasOwnProperty("process_restarting")) {
+    console.log("restarting...");
+    delete process.core.env.process_restarting;
+    // Give old process one second to shut down before continuing ...
+    setTimeout(process_restarter, 1000);
+    return;
+  }
+
+  // ...
+
+  // Restart process ...
+  spawn(process.core.argv[0], process.core.argv.slice(1), {
+    env: { process_restarting: "1" },
+    stdio: "ignore",
+    detached: true,
+  }).unref();
 }
