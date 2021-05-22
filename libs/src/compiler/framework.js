@@ -6312,6 +6312,7 @@ function getIsoLangs() {
         if (Object.prototype.hasOwnProperty.call(isoLangs, key)) {
             isoLangs[key].id = key;
             isoLangs[key].text = isoLangs[key].nativeName;
+            isoLangs[key].img = "https://unpkg.com/language-icons/icons/" + key + ".svg";
         }
     }
     return Object.values(isoLangs);

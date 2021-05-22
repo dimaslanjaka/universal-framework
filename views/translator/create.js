@@ -3,7 +3,7 @@ formsaver();
 $("#slang,#tolang").select2({
   placeholder: "Select Article Language",
   templateResult: function (data) {
-    return $(`<span>${data.text}</span>`);
+    return $(`<img src="${data.img}" /><span>${data.text}</span>`);
   },
   data: getIsoLangs(),
 });

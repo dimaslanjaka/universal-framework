@@ -8,7 +8,7 @@ import * as fs from "fs";
 import { createApp } from "./gulpfile-app";
 import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
-import { gulpWatch, watch2, watch3 } from "./gulpfile-watch";
+import { watch3 } from "./gulpfile-watch";
 
 const root = process.root;
 

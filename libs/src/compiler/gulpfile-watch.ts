@@ -5,9 +5,8 @@ import path from "path";
 import framework from "../compiler/index";
 import log from "../compiler/log";
 //import process from "../compiler/process";
-import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 // noinspection ES6PreferShortImport
-import { createApp, multiMinify, views } from "./gulpfile-app";
+import { createApp } from "./gulpfile-app";
 // noinspection ES6PreferShortImport
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
@@ -83,33 +82,27 @@ export function gulpWatch() {
   });
 }
 
-export function watch2(done: () => void) {
-  const ext = ".{js|css|sass|less|scss}";
-  gulp.watch(
-    ["./src/MVC/**/*" + ext, "./etc/**/*" + ext, "./" + config.app.views + "/**/*" + ext, "**.min" + ext],
-    async function (done) {
-      await multiMinify(views());
-      done();
-    }
-  );
-  gulp.watch(["./libs/js/**/*" + ext, "./libs/src/**/*" + ext], async function (done) {
-    await createApp(true);
-    done();
-  });
-  done();
-}
-
-export function watch3(done: () => void) {
+export async function watch3(done: () => void) {
   const ext = ".{js|css|sass|less|scss}";
   const files = ["./src/MVC/**/*" + ext, "./etc/**/*" + ext, "./" + config.app.views + "/**/*" + ext, "!**.min" + ext];
-  gulp.watch(files, async function (done) {
-    await multiMinify(views());
-    done();
+  ///console.log(files);
+  const views_path = path.join(process.cwd(), config.app.views + "/**/*");
+  console.log(views_path);
+  spawner.spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"], false, function (child) {
+    child.stderr.on("data", function (data) {
+      console.error(data);
+    });
   });
-
-  spawner.spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"]);
   spawner.spawn("cmd", ["/k", "tsc -p tsconfig.precompiler.json --watch"]);
   spawner.spawn("cmd", ["/k", "tsc -p tsconfig.compiler.json --watch"]);
+  gulp.watch(views_path, null).on("change", async function (event, file) {
+    const trigger = async function () {
+      const canonical = framework.normalize(path.resolve(file.toString()));
+      console.log(canonical, file);
+    };
+    return trigger();
+  });
+
   done();
 }
 
