@@ -12,6 +12,7 @@ import { createApp, multiMinify, views } from "./gulpfile-app";
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
+var kill = require("tree-kill");
 
 export async function gulpWatch() {
   console.clear();
@@ -59,7 +60,7 @@ export async function gulpWatch() {
 
             if (isCompiler || isFormsaver) {
               // TODO: reload gulp
-              reload_gulp();
+              reload_gulp2();
             }
           }, 1000);
         }
@@ -104,12 +105,13 @@ export function watch2(done: () => void) {
 
 let reload_timeout = null;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function reload_gulp(cb: () => any = null) {
   //spawn("gulp", ["watch"], { stdio: "inherit" });
   //process.exit();
 
-  if (process.env.process_restarting) {
+  console.info(process.env.process_restarting);
+  if (process.env.process_restarting == "1") {
+    console.info("restarting...");
     delete process.env.process_restarting;
     // Give old process one second to shut down before continuing ...
     reload_timeout = setTimeout(reload_gulp, 1000);
@@ -117,18 +119,20 @@ export async function reload_gulp(cb: () => any = null) {
     process.exit();
   }
 
-  console.clear();
-  console.log("reloading gulp");
-  //console.log(process.argv[0]);
-  //console.log(process.argv.slice(1));
+  const children_kill = function () {
+    children.forEach(function (child) {
+      child.kill();
+      kill(child.pid, "SIGKILL", function (err) {
+        console.error(err);
+      });
+    });
+  };
 
   var children: ChildProcessWithoutNullStreams[] = [];
 
   process.on("exit", function () {
     console.log("killing", children.length, "child processes");
-    children.forEach(function (child) {
-      child.kill();
-    });
+    children_kill();
   });
 
   var cleanExit = function () {
@@ -137,24 +141,41 @@ export async function reload_gulp(cb: () => any = null) {
   process.on("SIGINT", cleanExit); // catch ctrl-c
   process.on("SIGTERM", cleanExit); // catch kill
 
-  let out: any, err: any;
   // Restart process ...
-  if (!children.isEmpty()) {
-    children[0].kill();
-    children.shift();
-  }
+  children_kill();
 
-  children.push(
-    spawn(process.argv[0], process.argv.slice(1), {
-      env: { process_restarting: "1" },
-      //stdio: "ignore",
-      detached: true,
-      stdio: ["ignore", out, err],
-    }) //.unref()
-  );
+  children[0] = spawn(process.argv[0], process.argv.slice(1), {
+    env: { process_restarting: "1" },
+    stdio: "ignore",
+    detached: true,
+  }); //.unref()
   children[0].unref();
+  children[0].stdout.on("data", function (data) {
+    console.log("stdout:" + data);
+  });
+
+  children[0].stderr.on("data", function (data) {
+    console.log("stderr:" + data);
+  });
+
+  children[0].stdin.on("data", function (data) {
+    console.log("stdin:" + data);
+  });
 
   if (typeof cb == "function") {
     cb();
   }
+}
+
+let terminal;
+export function reload_gulp2() {
+  console.log("ENV " + process.env.process_restarting);
+  // Give old process one second to shut down before continuing ...
+  reload_timeout = setTimeout(function () {
+    terminal = spawn(process.argv[0], process.argv.slice(1), {
+      env: { process_restarting: "1" },
+      stdio: "ignore",
+    }).unref();
+  }, 1000);
+  process.exit();
 }

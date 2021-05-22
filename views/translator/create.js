@@ -1,6 +1,8 @@
 $("textarea").autoHeight();
 formsaver();
-select2Country($("[select2-country]"));
+$("#slang").select2({
+  placeholder: "Select Article Language",
+});
 
 $("form").on("submit", function (e) {
   e.preventDefault();
