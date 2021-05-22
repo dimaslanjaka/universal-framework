@@ -8,7 +8,7 @@ import * as uglifycss from "uglifycss";
 import * as sass from "sass";
 import { exec } from "child_process";
 import "../node-localstorage/src/index";
-import configuration from "./config";
+import { config } from "./config";
 import * as framework from "./framework";
 import filemanager from "./filemanager";
 import less from "less";
@@ -25,7 +25,7 @@ class core {
    * config.json
    */
   static config() {
-    return configuration;
+    return config;
   }
 
   /**

@@ -6,7 +6,7 @@ import { compileAssets } from "./gulpfile-compiler";
 import { localStorage } from "../node-localstorage/index";
 import process from "../compiler/process";
 import framework from "../compiler/index";
-import config from "../compiler/config";
+import { config } from "../compiler/config";
 
 const root = process.root;
 

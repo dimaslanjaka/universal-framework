@@ -810,8 +810,9 @@ declare function enable_button(t: JQuery<any> | HTMLButtonElement): void;
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
+ * iso countries
  */
-declare const countries: {
+declare const isoCountries: {
     name: string;
     alpha2: string;
     alpha3: string;
@@ -823,7 +824,7 @@ declare const countries: {
 /**
  * @author Phil Teare
  * @global
- * using wikipedia data
+ * iso languanges using wikipedia data
  */
 declare const isoLangs: {
     ab: {
@@ -1624,17 +1625,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -1738,7 +1739,7 @@ declare function formsaver(): void;
  * @param {Function}              callback   Callback function for each iteration
  * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-declare function forEach(collection: any[] | any | NodeList, callback: Function, scope?: any[] | any | NodeList): void;
+declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
 /**
  * Get the closest matching element up the DOM tree.
  * @private

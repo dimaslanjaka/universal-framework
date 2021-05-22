@@ -136,11 +136,6 @@ function loadCodemirror(element, mode, theme) {
                     var editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
-                        /*
-                            smartIndent: true,
-                            lineWrapping: true,
-                            showCursorWhenSelecting: true,
-                            matchHighlight: true,*/
                     });
                     loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                         editor.setOption("theme", theme);
@@ -2601,10 +2596,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
+        class: iconMap[severity],
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
+        class: alertClasses.join(" "),
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2701,7 +2696,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
+                cookie_expires: 28 * 24 * 60 * 60,
             });
             var trackLinks = document.getElementsByTagName("a");
             var _loop_1 = function () {
@@ -2915,7 +2910,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent", // or 'seconds' => 23/60
+                type: "percent",
             },
             autoStart: true,
         });
@@ -3400,8 +3395,9 @@ function enable_button(t) {
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
+ * iso countries
  */
-var countries = [
+var isoCountries = [
     {
         name: "Afghanistan",
         alpha2: "AF",
@@ -5575,7 +5571,7 @@ var countries = [
 /**
  * @author Phil Teare
  * @global
- * using wikipedia data
+ * iso languanges using wikipedia data
  */
 var isoLangs = {
     ab: {
@@ -6315,6 +6311,7 @@ function getIsoLangs() {
     for (var key in isoLangs) {
         if (Object.prototype.hasOwnProperty.call(isoLangs, key)) {
             isoLangs[key].id = key;
+            isoLangs[key].text = isoLangs[key].nativeName;
         }
     }
     return Object.values(isoLangs);
@@ -6324,7 +6321,7 @@ function getIsoLangs() {
  * @returns
  */
 function getCountries() {
-    return countries;
+    return isoCountries;
 }
 /**
  * Select2 Country
@@ -6338,7 +6335,7 @@ function select2Country(el, select2Opt) {
     if (select2Opt === void 0) { select2Opt = {}; }
     "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css".CSS();
     var isoCountries = [];
-    countries.forEach(function (country) {
+    isoCountries.forEach(function (country) {
         isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
     });
     var defaultOpt = {
@@ -6362,7 +6359,7 @@ function select2Country(el, select2Opt) {
     el.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
-    module.exports.countries = countries;
+    module.exports.countries = isoCountries;
     module.exports.getCountries = getCountries;
 }
 else {
@@ -6562,7 +6559,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
+    "8364": "&euro;",
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.

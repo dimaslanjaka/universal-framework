@@ -1,5 +1,5 @@
 import * as gulp from "gulp";
-import config from "../compiler/config";
+import { config } from "./config";
 import upath from "upath";
 import path from "path";
 import framework from "../compiler/index";
@@ -13,7 +13,7 @@ import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
 
-export async function gulpWatch() {
+export function gulpWatch() {
   console.clear();
   const files = [
     "./libs/js/**/*.{js|ts}",
@@ -36,6 +36,7 @@ export async function gulpWatch() {
   return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
     const trigger = function () {
       file = framework.normalize(path.resolve(file.toString()));
+      console.info(`${file} changed`);
       /**
        * Check is library compiler or source compiler
        */
@@ -55,7 +56,9 @@ export async function gulpWatch() {
           log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
           log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
           watch_timer = setTimeout(async function () {
-            await createApp(true);
+            await createApp(true).finally(function () {
+              watch_timer = null;
+            });
           }, 1000);
         }
       } else {
@@ -76,8 +79,6 @@ export async function gulpWatch() {
       }
     };
     return trigger();
-
-    //if (localStorage.getItem("watch"))
   });
 }
 
@@ -95,6 +96,10 @@ export function watch2(done: () => void) {
     done();
   });
   done();
+}
+
+export function watch3() {
+  spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"]);
 }
 
 /*

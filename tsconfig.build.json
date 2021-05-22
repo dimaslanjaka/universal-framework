@@ -15,12 +15,12 @@
     "sourceRoot": "./libs/js/",
     "rootDir": "./libs/js/",
     "sourceMap": true,
-    "watch": false,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "importHelpers": true,
     "lib": ["DOM", "ESNext", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"],
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "watch": false
   },
   "include": ["./libs/js/**/*"],
   "typeAcquisition": {

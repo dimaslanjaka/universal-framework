@@ -16,17 +16,11 @@ const webConfig = {
 };
 
 fs.writeFileSync(path.join(__dirname, "/libs/js/_conf.ts"), "const siteConfig = " + JSON.stringify(webConfig));
+fs.writeFileSync(
+  path.join(__dirname, "libs/src/compiler/config.ts"),
+  "export const config = " + JSON.stringify(siteConfig)
+);
 
-/*
-const gulp = require("gulp");
-var typedoc = require("gulp-typedoc");
-gulp.task("typedoc", function () {
-  return gulp.src(["libs/js/*.ts"]).pipe(
-    typedoc({
-      out: "docs/js/",
-      name: "My project title",
-      exclude: "libs/src/smartform/dist/**",
-    })
-  );
+gulp.task("ts-watch", function () {
+  gulp.watch(["./libs/**/*.{js|ts}"], function () {});
 });
-*/

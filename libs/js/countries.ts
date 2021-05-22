@@ -3,8 +3,9 @@
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
+ * iso countries
  */
-const countries = [
+const isoCountries = [
   {
     name: "Afghanistan",
     alpha2: "AF",
@@ -2179,7 +2180,7 @@ const countries = [
 /**
  * @author Phil Teare
  * @global
- * using wikipedia data
+ * iso languanges using wikipedia data
  */
 const isoLangs = {
   ab: {
@@ -2920,6 +2921,7 @@ function getIsoLangs(): any {
   for (const key in isoLangs) {
     if (Object.prototype.hasOwnProperty.call(isoLangs, key)) {
       isoLangs[key].id = key;
+      isoLangs[key].text = isoLangs[key].nativeName;
     }
   }
   return Object.values(isoLangs);
@@ -2930,7 +2932,7 @@ function getIsoLangs(): any {
  * @returns
  */
 function getCountries() {
-  return countries;
+  return isoCountries;
 }
 
 /**
@@ -2947,7 +2949,7 @@ function select2Country(
 ) {
   "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css".CSS();
   const isoCountries = [];
-  countries.forEach(function (country) {
+  isoCountries.forEach(function (country) {
     isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
   });
 
@@ -2976,7 +2978,7 @@ function select2Country(
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports.countries = countries;
+  module.exports.countries = isoCountries;
   module.exports.getCountries = getCountries;
 } else {
   (function ($) {

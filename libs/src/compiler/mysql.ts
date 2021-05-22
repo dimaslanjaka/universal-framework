@@ -1,8 +1,6 @@
 import log from "./log";
 import * as mysql from "mysql";
-import configuration from "./config";
-
-var config = configuration;
+import { config } from "./config";
 
 function mysql_connection(): null | mysql.Connection {
   var result = null;
