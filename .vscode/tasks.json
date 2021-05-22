@@ -25,7 +25,7 @@
         "showReuseMessage": true,
         "clear": false
       },
-      "command": "npm --silent run start",
+      "command": "npm run start",
       "runOptions": {
         "instanceLimit": 1,
         "reevaluateOnRerun": true,

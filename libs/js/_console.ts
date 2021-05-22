@@ -1,6 +1,6 @@
 /// <reference path="./aacaller.ts" />
 /**
- * @file Console Controller
+ * Console Controller
  */
 
 interface Console {
@@ -9,7 +9,7 @@ interface Console {
     (message?: any, ...optionalParams: any[]): void;
   };
 }
-declare var console_callback: any;
+var console_callback: any;
 
 if (typeof console != "undefined") {
   if (typeof console.log != "undefined") {

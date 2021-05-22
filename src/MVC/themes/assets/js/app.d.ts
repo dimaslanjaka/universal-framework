@@ -519,7 +519,7 @@ declare function onlyUnique(value: any, index: any, self: any[]): boolean;
 declare function parseNumber(total_amount_string: string): number;
 declare function typedKeys<T>(o: T): (keyof T)[];
 /**
- * @file Console Controller
+ * Console Controller
  */
 interface Console {
     olog: {

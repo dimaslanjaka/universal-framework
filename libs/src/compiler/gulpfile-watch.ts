@@ -12,7 +12,6 @@ import { createApp, multiMinify, views } from "./gulpfile-app";
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
-var kill = require("tree-kill");
 
 export async function gulpWatch() {
   console.clear();
@@ -57,11 +56,6 @@ export async function gulpWatch() {
           log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
           watch_timer = setTimeout(async function () {
             await createApp(true);
-
-            if (isCompiler || isFormsaver) {
-              // TODO: reload gulp
-              reload_gulp2();
-            }
           }, 1000);
         }
       } else {
@@ -103,79 +97,64 @@ export function watch2(done: () => void) {
   done();
 }
 
-let reload_timeout = null;
+/*
+var cleanExit = function () {
+  process.exit();
+};
+process.on("SIGINT", cleanExit); // catch ctrl-c
+process.on("SIGTERM", cleanExit); // catch kill
+process.on("SIGKILL", cleanExit); // catch kill
+var children: ChildProcessWithoutNullStreams[] = [];
+function children_kill() {
+  children.forEach(function (child: ChildProcessWithoutNullStreams) {
+    process.kill(child.pid, "SIGKILL");
+    child.kill();
+    console.log(`Child ${child.pid} killed ${child.killed ? "success" : "failed"}`);
+  });
+}
+
+process.on("exit", function () {
+  console.log("killing", children.length, "child processes");
+  children_kill();
+});
+
 
 export async function reload_gulp(cb: () => any = null) {
-  //spawn("gulp", ["watch"], { stdio: "inherit" });
-  //process.exit();
-
   console.info(process.env.process_restarting);
   if (process.env.process_restarting == "1") {
     console.info("restarting...");
     delete process.env.process_restarting;
     // Give old process one second to shut down before continuing ...
-    reload_timeout = setTimeout(reload_gulp, 1000);
-    //reload_gulp();
-    process.exit();
+    setTimeout(reload_gulp, 1000);
+    return;
   }
-
-  const children_kill = function () {
-    children.forEach(function (child) {
-      child.kill();
-      kill(child.pid, "SIGKILL", function (err) {
-        console.error(err);
-      });
-    });
-  };
-
-  var children: ChildProcessWithoutNullStreams[] = [];
-
-  process.on("exit", function () {
-    console.log("killing", children.length, "child processes");
-    children_kill();
-  });
-
-  var cleanExit = function () {
-    process.exit();
-  };
-  process.on("SIGINT", cleanExit); // catch ctrl-c
-  process.on("SIGTERM", cleanExit); // catch kill
-
-  // Restart process ...
-  children_kill();
-
-  children[0] = spawn(process.argv[0], process.argv.slice(1), {
-    env: { process_restarting: "1" },
-    stdio: "ignore",
-    detached: true,
-  }); //.unref()
-  children[0].unref();
-  children[0].stdout.on("data", function (data) {
-    console.log("stdout:" + data);
-  });
-
-  children[0].stderr.on("data", function (data) {
-    console.log("stderr:" + data);
-  });
-
-  children[0].stdin.on("data", function (data) {
-    console.log("stdin:" + data);
-  });
 
   if (typeof cb == "function") {
     cb();
   }
-}
 
-let terminal;
-export function reload_gulp2() {
-  console.log("ENV " + process.env.process_restarting);
-  // Give old process one second to shut down before continuing ...
-  reload_timeout = setTimeout(function () {
-    terminal = spawn(process.argv[0], process.argv.slice(1), {
-      env: { process_restarting: "1" },
-      stdio: "ignore",
-    }).unref();
-  }, 1000);
-  process.exit();
+  // Restart process ...
+  children_kill();
+
+  const terminal = spawn(process.argv[0], process.argv.slice(1), {
+    env: { process_restarting: "1" },
+    stdio: "ignore",
+    //detached: true,
+  });
+
+  terminal.stdout.on("data", function (data) {
+    console.log("stdout:" + data);
+  });
+
+  terminal.stderr.on("data", function (data) {
+    console.log("stderr:" + data);
+  });
+
+  terminal.stdin.on("data", function (data) {
+    console.log("stdin:" + data);
+  });
+
+  children.push(terminal);
+  terminal.unref();
 }
+*/

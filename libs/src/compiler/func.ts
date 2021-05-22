@@ -11,8 +11,6 @@ import chalk from "chalk";
 import dns from "dns";
 import sorter from "./sorter";
 
-require("./consoler");
-
 /**
  * Check connectivity
  */
@@ -63,24 +61,16 @@ export function writenow(packageObject: packagejson) {
     return true;
   });
 
-  if (
-    packageObject &&
-    typeof packageObject == "object" &&
-    count(packageObject) > 0
-  ) {
+  if (packageObject && typeof packageObject == "object" && count(packageObject) > 0) {
     if (sorterFound) {
-      fs.writeFileSync(
-        path.join(__dirname, "package.json"),
-        JSON.stringify(sorter.reorder(packageObject), null, 4),
-        { encoding: "utf-8" }
-      );
+      fs.writeFileSync(path.join(__dirname, "package.json"), JSON.stringify(sorter.reorder(packageObject), null, 4), {
+        encoding: "utf-8",
+      });
     } else {
       console.log("sorter not found, using default...");
-      fs.writeFileSync(
-        path.join(__dirname, "package.json"),
-        JSON.stringify(packageObject, null, 4),
-        { encoding: "utf-8" }
-      );
+      fs.writeFileSync(path.join(__dirname, "package.json"), JSON.stringify(packageObject, null, 4), {
+        encoding: "utf-8",
+      });
     }
   } else {
     console.warn("not object", typeof packageObject);
@@ -137,9 +127,7 @@ export function random_hex(familiar?: boolean) {
     var values = Object.values(choose);
     return values[Math.floor(Math.random() * values.length)];
   } else {
-    return (
-      "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
-    );
+    return "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
   }
 }
 
@@ -197,17 +185,7 @@ export function random_rgba() {
   var o = Math.round,
     r = Math.random,
     s = 255;
-  return (
-    "rgba(" +
-    o(r() * s) +
-    "," +
-    o(r() * s) +
-    "," +
-    o(r() * s) +
-    "," +
-    r().toFixed(1) +
-    ")"
-  );
+  return "rgba(" + o(r() * s) + "," + o(r() * s) + "," + o(r() * s) + "," + r().toFixed(1) + ")";
 }
 
 /**
@@ -250,10 +228,7 @@ var execute_dump = [];
  * @requires NodeJS
  * @param callback
  */
-export function execute(
-  cmd: string | null,
-  callback: (arg0: boolean, arg1: string | Error) => any = null
-): any {
+export function execute(cmd: string | null, callback: (arg0: boolean, arg1: string | Error) => any = null): any {
   if (typeof cmd != "string") {
     console.log(typeof cmd + " not string");
     return;
@@ -310,34 +285,25 @@ export function execute(
  * @param tmodule
  * @requires node
  */
-export function module_exists(
-  tmodule: Array<string> | string,
-  global: boolean = false,
-  dump: boolean = false
-) {
+export function module_exists(tmodule: Array<string> | string, global: boolean = false, dump: boolean = false) {
   const test = function (tmodule: string, global: boolean) {
     var result = null;
-    execute(
-      ("npm list -json -depth=0 " + (global ? "-g" : "")).trim(),
-      function (error, message) {
-        if (message instanceof Error || !error) {
-          result = false;
-        } else {
-          try {
-            var json: npmlist = JSON.parse(message);
+    execute(("npm list -json -depth=0 " + (global ? "-g" : "")).trim(), function (error, message) {
+      if (message instanceof Error || !error) {
+        result = false;
+      } else {
+        try {
+          var json: npmlist = JSON.parse(message);
 
-            result = Object.keys(json.dependencies).includes(tmodule);
-            if (dump) {
-              console.log(
-                `${tmodule} is ${result ? "installed" : "not installed"}`
-              );
-            }
-          } catch (error) {
-            result = false;
+          result = Object.keys(json.dependencies).includes(tmodule);
+          if (dump) {
+            console.log(`${tmodule} is ${result ? "installed" : "not installed"}`);
           }
+        } catch (error) {
+          result = false;
         }
       }
-    );
+    });
     return result;
   };
   if (typeof tmodule == "string") {
@@ -383,10 +349,7 @@ export function config_builder() {
   var mod = str.replace(regex, `config:${parsed} = require`);
   fs.writeFileSync(asset("./libs/src/compiler/config.ts"), mod);
 
-  function parseConfig(
-    config: { [key: string]: any },
-    usingExclude: boolean = null
-  ) {
+  function parseConfig(config: { [key: string]: any }, usingExclude: boolean = null) {
     const excluded = function (key: string) {
       return ["vscode"].indexOf(key) == -1;
     };
@@ -481,10 +444,7 @@ export function getLatestVersion(key: string) {
       console.error(error);
     }
     try {
-      writeFile(
-        `./tmp/npm/packages/${key}/latest.json`,
-        JSON.parse(message.toString())
-      );
+      writeFile(`./tmp/npm/packages/${key}/latest.json`, JSON.parse(message.toString()));
     } catch (error) {}
   });
 }
@@ -494,10 +454,7 @@ export function getLatestVersion(key: string) {
  * @param commands
  * @param callback callback for each command return
  */
-export function async_exec(
-  commands: string[],
-  callback: (stdout: string, stderr: string, isLast: boolean) => any
-) {
+export function async_exec(commands: string[], callback: (stdout: string, stderr: string, isLast: boolean) => any) {
   if (!Array.isArray(commands)) {
     console.error("commands must be instance of array");
     return null;
@@ -548,17 +505,12 @@ export function list_package() {
       try {
         data = JSON.parse(data);
         if (fs.existsSync("./tmp/npm/local.json")) {
-          var old = JSON.parse(
-            fs.readFileSync("./tmp/npm/local.json").toString()
-          );
+          var old = JSON.parse(fs.readFileSync("./tmp/npm/local.json").toString());
           if (old) {
             data = Object.assign({}, data, old);
           }
         }
-        if (
-          data.hasOwnProperty("dependencies") &&
-          !localStorage.getItem("list_package_latest")
-        ) {
+        if (data.hasOwnProperty("dependencies") && !localStorage.getItem("list_package_latest")) {
           localStorage.setItem("list_package_latest", "1");
           const executor = promisify(exec);
           const dependencies = Object.keys(data.dependencies);
@@ -569,14 +521,10 @@ export function list_package() {
             for await (const key of dependencies) {
               if (data.dependencies.hasOwnProperty(key)) {
                 try {
-                  var { stdout } = await executor(
-                    "npm show " + key + " version"
-                  );
+                  var { stdout } = await executor("npm show " + key + " version");
                   data.dependencies[key].latest = stdout.trim();
                   if (!key.includes("@types")) {
-                    var { stdout } = await executor(
-                      "npm view @types/" + key + " version -json"
-                    );
+                    var { stdout } = await executor("npm view @types/" + key + " version -json");
                     if (stdout.trim().length) {
                       data.dependencies[key].types = {
                         name: "@types/" + key,
@@ -592,12 +540,7 @@ export function list_package() {
                   writeFile("./tmp/npm/local.json", data);
                   task
                     .status(
-                      (
-                        (dependencies.length * 100) /
-                        Object.keys(data.dependencies).length
-                      )
-                        .toFixed(3)
-                        .toString() + "%"
+                      ((dependencies.length * 100) / Object.keys(data.dependencies).length).toFixed(3).toString() + "%"
                     )
                     .details(chalk.hex(random_hex(true)).underline(key));
                 } catch (error) {

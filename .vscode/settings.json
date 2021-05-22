@@ -41,7 +41,7 @@
   "files.associations": {
     "*.extension": "language"
   },
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 18000,
   "files.encoding": "utf8",
   "files.exclude": {

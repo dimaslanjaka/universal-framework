@@ -1811,8 +1811,9 @@ function typedKeys(o) {
 }
 /// <reference path="./aacaller.ts" />
 /**
- * @file Console Controller
+ * Console Controller
  */
+var console_callback;
 if (typeof console != "undefined") {
     if (typeof console.log != "undefined") {
         console.olog = console.log;
