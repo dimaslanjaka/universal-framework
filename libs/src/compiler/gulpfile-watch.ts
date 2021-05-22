@@ -16,11 +16,11 @@ import "../../js/_Prototype-Array";
 export async function gulpWatch() {
   console.clear();
   const files = [
-    "./libs/js/**/*",
-    "./libs/src/**/*",
-    "./src/MVC/**/*",
-    "./etc/**/*",
-    "./" + config.app.views + "/**/*",
+    "./libs/js/**/*.{js|ts}",
+    "./libs/src/**/*.{js|ts}",
+    "./src/MVC/**/*.{js|ts|css|scss|less}",
+    "./etc/**/*.{js|ts|css|scss|less}",
+    "./" + config.app.views + "/**/*.{js|ts|css|scss|less}",
   ];
 
   log.log(

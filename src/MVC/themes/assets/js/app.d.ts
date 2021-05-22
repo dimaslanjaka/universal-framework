@@ -1556,6 +1556,11 @@ declare const isoLangs: {
     };
 };
 /**
+ * Get ISO Langs
+ * @returns
+ */
+declare function getIsoLangs(): any;
+/**
  * Get Countries ISO
  * @returns
  */

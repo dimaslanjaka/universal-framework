@@ -2,6 +2,10 @@ $("textarea").autoHeight();
 formsaver();
 $("#slang").select2({
   placeholder: "Select Article Language",
+  templateResult: function (data) {
+    return `<span>${data.text}</span>`;
+  },
+  data: getIsoLangs(),
 });
 
 $("form").on("submit", function (e) {

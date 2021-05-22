@@ -6308,6 +6308,18 @@ var isoLangs = {
     },
 };
 /**
+ * Get ISO Langs
+ * @returns
+ */
+function getIsoLangs() {
+    for (var key in isoLangs) {
+        if (Object.prototype.hasOwnProperty.call(isoLangs, key)) {
+            isoLangs[key].id = key;
+        }
+    }
+    return Object.values(isoLangs);
+}
+/**
  * Get Countries ISO
  * @returns
  */
