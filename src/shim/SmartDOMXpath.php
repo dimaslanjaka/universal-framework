@@ -16,7 +16,7 @@ class SmartDOMXpath extends DOMXpath
    * Body Instance
    * ```html
    * <!--get--> <body></body>
-   * ```.
+   * ```
    *
    * @return \DOMNode|null
    */

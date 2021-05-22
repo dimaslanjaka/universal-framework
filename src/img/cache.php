@@ -151,7 +151,7 @@ class cache
    * * `schema data cache`
    * ```json
    * { "md5": "realURL" }
-   * ```.
+   * ```
    *
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */

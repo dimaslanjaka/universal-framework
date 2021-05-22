@@ -5,6 +5,19 @@ namespace GoogleExt;
 use Extender\request;
 use JSON\json;
 
+/**
+ * Google Recaptcha
+ *
+ * ```php
+ * $recap = new GoogleExt\recaptcha();
+ *
+ * // using manual token
+ * $recaptcha->verify("Generated Token Here", function ($success, $response, $token) { e(func_get_args()); });
+ *
+ * // using g-recaptcha-response
+ * $recaptcha->verify($_REQUEST['g-recaptcha-response'], function ($success, $response, $token) { e(func_get_args()); });
+ * ```
+ */
 class recaptcha
 {
   /**

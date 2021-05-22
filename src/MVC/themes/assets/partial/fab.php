@@ -6,7 +6,7 @@ $GLOBALS['fab-creator'] = '';
  * Floating action bar creator
  * ```php
  * echo fab(['href' => '#', 'icon' => 'fa-question', 'attributes' => 'title="#href" rel="nofollow"'], ['href' => '#user', 'icon' => 'fa-user', 'attributes' => 'title="#user" rel="nofollow"']);
- * ```.
+ * ```
  *
  * @param array $c1 max 4 options
  */
