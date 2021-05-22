@@ -11,7 +11,6 @@ import { createApp } from "./gulpfile-app";
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
-import { spawner } from "./spawner";
 
 export function gulpWatch() {
   console.clear();
@@ -67,7 +66,8 @@ export function gulpWatch() {
           if (!/\.min\.(js|css|ts)$/s.test(file)) {
             compileAssets(file);
           }
-        } else {
+        } /*
+        else {
           let reason = log.error("undefined");
           if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
             reason = log.color("brown", "Excluded");
@@ -76,18 +76,19 @@ export function gulpWatch() {
           }
           log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
         }
+        */
       }
     };
     return trigger();
   });
 }
 
-export async function watch3(done: () => void) {
+export function watch3(done: () => void) {
   const ext = ".{js|css|sass|less|scss}";
   const files = ["./src/MVC/**/*" + ext, "./etc/**/*" + ext, "./" + config.app.views + "/**/*" + ext, "!**.min" + ext];
   ///console.log(files);
-  const views_path = path.join(process.cwd(), config.app.views + "/**/*");
-  console.log(views_path);
+
+  /*
   spawner.spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"], false, function (child) {
     child.stderr.on("data", function (data) {
       console.error(data);
@@ -95,75 +96,15 @@ export async function watch3(done: () => void) {
   });
   spawner.spawn("cmd", ["/k", "tsc -p tsconfig.precompiler.json --watch"]);
   spawner.spawn("cmd", ["/k", "tsc -p tsconfig.compiler.json --watch"]);
-  gulp.watch(views_path, null).on("change", async function (event, file) {
-    const trigger = async function () {
-      const canonical = framework.normalize(path.resolve(file.toString()));
-      console.log(canonical, file);
-    };
-    return trigger();
-  });
-
-  done();
-}
-
-/*
-var cleanExit = function () {
-  process.exit();
-};
-process.on("SIGINT", cleanExit); // catch ctrl-c
-process.on("SIGTERM", cleanExit); // catch kill
-process.on("SIGKILL", cleanExit); // catch kill
-var children: ChildProcessWithoutNullStreams[] = [];
-function children_kill() {
-  children.forEach(function (child: ChildProcessWithoutNullStreams) {
-    process.kill(child.pid, "SIGKILL");
-    child.kill();
-    console.log(`Child ${child.pid} killed ${child.killed ? "success" : "failed"}`);
+  */
+  return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
+    const canonical = path.normalize(path.resolve(file.toString()));
+    console.log(canonical, file);
+    if (/\.(js|scss|css|less|ts)$/s.test(canonical)) {
+      // TODO: Compile js css on change
+      if (!/\.min\.(js|css|ts)$/s.test(canonical)) {
+        compileAssets(canonical);
+      }
+    }
   });
 }
-
-process.on("exit", function () {
-  console.log("killing", children.length, "child processes");
-  children_kill();
-});
-
-
-export async function reload_gulp(cb: () => any = null) {
-  console.info(process.env.process_restarting);
-  if (process.env.process_restarting == "1") {
-    console.info("restarting...");
-    delete process.env.process_restarting;
-    // Give old process one second to shut down before continuing ...
-    setTimeout(reload_gulp, 1000);
-    return;
-  }
-
-  if (typeof cb == "function") {
-    cb();
-  }
-
-  // Restart process ...
-  children_kill();
-
-  const terminal = spawn(process.argv[0], process.argv.slice(1), {
-    env: { process_restarting: "1" },
-    stdio: "ignore",
-    //detached: true,
-  });
-
-  terminal.stdout.on("data", function (data) {
-    console.log("stdout:" + data);
-  });
-
-  terminal.stderr.on("data", function (data) {
-    console.log("stderr:" + data);
-  });
-
-  terminal.stdin.on("data", function (data) {
-    console.log("stdin:" + data);
-  });
-
-  children.push(terminal);
-  terminal.unref();
-}
-*/

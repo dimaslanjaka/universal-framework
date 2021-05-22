@@ -52,7 +52,7 @@ export function reorderPkg() {
 }
 
 // watch libs/js/**/* and views
-gulp.task("watch", watch3);
+gulp.task("watch", gulp.parallel(watch3));
 
 gulp.task("assets-compile", function () {
   function filter(views: any[]) {
