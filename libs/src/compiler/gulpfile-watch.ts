@@ -12,6 +12,7 @@ import { createApp, multiMinify, views } from "./gulpfile-app";
 import "../node-localstorage/src/index";
 import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
+import { spawner } from "./spawner";
 
 export function gulpWatch() {
   console.clear();
@@ -98,8 +99,18 @@ export function watch2(done: () => void) {
   done();
 }
 
-export function watch3() {
-  spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"]);
+export function watch3(done: () => void) {
+  const ext = ".{js|css|sass|less|scss}";
+  const files = ["./src/MVC/**/*" + ext, "./etc/**/*" + ext, "./" + config.app.views + "/**/*" + ext, "!**.min" + ext];
+  gulp.watch(files, async function (done) {
+    await multiMinify(views());
+    done();
+  });
+
+  spawner.spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"]);
+  spawner.spawn("cmd", ["/k", "tsc -p tsconfig.precompiler.json --watch"]);
+  spawner.spawn("cmd", ["/k", "tsc -p tsconfig.compiler.json --watch"]);
+  done();
 }
 
 /*

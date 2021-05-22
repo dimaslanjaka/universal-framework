@@ -20,7 +20,3 @@ fs.writeFileSync(
   path.join(__dirname, "libs/src/compiler/config.ts"),
   "export const config = " + JSON.stringify(siteConfig)
 );
-
-gulp.task("ts-watch", function () {
-  gulp.watch(["./libs/**/*.{js|ts}"], function () {});
-});
