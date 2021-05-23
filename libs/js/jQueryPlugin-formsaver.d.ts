@@ -101,6 +101,46 @@ declare class formSaver {
      */
     auto(): void;
 }
+declare const lStorage: {
+    hasData: (key: string | number) => boolean;
+    get: (key: string | number) => any;
+    set: (key: string, value: string) => void;
+    extend: (key: any, value: any) => void;
+    remove: (key: string) => void;
+};
+declare class formSaver2 {
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
+    static save(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
+    static offset(el: HTMLElement): DOMRect;
+    static hasAttribute(el: HTMLElement, name: string): boolean;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
+    static is_select2(el: HTMLElement): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
+    static is_jquery(): boolean;
+    static get_identifier(el: HTMLElement): string;
+}
 /**
  * Element Counter
  */
@@ -124,36 +164,3 @@ declare var isBrowser: Function;
  * @todo save input fields into browser for reusable form
  */
 declare function formsaver(): void;
-declare class formSave {
-    constructor(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement);
-    /**
-     * Save values form
-     * @param el
-     * @returns
-     */
-    static save(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
-    /**
-     * Get Offsets Element
-     * @param el
-     * @returns
-     */
-    static offset(el: HTMLElement): DOMRect;
-    /**
-     * Restore form value
-     * @param el
-     * @returns
-     */
-    static restore(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
-    /**
-     * Is Select2 Initialized ?
-     * @param el
-     * @returns
-     */
-    static is_select2(el: HTMLElement): Select2.Select2;
-    /**
-     * Is jQuery loaded?
-     * @returns
-     */
-    static is_jquery(): boolean;
-    static get_identifier(el: HTMLElement): string;
-}

@@ -1829,6 +1829,46 @@ declare class formSaver {
      */
     auto(): void;
 }
+declare const lStorage: {
+    hasData: (key: any) => boolean;
+    get: (key: any) => any;
+    set: (key: any, value: any) => void;
+    extend: (key: any, value: any) => void;
+    remove: (key: any) => void;
+};
+declare class formSaver2 {
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
+    static save(el: any): void;
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
+    static offset(el: any): any;
+    static hasAttribute(el: any, name: any): any;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: any): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
+    static is_select2(el: any): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
+    static is_jquery(): boolean;
+    static get_identifier(el: any): string;
+}
 /**
  * unique id generator
  * @param length digit number string
@@ -1849,38 +1889,6 @@ declare var storageKey: string;
 declare var formField: any;
 declare var formSaved: string;
 declare var uniqueid: string;
-declare class formSave {
-    /**
-     * Save values form
-     * @param el
-     * @returns
-     */
-    static save(el: any): void;
-    /**
-     * Get Offsets Element
-     * @param el
-     * @returns
-     */
-    static offset(el: any): any;
-    /**
-     * Restore form value
-     * @param el
-     * @returns
-     */
-    static restore(el: any): void;
-    /**
-     * Is Select2 Initialized ?
-     * @param el
-     * @returns
-     */
-    static is_select2(el: any): Select2.Select2;
-    /**
-     * Is jQuery loaded?
-     * @returns
-     */
-    static is_jquery(): boolean;
-    static get_identifier(el: any): string;
-}
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
