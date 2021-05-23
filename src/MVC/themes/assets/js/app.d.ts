@@ -1756,38 +1756,49 @@ declare class lStorage extends Storage {
     remove(key: any): void;
 }
 declare class formSaver2 {
+    static debug: boolean;
+    static save(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
     /**
      * Save values form
      * @param el
      * @returns
      */
     static save(el: any): void;
+    static offset(el: HTMLElement): DOMRect;
     /**
      * Get Offsets Element
      * @param el
      * @returns
      */
     static offset(el: any): any;
+    static hasAttribute(el: HTMLElement, name: string): boolean;
     static hasAttribute(el: any, name: any): any;
-    static convertElement(el: any): any;
+    private static convertElement;
+    static restore(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
     /**
      * Restore form value
      * @param el
      * @returns
      */
     static restore(el: any): void;
+    static is_select2(el: HTMLElement): Select2.Select2;
     /**
      * Is Select2 Initialized ?
      * @param el
      * @returns
      */
     static is_select2(el: any): Select2.Select2;
+    static is_jquery(): boolean;
     /**
      * Is jQuery loaded?
      * @returns
      */
     static is_jquery(): boolean;
+    static get_identifier(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): string;
     static get_identifier(el: any): string;
+}
+declare namespace formSaver2 {
+    const debug: boolean;
 }
 /**
  * Add integers, wrapping at 2^32.

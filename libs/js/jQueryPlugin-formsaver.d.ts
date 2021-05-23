@@ -40,6 +40,7 @@ declare class lStorage extends Storage {
     remove(key: string): void;
 }
 declare class formSaver2 {
+    static debug: boolean;
     /**
      * Save values form
      * @param el

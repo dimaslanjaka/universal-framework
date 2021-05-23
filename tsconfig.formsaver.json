@@ -13,6 +13,7 @@
         "outFile": "./libs/js/jQueryPlugin-formsaver.js",
         "sourceRoot": "./src/smartform/src/",
         "sourceMap": false,
+        "inlineSources": false,
         "inlineSourceMap": true,
         "watch": false,
         "skipLibCheck": true,

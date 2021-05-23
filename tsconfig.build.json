@@ -15,6 +15,7 @@
         "sourceRoot": "./libs/js/",
         "rootDir": "./libs/js/",
         "sourceMap": true,
+        "inlineSources": false,
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "importHelpers": true,
