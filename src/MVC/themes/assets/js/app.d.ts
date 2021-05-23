@@ -1712,8 +1712,82 @@ declare function rp(angka: number, prefix?: string | any): string;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-declare module "jQueryPlugin-formsaver" {
-    export var __esModule: boolean;
+declare function formsaver(): void;
+/**
+ * Set all forms to be smart
+ * @todo save input fields into browser for reusable form
+ */
+declare function formsaver(): void;
+/**
+ * unique id generator
+ * @param length digit number string
+ * @returns random string
+ */
+declare function makeid(length: any): string;
+/**
+ * Local Storage key
+ */
+declare var storageKey: string;
+declare var formFieldBuild: any;
+declare var formSaved: string;
+/**
+ * Element Indexer
+ */
+declare var formField: object | any[];
+declare var uniqueid: string;
+/**
+ * check if running in browser
+ */
+declare var isBrowser: Function;
+/**
+ * Element Counter
+ */
+declare var Count: number;
+declare class lStorage extends Storage {
+    has(key: any): boolean;
+    /**
+     * See {@link localStorage.getItem}
+     * @param key
+     * @returns
+     */
+    get(key: any): any;
+    set(key: any, value: any): void;
+    extend(key: any, value: any): void;
+    remove(key: any): void;
+}
+declare class formSaver2 {
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
+    static save(el: any): void;
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
+    static offset(el: any): any;
+    static hasAttribute(el: any, name: any): any;
+    static convertElement(el: any): any;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: any): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
+    static is_select2(el: any): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
+    static is_jquery(): boolean;
+    static get_identifier(el: any): string;
 }
 /**
  * Add integers, wrapping at 2^32.

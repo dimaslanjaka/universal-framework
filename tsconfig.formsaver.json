@@ -20,7 +20,7 @@
         "lib": ["DOM", "ESNext", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"],
         "typeRoots": ["node_modules/@types", "src/smartform/src/js/"]
     },
-    "include": ["./libs/src/smartform/src/js", "!./libs/src/smartform/src/js/main.js"],
+    "include": ["./libs/src/smartform/src/js/*"],
     "typeAcquisition": {
         "include": ["jQuery", "toastr", "sweetalert", "CryptoJS"]
     },
@@ -32,6 +32,7 @@
         "**/tmp/**",
         "**/assets/**",
         "**/views/**",
-        "**.min.js"
+        "**.min.js",
+        "./libs/src/smartform/src/**/main.*"
     ]
 }

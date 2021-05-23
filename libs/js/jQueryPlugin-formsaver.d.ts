@@ -78,8 +78,3 @@ declare class formSaver2 {
  * @todo save input fields into browser for reusable form
  */
 declare function formsaver(): void;
-declare module "main" {
-    import "./_conf";
-    import "./formSaver2";
-    import "./jquery-saver";
-}
