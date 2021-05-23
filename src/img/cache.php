@@ -7,58 +7,101 @@ namespace img;
  */
 class cache
 {
-  public static $saved;
   public static $url;
   public static $api;
+  /**
+   * Cache file img location.
+   *
+   * @var string
+   */
   public static $cache;
   public static $cache_dir = ROOT . '/tmp/img/';
+  private static $caches = [];
+  public static $saved;
 
   public function __construct()
   {
     self::$api = new \Extender\request('https://unsplash.it');
+    self::$saved = resolve_file(self::$cache_dir . '/saved.json', '{}');
   }
 
+  /**
+   * @return string|false
+   */
   public static function imageCache($url, $rewrite = false)
   {
     resolve_file(self::$cache_dir . '/.htaccess', 'deny from all');
-    if (!self::$api) {
-      self::$api = new \Extender\request('https://unsplash.it');
-    }
     self::$url = $url;
-    self::$api->setCookieFile(self::$cache_dir . '/cookies.txt');
-    self::$api->setCookieJar(self::$cache_dir . '/cookies.txt');
-    self::$api->setReferrer($url);
-    self::$api->setUserAgent($_SERVER['HTTP_USER_AGENT']);
-    $saved = resolve_file(self::$cache_dir . '/saved.json', '{}');
-    self::$saved = $saved;
-    $res = read_file($saved, []);
-    if (is_string($res) && is_json($res)) {
-      $res = json_decode($res, true);
+    self::$cache = self::$cache_dir . '/' . md5($url);
+    self::$saved = resolve_file(self::$cache_dir . '/saved.json', '{}');
+
+    $read_caches = read_file(self::$saved, []);
+
+    if (is_string($read_caches)) {
+      if (is_json($read_caches)) {
+        self::$caches = array_merge(self::$caches, json_decode($read_caches, true));
+      }
     }
 
-    self::$api->setUrl($url);
-    $url = self::$api->url;
-    $cache = self::$cache_dir . '/' . md5($url);
-    self::$cache = $cache;
-    if (file_exists($cache) && !headers_sent()) {
+    if (file_exists(self::$cache) && !headers_sent()) {
+      header('X-Robots-Tag: noindex, nofollow', true);
       header_remove('x-powered-by');
       header_remove('pragma');
-      self::send_cache_header($cache);
-      $lastModified = gmdate('D, d M Y H:i:s', filemtime($cache)) . ' GMT';
-      header('Cache-Control: private');
+      self::send_cache_header(self::$cache);
+      $lastModified = gmdate('D, d M Y H:i:s', filemtime(self::$cache)) . ' GMT';
+      header('Cache-Control: private', true);
       /*
        * Send fallback headers
        */
-      //header('Content-type: image/jpeg');
-      header('ETag: ' . md5_file($cache));
-      header("Last-Modified: $lastModified");
+      header('ETag: ' . md5_file(self::$cache));
+      header("Last-Modified: $lastModified", true);
       // 1 day expires
-      header('Expires: ' . gmdate('D, d M Y H:i:s', ((60 * 60 * 24 * 1) + strtotime($lastModified))));
+      header('Expires: ' . gmdate('D, d M Y H:i:s', ((60 * 60 * 24 * 1) + strtotime($lastModified))), true);
+
+      // get saved image information
+      //image/svg+xml
+      self::mime_header(mime_content_type(self::$cache));
+
+      $read = read_file(self::$cache);
+
+      if (!empty($read)) {
+        return $read;
+      } else {
+        return self::{__FUNCTION__}($url, true);
+      }
     }
 
-    if (!isset($res[$url]) || (is_bool($rewrite) && $rewrite)) {
-      self::$api->set_method('get');
-      self::$api->exec();
+    if (!isset(self::$caches[self::$cache]) || (is_bool($rewrite) && $rewrite)) {
+      return self::crawl($url);
+    }
+
+    return false;
+  }
+
+  private static function mime_header($mime)
+  {
+    if (preg_match('#image/png|image/.*icon|image/jpe?g|image/.*#', $mime) !== 1) {
+      header('HTTP/1.1 404 Not Found');
+      e($mime);
+      exit;
+    }
+    if (strpos($mime, 'svg') !== false) $mime = 'image/svg+xml';
+    header('Content-Type: ' . $mime, true);
+  }
+
+  private static function crawl($url)
+  {
+    if (!self::$api) self::$api = new \Extender\request($url);
+    self::$api->set_url($url);
+    self::$api->setCookieFile(self::$cache_dir . '/cookies-imageCache.txt');
+    self::$api->setCookieJar(self::$cache_dir . '/cookies-imageCache.txt');
+    self::$api->setReferrer($url);
+    self::$api->setUserAgent($_SERVER['HTTP_USER_AGENT']);
+
+    self::$api->setUrl($url);
+    self::$api->set_method('get');
+    self::$api->exec();
+    if (!self::$api->error) {
       for ($i = 0; $i < 2; ++$i) {
         if (isset(self::$api->responseHeaders['Location'])) {
           self::$api->get(self::$api->responseHeaders['Location']);
@@ -66,29 +109,25 @@ class cache
           break;
         }
       }
-      $res[$url] = self::$api->url;
-      write_file($saved, $res, true);
-      write_file($cache, self::$api->response, true);
-      header('Content-Type: ' . self::$api->responseHeaders['Content-Type'], true);
-      echo self::$api->response;
-    } elseif (file_exists($cache)) {
-      header('Content-Type: ' . mime_content_type($cache), true);
-      $read = read_file($cache);
-      if (!empty($read)) {
-        echo $read;
+
+      if (strpos(self::$api->responseHeaders['Content-Type'], 'image') !== false) {
+        $res[$url] = self::$api->url;
+        write_file(self::$saved, $res, true);
+        write_file(self::$cache, self::$api->response, true);
+        self::mime_header(self::$api->responseHeaders['Content-Type']);
+        self::writeCache();
+        return self::$api->response;
       } else {
-        return self::{__FUNCTION__}($url, true);
+        e(self::$api->responseHeaders['Content-Type']);
       }
-    } else {
-      self::$api->set_url($res[$url])->set_method('get')->exec();
-      self::writeCache();
     }
+    return false;
   }
 
   /**
    * Send Cache Header for static content.
    *
-   * @param [type] $cache_file_name
+   * @param string $cache_file_name
    * @param bool   $check_request
    *
    * @return void
@@ -109,6 +148,9 @@ class cache
       header('Cache-Control: private', true);
       // we don't send an "Expires:" header to make clients/browsers use if-modified-since and/or if-none-match
 
+      # Check if the client already has the requested item
+      $check = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) or
+        isset($_SERVER['HTTP_IF_NONE_MATCH']);
       if ($check_request) {
         if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && !empty($_SERVER['HTTP_IF_NONE_MATCH'])) {
           $tmp = explode(';', $_SERVER['HTTP_IF_NONE_MATCH']); // IE fix!
@@ -139,7 +181,7 @@ class cache
    */
   public static function writeCache()
   {
-    $res[self::$url] = self::$api->url;
+    $res[self::$cache] = self::$api->url;
     write_file(self::$saved, $res, true);
     write_file(self::$cache, self::$api->response, true);
     header('Content-Type: ' . self::$api->responseHeaders['Content-Type'], true);
@@ -151,7 +193,7 @@ class cache
    * * `schema data cache`
    * ```json
    * { "md5": "realURL" }
-   * ```
+   * ```.
    *
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */
@@ -185,9 +227,9 @@ class cache
      */
     $saved = __DIR__ . "/data/$savedname.json";
     self::$saved = $saved;
-    $res = read_file($saved, []);
-    if (is_string($res)) {
-      $res = json_decode($res, true);
+    $read_caches = read_file($saved, []);
+    if (is_string($read_caches)) {
+      self::$caches = array_replace(self::$caches, json_decode($read_caches, true));
     }
     if (isset($res[$md5])) {
       self::$url = $res[$md5];

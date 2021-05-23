@@ -6,6 +6,7 @@
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
+/// <reference types="google.analytics" />
 /// <reference types="datatables.net" />
 /**
  * AES encrypt
@@ -39,7 +40,6 @@ declare function loadCodemirror(element: HTMLTextAreaElement, mode: string | str
  */
 declare class Cookies {
     private static logged;
-    private static logging;
     /**
      * Get cookie value by cookie name
      * @param c_name
@@ -78,6 +78,7 @@ declare class Cookies {
      * @param callback Function callback to be executed one time
      */
     static one(name: string, value: any, expire: number, callback: Function): void;
+    private static logging;
     /**
      * decompress cookie
      * @param str
@@ -270,27 +271,6 @@ declare const cookie_indicator: string;
 declare class ip {
     static storage: STORAGE;
     /**
-     * Reflection class constructor
-     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
-     * @param callback
-     * @example
-     * var myObj = new myClass();
-     * myObj.init(function() {
-     *    // inside here you can use myObj
-     * });
-     */
-    init(callback: Function): void;
-    /**
-     * Check if the ip has been applied
-     * @private
-     */
-    private static status;
-    /**
-     * Checks ip
-     * @returns promises
-     */
-    private static check;
-    /**
      * Gets ip
      * @param callback function callback(ip) or null return ip
      * @returns {String} ip or callback
@@ -309,11 +289,32 @@ declare class ip {
      */
     static cloudflare(): JQuery.jqXHR<any>;
     /**
+     * Check if the ip has been applied
+     * @private
+     */
+    private static status;
+    /**
+     * Checks ip
+     * @returns promises
+     */
+    private static check;
+    /**
      * Save ip to cookie and localstorage
      * @param ip
      * @private
      */
     private static save;
+    /**
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
+     */
+    init(callback: Function): void;
 }
 /**
  * Get unique id of machine
@@ -437,13 +438,11 @@ declare const siteConfig: {
         };
     };
 };
-declare var isNode: boolean;
-declare var root: any;
-declare var global: any;
+declare let root: any;
 /**
  * Is Node ?
  */
-declare function isnode(): boolean;
+declare function isnode(): any;
 /**
  * Class reflection
  * @see https://stackoverflow.com/a/1250766
@@ -527,7 +526,7 @@ interface Console {
         (message?: any, ...optionalParams: any[]): void;
     };
 }
-declare var console_callback: any;
+declare let console_callback: any;
 /**
  * Get stacktrace
  */
@@ -563,9 +562,9 @@ declare function async_process(source_cache: string): void;
  * @param settings Jquery ajax settings
  */
 declare function jAjax(settings: JQueryAjaxSettings): JQuery.jqXHR<any>;
-declare var AjaxSchedulerInit: NodeJS.Timer;
-declare var AjaxSchedulerRequests: Array<any>;
-declare var AjaxSchedulerRunning: Boolean;
+declare let AjaxSchedulerInit: NodeJS.Timer;
+declare let AjaxSchedulerRequests: Array<any>;
+declare let AjaxSchedulerRunning: Boolean;
 /**
  * AJAX MANAGER
  * @todo handle ajax request queue
@@ -615,12 +614,12 @@ declare namespace ajax {
 /**
  * Bootstrap Alert Generator
  * @example createAlert(
-  "[title] Opps!",
-  "[description] Something went wrong",
-  "[details] Here is a bunch of text about some stuff that happened.",
-  "[mode|bg-color] danger",
-  true, false,
-  { position: "fixed", bottom: "15px", right: "15px" });
+ "[title] Opps!",
+ "[description] Something went wrong",
+ "[details] Here is a bunch of text about some stuff that happened.",
+ "[mode|bg-color] danger",
+ true, false,
+ { position: "fixed", bottom: "15px", right: "15px" });
  */
 declare function createAlert(
 /**
@@ -660,6 +659,7 @@ options: React.CSSProperties | string): void;
  * @param css
  */
 declare function createStyle(css: string, attributes?: {}): void;
+declare let gtag: Window["gtag"] | UniversalAnalytics.ga;
 declare let ORIGIN: any;
 declare let IP: string;
 declare class dimas {
@@ -668,8 +668,6 @@ declare class dimas {
      */
     static url: any;
     static ip: any;
-    static setIp(ip: any): void;
-    static getIp(): any;
     /**
      * framework captcha
      */
@@ -700,6 +698,8 @@ declare class dimas {
          */
         listen(): JQuery<Document>;
     };
+    static setIp(ip: any): void;
+    static getIp(): any;
     /**
      * Count Array/Object/String length
      * @param {any[]|string|object} data
@@ -1561,11 +1561,12 @@ declare const isoLangs: {
  * @returns
  */
 declare function getIsoLangs(): any;
+declare function select2Langs(selectLang: JQuery<HTMLSelectElement> | JQuery<HTMLElement>, select2Opt?: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any>): void;
 /**
  * Get Countries ISO
  * @returns
  */
-declare function getCountries(): {
+declare function getIsoCountries(): {
     name: string;
     alpha2: string;
     alpha3: string;
@@ -1683,6 +1684,7 @@ declare const LoadScriptLoaded: any[];
  * @param callback
  */
 declare function LoadScript(config: LoadScriptOptions): typeof LoadScriptLoaded;
+declare const loadedCss: string[];
 /**
  * Load CSS async
  * @param href
@@ -2125,7 +2127,7 @@ interface RequireConfig {
     css: object;
 }
 declare const dtpackage: () => string[];
-declare var requirejs_ignited: boolean;
+declare const requirejs_ignited = false;
 /**
  * Load requirejs
  */
@@ -2141,14 +2143,14 @@ declare function load_module(name: string | string[], callback: Function): void;
  * @param callback
  */
 declare function load_datatables(callback: Function): void;
-declare var datatables_ignited: boolean;
+declare let datatables_ignited: boolean;
 /**
  * Datatables init
  * @todo disable error warning
  * @todo add refresh button
  */
 declare function datatables_init(): Promise<unknown>;
-declare var optimized_ids: any[];
+declare const optimized_ids: any[];
 /**
  * Optimize Material Datatables
  * @param id id table
@@ -2169,11 +2171,11 @@ declare function datatables_colums_options(data?: DataTables.ColumnSettings, exc
 declare class ctable {
     private can_edit;
     private instance;
-    constructor(config?: ctableOpt);
     private editable_run;
-    private editable;
+    constructor(config?: ctableOpt);
     create(id: string, where: string, data: string[]): void;
     add(table: string, data: any[]): void;
+    private editable;
 }
 interface ctableOpt {
     editable?: boolean;
@@ -2277,18 +2279,18 @@ declare function get_currency_symbol(): string;
 declare function createJSON(jsObj: any, tabs: boolean): string;
 declare function loadingio(text: any, callback: any, mode: any, ...args: any[]): void;
 /**
-function target(a) {
+ function target(a) {
     alert(a);
 }
 
-var o = {
+ var o = {
     suffix: " World",
     target: function(s) { alert(s + this.suffix); }
 };
 
-__call("target", "Hello");
+ __call("target", "Hello");
 
-__call.call(o, "target", "Hello");
+ __call.call(o, "target", "Hello");
  */
 /**
  * parse proxy from string

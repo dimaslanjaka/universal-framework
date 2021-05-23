@@ -1,42 +1,54 @@
 /*
- * VSCode Typehinting Module
+ * VSCode Typehint Module
  * Set Filetype JSON with Comments to disable errors of this files
  */
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "outDir": "dist/dts",
-    "rootDir": "./",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "noEmit": true,
-    "checkJs": false,
-    "watch": false,
-    "typeRoots": ["./node_modules/@types", "./libs/js"],
-    "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr", "vuepress-types"],
-    "target": "ES5",
-    "lib": ["DOM", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"]
-  },
-  "include": ["*.json", "./libs/**/*", "./etc/**/*", "./views/**/*", "./src/MVC/themes/**/*", "./assets/node/**/*"],
-  "exclude": [
-    "node_modules",
-    "./src/MVC/themes/assets/js",
-    "**/node_modules/*",
-    "**/node_modules/**",
-    "./src",
-    "./vendor",
-    "./tmp",
-    "./dist",
-    "./assets/js",
-    "**.min.js",
-    "**/*.min.js",
-    "./src/MVC/themes/assets/js",
-    "./libs/compiler/**/*",
-    "./libs/src/compiler/framework.js",
-    "./libs/compiler/framework.js",
-    "./libs/src/observatory/lib/**/*"
-  ]
+    "compilerOptions": {
+        "module": "CommonJS",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "outDir": "dist/dts",
+        "rootDir": "./",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "noEmit": true,
+        "checkJs": false,
+        "watch": false,
+        "typeRoots": ["./node_modules/@types", "./libs/js"],
+        "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr", "vuepress-types"],
+        "target": "ES5",
+        "lib": [
+            "DOM",
+            "ES5",
+            "ES6",
+            "ES2015",
+            "ES2016",
+            "ES2017",
+            "ES2018",
+            "ES2019",
+            "ES2020",
+            "DOM.Iterable",
+            "WebWorker"
+        ]
+    },
+    "include": ["*.json", "./libs/**/*", "./etc/**/*", "./views/**/*", "./src/MVC/themes/**/*", "./assets/node/**/*"],
+    "exclude": [
+        "node_modules",
+        "./src/MVC/themes/assets/js",
+        "**/node_modules/*",
+        "**/node_modules/**",
+        "./src",
+        "./vendor",
+        "./tmp",
+        "./dist",
+        "./assets/js",
+        "**.min.js",
+        "**/*.min.js",
+        "./src/MVC/themes/assets/js",
+        "./libs/compiler/**/*",
+        "./libs/src/compiler/framework.js",
+        "./libs/compiler/framework.js",
+        "./libs/src/observatory/lib/**/*"
+    ]
 }

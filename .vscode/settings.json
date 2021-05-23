@@ -47,7 +47,7 @@
   "files.exclude": {
     ".vscode": false,
     "**/node_modules": true,
-    "**/vendor": true,
+    //"**/vendor": true,
     "**/tmp": true,
     "**/*.min.js": true,
     "**/*.min.css": true,
@@ -159,5 +159,8 @@
   "eslint.debug": true,
   "eslint.run": "onSave",
   "eslint.trace.server": "messages",
-  "eslint.options": { "configFile": "./.eslintrc.js" }
+  "eslint.options": {
+    "configFile": "./.eslintrc.js"
+  },
+  "intelephense.diagnostics.run": "onSave"
 }

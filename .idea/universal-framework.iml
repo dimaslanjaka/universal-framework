@@ -143,6 +143,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-curl-class/php-curl-class" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/pear/pear-core-minimal" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/assets" />
+      <excludeFolder url="file://$MODULE_DIR$/.vscode" />
+      <excludeFolder url="file://$MODULE_DIR$/libs/Windows" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

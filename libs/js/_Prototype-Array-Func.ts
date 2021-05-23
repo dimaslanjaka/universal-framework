@@ -1,7 +1,7 @@
 function array_filter(array: []) {
-  return array.filter(function (el) {
-    return el != null;
-  });
+    return array.filter(function (el) {
+        return el != null;
+    });
 }
 
 /**
@@ -10,14 +10,14 @@ function array_filter(array: []) {
  * @param {boolean} unique Unique the arrays
  */
 function array_rand(arrays: any[], unique: any) {
-  if (unique) {
-    arrays = array_unique(arrays);
-  }
-  const index = Math.floor(Math.random() * arrays.length);
-  return {
-    index: index,
-    value: arrays[index],
-  };
+    if (unique) {
+        arrays = array_unique(arrays);
+    }
+    const index = Math.floor(Math.random() * arrays.length);
+    return {
+        index: index,
+        value: arrays[index],
+    };
 }
 
 /**
@@ -25,9 +25,9 @@ function array_rand(arrays: any[], unique: any) {
  * @param {Array<any>} arrays
  */
 function array_unique(arrays: any[]) {
-  return arrays.filter(function (item: any, pos: any, self: string | any[]) {
-    return self.indexOf(item) == pos;
-  });
+    return arrays.filter(function (item: any, pos: any, self: string | any[]) {
+        return self.indexOf(item) == pos;
+    });
 }
 
 /**
@@ -36,14 +36,14 @@ function array_unique(arrays: any[]) {
  * @param {String|number} key
  */
 function array_unset(arrayName: { [x: string]: any }, key: any) {
-  let x: string | number;
-  const tmpArray = [];
-  for (x in arrayName) {
-    if (x != key) {
-      tmpArray[x] = arrayName[x];
+    let x: string | number;
+    const tmpArray = [];
+    for (x in arrayName) {
+        if (x != key) {
+            tmpArray[x] = arrayName[x];
+        }
     }
-  }
-  return tmpArray;
+    return tmpArray;
 }
 
 /**
@@ -55,32 +55,32 @@ function array_unset(arrayName: { [x: string]: any }, key: any) {
  * console.log(arr); //return random
  */
 function shuffle(array: Array<any>) {
-  let currentIndex = array.length,
-    temporaryValue: any,
-    randomIndex: number;
+    let currentIndex = array.length,
+        temporaryValue: any,
+        randomIndex: number;
 
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
 
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
 
-  return array;
+    return array;
 }
 
 function arrayCompare(a1: Array<any>, a2: Array<any>) {
-  if (a1.length != a2.length) return false;
-  const length = a2.length;
-  for (let i = 0; i < length; i++) {
-    if (a1[i] !== a2[i]) return false;
-  }
-  return true;
+    if (a1.length != a2.length) return false;
+    const length = a2.length;
+    for (let i = 0; i < length; i++) {
+        if (a1[i] !== a2[i]) return false;
+    }
+    return true;
 }
 
 /**
@@ -89,15 +89,15 @@ function arrayCompare(a1: Array<any>, a2: Array<any>) {
  * @param haystack
  */
 function inArray(needle: any, haystack: Array<any>) {
-  const length = haystack.length;
-  for (let i = 0; i < length; i++) {
-    if (typeof haystack[i] == "object") {
-      if (arrayCompare(haystack[i], needle)) return true;
-    } else {
-      if (haystack[i] == needle) return true;
+    const length = haystack.length;
+    for (let i = 0; i < length; i++) {
+        if (typeof haystack[i] == "object") {
+            if (arrayCompare(haystack[i], needle)) return true;
+        } else {
+            if (haystack[i] == needle) return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /**
@@ -106,7 +106,7 @@ function inArray(needle: any, haystack: Array<any>) {
  * @param haystack
  */
 function in_array(needle: any, haystack: Array<any>) {
-  return inArray(needle, haystack);
+    return inArray(needle, haystack);
 }
 
 /**
@@ -114,7 +114,7 @@ function in_array(needle: any, haystack: Array<any>) {
  * @param haystack string etc
  */
 function array_keys(haystack: any) {
-  return Object.keys(haystack);
+    return Object.keys(haystack);
 }
 
 /**
@@ -122,20 +122,20 @@ function array_keys(haystack: any) {
  * @param a items An array containing the items.
  */
 function array_shuffle(a: Array<any>) {
-  let j: number, x: any, i: number;
-  for (i = a.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
-  }
-  return a;
+    let j: number, x: any, i: number;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = {
-    array_shuffle,
-    array_keys,
-    in_array,
-  };
+    module.exports = {
+        array_shuffle,
+        array_keys,
+        in_array,
+    };
 }

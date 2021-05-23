@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f91265854b5d2ed4110abaf29c721b30",
+    "content-hash": "469b0ac3fabad0d4bf6ac2e19bfcde8d",
     "packages": [
         {
             "name": "ahsankhatri/cryptolib-php",
@@ -1666,16 +1666,16 @@
         },
         {
             "name": "php-curl-class/php-curl-class",
-            "version": "dev-master",
+            "version": "9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "69cab62ba3bf0b5fe59f6ff3663a0810b6da4c8a"
+                "reference": "2e63c0d00a65ada99106def2ddba9d4b1ffa99d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/69cab62ba3bf0b5fe59f6ff3663a0810b6da4c8a",
-                "reference": "69cab62ba3bf0b5fe59f6ff3663a0810b6da4c8a",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/2e63c0d00a65ada99106def2ddba9d4b1ffa99d9",
+                "reference": "2e63c0d00a65ada99106def2ddba9d4b1ffa99d9",
                 "shasum": ""
             },
             "require": {
@@ -1690,7 +1690,6 @@
             "suggest": {
                 "ext-mbstring": "*"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1726,14 +1725,15 @@
                 "requests",
                 "restful",
                 "web-scraper",
+                "web-scraping ",
                 "web-service",
                 "xml"
             ],
             "support": {
                 "issues": "https://github.com/php-curl-class/php-curl-class/issues",
-                "source": "https://github.com/php-curl-class/php-curl-class/tree/master"
+                "source": "https://github.com/php-curl-class/php-curl-class/tree/9.1.0"
             },
-            "time": "2021-05-02T04:14:11+00:00"
+            "time": "2021-03-25T01:19:16+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -4958,61 +4958,6 @@
             "time": "2017-05-15T08:35:42+00:00"
         },
         {
-            "name": "nelson6e65/phpdoc-vuepress",
-            "version": "v1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nelson6e65/phpdoc-vuepress.git",
-                "reference": "cef7fd26ce6aaa8a27bc2c4d3af38172cb7e1bb1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nelson6e65/phpdoc-vuepress/zipball/cef7fd26ce6aaa8a27bc2c4d3af38172cb7e1bb1",
-                "reference": "cef7fd26ce6aaa8a27bc2c4d3af38172cb7e1bb1",
-                "shasum": ""
-            },
-            "require-dev": {
-                "jms/serializer": "1.7.*",
-                "phpdocumentor/phpdocumentor": "^2.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "NelsonMartell\\VuePress\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nelson Martell",
-                    "email": "nelson6e65@gmail.com"
-                }
-            ],
-            "description": "Template for generating your PHP API documentation in a pretty VuePress format.",
-            "homepage": "https://github.com/nelson6e65/phpdoc-vuepress",
-            "keywords": [
-                "VuePress",
-                "documentation",
-                "markdown",
-                "php",
-                "phpDocumentor",
-                "phpdoc"
-            ],
-            "support": {
-                "issues": "https://github.com/nelson6e65/phpdoc-vuepress/issues",
-                "source": "https://github.com/nelson6e65/phpdoc-vuepress/tree/v1.0.1"
-            },
-            "time": "2021-02-13T22:00:34+00:00"
-        },
-        {
             "name": "nikic/php-parser",
             "version": "v1.4.1",
             "source": {
@@ -7137,9 +7082,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "php-curl-class/php-curl-class": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -7152,7 +7095,8 @@
         "ext-tokenizer": "*",
         "php": "^5.6 || ^7.1",
         "ext-libxml": "*",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "ext-intl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

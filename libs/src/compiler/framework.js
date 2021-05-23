@@ -154,11 +154,6 @@ function loadCodemirror(element, mode, theme) {
 var Cookies = /** @class */ (function () {
     function Cookies() {
     }
-    Cookies.logging = function () {
-        if (empty(this.logged)) {
-            Cookies.set("cl", JSON.stringify(this.logged), "1d");
-        }
-    };
     /**
      * Get cookie value by cookie name
      * @param c_name
@@ -252,7 +247,7 @@ var Cookies = /** @class */ (function () {
             }
         }
         /*value = JSON.stringify(value);
-        value = base64_encode(JSON.stringify(value));*/
+         value = base64_encode(JSON.stringify(value));*/
         value = this.compress(value);
         var formatted = name + "=" + value + expires + "; path=" + cookie_path;
         console.info("cookie formatted: " + formatted);
@@ -280,12 +275,12 @@ var Cookies = /** @class */ (function () {
             var pair = pairs[i].split("=");
             cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
             /*
-            try {
-              cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
-            } catch (e) {
-              cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
-            }
-            */
+             try {
+             cookies[(pair[0] + "").trim()] = Cookies.get((pair[0] + "").trim());
+             } catch (e) {
+             cookies[(pair[0] + "").trim()] = unescape(pair.slice(1).join("="));
+             }
+             */
         }
         //console.log(cookies.length, cookies);
         return cookies;
@@ -300,6 +295,11 @@ var Cookies = /** @class */ (function () {
     Cookies.one = function (name, value, expire, callback) {
         if (this.get(name) == null) {
             this.set(name, value, expire, "m", "/", callback);
+        }
+    };
+    Cookies.logging = function () {
+        if (empty(this.logged)) {
+            Cookies.set("cl", JSON.stringify(this.logged), "1d");
         }
     };
     /**
@@ -374,8 +374,8 @@ function userJSDecrypt(passphrase, encryptedText) {
 }
 // another
 /*var salt = 'salt';
-  var iv = '1111111111111111';
-  */
+ var iv = '1111111111111111';
+ */
 var iterations = "999";
 /**
  * Crypto get key
@@ -534,7 +534,7 @@ function get_device() {
         browser = navigator.appName;
         version = "" + parseFloat(navigator.appVersion);
         majorVersion = parseInt(navigator.appVersion, 10);
-        var nameOffset, verOffset, ix;
+        var nameOffset = void 0, verOffset = void 0, ix = void 0;
         // Opera
         if ((verOffset = nAgt.indexOf("Opera")) != -1) {
             browser = "Opera";
@@ -1062,60 +1062,14 @@ var ip = /** @class */ (function () {
     function ip() {
     }
     /**
-     * Reflection class constructor
-     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
-     * @param callback
-     * @example
-     * var myObj = new myClass();
-     * myObj.init(function() {
-     *    // inside here you can use myObj
-     * });
-     */
-    ip.prototype.init = function (callback) {
-        // do something async and call the callback:
-        callback.bind(this)();
-    };
-    /**
-     * Check if the ip has been applied
-     * @private
-     */
-    ip.status = function () {
-        //if (value != null) if (!value.isEmpty()) ip.save(value);
-        return Cookies.has(cookie_indicator);
-    };
-    /**
-     * Checks ip
-     * @returns promises
-     */
-    ip.check = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!!this.status()) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.cloudflare()];
-                    case 1:
-                        _a.sent();
-                        _a.label = 2;
-                    case 2:
-                        if (!!this.status()) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.l2io()];
-                    case 3:
-                        _a.sent();
-                        _a.label = 4;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    /**
      * Gets ip
      * @param callback function callback(ip) or null return ip
      * @returns {String} ip or callback
      */
     ip.get = function (callback) {
         if (callback === void 0) { callback = null; }
-        this.check().then(function () { });
+        this.check().then(function () {
+        });
         //console.log(this.status(null));
         var ips = this.storage.get(cookie_ip);
         //ips = Cookies.get(cookie_ip);
@@ -1177,6 +1131,39 @@ var ip = /** @class */ (function () {
         });
     };
     /**
+     * Check if the ip has been applied
+     * @private
+     */
+    ip.status = function () {
+        //if (value != null) if (!value.isEmpty()) ip.save(value);
+        return Cookies.has(cookie_indicator);
+    };
+    /**
+     * Checks ip
+     * @returns promises
+     */
+    ip.check = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!!this.status()) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.cloudflare()];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        if (!!this.status()) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.l2io()];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
      * Save ip to cookie and localstorage
      * @param ip
      * @private
@@ -1187,6 +1174,20 @@ var ip = /** @class */ (function () {
         if (typeof localStorage != "undefined") {
             this.storage.set(cookie_ip, ip);
         }
+    };
+    /**
+     * Reflection class constructor
+     * @see https://stackoverflow.com/questions/43431550/async-await-class-constructor
+     * @param callback
+     * @example
+     * var myObj = new myClass();
+     * myObj.init(function() {
+     *    // inside here you can use myObj
+     * });
+     */
+    ip.prototype.init = function (callback) {
+        // do something async and call the callback:
+        callback.bind(this)();
     };
     ip.storage = new STORAGE();
     return ip;
@@ -1609,26 +1610,20 @@ function strpad(val) {
     }
 }
 var siteConfig = { "google": { "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI", "recaptcha": { "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" }, "analystics": { "id": "UA-106238155-1" } } };
-var isNode = typeof process === "object" && typeof window === "undefined";
 var root;
+//declare let global: any;
 (function () {
     if (typeof global == "undefined" || (global && !global)) {
         global = this;
     }
     // Establish the root object, `window` in the browser, or `global` on the server.
     root = this;
-    // Export the Underscore object for **CommonJS**, with backwards-compatibility
-    // for the old `require()` API. If we're not in CommonJS, add `_` to the
-    // global object.
-    if (typeof module !== "undefined" && module.exports) {
-        isNode = true;
-    }
 })();
 /**
  * Is Node ?
  */
 function isnode() {
-    return isNode;
+    return typeof module !== "undefined" && module.exports;
 }
 /**
  * Class reflection
@@ -1869,7 +1864,8 @@ if (typeof console != "undefined") {
         console.olog = console.log;
     }
     else {
-        console.olog = function () { };
+        console.olog = function () {
+        };
     }
 }
 if (typeof module == "undefined") {
@@ -2012,7 +2008,6 @@ function pageid(length) {
     if (!length) {
         length = 6;
     }
-    ;
     return Math.random().toString(20).substr(2, length);
 }
 var randstr = function (length) {
@@ -2037,15 +2032,15 @@ if (!isnode()) {
     /**
      * AJAX runner base
      */
-    var AJAX = null;
+    var AJAX_1 = null;
     /**
      * Ajax dump base
      */
-    var dumpAjax = false;
+    var dumpAjax_1 = false;
     /**
      * Ajax indicator base
      */
-    var indicatorAjax = false;
+    var indicatorAjax_1 = false;
     var ajaxIDLoader_1 = "ajxLoader_" +
         Math.random().toString(36).substring(2) +
         Date.now().toString(36);
@@ -2053,15 +2048,15 @@ if (!isnode()) {
         $("body").append('<div id="' +
             ajaxIDLoader_1 +
             '" style="position: fixed;z-index:9999;bottom:5px;left:5px;"><svg enable-background="new 0 0 40 40"height=40px id=loader-1 version=1.1 viewBox="0 0 40 40"width=40px x=0px xml:space=preserve xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink y=0px><path d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946\
-  s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634\
-  c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"fill=#000 opacity=0.2 /><path d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0\
-  C22.32,8.481,24.301,9.057,26.013,10.047z"fill=#000><animateTransform attributeName=transform attributeType=xml dur=0.5s from="0 20 20"repeatCount=indefinite to="360 20 20"type=rotate /></path></svg></div>');
+      s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634\
+      c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"fill=#000 opacity=0.2 /><path d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0\
+      C22.32,8.481,24.301,9.057,26.013,10.047z"fill=#000><animateTransform attributeName=transform attributeType=xml dur=0.5s from="0 20 20"repeatCount=indefinite to="360 20 20"type=rotate /></path></svg></div>');
         $("#" + ajaxIDLoader_1).fadeOut("fast");
     }
     jQuery.ajaxPrefilter(function (options) {
-        indicatorAjax =
+        indicatorAjax_1 =
             typeof options.indicator == "boolean" && options.indicator === true;
-        dumpAjax = typeof options.dump == "boolean" && options.dump === true;
+        dumpAjax_1 = typeof options.dump == "boolean" && options.dump === true;
         /**
          * Ajax Proxying begin
          */
@@ -2090,9 +2085,9 @@ if (!isnode()) {
         }
     });
     /*
-  $(document).ajaxStart(function () {
-  });
-  */
+     $(document).ajaxStart(function () {
+     });
+     */
     $(document).ajaxError(function (event, jqXHR, settings, errorThrown) {
         var content_type = jqXHR.getResponseHeader("Content-Type");
         if (typeof toastr != "undefined") {
@@ -2110,7 +2105,7 @@ if (!isnode()) {
         if (settings.hasOwnProperty("indicator") && settings.indicator) {
             $("#" + ajaxIDLoader_1).fadeIn("fast");
         }
-        if (dumpAjax) {
+        if (dumpAjax_1) {
             toastr.info("Requesting...", "Request Info");
         }
         if (!settings.hasOwnProperty("method")) {
@@ -2121,10 +2116,10 @@ if (!isnode()) {
         if (settings.hasOwnProperty("indicator") && settings.indicator) {
             $("#" + ajaxIDLoader_1).fadeOut("fast");
         }
-        if (dumpAjax) {
+        if (dumpAjax_1) {
             toastr.success("Request complete", "Request Info");
         }
-        AJAX = null;
+        AJAX_1 = null;
         $("#" + ajaxIDLoader_1).fadeOut("slow");
         var content_type = xhr.getResponseHeader("Content-Type"), res;
         if (xhr.hasOwnProperty("responseJSON")) {
@@ -2193,12 +2188,12 @@ if (!isnode()) {
         }
     });
     /*
-  jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-    if (typeof options.data != 'undefined' && !jQuery.isEmptyObject(options.data)) {
-      jqXHR.setRequestHeader('timeStamp', new Date().getTime().toString());
-    }
-  });
-  */
+     jQuery.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+     if (typeof options.data != 'undefined' && !jQuery.isEmptyObject(options.data)) {
+     jqXHR.setRequestHeader('timeStamp', new Date().getTime().toString());
+     }
+     });
+     */
 }
 function processAjaxForm(xhr, callback) {
     //var content_type = typeof xhr.getResponseHeader == 'function' ? xhr.getResponseHeader('Content-Type') : null, res;
@@ -2427,7 +2422,7 @@ function ajaxRun(url, method, data, success, failed, complete) {
             }
         },
         complete: function (res) {
-            AJAX = null;
+            //AJAX = null;
             if (typeof complete == "function") {
                 complete(res);
             }
@@ -2475,7 +2470,8 @@ if (!isnode()) {
                 xhr = new ActiveXObject(versions[i]);
                 break;
             }
-            catch (e) { }
+            catch (e) {
+            }
         }
         return xhr;
     };
@@ -2517,12 +2513,12 @@ if (!isnode()) {
 /**
  * Bootstrap Alert Generator
  * @example createAlert(
-  "[title] Opps!",
-  "[description] Something went wrong",
-  "[details] Here is a bunch of text about some stuff that happened.",
-  "[mode|bg-color] danger",
-  true, false,
-  { position: "fixed", bottom: "15px", right: "15px" });
+ "[title] Opps!",
+ "[description] Something went wrong",
+ "[details] Here is a bunch of text about some stuff that happened.",
+ "[mode|bg-color] danger",
+ true, false,
+ { position: "fixed", bottom: "15px", right: "15px" });
  */
 function createAlert(
 /**
@@ -2671,13 +2667,13 @@ function createStyle(css, attributes) {
     }
 }
 /// <reference path="./globals.d.ts" />
+var gtag = null;
 if (!(typeof module !== "undefined" && module.exports)) {
-    var gtagID = siteConfig.google.recaptcha.key;
+    var gtagID_1 = siteConfig.google.recaptcha.key;
     var create_gtagscript = document.createElement("script");
-    create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
+    create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID_1;
     create_gtagscript.async = true;
     document.getElementsByTagName("body")[0].appendChild(create_gtagscript);
-    var gtag = null;
     window.onload = function () {
         if (window.dataLayer) {
             window.dataLayer = window.dataLayer || [];
@@ -2685,12 +2681,12 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 window.dataLayer.push(arguments);
             };
             gtag("js", new Date());
-            gtag("config", gtagID, {
+            gtag("config", gtagID_1, {
                 page_title: document.title,
                 page_path: location.pathname,
             });
             gtag("event", "page_view", {
-                send_to: gtagID,
+                send_to: gtagID_1,
             });
             gtag("config", "UA-106238155-1", {
                 cookie_prefix: "GoogleAnalystics",
@@ -2699,7 +2695,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 cookie_expires: 28 * 24 * 60 * 60,
             });
             var trackLinks = document.getElementsByTagName("a");
-            var _loop_1 = function () {
+            var _loop_1 = function (i, len) {
                 var singleLink = trackLinks[i];
                 singleLink.onclick = function () {
                     if (!/^\#/gm.test(singleLink.href) && !empty(singleLink.href)) {
@@ -2712,26 +2708,26 @@ if (!(typeof module !== "undefined" && module.exports)) {
                 };
             };
             for (var i = 0, len = trackLinks.length; i < len; i++) {
-                _loop_1();
+                _loop_1(i, len);
             }
             /*var elementsArray = document.querySelectorAll('b,iframe,ins,button,img,input,.adsense,#adsense,.ads,#ads,.ad_slot,.adsbygoogle,blockquote');
-          elementsArray.forEach(function(elem) {
-            elem.addEventListener("click", function(event) {
-              var data = null;
-              var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
-      
-              dump = document.getElementById('positionTrack');
-      
-              if (dump) {
-                data = this.tagName + '(' + clickon + ')';
-      
-                dump.textContent = data;
-              }
-              gtag("event", "ClickPosition", {
-                'elements': data
-              });
-            });
-          });*/
+             elementsArray.forEach(function(elem) {
+             elem.addEventListener("click", function(event) {
+             var data = null;
+             var clickon = "X: " + event.clientX + " - Y: " + event.clientY;
+
+             dump = document.getElementById('positionTrack');
+
+             if (dump) {
+             data = this.tagName + '(' + clickon + ')';
+
+             dump.textContent = data;
+             }
+             gtag("event", "ClickPosition", {
+             'elements': data
+             });
+             });
+             });*/
         }
     };
     /**
@@ -2990,7 +2986,8 @@ var dimas = /** @class */ (function () {
             });
         },
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        callback: function (arg) { },
+        callback: function (arg) {
+        },
         /**
          * Captcha JSONP callback
          */
@@ -3392,6 +3389,7 @@ function enable_button(t) {
     }
 }
 // noinspection TypeScriptRedundantGenericType
+/// <reference path="./../js/globals.d.ts" />
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
@@ -6312,16 +6310,31 @@ function getIsoLangs() {
         if (Object.prototype.hasOwnProperty.call(isoLangs, key)) {
             isoLangs[key].id = key;
             isoLangs[key].text = isoLangs[key].nativeName;
-            isoLangs[key].img = "https://unpkg.com/language-icons/icons/" + key + ".svg";
+            isoLangs[key].img = "/server/img/flag?code=" + key;
         }
     }
     return Object.values(isoLangs);
+}
+function select2Langs(selectLang, select2Opt) {
+    if (select2Opt === void 0) { select2Opt = {}; }
+    loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
+    var defaultOpt = {
+        placeholder: "Select Article Language",
+        templateResult: function (data) {
+            if (data.hasOwnProperty("loading") && data.loading)
+                return data.text;
+            return $("<img class=\"flag-icon\" src=\"/server/img/flag?code=" + data.id + "\" alt=\"Language " + data.id + "\"/><span style=\"margin-left:10px\">" + data.text + "</span>");
+        },
+        data: getIsoLangs(),
+    };
+    var newOpt = Object.assign(defaultOpt, select2Opt);
+    selectLang.select2(newOpt);
 }
 /**
  * Get Countries ISO
  * @returns
  */
-function getCountries() {
+function getIsoCountries() {
     return isoCountries;
 }
 /**
@@ -6334,7 +6347,7 @@ function getCountries() {
  */
 function select2Country(el, select2Opt) {
     if (select2Opt === void 0) { select2Opt = {}; }
-    "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css".CSS();
+    loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
     var isoCountries = [];
     isoCountries.forEach(function (country) {
         isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
@@ -6343,16 +6356,14 @@ function select2Country(el, select2Opt) {
         placeholder: "Select a country",
         templateResult: function (country) {
             //console.log(country);
-            if (!country.id) {
+            if (country.hasOwnProperty("loading") && country.loading)
                 return country.text;
-            }
-            var $country = $('<span class="flag-icon flag-icon-' +
+            return $('<span class="flag-icon flag-icon-' +
                 country.id.toString().toLowerCase() +
                 ' flag-icon-squared"></span>' +
                 '<span class="flag-text" style="margin-left: 10px">' +
                 country.text +
                 "</span>");
-            return $country;
         },
         data: isoCountries,
     };
@@ -6360,13 +6371,16 @@ function select2Country(el, select2Opt) {
     el.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
-    module.exports.countries = isoCountries;
-    module.exports.getCountries = getCountries;
+    module.exports.getCountries = getIsoCountries;
+    module.exports.getLangs = getIsoLangs();
 }
 else {
     (function ($) {
         $.fn.select2Country = function (select2Opt) {
             select2Country($(this), select2Opt);
+        };
+        $.fn.select2LangCountry = function (select2Opt) {
+            select2Langs($(this), select2Opt);
         };
     })(jQuery);
 }
@@ -6411,7 +6425,8 @@ function debug_detect() {
 function restrict_mode(restrict) {
     if (restrict) {
         console.clear();
-        window["console"]["log"] = function () { };
+        window["console"]["log"] = function () {
+        };
         var threshold = 160;
         var devtools = {
             isOpen: false,
@@ -6748,6 +6763,7 @@ function LoadScript(config) {
     }
     return LoadScriptLoaded;
 }
+var loadedCss = [];
 /**
  * Load CSS async
  * @param href
@@ -6760,24 +6776,31 @@ function loadCSS(href, callback) {
     var htm = document.querySelector("html");
     var cache = htm.getAttribute("cache").toString().trim();
     if (Array.isArray(href)) {
-        var hrefs = href;
-        var link_1 = document.createElement("link");
-        link_1.media = "print";
-        link_1.rel = "stylesheet";
-        link_1.href = cache.length ? hrefs[0] + "?cache=" + cache : hrefs[0];
-        link_1.onload = function () {
-            link_1.media = "all";
-            hrefs.shift();
-            if (!hrefs.length) {
-                if (typeof callback == "function") {
-                    callback(link_1, href);
+        var hrefs_1 = href;
+        if (!loadedCss.contains(hrefs_1[0])) {
+            var link_1 = document.createElement("link");
+            link_1.media = "print";
+            link_1.rel = "stylesheet";
+            link_1.href = cache.length ? hrefs_1[0] + "?cache=" + cache : hrefs_1[0];
+            link_1.onload = function () {
+                link_1.media = "all";
+                hrefs_1.shift();
+                loadedCss.add(hrefs_1[0]);
+                if (!hrefs_1.length) {
+                    if (typeof callback == "function") {
+                        callback(link_1, href);
+                    }
                 }
-            }
-            else {
-                loadCSS(hrefs, callback);
-            }
-        };
-        document.head.appendChild(link_1);
+                else {
+                    loadCSS(hrefs_1, callback);
+                }
+            };
+            document.head.appendChild(link_1);
+        }
+        else {
+            hrefs_1.shift();
+            loadCSS(hrefs_1, callback);
+        }
     }
 }
 var guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
@@ -7338,27 +7361,27 @@ function md5(string, key, raw) {
     return rawHMACMD5(key, string);
 }
 /*
-  if (typeof define === "function" && define.amd) {
-    define(function () {
-      return md5;
-    });
-  } else if (typeof module === "object" && module.exports) {
-    module.exports = md5;
-  } else {
-    $.md5 = md5;
-  }
-*/
+ if (typeof define === "function" && define.amd) {
+ define(function () {
+ return md5;
+ });
+ } else if (typeof module === "object" && module.exports) {
+ module.exports = md5;
+ } else {
+ $.md5 = md5;
+ }
+ */
 /// <reference path="./globals.d.ts"/>
 if (!isnode()) {
     /*
-   <div class="progress">
-   <div class="progress-bar progress-bar-success progress-bar-striped"
-   role="progressbar" aria-valuenow="40" aria-valuemin="0"
-   aria-valuemax="100" style="width: 40%">
-   <span class="sr-only">40% Complete (success)</span>
-   </div>
-   </div>
-   */
+     <div class="progress">
+     <div class="progress-bar progress-bar-success progress-bar-striped"
+     role="progressbar" aria-valuenow="40" aria-valuemin="0"
+     aria-valuemax="100" style="width: 40%">
+     <span class="sr-only">40% Complete (success)</span>
+     </div>
+     </div>
+     */
     if (typeof jQuery === "undefined") {
         throw new Error("jQuery progress timer requires jQuery");
     }
@@ -7392,7 +7415,8 @@ if (!isnode()) {
                     //seconds remaining triggering switch to warning color
                     warningThreshold: 5,
                     //invoked once the timer expires
-                    onFinish: function () { },
+                    onFinish: function () {
+                    },
                     //bootstrap progress bar style at the beginning of the timer
                     baseStyle: "",
                     //bootstrap progress bar style in the warning phase
@@ -7447,7 +7471,7 @@ if (!isnode()) {
                 var elapsed = new Date().valueOf() - t.start.valueOf(), width = (elapsed / t.limit) * 100;
                 t.bar.attr("aria-valuenow", width);
                 t.bar.width(width + "%");
-                var percentage = new Number(width.toFixed(2));
+                var percentage = Number(width.toFixed(2));
                 if (percentage >= 100) {
                     percentage = 100;
                 }
@@ -7554,6 +7578,8 @@ if (!isnode()) {
         $.fn[pluginName].getters = ["complete", "error"];
     })(jQuery, window, document, undefined);
 }
+/// <reference path="./Object.d.ts" />
+/// <reference path="./globals.d.ts" />
 var reCaptcha = {
     /**
      * @type {Number} counter executions
@@ -7614,6 +7640,11 @@ var reCaptcha = {
         //console.log('gtag is ' + typeof gtag);
         if (typeof gtag == "function") {
             gtag("event", "recaptcha", {
+                action: action,
+            });
+        }
+        else if (typeof ga == "function") {
+            ga("event", "recaptcha", {
                 action: action,
             });
         }
@@ -7802,16 +7833,16 @@ if (!isnode()) {
         return new Promise(function (resolve) {
             console.log("Loading RequireJS using", event);
             if (!requirejs_ignited) {
-                var element = document.createElement("script");
-                element.src = "/node_modules/requirejs/require.js";
-                element.onload = element.onreadystatechange = function () {
+                var element_1 = document.createElement("script");
+                element_1.src = "/node_modules/requirejs/require.js";
+                element_1.onload = element_1.onreadystatechange = function () {
                     if (typeof requirejs != "undefined") {
                         console.log("requirejs ignited and loaded successfuly");
                         requirejs.config(require_config);
                     }
                     resolve(true);
                 };
-                document.body.appendChild(element);
+                document.body.appendChild(element_1);
             }
         });
     }
@@ -7844,9 +7875,9 @@ function load_module(name, callback) {
     cache = cache.length ? "?cache=" + cache : "";
     for (var key in require_config.paths) {
         if (require_config.paths.hasOwnProperty(key)) {
-            var element_1 = require_config.paths[key];
+            var element_2 = require_config.paths[key];
             if (name.includes(key)) {
-                scripts_List.push(element_1 + ".js" + cache);
+                scripts_List.push(element_2 + ".js" + cache);
                 if (require_config.css.hasOwnProperty(key)) {
                     style_List.push(require_config.css[key] + ".css");
                 }
@@ -8048,36 +8079,6 @@ var ctable = /** @class */ (function () {
             }
         }
     }
-    ctable.prototype.editable = function (activate) {
-        var self = this;
-        if (this.editable_run) {
-            return;
-        }
-        if (activate && self.instance && self.instance.length) {
-            this.editable_run = true;
-            $(document).on("click", ".table-add", function (e) {
-                e.preventDefault();
-                var $clone = self.instance
-                    .find("tr.addthis")
-                    .clone(true)
-                    .removeClass("d-none");
-                self.instance.find("table").append($clone);
-            });
-            $(".table-remove").click(function () {
-                $(this).parents("tr").detach();
-            });
-            $(".table-up").click(function () {
-                var $row = $(this).parents("tr");
-                if ($row.index() === 1)
-                    return; // Don't go above the header
-                $row.prev().before($row.get(0));
-            });
-            $(".table-down").click(function () {
-                var $row = $(this).parents("tr");
-                $row.next().after($row.get(0));
-            });
-        }
-    };
     ctable.prototype.create = function (id, where, data) {
         var table = "<table id='" + id + "' class='table table-responsive' style=\"position:relative\"><thead><tr>";
         var self = this;
@@ -8116,6 +8117,36 @@ var ctable = /** @class */ (function () {
         document
             .getElementById(table)
             .getElementsByTagName("tbody")[0].innerHTML += row;
+    };
+    ctable.prototype.editable = function (activate) {
+        var self = this;
+        if (this.editable_run) {
+            return;
+        }
+        if (activate && self.instance && self.instance.length) {
+            this.editable_run = true;
+            $(document).on("click", ".table-add", function (e) {
+                e.preventDefault();
+                var $clone = self.instance
+                    .find("tr.addthis")
+                    .clone(true)
+                    .removeClass("d-none");
+                self.instance.find("table").append($clone);
+            });
+            $(".table-remove").click(function () {
+                $(this).parents("tr").detach();
+            });
+            $(".table-up").click(function () {
+                var $row = $(this).parents("tr");
+                if ($row.index() === 1)
+                    return; // Don't go above the header
+                $row.prev().before($row.get(0));
+            });
+            $(".table-down").click(function () {
+                var $row = $(this).parents("tr");
+                $row.next().after($row.get(0));
+            });
+        }
     };
     return ctable;
 }());
@@ -8694,18 +8725,18 @@ function loadingio(text, callback, mode) {
     }
 }
 /**
-function target(a) {
+ function target(a) {
     alert(a);
 }
 
-var o = {
+ var o = {
     suffix: " World",
     target: function(s) { alert(s + this.suffix); }
 };
 
-__call("target", "Hello");
+ __call("target", "Hello");
 
-__call.call(o, "target", "Hello");
+ __call.call(o, "target", "Hello");
  */
 /**
  * parse proxy from string
@@ -8716,13 +8747,13 @@ function parse_proxy(str) {
     var matchs, px = [];
     loadingio("Parsing proxies", function () {
         /*
-        while (match = /([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}):?([0-9]{1,6})?/g.exec(str)) {
-          console.log('Match: "' + match[0] + '" first group: -> "' + match[1] + '" second group -> ' + match[2]);
-          if (typeof match[0] != 'undefined' && typeof match[2] != 'undefined' && !inArray(match[0], px)) {
-            px.push(match[0]);
-          }
-        }
-        */
+         while (match = /([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}):?([0-9]{1,6})?/g.exec(str)) {
+         console.log('Match: "' + match[0] + '" first group: -> "' + match[1] + '" second group -> ' + match[2]);
+         if (typeof match[0] != 'undefined' && typeof match[2] != 'undefined' && !inArray(match[0], px)) {
+         px.push(match[0]);
+         }
+         }
+         */
         if (typeof str == "string") {
             var regex = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\:[0-9]{1,6}/gm, match, proxyMatch;
             while ((match = regex.exec(str))) {
@@ -8782,14 +8813,14 @@ function foreach(object, callback) {
         }
     });
     /*
-      for ([key, value] of Object.entries(object)) {
-        if (typeof callback == 'function'){
-          callback(key, value);
-        } else {
-          console.log(key, value);
-        }
-      }
-    */
+     for ([key, value] of Object.entries(object)) {
+     if (typeof callback == 'function'){
+     callback(key, value);
+     } else {
+     console.log(key, value);
+     }
+     }
+     */
 }
 /**
  * Get multiple random element from array

@@ -5,21 +5,21 @@
  * @param disqus_shortname disqus username/shortname
  */
 function load_disqus(disqus_shortname: string) {
-  // Prepare the trigger and target
-  var disqus_trigger = $("#disqus_trigger"),
-    disqus_target = $("#disqus_thread");
+    // Prepare the trigger and target
+    const disqus_trigger = $("#disqus_trigger"),
+        disqus_target = $("#disqus_thread");
 
-  // Load script asynchronously only when the trigger and target exist
-  if (disqus_target.length) {
-    LoadScript({
-      url: "//" + disqus_shortname + ".disqus.com/embed.js",
-      callback: function () {
-        disqus_trigger.remove();
-      },
-    });
-  } else {
-    if (typeof toastr != "undefined") {
-      toastr.error("disqus container not exists", "disqus comment");
+    // Load script asynchronously only when the trigger and target exist
+    if (disqus_target.length) {
+        LoadScript({
+            url: "//" + disqus_shortname + ".disqus.com/embed.js",
+            callback: function () {
+                disqus_trigger.remove();
+            },
+        });
+    } else {
+        if (typeof toastr != "undefined") {
+            toastr.error("disqus container not exists", "disqus comment");
+        }
     }
-  }
 }

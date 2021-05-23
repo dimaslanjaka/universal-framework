@@ -165,9 +165,9 @@ gulp.task("assets-compile", function () {
       });
   }
 
-  var css = framework.readdir(root + "/assets/css");
+  var css = filemanager.readdir(root + "/assets/css");
   css = filter(css);
-  var js = framework.readdir(root + "/assets/js");
+  var js = filemanager.readdir(root + "/assets/js");
   js = filter(js);
 });
 gulp.task("reload", reload_gulp);
@@ -263,7 +263,7 @@ export function compileAssets(item: string | Buffer): any {
  * List views folder
  */
 export function views() {
-  var views = framework.readdir(root + `/${config.app.views}`);
+  var views = filemanager.readdir(root + `/${config.app.views}`);
   return views
     .filter(function (item) {
       return (

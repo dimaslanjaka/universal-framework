@@ -5,15 +5,15 @@
  * @param t element of button
  */
 function disable_button(t: JQuery<any> | HTMLButtonElement): void {
-  let el: HTMLButtonElement;
-  if (t instanceof jQuery) {
-    el = t.get();
-  } else if (t instanceof HTMLButtonElement) {
-    el = t;
-  }
-  if (typeof el != "undefined") {
-    el.setAttribute("disabled", "true");
-  }
+    let el: HTMLButtonElement;
+    if (t instanceof jQuery) {
+        el = t.get();
+    } else if (t instanceof HTMLButtonElement) {
+        el = t;
+    }
+    if (typeof el != "undefined") {
+        el.setAttribute("disabled", "true");
+    }
 }
 
 /**
@@ -21,13 +21,13 @@ function disable_button(t: JQuery<any> | HTMLButtonElement): void {
  * @param t element of button
  */
 function enable_button(t: JQuery<any> | HTMLButtonElement): void {
-  let el: HTMLButtonElement;
-  if (t instanceof jQuery) {
-    el = t.get();
-  } else if (t instanceof HTMLButtonElement) {
-    el = t;
-  }
-  if (typeof el != "undefined") {
-    el.removeAttribute("disabled");
-  }
+    let el: HTMLButtonElement;
+    if (t instanceof jQuery) {
+        el = t.get();
+    } else if (t instanceof HTMLButtonElement) {
+        el = t;
+    }
+    if (typeof el != "undefined") {
+        el.removeAttribute("disabled");
+    }
 }
