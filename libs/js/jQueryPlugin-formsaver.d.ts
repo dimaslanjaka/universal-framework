@@ -53,6 +53,20 @@ declare class formSaver2 {
      * @returns
      */
     static offset(el: HTMLElement): DOMRect;
+    /**
+     * jQuery event listener
+     */
+    static jquery_listener(): void;
+    /**
+     * Pure javascript event listener
+     */
+    static vanilla_listener(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Is element has attribute ?
+     * @param el
+     * @param name
+     * @returns
+     */
     static hasAttribute(el: HTMLElement, name: string): boolean;
     private static convertElement;
     /**
@@ -73,6 +87,7 @@ declare class formSaver2 {
      */
     static is_jquery(): boolean;
     static get_identifier(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): string;
+    constructor(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement);
 }
 /**
  * Set all forms to be smart

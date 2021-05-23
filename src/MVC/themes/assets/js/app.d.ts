@@ -1771,7 +1771,23 @@ declare class formSaver2 {
      * @returns
      */
     static offset(el: any): any;
+    static jquery_listener(): void;
+    /**
+     * jQuery event listener
+     */
+    static jquery_listener(): void;
+    static vanilla_listener(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
+    /**
+     * Pure javascript event listener
+     */
+    static vanilla_listener(el: any): void;
     static hasAttribute(el: HTMLElement, name: string): boolean;
+    /**
+     * Is element has attribute ?
+     * @param el
+     * @param name
+     * @returns
+     */
     static hasAttribute(el: any, name: any): any;
     private static convertElement;
     static restore(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
@@ -1796,6 +1812,8 @@ declare class formSaver2 {
     static is_jquery(): boolean;
     static get_identifier(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): string;
     static get_identifier(el: any): string;
+    constructor(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement);
+    constructor(el: any);
 }
 declare namespace formSaver2 {
     const debug: boolean;
