@@ -14,6 +14,11 @@ import filemanager from "./filemanager";
 import less from "less";
 
 /**
+ * Determine framework is loaded in browser
+ */
+const isAppLoaded = true;
+
+/**
  * @class Core compiler
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
  */
@@ -107,7 +112,9 @@ class core {
         if (exists) {
             const output = filename.toString().replace(/\.browserify\.js/s, ".js");
             exec(`browserify -t [ babelify --presets [ es2015 ] ] ${filename} -o ${output}`);
-            log.log(`${self.filelog(filename.toString())} > ${self.filelog(output.toString())} ${log.success("success")}`);
+            log.log(
+                `${self.filelog(filename.toString())} > ${self.filelog(output.toString())} ${log.success("success")}`
+            );
         }
     }
 
@@ -163,10 +170,9 @@ class core {
         if (exists) {
             const outputcss = filename.toString().replace(/\.less/s, ".css");
             const source = fs.readFileSync(filename).toString();
-            less
-                .render(source, {sourceMap: {sourceMapFileInline: true}})
+            less.render(source, { sourceMap: { sourceMapFileInline: true } })
                 .then(function (output) {
-                    fs.writeFileSync(outputcss, output.css, {encoding: "utf-8"});
+                    fs.writeFileSync(outputcss, output.css, { encoding: "utf-8" });
                     log.log(
                         `${log.chalk().hex("#1d365d").bgWhite(self.filelog(filename))} > ${log
                             .chalk()
@@ -346,17 +352,24 @@ class core {
                             const output = self.filelog(min);
                             if (terserResult.error) {
                                 log.log(
-                                    `${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.chalk().red("fail")}`
+                                    `${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log
+                                        .chalk()
+                                        .red("fail")}`
                                 );
-                                fs.exists(min, function (ex) {
-                                    if (ex) {
-                                        filemanager.unlink(min, false);
-                                        log.log(log.chalk().yellowBright(core.filelog(min)) + log.chalk().redBright(" deleted"));
-                                    }
-                                });
+
+                                if (fs.existsSync(min)) {
+                                    filemanager.unlink(min, false);
+                                    log.log(
+                                        log.chalk().yellowBright(core.filelog(min)) + log.chalk().redBright(" deleted")
+                                    );
+                                }
                             } else {
                                 fs.writeFileSync(min, terserResult.code, "utf8");
-                                log.log(`${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.success("success")}`);
+                                log.log(
+                                    `${log.chalk().yellow(input)} > ${log.chalk().yellowBright(output)} ${log.success(
+                                        "success"
+                                    )}`
+                                );
                             }
                         }
                     });
@@ -426,7 +439,9 @@ class core {
                                                     log.log(
                                                         `${log.chalk().blueBright(self.filelog(file))} > ${log
                                                             .chalk()
-                                                            .blueBright(self.filelog(min))} ${log.chalk().green("success")}`
+                                                            .blueBright(self.filelog(min))} ${log
+                                                            .chalk()
+                                                            .green("success")}`
                                                     );
                                                 } else {
                                                     callback(true, file, min);

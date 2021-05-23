@@ -1,4 +1,4 @@
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /**
      * @todo Auto replace placeholder textarea newLines
      */
@@ -168,8 +168,7 @@ function findDups(arr, callback) {
  */
 function makeid(length) {
     var result = "";
-    var characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -262,10 +261,7 @@ if (!isnode()) {
     }
 
     /** datetime-local */
-    if (
-        typeof dimas == "object" &&
-        typeof framework().datetimelocal != "undefined"
-    ) {
+    if (typeof dimas == "object" && typeof framework().datetimelocal != "undefined") {
         framework().datetimelocal(undefined);
     }
 
@@ -305,12 +301,7 @@ if (!isnode()) {
                 formatHref: function (href, type) {
                     return (
                         "/youtube/s/" +
-                        btoa(
-                            CryptoJS.AES.encrypt(
-                                href,
-                                typeof hash_pass != "undefined" ? hash_pass : location.host
-                            )
-                        )
+                        btoa(CryptoJS.AES.encrypt(href, typeof hash_pass != "undefined" ? hash_pass : location.host))
                     );
                 },
             });

@@ -1,4 +1,4 @@
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /** Format Rupiah */
     const inputrp = $('[id="format-rupiah"]');
     if (inputrp.length) {

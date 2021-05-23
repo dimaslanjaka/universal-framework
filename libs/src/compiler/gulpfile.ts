@@ -55,38 +55,9 @@ export function reorderPkg() {
 // watch libs/js/**/* and views
 gulp.task("watch", gulp.series(watch3));
 
-gulp.task("assets-compile", function (done) {
-    function filter(views: any[]) {
-        return views
-            .filter(function (item) {
-                return (
-                    /\.(js|scss|css|sass|less|ts)$/.test(item) &&
-                    !/\.min\.(js|css)$/.test(item) &&
-                    !/-ori|-original|-backup|\.bak/s.test(item)
-                );
-            })
-            .map(function (asset) {
-                return framework.normalize(asset);
-            });
-    }
-
-    let css = filemanager.readdir(root + "/assets/css");
-    // noinspection JSUnusedAssignment
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    css = filter(css);
-    let js = filemanager.readdir(root + "/assets/js");
-    // noinspection JSUnusedAssignment
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    js = filter(js);
-
-    console.log(css);
-    console.log(js);
-
-    done();
-});
-
-gulp.task("compile-view", function () {
+gulp.task("compile-view", function (done) {
     multiMinify(views());
+    done();
 });
 
 gulp.task("default", gulp.series(["build", "watch"]));

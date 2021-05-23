@@ -2,14 +2,9 @@
  * Auto height textarea
  */
 function autoHeight_(element: HTMLElement | JQuery<HTMLElement>) {
-    if (
-        element instanceof HTMLTextAreaElement ||
-        element instanceof HTMLElement
-    ) {
+    if (element instanceof HTMLTextAreaElement || element instanceof HTMLElement) {
         if (typeof jQuery != "undefined") {
-            return jQuery(element)
-                .css({height: "auto", "overflow-y": "hidden"})
-                .height(element.scrollHeight);
+            return jQuery(element).css({ height: "auto", "overflow-y": "hidden" }).height(element.scrollHeight);
         }
     }
 }
@@ -17,7 +12,7 @@ function autoHeight_(element: HTMLElement | JQuery<HTMLElement>) {
 /**
  * jQuery plugin only works on browser language
  */
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     if (typeof jQuery != "undefined") {
         (function ($) {
             $.fn.hasAttr = function (name: string) {

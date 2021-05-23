@@ -44,8 +44,7 @@ function debug_detect() {
 function restrict_mode(restrict) {
     if (restrict) {
         console.clear();
-        window["console"]["log"] = function () {
-        };
+        window["console"]["log"] = function () {};
         var threshold = 160;
         var devtools = {
             isOpen: false,
@@ -60,9 +59,7 @@ function restrict_mode(restrict) {
 
             if (
                 !(heightThreshold && widthThreshold) &&
-                ((window.Firebug &&
-                    window.Firebug.chrome &&
-                    window.Firebug.chrome.isInitialized) ||
+                ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) ||
                     widthThreshold ||
                     heightThreshold)
             ) {
@@ -120,7 +117,7 @@ function restrict_mode(restrict) {
     }
 }
 
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     var restrict = !isMobile();
     //restrict = false;
     restrict = restrict && !is_localhost() && !is_development();

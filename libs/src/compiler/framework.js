@@ -2668,7 +2668,7 @@ function createStyle(css, attributes) {
 }
 /// <reference path="./globals.d.ts" />
 var gtag = null;
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     var gtagID_1 = siteConfig.google.analystics.id;
     var create_gtagscript = document.createElement("script");
     create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID_1;
@@ -6425,8 +6425,7 @@ function debug_detect() {
 function restrict_mode(restrict) {
     if (restrict) {
         console.clear();
-        window["console"]["log"] = function () {
-        };
+        window["console"]["log"] = function () { };
         var threshold = 160;
         var devtools = {
             isOpen: false,
@@ -6439,9 +6438,7 @@ function restrict_mode(restrict) {
             var orientation = widthThreshold ? "vertical" : "horizontal";
             //console.log(widthThreshold, heightThreshold, orientation);
             if (!(heightThreshold && widthThreshold) &&
-                ((window.Firebug &&
-                    window.Firebug.chrome &&
-                    window.Firebug.chrome.isInitialized) ||
+                ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) ||
                     widthThreshold ||
                     heightThreshold)) {
                 if (!devtools.isOpen || devtools.orientation !== orientation) {
@@ -6494,7 +6491,7 @@ function restrict_mode(restrict) {
         };
     }
 }
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     var restrict = !isMobile();
     //restrict = false;
     restrict = restrict && !is_localhost() && !is_development();
@@ -6832,7 +6829,7 @@ function uuidv4() {
         return v.toString(16);
     });
 }
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /**
      * jQuery Extender
      */
@@ -6856,16 +6853,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
     })(jQuery);
     // Restricts input for the given textbox to the given inputFilter function.
     function setInputFilter(textbox, inputFilter) {
-        [
-            "input",
-            "keydown",
-            "keyup",
-            "mousedown",
-            "mouseup",
-            "select",
-            "contextmenu",
-            "drop",
-        ].forEach(function (event) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
             textbox.addEventListener(event, function () {
                 if (inputFilter(this.value)) {
                     this.oldValue = this.value;
@@ -6900,7 +6888,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         }
     }
 }
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /** Format Rupiah */
     var inputrp = $('[id="format-rupiah"]');
     if (inputrp.length) {
@@ -6956,19 +6944,16 @@ function rp(angka, prefix) {
  * Auto height textarea
  */
 function autoHeight_(element) {
-    if (element instanceof HTMLTextAreaElement ||
-        element instanceof HTMLElement) {
+    if (element instanceof HTMLTextAreaElement || element instanceof HTMLElement) {
         if (typeof jQuery != "undefined") {
-            return jQuery(element)
-                .css({ height: "auto", "overflow-y": "hidden" })
-                .height(element.scrollHeight);
+            return jQuery(element).css({ height: "auto", "overflow-y": "hidden" }).height(element.scrollHeight);
         }
     }
 }
 /**
  * jQuery plugin only works on browser language
  */
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     if (typeof jQuery != "undefined") {
         (function ($) {
             $.fn.hasAttr = function (name) {
@@ -8163,7 +8148,7 @@ if (!isnode()) {
         }
     }
 }
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     var UIDvalue = getUID();
 }
 function currentUID() {
@@ -8355,7 +8340,7 @@ var user = /** @class */ (function () {
     };
     return user;
 }());
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /**
      * @typedef {user} userc
      */
@@ -8367,7 +8352,7 @@ if (!(typeof module !== "undefined" && module.exports)) {
         jQuery.user = userc;
     }
 }
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /**
      * @todo Auto replace placeholder textarea newLines
      */
@@ -8600,8 +8585,7 @@ if (!isnode()) {
         }
     }
     /** datetime-local */
-    if (typeof dimas == "object" &&
-        typeof framework().datetimelocal != "undefined") {
+    if (typeof dimas == "object" && typeof framework().datetimelocal != "undefined") {
         framework().datetimelocal(undefined);
     }
     /** Progress bar */

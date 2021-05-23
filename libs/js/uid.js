@@ -1,4 +1,4 @@
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     var UIDvalue = getUID();
 }
 

@@ -72,7 +72,7 @@ class user {
     }
 }
 
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     /**
      * @typedef {user} userc
      */

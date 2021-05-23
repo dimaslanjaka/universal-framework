@@ -125,6 +125,7 @@ declare var isBrowser: Function;
  */
 declare function formsaver(): void;
 declare class formSave {
+    constructor(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement);
     /**
      * Save values form
      * @param el

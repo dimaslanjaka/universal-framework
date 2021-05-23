@@ -25,11 +25,11 @@ export function gulpWatch() {
 
     log.log(
         log.random("Listening ") +
-        files
-            .map(function (item) {
-                return log.random(upath.resolve(item));
-            })
-            .join(" ")
+            files
+                .map(function (item) {
+                    return log.random(upath.resolve(item));
+                })
+                .join(" ")
     );
 
     let watch_timer = null;
@@ -103,6 +103,12 @@ export function watch3(done: () => void) {
             // TODO: Compile js css on change
             if (!/\.min\.(js|css|ts)$/s.test(canonical)) {
                 compileAssets(canonical);
+                if (canonical.endsWith("app.js")) {
+                    setTimeout(() => {
+                        console.info("re-compiling app.js");
+                        compileAssets(canonical);
+                    }, 2500);
+                }
             }
         }
         done();

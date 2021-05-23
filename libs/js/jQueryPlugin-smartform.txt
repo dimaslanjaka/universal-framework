@@ -211,7 +211,7 @@ function save_fields(elem: HTMLElement | JQuery<HTMLElement>) {
   }
 }
 
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
   if (typeof jQuery != "undefined") {
     (function ($) {
       $.fn.smartform_config = {

@@ -1,6 +1,6 @@
 /// <reference path="./globals.d.ts" />
 let gtag: Window["gtag"] | UniversalAnalytics.ga = null;
-if (!(typeof module !== "undefined" && module.exports)) {
+if (!isnode()) {
     const gtagID = siteConfig.google.analystics.id;
     const create_gtagscript = document.createElement("script");
     create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
