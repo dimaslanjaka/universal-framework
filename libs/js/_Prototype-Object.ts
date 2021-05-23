@@ -1,6 +1,6 @@
 /// <reference path="globals.d.ts" />
 /// <reference path="Object.d.ts" />
-/// <reference path="../src/smartform/src/js/Object.d.ts"/>
+/// <reference path="../src/smartform/src/js/_a_Object.d.ts"/>
 
 Object.size = function (obj) {
     let size = 0,

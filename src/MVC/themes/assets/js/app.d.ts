@@ -1,6 +1,6 @@
 /// <reference path="../../../../../libs/js/globals.d.ts" />
 /// <reference path="../../../../../libs/js/Object.d.ts" />
-/// <reference path="../../../../../libs/src/smartform/src/js/Object.d.ts" />
+/// <reference path="../../../../../libs/src/smartform/src/js/_a_Object.d.ts" />
 /// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
 /// <reference types="jquery" />
@@ -1626,17 +1626,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
+    "160": string;
+    "161": string;
+    "162": string;
+    "163": string;
+    "164": string;
+    "165": string;
+    "166": string;
+    "167": string;
+    "168": string;
+    "169": string;
+    "8364": string;
 };
 /**
  * php equivalent http_build_query
@@ -1712,183 +1712,9 @@ declare function rp(angka: number, prefix?: string | any): string;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-declare function copyToClipboard(text: string, el: JQuery<HTMLElement>): void;
-/**
- * Copy to clipboard
- */
-declare function copyToClipboard(text: any, el: any): void;
-declare function extend_setting_form(...param: any[]): SettingForm;
-/**
- * Merge two or more objects together.
- * (c) 2017 Chris Ferdinandi, MIT License, https://gomakethings.com
- * @param   {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
- * @param   {Object}   objects  The objects to merge together
- * @returns {Object|SettingForm}            Merged values of defaults and options
- */
-declare function extend_setting_form(...param: any[]): any | SettingForm;
-declare function formsaver(): void;
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-declare function formsaver(): void;
-/**
- * A simple forEach() implementation for Arrays, Objects and NodeLists.
- * @private
- * @author Todd Motto
- * @link   https://github.com/toddmotto/foreach
- * @param {Array|Object|NodeList} collection Collection of items to iterate
- * @param {Function}              callback   Callback function for each iteration
- * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
- */
-declare function forEach(collection: Array | any | NodeList, callback: Function, scope?: Array | any | NodeList): void;
-/**
- * Get the closest matching element up the DOM tree.
- * @private
- * @param  {Element} elem     Starting element
- * @param  {String}  selector Selector to match against
- * @return {Boolean|Element}  Returns null if not match found
- */
-declare function getClosest(elem: Element, selector: string): boolean | Element;
-/**
- * Convert data-options attribute into an object of key/value pairs
- * @private
- * @param {String} options Link-specific options as a data attribute string
- * @returns {Object}
- */
-declare function getDataOptions(options: string): any;
-/**
- * Handle events
- * @private
- */
-declare function eventHandler(event: any): void;
-/**
- * Is Browser (not node)
- */
-declare var isBrowser: Function;
-/**
- * Is Node (not browser)
- */
-declare var isNode: Function;
-declare var settings: any;
-declare var forms: any;
-declare namespace defaults {
-    const selectorStatus: string;
-    const selectorSave: string;
-    const selectorDelete: string;
-    const selectorIgnore: string;
-    const deleteClear: boolean;
-    const saveMessage: string;
-    const deleteMessage: string;
-    const saveClass: string;
-    const deleteClass: string;
-    const initClass: string;
-    function callbackSave(): void;
-    function callbackDelete(): void;
-    function callbackLoad(): void;
+declare module "jQueryPlugin-formsaver" {
+    export var __esModule: boolean;
 }
-declare class formSaver {
-    /**
-     * Save form data to localStorage
-     * @public
-     * @param  {Element} btn Button that triggers form save
-     * @param  {Element} form The form to save
-     * @param  {Object} options
-     * @param  {Event} event
-     */
-    public static saveForm(btn: Element, formID: any, options: any, event?: Event): void;
-    /**
-     * Remove form data from localStorage
-     * @public
-     * @param  {Element} btn Button that triggers form delete
-     * @param  {Element} form The form to remove from localStorage
-     * @param  {Object} options
-     * @param  {Event} event
-     */
-    public static deleteForm(btn: Element, formID: any, options: any, event?: Event): void;
-    /**
-     * Load form data from localStorage
-     * @public
-     * @param  {Element} form The form to get data for
-     * @param  {Object} options
-     */
-    public loadForm(form: Element, options: any): void;
-    /**
-     * Destroy the current initialization.
-     * @public
-     */
-    public destroy(): void;
-    /**
-     * Initialize Form Saver
-     * @public
-     * @param {Object} options User settings
-     */
-    public init(options: any): void;
-    /**
-     * Auto form saver
-     */
-    auto(): void;
-}
-declare const lStorage: {
-    hasData: (key: any) => boolean;
-    get: (key: any) => any;
-    set: (key: any, value: any) => void;
-    extend: (key: any, value: any) => void;
-    remove: (key: any) => void;
-};
-declare class formSaver2 {
-    /**
-     * Save values form
-     * @param el
-     * @returns
-     */
-    static save(el: any): void;
-    /**
-     * Get Offsets Element
-     * @param el
-     * @returns
-     */
-    static offset(el: any): any;
-    static hasAttribute(el: any, name: any): any;
-    /**
-     * Restore form value
-     * @param el
-     * @returns
-     */
-    static restore(el: any): void;
-    /**
-     * Is Select2 Initialized ?
-     * @param el
-     * @returns
-     */
-    static is_select2(el: any): Select2.Select2;
-    /**
-     * Is jQuery loaded?
-     * @returns
-     */
-    static is_jquery(): boolean;
-    static get_identifier(el: any): string;
-}
-/**
- * unique id generator
- * @param length digit number string
- * @returns random string
- */
-declare function makeid(length: any): string;
-/**
- * Element Counter
- */
-declare var Count: number;
-/**
- * Local Storage key
- */
-declare var storageKey: string;
-/**
- * Element Indexer
- */
-declare var formField: any;
-declare var formSaved: string;
-declare var uniqueid: string;
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.

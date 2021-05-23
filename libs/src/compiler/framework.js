@@ -136,6 +136,11 @@ function loadCodemirror(element, mode, theme) {
                     var editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
+                        /*
+                         smartIndent: true,
+                         lineWrapping: true,
+                         showCursorWhenSelecting: true,
+                         matchHighlight: true,*/
                     });
                     loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
                         editor.setOption("theme", theme);
@@ -970,7 +975,7 @@ String.prototype.isEmpty = function () {
 };
 /// <reference path="globals.d.ts" />
 /// <reference path="Object.d.ts" />
-/// <reference path="../src/smartform/src/js/Object.d.ts"/>
+/// <reference path="../src/smartform/src/js/_a_Object.d.ts"/>
 Object.size = function (obj) {
     var size = 0, key;
     for (key in obj) {
@@ -2592,10 +2597,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     var msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     var msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         var msgTitle = $("<h4 />", {
@@ -2692,7 +2697,7 @@ if (!isnode()) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             var trackLinks = document.getElementsByTagName("a");
             var _loop_1 = function (i, len) {
@@ -2906,7 +2911,7 @@ var dimas = /** @class */ (function () {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -6572,7 +6577,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
