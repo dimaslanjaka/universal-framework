@@ -1,15 +1,12 @@
 <?php
 
-/**
- * This script for cleaning cache and update assets cache keys
- */
 if (user()->is_admin() || LOCAL) {
   if (isset($_REQUEST['clean_cache'])) {
-      \Filemanager\file::emptyDir(ROOT . '/tmp/html');
-      \Filemanager\file::emptyDir(ROOT . '/processed/html');
-      \Filemanager\file::emptyDir(ROOT . '/src/Session/sessions');
-      \Filemanager\file::emptyDir(ROOT . '/tmp/optimized');
-      e(['error' => false, 'message' => 'Cache cleaned success']);
+    \Filemanager\file::emptyDir(ROOT . '/tmp/html');
+    \Filemanager\file::emptyDir(ROOT . '/processed/html');
+    \Filemanager\file::emptyDir(ROOT . '/src/Session/sessions');
+    \Filemanager\file::emptyDir(ROOT . '/tmp/optimized');
+    e(['error' => false, 'message' => 'Cache cleaned success']);
   }
 
   if (isset($_REQUEST['latest'])) {
