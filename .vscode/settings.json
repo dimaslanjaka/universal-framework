@@ -162,5 +162,6 @@
   "eslint.options": {
     "configFile": "./.eslintrc.js"
   },
-  "intelephense.diagnostics.run": "onSave"
+  "intelephense.diagnostics.run": "onSave",
+  "git.postCommitCommand": "sync"
 }
