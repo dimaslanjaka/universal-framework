@@ -125,7 +125,18 @@ declare var isBrowser: Function;
  */
 declare function formsaver(): void;
 declare class formSave {
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
     static save(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
+    static offset(el: HTMLElement): DOMRect;
     /**
      * Restore form value
      * @param el

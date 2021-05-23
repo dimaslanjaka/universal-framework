@@ -1850,7 +1850,18 @@ declare var formField: any;
 declare var formSaved: string;
 declare var uniqueid: string;
 declare class formSave {
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
     static save(el: any): void;
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
+    static offset(el: any): any;
     /**
      * Restore form value
      * @param el
