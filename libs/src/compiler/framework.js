@@ -2669,7 +2669,7 @@ function createStyle(css, attributes) {
 /// <reference path="./globals.d.ts" />
 var gtag = null;
 if (!(typeof module !== "undefined" && module.exports)) {
-    var gtagID_1 = siteConfig.google.recaptcha.key;
+    var gtagID_1 = siteConfig.google.analystics.id;
     var create_gtagscript = document.createElement("script");
     create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID_1;
     create_gtagscript.async = true;

@@ -1,7 +1,7 @@
 /// <reference path="./globals.d.ts" />
 let gtag: Window["gtag"] | UniversalAnalytics.ga = null;
 if (!(typeof module !== "undefined" && module.exports)) {
-    const gtagID = siteConfig.google.recaptcha.key;
+    const gtagID = siteConfig.google.analystics.id;
     const create_gtagscript = document.createElement("script");
     create_gtagscript.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
     create_gtagscript.async = true;
