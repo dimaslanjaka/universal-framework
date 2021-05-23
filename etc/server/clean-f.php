@@ -20,7 +20,7 @@ if (user()->is_admin() || LOCAL) {
       if (isset($_REQUEST['force'])) {
         $latest = md5(uniqid($latest));
       }
-      $config->result['cache']['ext'] = $latest;
+      //$config->result['cache']['ext'] = $latest;
     }
     $config->result['app']['environtment'] = \MVC\helper::env('dev') ? 'development' : 'production';
     $config->result['app']['domain'] = $_SERVER['HTTP_HOST'];
