@@ -102,6 +102,20 @@ declare class formSaver {
     auto(): void;
 }
 /**
+ * Element Counter
+ */
+declare var Count: number;
+/**
+ * Local Storage key
+ */
+declare var storageKey: String;
+/**
+ * Element Indexer
+ */
+declare var formField: object | Array<any>;
+declare var formSaved: string;
+declare var uniqueid: string;
+/**
  * check if running in browser
  */
 declare var isBrowser: Function;
@@ -110,3 +124,24 @@ declare var isBrowser: Function;
  * @todo save input fields into browser for reusable form
  */
 declare function formsaver(): void;
+declare class formSave {
+    static save(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
+    static is_select2(el: HTMLElement): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
+    static is_jquery(): boolean;
+    static get_identifier(el: HTMLElement): string;
+}

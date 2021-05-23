@@ -1836,6 +1836,41 @@ declare class formSaver {
  */
 declare function makeid(length: any): string;
 /**
+ * Element Counter
+ */
+declare var Count: number;
+/**
+ * Local Storage key
+ */
+declare var storageKey: string;
+/**
+ * Element Indexer
+ */
+declare var formField: any;
+declare var formSaved: string;
+declare var uniqueid: string;
+declare class formSave {
+    static save(el: any): void;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: any): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
+    static is_select2(el: any): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
+    static is_jquery(): boolean;
+    static get_identifier(el: any): string;
+}
+/**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
  *
