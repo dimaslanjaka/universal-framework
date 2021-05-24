@@ -6948,6 +6948,11 @@ Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
 if (typeof makeid == "undefined") {
+    /**
+     * unique id generator
+     * @param length digit number string
+     * @returns random string
+     */
     var makeid = function (length) {
         var result = "";
         var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -6958,6 +6963,9 @@ if (typeof makeid == "undefined") {
         return result;
     };
 }
+/**
+ * Local Storage key
+ */
 var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
 var formFieldBuild;
 var formSaved = localStorage.getItem(storageKey.toString());
@@ -6967,10 +6975,20 @@ if (!formSaved) {
 else {
     formFieldBuild = JSON.parse(formSaved);
 }
+/**
+ * Element Indexer
+ */
 var formField = formFieldBuild;
 var uniqueid = makeid(5);
+/**
+ * check if running in browser
+ */
 var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
+/**
+ * Element Counter
+ */
 var Count = -1;
+/// <reference path="./_a_Object.d.ts" />
 if (typeof Storage == "undefined") {
     class Storage {
     }
@@ -6982,6 +7000,11 @@ class lStorage extends Storage {
     has(key) {
         return !!localStorage[key] && !!localStorage[key].length;
     }
+    /**
+     * See {@link localStorage.getItem}
+     * @param key
+     * @returns
+     */
     get(key) {
         if (!this.has(key)) {
             return false;
@@ -7018,11 +7041,22 @@ class lStorage extends Storage {
         localStorage.removeItem(key);
     }
 }
+/// <reference path='./_lStorage.ts' />
+/// <reference path='./_conf.ts' />
 class formSaver2 {
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
     static offset(el) {
         return el.getBoundingClientRect();
     }
+    /**
+     * jQuery event listener
+     */
     static jquery_listener() {
+        // bind to new elements
         $(document).bind("DOMNodeInserted", function () {
             switch ($(this).prop("tagName")) {
                 case "SELECT":
@@ -7032,6 +7066,7 @@ class formSaver2 {
                     break;
             }
         });
+        // detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
             var t = $(this);
             var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
@@ -7045,9 +7080,11 @@ class formSaver2 {
                 }
             }
         });
+        //save value to localstorage
         $(document).on("change", "select, input, textarea", function (e) {
             formSaver2.save(this);
         });
+        // validate formsaver
         $(document).on("focus", "input,textarea,select", function () {
             var t = $(this);
             t.getIDName();
@@ -7059,6 +7096,9 @@ class formSaver2 {
             }
         });
     }
+    /**
+     * Pure javascript event listener
+     */
     static vanilla_listener(el, callback) {
         if (el.addEventListener) {
             el.addEventListener("change", callback);
@@ -7067,6 +7107,12 @@ class formSaver2 {
             el.attachEvent("onchange", callback);
         }
     }
+    /**
+     * Is element has attribute ?
+     * @param el
+     * @param name
+     * @returns
+     */
     static hasAttribute(el, name) {
         return el.nodeType === 1 && el.hasAttribute(name);
     }
@@ -7077,16 +7123,24 @@ class formSaver2 {
         let nodeValid = el.nodeType === 1;
         return el;
     }
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
     static restore(el, debug = false) {
         el = this.convertElement(el);
         Count++;
+        // skip no save
         if (el.hasAttribute("no-save"))
             return;
         el.setAttribute("aria-formsaver", uniqueid);
         let item;
         let key = this.get_identifier(el);
         var type = el.getAttribute("type");
+        // begin restoration
         if (key) {
+            // checkbox input button
             if (type === "checkbox") {
                 item = JSON.parse(localStorage.getItem(key));
                 if (item === null) {
@@ -7097,17 +7151,20 @@ class formSaver2 {
                 el.checked = item;
                 return;
             }
+            // radio input button
             else if (type === "radio") {
                 item = localStorage.getItem(key) === "on";
                 el.checked = item;
                 return;
             }
+            // input text number, textarea, or select
             else {
                 item = localStorage.getItem(key);
                 if (item === null || !item.toString().length) {
                     return;
                 }
                 el.value = item;
+                // select2
                 if (this.is_select2(el)) {
                     $(el).val(item).trigger("change");
                 }
@@ -7116,6 +7173,11 @@ class formSaver2 {
                 console.log("load", type, key, item);
         }
     }
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
     static save(el, debug = false) {
         el = this.convertElement(el);
         var key = this.get_identifier(el);
@@ -7146,9 +7208,18 @@ class formSaver2 {
                 console.log("save", key, localStorage.getItem(key));
         }
     }
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
     static is_select2(el) {
         return this.is_jquery() && $(el).data("select2");
     }
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
     static is_jquery() {
         return typeof jQuery != "undefined";
     }
@@ -7164,6 +7235,9 @@ class formSaver2 {
             else {
                 el.setAttribute("id", formField[Count]);
             }
+            /**
+             * Increase index offset
+             */
             Count++;
         }
         else if (el.getAttribute("id") == "null") {
@@ -7191,10 +7265,22 @@ class formSaver2 {
         }
     }
 }
+/// <reference path="./_conf.ts" />
+/// <reference path="./_a_Object.d.ts"/>
+/// <reference path="./globals.d.ts"/>
+/// <reference path="./index.d.ts"/>
+/// <reference path="./formSaver2.ts" />
+/**
+ * SMARTFORM
+ * @todo save form user input
+ */
+//console.log(`is browser : ${isBrowser()}`);
 if (isBrowser()) {
     (function () {
         const isJqueryLoaded = typeof jQuery != "undefined";
+        //console.log(`is jQuery loaded : ${isJqueryLoaded}`);
         if (isJqueryLoaded) {
+            //console.log("Apply plugin smartform jQuery");
             (function ($) {
                 $.fn.getIDName = function () {
                     if ($(this).attr("aria-autovalue")) {
@@ -7204,6 +7290,8 @@ if (isBrowser()) {
                 };
                 $.fn.has_attr = function (name) {
                     var attr = $(this).attr(name);
+                    // For some browsers, `attr` is undefined; for others,
+                    // `attr` is false.  Check for both.
                     return typeof attr !== "undefined" && attr !== false;
                 };
                 $.fn.smartForm = function () {
@@ -7227,6 +7315,11 @@ if (isBrowser()) {
         }
     })();
 }
+/**
+ * Set all forms to be saved with method vanilla
+ * @todo save input fields into browser for reusable form
+ * @param debug debug process saving and restoration
+ */
 function formsaver(debug = false) {
     if (typeof jQuery != "undefined") {
         if (debug)

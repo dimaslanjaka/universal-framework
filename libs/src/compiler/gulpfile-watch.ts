@@ -13,43 +13,28 @@ import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
 import { spawner } from "./spawner";
 
-export function gulpWatch() {
-    console.clear();
-    const files = [
-        "./libs/js/**/*.{js|ts}",
-        "./libs/src/**/*.{js|ts}",
-        "./src/MVC/**/*.{js|ts|css|scss|less}",
-        "./etc/**/*.{js|ts|css|scss|less}",
-        "./" + config.app.views + "/**/*.{js|ts|css|scss|less}",
-    ];
-
-    log.log(
-        log.random("Listening ") +
-            files
-                .map(function (item) {
-                    return log.random(upath.resolve(item));
-                })
-                .join(" ")
-    );
+export function gulpWatch(done) {
+    const files = ["./libs/js/*", "./libs/src/**/*", "./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"];
 
     let watch_timer = null;
-    return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
-        const trigger = function () {
+    const watchf = gulp
+        .watch(files, null)
+        .on("change", function (file: string | Buffer | import("url").URL | string[]) {
+            if (localStorage.getItem("watch")) {
+                return;
+            }
             file = framework.normalize(path.resolve(file.toString()));
-            console.info(`${file} changed`);
+            //console.info(`${file} changed`);
             /**
              * Check is library compiler or source compiler
              */
             const is_Lib = /libs\/(js|src)\//s.test(framework.normalize(file));
-            const filename_log = framework.filelog(file);
 
             if (is_Lib) {
-                const isCompiler = /[\/\\]libs[\/\\]src[\/\\]compiler[\/\\]/s.test(file);
                 /**
-                 * Exclude framework.js app.js and map js
+                 * Exclude framework.js app.js and *.map.js
                  */
                 const isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
-                const isFormsaver = /[\/\\]libs[\/\\]src[\/\\]smarform[\/\\]/s.test(file);
                 if (isFramework) return;
 
                 if (watch_timer == null) {
@@ -67,24 +52,27 @@ export function gulpWatch() {
                     if (!/\.min\.(js|css|ts)$/s.test(file)) {
                         compileAssets(file);
                     }
-                } /*
-                 else {
-                 let reason = log.error("undefined");
-                 if (/\.(php|log|txt|htaccess|log)$/s.test(filename_log)) {
-                 reason = log.color("brown", "Excluded");
-                 } else if (/\.(d\.ts)$/s.test(filename_log)) {
-                 reason = log.color("cyan", "Typehint");
-                 }
-                 log.log(`[${reason}] cannot modify ${log.random(filename_log)}`);
-                 }
-                 */
+                }
             }
-        };
-        return trigger();
-    });
+
+            done(); // <--- tell gulp initialize complete
+        });
+
+    console.clear();
+    log.log(
+        log.random("Listening ") +
+            files
+                .map(function (item) {
+                    return log.random(upath.resolve(item));
+                })
+                .join(", ")
+                .trim()
+    );
+
+    return watchf;
 }
 
-export function watch3(done: () => void) {
+export function gulpWatch2(done: () => void) {
     const ext = ".{js|css|sass|less|scss}";
     const files = ["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*", "!**.min" + ext];
     console.log("starting watch", files);

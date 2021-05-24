@@ -4,7 +4,7 @@
     $("textarea").autoHeight();
 
     $("textarea,input,select").each(function (i, el) {
-        new formSaver2(el, true);
+        //new formSaver2(el, true);
     });
 
     $("#slang,#tolang").select2LangCountry();

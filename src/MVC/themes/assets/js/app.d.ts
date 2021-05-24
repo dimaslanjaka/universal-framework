@@ -1712,31 +1712,94 @@ declare function rp(angka: number, prefix?: string | any): string;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
+/**
+ * Set all forms to be saved with method vanilla
+ * @todo save input fields into browser for reusable form
+ * @param debug debug process saving and restoration
+ */
 declare function formsaver(debug?: boolean): void;
+/**
+ * unique id generator
+ * @param length digit number string
+ * @returns random string
+ */
 declare function makeid(length: any): string;
+/**
+ * Local Storage key
+ */
 declare var storageKey: string;
 declare var formFieldBuild: any;
 declare var formSaved: string;
+/**
+ * Element Indexer
+ */
 declare var formField: any;
 declare var uniqueid: string;
+/**
+ * check if running in browser
+ */
 declare var isBrowser: Function;
+/**
+ * Element Counter
+ */
 declare var Count: number;
 declare class lStorage extends Storage {
     has(key: any): boolean;
+    /**
+     * See {@link localStorage.getItem}
+     * @param key
+     * @returns
+     */
     get(key: any): any;
     set(key: any, value: any): void;
     extend(key: any, value: any): void;
     remove(key: any): void;
 }
 declare class formSaver2 {
+    /**
+     * Get Offsets Element
+     * @param el
+     * @returns
+     */
     static offset(el: any): any;
+    /**
+     * jQuery event listener
+     */
     static jquery_listener(): void;
+    /**
+     * Pure javascript event listener
+     */
     static vanilla_listener(el: any, callback: any): void;
+    /**
+     * Is element has attribute ?
+     * @param el
+     * @param name
+     * @returns
+     */
     static hasAttribute(el: any, name: any): any;
     static convertElement(el: any): any;
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
     static restore(el: any, debug?: boolean): void;
+    /**
+     * Save values form
+     * @param el
+     * @returns
+     */
     static save(el: any, debug?: boolean): void;
+    /**
+     * Is Select2 Initialized ?
+     * @param el
+     * @returns
+     */
     static is_select2(el: any): Select2.Select2;
+    /**
+     * Is jQuery loaded?
+     * @returns
+     */
     static is_jquery(): boolean;
     static get_identifier(el: any): string;
     constructor(el: any, options?: {

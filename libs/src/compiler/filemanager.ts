@@ -5,6 +5,9 @@ import log from "./log";
 import core from "./core";
 
 class filemanager {
+    static path = path;
+    static join = path.join;
+
     /**
      * Is file/folder exists?
      */
@@ -59,7 +62,7 @@ class filemanager {
         if (typeof content == "object" || Array.isArray(content)) {
             content = JSON.stringify(content, null, 4);
         }
-        fs.writeFileSync(file, content, {encoding: "utf-8"});
+        fs.writeFileSync(file, content, { encoding: "utf-8" });
         return file;
     }
 
@@ -144,6 +147,8 @@ class filemanager {
 
         return fileLists;
     }
+
+    static normalize() {}
 }
 
 export = filemanager;

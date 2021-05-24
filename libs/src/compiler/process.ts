@@ -15,6 +15,7 @@ class process {
     static root = coreProcess.cwd();
     static verbose = false;
     static tmp = savetemp;
+
     /**
      * process instance `import coreProcess from "process";`
      */

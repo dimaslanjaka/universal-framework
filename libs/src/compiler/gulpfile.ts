@@ -2,14 +2,12 @@
 import "../../js/_Prototype-Array";
 import "../node-localstorage/src/index";
 import * as gulp from "gulp";
-import framework from "../compiler/index";
 import process from "../compiler/process";
 import * as fs from "fs";
 import { createApp, multiMinify, views } from "./gulpfile-app";
 import { doc } from "./gulpfile-doc";
 import { fixDeps } from "./func";
-import { watch3 } from "./gulpfile-watch";
-import filemanager from "./filemanager";
+import { gulpWatch, gulpWatch2 } from "./gulpfile-watch";
 
 const root = process.root;
 
@@ -53,7 +51,8 @@ export function reorderPkg() {
 }
 
 // watch libs/js/**/* and views
-gulp.task("watch", gulp.series(watch3));
+gulp.task("watch", gulp.series(gulpWatch));
+gulp.task("watch2", gulp.series(gulpWatch2));
 
 gulp.task("compile-view", function (done) {
     multiMinify(views());
