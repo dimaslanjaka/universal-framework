@@ -1626,17 +1626,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -1712,111 +1712,37 @@ declare function rp(angka: number, prefix?: string | any): string;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
-declare function formsaver(): void;
-/**
- * Set all forms to be smart
- * @todo save input fields into browser for reusable form
- */
-declare function formsaver(): void;
-/**
- * unique id generator
- * @param length digit number string
- * @returns random string
- */
+declare function formsaver(debug?: boolean): void;
 declare function makeid(length: any): string;
-/**
- * Local Storage key
- */
 declare var storageKey: string;
 declare var formFieldBuild: any;
 declare var formSaved: string;
-/**
- * Element Indexer
- */
-declare var formField: object | any[];
+declare var formField: any;
 declare var uniqueid: string;
-/**
- * check if running in browser
- */
 declare var isBrowser: Function;
-/**
- * Element Counter
- */
 declare var Count: number;
 declare class lStorage extends Storage {
     has(key: any): boolean;
-    /**
-     * See {@link localStorage.getItem}
-     * @param key
-     * @returns
-     */
     get(key: any): any;
     set(key: any, value: any): void;
     extend(key: any, value: any): void;
     remove(key: any): void;
 }
 declare class formSaver2 {
-    static debug: boolean;
-    static save(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
-    /**
-     * Save values form
-     * @param el
-     * @returns
-     */
-    static save(el: any): void;
-    static offset(el: HTMLElement): DOMRect;
-    /**
-     * Get Offsets Element
-     * @param el
-     * @returns
-     */
     static offset(el: any): any;
     static jquery_listener(): void;
-    /**
-     * jQuery event listener
-     */
-    static jquery_listener(): void;
-    static vanilla_listener(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
-    /**
-     * Pure javascript event listener
-     */
-    static vanilla_listener(el: any): void;
-    static hasAttribute(el: HTMLElement, name: string): boolean;
-    /**
-     * Is element has attribute ?
-     * @param el
-     * @param name
-     * @returns
-     */
+    static vanilla_listener(el: any, callback: any): void;
     static hasAttribute(el: any, name: any): any;
-    private static convertElement;
-    static restore(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): void;
-    /**
-     * Restore form value
-     * @param el
-     * @returns
-     */
-    static restore(el: any): void;
-    static is_select2(el: HTMLElement): Select2.Select2;
-    /**
-     * Is Select2 Initialized ?
-     * @param el
-     * @returns
-     */
+    static convertElement(el: any): any;
+    static restore(el: any, debug?: boolean): void;
+    static save(el: any, debug?: boolean): void;
     static is_select2(el: any): Select2.Select2;
     static is_jquery(): boolean;
-    /**
-     * Is jQuery loaded?
-     * @returns
-     */
-    static is_jquery(): boolean;
-    static get_identifier(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement): string;
     static get_identifier(el: any): string;
-    constructor(el: HTMLTextAreaElement | HTMLSelectElement | HTMLInputElement);
-    constructor(el: any);
-}
-declare namespace formSaver2 {
-    const debug: boolean;
+    constructor(el: any, options?: {
+        debug: boolean;
+        method: string;
+    });
 }
 /**
  * Add integers, wrapping at 2^32.
