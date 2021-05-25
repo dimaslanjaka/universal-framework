@@ -2929,6 +2929,9 @@ function getIsoLangs(): any {
     return Object.values(isoLangs);
 }
 
+/**
+ * Select2 Language Country
+ */
 function select2Langs(
     selectLang: JQuery<HTMLSelectElement> | JQuery<HTMLElement>,
     select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}
@@ -2947,6 +2950,7 @@ function select2Langs(
     };
 
     const newOpt: any = Object.assign(defaultOpt, select2Opt);
+    console.log(newOpt);
 
     selectLang.select2(newOpt);
 }
@@ -2962,19 +2966,19 @@ function getIsoCountries() {
 /**
  * Select2 Country
  * @requires jQuery
- * @param el
+ * @param selectCountry
  * @param select2Opt Select2 Options
  * @example
  * select2Country($("#selectID"), {placeholder:"Select Your Country"})
  */
 function select2Country(
-    el: JQuery<HTMLSelectElement> | JQuery<HTMLElement>,
+    select2Country: JQuery<HTMLSelectElement> | JQuery<HTMLElement>,
     select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}
 ) {
     loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
-    const isoCountries = [];
+    const newIso = [];
     isoCountries.forEach(function (country) {
-        isoCountries.add(Object.assign(country, {id: country.alpha2, text: country.name}));
+        newIso.add(Object.assign(country, { id: country.alpha2, text: country.name }));
     });
 
     const defaultOpt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, Select2.LoadingData> = {
@@ -2984,18 +2988,19 @@ function select2Country(
             if (country.hasOwnProperty("loading") && country.loading) return country.text;
             return $(
                 '<span class="flag-icon flag-icon-' +
-                country.id.toString().toLowerCase() +
-                ' flag-icon-squared"></span>' +
-                '<span class="flag-text" style="margin-left: 10px">' +
-                country.text +
-                "</span>"
+                    country.id.toString().toLowerCase() +
+                    ' flag-icon-squared"></span>' +
+                    '<span class="flag-text" style="margin-left: 10px">' +
+                    country.text +
+                    "</span>"
             );
         },
-        data: isoCountries,
+        data: newIso,
     };
 
     const newOpt: any = Object.assign(defaultOpt, select2Opt);
-    el.select2(newOpt);
+    console.log(newOpt);
+    select2Country.select2(newOpt);
 }
 
 if (typeof module !== "undefined" && module.exports) {

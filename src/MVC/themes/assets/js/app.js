@@ -6258,6 +6258,9 @@ function getIsoLangs() {
     }
     return Object.values(isoLangs);
 }
+/**
+ * Select2 Language Country
+ */
 function select2Langs(selectLang, select2Opt = {}) {
     loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
     const defaultOpt = {
@@ -6270,6 +6273,7 @@ function select2Langs(selectLang, select2Opt = {}) {
         data: getIsoLangs(),
     };
     const newOpt = Object.assign(defaultOpt, select2Opt);
+    console.log(newOpt);
     selectLang.select2(newOpt);
 }
 /**
@@ -6282,16 +6286,16 @@ function getIsoCountries() {
 /**
  * Select2 Country
  * @requires jQuery
- * @param el
+ * @param selectCountry
  * @param select2Opt Select2 Options
  * @example
  * select2Country($("#selectID"), {placeholder:"Select Your Country"})
  */
-function select2Country(el, select2Opt = {}) {
+function select2Country(select2Country, select2Opt = {}) {
     loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
-    const isoCountries = [];
+    const newIso = [];
     isoCountries.forEach(function (country) {
-        isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
+        newIso.add(Object.assign(country, { id: country.alpha2, text: country.name }));
     });
     const defaultOpt = {
         placeholder: "Select a country",
@@ -6306,10 +6310,11 @@ function select2Country(el, select2Opt = {}) {
                 country.text +
                 "</span>");
         },
-        data: isoCountries,
+        data: newIso,
     };
     const newOpt = Object.assign(defaultOpt, select2Opt);
-    el.select2(newOpt);
+    console.log(newOpt);
+    select2Country.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
     module.exports.getCountries = getIsoCountries;
@@ -7171,6 +7176,7 @@ class formSaver2 {
                 el.value = item;
                 // select2
                 if (this.is_select2(el)) {
+                    console.log(`restoring ${el.getAttribute("id")} which Initialized select2`);
                     $(el).val(item).trigger("change");
                 }
             }
@@ -7195,7 +7201,7 @@ class formSaver2 {
                     console.log("save checkbox button ", formSaver2.offset(el));
                 return;
             }
-            else if (el.getAttribute("type") == "radio" && el.hasAttribute("id")) {
+            else if (el.getAttribute("type") == "radio") {
                 $('[name="' + el.getAttribute("name") + '"]').each(function (i, e) {
                     localStorage.setItem(key, "off");
                 });
@@ -7253,11 +7259,13 @@ class formSaver2 {
         }
         return location.pathname + el.getAttribute("id");
     }
-    constructor(el, options = {
-        debug: false,
-        method: "vanilla",
-    }) {
-        console.log(`init debug ${options.debug}`, el);
+    constructor(el, options) {
+        let defaultOpt = {
+            debug: false,
+            method: "vanilla",
+        };
+        options = Object.assign(defaultOpt, options);
+        //console.log(`init debug ${options.debug}`, el);
         if (typeof options.debug == "undefined") {
             options.debug = false;
             console.log(`change debug to false`);

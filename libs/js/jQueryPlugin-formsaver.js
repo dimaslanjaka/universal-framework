@@ -251,6 +251,7 @@ class formSaver2 {
                 el.value = item;
                 // select2
                 if (this.is_select2(el)) {
+                    console.log(`restoring ${el.getAttribute("id")} which Initialized select2`);
                     $(el).val(item).trigger("change");
                 }
             }
@@ -275,7 +276,7 @@ class formSaver2 {
                     console.log("save checkbox button ", formSaver2.offset(el));
                 return;
             }
-            else if (el.getAttribute("type") == "radio" && el.hasAttribute("id")) {
+            else if (el.getAttribute("type") == "radio") {
                 $('[name="' + el.getAttribute("name") + '"]').each(function (i, e) {
                     localStorage.setItem(key, "off");
                 });
@@ -333,11 +334,13 @@ class formSaver2 {
         }
         return location.pathname + el.getAttribute("id");
     }
-    constructor(el, options = {
-        debug: false,
-        method: "vanilla",
-    }) {
-        console.log(`init debug ${options.debug}`, el);
+    constructor(el, options) {
+        let defaultOpt = {
+            debug: false,
+            method: "vanilla",
+        };
+        options = Object.assign(defaultOpt, options);
+        //console.log(`init debug ${options.debug}`, el);
         if (typeof options.debug == "undefined") {
             options.debug = false;
             console.log(`change debug to false`);

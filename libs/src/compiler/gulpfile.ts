@@ -65,3 +65,5 @@ gulp.task("default", gulp.series(["build", "watch"]));
  * Create Documentation of javascript's
  */
 gulp.task("doc", doc);
+
+/// modify this to tell typescript compiler

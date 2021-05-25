@@ -6320,6 +6320,9 @@ function getIsoLangs() {
     }
     return Object.values(isoLangs);
 }
+/**
+ * Select2 Language Country
+ */
 function select2Langs(selectLang, select2Opt) {
     if (select2Opt === void 0) { select2Opt = {}; }
     loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
@@ -6333,6 +6336,7 @@ function select2Langs(selectLang, select2Opt) {
         data: getIsoLangs(),
     };
     var newOpt = Object.assign(defaultOpt, select2Opt);
+    console.log(newOpt);
     selectLang.select2(newOpt);
 }
 /**
@@ -6345,17 +6349,17 @@ function getIsoCountries() {
 /**
  * Select2 Country
  * @requires jQuery
- * @param el
+ * @param selectCountry
  * @param select2Opt Select2 Options
  * @example
  * select2Country($("#selectID"), {placeholder:"Select Your Country"})
  */
-function select2Country(el, select2Opt) {
+function select2Country(select2Country, select2Opt) {
     if (select2Opt === void 0) { select2Opt = {}; }
     loadCSS("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css");
-    var isoCountries = [];
+    var newIso = [];
     isoCountries.forEach(function (country) {
-        isoCountries.add(Object.assign(country, { id: country.alpha2, text: country.name }));
+        newIso.add(Object.assign(country, { id: country.alpha2, text: country.name }));
     });
     var defaultOpt = {
         placeholder: "Select a country",
@@ -6370,10 +6374,11 @@ function select2Country(el, select2Opt) {
                 country.text +
                 "</span>");
         },
-        data: isoCountries,
+        data: newIso,
     };
     var newOpt = Object.assign(defaultOpt, select2Opt);
-    el.select2(newOpt);
+    console.log(newOpt);
+    select2Country.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
     module.exports.getCountries = getIsoCountries;

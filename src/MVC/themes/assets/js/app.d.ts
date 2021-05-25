@@ -1561,6 +1561,9 @@ declare const isoLangs: {
  * @returns
  */
 declare function getIsoLangs(): any;
+/**
+ * Select2 Language Country
+ */
 declare function select2Langs(selectLang: JQuery<HTMLSelectElement> | JQuery<HTMLElement>, select2Opt?: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any>): void;
 /**
  * Get Countries ISO
@@ -1578,12 +1581,12 @@ declare function getIsoCountries(): {
 /**
  * Select2 Country
  * @requires jQuery
- * @param el
+ * @param selectCountry
  * @param select2Opt Select2 Options
  * @example
  * select2Country($("#selectID"), {placeholder:"Select Your Country"})
  */
-declare function select2Country(el: JQuery<HTMLSelectElement> | JQuery<HTMLElement>, select2Opt?: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any>): void;
+declare function select2Country(select2Country: JQuery<HTMLSelectElement> | JQuery<HTMLElement>, select2Opt?: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any>): void;
 /**
  * Disable debugger
  */
@@ -1802,10 +1805,7 @@ declare class formSaver2 {
      */
     static is_jquery(): boolean;
     static get_identifier(el: any): string;
-    constructor(el: any, options?: {
-        debug: boolean;
-        method: string;
-    });
+    constructor(el: any, options: any);
 }
 /**
  * Add integers, wrapping at 2^32.
