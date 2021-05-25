@@ -255,8 +255,7 @@ class formSaver2 {
                     $(el).val(item).trigger("change");
                 }
             }
-            if (debug)
-                console.log("load", type, key, item);
+            //if (debug) console.log("load", type, key, item);
         }
     }
     /**
@@ -290,8 +289,7 @@ class formSaver2 {
             else {
                 localStorage.setItem(key, item.toString());
             }
-            if (debug)
-                console.log("save", key, localStorage.getItem(key));
+            //if (debug) console.log("save", key, localStorage.getItem(key));
         }
     }
     /**

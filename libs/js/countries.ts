@@ -2950,7 +2950,7 @@ function select2Langs(
     };
 
     const newOpt: any = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
 
     selectLang.select2(newOpt);
 }
@@ -2999,7 +2999,7 @@ function select2Country(
     };
 
     const newOpt: any = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
     select2Country.select2(newOpt);
 }
 

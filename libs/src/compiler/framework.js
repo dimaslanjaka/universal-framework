@@ -6331,7 +6331,7 @@ function select2Langs(selectLang, select2Opt) {
         data: getIsoLangs(),
     };
     var newOpt = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
     selectLang.select2(newOpt);
 }
 /**
@@ -6372,7 +6372,7 @@ function select2Country(select2Country, select2Opt) {
         data: newIso,
     };
     var newOpt = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
     select2Country.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {

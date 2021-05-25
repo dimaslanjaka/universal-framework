@@ -6268,7 +6268,7 @@ function select2Langs(selectLang, select2Opt = {}) {
         data: getIsoLangs(),
     };
     const newOpt = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
     selectLang.select2(newOpt);
 }
 /**
@@ -6308,7 +6308,7 @@ function select2Country(select2Country, select2Opt = {}) {
         data: newIso,
     };
     const newOpt = Object.assign(defaultOpt, select2Opt);
-    console.log(newOpt);
+    //console.log(newOpt);
     select2Country.select2(newOpt);
 }
 if (typeof module !== "undefined" && module.exports) {
@@ -7176,8 +7176,7 @@ class formSaver2 {
                     $(el).val(item).trigger("change");
                 }
             }
-            if (debug)
-                console.log("load", type, key, item);
+            //if (debug) console.log("load", type, key, item);
         }
     }
     /**
@@ -7211,8 +7210,7 @@ class formSaver2 {
             else {
                 localStorage.setItem(key, item.toString());
             }
-            if (debug)
-                console.log("save", key, localStorage.getItem(key));
+            //if (debug) console.log("save", key, localStorage.getItem(key));
         }
     }
     /**
