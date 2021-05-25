@@ -55,7 +55,7 @@ export function gulpWatch(done) {
                 }
             }
 
-            done(); // <--- tell gulp initialize complete
+            //done(); // <--- tell gulp initialize complete
         });
 
     console.clear();

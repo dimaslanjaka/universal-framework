@@ -5,6 +5,7 @@ import log from "./log";
 import { MD5 } from "crypto-js";
 import coreProcess from "process";
 import core from "./core";
+import uniqid from "../locutus/src/php/misc/uniqid";
 
 const savetemp = "./tmp/compiler";
 if (fs.existsSync(savetemp)) {
@@ -12,9 +13,22 @@ if (fs.existsSync(savetemp)) {
 }
 
 class process {
+    /**
+     * Root terminal
+     */
     static root = coreProcess.cwd();
+    /**
+     * Debug
+     */
     static verbose = false;
+    /**
+     * Compiler temp folder
+     */
     static tmp = savetemp;
+    /**
+     * Current process unique id
+     */
+    static id: string = uniqid("_");
 
     /**
      * process instance `import coreProcess from "process";`

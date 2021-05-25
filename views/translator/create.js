@@ -1,11 +1,8 @@
 // noinspection JSUnresolvedVariable
-
-(function () {
+z(function () {
     $("textarea").autoHeight();
 
-    $("textarea,input,select").each(function (i, el) {
-        //new formSaver2(el, true);
-    });
+    formsaver();
 
     $("#slang,#tolang").select2LangCountry();
 

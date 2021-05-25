@@ -337,7 +337,11 @@ class formSaver2 {
         debug: false,
         method: "vanilla",
     }) {
-        console.log(`init debug ${options.debug}`);
+        console.log(`init debug ${options.debug}`, el);
+        if (typeof options.debug == "undefined") {
+            options.debug = false;
+            console.log(`change debug to false`);
+        }
         formSaver2.restore(el, options.debug);
         if (options.method == "jquery" && formSaver2.is_jquery()) {
             formSaver2.jquery_listener();
@@ -403,15 +407,15 @@ if (isBrowser()) {
 /**
  * Set all forms to be saved with method vanilla
  * @todo save input fields into browser for reusable form
- * @param debug debug process saving and restoration
+ * @param show_debug debug process saving and restoration
  */
-function formsaver(debug = false) {
+function formsaver(show_debug = false) {
     if (typeof jQuery != "undefined") {
-        if (debug)
+        if (show_debug)
             console.log("Starting smartform jQuery");
         if (typeof jQuery != "undefined") {
             jQuery("input,textarea,select").each(function (i, el) {
-                new formSaver2(this, { debug: debug });
+                new formSaver2(this, { debug: show_debug });
             });
         }
     }

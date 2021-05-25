@@ -109,6 +109,11 @@ function loadCodemirror(element, mode, theme) {
                     const editor = CodeMirror.fromTextArea(element, {
                         lineNumbers: true,
                         mode: mode,
+                        /*
+                         smartIndent: true,
+                         lineWrapping: true,
+                         showCursorWhenSelecting: true,
+                         matchHighlight: true,*/
                     });
                     loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
                         editor.setOption("theme", theme);
@@ -2551,10 +2556,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     const msgIcon = $("<i />", {
-        class: iconMap[severity],
+        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
     });
     const msg = $("<div />", {
-        class: alertClasses.join(" "),
+        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
     });
     if (title) {
         const msgTitle = $("<h4 />", {
@@ -2650,7 +2655,7 @@ if (!isnode()) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60,
+                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
             });
             const trackLinks = document.getElementsByTagName("a");
             for (let i = 0, len = trackLinks.length; i < len; i++) {
@@ -2859,7 +2864,7 @@ class dimas {
             },
             label: {
                 show: true,
-                type: "percent",
+                type: "percent", // or 'seconds' => 23/60
             },
             autoStart: true,
         });
@@ -6508,7 +6513,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;",
+    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
@@ -7252,7 +7257,11 @@ class formSaver2 {
         debug: false,
         method: "vanilla",
     }) {
-        console.log(`init debug ${options.debug}`);
+        console.log(`init debug ${options.debug}`, el);
+        if (typeof options.debug == "undefined") {
+            options.debug = false;
+            console.log(`change debug to false`);
+        }
         formSaver2.restore(el, options.debug);
         if (options.method == "jquery" && formSaver2.is_jquery()) {
             formSaver2.jquery_listener();
@@ -7318,15 +7327,15 @@ if (isBrowser()) {
 /**
  * Set all forms to be saved with method vanilla
  * @todo save input fields into browser for reusable form
- * @param debug debug process saving and restoration
+ * @param show_debug debug process saving and restoration
  */
-function formsaver(debug = false) {
+function formsaver(show_debug = false) {
     if (typeof jQuery != "undefined") {
-        if (debug)
+        if (show_debug)
             console.log("Starting smartform jQuery");
         if (typeof jQuery != "undefined") {
             jQuery("input,textarea,select").each(function (i, el) {
-                new formSaver2(this, { debug: debug });
+                new formSaver2(this, { debug: show_debug });
             });
         }
     }

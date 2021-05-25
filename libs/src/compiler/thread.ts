@@ -2,7 +2,7 @@ import filemanager from "./filemanager";
 import process from "./process";
 
 export class thread {
-    private static root_folder = filemanager.join(process.root, "tmp", "thread");
+    private static root_folder = filemanager.join(process.root, "tmp", "thread", process.id);
     /**
      * Run single thread
      * @param name

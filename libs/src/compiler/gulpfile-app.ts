@@ -9,13 +9,14 @@ import framework from "../compiler/index";
 import { config } from "../compiler/config";
 import filemanager from "./filemanager";
 
-const root = process.root;
+localStorage.removeItem("compile");
 
 /**
  * Create App.js
  * @param withoutView false to not compile views javascripts
  */
 export async function createApp(withoutView: boolean) {
+    const root = process.root;
     const exists = localStorage.getItem("compile");
     if (!exists) {
         localStorage.setItem("compile", "running");
@@ -48,8 +49,8 @@ export async function createApp(withoutView: boolean) {
     } else {
         log.log(
             log.error("Compiler lock process already exists ") +
-            log.chalk().yellow("node index.js fix") +
-            log.chalk().green(" to fix it")
+                log.chalk().yellow("node index.js fix") +
+                log.chalk().green(" to fix it")
         );
     }
 }
@@ -91,6 +92,7 @@ export function typescriptCompiler(
  * List views folder
  */
 export function views() {
+    const root = process.root;
     const views = filemanager.readdir(root + `/${config.app.views}`);
     return views
         .filter(function (item) {
