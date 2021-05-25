@@ -7278,6 +7278,7 @@ class formSaver2 {
         }
     }
 }
+/// modify this to tell typescript compiler
 /// <reference path="./_conf.ts" />
 /// <reference path="./_a_Object.d.ts"/>
 /// <reference path="./globals.d.ts"/>
