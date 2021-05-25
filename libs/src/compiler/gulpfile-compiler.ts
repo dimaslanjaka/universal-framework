@@ -13,15 +13,15 @@ const root = process.root;
  * compile and minify assets
  * @param item file full path
  */
-export function compileAssets(item: string | Buffer): any {
+export function compileAssets(item: string | Buffer, callback?: Function | any): any {
     const exists = fs.existsSync(item);
     if (exists) {
         item = item.toString();
         let config:
-        | string
-        | {
-            obfuscate: boolean;
-        } = upath.normalizeSafe(root + "/src/MVC/config/" + item.replace(core.root(), ""));
+            | string
+            | {
+                  obfuscate: boolean;
+              } = upath.normalizeSafe(root + "/src/MVC/config/" + item.replace(core.root(), ""));
         config = core.normalize(core.root() + config);
         config = config.replace(/\.(js|css)/s, ".json");
         if (fs.existsSync(config)) {
@@ -71,6 +71,7 @@ export function compileAssets(item: string | Buffer): any {
             }
         }
     }
+    if (typeof callback == "function") callback();
 }
 
 /**

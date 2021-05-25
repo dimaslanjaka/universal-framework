@@ -127,6 +127,7 @@ class lStorage extends Storage {
     }
 }
 /// <reference path='./_lStorage.ts' />
+/// <reference path='./globals.d.ts' />
 /// <reference path='./_conf.ts' />
 class formSaver2 {
     /**
@@ -223,8 +224,9 @@ class formSaver2 {
         let item;
         let key = this.get_identifier(el);
         var type = el.getAttribute("type");
+        console.log(`restoring ${key} ${type}`);
         // begin restoration
-        if (key) {
+        if (key.length > 0) {
             // checkbox input button
             if (type === "checkbox") {
                 item = JSON.parse(localStorage.getItem(key));
@@ -232,7 +234,7 @@ class formSaver2 {
                     return;
                 }
                 if (debug)
-                    console.log(`value checkbox[${key}] ${item}`);
+                    console.log(`restore value checkbox[${key}] ${item}`);
                 el.checked = item;
                 return;
             }
@@ -267,12 +269,17 @@ class formSaver2 {
         el = this.convertElement(el);
         var key = this.get_identifier(el);
         var item = el.value;
-        var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver");
+        var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver") && el.hasAttribute("name");
+        console.log(`${el.tagName} ${allowed}`);
         if (key && item !== "" && allowed) {
             if (el.getAttribute("type") == "checkbox") {
+                let getVal = getCheckedValue(document.getElementsByName(el.getAttribute("name")));
                 localStorage.setItem(key, (el.checked == true).toString());
-                if (debug)
-                    console.log("save checkbox button ", formSaver2.offset(el));
+                console.log({
+                    type: el.tagName,
+                    value: getVal,
+                });
+                //if (debug) console.log("save checkbox button ", formSaver2.offset(el));
                 return;
             }
             else if (el.getAttribute("type") == "radio") {
@@ -354,6 +361,24 @@ class formSaver2 {
             });
         }
     }
+}
+/**
+ * this will check the checked radio in a group, and return the value
+ * @param el
+ * @returns
+ * @see https://stackoverflow.com/a/30389680
+ * @example
+ * var checkedbooking = getCheckedValue(document.getElementsByName('booking_type'));
+ * console.log(checkedbooking); // {index: NumberIndexRadio, value: valueOfRadio}
+ */
+function getCheckedValue(el) {
+    let result = {};
+    for (var i = 0, length = el.length; i < length; i++) {
+        if (el[i].checked) {
+            result = { value: el[i].value, index: i };
+        }
+    }
+    return result;
 }
 /// modify this to tell typescript compiler
 /// <reference path="./_conf.ts" />

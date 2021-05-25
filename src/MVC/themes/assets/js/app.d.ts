@@ -1629,17 +1629,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    160: string;
-    161: string;
-    162: string;
-    163: string;
-    164: string;
-    165: string;
-    166: string;
-    167: string;
-    168: string;
-    169: string;
-    8364: string;
+    "160": string;
+    "161": string;
+    "162": string;
+    "163": string;
+    "164": string;
+    "165": string;
+    "166": string;
+    "167": string;
+    "168": string;
+    "169": string;
+    "8364": string;
 };
 /**
  * php equivalent http_build_query
@@ -1715,6 +1715,16 @@ declare function rp(angka: number, prefix?: string | any): string;
  * Auto height textarea
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
+/**
+ * this will check the checked radio in a group, and return the value
+ * @param el
+ * @returns
+ * @see https://stackoverflow.com/a/30389680
+ * @example
+ * var checkedbooking = getCheckedValue(document.getElementsByName('booking_type'));
+ * console.log(checkedbooking); // {index: NumberIndexRadio, value: valueOfRadio}
+ */
+declare function getCheckedValue(el: any): {};
 /**
  * Set all forms to be saved with method vanilla
  * @todo save input fields into browser for reusable form

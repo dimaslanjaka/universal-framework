@@ -5,12 +5,15 @@ $("form").on("submit", function (e) {
 $("select#country").select2Country();
 
 /**
- * @type {HTMLCollection}
+ * @type {HTMLCollectionOfHTMLFormElement}
  */
-var testInput = document.forms["test"].getElementsByTagName("input");
+var testForm = document.forms["test"];
+var testInput = testForm.getElementsByTagName("input");
 for (const key in testInput) {
     if (Object.hasOwnProperty.call(testInput, key)) {
         const input = testInput[key];
         new formSaver2(input, { debug: true });
     }
 }
+
+var testTextarea = testForm.getElementsByTagName("textarea");

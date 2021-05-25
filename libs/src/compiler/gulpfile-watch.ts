@@ -13,10 +13,10 @@ import { compileAssets } from "./gulpfile-compiler";
 import "../../js/_Prototype-Array";
 import { spawner } from "./spawner";
 
-export function gulpWatch(done) {
+export async function gulpWatch(done) {
     const files = ["./libs/js/*", "./libs/src/**/*", "./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"];
 
-    let watch_timer = null;
+    let watch_timer: NodeJS.Timeout | null = null;
     const watchf = gulp
         .watch(files, null)
         .on("change", function (file: string | Buffer | import("url").URL | string[]) {
@@ -37,12 +37,23 @@ export function gulpWatch(done) {
                 const isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
                 if (isFramework) return;
 
+                log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
+
+                // if timer still running, cancel it
+                if (watch_timer != null) {
+                    console.log("progress compile still running, canceling...");
+                    clearTimeout(watch_timer);
+                    watch_timer = null;
+                }
+
+                // if timer stopped, run new compile progress
                 if (watch_timer == null) {
-                    log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
                     log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
                     watch_timer = setTimeout(async function () {
                         await createApp(true).finally(function () {
+                            // tell timer variable progress finished
                             watch_timer = null;
+                            done();
                         });
                     }, 1000);
                 }
@@ -50,7 +61,7 @@ export function gulpWatch(done) {
                 if (/\.(js|scss|css|less|ts)$/s.test(file)) {
                     // TODO: Compile js css on change
                     if (!/\.min\.(js|css|ts)$/s.test(file)) {
-                        compileAssets(file);
+                        compileAssets(file, done);
                     }
                 }
             }
@@ -94,7 +105,7 @@ export function gulpWatch2(done: () => void) {
                 if (canonical.endsWith("app.js")) {
                     setTimeout(() => {
                         console.info("re-compiling app.js");
-                        compileAssets(canonical);
+                        compileAssets(canonical, done);
                     }, 2500);
                 }
             }
