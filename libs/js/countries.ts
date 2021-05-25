@@ -3017,3 +3017,5 @@ if (typeof module !== "undefined" && module.exports) {
         };
     })(jQuery);
 }
+
+/// modify this to tell typescript compiler
