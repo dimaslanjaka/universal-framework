@@ -1,0 +1,34 @@
+#carticle * {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+#carticle img {
+    display: inline-block;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    border: 0px;
+    vertical-align: middle;
+    background-color: transparent;
+    margin: 0px auto;
+}
+
+#carticle a {
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    text-decoration-line: none;
+    color: rgb(68, 138, 203);
+    outline: 0px;
+}
+
+#carticle th {
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    width: 415px;
+    background: rgb(242, 242, 242);
+    border: 1px solid rgb(226, 226, 226);
+    padding: 6px 8px;
+}
+
+#carticle td,
+#carticle th {
+    text-align: center;
+}

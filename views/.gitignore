@@ -17,3 +17,7 @@
 !index.php
 !translator/
 !translator/**/*
+!code-editor/
+!code-editor/**/*
+!html-builder/
+!html-builder/**/*

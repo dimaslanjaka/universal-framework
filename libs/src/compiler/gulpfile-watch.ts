@@ -76,10 +76,6 @@ export async function gulpWatch(done) {
 }
 
 export function gulpWatch2(done: () => void) {
-    const ext = ".{js|css|sass|less|scss}";
-    const files = ["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*", "!**.min" + ext];
-    console.log("starting watch", files);
-
     // watch libs
     spawner.spawn("cmd", ["/k", "tsc -p tsconfig.formsaver.json --watch"]);
     spawner.spawn("cmd", ["/k", "tsc -p tsconfig.build.json --watch"]);
@@ -87,7 +83,15 @@ export function gulpWatch2(done: () => void) {
     spawner.spawn("cmd", ["/k", "tsc -p tsconfig.compiler.json --watch"]);
 
     // watch views
-    return gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
+    return watchView(done);
+}
+
+export function watchView(done) {
+    const ext = ".{js|css|sass|less|scss}";
+    const files = ["./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*", "!**.min" + ext];
+    console.log("starting watch", files);
+
+    gulp.watch(files, null).on("change", function (file: string | Buffer | import("url").URL | string[]) {
         const canonical = path.normalize(path.resolve(file.toString()));
         //console.log(canonical, file);
         if (/\.(js|scss|css|less|ts)$/s.test(canonical)) {

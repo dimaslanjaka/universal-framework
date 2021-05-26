@@ -2,6 +2,7 @@
 
 namespace Filemanager;
 
+use DirectoryIterator;
 use Exception;
 use FilesystemIterator;
 use JSON\json;
@@ -146,6 +147,15 @@ class file
     return false;
   }
 
+  /**
+   * Write file recursive.
+   *
+   * @param string $path
+   * @param string $content
+   * @param bool   $append
+   *
+   * @return string
+   */
   public static function write($path, $content = '', $append = false)
   {
     if (is_object($content) || is_array($content)) {
@@ -432,5 +442,36 @@ class file
       }
     }
     closedir($mydir);
+  }
+
+  /**
+   * Iterate files in directory
+   *
+   * @param string $path
+   * @return array
+   */
+  public static function directoryIterator($path)
+  {
+    $result = [];
+    $dir = new DirectoryIterator($path);
+    foreach ($dir as $fileinfo) {
+      if (!$fileinfo->isDot()) {
+        $result[] = [
+          'filename' => $fileinfo->getFilename(), 'path' => self::toUnixPath($fileinfo->getPathInfo()), 'fullpath' => self::toUnixPath($fileinfo->getPathInfo() . '/' . $fileinfo->getFilename())
+        ];
+      }
+    }
+
+    return $result;
+  }
+
+  public static function toUnixPath($path)
+  {
+    $path = str_replace('\\', '/', $path);
+    $path = preg_replace('|(?<=.)/+|', '/', $path);
+    if (':' === substr($path, 1, 1)) {
+      $path = ucfirst($path);
+    }
+    return $path;
   }
 }

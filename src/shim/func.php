@@ -48,39 +48,6 @@ function cors()
 }
 
 /**
- * Check if string start with needle string.
- *
- * @param string $haystack
- * @param string $needle
- *
- * @return bool
- */
-function startsWith($haystack, $needle)
-{
-  $length = strlen($needle);
-
-  return substr($haystack, 0, $length) === $needle;
-}
-
-/**
- * Check if string ends with needle string.
- *
- * @param string $haystack
- * @param string $needle
- *
- * @return bool
- */
-function endsWith($haystack, $needle)
-{
-  $length = strlen($needle);
-  if (!$length) {
-    return true;
-  }
-
-  return substr($haystack, -$length) === $needle;
-}
-
-/**
  * Convert string or number or float to number/float value.
  *
  * @param int|float|string $val
@@ -159,8 +126,8 @@ function fixurl($url)
 function fixpath($subject)
 {
   $replace = (DIRECTORY_SEPARATOR === '\\')
-        ? str_replace('/', '\\', $subject)
-        : str_replace('\\', '/', $subject);
+    ? str_replace('/', '\\', $subject)
+    : str_replace('\\', '/', $subject);
 
   return preg_replace('/[\/\\\\]{2,100}/m', DIRECTORY_SEPARATOR, $replace);
 }
@@ -266,4 +233,80 @@ function parse_url2($url, $encoded = false)
   }
 
   return array_merge($parts);
+}
+
+
+/**
+ * Check if string start with needle string.
+ *
+ * @param string $haystack
+ * @param string $needle
+ *
+ * @return bool
+ */
+function startsWith($haystack, $needle)
+{
+  $length = strlen($needle);
+
+  return substr($haystack, 0, $length) === $needle;
+}
+
+/**
+ * Check if string ends with needle string.
+ *
+ * @param string $haystack
+ * @param string $needle
+ *
+ * @return bool
+ */
+function endsWith($haystack, $needle)
+{
+  $length = strlen($needle);
+  if (!$length) {
+    return true;
+  }
+
+  return substr($haystack, -$length) === $needle;
+}
+
+if (!function_exists('str_starts_with')) {
+  /**
+   * source: Laravel Framework
+   * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   * @param string $haystack
+   * @param string $needle
+   * @return bool
+   */
+  function str_starts_with($haystack, $needle)
+  {
+    return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+  }
+}
+
+if (!function_exists('str_ends_with')) {
+  /**
+   * source: Laravel Framework
+   * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   * @param string $haystack
+   * @param string $needle
+   * @return bool
+   */
+  function str_ends_with($haystack, $needle)
+  {
+    return $needle !== '' && substr($haystack, -strlen($needle)) === (string)$needle;
+  }
+}
+
+if (!function_exists('str_contains')) {
+  /**
+   * source: Laravel Framework
+   * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   * @param string $haystack
+   * @param string $needle
+   * @return bool
+   */
+  function str_contains($haystack, $needle)
+  {
+    return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+  }
 }
