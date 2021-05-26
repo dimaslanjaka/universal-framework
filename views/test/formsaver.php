@@ -36,7 +36,7 @@
 
       <div class="form-group mb-2">
         <label for="exampleFormControlTextarea1">Example textarea</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="RequiredName"></textarea>
       </div>
     </form>
   </div>

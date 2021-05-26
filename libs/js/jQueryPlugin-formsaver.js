@@ -79,11 +79,13 @@ if (typeof Storage == "undefined") {
     }
 }
 class lStorage extends Storage {
-    constructor() {
+    constructor(prefix = "") {
         super();
+        this.prefix = "";
+        this.prefix = prefix;
     }
     has(key) {
-        return !!localStorage[key] && !!localStorage[key].length;
+        return !!localStorage[this.prefix + key] && !!localStorage[this.prefix + key].length;
     }
     /**
      * See {@link localStorage.getItem}
@@ -91,10 +93,10 @@ class lStorage extends Storage {
      * @returns
      */
     get(key) {
-        if (!this.has(key)) {
+        if (!this.has(this.prefix + key)) {
             return false;
         }
-        var data = localStorage[key];
+        var data = localStorage[this.prefix + key];
         try {
             return JSON.parse(data);
         }
@@ -104,31 +106,64 @@ class lStorage extends Storage {
     }
     set(key, value) {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            localStorage.setItem(this.prefix + key, JSON.stringify(value));
         }
         catch (e) {
-            localStorage.setItem(key, value);
+            localStorage.setItem(this.prefix + key, value);
         }
     }
     extend(key, value) {
-        if (this.has(key)) {
-            var _value = this.get(key);
+        if (this.has(this.prefix + key)) {
+            var _value = this.get(this.prefix + key);
             if (typeof jQuery != "undefined") {
                 $.extend(_value, JSON.parse(JSON.stringify(value)));
             }
-            this.set(key, _value);
+            this.set(this.prefix + key, _value);
         }
         else {
-            this.set(key, value);
+            this.set(this.prefix + key, value);
         }
     }
     remove(key) {
-        localStorage.removeItem(key);
+        localStorage.removeItem(this.prefix + key);
     }
 }
 /// <reference path='./_lStorage.ts' />
 /// <reference path='./globals.d.ts' />
 /// <reference path='./_conf.ts' />
+const formSaver2Storage = {
+    /**
+     * See {@see localstorage.setItem}
+     * @param key
+     * @param value
+     */
+    set(key, value) {
+        if (typeof value == "object" || Array.isArray(value))
+            value = JSON.stringify(value);
+        if (typeof value != "string")
+            value = new String(value);
+        localStorage.setItem(key, value);
+    },
+    get(key) {
+        let value = localStorage.getItem(key);
+        if (this.IsJsonString(value)) {
+            value = JSON.parse(value);
+        }
+        if (value != null)
+            return value;
+    },
+    IsJsonString(str) {
+        if (str == null)
+            return false;
+        try {
+            JSON.parse(str);
+        }
+        catch (e) {
+            return false;
+        }
+        return true;
+    },
+};
 class formSaver2 {
     /**
      * Get Offsets Element
@@ -224,7 +259,7 @@ class formSaver2 {
         let item;
         let key = this.get_identifier(el);
         var type = el.getAttribute("type");
-        console.log(`restoring ${key} ${type}`);
+        //console.log(`restoring ${key} ${type}`);
         // begin restoration
         if (key.length > 0) {
             // checkbox input button
@@ -240,8 +275,23 @@ class formSaver2 {
             }
             // radio input button
             else if (type === "radio") {
-                item = localStorage.getItem(key) === "on";
-                el.checked = item;
+                var value = localStorage.getItem(key);
+                if (formSaver2Storage.IsJsonString(value)) {
+                    value = JSON.parse(value);
+                }
+                var ele = document.getElementsByName(el.getAttribute("name"));
+                for (var i = 0; i < ele.length; i++)
+                    ele[i].checked = false;
+                setTimeout(function () {
+                    if (value && typeof value == "object" && value.hasOwnProperty("index")) {
+                        //ele.item(value.index).checked = true;
+                        ele[value.index].checked = true;
+                        if (debug)
+                            console.log("restoring checkbox", value);
+                    }
+                }, 1000);
+                //item = value === "on";
+                //el.checked = item;
                 return;
             }
             // input text number, textarea, or select
@@ -270,27 +320,30 @@ class formSaver2 {
         var key = this.get_identifier(el);
         var item = el.value;
         var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver") && el.hasAttribute("name");
-        console.log(`${el.tagName} ${allowed}`);
+        if (debug)
+            console.log(`${el.tagName} ${key} ${allowed}`);
         if (key && item !== "" && allowed) {
             if (el.getAttribute("type") == "checkbox") {
-                let getVal = getCheckedValue(document.getElementsByName(el.getAttribute("name")));
                 localStorage.setItem(key, (el.checked == true).toString());
-                console.log({
-                    type: el.tagName,
-                    value: getVal,
-                });
-                //if (debug) console.log("save checkbox button ", formSaver2.offset(el));
+                if (debug)
+                    console.log("save checkbox button ", formSaver2.offset(el));
                 return;
             }
             else if (el.getAttribute("type") == "radio") {
-                $('[name="' + el.getAttribute("name") + '"]').each(function (i, e) {
-                    localStorage.setItem(key, "off");
-                });
-                setTimeout(() => {
-                    localStorage.setItem(key, item.toString());
+                let ele = document.getElementsByName(el.getAttribute("name"));
+                let getVal = getCheckedValue(ele);
+                let self = this;
+                for (let checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
+                    if (ele.hasOwnProperty(checkboxIndex)) {
+                        const element = ele[checkboxIndex];
+                        self.delete(element, debug);
+                    }
+                }
+                setTimeout(function () {
+                    localStorage.setItem(key, JSON.stringify(getVal));
                     if (debug)
-                        console.log("save radio button ", formSaver2.offset(el));
-                }, 500);
+                        console.log("save radio button ", getVal);
+                }, 1000);
                 return;
             }
             else {
@@ -298,6 +351,13 @@ class formSaver2 {
             }
             //if (debug) console.log("save", key, localStorage.getItem(key));
         }
+    }
+    static delete(el, debug = false) {
+        el = this.convertElement(el);
+        var key = this.get_identifier(el);
+        if (debug)
+            console.log(`deleting ${key}`);
+        localStorage.removeItem(key);
     }
     /**
      * Is Select2 Initialized ?
@@ -375,7 +435,7 @@ function getCheckedValue(el) {
     let result = {};
     for (var i = 0, length = el.length; i < length; i++) {
         if (el[i].checked) {
-            result = { value: el[i].value, index: i };
+            result = { value: el[i].value, index: i, id: formSaver2.get_identifier(el[i]) };
         }
     }
     return result;

@@ -46,12 +46,6 @@ export async function createApp(withoutView: boolean) {
         //const appjs = path.join(root, "src/MVC/themes/assets/js/app.js");
         //exec(`browserify ${appjs} -o ${appjs}`);
         localStorage.removeItem("compile");
-    } else {
-        log.log(
-            log.error("Compiler lock process already exists ") +
-                log.chalk().yellow("node index.js fix") +
-                log.chalk().green(" to fix it")
-        );
     }
 }
 
@@ -64,20 +58,22 @@ export async function createApp(withoutView: boolean) {
 export function typescriptCompiler(
     source: string,
     destination: string,
-    callback: (arg0: any, arg1: any) => void = null
+    callback: (arg0: any, arg1: any, err: any, stdout: any, stderr: any) => void = null
 ) {
     return new Promise((resolve, reject) => {
         exec(`tsc -p ${source}`, function (err: ExecException, stdout: string, stderr: string) {
             if (!err) {
-                if (typeof callback == "function") {
-                    callback(source, destination);
-                }
                 if (stdout.trim().length) {
                     console.log(stdout);
                 }
                 if (stderr.trim().length) {
                     console.log(stderr);
                 }
+
+                if (typeof callback == "function") {
+                    callback(source, destination, err, stdout, stderr);
+                }
+
                 log.log(log.color("blue", "successfully compiled ") + log.success(path.basename(source)));
                 resolve(true);
             } else {

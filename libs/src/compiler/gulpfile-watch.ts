@@ -37,17 +37,9 @@ export async function gulpWatch(done) {
                 const isFramework = /((framework|app)\.(js|js.map)|\.map)$/s.test(file);
                 if (isFramework) return;
 
-                log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
-
-                // if timer still running, cancel it
-                if (watch_timer != null) {
-                    console.log("progress compile still running, canceling...");
-                    clearTimeout(watch_timer);
-                    watch_timer = null;
-                }
-
                 // if timer stopped, run new compile progress
                 if (watch_timer == null) {
+                    log.log(log.random("Library compiler triggered by ") + log.random(framework.filelog(file)));
                     log.log(log.chalk().yellow(`start compile ${log.random("src/MVC/themes/assets/js")}`));
                     watch_timer = setTimeout(async function () {
                         await createApp(true).finally(function () {

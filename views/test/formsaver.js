@@ -17,3 +17,9 @@ for (const key in testInput) {
 }
 
 var testTextarea = testForm.getElementsByTagName("textarea");
+for (const key in testTextarea) {
+    if (Object.hasOwnProperty.call(testTextarea, key)) {
+        const textareaSingle = testTextarea[key];
+        new formSaver2(textareaSingle, { debug: true });
+    }
+}

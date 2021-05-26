@@ -3,6 +3,8 @@
 /// <reference path="../../../../../libs/src/smartform/src/js/_a_Object.d.ts" />
 /// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
+/// <reference path="../../../../../libs/src/smartform/src/js/globals.d.ts" />
+/// <reference path="../../../../../libs/src/smartform/src/js/index.d.ts" />
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
@@ -1629,17 +1631,17 @@ declare function calculatorDistance(elem: JQuery, mouseX: number, mouseY: number
  */
 declare function prepEntities(str: string): string;
 declare var entityMap: {
-    "160": string;
-    "161": string;
-    "162": string;
-    "163": string;
-    "164": string;
-    "165": string;
-    "166": string;
-    "167": string;
-    "168": string;
-    "169": string;
-    "8364": string;
+    160: string;
+    161: string;
+    162: string;
+    163: string;
+    164: string;
+    165: string;
+    166: string;
+    167: string;
+    168: string;
+    169: string;
+    8364: string;
 };
 /**
  * php equivalent http_build_query
@@ -1757,6 +1759,8 @@ declare var isBrowser: Function;
  */
 declare var Count: number;
 declare class lStorage extends Storage {
+    constructor(prefix?: string);
+    prefix: string;
     has(key: any): boolean;
     /**
      * See {@link localStorage.getItem}
@@ -1768,6 +1772,16 @@ declare class lStorage extends Storage {
     extend(key: any, value: any): void;
     remove(key: any): void;
 }
+declare const formSaver2Storage: {
+    /**
+     * See {@see localstorage.setItem}
+     * @param key
+     * @param value
+     */
+    set(key: any, value: any): void;
+    get(key: any): string;
+    IsJsonString(str: any): boolean;
+};
 declare class formSaver2 {
     /**
      * Get Offsets Element
@@ -1803,6 +1817,7 @@ declare class formSaver2 {
      * @returns
      */
     static save(el: any, debug?: boolean): void;
+    static delete(el: any, debug?: boolean): void;
     /**
      * Is Select2 Initialized ?
      * @param el

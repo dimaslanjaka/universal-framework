@@ -1,5 +1,7 @@
 // noinspection TypeScriptRedundantGenericType
-/// <reference path="./../js/globals.d.ts" />
+/// <reference path="./../src/smartform/src/js/globals.d.ts" />
+/// <reference path="./globals.d.ts" />
+/// <reference path="./../src/smartform/src/js/index.d.ts" />
 
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js

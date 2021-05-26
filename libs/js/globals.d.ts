@@ -87,18 +87,6 @@ interface JQuery extends jQuery {
      * Check if element has attribute
      */
     hasAttr(name: string): boolean;
-
-    /**
-     * Select2 Countries
-     * @param select2Opt
-     */
-    select2Country(select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}): void;
-
-    /**
-     * Select2 Language Countries
-     * @param select2Opt
-     */
-    select2LangCountry(select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}): void;
 }
 
 declare namespace JQuery {
@@ -458,11 +446,11 @@ interface HTMLScriptElement extends HTMLElement {
 
 interface HTMLElement
     extends Element,
-    DocumentAndElementEventHandlers,
-    ElementCSSInlineStyle,
-    ElementContentEditable,
-    GlobalEventHandlers,
-    HTMLOrSVGElement {
+        DocumentAndElementEventHandlers,
+        ElementCSSInlineStyle,
+        ElementContentEditable,
+        GlobalEventHandlers,
+        HTMLOrSVGElement {
     mozMatchesSelector: (selectors: string) => boolean;
     msMatchesSelector: (selectors: string) => boolean;
 
@@ -546,12 +534,12 @@ interface Window {
 
 interface Document
     extends Node,
-    DocumentAndElementEventHandlers,
-    DocumentOrShadowRoot,
-    GlobalEventHandlers,
-    NonElementParentNode,
-    ParentNode,
-    XPathEvaluatorBase {
+        DocumentAndElementEventHandlers,
+        DocumentOrShadowRoot,
+        GlobalEventHandlers,
+        NonElementParentNode,
+        ParentNode,
+        XPathEvaluatorBase {
     /**
      * window.addEventListener
      *
