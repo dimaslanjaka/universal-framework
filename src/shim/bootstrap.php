@@ -245,11 +245,32 @@ if (!function_exists('is_json')) {
   /**
    * Check is json string.
    *
+   * @param string $string
+   *
    * @return bool
    */
   function is_json($string)
   {
     return json::is_json($string);
+  }
+}
+
+if (!function_exists('is_xml')) {
+  /**
+   * Check is xml string.
+   *
+   * @param string $xml
+   *
+   * @return bool
+   */
+  function is_xml($xml)
+  {
+    $doc = @simplexml_load_string($xml);
+    if ($doc) {
+      return true; //this is valid
+    } else {
+      return false; //this is not valid
+    }
   }
 }
 
@@ -438,9 +459,9 @@ function recursive_mkdir($dest, $permissions = 0755, $recursive = true)
  * Resolve file. (create if not exists).
  *
  * @return string
- * ```php
- * resolve_file('/folder/file', 'content to be writen when not exist');
- * ```
+ *                ```php
+ *                resolve_file('/folder/file', 'content to be writen when not exist');
+ *                ```
  */
 function resolve_file($file, $content = '')
 {

@@ -343,6 +343,34 @@ class request extends Curl
     return $this;
   }
 
+  /**
+   * Set cookie by raw_cookie string.
+   *
+   * @param string $cookieString
+   *
+   * @return request
+   */
+  public function set_cookie_string($cookieString)
+  {
+    if (function_exists('http_parse_cookie')) {
+      $cookies = call_user_func('http_parse_cookie', $cookieString);
+    } else {
+      parse_str(strtr($cookieString, ['&' => '%26', '+' => '%2B', ';' => '&']), $cookies);
+    }
+    foreach ($cookies as $key => $value) {
+      $this->setCookie($key, $value);
+    }
+
+    return $this;
+  }
+
+  /**
+   * Set cookie file.
+   *
+   * @param string $cookie
+   *
+   * @return request
+   */
   public function set_cookie_file($cookie = null)
   {
     if (!$cookie) {

@@ -95,39 +95,39 @@ class simple_html_dom // extends HtmlDocument
   }
 
   public function file_get_html(
-        $url,
-        $use_include_path = false,
-        $context = null,
-        $offset = 0,
-        $maxLen = -1,
-        $lowercase = true,
-        $forceTagsClosed = true,
-        $target_charset = \simplehtmldom\DEFAULT_TARGET_CHARSET,
-        $stripRN = true,
-        $defaultBRText = \simplehtmldom\DEFAULT_BR_TEXT,
-        $defaultSpanText = \simplehtmldom\DEFAULT_SPAN_TEXT
-    ) {
+    $url,
+    $use_include_path = false,
+    $context = null,
+    $offset = 0,
+    $maxLen = -1,
+    $lowercase = true,
+    $forceTagsClosed = true,
+    $target_charset = \simplehtmldom\DEFAULT_TARGET_CHARSET,
+    $stripRN = true,
+    $defaultBRText = \simplehtmldom\DEFAULT_BR_TEXT,
+    $defaultSpanText = \simplehtmldom\DEFAULT_SPAN_TEXT
+  ) {
     if ($maxLen <= 0) {
       $maxLen = \simplehtmldom\MAX_FILE_SIZE;
     }
 
     $dom = new HtmlDocument(
-            null,
-            $lowercase,
-            $forceTagsClosed,
-            $target_charset,
-            $stripRN,
-            $defaultBRText,
-            $defaultSpanText
-        );
+      null,
+      $lowercase,
+      $forceTagsClosed,
+      $target_charset,
+      $stripRN,
+      $defaultBRText,
+      $defaultSpanText
+    );
 
     $contents = file_get_contents(
-            $url,
-            $use_include_path,
-            $context,
-            $offset,
-            $maxLen + 1 // Load extra byte for limit check
-        );
+      $url,
+      $use_include_path,
+      $context,
+      $offset,
+      $maxLen + 1 // Load extra byte for limit check
+    );
 
     if (empty($contents) || strlen($contents) > $maxLen) {
       $dom->clear();
@@ -138,24 +138,58 @@ class simple_html_dom // extends HtmlDocument
     return $dom->load($contents, $lowercase, $stripRN);
   }
 
+  /**
+   * Parse XML with simplexml_load_string.
+   *
+   * @param string $str
+   * @param string $class_name
+   * @param int    $options
+   * @param string $namespace_or_prefix
+   * @param bool   $is_prefix
+   *
+   * @return \simplexml_load_string
+   */
+  public function str_get_xml(
+    $str,
+    $class_name = 'SimpleXMLElement',
+    $options = 0,
+    $namespace_or_prefix = '',
+    $is_prefix = false
+  ) {
+    return simplexml_load_string($str, $class_name, $options, $namespace_or_prefix, $is_prefix);
+  }
+
+  /**
+   * Parse HTML.
+   *
+   * @param string $str
+   * @param bool   $lowercase
+   * @param bool   $forceTagsClosed
+   * @param string $target_charset
+   * @param bool   $stripRN
+   * @param string $defaultBRText
+   * @param string $defaultSpanText
+   *
+   * @return void
+   */
   public function str_get_html(
-        $str,
-        $lowercase = true,
-        $forceTagsClosed = true,
-        $target_charset = DEFAULT_TARGET_CHARSET,
-        $stripRN = true,
-        $defaultBRText = DEFAULT_BR_TEXT,
-        $defaultSpanText = DEFAULT_SPAN_TEXT
-    ) {
+    $str,
+    $lowercase = true,
+    $forceTagsClosed = true,
+    $target_charset = DEFAULT_TARGET_CHARSET,
+    $stripRN = true,
+    $defaultBRText = DEFAULT_BR_TEXT,
+    $defaultSpanText = DEFAULT_SPAN_TEXT
+  ) {
     $dom = new HtmlDocument(
-            null,
-            $lowercase,
-            $forceTagsClosed,
-            $target_charset,
-            $stripRN,
-            $defaultBRText,
-            $defaultSpanText
-        );
+      null,
+      $lowercase,
+      $forceTagsClosed,
+      $target_charset,
+      $stripRN,
+      $defaultBRText,
+      $defaultSpanText
+    );
 
     if (empty($str) || strlen($str) > MAX_FILE_SIZE) {
       $dom->clear();

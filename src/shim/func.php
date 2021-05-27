@@ -235,7 +235,6 @@ function parse_url2($url, $encoded = false)
   return array_merge($parts);
 }
 
-
 /**
  * Check if string start with needle string.
  *
@@ -271,42 +270,55 @@ function endsWith($haystack, $needle)
 
 if (!function_exists('str_starts_with')) {
   /**
-   * source: Laravel Framework
+   * example:
+   * ```php
+   * if (str_starts_with('hello world', 'hello')) return true;
+   * ```
+   *source: Laravel Framework.
+   * @see https://www.php.net/manual/en/function.str-starts-with.php
    * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   *
    * @param string $haystack
    * @param string $needle
+   *
    * @return bool
    */
   function str_starts_with($haystack, $needle)
   {
-    return (string)$needle !== '' && strncmp($haystack, $needle, strlen($needle)) === 0;
+    return '' !== (string) $needle && 0 === strncmp($haystack, $needle, strlen($needle));
   }
 }
 
 if (!function_exists('str_ends_with')) {
   /**
-   * source: Laravel Framework
+   * source: Laravel Framework.
+   *
    * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   *
    * @param string $haystack
    * @param string $needle
+   *
    * @return bool
    */
   function str_ends_with($haystack, $needle)
   {
-    return $needle !== '' && substr($haystack, -strlen($needle)) === (string)$needle;
+    return '' !== $needle && substr($haystack, -strlen($needle)) === (string) $needle;
   }
 }
 
 if (!function_exists('str_contains')) {
   /**
-   * source: Laravel Framework
+   * source: Laravel Framework.
+   *
    * @see https://github.com/laravel/framework/blob/8.x/src/Illuminate/Support/Str.php
+   *
    * @param string $haystack
    * @param string $needle
+   *
    * @return bool
    */
   function str_contains($haystack, $needle)
   {
-    return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    return '' !== $needle && false !== mb_strpos($haystack, $needle);
   }
 }

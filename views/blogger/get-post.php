@@ -16,6 +16,8 @@ if (isset($_REQUEST['blogid'])) {
   e(['error' => true, 'message' => 'Blog url empty']);
 }
 
-if (isset($_REQUEST['postid'])){
-  $service->getPost($_REQUEST['postid']);
+if (isset($_REQUEST['postid'])) {
+  $service->recrawl = true;
+  $post = $service->getPost($_REQUEST['postid']);
+  e($post);
 }

@@ -79,14 +79,12 @@
     "intelephense.telemetry.enabled": false,
     "intelephense.trace.server": "off",
     "jake.autoDetect": "off",
-    "javascript.implicitProjectConfig.experimentalDecorators": true,
     "javascript.suggest.completeFunctionCalls": true,
     "javascript.updateImportsOnFileMove.enabled": "never",
     "markdown.extension.list.indentationSize": "adaptive",
     "markdown.preview.scrollEditorWithPreview": true,
     "npm.autoDetect": "on",
     "npm.enableRunFromFolder": false,
-    "npm.enableScriptExplorer": false,
     "npm.exclude": "**libs**",
     "npm.fetchOnlinePackageInfo": false,
     "npm.packageManager": "npm",
@@ -94,8 +92,6 @@
     "php-cs-fixer.autoFixByBracket": true,
     "php-cs-fixer.autoFixBySemicolon": true,
     "php-cs-fixer.config": ".php_cs;.php_cs.dist;.php-cs-fixer.dist.php",
-    "php-cs-fixer.executablePath": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.phar",
-    "php-cs-fixer.executablePathWindows": "D:\\dimaslanjaka.github.io\\php-yt-api\\libs\\bin\\php-cs-fixer\\php-cs-fixer.bat",
     "php-cs-fixer.formatHtml": true,
     "php-cs-fixer.lastDownload": 1,
     "php-cs-fixer.onsave": true,
@@ -104,7 +100,6 @@
         "name": "Dimas Lanjaka",
         "email": "dimaslanjaka@gmail.com"
     },
-    "prettier.packageManager": "npm",
     "prettier.resolveGlobalModules": true,
     "prettier.tabWidth": 2,
     "prettier.useEditorConfig": true,
@@ -163,5 +158,7 @@
         "configFile": "./.eslintrc.js"
     },
     "intelephense.diagnostics.run": "onSave",
-    "php-cs-fixer.allowRisky": true
+    "php-cs-fixer.allowRisky": true,
+    "php-cs-fixer.showOutput": false,
+    "php-cs-fixer.executablePath": "D:/Workspaces/PHP/universal-framework/libs/bin/php-cs-fixer/php-cs-fixer.phar"
 }

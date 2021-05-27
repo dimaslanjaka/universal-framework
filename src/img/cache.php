@@ -80,18 +80,22 @@ class cache
 
   private static function mime_header($mime)
   {
-    if (preg_match('#image/png|image/.*icon|image/jpe?g|image/.*#', $mime) !== 1) {
+    if (1 !== preg_match('#image/png|image/.*icon|image/jpe?g|image/.*#', $mime)) {
       header('HTTP/1.1 404 Not Found');
       e($mime);
       exit;
     }
-    if (strpos($mime, 'svg') !== false) $mime = 'image/svg+xml';
+    if (false !== strpos($mime, 'svg')) {
+      $mime = 'image/svg+xml';
+    }
     header('Content-Type: ' . $mime, true);
   }
 
   private static function crawl($url)
   {
-    if (!self::$api) self::$api = new \Extender\request($url);
+    if (!self::$api) {
+      self::$api = new \Extender\request($url);
+    }
     self::$api->set_url($url);
     self::$api->setCookieFile(self::$cache_dir . '/cookies-imageCache.txt');
     self::$api->setCookieJar(self::$cache_dir . '/cookies-imageCache.txt');
@@ -110,17 +114,19 @@ class cache
         }
       }
 
-      if (strpos(self::$api->responseHeaders['Content-Type'], 'image') !== false) {
+      if (false !== strpos(self::$api->responseHeaders['Content-Type'], 'image')) {
         $res[$url] = self::$api->url;
         write_file(self::$saved, $res, true);
         write_file(self::$cache, self::$api->response, true);
         self::mime_header(self::$api->responseHeaders['Content-Type']);
         self::writeCache();
+
         return self::$api->response;
       } else {
         e(self::$api->responseHeaders['Content-Type']);
       }
     }
+
     return false;
   }
 
@@ -148,7 +154,7 @@ class cache
       header('Cache-Control: private', true);
       // we don't send an "Expires:" header to make clients/browsers use if-modified-since and/or if-none-match
 
-      # Check if the client already has the requested item
+      // Check if the client already has the requested item
       $check = isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) or
         isset($_SERVER['HTTP_IF_NONE_MATCH']);
       if ($check_request) {
@@ -189,11 +195,11 @@ class cache
   }
 
   /**
-   * Transform url image to cache
    * * `schema data cache`
    * ```json
    * { "md5": "realURL" }
-   * ```.
+   * ```
+   * Transform url image to cache.
    *
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */
