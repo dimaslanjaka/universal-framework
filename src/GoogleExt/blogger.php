@@ -36,7 +36,7 @@ class blogger
   private $blogConfig;
 
   /**
-   * Set Blog By URL.
+   * Get blog information by url.
    *
    * @param $url
    *
@@ -62,6 +62,73 @@ class blogger
     }
 
     return $blog;
+  }
+
+  /**
+   * Get blog information by id.
+   *
+   * @param int|string $blogId
+   *
+   * @return Google_Service_Blogger_Blog2|Google_Service_Blogger_Blog
+   */
+  public function byId($blogId)
+  {
+    if (!is_numeric($blogId)) {
+      throw new Exception('Blog id must be instanceof number insteadOf ' . gettype($blogId), 1);
+    }
+    $this->blogCacheId = $blogId;
+    $this->blogId = $blogId;
+    $this->blogConfig = $this->configFolder . '/' . $this->blogCacheId . '.json';
+    $query = ['key' => CONFIG['google']['key']];
+    $base = 'https://www.googleapis.com/blogger/v3/blogs';
+    $url = "$base/$blogId?" . http_build_query($query);
+
+    if (!file_exists($this->blogConfig)) {
+      $response = $this->curl($url);
+      file::write($this->blogConfig, json_encode($response));
+
+      return new Google_Service_Blogger_Blog2($response);
+    } else {
+      $blog = new Google_Service_Blogger_Blog2(file::get($this->blogConfig, true));
+      $this->blogId = $blog->getId();
+
+      return $blog;
+    }
+  }
+
+  /**
+   * Get Post Information By Id.
+   *
+   * @param string $id
+   *
+   * @return void
+   */
+  public function getPost($id)
+  {
+    $url = 'https://www.blogger.com/feeds/' . $this->blogId . '/posts/default/' . $id;
+    $curl = new \Extender\request('https://www.blogger.com');
+    $curl->setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36');
+    $curl->set_cookie_file(ROOT . '/tmp/curl/blogger/cookie.txt');
+    $curl->setReferrer('https://localhost/url?url=https%3A%2F%2Fwww.example.com%2F');
+    $curl->setHeaders([
+      'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+      'Accept-Language' => 'en-US,en;q=0.5',
+      'Connection' => 'keep-alive',
+      'Cache-Control' => 'no-cache',
+      'Pragma' => 'no-cache',
+      'accept-encoding' => 'gzip, deflate, br',
+      'X-Php-Expected-Class' => '',
+    ]);
+    $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
+    $request = $curl->get($url);
+    var_dump($curl);
+    exit;
+    /*try {
+      $post = $this->posts->get($this->blogId, $id);
+      e($post);
+    } catch (\Throwable $th) {
+      //echo $th->getMessage();
+    }*/
   }
 
   public function listPosts($limit = 5)
@@ -153,10 +220,16 @@ class blogger
     $cacheId = md5($url);
     $cacheFile = ROOT . '/tmp/curl/' . __CLASS__ . '/' . __FUNCTION__ . '/' . $cacheId;
     if (file_exists($cacheFile) && !$this->recrawl) {
+      // return cached curl
       //$cacheModified = filemtime($cacheFile);
       //$minute = floor((time() - $cacheModified) / (60));
       //echo $minute . PHP_EOL;
-      return json_decode(file_get_contents($cacheFile), true);
+      $read = file_get_contents($cacheFile);
+      if (is_json($read)) {
+        return json_decode($read, true);
+      }
+
+      return $read;
     }
 
     try {
@@ -168,7 +241,11 @@ class blogger
       file::write($cacheFile, $resp);
       curl_close($ch);
 
-      return json_decode($resp, true);
+      if (is_json($resp)) {
+        return json_decode($resp, true);
+      }
+
+      return $resp;
     } catch (Exception $ex) {
       return ['error' => true, 'message' => $ex->getMessage()];
     }

@@ -2,7 +2,6 @@
 
 use JSON\json;
 
-header('Content-type: application/json');
 $requestData = $_REQUEST;
 header('Content-type: application/json');
 $class = new GoogleExt\client();

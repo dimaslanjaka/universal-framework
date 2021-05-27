@@ -8,6 +8,9 @@ use JSON\json;
 use MVC\Exception;
 use MVC\helper;
 
+/**
+ * Extender {@link \Curl\Curl}.
+ */
 class request extends Curl
 {
   /**
@@ -24,6 +27,7 @@ class request extends Curl
   public function __construct($base = null)
   {
     parent::__construct($base);
+    self::$_instance = $this;
   }
 
   public static function static_request($opt)
@@ -33,7 +37,7 @@ class request extends Curl
   }
 
   /**
-   * cURL shooter request.
+   * cURL sniper request.
    *
    * @param array $opt
    *
@@ -44,6 +48,7 @@ class request extends Curl
     if (!isset($opt['url'])) {
       throw new Exception('URL needed', 1);
     }
+
     $msisdn = isset($_SESSION['telkomsel']['msisdn']) ? $_SESSION['telkomsel']['msisdn'] : 'default';
     //$verbose = __DIR__ . '/otp/http/' . $msisdn . '.' . substr(clean_string(urldecode(urldecode($opt['url']))), 0, 50) . '.txt';
     //file_put_contents($verbose, '');
@@ -51,6 +56,7 @@ class request extends Curl
     $ch = curl_init();
 
     $result = ['request' => [], 'response' => []];
+
     if (isset($opt['postdata'])) {
       if (is_array($opt['postdata'])) {
         $opt['postdata'] = http_build_query($opt['postdata'], '', '&');
@@ -59,6 +65,7 @@ class request extends Curl
       $result['request']['postdata'] = $opt['postdata'];
       $this->require_content_length = true;
     }
+
     if (isset($opt['headers']) && is_array($opt['headers'])) {
       $headers = $opt['headers'];
       if (isset($opt['headers_trim'])) {
@@ -66,19 +73,22 @@ class request extends Curl
         $headers = array_filter($headers);
         $headers = array_values($headers);
       }
+
       for ($i = 0; $i < count($headers); ++$i) {
-        $header = array_map('trim', explode(':', $headers[$i]));
-        $small_header = strtolower($header[0]);
-        if ('content-length' == $small_header && true === $this->require_content_length) {
-          $headers[$i] = $header[0] . ': ' . strlen($opt['postdata']);
-        }
-        if ('user-agent' == $small_header) {
-          curl_setopt($ch, CURLOPT_USERAGENT, $header[1]);
+        if (isset($headers[$i])) {
+          $header = array_map('trim', explode(':', $headers[$i]));
+          $small_header = strtolower($header[0]);
+          if ('content-length' == $small_header && true === $this->require_content_length) {
+            $headers[$i] = $header[0] . ': ' . strlen($opt['postdata']);
+          }
+          if ('user-agent' == $small_header) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $header[1]);
+          }
         }
       }
-      //$this->DUMPNow($headers, $opt);
-
       curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+      //$this->DUMPNow($headers, $opt);
       $result['request']['headers'] = $headers;
     }
     curl_setopt($ch, CURLOPT_URL, trim($opt['url']));
