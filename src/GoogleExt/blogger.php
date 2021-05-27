@@ -16,8 +16,7 @@ class blogger
   public $blogs;
   public $blogId;
   private $service;
-  private $result_get_post = [];
-  private $configFolder = __DIR__ . '/config';
+  private $configFolder = __DIR__ . '/config/blogger';
   /**
    * @var bool Recrawl cache curl
    */
@@ -33,17 +32,34 @@ class blogger
     $this->posts = $this->service->posts;
   }
 
+  private $blogCacheId;
+  private $blogConfig;
+
   /**
    * Set Blog By URL.
    *
    * @param $url
    *
-   * @return Google_Service_Blogger_Blog
+   * @return Google_Service_Blogger_Blog|Google_Service_Blogger_Blog2
    */
   public function byUrl($url)
   {
-    $blog = $this->service->blogs->getByUrl($url);
-    $this->blogId = $blog->getId();
+    $parse = parse_url2($url);
+    if (isset($parse['host'])) {
+      $this->blogCacheId = md5($parse['host']);
+      $this->blogConfig = $this->configFolder . '/' . $this->blogCacheId . '.json';
+      // if config exists
+      if (!file_exists($this->blogConfig)) {
+        $blog = $this->service->blogs->getByUrl($url);
+        file::write($this->blogConfig, json_encode($blog));
+        $this->blogId = $blog->getId();
+      } else {
+        $blog = new Google_Service_Blogger_Blog2(file::get($this->blogConfig, true));
+        $this->blogId = $blog->getId();
+      }
+    } else {
+      e(['error' => true, 'message' => 'blog hostname empty']);
+    }
 
     return $blog;
   }
@@ -58,32 +74,68 @@ class blogger
     $this->blogId = $id;
   }
 
+  private $postsConfig;
+  private $postsCacheId;
+  /**
+   * Posts.
+   *
+   * @var Blogger_Post[]
+   */
+  private $result_get_post = [];
+
   /**
    * Get All Blogger Posts.
    *
-   * @param string|null $blogId
-   * @param string|null $pageToken
+   * @param bool $force recrawl
    *
-   * @return array
+   * @return Blogger_Post[]
    */
-  public function getPosts($blogId = null, $pageToken = null)
+  public function getPosts($force = false)
   {
-    if (null == $blogId) {
-      $blogId = $this->blogId;
+    $this->postsCacheId = $this->blogId;
+    $this->postsConfig = $this->configFolder . '/' . $this->postsCacheId . '/posts.json';
+    $exists = file_exists($this->postsConfig);
+    if ($exists) {
+      $posts = file::get($this->postsConfig, true);
+      if (is_array($posts)) {
+        foreach ($posts as $post) {
+          $this->result_get_post[] = new Blogger_Post($post);
+        }
+      }
     }
+    if (!$exists || $force) {
+      $this->fetchPosts();
+      // if posts not empty, cache them
+      if (!empty($this->result_get_post)) {
+        file::write($this->postsConfig, json_encode($this->result_get_post));
+      }
+    }
+
+    return $this->result_get_post;
+  }
+
+  private function fetchPosts($pageToken = null)
+  {
     $query = [
       'key' => CONFIG['google']['key'],
     ];
     if (is_string($pageToken) && !empty($pageToken)) {
       $query['pageToken'] = $pageToken;
     }
+    $blogId = $this->blogId;
     $url = "https://www.googleapis.com/blogger/v3/blogs/$blogId/posts?" . http_build_query($query);
     $response = $this->curl($url);
+
     if (isset($response['items'])) {
-      $this->result_get_post = array_merge($this->result_get_post, $response['items']);
+      //$this->result_get_post = array_replace($this->result_get_post, $response['items']);
+      foreach ($response['items'] as $item) {
+        $this->result_get_post[] = new Blogger_Post($item);
+      }
+    } else {
+      e($response);
     }
     if (isset($response['nextPageToken'])) {
-      return $this->getPosts($blogId, $response['nextPageToken']);
+      return $this->fetchPosts($response['nextPageToken']);
     }
 
     return $this->result_get_post;

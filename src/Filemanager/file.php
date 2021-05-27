@@ -244,7 +244,7 @@ class file
    * @param string $file
    * @param bool   $parse_json
    *
-   * @return string|null NULL = failed
+   * @return string|array NULL = failed
    */
   public static function get($file, $parse_json = false)
   {

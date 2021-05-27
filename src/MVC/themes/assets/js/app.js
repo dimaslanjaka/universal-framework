@@ -6637,6 +6637,7 @@ function LoadScript(config) {
         urls.add(config.url);
     }
     else if (Array.isArray(config.url)) {
+        console.log(config.url);
         urls.addAll(config.url);
     }
     const defaultConfig = {

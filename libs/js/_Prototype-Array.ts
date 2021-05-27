@@ -43,8 +43,8 @@ Array.prototype.add = function (element) {
     return this;
 };
 
-Array.prototype.addAll = function (others) {
-    others.foreach(function (e: any) {
+Array.prototype.addAll = function (others: Array<any>) {
+    others.forEach(function (e: any) {
         this.push(e);
     });
     return this;

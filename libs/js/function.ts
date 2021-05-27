@@ -101,6 +101,7 @@ function LoadScript(config: LoadScriptOptions): typeof LoadScriptLoaded {
     if (typeof config.url == "string") {
         urls.add(config.url);
     } else if (Array.isArray(config.url)) {
+        console.log(config.url);
         urls.addAll(config.url);
     }
 

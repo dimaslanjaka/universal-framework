@@ -6,7 +6,7 @@ use Extender\request;
 use JSON\json;
 
 /**
- * Google Recaptcha
+ * Google Recaptcha.
  *
  * ```php
  * $recap = new GoogleExt\recaptcha();
@@ -21,7 +21,7 @@ use JSON\json;
 class recaptcha
 {
   /**
-   * Secret Key (Default from config.json)
+   * Secret Key (Default from config.json).
    *
    * @var string
    */
@@ -52,10 +52,11 @@ class recaptcha
   }
 
   /**
-   * Verify Recaptcha
+   * Verify Recaptcha.
    *
-   * @param string $token
+   * @param string   $token
    * @param callable $callback
+   *
    * @return void
    */
   public function verify($token, $callback)
@@ -64,30 +65,31 @@ class recaptcha
 
     // post request to server
     $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = array('secret' => recaptcha::$secretKey, 'response' => $token);
-    $options = array(
-      'http' => array(
-        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-        'method'  => 'POST',
-        'content' => http_build_query($data)
-      )
-    );
-    $context  = stream_context_create($options);
+    $data = ['secret' => recaptcha::$secretKey, 'response' => $token];
+    $options = [
+      'http' => [
+        'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method' => 'POST',
+        'content' => http_build_query($data),
+      ],
+    ];
+    $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
     $responseKeys = json_decode($response, true);
 
     return call_user_func(
       $callback,
-      (isset($responseKeys["success"]) && $responseKeys["success"]),
+      (isset($responseKeys['success']) && $responseKeys['success']),
       $responseKeys,
       $token
     );
   }
 
   /**
-   * Verify Recaptcha
+   * Verify Recaptcha.
    *
    * @param callable $callback
+   *
    * @return void
    */
   private function verifyCaptcha($callback)
