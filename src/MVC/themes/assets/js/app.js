@@ -1399,10 +1399,11 @@ Array.prototype.add = function (element) {
     return this;
 };
 Array.prototype.addAll = function (others) {
-    others.foreach(function (e) {
-        this.push(e);
+    const self = this;
+    others.forEach(function (e) {
+        self.push(e);
     });
-    return this;
+    return self;
 };
 Array.prototype.random = function () {
     return this[Math.floor(Math.random() * this.length)];
@@ -6632,12 +6633,11 @@ const LoadScriptLoaded = [];
  * @param callback
  */
 function LoadScript(config) {
-    const urls = [];
+    let urls = [];
     if (typeof config.url == "string") {
         urls.add(config.url);
     }
     else if (Array.isArray(config.url)) {
-        console.log(config.url);
         urls.addAll(config.url);
     }
     const defaultConfig = {

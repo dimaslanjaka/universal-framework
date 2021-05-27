@@ -1453,10 +1453,11 @@ Array.prototype.add = function (element) {
     return this;
 };
 Array.prototype.addAll = function (others) {
+    var self = this;
     others.forEach(function (e) {
-        this.push(e);
+        self.push(e);
     });
-    return this;
+    return self;
 };
 Array.prototype.random = function () {
     return this[Math.floor(Math.random() * this.length)];
@@ -6701,7 +6702,6 @@ function LoadScript(config) {
         urls.add(config.url);
     }
     else if (Array.isArray(config.url)) {
-        console.log(config.url);
         urls.addAll(config.url);
     }
     var defaultConfig = {

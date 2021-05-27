@@ -44,10 +44,11 @@ Array.prototype.add = function (element) {
 };
 
 Array.prototype.addAll = function (others: Array<any>) {
+    const self = this;
     others.forEach(function (e: any) {
-        this.push(e);
+        self.push(e);
     });
-    return this;
+    return self;
 };
 
 Array.prototype.random = function () {
