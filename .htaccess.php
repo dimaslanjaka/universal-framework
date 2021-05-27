@@ -1,4 +1,5 @@
 <?php
+
 $mixed_contents = <<<TXT
 # Fix Mixed Contents
 <ifModule mod_headers.c>

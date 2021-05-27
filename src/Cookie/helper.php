@@ -9,6 +9,7 @@ class helper
 {
   public static $domain = '/';
   public static $secure = false;
+  public static $password = CONFIG['security']['salt'];
 
   public static function secure($secure)
   {
@@ -37,7 +38,7 @@ class helper
     if ($ret) {
       //$ret = json_decode(gzinflate($ret), true);
       //$ret = json_decode(base64_decode($ret), true);
-      $ret = aesDecrypt($ret, md5($_SERVER['HTTP_HOST']));
+      $ret = aesDecrypt($ret, self::$password);
     }
     if (!$AllowEmpty && empty($ret)) {
       $ret = null;
@@ -61,6 +62,7 @@ class helper
         $parts = explode('=', $cookie);
         $name = trim($parts[0]);
         //var_dump($name);
+        // skip session clear
         if (preg_match('/PHPSESSID/s', $name) || in_array($name, $except)) {
           continue;
         }
@@ -127,7 +129,7 @@ class helper
    * Set cookie helper.
    *
    * @param mixed            $value
-   * @param int|float|string $expire   1m/1h/1d/1y
+   * @param int|float|string $expire   1m/1h/1d/1y default m(minute)
    * @param string           $domain   default $_SERVER['HTTP_HOST']
    * @param bool             $secure
    * @param bool             $httponly
@@ -153,12 +155,14 @@ class helper
       } elseif (endsWith($expire, 'y')) {
         $expire = time() + (toNumber($expire) * 31556926); // where 31556926 is total seconds for a year.
       }
+    } else {
+      $expire = time() + (toNumber($expire) * 60);
     }
 
     try {
       //$value = gzdeflate(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 9);
       //$value = base64_encode(json_encode($value));
-      $value = aesEncrypt($value, md5($_SERVER['HTTP_HOST']));
+      $value = aesEncrypt($value, self::$password);
     } catch (\MVC\Exception $E) {
       $value = $value;
     }

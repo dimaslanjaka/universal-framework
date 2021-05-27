@@ -17,18 +17,12 @@ if (isset($_REQUEST['user']) && isset($_REQUEST['pass'])) {
   }
 }
 
-if (isset($_REQUEST['check'])) {
-  user()->check_login(function ($session) {
-    e($session);
-  });
-}
-
 function dologin($username, $password)
 {
   $result = user()->login($username, $password);
   if (isset($result['error'])) {
     if (!$result['error']) {
-      $result['redirect'] = isset($_REQUEST['redirect']) ? urldecode($_SERVER['redirect']) : '/dashboard';
+      $result['redirect'] = isset($_REQUEST['redirect']) ? urldecode($_SERVER['redirect']) : '/user/dashboard';
     }
   }
 

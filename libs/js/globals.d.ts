@@ -2,6 +2,7 @@
 /// <reference types="datatables.net"/>
 /// <reference types="datatables.net-buttons"/>
 /// <reference types="select2"/>
+/// <reference lib="dom" />
 
 declare const $: JQuery;
 
@@ -446,11 +447,11 @@ interface HTMLScriptElement extends HTMLElement {
 
 interface HTMLElement
     extends Element,
-        DocumentAndElementEventHandlers,
-        ElementCSSInlineStyle,
-        ElementContentEditable,
-        GlobalEventHandlers,
-        HTMLOrSVGElement {
+    DocumentAndElementEventHandlers,
+    ElementCSSInlineStyle,
+    ElementContentEditable,
+    GlobalEventHandlers,
+    HTMLOrSVGElement {
     mozMatchesSelector: (selectors: string) => boolean;
     msMatchesSelector: (selectors: string) => boolean;
 
@@ -534,12 +535,12 @@ interface Window {
 
 interface Document
     extends Node,
-        DocumentAndElementEventHandlers,
-        DocumentOrShadowRoot,
-        GlobalEventHandlers,
-        NonElementParentNode,
-        ParentNode,
-        XPathEvaluatorBase {
+    DocumentAndElementEventHandlers,
+    DocumentOrShadowRoot,
+    GlobalEventHandlers,
+    NonElementParentNode,
+    ParentNode,
+    XPathEvaluatorBase {
     /**
      * window.addEventListener
      *

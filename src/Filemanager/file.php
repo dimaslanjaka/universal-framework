@@ -238,6 +238,14 @@ class file
     return false;
   }
 
+  /**
+   * Read file with json decode support.
+   *
+   * @param string $file
+   * @param bool   $parse_json
+   *
+   * @return string|null NULL = failed
+   */
   public static function get($file, $parse_json = false)
   {
     resolve_dir(dirname($file));
@@ -445,9 +453,10 @@ class file
   }
 
   /**
-   * Iterate files in directory
+   * Iterate files in directory.
    *
    * @param string $path
+   *
    * @return array
    */
   public static function directoryIterator($path)
@@ -457,7 +466,7 @@ class file
     foreach ($dir as $fileinfo) {
       if (!$fileinfo->isDot()) {
         $result[] = [
-          'filename' => $fileinfo->getFilename(), 'path' => self::toUnixPath($fileinfo->getPathInfo()), 'fullpath' => self::toUnixPath($fileinfo->getPathInfo() . '/' . $fileinfo->getFilename())
+          'filename' => $fileinfo->getFilename(), 'path' => self::toUnixPath($fileinfo->getPathInfo()), 'fullpath' => self::toUnixPath($fileinfo->getPathInfo() . '/' . $fileinfo->getFilename()),
         ];
       }
     }
@@ -472,6 +481,7 @@ class file
     if (':' === substr($path, 1, 1)) {
       $path = ucfirst($path);
     }
+
     return $path;
   }
 }

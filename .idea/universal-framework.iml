@@ -29,6 +29,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/Utils" isTestSource="false" packagePrefix="Utils\" />
       <sourceFolder url="file://$MODULE_DIR$/src/img" isTestSource="false" packagePrefix="img\" />
       <sourceFolder url="file://$MODULE_DIR$/src/simplehtmldom" isTestSource="false" packagePrefix="simplehtmldom\" />
+      <sourceFolder url="file://$MODULE_DIR$/assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/etc" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/views" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/dist" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/src/AGC/agc_service" />
@@ -143,9 +147,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-curl-class/php-curl-class" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/pear/pear-core-minimal" />
       <excludeFolder url="file://$MODULE_DIR$/vendor" />
-      <excludeFolder url="file://$MODULE_DIR$/assets" />
       <excludeFolder url="file://$MODULE_DIR$/.vscode" />
       <excludeFolder url="file://$MODULE_DIR$/libs/Windows" />
+      <excludeFolder url="file://$MODULE_DIR$/docs" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
