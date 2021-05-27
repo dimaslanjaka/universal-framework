@@ -1,12 +1,12 @@
-//import * as bootstrap from "bootstrap";
-//import $ from "jquery";
+/// <reference path="./globals.d.ts" />
 
-if (!isnode()) {
-    $(document).ready(function (e) {
+if (!isnode() && typeof jQuery != "undefined") {
+    (function (e) {
         // element with onload
         $("[onload]").each(function (i, el) {
             eval(el.getAttribute("onload"));
         });
+
         // button ajax
         $(document).on("click", 'button[id="ajax"][src]', function (e) {
             e.preventDefault();
@@ -18,6 +18,7 @@ if (!isnode()) {
                 },
             });
         });
+
         // apply on element has attribute data-trigger
         $(document).on("click", "[data-trigger]", function (e) {
             e.preventDefault();
@@ -33,36 +34,29 @@ if (!isnode()) {
             }
         });
 
-        //href hyperlink button
-        $(document).on("click", "button[href].btn-link", function (e) {
+        //href hyperlink
+        $(document).on("click", "[href]", function (e) {
             e.preventDefault();
-            location.href = $(this).attr("href");
+            let href = $(this).attr("href");
+            console.log("click href " + href);
+            location.href = href;
         });
 
         /**
          * open in new tab
          */
-        $(document.body).on(
-            "click",
-            'a[id="newtab"],[newtab],[data-newtab]',
-            function (e) {
-                e.preventDefault();
-                const t = $(this);
-                if (t.attr("href")) {
-                    if (t.data("newtab")) {
-                        //data-newtab hide referrer
-                        window
-                            .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-                            .focus();
-                    } else {
-                        openInNewTab(
-                            t.attr("href"),
-                            t.data("name") ? t.data("name") : "_blank"
-                        );
-                    }
+        $(document.body).on("click", 'a[id="newtab"],[newtab],[data-newtab]', function (e) {
+            e.preventDefault();
+            const t = $(this);
+            if (t.attr("href")) {
+                if (t.data("newtab")) {
+                    //data-newtab hide referrer
+                    window.open("http://href.li/?" + $(this).data("newtab"), "newtab").focus();
+                } else {
+                    openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
                 }
             }
-        );
+        });
 
         $(document).on("click", "[data-dismiss]", function (e) {
             const dataDismiss = $(this).data("dismiss");
@@ -88,9 +82,26 @@ if (!isnode()) {
                 });
             });
         }
-    });
+    })();
 }
 
+if (!isnode()) {
+    document.addEventListener(
+        "click",
+        function (event) {
+            if (event.target.matches("a[href], a[href] *")) {
+                event.preventDefault();
+                console.log("works fine");
+            }
+        },
+        false
+    );
+}
+
+/**
+ * Random HEX
+ * @returns HEX number without HASH(#)
+ */
 function randomHex() {
     return Math.floor(Math.random() * 16777215).toString(16);
 }

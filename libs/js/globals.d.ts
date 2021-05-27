@@ -181,6 +181,10 @@ interface XMLHttpRequest extends XMLHttpRequestEventTarget {
     responseJSON: Array<any> | Object | null;
 }
 
+interface EventTarget {
+    matches(pattern: string): boolean;
+}
+
 /**
  * Progressbar timer
  */
@@ -447,11 +451,11 @@ interface HTMLScriptElement extends HTMLElement {
 
 interface HTMLElement
     extends Element,
-    DocumentAndElementEventHandlers,
-    ElementCSSInlineStyle,
-    ElementContentEditable,
-    GlobalEventHandlers,
-    HTMLOrSVGElement {
+        DocumentAndElementEventHandlers,
+        ElementCSSInlineStyle,
+        ElementContentEditable,
+        GlobalEventHandlers,
+        HTMLOrSVGElement {
     mozMatchesSelector: (selectors: string) => boolean;
     msMatchesSelector: (selectors: string) => boolean;
 
@@ -535,12 +539,12 @@ interface Window {
 
 interface Document
     extends Node,
-    DocumentAndElementEventHandlers,
-    DocumentOrShadowRoot,
-    GlobalEventHandlers,
-    NonElementParentNode,
-    ParentNode,
-    XPathEvaluatorBase {
+        DocumentAndElementEventHandlers,
+        DocumentOrShadowRoot,
+        GlobalEventHandlers,
+        NonElementParentNode,
+        ParentNode,
+        XPathEvaluatorBase {
     /**
      * window.addEventListener
      *

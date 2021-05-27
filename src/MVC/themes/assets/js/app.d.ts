@@ -792,6 +792,10 @@ declare namespace Base64 {
     function _utf8_encode(string: any): string;
     function _utf8_decode(utftext: any): string;
 }
+/**
+ * Random HEX
+ * @returns HEX number without HASH(#)
+ */
 declare function randomHex(): string;
 /**
  * open in new tab

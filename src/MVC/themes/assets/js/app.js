@@ -3204,10 +3204,9 @@ function b64DecodeUnicode(str) {
     })
         .join(""));
 }
-//import * as bootstrap from "bootstrap";
-//import $ from "jquery";
-if (!isnode()) {
-    $(document).ready(function (e) {
+/// <reference path="./globals.d.ts" />
+if (!isnode() && typeof jQuery != "undefined") {
+    (function (e) {
         // element with onload
         $("[onload]").each(function (i, el) {
             eval(el.getAttribute("onload"));
@@ -3237,10 +3236,12 @@ if (!isnode()) {
                     break;
             }
         });
-        //href hyperlink button
-        $(document).on("click", "button[href].btn-link", function (e) {
+        //href hyperlink
+        $(document).on("click", "[href]", function (e) {
             e.preventDefault();
-            location.href = $(this).attr("href");
+            let href = $(this).attr("href");
+            console.log("click href " + href);
+            location.href = href;
         });
         /**
          * open in new tab
@@ -3251,9 +3252,7 @@ if (!isnode()) {
             if (t.attr("href")) {
                 if (t.data("newtab")) {
                     //data-newtab hide referrer
-                    window
-                        .open("http://href.li/?" + $(this).data("newtab"), "newtab")
-                        .focus();
+                    window.open("http://href.li/?" + $(this).data("newtab"), "newtab").focus();
                 }
                 else {
                     openInNewTab(t.attr("href"), t.data("name") ? t.data("name") : "_blank");
@@ -3283,8 +3282,20 @@ if (!isnode()) {
                 });
             });
         }
-    });
+    })();
 }
+if (!isnode()) {
+    document.addEventListener("click", function (event) {
+        if (event.target.matches("a[href], a[href] *")) {
+            event.preventDefault();
+            console.log("works fine");
+        }
+    }, false);
+}
+/**
+ * Random HEX
+ * @returns HEX number without HASH(#)
+ */
 function randomHex() {
     return Math.floor(Math.random() * 16777215).toString(16);
 }
