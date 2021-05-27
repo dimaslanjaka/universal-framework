@@ -3,6 +3,7 @@
 /// <reference path="../../../../../libs/src/smartform/src/js/_a_Object.d.ts" />
 /// <reference path="../../../../../libs/js/Date.d.ts" />
 /// <reference path="../../../../../libs/js/alert.d.ts" />
+/// <reference path="../../../../../libs/js/lib.dom.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/globals.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/index.d.ts" />
 /// <reference types="jquery" />
@@ -10,6 +11,7 @@
 /// <reference types="react" />
 /// <reference types="google.analytics" />
 /// <reference types="datatables.net" />
+/// <reference lib="dom" />
 /**
  * AES encrypt
  * @url /src/shim/Cipher.php

@@ -9,6 +9,13 @@ const fs = require("fs");
 const path = require("path");
 const siteConfig = require("./config.json");
 const spawn = require("cross-spawn");
+const http = require("https"); // or 'https' for https:// URLs
+const download = function (url, dest) {
+    const file = fs.createWriteStream(dest);
+    const request = http.get(url, function (response) {
+        response.pipe(file);
+    });
+};
 const webConfig = {
     google: {
         key: siteConfig.google.key,
@@ -26,6 +33,8 @@ fs.writeFileSync(
     path.join(__dirname, "libs/src/compiler/config.ts"),
     "export const config = " + JSON.stringify(siteConfig)
 );
+
+download("https://raw.githubusercontent.com/microsoft/TypeScript/master/lib/lib.dom.d.ts", "./libs/js/lib.dom.d.ts");
 
 gulp.task("compile", function (done) {
     ["tsconfig.formsaver.json", "tsconfig.precompiler.json", "tsconfig.compiler.json", "tsconfig.build.json"].map(

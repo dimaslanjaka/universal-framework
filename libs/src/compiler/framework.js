@@ -1569,6 +1569,17 @@ Date.prototype.addHours2 = function (hrs) {
 function datetime_local(date) {
     return new Date(date).toJSON().slice(0, 19);
 }
+if (typeof document != "undefined") {
+    Document.prototype.listen = function (eventType, listener, options) {
+        if (options === void 0) { options = {}; }
+        if (this.addEventListener) {
+            this.addEventListener(eventType, listener, options);
+        }
+        else if (this.attachEvent) {
+            this.attachEvent("on" + eventType, listener, options);
+        }
+    };
+}
 Number.prototype.getMS = function (type) {
     var self = this;
     return this * 60 * 1000;
@@ -3267,6 +3278,9 @@ function b64DecodeUnicode(str) {
         .join(""));
 }
 /// <reference path="./globals.d.ts" />
+/// <reference path="./_Prototype-Document.ts" />
+/// <reference lib="dom" />
+/// <reference path="./lib.dom.d.ts" />
 if (!isnode() && typeof jQuery != "undefined") {
     (function (e) {
         // element with onload
@@ -3346,14 +3360,21 @@ if (!isnode() && typeof jQuery != "undefined") {
         }
     })();
 }
+/*
 if (!isnode()) {
-    document.addEventListener("click", function (event) {
-        if (event.target.matches("a[href], a[href] *")) {
-            event.preventDefault();
-            console.log("works fine");
-        }
-    }, false);
+    console.log("initializing document listener");
+    document.listen(
+        "click",
+        function (event) {
+            if (event.target.matches("[href]")) {
+                event.preventDefault();
+                console.log("works fine");
+            }
+        },
+        false
+    );
 }
+*/
 /**
  * Random HEX
  * @returns HEX number without HASH(#)

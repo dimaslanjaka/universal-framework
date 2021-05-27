@@ -3,6 +3,7 @@
 /// <reference types="datatables.net-buttons"/>
 /// <reference types="select2"/>
 /// <reference lib="dom" />
+/// <reference path="./lib.dom.d.ts" />
 
 declare const $: JQuery;
 
@@ -555,4 +556,28 @@ interface Document
      * method behaves exactly as if the value was specified as options's capture.
      */
     attachEvent: any;
+
+    /**
+     * See {@see Document.addEventListener}
+     */
+    listen<K extends keyof DocumentEventMap>(
+        type: K,
+        listener: (this: Document, ev: DocumentEventMap[K]) => any,
+        options?: boolean | AddEventListenerOptions
+    ): void;
+    listen(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | AddEventListenerOptions
+    ): void;
+    removeListener<K extends keyof DocumentEventMap>(
+        type: K,
+        listener: (this: Document, ev: DocumentEventMap[K]) => any,
+        options?: boolean | EventListenerOptions
+    ): void;
+    removeListener(
+        type: string,
+        listener: EventListenerOrEventListenerObject,
+        options?: boolean | EventListenerOptions
+    ): void;
 }

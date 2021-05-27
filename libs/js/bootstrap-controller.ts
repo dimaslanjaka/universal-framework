@@ -1,4 +1,7 @@
 /// <reference path="./globals.d.ts" />
+/// <reference path="./_Prototype-Document.ts" />
+/// <reference lib="dom" />
+/// <reference path="./lib.dom.d.ts" />
 
 if (!isnode() && typeof jQuery != "undefined") {
     (function (e) {
@@ -85,11 +88,13 @@ if (!isnode() && typeof jQuery != "undefined") {
     })();
 }
 
+/*
 if (!isnode()) {
-    document.addEventListener(
+    console.log("initializing document listener");
+    document.listen(
         "click",
         function (event) {
-            if (event.target.matches("a[href], a[href] *")) {
+            if (event.target.matches("[href]")) {
                 event.preventDefault();
                 console.log("works fine");
             }
@@ -97,6 +102,7 @@ if (!isnode()) {
         false
     );
 }
+*/
 
 /**
  * Random HEX

@@ -16,7 +16,7 @@ import { spawner } from "./spawner";
 export async function gulpWatch(done) {
     const files = ["./libs/js/*", "./libs/src/**/*", "./src/MVC/**/*", "./etc/**/*", "./" + config.app.views + "/**/*"];
 
-    let watch_timer: NodeJS.Timeout | null = null;
+    let watch_timer: NodeJS.Timeout | any = null;
     const watchf = gulp
         .watch(files, null)
         .on("change", function (file: string | Buffer | import("url").URL | string[]) {

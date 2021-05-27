@@ -41,7 +41,7 @@ var table = $("#list").DataTable({
             searchable: false,
             render: function (data, type, row, meta) {
                 console.log(row);
-                return `<div class="btn-group"><button class="btn btn-success" data-newtab="${row.href}"><i class="far fa-eye"></i></button></div>`;
+                return `<div class="btn-group"><button class="btn btn-success" href="${row.href}"><i class="far fa-eye"></i></button></div>`;
             },
         },
     ],
