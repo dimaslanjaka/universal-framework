@@ -52,7 +52,7 @@ export async function gulpWatch(done) {
             } else {
                 if (/\.(js|scss|css|less|ts)$/s.test(file)) {
                     // TODO: Compile js css on change
-                    if (!/\.min\.(js|css|ts)$/s.test(file)) {
+                    if (!/\.(min|module)\.(js|css|ts)$/s.test(file)) {
                         compileAssets(file, done);
                     }
                 }
@@ -96,7 +96,7 @@ export function watchView(done) {
         //console.log(canonical, file);
         if (/\.(js|scss|css|less|ts)$/s.test(canonical)) {
             // TODO: Compile js css on change
-            if (!/\.min\.(js|css|ts)$/s.test(canonical)) {
+            if (!/\.(min|module)\.(js|css|ts)$/s.test(canonical)) {
                 compileAssets(canonical);
                 if (canonical.endsWith("app.js")) {
                     setTimeout(() => {

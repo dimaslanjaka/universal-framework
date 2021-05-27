@@ -285,7 +285,7 @@ if (!function_exists('str_starts_with')) {
    */
   function str_starts_with($haystack, $needle)
   {
-    return '' !== (string) $needle && 0 === strncmp($haystack, $needle, strlen($needle));
+    return startsWith($haystack, $needle);
   }
 }
 
@@ -302,7 +302,7 @@ if (!function_exists('str_ends_with')) {
    */
   function str_ends_with($haystack, $needle)
   {
-    return '' !== $needle && substr($haystack, -strlen($needle)) === (string) $needle;
+    return endsWith($haystack, $needle);
   }
 }
 

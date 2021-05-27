@@ -101,7 +101,7 @@ class Blogger_Post
    *
    * @var string[]
    */
-  public $labels;
+  public $labels = [];
   /**
    * Etag.
    *
@@ -113,20 +113,20 @@ class Blogger_Post
   /**
    * Categories.
    *
-   * @var Category[]
+   * @var Category[]|Attributes[]
    */
-  public $category;
+  public $category = [];
   /**
    * Links Blogger.
    *
    * @var Link[]
    */
-  public $link;
+  public $link = [];
 
-  public function __construct($deserializedJson)
+  public function __construct($deserializedJson, $fromCache = false)
   {
     $this->set($deserializedJson);
-    $this->deserializedBy = 'config';
+    $this->deserializedBy = $fromCache ? 'curl' : 'config';
   }
 
   public function set($data)
@@ -186,6 +186,29 @@ class Blogger_Post
               unset($fixmod['gd$image']);
             }
             $value = $fixmod;
+          } else if ($key == 'app$control') {
+            if (isset($value['app$draft']['$t'])) {
+              $this->draft = 'yes' == $value['app$draft']['$t'] ? true : false;
+            }
+            continue;
+          } else if ($key == 'link') {
+            array_walk($value, function ($item) {
+              if (isset($item['rel']) && isset($item['href'])) {
+                if ('self' == $item['rel']) {
+                  $this->selfLink = $item['href'];
+                }
+                if ($item['rel'] == 'alternate') {
+                  $this->url = $item['href'];
+                }
+              }
+            });
+          } else if ($key == 'category') {
+            // modify label
+            array_walk($value, function (&$item) {
+              if (isset($item['term'])) {
+                $this->labels[] = $item['term'];
+              }
+            });
           }
         }
 

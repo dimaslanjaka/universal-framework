@@ -109,7 +109,7 @@ class blogger
     $url = 'https://www.blogger.com/feeds/' . $this->blogId . '/posts/default/' . $id . '?alt=json';
     $request = $this->curl2($url);
 
-    return new Blogger_Post($request);
+    return new Blogger_Post($request, $this->recrawl);
     /*try {
       $post = $this->posts->get($this->blogId, $id);
       e($post);
@@ -153,7 +153,7 @@ class blogger
       $posts = file::get($this->postsConfig, true);
       if (is_array($posts)) {
         foreach ($posts as $post) {
-          $this->result_get_post[] = new Blogger_Post($post);
+          $this->result_get_post[] = new Blogger_Post($post, $this->recrawl);
         }
       }
     }
@@ -183,7 +183,7 @@ class blogger
     if (isset($response['items'])) {
       //$this->result_get_post = array_replace($this->result_get_post, $response['items']);
       foreach ($response['items'] as $item) {
-        $this->result_get_post[] = new Blogger_Post($item);
+        $this->result_get_post[] = new Blogger_Post($item, $this->recrawl);
       }
     } else {
       e($response);

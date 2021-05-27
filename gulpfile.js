@@ -1,9 +1,3 @@
-try {
-    require("./dist/src/compiler/gulpfile");
-} catch (error) {
-    console.error(error);
-}
-
 const gulp = require("gulp");
 const fs = require("fs");
 const path = require("path");
@@ -28,13 +22,21 @@ const webConfig = {
     },
 };
 
-fs.writeFileSync(path.join(__dirname, "/libs/js/_conf.ts"), "const siteConfig = " + JSON.stringify(webConfig));
-fs.writeFileSync(
-    path.join(__dirname, "libs/src/compiler/config.ts"),
-    "export const config = " + JSON.stringify(siteConfig)
-);
+(async function () {
+    await fs.writeFileSync(
+        path.join(__dirname, "/libs/js/_conf.ts"),
+        "const siteConfig = " + JSON.stringify(webConfig)
+    );
+    await fs.writeFileSync(
+        path.join(__dirname, "libs/src/compiler/config.ts"),
+        "export const config = " + JSON.stringify(siteConfig)
+    );
 
-download("https://raw.githubusercontent.com/microsoft/TypeScript/master/lib/lib.dom.d.ts", "./libs/js/lib.dom.d.ts");
+    await download(
+        "https://raw.githubusercontent.com/microsoft/TypeScript/master/lib/lib.dom.d.ts",
+        "./libs/js/lib.dom.d.ts"
+    );
+})();
 
 gulp.task("compile", function (done) {
     ["tsconfig.formsaver.json", "tsconfig.precompiler.json", "tsconfig.compiler.json", "tsconfig.build.json"].map(
@@ -55,3 +57,9 @@ gulp.task("compile", function (done) {
         }
     );
 });
+
+try {
+    require("./dist/src/compiler/gulpfile");
+} catch (error) {
+    console.error(error);
+}

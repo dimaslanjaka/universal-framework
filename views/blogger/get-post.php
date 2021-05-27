@@ -16,8 +16,13 @@ if (isset($_REQUEST['blogid'])) {
   e(['error' => true, 'message' => 'Blog url empty']);
 }
 
-if (isset($_REQUEST['postid'])) {
+if (isset($_REQUEST['refresh'])) {
   $service->recrawl = true;
+}
+
+if (isset($_REQUEST['postid'])) {
   $post = $service->getPost($_REQUEST['postid']);
-  e($post);
+  if (is_array_object($post)) {
+    e($post);
+  }
 }

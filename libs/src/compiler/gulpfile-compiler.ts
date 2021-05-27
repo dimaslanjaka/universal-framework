@@ -37,7 +37,7 @@ export function compileAssets(item: string | Buffer, callback?: Function | any):
         } else if (item.endsWith(".css") && !item.endsWith(".min.css")) {
             //console.log(`Minify CSS ${core.filelog(item)}`);
             core.minCSS(item);
-        } else if (item.endsWith(".js") && !item.endsWith(".min.js")) {
+        } else if (item.endsWith(".js") && !item.endsWith(".min.js") && !item.endsWith(".module.js")) {
             if (item.endsWith("browserify.js")) {
                 console.log("Compile Browserify");
                 // TODO: Compile Browserify
