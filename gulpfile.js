@@ -9,6 +9,7 @@ const download = function (url, dest) {
     const request = http.get(url, function (response) {
         response.pipe(file);
     });
+    return request;
 };
 const webConfig = {
     google: {
@@ -22,21 +23,18 @@ const webConfig = {
     },
 };
 
-(async function () {
-    await fs.writeFileSync(
-        path.join(__dirname, "/libs/js/_conf.ts"),
-        "const siteConfig = " + JSON.stringify(webConfig)
-    );
-    await fs.writeFileSync(
+gulp.task("config", function (done) {
+    fs.writeFileSync(path.join(__dirname, "/libs/js/_conf.ts"), "const siteConfig = " + JSON.stringify(webConfig));
+    fs.writeFileSync(
         path.join(__dirname, "libs/src/compiler/config.ts"),
         "export const config = " + JSON.stringify(siteConfig)
     );
 
-    await download(
+    download(
         "https://raw.githubusercontent.com/microsoft/TypeScript/master/lib/lib.dom.d.ts",
         "./libs/js/lib.dom.d.ts"
-    );
-})();
+    )._final(done);
+});
 
 gulp.task("compile", function (done) {
     ["tsconfig.formsaver.json", "tsconfig.precompiler.json", "tsconfig.compiler.json", "tsconfig.build.json"].map(

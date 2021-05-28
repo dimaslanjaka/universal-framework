@@ -92,9 +92,9 @@ class helper
     $pageURL .= '://';
     if ('80' != $_SERVER['SERVER_PORT']) {
       $pageURL .= $_SERVER['SERVER_NAME']
-                . ':'
-                . $_SERVER['SERVER_PORT']
-                . $_SERVER['REQUEST_URI'];
+        . ':'
+        . $_SERVER['SERVER_PORT']
+        . $_SERVER['REQUEST_URI'];
     } else {
       $pageURL .= $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
     }
@@ -167,10 +167,15 @@ class helper
       $value = $value;
     }
 
-    if (!setcookie($name, $value, $expire, $path, $domain, $secure, $httponly)) {
-      return false;
+    $valid = !preg_match('/[=,; \t\r\n\013\014]/', $name);
+    if ($valid) {
+      if (!setcookie($name, $value, $expire, $path, $domain, $secure, $httponly)) {
+        return false;
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      error_log('Cookie names cannot contain any of the following \'=,; \t\r\n\013\014\' on ' . self::get_current_url());
     }
   }
 

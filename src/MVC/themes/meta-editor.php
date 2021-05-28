@@ -70,40 +70,40 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
 
 ?>
 
-<div class="card m-4 ">
-    <div class="card-body">
-        <h5 class="card-title text-center">Meta Editor</h5>
-        <div class="md-form">
-            <form action="" method="post" class="" id="meta-admin-toolbox-<?php echo uniqid(); ?>">
-                <input type="hidden" name="meta-config" value="<?php echo $meta_config; ?>">
-                <input type="hidden" name="meta-save" value="<?php echo random_int(1, 20); ?>">
-                <?php
-                foreach ($c_meta as $key => $value) {
-                  $typeMeta = 'text';
-                  $attributes = [];
-                  if (in_array($key, ['published', 'modified'])) {
-                    $typeMeta = 'datetime-local';
-                    $value = date("Y-m-d\TH:i:s", strtotime($value));
-                    $attributes[] = 'step="1"';
-                  }
-                  if (in_array($key, ['meta_config', 'content'])) {
-                    $attributes[] = 'readonly';
-                  }
+<div class="card mt-4">
+  <div class="card-body">
+    <h5 class="card-title text-center">Meta Editor</h5>
+    <div class="md-form">
+      <form action="" method="post" class="" id="meta-admin-toolbox-<?php echo uniqid(); ?>">
+        <input type="hidden" name="meta-config" value="<?php echo $meta_config; ?>">
+        <input type="hidden" name="meta-save" value="<?php echo random_int(1, 20); ?>">
+        <?php
+        foreach ($c_meta as $key => $value) {
+          $typeMeta = 'text';
+          $attributes = [];
+          if (in_array($key, ['published', 'modified'])) {
+            $typeMeta = 'datetime-local';
+            $value = date("Y-m-d\TH:i:s", strtotime($value));
+            $attributes[] = 'step="1"';
+          }
+          if (in_array($key, ['meta_config', 'content'])) {
+            $attributes[] = 'readonly';
+          }
 
-                  $inputhtml = '<input no-save="true" type="' . $typeMeta . '" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control" ' . implode(' ', $attributes) . '>
+          $inputhtml = '<input no-save="true" type="' . $typeMeta . '" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control" ' . implode(' ', $attributes) . '>
           <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>';
-                  if ('thumbnail' == $key) {
-                    $inputhtml = '<textarea cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea" no-save="true">' . $value . '</textarea>
+          if ('thumbnail' == $key) {
+            $inputhtml = '<textarea cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea" no-save="true">' . $value . '</textarea>
             <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>
             <div style="position: relative;"><img id="thumb-preview" src="' . $value . '" alt="preview" width="100%" height="180px" /><div class="card-label">preview</div></div>';
-                  } elseif ('desc' == $key) {
-                    $inputhtml = '<textarea no-save="true" cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea">' . $value . '</textarea>
+          } elseif ('desc' == $key) {
+            $inputhtml = '<textarea no-save="true" cols="30" rows="10" id="meta-' . $key . '" name="' . $key . '" value="' . $value . '" class="form-control md-textarea">' . $value . '</textarea>
             <label for="meta-' . $key . '">' . $key . ' (' . gettype($value) . ')</label>';
-                  } elseif (in_array($key, ['theme', 'share', 'comments', 'cache', 'obfuscate'])) {
-                    if ('boolean' != gettype($value)) {
-                      $value = false;
-                    }
-                    echo '
+          } elseif (in_array($key, ['theme', 'share', 'comments', 'cache', 'obfuscate'])) {
+            if ('boolean' != gettype($value)) {
+              $value = false;
+            }
+            echo '
             <select no-save="true" name="' . $key . '" class="mdb-select md-form colorful-select dropdown-primary" id="meta-' . $key . '">
               <option value="" disabled>Choose your option</option>
               <option value="true" ' . (true === $value ? 'selected' : '') . '>True</option>
@@ -111,26 +111,26 @@ if (isset($_POST['meta-save']) && helper::is_header('Save-Metadata')) {
             </select>
             <label class="mdb-main-label">' . $key . ' (' . gettype($value) . ')</label>
             ';
-                    continue;
-                  }
-                  echo '
+            continue;
+          }
+          echo '
           <div class="md-form">
             ' . $inputhtml . '
           </div>';
-                }
-                //echo "<pre>" . json::json($_SESSION, false) . "</pre>";
-                ?>
-                <div class="form-group mb-2">
-                    <button type="submit" class="btn btn-primary">Save meta</button>
-                </div>
-            </form>
+        }
+        //echo "<pre>" . json::json($_SESSION, false) . "</pre>";
+        ?>
+        <div class="form-group mb-2">
+          <button type="submit" class="btn btn-primary">Save meta</button>
         </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <script async="true">
-    let script = document.createElement('script');
-    script.src = "<?php echo path2url(__DIR__ . '/admin.min.js'); ?>";
-    script.async = false;
-    document.body.append(script); // (*)
+  let script = document.createElement('script');
+  script.src = "<?php echo path2url(__DIR__ . '/admin.min.js'); ?>";
+  script.async = false;
+  document.body.append(script); // (*)
 </script>

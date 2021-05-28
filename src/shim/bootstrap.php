@@ -241,6 +241,21 @@ function e()
   exit;
 }
 
+/**
+ * Exit JSON Clear Output Buffers
+ *
+ * @param mixed ...$dump
+ * @return void
+ */
+function exitDump(...$dump)
+{
+  if (ob_get_level()) {
+    ob_end_clean();
+    ob_start();
+  }
+  e($dump);
+}
+
 if (!function_exists('is_json')) {
   /**
    * Check is json string.

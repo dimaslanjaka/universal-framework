@@ -10,7 +10,7 @@ if (isset($_REQUEST['fetch'])) {
       $path = $file['fullpath'];
       $name = basename($path, '.html');
       $config = file::get(__DIR__ . '/src/' . $name . '.json', true);
-      $result[] = ['name' => $name, 'href' => "/html-builder/index?render=$name", 'config' => $config];
+      $result[] = ['name' => $name, 'config' => $config];
     }
   }
   e($result);

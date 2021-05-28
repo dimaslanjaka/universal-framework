@@ -4,7 +4,7 @@
 /// <reference path="./lib.dom.d.ts" />
 
 if (!isnode() && typeof jQuery != "undefined") {
-    (function (e) {
+    (function ($) {
         // element with onload
         $("[onload]").each(function (i, el) {
             eval(el.getAttribute("onload"));
@@ -37,11 +37,22 @@ if (!isnode() && typeof jQuery != "undefined") {
             }
         });
 
+        // fix tab-panel
+        $('a[data-toggle="tab"]').on("click", function (e) {
+            let id = $(this).attr("id");
+            let target = $(`[aria-labelledby="${id}"]`);
+            let tabContent = target.parent("[class*='tab-content']");
+            let tabPane = tabContent.children("div[class*='tab-pane']");
+            tabPane.each(function () {
+                $(this).removeClass("active show");
+            });
+        });
+
         //href hyperlink
-        $(document).on("click", "[href]", function (e) {
+        $(document).on("click", "[data-href]", function (e) {
             e.preventDefault();
-            let href = $(this).attr("href");
-            console.log("click href " + href);
+            let href = $(this).data("href");
+            //console.log("click href " + href);
             location.href = href;
         });
 
@@ -85,7 +96,7 @@ if (!isnode() && typeof jQuery != "undefined") {
                 });
             });
         }
-    })();
+    })(jQuery);
 }
 
 /*

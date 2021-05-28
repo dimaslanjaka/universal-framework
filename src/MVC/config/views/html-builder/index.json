@@ -1,15 +1,16 @@
 {
-    "published": "05/27/21 4:10 AM",
-    "modified": "05/27/21 4:10 AM",
+    "published": "2021-05-27T04:10:00",
+    "modified": "2021-05-27T04:10:00",
     "thumbnail": "https://1.bp.blogspot.com/-rkXCUBbNXyw/XfY0hwoFu5I/AAAAAAAAAhw/BUyeKW5BtMoIJLlPUcPSdqGZBQRncXjDQCK4BGAYYCw/s600/PicsArt_09-09-12.12.25.jpg",
     "theme": true,
-    "title": "/html-builder/index",
+    "title": "Editor HB",
     "share": false,
     "desc": "",
-    "content": "\\views\\html-builder\\index.php",
-    "robot": "noindex, nofollow",
+    "content": "D:\\Workspaces\\PHP\\universal-framework\\views\\html-builder\\index.php",
+    "robot": "index, follow",
     "obfuscate": false,
     "cache": false,
     "label": "default",
-    "meta_config": null
+    "meta_config": "D:\\Workspaces\\PHP\\universal-framework\\src\\MVC\\config\\views\\html-builder\\index.json",
+    "comments": false
 }
