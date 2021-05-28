@@ -79,6 +79,7 @@ function aesDecrypt(encrypted, key) {
         format: CryptoJSAesJson,
     }).toString(CryptoJS.enc.Utf8));
 }
+/// <reference types="codemirror" />
 /**
  * CodeMirror loader
  * @param id
@@ -129,7 +130,7 @@ function loadCodemirror(element, mode, theme) {
         var conf = {
             url: scripts,
             options: {
-                type: "text/javascript"
+                type: "text/javascript",
             },
             callback: function () {
                 loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
@@ -1231,11 +1232,25 @@ function get_unique_id() {
  * get url parameter by name
  * @param name parameter name
  * @param url url target, null for current location.href
+ * @see https://stackoverflow.com/a/901144
+ * @returns
+ * @example
+ * ```js
+ * // query string: ?foo=lorem&bar=&baz
+ * var foo = getParameterByName('foo'); // "lorem"
+ * var bar = getParameterByName('bar'); // "" (present with empty value)
+ * var baz = getParameterByName('baz'); // "" (present with no value)
+ * var qux = getParameterByName('qux'); // null (absent)
+ * ```
  */
 function getParameterByName(name, url) {
+    if (url === void 0) { url = null; }
     if (typeof URLSearchParams !== "undefined") {
         if (!window.location.search) {
             url = window.location.href;
+        }
+        else {
+            url = window.location.search;
         }
         var urlParams = new URLSearchParams(url);
         return urlParams.get(name);
@@ -6719,7 +6734,8 @@ function forceSSL() {
 }
 /**
  * json decode fails return false
- * @param  obj
+ * @param obj
+ * @returns
  */
 function json_decode(obj) {
     try {

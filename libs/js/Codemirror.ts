@@ -1,3 +1,5 @@
+/// <reference types="codemirror" />
+
 /**
  * CodeMirror loader
  * @param id
@@ -47,7 +49,7 @@ function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], t
         const conf: LoadScriptOptions = {
             url: scripts,
             options: {
-                type: "text/javascript"
+                type: "text/javascript",
             },
             callback: function () {
                 loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {

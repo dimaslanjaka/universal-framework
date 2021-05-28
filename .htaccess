@@ -16,8 +16,41 @@ RewriteCond %{HTTP_HOST} ^blog\.php\.io [NC]
 RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
 
 <IfModule mod_headers.c>
+  # set allow cors
   <FilesMatch "\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map|ttf|otf|eot|svg)$">
     Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+
+  # allow index.php
+  <FilesMatch "index\.php$">
+    Order Allow,Deny
+    Allow from all
+  </FilesMatch>
+
+  # restrict direct access files
+  <FilesMatch "\.(?:inc|ini|sh|py|java|jar|har|json|bat|zip|tgz|tar|rar|txt|htaccess)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+
+  # javascript
+  <FilesMatch "\.(?:mjs|js)$">
+    Order Allow,Deny
+    Allow from all
+    Header set Content-type "application/javascript; charset=utf-8"
+  </FilesMatch>
+
+  # allow static web files
+  <FilesMatch ".*\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map)$">
+    Order Allow,Deny
+    Allow from all
+  </FilesMatch>
+
+  # allow site manifest
+  <FilesMatch "(manifest\.json)$">
+    Order Allow,Deny
+    Allow from all
+    Header set Content-type "application/json; charset=utf-8"
   </FilesMatch>
 </IfModule>
 
@@ -38,26 +71,6 @@ RewriteRule ^(.*)$ etc/blog/index.php [NC,QSA]
     Header edit Set-Cookie ^(.*)$ $1;SameSite=None;Secure
   </If>
 </ifmodule>
-
-<FilesMatch "index\.php$">
-  Order Allow,Deny
-  Allow from all
-</FilesMatch>
-
-<FilesMatch "\.(?:inc|ini|sh|py|java|jar|har|json|bat|zip|tgz|tar|rar|txt|htaccess)$">
-  Order allow,deny
-  Deny from all
-</FilesMatch>
-
-<FilesMatch ".*\.(css|js|png|jpg|gif|jpeg|bmp|ico|woff|woff2|otf|map)$">
-  Order Allow,Deny
-  Allow from all
-</FilesMatch>
-
-<FilesMatch "(manifest\.json)$">
-  Order Allow,Deny
-  Allow from all
-</FilesMatch>
 
 # BEGIN Expire headers
 <IfModule mod_expires.c>

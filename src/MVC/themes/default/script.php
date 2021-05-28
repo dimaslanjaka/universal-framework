@@ -175,6 +175,7 @@ if (isset($content) && file_exists($content)) {
   if (file_exists($contentModule)) {
     $getModule = file::get($contentModule);
     if (!empty($getModule)) {
+      $getModule = str_replace('import prettier from "prettier";', 'import prettier from "/node_modules/prettier/esm/standalone.mjs";', $getModule);
       echo "<script type='module'>\n$getModule\n</script>\n";
     }
   }

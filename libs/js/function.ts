@@ -52,9 +52,10 @@ function forceSSL() {
 
 /**
  * json decode fails return false
- * @param  obj
+ * @param obj
+ * @returns
  */
-function json_decode(obj: string) {
+function json_decode(obj: string): boolean | object {
     try {
         return JSON.parse(obj);
     } catch (error) {

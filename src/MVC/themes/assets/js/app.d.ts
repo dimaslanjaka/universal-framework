@@ -328,8 +328,18 @@ declare function get_unique_id(): string | Object;
  * get url parameter by name
  * @param name parameter name
  * @param url url target, null for current location.href
+ * @see https://stackoverflow.com/a/901144
+ * @returns
+ * @example
+ * ```js
+ * // query string: ?foo=lorem&bar=&baz
+ * var foo = getParameterByName('foo'); // "lorem"
+ * var bar = getParameterByName('bar'); // "" (present with empty value)
+ * var baz = getParameterByName('baz'); // "" (present with no value)
+ * var qux = getParameterByName('qux'); // null (absent)
+ * ```
  */
-declare function getParameterByName(name: string, url: string | null): string;
+declare function getParameterByName(name: string, url?: string | null): string;
 /**
  * Autofill datetime-local value
  */
@@ -1664,9 +1674,10 @@ declare function is_localhost(): RegExpMatchArray;
 declare function forceSSL(): void;
 /**
  * json decode fails return false
- * @param  obj
+ * @param obj
+ * @returns
  */
-declare function json_decode(obj: string): any;
+declare function json_decode(obj: string): boolean | object;
 interface HTMLScriptAttribute {
     async?: boolean;
     defer?: boolean;

@@ -16,7 +16,7 @@
         "checkJs": false,
         "watch": false,
         "typeRoots": ["./node_modules/@types", "./libs/js"],
-        "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr", "vuepress-types"],
+        "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr", "vuepress-types", "codemirror"],
         "target": "ES5",
         "lib": [
             "DOM",
