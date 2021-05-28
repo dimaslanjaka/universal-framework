@@ -52,85 +52,287 @@ function aesDecrypt(encrypted, key) {
         format: CryptoJSAesJson,
     }).toString(CryptoJS.enc.Utf8));
 }
-/// <reference types="codemirror" />
-/**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
- */
-function loadCodemirror(options) {
-    let defaultOpt = { mode: null, theme: null, override: {} };
-    options = Object.assign(defaultOpt, options);
-    let mode = options.mode;
-    if (!(options.element instanceof HTMLTextAreaElement)) {
-        console.error("element must be instanceof HTMLTextAreaElement");
-        return null;
+const CodeMirrorAddon = {
+    "CodeMirror-comment-comment": {
+        "js": "/node_modules/codemirror/addon/comment/comment.js"
+    },
+    "CodeMirror-comment-continuecomment": {
+        "js": "/node_modules/codemirror/addon/comment/continuecomment.js"
+    },
+    "CodeMirror-dialog-dialog": {
+        "css": "/node_modules/codemirror/addon/dialog/dialog.css",
+        "js": "/node_modules/codemirror/addon/dialog/dialog.js"
+    },
+    "CodeMirror-display-autorefresh": {
+        "js": "/node_modules/codemirror/addon/display/autorefresh.js"
+    },
+    "CodeMirror-display-fullscreen": {
+        "css": "/node_modules/codemirror/addon/display/fullscreen.css",
+        "js": "/node_modules/codemirror/addon/display/fullscreen.js"
+    },
+    "CodeMirror-display-panel": {
+        "js": "/node_modules/codemirror/addon/display/panel.js"
+    },
+    "CodeMirror-display-placeholder": {
+        "js": "/node_modules/codemirror/addon/display/placeholder.js"
+    },
+    "CodeMirror-display-rulers": {
+        "js": "/node_modules/codemirror/addon/display/rulers.js"
+    },
+    "CodeMirror-edit-closebrackets": {
+        "js": "/node_modules/codemirror/addon/edit/closebrackets.js"
+    },
+    "CodeMirror-edit-closetag": {
+        "js": "/node_modules/codemirror/addon/edit/closetag.js"
+    },
+    "CodeMirror-edit-continuelist": {
+        "js": "/node_modules/codemirror/addon/edit/continuelist.js"
+    },
+    "CodeMirror-edit-matchbrackets": {
+        "js": "/node_modules/codemirror/addon/edit/matchbrackets.js"
+    },
+    "CodeMirror-edit-matchtags": {
+        "js": "/node_modules/codemirror/addon/edit/matchtags.js"
+    },
+    "CodeMirror-edit-trailingspace": {
+        "js": "/node_modules/codemirror/addon/edit/trailingspace.js"
+    },
+    "CodeMirror-fold-brace-fold": {
+        "js": "/node_modules/codemirror/addon/fold/brace-fold.js"
+    },
+    "CodeMirror-fold-comment-fold": {
+        "js": "/node_modules/codemirror/addon/fold/comment-fold.js"
+    },
+    "CodeMirror-fold-foldcode": {
+        "js": "/node_modules/codemirror/addon/fold/foldcode.js"
+    },
+    "CodeMirror-fold-foldgutter": {
+        "css": "/node_modules/codemirror/addon/fold/foldgutter.css",
+        "js": "/node_modules/codemirror/addon/fold/foldgutter.js"
+    },
+    "CodeMirror-fold-indent-fold": {
+        "js": "/node_modules/codemirror/addon/fold/indent-fold.js"
+    },
+    "CodeMirror-fold-markdown-fold": {
+        "js": "/node_modules/codemirror/addon/fold/markdown-fold.js"
+    },
+    "CodeMirror-fold-xml-fold": {
+        "js": "/node_modules/codemirror/addon/fold/xml-fold.js"
+    },
+    "CodeMirror-hint-anyword-hint": {
+        "js": "/node_modules/codemirror/addon/hint/anyword-hint.js"
+    },
+    "CodeMirror-hint-css-hint": {
+        "js": "/node_modules/codemirror/addon/hint/css-hint.js"
+    },
+    "CodeMirror-hint-html-hint": {
+        "js": "/node_modules/codemirror/addon/hint/html-hint.js"
+    },
+    "CodeMirror-hint-javascript-hint": {
+        "js": "/node_modules/codemirror/addon/hint/javascript-hint.js"
+    },
+    "CodeMirror-hint-show-hint": {
+        "css": "/node_modules/codemirror/addon/hint/show-hint.css",
+        "js": "/node_modules/codemirror/addon/hint/show-hint.js"
+    },
+    "CodeMirror-hint-sql-hint": {
+        "js": "/node_modules/codemirror/addon/hint/sql-hint.js"
+    },
+    "CodeMirror-hint-xml-hint": {
+        "js": "/node_modules/codemirror/addon/hint/xml-hint.js"
+    },
+    "CodeMirror-lint-coffeescript-lint": {
+        "js": "/node_modules/codemirror/addon/lint/coffeescript-lint.js"
+    },
+    "CodeMirror-lint-css-lint": {
+        "js": "/node_modules/codemirror/addon/lint/css-lint.js"
+    },
+    "CodeMirror-lint-html-lint": {
+        "js": "/node_modules/codemirror/addon/lint/html-lint.js"
+    },
+    "CodeMirror-lint-javascript-lint": {
+        "js": "/node_modules/codemirror/addon/lint/javascript-lint.js"
+    },
+    "CodeMirror-lint-json-lint": {
+        "js": "/node_modules/codemirror/addon/lint/json-lint.js"
+    },
+    "CodeMirror-lint-lint": {
+        "css": "/node_modules/codemirror/addon/lint/lint.css",
+        "js": "/node_modules/codemirror/addon/lint/lint.js"
+    },
+    "CodeMirror-lint-yaml-lint": {
+        "js": "/node_modules/codemirror/addon/lint/yaml-lint.js"
+    },
+    "CodeMirror-merge-merge": {
+        "css": "/node_modules/codemirror/addon/merge/merge.css",
+        "js": "/node_modules/codemirror/addon/merge/merge.js"
+    },
+    "CodeMirror-mode-loadmode": {
+        "js": "/node_modules/codemirror/addon/mode/loadmode.js"
+    },
+    "CodeMirror-mode-multiplex": {
+        "js": "/node_modules/codemirror/addon/mode/multiplex.js"
+    },
+    "CodeMirror-mode-multiplex_test": {
+        "js": "/node_modules/codemirror/addon/mode/multiplex_test.js"
+    },
+    "CodeMirror-mode-overlay": {
+        "js": "/node_modules/codemirror/addon/mode/overlay.js"
+    },
+    "CodeMirror-mode-simple": {
+        "js": "/node_modules/codemirror/addon/mode/simple.js"
+    },
+    "CodeMirror-runmode-colorize": {
+        "js": "/node_modules/codemirror/addon/runmode/colorize.js"
+    },
+    "CodeMirror-runmode-runmode-standalone": {
+        "js": "/node_modules/codemirror/addon/runmode/runmode-standalone.js"
+    },
+    "CodeMirror-runmode-runmode": {
+        "js": "/node_modules/codemirror/addon/runmode/runmode.js"
+    },
+    "CodeMirror-runmode-runmode.node": {
+        "js": "/node_modules/codemirror/addon/runmode/runmode.node.js"
+    },
+    "CodeMirror-scroll-annotatescrollbar": {
+        "js": "/node_modules/codemirror/addon/scroll/annotatescrollbar.js"
+    },
+    "CodeMirror-scroll-scrollpastend": {
+        "js": "/node_modules/codemirror/addon/scroll/scrollpastend.js"
+    },
+    "CodeMirror-scroll-simplescrollbars": {
+        "css": "/node_modules/codemirror/addon/scroll/simplescrollbars.css",
+        "js": "/node_modules/codemirror/addon/scroll/simplescrollbars.js"
+    },
+    "CodeMirror-search-jump-to-line": {
+        "js": "/node_modules/codemirror/addon/search/jump-to-line.js"
+    },
+    "CodeMirror-search-match-highlighter": {
+        "js": "/node_modules/codemirror/addon/search/match-highlighter.js"
+    },
+    "CodeMirror-search-matchesonscrollbar": {
+        "css": "/node_modules/codemirror/addon/search/matchesonscrollbar.css",
+        "js": "/node_modules/codemirror/addon/search/matchesonscrollbar.js"
+    },
+    "CodeMirror-search-search": {
+        "js": "/node_modules/codemirror/addon/search/search.js"
+    },
+    "CodeMirror-search-searchcursor": {
+        "js": "/node_modules/codemirror/addon/search/searchcursor.js"
+    },
+    "CodeMirror-selection-active-line": {
+        "js": "/node_modules/codemirror/addon/selection/active-line.js"
+    },
+    "CodeMirror-selection-mark-selection": {
+        "js": "/node_modules/codemirror/addon/selection/mark-selection.js"
+    },
+    "CodeMirror-selection-selection-pointer": {
+        "js": "/node_modules/codemirror/addon/selection/selection-pointer.js"
+    },
+    "CodeMirror-tern-tern": {
+        "css": "/node_modules/codemirror/addon/tern/tern.css",
+        "js": "/node_modules/codemirror/addon/tern/tern.js"
+    },
+    "CodeMirror-tern-worker": {
+        "js": "/node_modules/codemirror/addon/tern/worker.js"
+    },
+    "CodeMirror-wrap-hardwrap": {
+        "js": "/node_modules/codemirror/addon/wrap/hardwrap.js"
     }
+};
+/// <reference types="codemirror" />
+/// <reference path="./Codemirror.d.ts" />
+/// <reference path="./Codemirror-var.ts" />
+let loadedTheme = null;
+/**
+ * CodeMirror script and style loader
+ * @param opt
+ */
+function loadCodeMirrorScript(opt) {
     const scripts = ["/node_modules/codemirror/lib/codemirror.js"];
-    if (mode) {
-        if (typeof mode == "string") {
-            scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
-        }
-        else if (Array.isArray(mode)) {
-            mode.forEach(function (m) {
-                scripts.push(`/node_modules/codemirror/mode/${m}/${m}.js`);
+    if (opt.mode) {
+        if (Array.isArray(opt.mode)) {
+            opt.mode.forEach(function (mode) {
+                scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
             });
         }
     }
-    if (!options.theme) {
-        const themes = [
-            "3024-night",
-            "abcdef",
-            "ambiance",
-            "base16-dark",
-            "bespin",
-            "blackboard",
-            "cobalt",
-            "colorforth",
-            "dracula",
-            "erlang-dark",
-            "hopscotch",
-            "icecoder",
-            "isotope",
-            "lesser-dark",
-            "liquibyte",
-            "material",
-            "mbo",
-            "mdn-like",
-            "monokai",
-        ];
-        options.theme = themes[Math.floor(Math.random() * themes.length)];
+    if (opt.addons) {
+        if (Array.isArray(opt.addons)) {
+            opt.addons.forEach(function (addon) {
+                let ons = CodeMirrorAddon[addon];
+                if (ons.hasOwnProperty("js")) {
+                    scripts.push(ons.js);
+                }
+            });
+        }
     }
-    framework().async(function () {
-        const conf = {
-            url: scripts,
-            options: {
-                type: "text/javascript",
-            },
-            callback: function () {
-                loadCSS(["/node_modules/codemirror/lib/codemirror.css", "/assets/css/codemirror/style.css"], function () {
-                    let defaultOverride = {
-                        lineNumbers: true,
-                        mode: mode,
-                        /*
-                     smartIndent: true,
-                     lineWrapping: true,
-                     showCursorWhenSelecting: true,
-                     matchHighlight: true,*/
-                    };
-                    const editor = CodeMirror.fromTextArea(options.element, Object.assign(defaultOpt, defaultOverride));
-                    loadCSS(`/node_modules/codemirror/theme/${options.theme}.css`, function () {
-                        editor.setOption("theme", options.theme);
-                        if (typeof options.callback == "function") {
-                            options.callback(options.element);
-                        }
-                    });
-                });
-            },
-        };
-        LoadScript(conf);
+    // load style codemirror
+    loadCSS([
+        "/node_modules/codemirror/lib/codemirror.css",
+        "/assets/css/codemirror/style.css",
+        `/node_modules/codemirror/theme/${opt.theme}.css`,
+    ], function () {
+        // set loadedTheme
+        loadedTheme = opt.theme;
     });
+    // load script codemirror
+    const conf = {
+        url: scripts,
+        options: {
+            type: "text/javascript",
+        },
+        callback: opt.callback,
+    };
+    LoadScript(conf);
+}
+/**
+ * CodeMirror element initializer
+ * @param opt
+ */
+function initCodeMirror(opt) {
+    let defaultOverride = {
+        lineNumbers: true,
+        mode: opt.mode,
+        selectionsMayTouch: true,
+        /*
+         smartIndent: true,
+         lineWrapping: true,
+         showCursorWhenSelecting: true,
+         matchHighlight: true,*/
+    };
+    defaultOverride = Object.assign(defaultOverride, opt.override);
+    const editor = CodeMirror.fromTextArea(opt.element, defaultOverride);
+    if (typeof loadedTheme == "string")
+        editor.setOption("theme", loadedTheme);
+    if (typeof opt.callback == "function") {
+        opt.callback(opt.element);
+    }
+    return editor;
+}
+function codeMirrorRandomTheme() {
+    const themes = [
+        "3024-night",
+        "abcdef",
+        "ambiance",
+        "base16-dark",
+        "bespin",
+        "blackboard",
+        "cobalt",
+        "colorforth",
+        "dracula",
+        "erlang-dark",
+        "hopscotch",
+        "icecoder",
+        "isotope",
+        "lesser-dark",
+        "liquibyte",
+        "material",
+        "mbo",
+        "mdn-like",
+        "monokai",
+    ];
+    return themes[Math.floor(Math.random() * themes.length)];
 }
 /**
  * Cookie Helper
@@ -6780,37 +6982,39 @@ const loadedCss = [];
  * @param callback
  */
 function loadCSS(href, callback) {
+    let hrefs;
     if (typeof href == "string") {
-        href = [href];
+        hrefs = [href];
     }
-    const htm = document.querySelector("html");
-    const cache = htm.getAttribute("cache").toString().trim();
-    if (Array.isArray(href)) {
-        const hrefs = href;
-        if (!loadedCss.contains(hrefs[0])) {
-            const link = document.createElement("link");
-            link.media = "print";
-            link.rel = "stylesheet";
-            link.href = cache.length ? hrefs[0] + "?cache=" + cache : hrefs[0];
-            link.onload = function () {
-                link.media = "all";
-                hrefs.shift();
-                loadedCss.add(hrefs[0]);
-                if (!hrefs.length) {
-                    if (typeof callback == "function") {
-                        callback(link, href);
-                    }
-                }
-                else {
-                    loadCSS(hrefs, callback);
-                }
-            };
-            document.head.appendChild(link);
-        }
-        else {
+    else {
+        hrefs = href;
+    }
+    if (typeof hrefs[0] == "string" && !loadedCss.contains(hrefs[0])) {
+        const link = document.createElement("link");
+        link.media = "print";
+        link.rel = "stylesheet";
+        link.href = hrefs[0];
+        link.onload = function () {
+            link.media = "all";
+            // add to index
+            loadedCss.add(hrefs[0]);
+            // remove added item to index
             hrefs.shift();
-            loadCSS(hrefs, callback);
-        }
+            // if the items is still there
+            if (!hrefs.length) {
+                if (typeof callback == "function") {
+                    callback(link, href);
+                }
+            }
+            else {
+                loadCSS(hrefs, callback);
+            }
+        };
+        document.head.appendChild(link);
+    }
+    else {
+        hrefs.shift();
+        loadCSS(hrefs, callback);
     }
 }
 const guxid = (Math.random().toString(16) + "000000000").substr(2, 8);

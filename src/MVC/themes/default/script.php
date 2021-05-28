@@ -55,7 +55,8 @@ function mapJS($js)
     if (!$already && $item = realpath($item)) {
       $get = file::get($item);
       if (!empty($get)) {
-        echo "<script filename='$item'>\n$get\n</script>\n";
+        $itemId = basename($item);
+        echo "<script filename='$itemId'>\n$get\n</script>\n";
         $already = true;
       }
     }

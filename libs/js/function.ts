@@ -194,34 +194,36 @@ const loadedCss: string[] = [];
  * @param callback
  */
 function loadCSS(href: string | string[], callback?: any) {
+    let hrefs: string[];
     if (typeof href == "string") {
-        href = [href];
+        hrefs = [href];
+    } else {
+        hrefs = href;
     }
-    const htm = document.querySelector("html");
-    const cache = htm.getAttribute("cache").toString().trim();
-    if (Array.isArray(href)) {
-        const hrefs = href;
-        if (!loadedCss.contains(hrefs[0])) {
-            const link = document.createElement("link");
-            link.media = "print";
-            link.rel = "stylesheet";
-            link.href = cache.length ? hrefs[0] + "?cache=" + cache : hrefs[0];
-            link.onload = function () {
-                link.media = "all";
-                hrefs.shift();
-                loadedCss.add(hrefs[0]);
-                if (!hrefs.length) {
-                    if (typeof callback == "function") {
-                        callback(link, href);
-                    }
-                } else {
-                    loadCSS(hrefs, callback);
-                }
-            };
-            document.head.appendChild(link);
-        } else {
+
+    if (typeof hrefs[0] == "string" && !loadedCss.contains(hrefs[0])) {
+        const link = document.createElement("link");
+        link.media = "print";
+        link.rel = "stylesheet";
+        link.href = hrefs[0];
+        link.onload = function () {
+            link.media = "all";
+            // add to index
+            loadedCss.add(hrefs[0]);
+            // remove added item to index
             hrefs.shift();
-            loadCSS(hrefs, callback);
-        }
+            // if the items is still there
+            if (!hrefs.length) {
+                if (typeof callback == "function") {
+                    callback(link, href);
+                }
+            } else {
+                loadCSS(hrefs, callback);
+            }
+        };
+        document.head.appendChild(link);
+    } else {
+        hrefs.shift();
+        loadCSS(hrefs, callback);
     }
 }

@@ -1,3 +1,9 @@
+/* Wrap */
 .CodeMirror-wrap pre {
     word-break: break-word;
+}
+/* Auto resize */
+.CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
 }

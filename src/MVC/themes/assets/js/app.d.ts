@@ -1,3 +1,4 @@
+/// <reference path="../../../../../libs/js/Codemirror.d.ts" />
 /// <reference path="../../../../../libs/js/globals.d.ts" />
 /// <reference path="../../../../../libs/js/Object.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/_a_Object.d.ts" />
@@ -31,19 +32,220 @@ declare namespace CryptoJSAesJson {
     function stringify(cipherParams: any): string;
     function parse(jsonStr: any): CryptoJS.lib.CipherParams;
 }
+declare const CodeMirrorAddon: {
+    "CodeMirror-comment-comment": {
+        js: string;
+    };
+    "CodeMirror-comment-continuecomment": {
+        js: string;
+    };
+    "CodeMirror-dialog-dialog": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-display-autorefresh": {
+        js: string;
+    };
+    "CodeMirror-display-fullscreen": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-display-panel": {
+        js: string;
+    };
+    "CodeMirror-display-placeholder": {
+        js: string;
+    };
+    "CodeMirror-display-rulers": {
+        js: string;
+    };
+    "CodeMirror-edit-closebrackets": {
+        js: string;
+    };
+    "CodeMirror-edit-closetag": {
+        js: string;
+    };
+    "CodeMirror-edit-continuelist": {
+        js: string;
+    };
+    "CodeMirror-edit-matchbrackets": {
+        js: string;
+    };
+    "CodeMirror-edit-matchtags": {
+        js: string;
+    };
+    "CodeMirror-edit-trailingspace": {
+        js: string;
+    };
+    "CodeMirror-fold-brace-fold": {
+        js: string;
+    };
+    "CodeMirror-fold-comment-fold": {
+        js: string;
+    };
+    "CodeMirror-fold-foldcode": {
+        js: string;
+    };
+    "CodeMirror-fold-foldgutter": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-fold-indent-fold": {
+        js: string;
+    };
+    "CodeMirror-fold-markdown-fold": {
+        js: string;
+    };
+    "CodeMirror-fold-xml-fold": {
+        js: string;
+    };
+    "CodeMirror-hint-anyword-hint": {
+        js: string;
+    };
+    "CodeMirror-hint-css-hint": {
+        js: string;
+    };
+    "CodeMirror-hint-html-hint": {
+        js: string;
+    };
+    "CodeMirror-hint-javascript-hint": {
+        js: string;
+    };
+    "CodeMirror-hint-show-hint": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-hint-sql-hint": {
+        js: string;
+    };
+    "CodeMirror-hint-xml-hint": {
+        js: string;
+    };
+    "CodeMirror-lint-coffeescript-lint": {
+        js: string;
+    };
+    "CodeMirror-lint-css-lint": {
+        js: string;
+    };
+    "CodeMirror-lint-html-lint": {
+        js: string;
+    };
+    "CodeMirror-lint-javascript-lint": {
+        js: string;
+    };
+    "CodeMirror-lint-json-lint": {
+        js: string;
+    };
+    "CodeMirror-lint-lint": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-lint-yaml-lint": {
+        js: string;
+    };
+    "CodeMirror-merge-merge": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-mode-loadmode": {
+        js: string;
+    };
+    "CodeMirror-mode-multiplex": {
+        js: string;
+    };
+    "CodeMirror-mode-multiplex_test": {
+        js: string;
+    };
+    "CodeMirror-mode-overlay": {
+        js: string;
+    };
+    "CodeMirror-mode-simple": {
+        js: string;
+    };
+    "CodeMirror-runmode-colorize": {
+        js: string;
+    };
+    "CodeMirror-runmode-runmode-standalone": {
+        js: string;
+    };
+    "CodeMirror-runmode-runmode": {
+        js: string;
+    };
+    "CodeMirror-runmode-runmode.node": {
+        js: string;
+    };
+    "CodeMirror-scroll-annotatescrollbar": {
+        js: string;
+    };
+    "CodeMirror-scroll-scrollpastend": {
+        js: string;
+    };
+    "CodeMirror-scroll-simplescrollbars": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-search-jump-to-line": {
+        js: string;
+    };
+    "CodeMirror-search-match-highlighter": {
+        js: string;
+    };
+    "CodeMirror-search-matchesonscrollbar": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-search-search": {
+        js: string;
+    };
+    "CodeMirror-search-searchcursor": {
+        js: string;
+    };
+    "CodeMirror-selection-active-line": {
+        js: string;
+    };
+    "CodeMirror-selection-mark-selection": {
+        js: string;
+    };
+    "CodeMirror-selection-selection-pointer": {
+        js: string;
+    };
+    "CodeMirror-tern-tern": {
+        css: string;
+        js: string;
+    };
+    "CodeMirror-tern-worker": {
+        js: string;
+    };
+    "CodeMirror-wrap-hardwrap": {
+        js: string;
+    };
+};
+declare let loadedTheme: any;
 /**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
+ * CodeMirror script and style loader
+ * @param opt
  */
-declare function loadCodemirror(options: {
-    element: HTMLTextAreaElement;
-    mode?: string | string[];
-    theme?: "3024-night" | "abcdef" | "ambiance" | "base16-dark" | "bespin" | "blackboard" | "cobalt" | "colorforth" | "dracula" | "erlang-dark" | "hopscotch" | "icecoder" | "isotope" | "lesser-dark" | "liquibyte" | "material" | "mbo" | "mdn-like" | "monokai";
+declare function loadCodeMirrorScript(opt: {
+    /**
+     * @link https://codemirror.net/mode/
+     */
+    mode: CodeMirrorConfig["modes"];
+    addons?: CodeMirrorConfig["addons"];
+    theme?: CodeMirrorConfig["theme"];
     override?: CodeMirror.EditorConfiguration;
+    callback?: () => any;
+}): void;
+/**
+ * CodeMirror element initializer
+ * @param opt
+ */
+declare function initCodeMirror(opt: {
     callback?: (el: HTMLTextAreaElement) => any;
-}): any;
+    mode: CodeMirrorConfig["mode"];
+    element: HTMLTextAreaElement;
+    override?: CodeMirror.EditorConfiguration;
+}): CodeMirror.EditorFromTextArea;
+declare function codeMirrorRandomTheme(): any;
 /**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>

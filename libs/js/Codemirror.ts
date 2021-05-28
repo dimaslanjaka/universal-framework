@@ -1,111 +1,117 @@
 /// <reference types="codemirror" />
+/// <reference path="./Codemirror.d.ts" />
+/// <reference path="./Codemirror-var.ts" />
 
+let loadedTheme = null;
 /**
- * CodeMirror loader
- * @param id
- * @param mode
- * @param theme
+ * CodeMirror script and style loader
+ * @param opt
  */
-function loadCodemirror(options: {
-    element: HTMLTextAreaElement;
-    mode?: string | string[];
-    theme?:
-        | "3024-night"
-        | "abcdef"
-        | "ambiance"
-        | "base16-dark"
-        | "bespin"
-        | "blackboard"
-        | "cobalt"
-        | "colorforth"
-        | "dracula"
-        | "erlang-dark"
-        | "hopscotch"
-        | "icecoder"
-        | "isotope"
-        | "lesser-dark"
-        | "liquibyte"
-        | "material"
-        | "mbo"
-        | "mdn-like"
-        | "monokai";
+function loadCodeMirrorScript(opt: {
+    /**
+     * @link https://codemirror.net/mode/
+     */
+    mode: CodeMirrorConfig["modes"];
+    addons?: CodeMirrorConfig["addons"];
+    theme?: CodeMirrorConfig["theme"];
     override?: CodeMirror.EditorConfiguration;
-    callback?: (el: HTMLTextAreaElement) => any;
+    callback?: () => any;
 }) {
-    let defaultOpt = { mode: null, theme: null, override: {} };
-    options = Object.assign(defaultOpt, options);
-    let mode = options.mode;
-    if (!(options.element instanceof HTMLTextAreaElement)) {
-        console.error("element must be instanceof HTMLTextAreaElement");
-        return null;
-    }
     const scripts = ["/node_modules/codemirror/lib/codemirror.js"];
-    if (mode) {
-        if (typeof mode == "string") {
-            scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
-        } else if (Array.isArray(mode)) {
-            mode.forEach(function (m) {
-                scripts.push(`/node_modules/codemirror/mode/${m}/${m}.js`);
+    if (opt.mode) {
+        if (Array.isArray(opt.mode)) {
+            opt.mode.forEach(function (mode: string) {
+                scripts.push(`/node_modules/codemirror/mode/${mode}/${mode}.js`);
             });
         }
     }
-    if (!options.theme) {
-        const themes = [
-            "3024-night",
-            "abcdef",
-            "ambiance",
-            "base16-dark",
-            "bespin",
-            "blackboard",
-            "cobalt",
-            "colorforth",
-            "dracula",
-            "erlang-dark",
-            "hopscotch",
-            "icecoder",
-            "isotope",
-            "lesser-dark",
-            "liquibyte",
-            "material",
-            "mbo",
-            "mdn-like",
-            "monokai",
-        ];
-        options.theme = <any>themes[Math.floor(Math.random() * themes.length)];
+
+    if (opt.addons) {
+        if (Array.isArray(opt.addons)) {
+            opt.addons.forEach(function (addon: string) {
+                let ons: typeof CodeMirrorAddon["CodeMirror-display-fullscreen"] = CodeMirrorAddon[addon];
+                if (ons.hasOwnProperty("js")) {
+                    scripts.push(ons.js);
+                }
+            });
+        }
     }
-    framework().async(function () {
-        const conf: LoadScriptOptions = {
-            url: scripts,
-            options: {
-                type: "text/javascript",
-            },
-            callback: function () {
-                loadCSS(
-                    ["/node_modules/codemirror/lib/codemirror.css", "/assets/css/codemirror/style.css"],
-                    function () {
-                        let defaultOverride: CodeMirror.EditorConfiguration = {
-                            lineNumbers: true,
-                            mode: mode,
-                            /*
-                         smartIndent: true,
-                         lineWrapping: true,
-                         showCursorWhenSelecting: true,
-                         matchHighlight: true,*/
-                        };
-                        const editor = CodeMirror.fromTextArea(
-                            options.element,
-                            Object.assign(defaultOpt, defaultOverride)
-                        );
-                        loadCSS(`/node_modules/codemirror/theme/${options.theme}.css`, function () {
-                            editor.setOption("theme", options.theme);
-                            if (typeof options.callback == "function") {
-                                options.callback(options.element);
-                            }
-                        });
-                    }
-                );
-            },
-        };
-        LoadScript(conf);
-    });
+
+    // load style codemirror
+    loadCSS(
+        [
+            "/node_modules/codemirror/lib/codemirror.css",
+            "/assets/css/codemirror/style.css",
+            `/node_modules/codemirror/theme/${opt.theme}.css`,
+        ],
+        function () {
+            // set loadedTheme
+            loadedTheme = opt.theme;
+        }
+    );
+
+    // load script codemirror
+    const conf: LoadScriptOptions = {
+        url: scripts,
+        options: {
+            type: "text/javascript",
+        },
+        callback: opt.callback,
+    };
+    LoadScript(conf);
+}
+
+/**
+ * CodeMirror element initializer
+ * @param opt
+ */
+function initCodeMirror(opt: {
+    callback?: (el: HTMLTextAreaElement) => any;
+    mode: CodeMirrorConfig["mode"];
+    element: HTMLTextAreaElement;
+    override?: CodeMirror.EditorConfiguration;
+}) {
+    let defaultOverride: CodeMirror.EditorConfiguration = {
+        lineNumbers: true,
+        mode: opt.mode,
+        selectionsMayTouch: true,
+        /*
+         smartIndent: true,
+         lineWrapping: true,
+         showCursorWhenSelecting: true,
+         matchHighlight: true,*/
+    };
+    defaultOverride = Object.assign(defaultOverride, opt.override);
+
+    const editor = CodeMirror.fromTextArea(opt.element, defaultOverride);
+    if (typeof loadedTheme == "string") editor.setOption("theme", loadedTheme);
+    if (typeof opt.callback == "function") {
+        opt.callback(opt.element);
+    }
+    return editor;
+}
+
+function codeMirrorRandomTheme() {
+    const themes = [
+        "3024-night",
+        "abcdef",
+        "ambiance",
+        "base16-dark",
+        "bespin",
+        "blackboard",
+        "cobalt",
+        "colorforth",
+        "dracula",
+        "erlang-dark",
+        "hopscotch",
+        "icecoder",
+        "isotope",
+        "lesser-dark",
+        "liquibyte",
+        "material",
+        "mbo",
+        "mdn-like",
+        "monokai",
+    ];
+    return <any>themes[Math.floor(Math.random() * themes.length)];
 }
