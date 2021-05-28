@@ -86,8 +86,11 @@ function aesDecrypt(encrypted, key) {
  * @param mode
  * @param theme
  */
-function loadCodemirror(element, mode, theme) {
-    if (!(element instanceof HTMLTextAreaElement)) {
+function loadCodemirror(options) {
+    var defaultOpt = { mode: null, theme: null, override: {} };
+    options = Object.assign(defaultOpt, options);
+    var mode = options.mode;
+    if (!(options.element instanceof HTMLTextAreaElement)) {
         console.error("element must be instanceof HTMLTextAreaElement");
         return null;
     }
@@ -102,7 +105,7 @@ function loadCodemirror(element, mode, theme) {
             });
         }
     }
-    if (!theme) {
+    if (!options.theme) {
         var themes = [
             "3024-night",
             "abcdef",
@@ -124,7 +127,7 @@ function loadCodemirror(element, mode, theme) {
             "mdn-like",
             "monokai",
         ];
-        var theme = themes[Math.floor(Math.random() * themes.length)];
+        options.theme = themes[Math.floor(Math.random() * themes.length)];
     }
     framework().async(function () {
         var conf = {
@@ -133,18 +136,22 @@ function loadCodemirror(element, mode, theme) {
                 type: "text/javascript",
             },
             callback: function () {
-                loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-                    var editor = CodeMirror.fromTextArea(element, {
+                loadCSS(["/node_modules/codemirror/lib/codemirror.css", "/assets/css/codemirror/style.css"], function () {
+                    var defaultOverride = {
                         lineNumbers: true,
                         mode: mode,
                         /*
-                         smartIndent: true,
-                         lineWrapping: true,
-                         showCursorWhenSelecting: true,
-                         matchHighlight: true,*/
-                    });
-                    loadCSS("/node_modules/codemirror/theme/" + theme + ".css", function () {
-                        editor.setOption("theme", theme);
+                     smartIndent: true,
+                     lineWrapping: true,
+                     showCursorWhenSelecting: true,
+                     matchHighlight: true,*/
+                    };
+                    var editor = CodeMirror.fromTextArea(options.element, Object.assign(defaultOpt, defaultOverride));
+                    loadCSS("/node_modules/codemirror/theme/" + options.theme + ".css", function () {
+                        editor.setOption("theme", options.theme);
+                        if (typeof options.callback == "function") {
+                            options.callback(options.element);
+                        }
                     });
                 });
             },

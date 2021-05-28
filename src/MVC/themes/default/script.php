@@ -43,6 +43,26 @@ if (defined('materialize')) {
 }
 
 // application javascript
+$app = [THEME_DIR . '/../assets/js/app.min.js', THEME_DIR . '/../assets/js/app.js'];
+$core = [THEME_DIR . '/js/core.min.js', THEME_DIR . '/js/core.js'];
+mapJS($app);
+mapJS($core);
+
+function mapJS($js)
+{
+  $already = false;
+  foreach ($js as $item) {
+    if (!$already && $item = realpath($item)) {
+      $get = file::get($item);
+      if (!empty($get)) {
+        echo "<script filename='$item'>\n$get\n</script>\n";
+        $already = true;
+      }
+    }
+  }
+}
+
+/*
 echo $element->js([
   \MVC\helper::get_url_path(\MVC\helper::asset_find([
     THEME_DIR . '/../assets/js/app.min.js', THEME_DIR . '/../assets/js/app.js',
@@ -51,6 +71,7 @@ echo $element->js([
     THEME_DIR . '/js/core.min.js', THEME_DIR . '/js/core.js',
   ])),
 ]) . PHP_EOL;
+ */
 
 if (defined('jquery-ui')) {
   echo '<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">

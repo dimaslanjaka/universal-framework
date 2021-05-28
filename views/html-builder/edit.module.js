@@ -1,7 +1,7 @@
 //import prettier from "https://unpkg.com/prettier@2.3.0/esm/standalone.mjs";
 import prettier from "prettier";
-import parserBabel from "https://unpkg.com/prettier@2.3.0/esm/parser-babel.mjs";
-import parserHtml from "https://unpkg.com/prettier@2.3.0/esm/parser-html.mjs";
+import parserBabel from "/node_modules/prettier/esm/parser-babel.mjs";
+import parserHtml from "/node_modules/prettier/esm/parser-html.mjs";
 
 console.log(
     prettier.format("const html=/* HTML */ `<DIV> </DIV>`", {
@@ -14,11 +14,15 @@ console.log(
 let thtml = document.getElementById("thtml");
 let tcss = document.getElementById("tcss");
 let tjs = document.getElementById("tjs");
-let name = getParameterByName("name");
+let name = getParameterByName("name", location.href);
+console.log(name);
 fetch("/html-builder/edit?fetch=" + name)
     .then((response) => response.json())
     .then((data) => {
-        console.log(data);
+        //console.log(data);
+        if (typeof data.js == "string") {
+            tjs.value = data.js;
+        }
         if (typeof data.css == "string") {
             tcss.value = data.css;
         }
@@ -27,7 +31,15 @@ fetch("/html-builder/edit?fetch=" + name)
         }
     });
 
-loadCodemirror(thtml);
+loadCodemirror({
+    element: thtml,
+    theme: "dracula",
+    override: {
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+        value: thtml.value,
+    },
+});
 
 $(`[data-toggle="tab"]`).on("click", function (e) {
     let href = $(this).attr("href");

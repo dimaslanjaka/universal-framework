@@ -6,8 +6,36 @@
  * @param mode
  * @param theme
  */
-function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], theme: string) {
-    if (!(element instanceof HTMLTextAreaElement)) {
+function loadCodemirror(options: {
+    element: HTMLTextAreaElement;
+    mode?: string | string[];
+    theme?:
+        | "3024-night"
+        | "abcdef"
+        | "ambiance"
+        | "base16-dark"
+        | "bespin"
+        | "blackboard"
+        | "cobalt"
+        | "colorforth"
+        | "dracula"
+        | "erlang-dark"
+        | "hopscotch"
+        | "icecoder"
+        | "isotope"
+        | "lesser-dark"
+        | "liquibyte"
+        | "material"
+        | "mbo"
+        | "mdn-like"
+        | "monokai";
+    override?: CodeMirror.EditorConfiguration;
+    callback?: (el: HTMLTextAreaElement) => any;
+}) {
+    let defaultOpt = { mode: null, theme: null, override: {} };
+    options = Object.assign(defaultOpt, options);
+    let mode = options.mode;
+    if (!(options.element instanceof HTMLTextAreaElement)) {
         console.error("element must be instanceof HTMLTextAreaElement");
         return null;
     }
@@ -21,7 +49,7 @@ function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], t
             });
         }
     }
-    if (!theme) {
+    if (!options.theme) {
         const themes = [
             "3024-night",
             "abcdef",
@@ -43,7 +71,7 @@ function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], t
             "mdn-like",
             "monokai",
         ];
-        var theme = themes[Math.floor(Math.random() * themes.length)];
+        options.theme = <any>themes[Math.floor(Math.random() * themes.length)];
     }
     framework().async(function () {
         const conf: LoadScriptOptions = {
@@ -52,20 +80,30 @@ function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], t
                 type: "text/javascript",
             },
             callback: function () {
-                loadCSS("/node_modules/codemirror/lib/codemirror.css", function () {
-                    const editor = CodeMirror.fromTextArea(element, {
-                        lineNumbers: true,
-                        mode: mode,
-                        /*
+                loadCSS(
+                    ["/node_modules/codemirror/lib/codemirror.css", "/assets/css/codemirror/style.css"],
+                    function () {
+                        let defaultOverride: CodeMirror.EditorConfiguration = {
+                            lineNumbers: true,
+                            mode: mode,
+                            /*
                          smartIndent: true,
                          lineWrapping: true,
                          showCursorWhenSelecting: true,
                          matchHighlight: true,*/
-                    });
-                    loadCSS(`/node_modules/codemirror/theme/${theme}.css`, function () {
-                        editor.setOption("theme", theme);
-                    });
-                });
+                        };
+                        const editor = CodeMirror.fromTextArea(
+                            options.element,
+                            Object.assign(defaultOpt, defaultOverride)
+                        );
+                        loadCSS(`/node_modules/codemirror/theme/${options.theme}.css`, function () {
+                            editor.setOption("theme", options.theme);
+                            if (typeof options.callback == "function") {
+                                options.callback(options.element);
+                            }
+                        });
+                    }
+                );
             },
         };
         LoadScript(conf);

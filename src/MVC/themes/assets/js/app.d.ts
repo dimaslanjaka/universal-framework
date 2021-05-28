@@ -6,6 +6,7 @@
 /// <reference path="../../../../../libs/js/lib.dom.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/globals.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/index.d.ts" />
+/// <reference types="codemirror" />
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
@@ -36,7 +37,13 @@ declare namespace CryptoJSAesJson {
  * @param mode
  * @param theme
  */
-declare function loadCodemirror(element: HTMLTextAreaElement, mode: string | string[], theme: string): any;
+declare function loadCodemirror(options: {
+    element: HTMLTextAreaElement;
+    mode?: string | string[];
+    theme?: "3024-night" | "abcdef" | "ambiance" | "base16-dark" | "bespin" | "blackboard" | "cobalt" | "colorforth" | "dracula" | "erlang-dark" | "hopscotch" | "icecoder" | "isotope" | "lesser-dark" | "liquibyte" | "material" | "mbo" | "mdn-like" | "monokai";
+    override?: CodeMirror.EditorConfiguration;
+    callback?: (el: HTMLTextAreaElement) => any;
+}): any;
 /**
  * Cookie Helper
  * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
