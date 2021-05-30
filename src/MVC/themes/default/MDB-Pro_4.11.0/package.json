@@ -52,7 +52,6 @@
     "stylelint-order": "^3.0.0",
     "stylelint-scss": "^3.8.0"
   },
-  "dependencies": {},
   "description": "",
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
