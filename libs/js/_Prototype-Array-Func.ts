@@ -132,10 +132,42 @@ function array_shuffle(a: Array<any>) {
     return a;
 }
 
+/**
+ * Deep merge two or more objects into the first.
+ * (c) 2021 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param objects  The objects to merge together
+ * @returns Merged values of defaults and options
+ */
+function deepAssign(...objects: object[]): object {
+
+    // Make sure there are objects to merge
+    const len = objects.length;
+    if (len < 1) return;
+    if (len < 2) return objects[0];
+
+    // Merge all objects into first
+    for (let i = 1; i < len; i++) {
+        for (const key in objects[i]) {
+            if (objects[i].hasOwnProperty(key)) {
+                // If it's an object, recursively merge
+                // Otherwise, push to key
+                if (Object.prototype.toString.call(objects[i][key]) === '[object Object]') {
+                    objects[0][key] = deepAssign(objects[0][key] || {}, objects[i][key]);
+                } else {
+                    objects[0][key] = objects[i][key];
+                }
+            }
+        }
+    }
+
+    return arguments[0];
+
+}
+
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         array_shuffle,
         array_keys,
-        in_array,
+        in_array, deepAssign
     };
 }

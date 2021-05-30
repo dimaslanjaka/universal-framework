@@ -78,25 +78,25 @@ class helper
   {
     if (isset($_SERVER['HTTP_ACCEPT']) && $accept = $_SERVER['HTTP_ACCEPT']) {
       switch ($accept) {
-                case '*/*':
-                    return 'any';
-                    break;
-                case 'application/javascript':
-                    return 'javascript';
-                    break;
-                case 'application/json':
-                    return 'json';
-                    break;
-                /*case strpos($accept, 'application/json') >= 0:
+        case '*/*':
+          return 'any';
+          break;
+        case 'application/javascript':
+          return 'javascript';
+          break;
+        case 'application/json':
+          return 'json';
+          break;
+          /*case strpos($accept, 'application/json') >= 0:
                 return 'has_json';
                 break;
               case strpos($accept, 'application/javascript') >= 0:
                 return 'has_javascript';
                 break;*/
-                default:
-                    return $accept;
-                    break;
-            }
+        default:
+          return $accept;
+          break;
+      }
     }
   }
 
@@ -131,9 +131,9 @@ class helper
   public static function url2host($url, $fallback = null)
   {
     if (
-            isset(self::$arch[__FUNCTION__][md5($url)]) &&
-            !empty(self::$arch[__FUNCTION__][md5($url)])
-        ) {
+      isset(self::$arch[__FUNCTION__][md5($url)]) &&
+      !empty(self::$arch[__FUNCTION__][md5($url)])
+    ) {
       return self::$arch[__FUNCTION__][md5($url)];
     }
     if (self::is_url($url)) {
@@ -198,7 +198,7 @@ class helper
     }
   }
 
-  public static function asset_find(array $fn = [])
+  public static function asset_find($fn = [])
   {
     $source = null;
     foreach ($fn as $src) {
@@ -340,9 +340,9 @@ class helper
   public static function clean_multiple_hypens($string)
   {
     $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-        $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+    $string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
-        return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+    return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
   }
 
   public static function clean_whitespace($str)

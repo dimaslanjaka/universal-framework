@@ -17,7 +17,7 @@ function inc($file)
  *
  * @return array
  */
-function sort_iterable(array $arrayObj)
+function sort_iterable($arrayObj)
 {
   $arrayObj = array_map(function ($object) {
     if (\ArrayHelper\helper::is_iterable($object)) {
@@ -324,7 +324,7 @@ function safe_redirect($url, $exit = true)
  *                                latestFile([__DIR__ . '/src/MVC/', __DIR__ . '/libs/', __DIR__ . '/views/'])
  *                                ```
  */
-function latestFile(array $path, $return_timestamp = true)
+function latestFile($path, $return_timestamp = true)
 {
   $timestamp = 0;
   $file = '';

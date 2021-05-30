@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework
  *
@@ -138,7 +139,7 @@ class Zend_Uri_Http extends Zend_Uri
         $this->_regex['uric']       = '(?:' . $this->_regex['escaped'] . '|[' .
             self::CHAR_ALNUM . self::CHAR_MARK . self::CHAR_RESERVED .
 
-        // If unwise chars are allowed, add them to the URI chars class
+            // If unwise chars are allowed, add them to the URI chars class
             (self::$_config['allow_unwise'] ? self::CHAR_UNWISE : '') . '])';
 
         // If no scheme-specific part was supplied, the user intends to create
@@ -217,19 +218,19 @@ class Zend_Uri_Http extends Zend_Uri
 
         // Additional decomposition to get username, password, host, and port
         $combo   = isset($matches[3]) === true ? $matches[3] : '';
-        $pattern = '~^(([^:@]*)(:([^@]*))?@)?((?(?=[[])[[][^]]+[]]|[^:]+))(:(.*))?$~';        
+        $pattern = '~^(([^:@]*)(:([^@]*))?@)?((?(?=[[])[[][^]]+[]]|[^:]+))(:(.*))?$~';
         $status  = @preg_match($pattern, $combo, $matches);
         if ($status === false) {
             require_once 'Zend/Uri/Exception.php';
             throw new Zend_Uri_Exception('Internal error: authority decomposition failed');
         }
-        
+
         // Save remaining URI components
         $this->_username = isset($matches[2]) === true ? $matches[2] : '';
         $this->_password = isset($matches[4]) === true ? $matches[4] : '';
-        $this->_host     = isset($matches[5]) === true 
-                         ? preg_replace('~^\[([^]]+)\]$~', '\1', $matches[5])  // Strip wrapper [] from IPv6 literal
-                         : '';
+        $this->_host     = isset($matches[5]) === true
+            ? preg_replace('~^\[([^]]+)\]$~', '\1', $matches[5])  // Strip wrapper [] from IPv6 literal
+            : '';
         $this->_port     = isset($matches[7]) === true ? $matches[7] : '';
     }
 
@@ -254,13 +255,13 @@ class Zend_Uri_Http extends Zend_Uri
         $fragment = strlen($this->_fragment) > 0 ? "#$this->_fragment" : '';
 
         return $this->_scheme
-             . '://'
-             . $auth
-             . $this->_host
-             . $port
-             . $this->_path
-             . $query
-             . $fragment;
+            . '://'
+            . $auth
+            . $this->_host
+            . $port
+            . $this->_path
+            . $query
+            . $fragment;
     }
 
     /**
@@ -273,12 +274,12 @@ class Zend_Uri_Http extends Zend_Uri
     {
         // Return true if and only if all parts of the URI have passed validation
         return $this->validateUsername()
-           and $this->validatePassword()
-           and $this->validateHost()
-           and $this->validatePort()
-           and $this->validatePath()
-           and $this->validateQuery()
-           and $this->validateFragment();
+            and $this->validatePassword()
+            and $this->validateHost()
+            and $this->validatePort()
+            and $this->validatePath()
+            and $this->validateQuery()
+            and $this->validateFragment();
     }
 
     /**
@@ -554,7 +555,7 @@ class Zend_Uri_Http extends Zend_Uri
             throw new Zend_Uri_Exception('Internal error: path validation failed');
         }
 
-        return (boolean) $status;
+        return (bool) $status;
     }
 
     /**
@@ -642,7 +643,7 @@ class Zend_Uri_Http extends Zend_Uri
      * @param  array $queryParams
      * @return string Old query string
      */
-    public function addReplaceQueryParameters(array $queryParams)
+    public function addReplaceQueryParameters($queryParams)
     {
         $queryParams = array_merge($this->getQueryAsArray(), $queryParams);
         return $this->setQuery($queryParams);
@@ -655,7 +656,7 @@ class Zend_Uri_Http extends Zend_Uri
      * @param  array $queryParamKeys
      * @return string Old query string
      */
-    public function removeQueryParameters(array $queryParamKeys)
+    public function removeQueryParameters($queryParamKeys)
     {
         $queryParams = array_diff_key($this->getQueryAsArray(), array_fill_keys($queryParamKeys, 0));
         return $this->setQuery($queryParams);
@@ -740,7 +741,7 @@ class Zend_Uri_Http extends Zend_Uri
             throw new Zend_Uri_Exception('Internal error: fragment validation failed');
         }
 
-        return (boolean) $status;
+        return (bool) $status;
     }
 
     /**

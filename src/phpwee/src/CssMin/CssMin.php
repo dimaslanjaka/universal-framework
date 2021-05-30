@@ -327,7 +327,7 @@ abstract class aCssFormatter
    * @param string $indent  Indent string [optional]
    * @param int    $padding Declaration value padding [optional]
    */
-  public function __construct(array $tokens, $indent = null, $padding = null)
+  public function __construct($tokens, $indent = null, $padding = null)
   {
     $this->tokens = $tokens;
     $this->indent = !is_null($indent) ? $indent : $this->indent;
@@ -507,25 +507,27 @@ class CssWhitesmithsFormatter extends aCssFormatter
         $r[] = $indent . implode(', ', $token->Selectors);
         $r[] = $this->indent . $indent . '{';
         ++$level;
-      } elseif ('CssAtFontFaceDeclarationToken' == $class
-                || 'CssAtKeyframesRulesetDeclarationToken' === $class
-                || 'CssAtPageDeclarationToken' === $class
-                || 'CssAtVariablesDeclarationToken' == $class
-                || 'CssRulesetDeclarationToken' === $class
-            ) {
+      } elseif (
+        'CssAtFontFaceDeclarationToken' == $class
+        || 'CssAtKeyframesRulesetDeclarationToken' === $class
+        || 'CssAtPageDeclarationToken' === $class
+        || 'CssAtVariablesDeclarationToken' == $class
+        || 'CssRulesetDeclarationToken' === $class
+      ) {
         $declaration = $indent . $token->Property . ': ';
         if ($this->padding) {
           $declaration = str_pad($declaration, $this->padding, ' ', STR_PAD_RIGHT);
         }
         $r[] = $declaration . $token->Value . ($token->IsImportant ? ' !important' : '') . ';';
-      } elseif ('CssAtFontFaceEndToken' === $class
-                || 'CssAtMediaEndToken' === $class
-                || 'CssAtKeyframesEndToken' === $class
-                || 'CssAtKeyframesRulesetEndToken' === $class
-                || 'CssAtPageEndToken' === $class
-                || 'CssAtVariablesEndToken' === $class
-                || 'CssRulesetEndToken' === $class
-            ) {
+      } elseif (
+        'CssAtFontFaceEndToken' === $class
+        || 'CssAtMediaEndToken' === $class
+        || 'CssAtKeyframesEndToken' === $class
+        || 'CssAtKeyframesRulesetEndToken' === $class
+        || 'CssAtPageEndToken' === $class
+        || 'CssAtVariablesEndToken' === $class
+        || 'CssRulesetEndToken' === $class
+      ) {
         $r[] = $indent . '}';
         --$level;
       }
@@ -596,7 +598,7 @@ class CssVariablesMinifierPlugin extends aCssMinifierPlugin
    *
    * @return void
    */
-  public function setVariables(array $variables)
+  public function setVariables($variables)
   {
     $this->variables = $variables;
   }
@@ -1021,7 +1023,7 @@ class CssRulesetStartToken extends aCssRulesetStartToken
    *
    * @return void
    */
-  public function __construct(array $selectors = [])
+  public function __construct($selectors = [])
   {
     $this->Selectors = $selectors;
   }
@@ -1233,8 +1235,9 @@ class CssRemoveLastDelarationSemiColonMinifierFilter extends aCssMinifierFilter
       $current = get_class($tokens[$i]);
       $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
       if (('CssRulesetDeclarationToken' === $current && 'CssRulesetEndToken' === $next) ||
-                ('CssAtFontFaceDeclarationToken' === $current && 'CssAtFontFaceEndToken' === $next) ||
-                ('CssAtPageDeclarationToken' === $current && 'CssAtPageEndToken' === $next)) {
+        ('CssAtFontFaceDeclarationToken' === $current && 'CssAtFontFaceEndToken' === $next) ||
+        ('CssAtPageDeclarationToken' === $current && 'CssAtPageEndToken' === $next)
+      ) {
         $tokens[$i]->IsLast = true;
       }
     }
@@ -1271,8 +1274,8 @@ class CssRemoveEmptyRulesetsMinifierFilter extends aCssMinifierFilter
       $current = get_class($tokens[$i]);
       $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
       if (('CssRulesetStartToken' === $current && 'CssRulesetEndToken' === $next) ||
-                ('CssAtKeyframesRulesetStartToken' === $current && 'CssAtKeyframesRulesetEndToken' === $next && !array_intersect(['from', '0%', 'to', '100%'], array_map('strtolower', $tokens[$i]->Selectors)))
-            ) {
+        ('CssAtKeyframesRulesetStartToken' === $current && 'CssAtKeyframesRulesetEndToken' === $next && !array_intersect(['from', '0%', 'to', '100%'], array_map('strtolower', $tokens[$i]->Selectors)))
+      ) {
         $tokens[$i] = null;
         $tokens[$i + 1] = null;
         ++$i;
@@ -1312,9 +1315,10 @@ class CssRemoveEmptyAtBlocksMinifierFilter extends aCssMinifierFilter
       $current = get_class($tokens[$i]);
       $next = isset($tokens[$i + 1]) ? get_class($tokens[$i + 1]) : false;
       if (('CssAtFontFaceStartToken' === $current && 'CssAtFontFaceEndToken' === $next) ||
-                ('CssAtKeyframesStartToken' === $current && 'CssAtKeyframesEndToken' === $next) ||
-                ('CssAtPageStartToken' === $current && 'CssAtPageEndToken' === $next) ||
-                ('CssAtMediaStartToken' === $current && 'CssAtMediaEndToken' === $next)) {
+        ('CssAtKeyframesStartToken' === $current && 'CssAtKeyframesEndToken' === $next) ||
+        ('CssAtPageStartToken' === $current && 'CssAtPageEndToken' === $next) ||
+        ('CssAtMediaStartToken' === $current && 'CssAtMediaEndToken' === $next)
+      ) {
         $tokens[$i] = null;
         $tokens[$i + 1] = null;
         ++$i;
@@ -1499,9 +1503,9 @@ class CssParser
       }
     }
     // Normalise line endings
-        $source = str_replace("\r\n", "\n", $source);    // Windows to Unix line endings
-        $source = str_replace("\r", "\n", $source);        // Mac to Unix line endings
-        $this->source = $source;
+    $source = str_replace("\r\n", "\n", $source);    // Windows to Unix line endings
+    $source = str_replace("\r", "\n", $source);        // Mac to Unix line endings
+    $this->source = $source;
     // Variables
     $buffer = &$this->buffer;
     $exclusive = &$this->stateExclusive;
@@ -1510,16 +1514,16 @@ class CssParser
     // --
     for ($i = 0, $l = strlen($source); $i < $l; ++$i) {
       // Set the current Char
-            $c = $source[$i]; // Is faster than: $c = substr($source, $i, 1);
-            // Normalize and filter double whitespace characters
-            if (false === $exclusive) {
-              if ("\n" === $c || "\t" === $c) {
-                $c = ' ';
-              }
-              if (' ' === $c && ' ' === $p) {
-                continue;
-              }
-            }
+      $c = $source[$i]; // Is faster than: $c = substr($source, $i, 1);
+      // Normalize and filter double whitespace characters
+      if (false === $exclusive) {
+        if ("\n" === $c || "\t" === $c) {
+          $c = ' ';
+        }
+        if (' ' === $c && ' ' === $p) {
+          continue;
+        }
+      }
       $buffer .= $c;
       // Extended processing only if the current char is a global trigger char
       if (false !== strpos($globalTriggerChars, $c)) {
@@ -1769,7 +1773,7 @@ class CssParser
    *
    * @return void
    */
-  public function setMediaTypes(array $mediaTypes)
+  public function setMediaTypes($mediaTypes)
   {
     $this->stateMediaTypes = $mediaTypes;
   }
@@ -1848,25 +1852,27 @@ class CssOtbsFormatter extends aCssFormatter
       } elseif ('CssRulesetStartToken' === $class || 'CssAtKeyframesRulesetStartToken' === $class) {
         $r[] = $indent . implode(', ', $token->Selectors) . ' {';
         ++$level;
-      } elseif ('CssAtFontFaceDeclarationToken' == $class
-                || 'CssAtKeyframesRulesetDeclarationToken' === $class
-                || 'CssAtPageDeclarationToken' === $class
-                || 'CssAtVariablesDeclarationToken' == $class
-                || 'CssRulesetDeclarationToken' === $class
-            ) {
+      } elseif (
+        'CssAtFontFaceDeclarationToken' == $class
+        || 'CssAtKeyframesRulesetDeclarationToken' === $class
+        || 'CssAtPageDeclarationToken' === $class
+        || 'CssAtVariablesDeclarationToken' == $class
+        || 'CssRulesetDeclarationToken' === $class
+      ) {
         $declaration = $indent . $token->Property . ': ';
         if ($this->padding) {
           $declaration = str_pad($declaration, $this->padding, ' ', STR_PAD_RIGHT);
         }
         $r[] = $declaration . $token->Value . ($token->IsImportant ? ' !important' : '') . ';';
-      } elseif ('CssAtFontFaceEndToken' === $class
-                || 'CssAtMediaEndToken' === $class
-                || 'CssAtKeyframesEndToken' === $class
-                || 'CssAtKeyframesRulesetEndToken' === $class
-                || 'CssAtPageEndToken' === $class
-                || 'CssAtVariablesEndToken' === $class
-                || 'CssRulesetEndToken' === $class
-            ) {
+      } elseif (
+        'CssAtFontFaceEndToken' === $class
+        || 'CssAtMediaEndToken' === $class
+        || 'CssAtKeyframesEndToken' === $class
+        || 'CssAtKeyframesRulesetEndToken' === $class
+        || 'CssAtPageEndToken' === $class
+        || 'CssAtVariablesEndToken' === $class
+        || 'CssRulesetEndToken' === $class
+      ) {
         --$level;
         $r[] = str_repeat($indent, $level) . '}';
       }
@@ -4217,7 +4223,7 @@ class CssAtMediaStartToken extends aCssAtBlockStartToken
    *
    * @return void
    */
-  public function __construct(array $mediaTypes = [])
+  public function __construct($mediaTypes = [])
   {
     $this->MediaTypes = $mediaTypes;
   }
@@ -4398,7 +4404,7 @@ class CssAtKeyframesRulesetStartToken extends aCssRulesetStartToken
    *
    * @return void
    */
-  public function __construct(array $selectors = [])
+  public function __construct($selectors = [])
   {
     $this->Selectors = $selectors;
   }

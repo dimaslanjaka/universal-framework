@@ -98,7 +98,7 @@ const LoadScriptLoaded: any[] = [];
  * @param callback
  */
 function LoadScript(config: LoadScriptOptions): typeof LoadScriptLoaded {
-    let urls: string[] = [];
+    const urls: string[] = [];
     if (typeof config.url == "string") {
         urls.add(config.url);
     } else if (Array.isArray(config.url)) {

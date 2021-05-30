@@ -70,13 +70,13 @@ class session
 
     $handler = new FileSessionHandler($folder, 'PHPJS');
     session_set_save_handler(
-            [$handler, 'open'],
-            [$handler, 'close'],
-            [$handler, 'read'],
-            [$handler, 'write'],
-            [$handler, 'destroy'],
-            [$handler, 'gc']
-        );
+      [$handler, 'open'],
+      [$handler, 'close'],
+      [$handler, 'read'],
+      [$handler, 'write'],
+      [$handler, 'destroy'],
+      [$handler, 'gc']
+    );
     register_shutdown_function('session_write_close');
     session_start();
 
@@ -118,7 +118,7 @@ class session
     }
   }
 
-  public static function gets(array $keys)
+  public static function gets($keys)
   {
     $result = [];
     foreach ($keys as $key) {
@@ -214,9 +214,9 @@ class session
   {
     ini_set('session.autostart', false);
     //increase memory
-        ini_set('memory_limit', '256M'); //-1
+    ini_set('memory_limit', '256M'); //-1
 
-        // Set the max lifetime
+    // Set the max lifetime
     ini_set('session.gc_maxlifetime', $timeout);
 
     // Set the session cookie to timeout
@@ -282,11 +282,11 @@ class session
     //ini_set('session.use_only_cookies', 1);
 
     $bits_per_character = (int) (false !== ini_get('session.sid_bits_per_character')
-            ? ini_get('session.sid_bits_per_character')
-            : 4);
+      ? ini_get('session.sid_bits_per_character')
+      : 4);
     $sid_length = (int) (false !== ini_get('session.sid_length')
-            ? ini_get('session.sid_length')
-            : 40);
+      ? ini_get('session.sid_length')
+      : 40);
     if (($sid_length * $bits_per_character) < 160) {
       $bits = ($sid_length * $bits_per_character);
       // Add as many more characters as necessary to reach at least 160 bits
@@ -296,16 +296,16 @@ class session
 
     // Yes, 4,5,6 are the only known possible values as of 2016-10-27
     switch ($bits_per_character) {
-            case 4:
-                $this->sidRegexp = '[0-9a-f]';
-                break;
-            case 5:
-                $this->sidRegexp = '[0-9a-v]';
-                break;
-            case 6:
-                $this->sidRegexp = '[0-9a-zA-Z,-]';
-                break;
-        }
+      case 4:
+        $this->sidRegexp = '[0-9a-f]';
+        break;
+      case 5:
+        $this->sidRegexp = '[0-9a-v]';
+        break;
+      case 6:
+        $this->sidRegexp = '[0-9a-zA-Z,-]';
+        break;
+    }
 
     $this->sidRegexp .= '{' . $sid_length . '}';
   }
@@ -344,19 +344,19 @@ class session
   public function dump()
   {
     exit(\JSON\json::json(
-            [
-              'sessions' => [
-                'active' => PHP_SESSION_NONE == session_status(),
-                'id' => session_id(),
-                'folder' => \MVC\helper::fixSlash(ini_get('session.save_path')),
-                'session.gc_maxlifetime' => ini_get('session.gc_maxlifetime'),
-                'session.cookie_lifetime' => ini_get('session.cookie_lifetime'),
-                'session.gc_probability' => ini_get('session.gc_probability'),
-                'session.gc_divisor' => ini_get('session.gc_divisor'),
-                'session.hash_function' => ini_get('session.hash_function'),
-              ],
-            ]
-        ));
+      [
+        'sessions' => [
+          'active' => PHP_SESSION_NONE == session_status(),
+          'id' => session_id(),
+          'folder' => \MVC\helper::fixSlash(ini_get('session.save_path')),
+          'session.gc_maxlifetime' => ini_get('session.gc_maxlifetime'),
+          'session.cookie_lifetime' => ini_get('session.cookie_lifetime'),
+          'session.gc_probability' => ini_get('session.gc_probability'),
+          'session.gc_divisor' => ini_get('session.gc_divisor'),
+          'session.hash_function' => ini_get('session.hash_function'),
+        ],
+      ]
+    ));
   }
 
   public function is_sess($session_name, $not_found = null)

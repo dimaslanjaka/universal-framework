@@ -52,7 +52,7 @@ class helper
    *
    * @return void
    */
-  public static function destroy(array $except = [])
+  public static function destroy($except = [])
   {
     if (isset($_SERVER['HTTP_COOKIE'])) {
       $cookies = explode(';', $_SERVER['HTTP_COOKIE']);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ScramblePrivateMethod.php.
  *
@@ -42,11 +43,11 @@ class ScramblePrivateMethod extends ScramblerVisitor
    *
    * @return array
    **/
-  public function beforeTraverse(array $nodes)
+  public function beforeTraverse($nodes)
   {
     $this
-            ->resetRenamed()
-            ->skip($this->variableMethodCallsUsed($nodes));
+      ->resetRenamed()
+      ->skip($this->variableMethodCallsUsed($nodes));
 
     $this->scanMethodDefinitions($nodes);
 
@@ -60,7 +61,7 @@ class ScramblePrivateMethod extends ScramblerVisitor
    *
    * @return void
    **/
-  private function variableMethodCallsUsed(array $nodes)
+  private function variableMethodCallsUsed($nodes)
   {
     foreach ($nodes as $node) {
       if ($node instanceof MethodCall && $node->name instanceof Variable) {
@@ -88,7 +89,7 @@ class ScramblePrivateMethod extends ScramblerVisitor
    *
    * @return void
    **/
-  private function scanMethodDefinitions(array $nodes)
+  private function scanMethodDefinitions($nodes)
   {
     foreach ($nodes as $node) {
       // Scramble the private method definitions

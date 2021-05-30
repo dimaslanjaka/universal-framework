@@ -142,7 +142,7 @@ class themes
    *
    * @throws Exception
    */
-  public function setThemeByZones(array $config, $default)
+  public function setThemeByZones($config, $default)
   {
     $current = get_zone();
     $set = false;
@@ -333,7 +333,7 @@ class themes
     return $this;
   }
 
-  public function load_render(array $variables, $print = true)
+  public function load_render($variables, $print = true)
   {
     $this->meta['meta_config'] = fixpath($this->config);
     //exit(\JSON\json::json($this));
@@ -393,7 +393,7 @@ class themes
   /*
    * Load admin tools
    */
-    /*
+  /*
     public function load_admin_tools()
     {
       if ($this->is_admin()) {

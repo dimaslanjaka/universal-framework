@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ScramblePrivateProperty.php.
  *
@@ -47,11 +48,11 @@ class ScramblePrivateProperty extends ScramblerVisitor
    *
    * @return array
    **/
-  public function beforeTraverse(array $nodes)
+  public function beforeTraverse($nodes)
   {
     $this
-            ->resetRenamed()
-            ->scanPropertyDefinitions($nodes);
+      ->resetRenamed()
+      ->scanPropertyDefinitions($nodes);
 
     return $nodes;
   }
@@ -83,7 +84,7 @@ class ScramblePrivateProperty extends ScramblerVisitor
    *
    * @return void
    **/
-  private function scanPropertyDefinitions(array $nodes)
+  private function scanPropertyDefinitions($nodes)
   {
     foreach ($nodes as $node) {
       // Scramble the private method definitions

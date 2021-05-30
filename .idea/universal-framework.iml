@@ -29,10 +29,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/Utils" isTestSource="false" packagePrefix="Utils\" />
       <sourceFolder url="file://$MODULE_DIR$/src/img" isTestSource="false" packagePrefix="img\" />
       <sourceFolder url="file://$MODULE_DIR$/src/simplehtmldom" isTestSource="false" packagePrefix="simplehtmldom\" />
-      <sourceFolder url="file://$MODULE_DIR$/assets" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/etc" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/views" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/Zend" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/dist" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/src/AGC/agc_service" />

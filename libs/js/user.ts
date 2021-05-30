@@ -34,6 +34,26 @@ class user {
         }
     }
 
+    login(user: string, pass: string) {
+        fetch("/server/user", {
+            method: "post",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+
+            //make sure to serialize your JSON body
+            body: JSON.stringify({
+                login: makeid(5),
+                user: user,
+                pass: pass,
+            }),
+        }).then((response) => {
+            //do something awesome that makes the world a better place
+            console.log(response);
+        });
+    }
+
     /**
      * fetch userdata
      * @param callback

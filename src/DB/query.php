@@ -4,7 +4,7 @@ namespace DB;
 
 class query
 {
-  public function and(array $where)
+  public function and($where)
   {
     $where_combine = ' WHERE ';
     $i = 0;

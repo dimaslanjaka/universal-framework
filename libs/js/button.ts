@@ -4,7 +4,7 @@
  * Disabling button
  * @param t element of button
  */
-function disable_button(t: JQuery<any> | HTMLButtonElement): void {
+function disable_button(t: JQuery<HTMLButtonElement> | HTMLButtonElement): void {
     let el: HTMLButtonElement;
     if (t instanceof jQuery) {
         el = t.get();
@@ -20,7 +20,7 @@ function disable_button(t: JQuery<any> | HTMLButtonElement): void {
  * Enabling button
  * @param t element of button
  */
-function enable_button(t: JQuery<any> | HTMLButtonElement): void {
+function enable_button(t: JQuery<HTMLButtonElement> | HTMLButtonElement): void {
     let el: HTMLButtonElement;
     if (t instanceof jQuery) {
         el = t.get();

@@ -61,7 +61,7 @@ class element
     echo '</pre>';
   }
 
-  public function script(array $source = [], $html = false, $print = false)
+  public function script($source = [], $html = false, $print = false)
   {
     foreach ($source as $path) {
       $src_ = $this->get_local_asset($path);
@@ -128,7 +128,7 @@ class element
     return $element;
   }
 
-  public function css(array $source)
+  public function css($source)
   {
     $result = '';
     $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';
@@ -140,7 +140,7 @@ class element
     return $result;
   }
 
-  public function js(array $source)
+  public function js($source)
   {
     $result = '';
     $config = defined('CONFIG') && isset(CONFIG['cache']['key']) ? '?cache=' . CONFIG['cache']['key'] : '';
@@ -161,7 +161,7 @@ class element
    * @param bool   $print
    * @param string $rel
    */
-  public function link(array $source = [], $html = false, $print = false, $rel = 'stylesheet')
+  public function link($source = [], $html = false, $print = false, $rel = 'stylesheet')
   {
     foreach ($source as $path) {
       $src_ = $this->get_local_asset($path);

@@ -219,7 +219,7 @@ class pdo
   public function get_enum_set_values($table, $field)
   {
     $type = $this->pdo
-            ->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")->fetch();
+      ->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'")->fetch();
     if (isset($type['Type'])) {
       preg_match("/^(enum|set)\(\'(.*)\'\)$/", $type['Type'], $matches);
       if (isset($matches[2])) {
@@ -237,7 +237,7 @@ class pdo
    *
    * @return array
    */
-  public function exec(array $value = [])
+  public function exec($value = [])
   {
     $exec = $this->SQL_Exec($this->trim($this->query), $value);
     $this->resetQuery();
@@ -487,7 +487,7 @@ class pdo
     return $this;
   }
 
-  public function prep(array $prep)
+  public function prep($prep)
   {
     $stmt = $this->pdo->prepare($this->query);
     foreach ($prep as $key => $value) {
@@ -544,7 +544,7 @@ class pdo
   /**
    * Search database by row and keyword.
    */
-  public function search(array $data, $separated = 'OR')
+  public function search($data, $separated = 'OR')
   {
     $i = 0;
     foreach ($data as $key => $value) {
@@ -559,7 +559,7 @@ class pdo
     return $this;
   }
 
-  public function adv_search(array $data = ['OR' => ['key' => 'keyword', 'key2' => 'keyword2'], 'AND' => ['key' => 'keyword', 'key2' => 'keyword2']])
+  public function adv_search($data = ['OR' => ['key' => 'keyword', 'key2' => 'keyword2'], 'AND' => ['key' => 'keyword', 'key2' => 'keyword2']])
   {
     if (isset($data['OR'], $data['or'])) {
       $or = isset($data['OR']) ? $data['OR'] : $data['or'];
@@ -713,7 +713,7 @@ class pdo
     return $result;
   }
 
-  public function execute(array $value = [])
+  public function execute($value = [])
   {
     $result = ['query' => $this->query, 'error' => true];
     /**
@@ -728,7 +728,7 @@ class pdo
     return $result;
   }
 
-  public function exec2(array $value)
+  public function exec2($value)
   {
     $result = ['error' => true];
     /**
@@ -739,23 +739,23 @@ class pdo
     $i = 0;
     foreach ($value as $key => $value) {
       switch (gettype($value)) {
-                case 'int':
-                    $type = GlobalPDO::PARAM_INT;
-                    break;
-                case 'number':
-                    $type = GlobalPDO::PARAM_INT;
-                    break;
-                case 'boolean':
-                    $type = GlobalPDO::PARAM_BOOL;
-                    break;
-                case 'bool':
-                    $type = GlobalPDO::PARAM_BOOL;
-                    break;
+        case 'int':
+          $type = GlobalPDO::PARAM_INT;
+          break;
+        case 'number':
+          $type = GlobalPDO::PARAM_INT;
+          break;
+        case 'boolean':
+          $type = GlobalPDO::PARAM_BOOL;
+          break;
+        case 'bool':
+          $type = GlobalPDO::PARAM_BOOL;
+          break;
 
-                default:
-                    $type = GlobalPDO::PARAM_STR;
-                    break;
-            }
+        default:
+          $type = GlobalPDO::PARAM_STR;
+          break;
+      }
       if (!isset($type)) {
         throw new Exception('Error Processing Code: var(type) not exists, and value instance of ' . gettype($value), 1);
       }
@@ -789,6 +789,24 @@ class pdo
     }
   }
 
+  /**
+   * ```php
+   * $pdo = new \DB\pdo('u', 'p', 'db', 'localhost', 'utf8mb4');
+   * $filter = $pdo->select('user', "*")->whereString("`username` = 'username' OR `email` = 'email'");
+   * var_dump($filter->row_array());
+   * ```
+   * Where conditions using string
+   *
+   * @param string $conditionString
+   * @return pdo
+   */
+  public function whereString($conditionString)
+  {
+    $this->query .= ' WHERE ' . $conditionString;
+
+    return $this;
+  }
+
   public function where($is_equals = [], $not_equals = [], $param = null)
   {
     $this->query .= ' WHERE ';
@@ -805,7 +823,7 @@ class pdo
   /**
    * If array data is equals.
    */
-  public function equals(array $is_equals)
+  public function equals($is_equals)
   {
     if (!empty($is_equals)) {
       $i = count($is_equals);
@@ -833,7 +851,7 @@ class pdo
    *
    * @return $this
    */
-  public function sort(array $by, $order = 'ASC')
+  public function sort($by, $order = 'ASC')
   {
     $this->query .= ' ORDER BY ';
     for ($i = 0; $i < count($by); ++$i) {
@@ -876,7 +894,7 @@ class pdo
    *
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */
-  public function getQuery(array $data_value = [])
+  public function getQuery($data_value = [])
   {
     $query = $this->query;
     if (!empty($data_value)) {
@@ -966,8 +984,8 @@ class pdo
       $valstr .= " $value ";
       $is_equals .= " `{$keys[$i]}`=$value ";
       if ($i == count($data) - 1) { //last iteration
-                //$keystr .= ')';
-                //$valstr .= ')';
+        //$keystr .= ')';
+        //$valstr .= ')';
       } else {
         $keystr .= ', ';
         $valstr .= ', ';
@@ -990,6 +1008,12 @@ class pdo
     return $this;
   }
 
+  /**
+   * Show table creation
+   *
+   * @param string $table table name
+   * @return array
+   */
   public function show_creation($table)
   {
     return $this->query("SHOW CREATE TABLE `$table`")->row_array();

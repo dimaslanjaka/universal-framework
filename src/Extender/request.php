@@ -133,19 +133,19 @@ class request extends Curl
       curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
       if (isset($opt['proxy_type'])) {
         switch ($opt['proxy_type']) {
-                    case 'socks5':
-                        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-                        break;
-                    case 'http':
-                        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-                        break;
-                    case 'https':
-                        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
-                        break;
-                    case 'socks4':
-                        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
-                        break;
-                }
+          case 'socks5':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            break;
+          case 'http':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+            break;
+          case 'https':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTPS);
+            break;
+          case 'socks4':
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS4);
+            break;
+        }
       }
     }
 
@@ -398,7 +398,7 @@ class request extends Curl
    *
    * @return bool
    */
-  public function isAssoc(array $arr)
+  public function isAssoc($arr)
   {
     if ([] === $arr) {
       return false;
@@ -412,7 +412,7 @@ class request extends Curl
    *
    * @return bool
    */
-  public function has_string_keys(array $array)
+  public function has_string_keys($array)
   {
     return count(array_filter(array_keys($array), 'is_string')) > 0;
   }

@@ -6,7 +6,7 @@ use SmartDOMDocument;
 
 class array2element
 {
-  public function select(array $data, array $attributes = [], array $options = [])
+  public function select($data, array $attributes = [], array $options = [])
   {
     $dom = new SmartDOMDocument();
     if (!isset($options['selected'])) {

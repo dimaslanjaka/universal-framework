@@ -55,7 +55,7 @@
     "description": "Framework PHPJS full typehinting support with easy helper",
     "license": "MIT",
     "name": "dimaslanjaka/universal-framework",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "require": {
         "ahsankhatri/cryptolib-php": "^1.1",
         "codeception/codeception": "^4.0",

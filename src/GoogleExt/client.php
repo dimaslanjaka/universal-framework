@@ -23,7 +23,7 @@ class client extends Google_Client
   private $token_folder;
   private $configuration;
 
-  public function __construct(array $config = ['token' => ['folder' => __DIR__ . '/token']])
+  public function __construct($config = ['token' => ['folder' => __DIR__ . '/token']])
   {
     parent::__construct($config);
     $this->filemanager = new file();
@@ -85,20 +85,20 @@ class client extends Google_Client
   {
     $this->setApplicationName($this->application_name);
     $this->setCredentials(
-            CONFIG['google']['client'],
-            CONFIG['google']['secret'],
-            CONFIG['google']['key']
-        );
+      CONFIG['google']['client'],
+      CONFIG['google']['secret'],
+      CONFIG['google']['key']
+    );
     $scopes = [
       'https://www.googleapis.com/auth/userinfo.email',
       'https://www.googleapis.com/auth/userinfo.profile',
     ];
     if (is_string($scope)) {
       switch ($scope) {
-                case 'blogger':
-                    $scopes[] = 'https://www.googleapis.com/auth/blogger';
-                    break;
-            }
+        case 'blogger':
+          $scopes[] = 'https://www.googleapis.com/auth/blogger';
+          break;
+      }
     }
     $this->set_scope(array_unique($scopes));
     $this->set_offline(true);
@@ -234,9 +234,9 @@ class client extends Google_Client
       $client = $this;
       $service = new \Google_Service_YouTube($client);
       $response = $service->subscriptions->listSubscriptions(
-                'snippet,contentDetails',
-                array_filter(['forChannelId' => $cid, 'mine' => true])
-            );
+        'snippet,contentDetails',
+        array_filter(['forChannelId' => $cid, 'mine' => true])
+      );
 
       $result = count($response['items']);
       $output = [];
@@ -267,10 +267,10 @@ class client extends Google_Client
   {
     $config = $this->configuration;
     $this->setCredentials(
-            CONFIG['google']['client'],
-            CONFIG['google']['secret'],
-            CONFIG['google']['key']
-        );
+      CONFIG['google']['client'],
+      CONFIG['google']['secret'],
+      CONFIG['google']['key']
+    );
     $this->setRedirectUri($this->getOrigin($redirect));
     // authenticating
     if (isset($_GET['code'])) {

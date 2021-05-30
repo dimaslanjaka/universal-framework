@@ -4,7 +4,7 @@ namespace HTML;
 
 class js
 {
-  public static function js_array(array $array)
+  public static function js_array($array)
   {
     $temp = array_map(function ($index) {
       return self::js_str($index);

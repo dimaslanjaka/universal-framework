@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Scrambler.php.
  */
@@ -114,7 +115,7 @@ abstract class Scrambler extends NodeVisitorAbstract
    *
    * @return parent
    */
-  public function setIgnore(array $ignore)
+  public function setIgnore($ignore)
   {
     $this->ignore = $ignore;
 

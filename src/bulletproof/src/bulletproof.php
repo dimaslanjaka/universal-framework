@@ -1,4 +1,5 @@
 <?php
+
 /**
  * BULLETPROOF.
  *
@@ -100,7 +101,7 @@ class Image implements \ArrayAccess
   /**
    * @param array $_files represents the $_FILES array passed as dependency
    */
-  public function __construct(array $_files = [])
+  public function __construct($_files = [])
   {
     /* check if php_exif is enabled */
     if (!function_exists('exif_imagetype')) {
@@ -214,16 +215,16 @@ class Image implements \ArrayAccess
   public function getJson()
   {
     return json_encode(
-            [
-              'name' => $this->name,
-              'mime' => $this->mime,
-              'height' => $this->height,
-              'width' => $this->width,
-              'size' => $this->_files['size'],
-              'storage' => $this->storage,
-              'path' => $this->path,
-            ]
-        );
+      [
+        'name' => $this->name,
+        'mime' => $this->mime,
+        'height' => $this->height,
+        'width' => $this->width,
+        'size' => $this->_files['size'],
+        'storage' => $this->storage,
+        'path' => $this->path,
+      ]
+    );
   }
 
   /**
@@ -462,7 +463,7 @@ class Image implements \ArrayAccess
    *
    * @return $this
    */
-  public function setMime(array $fileTypes)
+  public function setMime($fileTypes)
   {
     $this->mimeTypes = $fileTypes;
 

@@ -15,7 +15,7 @@ class helper
    *
    * @todo Remove all defined keys in array
    */
-  public static function unset(array $source, array $keys)
+  public static function unset($source, array $keys)
   {
     foreach ($keys as $unset) {
       if (isset($source[$unset])) {
@@ -26,7 +26,7 @@ class helper
     return $source;
   }
 
-  public static function array_search(array $haystack, $needle)
+  public static function array_search($haystack, $needle)
   {
     if (!self::isAssoc($haystack)) {
       throw new \MVC\Exception('Array search only for associative array', 1);
@@ -47,7 +47,7 @@ class helper
    *
    * @return bool
    */
-  public static function isAssoc(array $source)
+  public static function isAssoc($source)
   {
     if ([] === $source) {
       return false;
@@ -56,13 +56,13 @@ class helper
     return array_keys($source) !== range(0, count($source) - 1);
   }
 
-  public static function recursiveFind(array $haystack, $needle)
+  public static function recursiveFind($haystack, $needle)
   {
     $iterator = new \RecursiveArrayIterator($haystack);
     $recursive = new \RecursiveIteratorIterator(
-            $iterator,
-            \RecursiveIteratorIterator::SELF_FIRST
-        );
+      $iterator,
+      \RecursiveIteratorIterator::SELF_FIRST
+    );
     foreach ($recursive as $key => $value) {
       if ($key === $needle) {
         yield $value;
@@ -89,7 +89,7 @@ class helper
    *
    * @todo check all keys in array
    */
-  public static function hasAll(array $array, array $key)
+  public static function hasAll($array, array $key)
   {
     if (empty($key)) {
       return false;
@@ -119,7 +119,7 @@ class helper
     return $result;
   }
 
-  public static function replace_value_by_key(array $before, array $after)
+  public static function replace_value_by_key($before, array $after)
   {
     foreach ($before as $key => $value) {
       if (isset($after[$key])) {
@@ -130,7 +130,7 @@ class helper
     return $before;
   }
 
-  public static function get_rand_arr(array $items, $length = 1)
+  public static function get_rand_arr($items, $length = 1)
   {
     $result = [];
     for ($i = 0; $i < $length; ++$i) {
@@ -140,7 +140,7 @@ class helper
     return $result;
   }
 
-  public static function fix_undefined_properties(array $arr, array $name)
+  public static function fix_undefined_properties($arr, array $name)
   {
     foreach ($name as $prop => $callback) {
       if (!isset($arr[$prop])) {
@@ -151,7 +151,7 @@ class helper
     return $arr;
   }
 
-  public static function get(array $source, array $keys = [])
+  public static function get($source, array $keys = [])
   {
     $source = (array) $source;
     $result = [];
@@ -188,7 +188,7 @@ class helper
    *
    * @return bool
    */
-  public static function isSequent(array $source)
+  public static function isSequent($source)
   {
     return !self::isAssoc($source);
   }

@@ -8,7 +8,7 @@
  *
  * @return array
  */
-function array_filter_recursive(array $array, array $filterdata)
+function array_filter_recursive($array, array $filterdata)
 {
   if (\ArrayHelper\helper::isSequent($array)) {
     return array_map(function ($single) use ($filterdata) {
@@ -28,7 +28,7 @@ function array_filter_recursive(array $array, array $filterdata)
  *
  * @return array
  */
-function array_unique_recursive(array $array)
+function array_unique_recursive($array)
 {
   $array = array_unique($array, SORT_REGULAR);
 
@@ -46,7 +46,7 @@ function array_unique_recursive(array $array)
  *
  * @return bool
  */
-function array_keys_exists(array $keys, array $arr)
+function array_keys_exists($keys, array $arr)
 {
   return !array_diff_key(array_flip($keys), $arr);
 }

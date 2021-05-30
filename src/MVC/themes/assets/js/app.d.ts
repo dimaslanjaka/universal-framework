@@ -15,24 +15,26 @@
 /// <reference types="google.analytics" />
 /// <reference types="datatables.net" />
 /// <reference lib="dom" />
-declare var CryptoJSAesJson: {
+declare const CryptoJSAesJson: {
     stringify: (cipherParams: CryptoJS.lib.CipherParams) => string;
-    parse: (jsonStr: any) => CryptoJS.lib.CipherParams;
+    parse: (jsonStr: string) => CryptoJS.lib.CipherParams;
 };
 /**
  * AES encrypt
- * @url /src/shim/Cipher.php
- * @param {text} text
- * @param {text} key
+ * @see /src/shim/Cipher.php
+ * @param text
+ * @param key
+ * @returns
  */
-declare function aesEncrypt(text: any, key: any): string;
+declare function aesEncrypt(text: string, key: string | CryptoJS.lib.WordArray): string;
 /**
  * AES decrypt
- * @url /src/shim/Cipher.php
- * @param {text} encrypted
- * @param {text} key
+ * @see /src/shim/Cipher.php
+ * @param encrypted
+ * @param key
+ * @returns
  */
-declare function aesDecrypt(encrypted: any, key: any): any;
+declare function aesDecrypt(encrypted: string, key: string | CryptoJS.lib.WordArray): any;
 declare const CodeMirrorAddon: {
     "CodeMirror-comment-comment": {
         js: string;
@@ -392,6 +394,19 @@ declare function get_device(): {
  * @param listener - function to attach for each event as a listener
  */
 declare function setEventListener(element: HTMLElement, eventNames: "click" | "mouseover" | "submit" | "change", listener: EventListenerOrEventListenerObject): void;
+/**
+ * Serialize all form data into an array of key/value pairs
+ * (c) 2020 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param form The form to serialize
+ * @return The serialized form data
+ * @see [Codepen Demo]{@link https://codepen.io/cferdinandi/pen/VwvMdOG}
+ * @see [Source Code]{@link https://vanillajstoolkit.com/helpers/serializearray/}
+ * @example
+ * var form = document.querySelector('#FormID');
+ * var data = serializeArray(form);
+ * console.log(data);
+ */
+declare function serializeArray(form: HTMLFormElement): Array<any>;
 declare class STORAGE {
     /**
      * Reflection class constructor
@@ -535,6 +550,12 @@ declare class ip {
  */
 declare function get_unique_id(): string | Object;
 /**
+ * Automatically expand a textarea as the user types
+ * (c) 2021 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param field The textarea
+ */
+declare function autoExpand(field: HTMLFormElement): void;
+/**
  * get url parameter by name
  * @param name parameter name
  * @param url url target, null for current location.href
@@ -620,6 +641,13 @@ declare function array_keys(haystack: any): string[];
  * @param a items An array containing the items.
  */
 declare function array_shuffle(a: Array<any>): any[];
+/**
+ * Deep merge two or more objects into the first.
+ * (c) 2021 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param objects  The objects to merge together
+ * @returns Merged values of defaults and options
+ */
+declare function deepAssign(...objects: object[]): object;
 declare function datetime_local(date: any): string;
 declare interface Number {
     getMS(type: string): number;
@@ -651,6 +679,15 @@ declare function oddoreven(n: string, type: string): boolean;
  * @param {number} val
  */
 declare function strpad(val: number): string | number;
+/**
+ * More accurately check the type of a JavaScript object
+ * (c) 2021 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param  {Object} obj The object
+ * @return {String}     The object type
+ * @see [Codepen]{@link https://codepen.io/cferdinandi/pen/aXzNze}
+ * @see [Source]{@link https://vanillajstoolkit.com/helpers/truetypeof/}
+ */
+declare function trueTypeOf(obj: object): string;
 declare const siteConfig: {
     google: {
         key: string;
@@ -1029,12 +1066,12 @@ declare function openInNewTab(url: string, name: string): void;
  * Disabling button
  * @param t element of button
  */
-declare function disable_button(t: JQuery<any> | HTMLButtonElement): void;
+declare function disable_button(t: JQuery<HTMLButtonElement> | HTMLButtonElement): void;
 /**
  * Enabling button
  * @param t element of button
  */
-declare function enable_button(t: JQuery<any> | HTMLButtonElement): void;
+declare function enable_button(t: JQuery<HTMLButtonElement> | HTMLButtonElement): void;
 /**
  * @see https://gist.githubusercontent.com/tmrk/4aa3cf285360526a98b2115d63e0cafd/raw/5e74803dcf33923257d081433ec92ba93765e3f3/countries.js
  * @global
@@ -2459,6 +2496,7 @@ declare class user {
      * get userdata
      */
     get(key: string): any;
+    login(user: string, pass: string): void;
     /**
      * fetch userdata
      * @param callback

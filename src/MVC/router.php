@@ -65,7 +65,7 @@ class router extends themes
   {
     if (1 == count(get_included_files())) {
       header('Location: /'); // Send to index
-            exit('403'); // Must include to stop PHP from continuing
+      exit('403'); // Must include to stop PHP from continuing
     }
   }
 
@@ -79,24 +79,24 @@ class router extends themes
   {
     $env = strtolower($env); //$GLOBALS['router']['env']
     switch ($env) {
-            case 'development':
-                //error_reporting(-1);
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-                ini_set('log_errors', 1);
-                ini_set('error_log', \Filemanager\file::file($this->PHP_ERROR_FILE, ''));
-                break;
+      case 'development':
+        //error_reporting(-1);
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        ini_set('log_errors', 1);
+        ini_set('error_log', \Filemanager\file::file($this->PHP_ERROR_FILE, ''));
+        break;
 
-            case 'production':
-                ini_set('display_errors', 0);
-                if (version_compare(PHP_VERSION, '5.3', '>=')) {
-                  error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-                } else {
-                  error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-                }
-                break;
+      case 'production':
+        ini_set('display_errors', 0);
+        if (version_compare(PHP_VERSION, '5.3', '>=')) {
+          error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+        } else {
+          error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
         }
+        break;
+    }
     if (empty($env)) {
       if (ob_get_level()) {
         ob_end_clean();
@@ -155,7 +155,7 @@ class router extends themes
    *
    * @return bool|string
    */
-  public function is_reqs(array $anys)
+  public function is_reqs($anys)
   {
     foreach ($anys as $any) {
       if (isset($_REQUEST[(string) $any])) {

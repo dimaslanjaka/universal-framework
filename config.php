@@ -96,7 +96,7 @@ function get_conf()
  *
  * @return void
  */
-function save_conf(array $newdata)
+function save_conf($newdata)
 {
     \Filemanager\file::file(__DIR__ . '/config.json', array_replace(get_conf(), $newdata), true);
 }

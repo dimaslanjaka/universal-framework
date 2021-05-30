@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ScrambleUse.php.
  *
@@ -44,7 +45,7 @@ class ScrambleUse extends ScramblerVisitor
    *
    * @return array
    **/
-  public function beforeTraverse(array $nodes)
+  public function beforeTraverse($nodes)
   {
     // Reset renamed list
     $this->resetRenamed();
@@ -63,7 +64,7 @@ class ScrambleUse extends ScramblerVisitor
    *
    * @return ClassStatement|bool returns falls if no class can be found
    **/
-  private function findClass(array $nodes)
+  private function findClass($nodes)
   {
     foreach ($nodes as $node) {
       if ($node instanceof ClassStatement) {
@@ -89,7 +90,7 @@ class ScrambleUse extends ScramblerVisitor
    *
    * @return void
    **/
-  private function scanUse(array $nodes)
+  private function scanUse($nodes)
   {
     foreach ($nodes as $node) {
       // Scramble the private method definitions
@@ -100,24 +101,24 @@ class ScrambleUse extends ScramblerVisitor
 
           // Prefix all classes with underscores, but don't modify them further
           $rename =
-                        false === strpos($originalName, '_')
-                        &&
-                        count($useNode->name->parts) > 1;
+            false === strpos($originalName, '_')
+            &&
+            count($useNode->name->parts) > 1;
 
           if (!$rename) {
             $useNode->name = new Name(
-                            '\\' . $useNode->name
-                        );
+              '\\' . $useNode->name
+            );
 
             continue;
           }
 
           // Scramble into new use name
           $newName = $this->scrambleString(
-                        $originalName
-                        . '-'
-                        . $useNode->alias
-                    );
+            $originalName
+              . '-'
+              . $useNode->alias
+          );
 
           // Record renaming of full class
           $this->renamed($originalName, $newName);
@@ -192,13 +193,13 @@ class ScrambleUse extends ScramblerVisitor
 
     // Static call or constant lookup on class
     if (
-            $node instanceof ClassConstFetch
-            || $node instanceof StaticCall
-            || $node instanceof StaticPropertyFetch
-            || $node instanceof StaticVar
-            || $node instanceof NewExpression
-            || $node instanceof InstanceOfExpression
-        ) {
+      $node instanceof ClassConstFetch
+      || $node instanceof StaticCall
+      || $node instanceof StaticPropertyFetch
+      || $node instanceof StaticVar
+      || $node instanceof NewExpression
+      || $node instanceof InstanceOfExpression
+    ) {
       // We need to be in a class for this to work
       if (empty($this->classNode)) {
         return;

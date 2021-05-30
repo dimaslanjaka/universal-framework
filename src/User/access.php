@@ -88,7 +88,7 @@ class access
    *
    * @return bool
    */
-  public function save(array $newData)
+  public function save($newData)
   {
     $config = $this->getAccess();
     //$merge = array_replace($config, $newData);

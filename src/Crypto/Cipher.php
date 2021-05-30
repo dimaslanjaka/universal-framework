@@ -40,7 +40,7 @@ class Cipher
     'numberOfIterations' => 1,
   ];
 
-  public function __construct(array $options = [])
+  public function __construct($options = [])
   {
     $this->_opts = $options + $this->_opts;
   }
@@ -56,21 +56,21 @@ class Cipher
 
     if ('encrypt' === $mode) {
       return base64_encode(openssl_encrypt(
-                $string,
-                $this->getOptions('method'),
-                $password,
-                OPENSSL_RAW_DATA,
-                $initVector
-            ));
+        $string,
+        $this->getOptions('method'),
+        $password,
+        OPENSSL_RAW_DATA,
+        $initVector
+      ));
     }
 
     return openssl_decrypt(
-            base64_decode($string),
-            $this->getOptions('method'),
-            $password,
-            OPENSSL_RAW_DATA,
-            $initVector
-        );
+      base64_decode($string),
+      $this->getOptions('method'),
+      $password,
+      OPENSSL_RAW_DATA,
+      $initVector
+    );
   }
 
   public function getComputedHash($key)
@@ -132,8 +132,8 @@ class Cipher
   public function decryptCipherTextWithRandomIV($cipherText, $key)
   {
     return substr(
-            $this->encryptOrDecrypt('decrypt', $cipherText, $key, $this->generateRandomIV()),
-            intval($this->getOptions('maxIVSize'))
-        );
+      $this->encryptOrDecrypt('decrypt', $cipherText, $key, $this->generateRandomIV()),
+      intval($this->getOptions('maxIVSize'))
+    );
   }
 }

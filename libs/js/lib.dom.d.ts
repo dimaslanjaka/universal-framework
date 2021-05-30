@@ -1014,8 +1014,7 @@ interface PaymentOptions {
     shippingType?: string;
 }
 
-interface PaymentRequestUpdateEventInit extends EventInit {
-}
+type PaymentRequestUpdateEventInit = EventInit
 
 interface PaymentShippingOption {
     amount: PaymentCurrencyAmount;
@@ -1171,8 +1170,7 @@ interface QueuingStrategyInit {
     highWaterMark: number;
 }
 
-interface RTCAnswerOptions extends RTCOfferAnswerOptions {
-}
+type RTCAnswerOptions = RTCOfferAnswerOptions
 
 interface RTCCertificateExpiration {
     expires?: number;
@@ -1438,8 +1436,7 @@ interface RTCRtpContributingSource {
     timestamp: number;
 }
 
-interface RTCRtpDecodingParameters extends RTCRtpCodingParameters {
-}
+type RTCRtpDecodingParameters = RTCRtpCodingParameters
 
 interface RTCRtpEncodingParameters extends RTCRtpCodingParameters {
     active?: boolean;
@@ -2450,8 +2447,7 @@ declare var AudioScheduledSourceNode: {
     new(): AudioScheduledSourceNode;
 };
 
-interface AudioWorklet extends Worklet {
-}
+type AudioWorklet = Worklet
 
 declare var AudioWorklet: {
     prototype: AudioWorklet;
@@ -2672,8 +2668,7 @@ declare var ByteLengthQueuingStrategy: {
 };
 
 /** A CDATA section that can be used within XML to include extended portions of unescaped text. The symbols < and & don’t need escaping as they normally do when inside a CDATA section. */
-interface CDATASection extends Text {
-}
+type CDATASection = Text
 
 declare var CDATASection: {
     prototype: CDATASection;
@@ -3325,8 +3320,7 @@ declare var CSSStyleSheet: {
 };
 
 /** An object representing a single CSS @supports at-rule. It implements the CSSConditionRule interface, and therefore the CSSRule and CSSGroupingRule interfaces with a type value of 12 (CSSRule.SUPPORTS_RULE). */
-interface CSSSupportsRule extends CSSConditionRule {
-}
+type CSSSupportsRule = CSSConditionRule
 
 declare var CSSSupportsRule: {
     prototype: CSSSupportsRule;
@@ -3534,8 +3528,7 @@ declare var CaretPosition: {
 };
 
 /** The ChannelMergerNode interface, often used in conjunction with its opposite, ChannelSplitterNode, reunites different mono inputs into a single output. Each input is used to fill a channel of the output. This is useful for accessing each channels separately, e.g. for performing channel mixing where gain must be separately controlled on each channel. */
-interface ChannelMergerNode extends AudioNode {
-}
+type ChannelMergerNode = AudioNode
 
 declare var ChannelMergerNode: {
     prototype: ChannelMergerNode;
@@ -3543,8 +3536,7 @@ declare var ChannelMergerNode: {
 };
 
 /** The ChannelSplitterNode interface, often used in conjunction with its opposite, ChannelMergerNode, separates the different channels of an audio source into a set of mono outputs. This is useful for accessing each channel separately, e.g. for performing channel mixing where gain must be separately controlled on each channel. */
-interface ChannelSplitterNode extends AudioNode {
-}
+type ChannelSplitterNode = AudioNode
 
 declare var ChannelSplitterNode: {
     prototype: ChannelSplitterNode;
@@ -3660,8 +3652,7 @@ declare var CloseEvent: {
 };
 
 /** Textual notations within markup; although it is generally not visually shown, such comments are available to be read in the source view. */
-interface Comment extends CharacterData {
-}
+type Comment = CharacterData
 
 declare var Comment: {
     prototype: Comment;
@@ -5077,8 +5068,7 @@ interface DocumentOrShadowRoot {
     getSelection(): Selection | null;
 }
 
-interface DocumentTimeline extends AnimationTimeline {
-}
+type DocumentTimeline = AnimationTimeline
 
 declare var DocumentTimeline: {
     prototype: DocumentTimeline;
@@ -9120,8 +9110,7 @@ declare var History: {
     new(): History;
 };
 
-interface IDBArrayKey extends Array<IDBValidKey> {
-}
+type IDBArrayKey = Array<IDBValidKey>
 
 /** This IndexedDB API interface represents a cursor for traversing or iterating over multiple records in a database. */
 interface IDBCursor {
@@ -10471,8 +10460,7 @@ declare var MediaStreamTrack: {
     new(): MediaStreamTrack;
 };
 
-interface MediaStreamTrackAudioSourceNode extends AudioNode {
-}
+type MediaStreamTrackAudioSourceNode = AudioNode
 
 declare var MediaStreamTrackAudioSourceNode: {
     prototype: MediaStreamTrackAudioSourceNode;
@@ -11608,8 +11596,7 @@ declare var PerformanceEntry: {
 };
 
 /** PerformanceMark is an abstract interface for PerformanceEntry objects with an entryType of "mark". Entries of this type are created by calling performance.mark() to add a named DOMHighResTimeStamp (the mark) to the browser's performance timeline. */
-interface PerformanceMark extends PerformanceEntry {
-}
+type PerformanceMark = PerformanceEntry
 
 declare var PerformanceMark: {
     prototype: PerformanceMark;
@@ -11617,8 +11604,7 @@ declare var PerformanceMark: {
 };
 
 /** PerformanceMeasure is an abstract interface for PerformanceEntry objects with an entryType of "measure". Entries of this type are created by calling performance.measure() to add a named DOMHighResTimeStamp (the measure) between two marks to the browser's performance timeline. */
-interface PerformanceMeasure extends PerformanceEntry {
-}
+type PerformanceMeasure = PerformanceEntry
 
 declare var PerformanceMeasure: {
     prototype: PerformanceMeasure;
@@ -14080,8 +14066,7 @@ declare var SVGPathSegArcRel: {
     new(): SVGPathSegArcRel;
 };
 
-interface SVGPathSegClosePath extends SVGPathSeg {
-}
+type SVGPathSegClosePath = SVGPathSeg
 
 declare var SVGPathSegClosePath: {
     prototype: SVGPathSegClosePath;
@@ -15372,8 +15357,7 @@ declare var SpeechSynthesisVoice: {
     new(): SpeechSynthesisVoice;
 };
 
-interface StaticRange extends AbstractRange {
-}
+type StaticRange = AbstractRange
 
 declare var StaticRange: {
     prototype: StaticRange;
@@ -17438,8 +17422,7 @@ declare var WebGLActiveInfo: {
 };
 
 /** Part of the WebGL API and represents an opaque buffer object storing data such as vertices or colors. */
-interface WebGLBuffer extends WebGLObject {
-}
+type WebGLBuffer = WebGLObject
 
 declare var WebGLBuffer: {
     prototype: WebGLBuffer;
@@ -17457,8 +17440,7 @@ declare var WebGLContextEvent: {
 };
 
 /** Part of the WebGL API and represents a collection of buffers that serve as a rendering destination. */
-interface WebGLFramebuffer extends WebGLObject {
-}
+type WebGLFramebuffer = WebGLObject
 
 declare var WebGLFramebuffer: {
     prototype: WebGLFramebuffer;
@@ -17474,16 +17456,14 @@ declare var WebGLObject: {
 };
 
 /** The WebGLProgram is part of the WebGL API and is a combination of two compiled WebGLShaders consisting of a vertex shader and a fragment shader (both written in GLSL). */
-interface WebGLProgram extends WebGLObject {
-}
+type WebGLProgram = WebGLObject
 
 declare var WebGLProgram: {
     prototype: WebGLProgram;
     new(): WebGLProgram;
 };
 
-interface WebGLQuery extends WebGLObject {
-}
+type WebGLQuery = WebGLObject
 
 declare var WebGLQuery: {
     prototype: WebGLQuery;
@@ -17491,8 +17471,7 @@ declare var WebGLQuery: {
 };
 
 /** Part of the WebGL API and represents a buffer that can contain an image, or can be source or target of an rendering operation. */
-interface WebGLRenderbuffer extends WebGLObject {
-}
+type WebGLRenderbuffer = WebGLObject
 
 declare var WebGLRenderbuffer: {
     prototype: WebGLRenderbuffer;
@@ -18270,8 +18249,7 @@ interface WebGLRenderingContextOverloads {
     uniformMatrix4fv(location: WebGLUniformLocation | null, transpose: GLboolean, value: Float32List): void;
 }
 
-interface WebGLSampler extends WebGLObject {
-}
+type WebGLSampler = WebGLObject
 
 declare var WebGLSampler: {
     prototype: WebGLSampler;
@@ -18279,8 +18257,7 @@ declare var WebGLSampler: {
 };
 
 /** The WebGLShader is part of the WebGL API and can either be a vertex or a fragment shader. A WebGLProgram requires both types of shaders. */
-interface WebGLShader extends WebGLObject {
-}
+type WebGLShader = WebGLObject
 
 declare var WebGLShader: {
     prototype: WebGLShader;
@@ -18299,8 +18276,7 @@ declare var WebGLShaderPrecisionFormat: {
     new(): WebGLShaderPrecisionFormat;
 };
 
-interface WebGLSync extends WebGLObject {
-}
+type WebGLSync = WebGLObject
 
 declare var WebGLSync: {
     prototype: WebGLSync;
@@ -18308,16 +18284,14 @@ declare var WebGLSync: {
 };
 
 /** Part of the WebGL API and represents an opaque texture object providing storage and state for texturing operations. */
-interface WebGLTexture extends WebGLObject {
-}
+type WebGLTexture = WebGLObject
 
 declare var WebGLTexture: {
     prototype: WebGLTexture;
     new(): WebGLTexture;
 };
 
-interface WebGLTransformFeedback extends WebGLObject {
-}
+type WebGLTransformFeedback = WebGLObject
 
 declare var WebGLTransformFeedback: {
     prototype: WebGLTransformFeedback;
@@ -18333,16 +18307,14 @@ declare var WebGLUniformLocation: {
     new(): WebGLUniformLocation;
 };
 
-interface WebGLVertexArrayObject extends WebGLObject {
-}
+type WebGLVertexArrayObject = WebGLObject
 
 declare var WebGLVertexArrayObject: {
     prototype: WebGLVertexArrayObject;
     new(): WebGLVertexArrayObject;
 };
 
-interface WebGLVertexArrayObjectOES extends WebGLObject {
-}
+type WebGLVertexArrayObjectOES = WebGLObject
 
 interface WebKitPoint {
     x: number;
@@ -19003,8 +18975,7 @@ declare var XMLSerializer: {
 };
 
 /** The XPathEvaluator interface allows to compile and evaluate XPath expressions. */
-interface XPathEvaluator extends XPathEvaluatorBase {
-}
+type XPathEvaluator = XPathEvaluatorBase
 
 declare var XPathEvaluator: {
     prototype: XPathEvaluator;
@@ -19121,7 +19092,7 @@ interface Console {
     warn(...data: any[]): void;
 }
 
-declare var console: Console;
+declare let console: Console;
 
 /** Holds useful CSS-related methods. No object with this interface are implemented: it contains only static methods and therefore is a utilitarian interface. */
 declare namespace CSS {
@@ -19585,102 +19556,102 @@ interface SVGElementTagNameMap {
 /** @deprecated Directly use HTMLElementTagNameMap or SVGElementTagNameMap as appropriate, instead. */
 type ElementTagNameMap = HTMLElementTagNameMap & Pick<SVGElementTagNameMap, Exclude<keyof SVGElementTagNameMap, keyof HTMLElementTagNameMap>>;
 
-declare var Audio: {
+declare let Audio: {
     new(src?: string): HTMLAudioElement;
 };
-declare var Image: {
+declare let Image: {
     new(width?: number, height?: number): HTMLImageElement;
 };
-declare var Option: {
+declare let Option: {
     new(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean): HTMLOptionElement;
 };
-declare var applicationCache: ApplicationCache;
-declare var clientInformation: Navigator;
-declare var closed: boolean;
-declare var customElements: CustomElementRegistry;
-declare var defaultStatus: string;
-declare var devicePixelRatio: number;
-declare var doNotTrack: string;
-declare var document: Document;
+declare let applicationCache: ApplicationCache;
+declare let clientInformation: Navigator;
+declare let closed: boolean;
+declare let customElements: CustomElementRegistry;
+declare let defaultStatus: string;
+declare let devicePixelRatio: number;
+declare let doNotTrack: string;
+declare let document: Document;
 /** @deprecated */
-declare var event: Event | undefined;
+declare let event: Event | undefined;
 /** @deprecated */
-declare var external: External;
-declare var frameElement: Element | null;
-declare var frames: Window;
-declare var history: History;
-declare var innerHeight: number;
-declare var innerWidth: number;
-declare var length: number;
-declare var location: Location;
-declare var locationbar: BarProp;
-declare var menubar: BarProp;
-declare var msContentScript: ExtensionScriptApis;
+declare let external: External;
+declare let frameElement: Element | null;
+declare let frames: Window;
+declare let history: History;
+declare let innerHeight: number;
+declare let innerWidth: number;
+declare let length: number;
+declare let location: Location;
+declare let locationbar: BarProp;
+declare let menubar: BarProp;
+declare let msContentScript: ExtensionScriptApis;
 /** @deprecated */
 declare const name: void;
-declare var navigator: Navigator;
-declare var offscreenBuffering: string | boolean;
-declare var oncompassneedscalibration: ((this: Window, ev: Event) => any) | null;
-declare var ondevicelight: ((this: Window, ev: DeviceLightEvent) => any) | null;
-declare var ondevicemotion: ((this: Window, ev: DeviceMotionEvent) => any) | null;
-declare var ondeviceorientation: ((this: Window, ev: DeviceOrientationEvent) => any) | null;
-declare var ondeviceorientationabsolute: ((this: Window, ev: DeviceOrientationEvent) => any) | null;
-declare var ongamepadconnected: ((this: Window, ev: GamepadEvent) => any) | null;
-declare var ongamepaddisconnected: ((this: Window, ev: GamepadEvent) => any) | null;
-declare var onmousewheel: ((this: Window, ev: Event) => any) | null;
-declare var onmsgesturechange: ((this: Window, ev: Event) => any) | null;
-declare var onmsgesturedoubletap: ((this: Window, ev: Event) => any) | null;
-declare var onmsgestureend: ((this: Window, ev: Event) => any) | null;
-declare var onmsgesturehold: ((this: Window, ev: Event) => any) | null;
-declare var onmsgesturestart: ((this: Window, ev: Event) => any) | null;
-declare var onmsgesturetap: ((this: Window, ev: Event) => any) | null;
-declare var onmsinertiastart: ((this: Window, ev: Event) => any) | null;
-declare var onmspointercancel: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerdown: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerenter: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerleave: ((this: Window, ev: Event) => any) | null;
-declare var onmspointermove: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerout: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerover: ((this: Window, ev: Event) => any) | null;
-declare var onmspointerup: ((this: Window, ev: Event) => any) | null;
+declare let navigator: Navigator;
+declare let offscreenBuffering: string | boolean;
+declare let oncompassneedscalibration: ((this: Window, ev: Event) => any) | null;
+declare let ondevicelight: ((this: Window, ev: DeviceLightEvent) => any) | null;
+declare let ondevicemotion: ((this: Window, ev: DeviceMotionEvent) => any) | null;
+declare let ondeviceorientation: ((this: Window, ev: DeviceOrientationEvent) => any) | null;
+declare let ondeviceorientationabsolute: ((this: Window, ev: DeviceOrientationEvent) => any) | null;
+declare let ongamepadconnected: ((this: Window, ev: GamepadEvent) => any) | null;
+declare let ongamepaddisconnected: ((this: Window, ev: GamepadEvent) => any) | null;
+declare let onmousewheel: ((this: Window, ev: Event) => any) | null;
+declare let onmsgesturechange: ((this: Window, ev: Event) => any) | null;
+declare let onmsgesturedoubletap: ((this: Window, ev: Event) => any) | null;
+declare let onmsgestureend: ((this: Window, ev: Event) => any) | null;
+declare let onmsgesturehold: ((this: Window, ev: Event) => any) | null;
+declare let onmsgesturestart: ((this: Window, ev: Event) => any) | null;
+declare let onmsgesturetap: ((this: Window, ev: Event) => any) | null;
+declare let onmsinertiastart: ((this: Window, ev: Event) => any) | null;
+declare let onmspointercancel: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerdown: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerenter: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerleave: ((this: Window, ev: Event) => any) | null;
+declare let onmspointermove: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerout: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerover: ((this: Window, ev: Event) => any) | null;
+declare let onmspointerup: ((this: Window, ev: Event) => any) | null;
 /** @deprecated */
-declare var onorientationchange: ((this: Window, ev: Event) => any) | null;
-declare var onreadystatechange: ((this: Window, ev: ProgressEvent<Window>) => any) | null;
-declare var onvrdisplayactivate: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplayblur: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplayconnect: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplaydeactivate: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplaydisconnect: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplayfocus: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplaypointerrestricted: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplaypointerunrestricted: ((this: Window, ev: Event) => any) | null;
-declare var onvrdisplaypresentchange: ((this: Window, ev: Event) => any) | null;
-declare var opener: any;
+declare let onorientationchange: ((this: Window, ev: Event) => any) | null;
+declare let onreadystatechange: ((this: Window, ev: ProgressEvent<Window>) => any) | null;
+declare let onvrdisplayactivate: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplayblur: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplayconnect: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplaydeactivate: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplaydisconnect: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplayfocus: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplaypointerrestricted: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplaypointerunrestricted: ((this: Window, ev: Event) => any) | null;
+declare let onvrdisplaypresentchange: ((this: Window, ev: Event) => any) | null;
+declare let opener: any;
 /** @deprecated */
-declare var orientation: string | number;
-declare var outerHeight: number;
-declare var outerWidth: number;
-declare var pageXOffset: number;
-declare var pageYOffset: number;
-declare var parent: Window;
-declare var personalbar: BarProp;
-declare var screen: Screen;
-declare var screenLeft: number;
-declare var screenTop: number;
-declare var screenX: number;
-declare var screenY: number;
-declare var scrollX: number;
-declare var scrollY: number;
-declare var scrollbars: BarProp;
-declare var self: Window & typeof globalThis;
-declare var speechSynthesis: SpeechSynthesis;
-declare var status: string;
-declare var statusbar: BarProp;
-declare var styleMedia: StyleMedia;
-declare var toolbar: BarProp;
-declare var top: Window;
-declare var visualViewport: VisualViewport;
-declare var window: Window & typeof globalThis;
+declare let orientation: string | number;
+declare let outerHeight: number;
+declare let outerWidth: number;
+declare let pageXOffset: number;
+declare let pageYOffset: number;
+declare let parent: Window;
+declare let personalbar: BarProp;
+declare let screen: Screen;
+declare let screenLeft: number;
+declare let screenTop: number;
+declare let screenX: number;
+declare let screenY: number;
+declare let scrollX: number;
+declare let scrollY: number;
+declare let scrollbars: BarProp;
+declare let self: Window & typeof globalThis;
+declare let speechSynthesis: SpeechSynthesis;
+declare let status: string;
+declare let statusbar: BarProp;
+declare let styleMedia: StyleMedia;
+declare let toolbar: BarProp;
+declare let top: Window;
+declare let visualViewport: VisualViewport;
+declare let window: Window & typeof globalThis;
 declare function alert(message?: any): void;
 declare function blur(): void;
 /** @deprecated */
@@ -19720,281 +19691,281 @@ declare function toString(): string;
  * Dispatches a synthetic event event to target and returns true if either event's cancelable attribute value is false or its preventDefault() method was not invoked, and false otherwise.
  */
 declare function dispatchEvent(event: Event): boolean;
-declare var sessionStorage: Storage;
-declare var localStorage: Storage;
+declare let sessionStorage: Storage;
+declare let localStorage: Storage;
 /**
  * Fires when the user aborts the download.
  * @param ev The event.
  */
-declare var onabort: ((this: Window, ev: UIEvent) => any) | null;
-declare var onanimationcancel: ((this: Window, ev: AnimationEvent) => any) | null;
-declare var onanimationend: ((this: Window, ev: AnimationEvent) => any) | null;
-declare var onanimationiteration: ((this: Window, ev: AnimationEvent) => any) | null;
-declare var onanimationstart: ((this: Window, ev: AnimationEvent) => any) | null;
-declare var onauxclick: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onabort: ((this: Window, ev: UIEvent) => any) | null;
+declare let onanimationcancel: ((this: Window, ev: AnimationEvent) => any) | null;
+declare let onanimationend: ((this: Window, ev: AnimationEvent) => any) | null;
+declare let onanimationiteration: ((this: Window, ev: AnimationEvent) => any) | null;
+declare let onanimationstart: ((this: Window, ev: AnimationEvent) => any) | null;
+declare let onauxclick: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires when the object loses the input focus.
  * @param ev The focus event.
  */
-declare var onblur: ((this: Window, ev: FocusEvent) => any) | null;
-declare var oncancel: ((this: Window, ev: Event) => any) | null;
+declare let onblur: ((this: Window, ev: FocusEvent) => any) | null;
+declare let oncancel: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when playback is possible, but would require further buffering.
  * @param ev The event.
  */
-declare var oncanplay: ((this: Window, ev: Event) => any) | null;
-declare var oncanplaythrough: ((this: Window, ev: Event) => any) | null;
+declare let oncanplay: ((this: Window, ev: Event) => any) | null;
+declare let oncanplaythrough: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the contents of the object or selection have changed.
  * @param ev The event.
  */
-declare var onchange: ((this: Window, ev: Event) => any) | null;
+declare let onchange: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the user clicks the left mouse button on the object
  * @param ev The mouse event.
  */
-declare var onclick: ((this: Window, ev: MouseEvent) => any) | null;
-declare var onclose: ((this: Window, ev: Event) => any) | null;
+declare let onclick: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onclose: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the user clicks the right mouse button in the client area, opening the context menu.
  * @param ev The mouse event.
  */
-declare var oncontextmenu: ((this: Window, ev: MouseEvent) => any) | null;
-declare var oncuechange: ((this: Window, ev: Event) => any) | null;
+declare let oncontextmenu: ((this: Window, ev: MouseEvent) => any) | null;
+declare let oncuechange: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the user double-clicks the object.
  * @param ev The mouse event.
  */
-declare var ondblclick: ((this: Window, ev: MouseEvent) => any) | null;
+declare let ondblclick: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires on the source object continuously during a drag operation.
  * @param ev The event.
  */
-declare var ondrag: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondrag: ((this: Window, ev: DragEvent) => any) | null;
 /**
  * Fires on the source object when the user releases the mouse at the close of a drag operation.
  * @param ev The event.
  */
-declare var ondragend: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondragend: ((this: Window, ev: DragEvent) => any) | null;
 /**
  * Fires on the target element when the user drags the object to a valid drop target.
  * @param ev The drag event.
  */
-declare var ondragenter: ((this: Window, ev: DragEvent) => any) | null;
-declare var ondragexit: ((this: Window, ev: Event) => any) | null;
+declare let ondragenter: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondragexit: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires on the target object when the user moves the mouse out of a valid drop target during a drag operation.
  * @param ev The drag event.
  */
-declare var ondragleave: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondragleave: ((this: Window, ev: DragEvent) => any) | null;
 /**
  * Fires on the target element continuously while the user drags the object over a valid drop target.
  * @param ev The event.
  */
-declare var ondragover: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondragover: ((this: Window, ev: DragEvent) => any) | null;
 /**
  * Fires on the source object when the user starts to drag a text selection or selected object.
  * @param ev The event.
  */
-declare var ondragstart: ((this: Window, ev: DragEvent) => any) | null;
-declare var ondrop: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondragstart: ((this: Window, ev: DragEvent) => any) | null;
+declare let ondrop: ((this: Window, ev: DragEvent) => any) | null;
 /**
  * Occurs when the duration attribute is updated.
  * @param ev The event.
  */
-declare var ondurationchange: ((this: Window, ev: Event) => any) | null;
+declare let ondurationchange: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the media element is reset to its initial state.
  * @param ev The event.
  */
-declare var onemptied: ((this: Window, ev: Event) => any) | null;
+declare let onemptied: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the end of playback is reached.
  * @param ev The event
  */
-declare var onended: ((this: Window, ev: Event) => any) | null;
+declare let onended: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when an error occurs during object loading.
  * @param ev The event.
  */
-declare var onerror: OnErrorEventHandler;
+declare let onerror: OnErrorEventHandler;
 /**
  * Fires when the object receives focus.
  * @param ev The event.
  */
-declare var onfocus: ((this: Window, ev: FocusEvent) => any) | null;
-declare var ongotpointercapture: ((this: Window, ev: PointerEvent) => any) | null;
-declare var oninput: ((this: Window, ev: Event) => any) | null;
-declare var oninvalid: ((this: Window, ev: Event) => any) | null;
+declare let onfocus: ((this: Window, ev: FocusEvent) => any) | null;
+declare let ongotpointercapture: ((this: Window, ev: PointerEvent) => any) | null;
+declare let oninput: ((this: Window, ev: Event) => any) | null;
+declare let oninvalid: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the user presses a key.
  * @param ev The keyboard event
  */
-declare var onkeydown: ((this: Window, ev: KeyboardEvent) => any) | null;
+declare let onkeydown: ((this: Window, ev: KeyboardEvent) => any) | null;
 /**
  * Fires when the user presses an alphanumeric key.
  * @param ev The event.
  */
-declare var onkeypress: ((this: Window, ev: KeyboardEvent) => any) | null;
+declare let onkeypress: ((this: Window, ev: KeyboardEvent) => any) | null;
 /**
  * Fires when the user releases a key.
  * @param ev The keyboard event
  */
-declare var onkeyup: ((this: Window, ev: KeyboardEvent) => any) | null;
+declare let onkeyup: ((this: Window, ev: KeyboardEvent) => any) | null;
 /**
  * Fires immediately after the browser loads the object.
  * @param ev The event.
  */
-declare var onload: ((this: Window, ev: Event) => any) | null;
+declare let onload: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when media data is loaded at the current playback position.
  * @param ev The event.
  */
-declare var onloadeddata: ((this: Window, ev: Event) => any) | null;
+declare let onloadeddata: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the duration and dimensions of the media have been determined.
  * @param ev The event.
  */
-declare var onloadedmetadata: ((this: Window, ev: Event) => any) | null;
+declare let onloadedmetadata: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when Internet Explorer begins looking for media data.
  * @param ev The event.
  */
-declare var onloadstart: ((this: Window, ev: Event) => any) | null;
-declare var onlostpointercapture: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onloadstart: ((this: Window, ev: Event) => any) | null;
+declare let onlostpointercapture: ((this: Window, ev: PointerEvent) => any) | null;
 /**
  * Fires when the user clicks the object with either mouse button.
  * @param ev The mouse event.
  */
-declare var onmousedown: ((this: Window, ev: MouseEvent) => any) | null;
-declare var onmouseenter: ((this: Window, ev: MouseEvent) => any) | null;
-declare var onmouseleave: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmousedown: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmouseenter: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmouseleave: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires when the user moves the mouse over the object.
  * @param ev The mouse event.
  */
-declare var onmousemove: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmousemove: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires when the user moves the mouse pointer outside the boundaries of the object.
  * @param ev The mouse event.
  */
-declare var onmouseout: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmouseout: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires when the user moves the mouse pointer into the object.
  * @param ev The mouse event.
  */
-declare var onmouseover: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmouseover: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Fires when the user releases a mouse button while the mouse is over the object.
  * @param ev The mouse event.
  */
-declare var onmouseup: ((this: Window, ev: MouseEvent) => any) | null;
+declare let onmouseup: ((this: Window, ev: MouseEvent) => any) | null;
 /**
  * Occurs when playback is paused.
  * @param ev The event.
  */
-declare var onpause: ((this: Window, ev: Event) => any) | null;
+declare let onpause: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the play method is requested.
  * @param ev The event.
  */
-declare var onplay: ((this: Window, ev: Event) => any) | null;
+declare let onplay: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the audio or video has started playing.
  * @param ev The event.
  */
-declare var onplaying: ((this: Window, ev: Event) => any) | null;
-declare var onpointercancel: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerdown: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerenter: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerleave: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointermove: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerout: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerover: ((this: Window, ev: PointerEvent) => any) | null;
-declare var onpointerup: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onplaying: ((this: Window, ev: Event) => any) | null;
+declare let onpointercancel: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerdown: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerenter: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerleave: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointermove: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerout: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerover: ((this: Window, ev: PointerEvent) => any) | null;
+declare let onpointerup: ((this: Window, ev: PointerEvent) => any) | null;
 /**
  * Occurs to indicate progress while downloading media data.
  * @param ev The event.
  */
-declare var onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
+declare let onprogress: ((this: Window, ev: ProgressEvent) => any) | null;
 /**
  * Occurs when the playback rate is increased or decreased.
  * @param ev The event.
  */
-declare var onratechange: ((this: Window, ev: Event) => any) | null;
+declare let onratechange: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the user resets a form.
  * @param ev The event.
  */
-declare var onreset: ((this: Window, ev: Event) => any) | null;
-declare var onresize: ((this: Window, ev: UIEvent) => any) | null;
+declare let onreset: ((this: Window, ev: Event) => any) | null;
+declare let onresize: ((this: Window, ev: UIEvent) => any) | null;
 /**
  * Fires when the user repositions the scroll box in the scroll bar on the object.
  * @param ev The event.
  */
-declare var onscroll: ((this: Window, ev: Event) => any) | null;
-declare var onsecuritypolicyviolation: ((this: Window, ev: SecurityPolicyViolationEvent) => any) | null;
+declare let onscroll: ((this: Window, ev: Event) => any) | null;
+declare let onsecuritypolicyviolation: ((this: Window, ev: SecurityPolicyViolationEvent) => any) | null;
 /**
  * Occurs when the seek operation ends.
  * @param ev The event.
  */
-declare var onseeked: ((this: Window, ev: Event) => any) | null;
+declare let onseeked: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the current playback position is moved.
  * @param ev The event.
  */
-declare var onseeking: ((this: Window, ev: Event) => any) | null;
+declare let onseeking: ((this: Window, ev: Event) => any) | null;
 /**
  * Fires when the current selection changes.
  * @param ev The event.
  */
-declare var onselect: ((this: Window, ev: Event) => any) | null;
-declare var onselectionchange: ((this: Window, ev: Event) => any) | null;
-declare var onselectstart: ((this: Window, ev: Event) => any) | null;
+declare let onselect: ((this: Window, ev: Event) => any) | null;
+declare let onselectionchange: ((this: Window, ev: Event) => any) | null;
+declare let onselectstart: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when the download has stopped.
  * @param ev The event.
  */
-declare var onstalled: ((this: Window, ev: Event) => any) | null;
-declare var onsubmit: ((this: Window, ev: Event) => any) | null;
+declare let onstalled: ((this: Window, ev: Event) => any) | null;
+declare let onsubmit: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs if the load operation has been intentionally halted.
  * @param ev The event.
  */
-declare var onsuspend: ((this: Window, ev: Event) => any) | null;
+declare let onsuspend: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs to indicate the current playback position.
  * @param ev The event.
  */
-declare var ontimeupdate: ((this: Window, ev: Event) => any) | null;
-declare var ontoggle: ((this: Window, ev: Event) => any) | null;
-declare var ontouchcancel: ((this: Window, ev: TouchEvent) => any) | null | undefined;
-declare var ontouchend: ((this: Window, ev: TouchEvent) => any) | null | undefined;
-declare var ontouchmove: ((this: Window, ev: TouchEvent) => any) | null | undefined;
-declare var ontouchstart: ((this: Window, ev: TouchEvent) => any) | null | undefined;
-declare var ontransitioncancel: ((this: Window, ev: TransitionEvent) => any) | null;
-declare var ontransitionend: ((this: Window, ev: TransitionEvent) => any) | null;
-declare var ontransitionrun: ((this: Window, ev: TransitionEvent) => any) | null;
-declare var ontransitionstart: ((this: Window, ev: TransitionEvent) => any) | null;
+declare let ontimeupdate: ((this: Window, ev: Event) => any) | null;
+declare let ontoggle: ((this: Window, ev: Event) => any) | null;
+declare let ontouchcancel: ((this: Window, ev: TouchEvent) => any) | null | undefined;
+declare let ontouchend: ((this: Window, ev: TouchEvent) => any) | null | undefined;
+declare let ontouchmove: ((this: Window, ev: TouchEvent) => any) | null | undefined;
+declare let ontouchstart: ((this: Window, ev: TouchEvent) => any) | null | undefined;
+declare let ontransitioncancel: ((this: Window, ev: TransitionEvent) => any) | null;
+declare let ontransitionend: ((this: Window, ev: TransitionEvent) => any) | null;
+declare let ontransitionrun: ((this: Window, ev: TransitionEvent) => any) | null;
+declare let ontransitionstart: ((this: Window, ev: TransitionEvent) => any) | null;
 /**
  * Occurs when the volume is changed, or playback is muted or unmuted.
  * @param ev The event.
  */
-declare var onvolumechange: ((this: Window, ev: Event) => any) | null;
+declare let onvolumechange: ((this: Window, ev: Event) => any) | null;
 /**
  * Occurs when playback stops because the next frame of a video resource is not available.
  * @param ev The event.
  */
-declare var onwaiting: ((this: Window, ev: Event) => any) | null;
-declare var onwheel: ((this: Window, ev: WheelEvent) => any) | null;
+declare let onwaiting: ((this: Window, ev: Event) => any) | null;
+declare let onwheel: ((this: Window, ev: WheelEvent) => any) | null;
 declare function cancelAnimationFrame(handle: number): void;
 declare function requestAnimationFrame(callback: FrameRequestCallback): number;
-declare var caches: CacheStorage;
-declare var crypto: Crypto;
-declare var indexedDB: IDBFactory;
-declare var isSecureContext: boolean;
-declare var origin: string;
-declare var performance: Performance;
+declare let caches: CacheStorage;
+declare let crypto: Crypto;
+declare let indexedDB: IDBFactory;
+declare let isSecureContext: boolean;
+declare let origin: string;
+declare let performance: Performance;
 declare function atob(data: string): string;
 declare function btoa(data: string): string;
 declare function clearInterval(handle?: number): void;
@@ -20005,22 +19976,22 @@ declare function fetch(input: RequestInfo, init?: RequestInit): Promise<Response
 declare function queueMicrotask(callback: VoidFunction): void;
 declare function setInterval(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
 declare function setTimeout(handler: TimerHandler, timeout?: number, ...arguments: any[]): number;
-declare var onafterprint: ((this: Window, ev: Event) => any) | null;
-declare var onbeforeprint: ((this: Window, ev: Event) => any) | null;
-declare var onbeforeunload: ((this: Window, ev: BeforeUnloadEvent) => any) | null;
-declare var onhashchange: ((this: Window, ev: HashChangeEvent) => any) | null;
-declare var onlanguagechange: ((this: Window, ev: Event) => any) | null;
-declare var onmessage: ((this: Window, ev: MessageEvent) => any) | null;
-declare var onmessageerror: ((this: Window, ev: MessageEvent) => any) | null;
-declare var onoffline: ((this: Window, ev: Event) => any) | null;
-declare var ononline: ((this: Window, ev: Event) => any) | null;
-declare var onpagehide: ((this: Window, ev: PageTransitionEvent) => any) | null;
-declare var onpageshow: ((this: Window, ev: PageTransitionEvent) => any) | null;
-declare var onpopstate: ((this: Window, ev: PopStateEvent) => any) | null;
-declare var onrejectionhandled: ((this: Window, ev: PromiseRejectionEvent) => any) | null;
-declare var onstorage: ((this: Window, ev: StorageEvent) => any) | null;
-declare var onunhandledrejection: ((this: Window, ev: PromiseRejectionEvent) => any) | null;
-declare var onunload: ((this: Window, ev: Event) => any) | null;
+declare let onafterprint: ((this: Window, ev: Event) => any) | null;
+declare let onbeforeprint: ((this: Window, ev: Event) => any) | null;
+declare let onbeforeunload: ((this: Window, ev: BeforeUnloadEvent) => any) | null;
+declare let onhashchange: ((this: Window, ev: HashChangeEvent) => any) | null;
+declare let onlanguagechange: ((this: Window, ev: Event) => any) | null;
+declare let onmessage: ((this: Window, ev: MessageEvent) => any) | null;
+declare let onmessageerror: ((this: Window, ev: MessageEvent) => any) | null;
+declare let onoffline: ((this: Window, ev: Event) => any) | null;
+declare let ononline: ((this: Window, ev: Event) => any) | null;
+declare let onpagehide: ((this: Window, ev: PageTransitionEvent) => any) | null;
+declare let onpageshow: ((this: Window, ev: PageTransitionEvent) => any) | null;
+declare let onpopstate: ((this: Window, ev: PopStateEvent) => any) | null;
+declare let onrejectionhandled: ((this: Window, ev: PromiseRejectionEvent) => any) | null;
+declare let onstorage: ((this: Window, ev: StorageEvent) => any) | null;
+declare let onunhandledrejection: ((this: Window, ev: PromiseRejectionEvent) => any) | null;
+declare let onunload: ((this: Window, ev: Event) => any) | null;
 declare function addEventListener<K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
 declare function addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
 declare function removeEventListener<K extends keyof WindowEventMap>(type: K, listener: (this: Window, ev: WindowEventMap[K]) => any, options?: boolean | EventListenerOptions): void;

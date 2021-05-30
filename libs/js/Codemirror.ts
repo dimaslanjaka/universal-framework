@@ -29,7 +29,7 @@ function loadCodeMirrorScript(opt: {
     if (opt.addons) {
         if (Array.isArray(opt.addons)) {
             opt.addons.forEach(function (addon: string) {
-                let ons: typeof CodeMirrorAddon["CodeMirror-display-fullscreen"] = CodeMirrorAddon[addon];
+                const ons: typeof CodeMirrorAddon["CodeMirror-display-fullscreen"] = CodeMirrorAddon[addon];
                 if (ons.hasOwnProperty("js")) {
                     scripts.push(ons.js);
                 }

@@ -8,9 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 /// <reference types="crypto-js" />
-var CryptoJSAesJson = {
+const CryptoJSAesJson = {
     stringify: function (cipherParams) {
-        var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64), iv: "", s: "" };
+        const j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64), iv: "", s: "" };
         if (cipherParams.iv)
             j.iv = cipherParams.iv.toString();
         if (cipherParams.salt)
@@ -18,8 +18,8 @@ var CryptoJSAesJson = {
         return JSON.stringify(j);
     },
     parse: function (jsonStr) {
-        var j = JSON.parse(jsonStr);
-        var cipherParams = CryptoJS.lib.CipherParams.create({
+        const j = JSON.parse(jsonStr);
+        const cipherParams = CryptoJS.lib.CipherParams.create({
             ciphertext: CryptoJS.enc.Base64.parse(j.ct),
         });
         if (j.iv)
@@ -31,27 +31,35 @@ var CryptoJSAesJson = {
 };
 /**
  * AES encrypt
- * @url /src/shim/Cipher.php
- * @param {text} text
- * @param {text} key
+ * @see /src/shim/Cipher.php
+ * @param text
+ * @param key
+ * @returns
  */
 function aesEncrypt(text, key) {
-    var enc = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
+    const enc = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
         format: CryptoJSAesJson,
     }).toString();
     return base64_encode(enc);
 }
 /**
  * AES decrypt
- * @url /src/shim/Cipher.php
- * @param {text} encrypted
- * @param {text} key
+ * @see /src/shim/Cipher.php
+ * @param encrypted
+ * @param key
+ * @returns
  */
 function aesDecrypt(encrypted, key) {
-    var dec = base64_decode(encrypted);
+    const dec = base64_decode(encrypted);
     return JSON.parse(CryptoJS.AES.decrypt(dec, key, {
         format: CryptoJSAesJson,
     }).toString(CryptoJS.enc.Utf8));
+}
+if (typeof module != "undefined" && typeof module.exports != "undefined") {
+    module.exports = {
+        aesDecrypt,
+        aesEncrypt,
+    };
 }
 const CodeMirrorAddon = {
     "CodeMirror-comment-comment": {
@@ -261,7 +269,7 @@ function loadCodeMirrorScript(opt) {
     if (opt.addons) {
         if (Array.isArray(opt.addons)) {
             opt.addons.forEach(function (addon) {
-                let ons = CodeMirrorAddon[addon];
+                const ons = CodeMirrorAddon[addon];
                 if (ons.hasOwnProperty("js")) {
                     scripts.push(ons.js);
                 }
@@ -979,6 +987,45 @@ if (typeof window != "undefined") {
         }
     })();
 }
+/// <reference lib="dom" />
+/**
+ * Serialize all form data into an array of key/value pairs
+ * (c) 2020 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param form The form to serialize
+ * @return The serialized form data
+ * @see [Codepen Demo]{@link https://codepen.io/cferdinandi/pen/VwvMdOG}
+ * @see [Source Code]{@link https://vanillajstoolkit.com/helpers/serializearray/}
+ * @example
+ * var form = document.querySelector('#FormID');
+ * var data = serializeArray(form);
+ * console.log(data);
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function serializeArray(form) {
+    const arr = [];
+    Array.prototype.slice.call(form.elements).forEach(function (field) {
+        if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1)
+            return;
+        if (field.type === 'select-multiple') {
+            Array.prototype.slice.call(field.options).forEach(function (option) {
+                if (!option.selected)
+                    return;
+                arr.push({
+                    name: field.name,
+                    value: option.value
+                });
+            });
+            return;
+        }
+        if (['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked)
+            return;
+        arr.push({
+            name: field.name,
+            value: field.value
+        });
+    });
+    return arr;
+}
 class STORAGE {
     /**
      * Reflection class constructor
@@ -1386,6 +1433,23 @@ function get_unique_id() {
     }
 }
 /**
+ * Automatically expand a textarea as the user types
+ * (c) 2021 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param field The textarea
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function autoExpand(field) {
+    // Reset field height
+    field.style.height = 'inherit';
+    // Get the computed styles for the element
+    const computed = window.getComputedStyle(field);
+    // Calculate the height
+    const height = parseFloat(computed.paddingTop) +
+        field.scrollHeight +
+        parseFloat(computed.paddingBottom);
+    field.style.height = height + 'px';
+}
+/**
  * get url parameter by name
  * @param name parameter name
  * @param url url target, null for current location.href
@@ -1576,11 +1640,41 @@ function array_shuffle(a) {
     }
     return a;
 }
+/**
+ * Deep merge two or more objects into the first.
+ * (c) 2021 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param objects  The objects to merge together
+ * @returns Merged values of defaults and options
+ */
+function deepAssign(...objects) {
+    // Make sure there are objects to merge
+    const len = objects.length;
+    if (len < 1)
+        return;
+    if (len < 2)
+        return objects[0];
+    // Merge all objects into first
+    for (let i = 1; i < len; i++) {
+        for (const key in objects[i]) {
+            if (objects[i].hasOwnProperty(key)) {
+                // If it's an object, recursively merge
+                // Otherwise, push to key
+                if (Object.prototype.toString.call(objects[i][key]) === '[object Object]') {
+                    objects[0][key] = deepAssign(objects[0][key] || {}, objects[i][key]);
+                }
+                else {
+                    objects[0][key] = objects[i][key];
+                }
+            }
+        }
+    }
+    return arguments[0];
+}
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         array_shuffle,
         array_keys,
-        in_array,
+        in_array, deepAssign
     };
 }
 /// <reference path="./globals.d.ts" />
@@ -1794,6 +1888,18 @@ function strpad(val) {
     else {
         return "0" + val;
     }
+}
+/**
+ * More accurately check the type of a JavaScript object
+ * (c) 2021 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
+ * @param  {Object} obj The object
+ * @return {String}     The object type
+ * @see [Codepen]{@link https://codepen.io/cferdinandi/pen/aXzNze}
+ * @see [Source]{@link https://vanillajstoolkit.com/helpers/truetypeof/}
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function trueTypeOf(obj) {
+    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
 }
 const siteConfig = { "google": { "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI", "recaptcha": { "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" }, "analystics": { "id": "UA-106238155-1" } } };
 let root;
@@ -3475,10 +3581,10 @@ if (!isnode() && typeof jQuery != "undefined") {
         });
         // fix tab-panel
         $('a[data-toggle="tab"]').on("click", function (e) {
-            let id = $(this).attr("id");
-            let target = $(`[aria-labelledby="${id}"]`);
-            let tabContent = target.parent("[class*='tab-content']");
-            let tabPane = tabContent.children("div[class*='tab-pane']");
+            const id = $(this).attr("id");
+            const target = $(`[aria-labelledby="${id}"]`);
+            const tabContent = target.parent("[class*='tab-content']");
+            const tabPane = tabContent.children("div[class*='tab-pane']");
             tabPane.each(function () {
                 $(this).removeClass("active show");
             });
@@ -3486,7 +3592,7 @@ if (!isnode() && typeof jQuery != "undefined") {
         //href hyperlink
         $(document).on("click", "[data-href]", function (e) {
             e.preventDefault();
-            let href = $(this).data("href");
+            const href = $(this).data("href");
             //console.log("click href " + href);
             location.href = href;
         });
@@ -6899,7 +7005,7 @@ const LoadScriptLoaded = [];
  * @param callback
  */
 function LoadScript(config) {
-    let urls = [];
+    const urls = [];
     if (typeof config.url == "string") {
         urls.add(config.url);
     }
@@ -9035,6 +9141,24 @@ class user {
             console.error("user::get", error);
             return undefined;
         }
+    }
+    login(user, pass) {
+        fetch("/server/user", {
+            method: "post",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            //make sure to serialize your JSON body
+            body: JSON.stringify({
+                login: makeid(5),
+                user: user,
+                pass: pass,
+            }),
+        }).then((response) => {
+            //do something awesome that makes the world a better place
+            console.log(response);
+        });
     }
     /**
      * fetch userdata
