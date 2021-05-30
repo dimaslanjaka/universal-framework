@@ -40,7 +40,7 @@ module.exports = {
         "no-use-before-define": 0,
         "constructor-super": 1,
         curly: 0,
-        eqeqeq: 1,
+        eqeqeq: 0, // fix disable == and ===
         "func-names": 0, // fix anonymous function warning
         "valid-typeof": 1,
         "prettier/prettier": 1,

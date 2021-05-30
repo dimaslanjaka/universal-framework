@@ -12,25 +12,25 @@
  * var data = serializeArray(form);
  * console.log(data);
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function serializeArray(form: HTMLFormElement): Array<any> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
+function serializeArray(form: HTMLFormElement): { name: string; value: string }[] {
     const arr = [];
     Array.prototype.slice.call(form.elements).forEach(function (field) {
-        if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1) return;
-        if (field.type === 'select-multiple') {
+        if (!field.name || field.disabled || ["file", "reset", "submit", "button"].indexOf(field.type) > -1) return;
+        if (field.type === "select-multiple") {
             Array.prototype.slice.call(field.options).forEach(function (option) {
                 if (!option.selected) return;
                 arr.push({
                     name: field.name,
-                    value: option.value
+                    value: option.value,
                 });
             });
             return;
         }
-        if (['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked) return;
+        if (["checkbox", "radio"].indexOf(field.type) > -1 && !field.checked) return;
         arr.push({
             name: field.name,
-            value: field.value
+            value: field.value,
         });
     });
     return arr;

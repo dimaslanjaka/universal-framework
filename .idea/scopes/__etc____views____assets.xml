@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="./etc, ./views, ./assets" pattern="file[universal-framework]:views//*||file[universal-framework]:etc//*||file[universal-framework]:assets/*" />
+</component>

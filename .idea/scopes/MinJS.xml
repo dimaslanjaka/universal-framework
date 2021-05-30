@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="MinJS" pattern="file[universal-framework]:views//*||file[universal-framework]:etc//*||file[universal-framework]:assets/*" />
-</component>

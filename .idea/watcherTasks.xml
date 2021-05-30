@@ -16,7 +16,27 @@
       <option name="outputFromStdout" value="false" />
       <option name="program" value="$PROJECT_DIR$/node_modules/.bin/terser" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="MinJS" />
+      <option name="scopeName" value="./etc, ./views, ./assets" />
+      <option name="trackOnlyRoot" value="false" />
+      <option name="workingDir" value="" />
+      <envs />
+    </TaskOptions>
+    <TaskOptions isEnabled="true">
+      <option name="arguments" value="run build" />
+      <option name="checkSyntaxErrors" value="true" />
+      <option name="description" />
+      <option name="exitCodeBehavior" value="ERROR" />
+      <option name="fileExtension" value="ts" />
+      <option name="immediateSync" value="true" />
+      <option name="name" value="universal-framework build" />
+      <option name="output" value="" />
+      <option name="outputFilters">
+        <array />
+      </option>
+      <option name="outputFromStdout" value="false" />
+      <option name="program" value="npm" />
+      <option name="runOnExternalChanges" value="true" />
+      <option name="scopeName" value="./libs" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="" />
       <envs />

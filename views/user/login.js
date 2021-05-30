@@ -3,9 +3,24 @@
 $(document).on("submit", "form", function (e) {
     e.preventDefault();
     const t = $(this).get(0);
-    let d = $(this).serializeArray();
     let serialize = serializeArray(t);
-    console.log(serialize);
+    serialize.forEach(function (fdata) {
+        if (fdata.name){}
+    });
+    const data = new URLSearchParams();
+    for (const pair of new FormData(t)) {
+        data.append(pair[0], pair[1]);
+    }
+
+    fetch("/server/user?login", {
+        method: "post",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((response) => {
+            console.log(response);
+        });
+
     /*
      var s = t.data("success"),
      er = t.data("error"),

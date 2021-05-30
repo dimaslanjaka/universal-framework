@@ -406,7 +406,10 @@ declare function setEventListener(element: HTMLElement, eventNames: "click" | "m
  * var data = serializeArray(form);
  * console.log(data);
  */
-declare function serializeArray(form: HTMLFormElement): Array<any>;
+declare function serializeArray(form: HTMLFormElement): {
+    name: string;
+    value: string;
+}[];
 declare class STORAGE {
     /**
      * Reflection class constructor
@@ -602,7 +605,7 @@ declare function array_rand(arrays: any[], unique: any): {
  */
 declare function array_unique(arrays: any[]): any[];
 /**
- *
+ * Unset array
  * @param {Array<any>} arrayName
  * @param {String|number} key
  */

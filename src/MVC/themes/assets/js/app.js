@@ -1000,28 +1000,28 @@ if (typeof window != "undefined") {
  * var data = serializeArray(form);
  * console.log(data);
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function serializeArray(form) {
     const arr = [];
     Array.prototype.slice.call(form.elements).forEach(function (field) {
-        if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1)
+        if (!field.name || field.disabled || ["file", "reset", "submit", "button"].indexOf(field.type) > -1)
             return;
-        if (field.type === 'select-multiple') {
+        if (field.type === "select-multiple") {
             Array.prototype.slice.call(field.options).forEach(function (option) {
                 if (!option.selected)
                     return;
                 arr.push({
                     name: field.name,
-                    value: option.value
+                    value: option.value,
                 });
             });
             return;
         }
-        if (['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked)
+        if (["checkbox", "radio"].indexOf(field.type) > -1 && !field.checked)
             return;
         arr.push({
             name: field.name,
-            value: field.value
+            value: field.value,
         });
     });
     return arr;
@@ -1546,10 +1546,11 @@ function array_unique(arrays) {
     });
 }
 /**
- *
+ * Unset array
  * @param {Array<any>} arrayName
  * @param {String|number} key
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function array_unset(arrayName, key) {
     let x;
     const tmpArray = [];
@@ -1568,6 +1569,7 @@ function array_unset(arrayName, key) {
  * shuffle(arr);
  * console.log(arr); //return random
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
     // While there remain elements to shuffle...
@@ -1659,7 +1661,7 @@ function deepAssign(...objects) {
             if (objects[i].hasOwnProperty(key)) {
                 // If it's an object, recursively merge
                 // Otherwise, push to key
-                if (Object.prototype.toString.call(objects[i][key]) === '[object Object]') {
+                if (Object.prototype.toString.call(objects[i][key]) === "[object Object]") {
                     objects[0][key] = deepAssign(objects[0][key] || {}, objects[i][key]);
                 }
                 else {
@@ -1674,7 +1676,8 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         array_shuffle,
         array_keys,
-        in_array, deepAssign
+        in_array,
+        deepAssign,
     };
 }
 /// <reference path="./globals.d.ts" />
@@ -9177,7 +9180,7 @@ class user {
                 user: true,
             },
             success: function (res) {
-                if (typeof res != "object") {
+                if (typeof res !== "object") {
                     return;
                 }
                 if (res) {
@@ -9186,7 +9189,7 @@ class user {
                         res._ = new Date();
                     }
                     if (res.hasOwnProperty("username")) {
-                        if (typeof callback == "function") {
+                        if (typeof callback === "function") {
                             callback(res);
                         }
                     }
@@ -9202,10 +9205,10 @@ if (!isnode()) {
      * @typedef {user} userc
      */
     const userc = new user();
-    if (typeof window != "undefined" && typeof window.user === "undefined") {
+    if (typeof window !== "undefined" && typeof window.user === "undefined") {
         window.user = userc;
     }
-    if (typeof jQuery != "undefined") {
+    if (typeof jQuery !== "undefined") {
         jQuery.user = userc;
     }
 }

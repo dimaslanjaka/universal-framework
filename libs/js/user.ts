@@ -71,7 +71,7 @@ class user {
                 user: true,
             },
             success: function (res: Object) {
-                if (typeof res != "object") {
+                if (typeof res !== "object") {
                     return;
                 }
                 if (res) {
@@ -80,7 +80,7 @@ class user {
                         (<any>res)._ = new Date();
                     }
                     if (res.hasOwnProperty("username")) {
-                        if (typeof callback == "function") {
+                        if (typeof callback === "function") {
                             callback(res);
                         }
                     }
@@ -97,10 +97,10 @@ if (!isnode()) {
      * @typedef {user} userc
      */
     const userc = new user();
-    if (typeof window != "undefined" && typeof window.user === "undefined") {
+    if (typeof window !== "undefined" && typeof window.user === "undefined") {
         window.user = userc;
     }
-    if (typeof jQuery != "undefined") {
+    if (typeof jQuery !== "undefined") {
         jQuery.user = userc;
     }
 }

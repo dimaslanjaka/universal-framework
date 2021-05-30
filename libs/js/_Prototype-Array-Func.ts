@@ -31,10 +31,11 @@ function array_unique(arrays: any[]) {
 }
 
 /**
- *
+ * Unset array
  * @param {Array<any>} arrayName
  * @param {String|number} key
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function array_unset(arrayName: { [x: string]: any }, key: any) {
     let x: string | number;
     const tmpArray = [];
@@ -54,6 +55,7 @@ function array_unset(arrayName: { [x: string]: any }, key: any) {
  * shuffle(arr);
  * console.log(arr); //return random
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function shuffle(array: Array<any>) {
     let currentIndex = array.length,
         temporaryValue: any,
@@ -139,7 +141,6 @@ function array_shuffle(a: Array<any>) {
  * @returns Merged values of defaults and options
  */
 function deepAssign(...objects: object[]): object {
-
     // Make sure there are objects to merge
     const len = objects.length;
     if (len < 1) return;
@@ -151,7 +152,7 @@ function deepAssign(...objects: object[]): object {
             if (objects[i].hasOwnProperty(key)) {
                 // If it's an object, recursively merge
                 // Otherwise, push to key
-                if (Object.prototype.toString.call(objects[i][key]) === '[object Object]') {
+                if (Object.prototype.toString.call(objects[i][key]) === "[object Object]") {
                     objects[0][key] = deepAssign(objects[0][key] || {}, objects[i][key]);
                 } else {
                     objects[0][key] = objects[i][key];
@@ -161,13 +162,13 @@ function deepAssign(...objects: object[]): object {
     }
 
     return arguments[0];
-
 }
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         array_shuffle,
         array_keys,
-        in_array, deepAssign
+        in_array,
+        deepAssign,
     };
 }

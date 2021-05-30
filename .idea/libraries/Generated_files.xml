@@ -2,10 +2,42 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/views/auth/google.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/blogger/edit.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/blogger/index.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/blogger/list-posts.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/code-editor/index.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/html-builder/index.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/office/inventory/index.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/office/inventory/warehouses/add.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/office/inventory/warehouses/list.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/office/user/login.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/test/cipher.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/test/formsaver.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/test/recaptcha.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/test/sessions.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/translator/create.min.min.js" />
+        <item url="file://$PROJECT_DIR$/views/translator/index.min.min.js" />
         <item url="file://$PROJECT_DIR$/views/user/login.min.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/views/auth/google.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/blogger/edit.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/blogger/index.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/blogger/list-posts.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/code-editor/index.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/html-builder/index.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/office/inventory/index.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/office/inventory/warehouses/add.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/office/inventory/warehouses/list.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/office/user/login.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/test/cipher.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/test/formsaver.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/test/recaptcha.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/test/sessions.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/translator/create.min.min.js" />
+      <root url="file://$PROJECT_DIR$/views/translator/index.min.min.js" />
       <root url="file://$PROJECT_DIR$/views/user/login.min.js" />
     </CLASSES>
     <JAVADOC />
