@@ -84,15 +84,23 @@ fetch("/html-builder/edit?fetch=" + name)
         });
     });
 
-/*
 $(`[data-toggle="tab"]`).on("click", function (e) {
-    let href = $(this).attr("href");
-    let area = $(href).children("textarea");
-    setTimeout(() => {
-        area.autoHeight();
-    }, 700);
+    /**
+     * @type {HTMLIFrameElement}
+     */
+    let ifr = document.getElementById("i-preview");
+    var code = ifr.contentWindow.document;
+    code.open();
+    let result = "";
+    if (editorhtml.getValue().length > 0) result += editorhtml.getValue();
+    if (editorcss.getValue().length > 0) result += "<style>" + editorcss.getValue() + "</style>";
+    if (editorjs.getValue().length > 0) result += "<scr" + "ipt>" + editorjs.getValue() + "</scr" + "ipt>";
+    code.writeln(result);
+    code.close();
+    //resizeIFrameToFitContent(ifr, { width: false, height: false });
+    //ifr.style = "height:" + ifr.contentWindow.document.body.scrollHeight + "px";
+    //console.log(ifr.contentWindow.document.body.scrollHeight);
 });
-*/
 
 $("#beautify").on("click", function (e) {
     e.preventDefault();
@@ -103,6 +111,10 @@ $("#beautify").on("click", function (e) {
     let fcss = formatCss(editorcss.getValue());
     if (typeof fcss == "string") {
         editorcss.setValue(fcss);
+    }
+    let fjs = formatJs(editorjs.getValue());
+    if (typeof fjs == "string") {
+        editorjs.setValue(fjs);
     }
 });
 

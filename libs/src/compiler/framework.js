@@ -34,9 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+/// <reference types="crypto-js" />
 var CryptoJSAesJson = {
     stringify: function (cipherParams) {
-        var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
+        var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64), iv: "", s: "" };
         if (cipherParams.iv)
             j.iv = cipherParams.iv.toString();
         if (cipherParams.salt)
@@ -7082,6 +7083,15 @@ function loadCSS(href, callback) {
         hrefs.shift();
         loadCSS(hrefs, callback);
     }
+}
+/**
+ * Resize iframe to fit content
+ * @param iFrame
+ */
+function resizeIFrameToFitContent(iFrame, options) {
+    if (options === void 0) { options = { width: true, height: true }; }
+    iFrame.width = iFrame.contentWindow.document.body.scrollWidth;
+    iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
 }
 var guxid = (Math.random().toString(16) + "000000000").substr(2, 8);
 /**

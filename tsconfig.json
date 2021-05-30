@@ -16,7 +16,17 @@
         "checkJs": false,
         "watch": false,
         "typeRoots": ["./node_modules/@types", "./libs/js"],
-        "types": ["datatables.net", "jquery", "requirejs", "node", "select2", "toastr", "vuepress-types", "codemirror"],
+        "types": [
+            "datatables.net",
+            "jquery",
+            "requirejs",
+            "node",
+            "select2",
+            "toastr",
+            "vuepress-types",
+            "codemirror",
+            "crypto-js"
+        ],
         "target": "ES5",
         "lib": [
             "DOM",

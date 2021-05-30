@@ -42,7 +42,7 @@
     </header>
     <!--Main Navigation-->
 
-    <main class="container-fluid">
+    <main data-class="container-fluid">
         <?php
         if (isset($content) && file_exists($content)) {
             include $content;

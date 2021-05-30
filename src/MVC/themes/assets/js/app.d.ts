@@ -7,6 +7,7 @@
 /// <reference path="../../../../../libs/js/lib.dom.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/globals.d.ts" />
 /// <reference path="../../../../../libs/src/smartform/src/js/index.d.ts" />
+/// <reference types="crypto-js" />
 /// <reference types="codemirror" />
 /// <reference types="jquery" />
 /// <reference types="node" />
@@ -14,6 +15,10 @@
 /// <reference types="google.analytics" />
 /// <reference types="datatables.net" />
 /// <reference lib="dom" />
+declare var CryptoJSAesJson: {
+    stringify: (cipherParams: CryptoJS.lib.CipherParams) => string;
+    parse: (jsonStr: any) => CryptoJS.lib.CipherParams;
+};
 /**
  * AES encrypt
  * @url /src/shim/Cipher.php
@@ -28,10 +33,6 @@ declare function aesEncrypt(text: any, key: any): string;
  * @param {text} key
  */
 declare function aesDecrypt(encrypted: any, key: any): any;
-declare namespace CryptoJSAesJson {
-    function stringify(cipherParams: any): string;
-    function parse(jsonStr: any): CryptoJS.lib.CipherParams;
-}
 declare const CodeMirrorAddon: {
     "CodeMirror-comment-comment": {
         js: string;
@@ -1922,6 +1923,14 @@ declare const loadedCss: string[];
  * @param callback
  */
 declare function loadCSS(href: string | string[], callback?: any): void;
+/**
+ * Resize iframe to fit content
+ * @param iFrame
+ */
+declare function resizeIFrameToFitContent(iFrame: HTMLIFrameElement, options?: {
+    width?: boolean;
+    height?: boolean;
+}): void;
 declare const guxid: string;
 /**
  * Get current unique global page user id

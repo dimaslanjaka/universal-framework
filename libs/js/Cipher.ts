@@ -1,6 +1,8 @@
+/// <reference types="crypto-js" />
+
 var CryptoJSAesJson = {
-    stringify: function (cipherParams) {
-        var j = {ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64)};
+    stringify: function (cipherParams: CryptoJS.lib.CipherParams) {
+        var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64), iv: "", s: "" };
         if (cipherParams.iv) j.iv = cipherParams.iv.toString();
         if (cipherParams.salt) j.s = cipherParams.salt.toString();
         return JSON.stringify(j);

@@ -227,3 +227,15 @@ function loadCSS(href: string | string[], callback?: any) {
         loadCSS(hrefs, callback);
     }
 }
+
+/**
+ * Resize iframe to fit content
+ * @param iFrame
+ */
+function resizeIFrameToFitContent(
+    iFrame: HTMLIFrameElement,
+    options: { width?: boolean; height?: boolean } = { width: true, height: true }
+) {
+    iFrame.width = <any>iFrame.contentWindow.document.body.scrollWidth;
+    iFrame.height = <any>iFrame.contentWindow.document.body.scrollHeight;
+}
