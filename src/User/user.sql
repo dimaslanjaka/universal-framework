@@ -3,7 +3,7 @@ CREATE TABLE `userdata` (
   `display_name` varchar(255) NOT NULL DEFAULT 'user',
   `email` varchar(255) NOT NULL DEFAULT 'default@webmanajemen.com',
   `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `password` varchar(250) NOT NULL,
   `created` datetime DEFAULT current_timestamp(),
   `number` text DEFAULT NULL,
   `role` set('superadmin','admin','client','guess','pegawai gudang','kepala gudang') NOT NULL,

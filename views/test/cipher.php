@@ -1,8 +1,24 @@
 <section class="container-fluid">
   <h1>Generator</h1>
-  <div class="form-group">
-    <input type="text" id='pass' class="form-control" placeholder="Enter password you want to encrypt">
+
+  <div class="row">
+    <!-- Grid column -->
+    <div class="col mb-2">
+      <!-- Default input -->
+      <input type="text" id='pass' class="form-control" placeholder="Enter password you want to encrypt">
+    </div>
+    <!-- Grid column -->
+
+    <!-- Grid column -->
+    <div class="col mb-2">
+      <!-- Default input -->
+      <input type="text" id="secret-key" class="form-control" placeholder="Secret Key" value="<?= CONFIG['security']['salt'] ?>">
+    </div>
+    <!-- Grid column -->
   </div>
+  <!-- Grid row -->
+  </div>
+
 </section>
 
 <section class="container-fluid" style="word-wrap: break-word;">

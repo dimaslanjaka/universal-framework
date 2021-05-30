@@ -1,16 +1,14 @@
 (function () {
-    setTimeout(() => {
-        aenc(`Test ${formatDate()}`);
-    }, 1000);
+    aenc(`Test ${formatDate()}`);
+
+    $("#pass").on("keyup", function (e) {
+        let pw = $(this).val();
+        aenc(pw);
+    });
 })();
 
-var key = "BlVssQKxzA" + location.host;
-function setKey(str) {
-    key = str;
-    return key;
-}
 function getKey() {
-    return key;
+    return document.getElementById("secret-key").value;
 }
 
 /**
@@ -19,6 +17,7 @@ function getKey() {
  */
 function aenc(text) {
     if (!text.length) text = "test";
+    let key = getKey();
 
     $.ajax({
         url: "?encrypt-text",
@@ -33,15 +32,19 @@ function aenc(text) {
             document.getElementById("secret").textContent = res.secret;
             document.getElementById("encphp").textContent = res.result;
             document.getElementById("encjs").textContent = aesEncrypt(text, key);
+
+            document.getElementById("jscode-encrypt").textContent = `aesEncrypt("${text}", "${key}");`;
             adec(res.result);
         },
     });
 }
+
 /**
  *
  * @param {string} text
  */
 function adec(text) {
+    let key = getKey();
     $.ajax({
         url: "?decrypt-text",
         method: "POST",
@@ -81,7 +84,3 @@ function formatDate(date) {
 
     return [year, month, day].join("-");
 }
-
-$("#pass").on("keyup", function (e) {
-    let pw = $(this).val();
-});

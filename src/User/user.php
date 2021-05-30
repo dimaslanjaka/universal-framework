@@ -103,7 +103,7 @@ class user
     $username = addslashes($username);
     $password = addslashes($password);
     $crypt = new crypt();
-    $password = $crypt->encrypt(CONFIG['security']['salt'], $password);
+    $password = aesEncrypt(CONFIG['security']['salt'], $password);
     $db = $this->dbname;
     $q = "INSERT INTO `$db` (`display_name`, `username`, `password`, `role`) VALUES (:name, :username, :password, :role);";
     $exec = $this->pdo->SQL_Exec($q, ['name' => $name, 'username' => $username, 'password' => $password, 'role' => $role]);
@@ -398,9 +398,9 @@ class user
     if ($this->is_login()) {
       $currentUsername = $this->userdata('username');
       $run = $this
-                ->pdo
-                ->query("UPDATE `userdata` SET `last_seen` = NOW() WHERE `username` = '{$currentUsername}';")
-                ->exec();
+        ->pdo
+        ->query("UPDATE `userdata` SET `last_seen` = NOW() WHERE `username` = '{$currentUsername}';")
+        ->exec();
 
       return $run;
     }
@@ -422,7 +422,7 @@ class user
     }
     $db = $this->dbname;
     $crypt = new crypt();
-    $pass = $crypt->encrypt(CONFIG['security']['salt'], $pass);
+    $pass = aesEncrypt(CONFIG['security']['salt'], $pass);
     if (!$this->is_admin()) {
       $q = "UPDATE `$db` SET `password` = :pass WHERE `$db`.`id` = :id AND `$db`.`role` <> 'superadmin' AND `$db`.`role` <> 'admin';";
     } else {
@@ -478,7 +478,7 @@ class user
   {
     $crypt = new crypt();
 
-    return $crypt->encrypt(CONFIG['security']['salt'], $password);
+    return aesEncrypt(CONFIG['security']['salt'], $password);
   }
 
   public function login($username, $password)
@@ -494,7 +494,7 @@ class user
     $db = $this->dbname;
     $password = addslashes($password);
     $crypt = new crypt();
-    $password = $crypt->encrypt(CONFIG['security']['salt'], $password);
+    $password = aesEncrypt(CONFIG['security']['salt'], $password);
 
     $query = "SELECT * FROM `$db` WHERE username=:username AND password=:password";
     //var_dump($username, $password, $query);
