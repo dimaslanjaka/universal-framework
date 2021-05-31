@@ -50,6 +50,9 @@ coding_style:
                 concatenation: true
 
 build:
+    dependencies:
+        before:
+            - "sudo apt-get -y install dnsutils"
     cache:
         directories:
             - node_modules
@@ -57,6 +60,10 @@ build:
             - bin # As vendor directory is cached, bin directory must be also cached (as some dependency will not installed if they are already present and so, related binary will not be linked)
             - ~/.composer # Composer home directory (avoid fetching already fetched packages)
     nodes:
+        compatibility:
+            dependencies:
+                override:
+                    - composer update
         analysis:
             project_setup:
                 override:
