@@ -12,6 +12,7 @@ build:
       - bin
       - node_modules
       - ~/.composer
+      - tmp
   environment:
     google_chrome:
       use_latest: true
