@@ -89,6 +89,15 @@ interface JQuery extends jQuery {
      * Check if element has attribute
      */
     hasAttr(name: string): boolean;
+
+    linkify(opt: linkifyConfig): any;
+}
+
+interface linkifyConfig {
+    hashtagUrlBuilder: any;
+    includeW3: boolean;
+    target: string;
+    noFollow: boolean;
 }
 
 declare namespace JQuery {
@@ -141,7 +150,7 @@ interface JQueryStatic {
 
     /**
      * ```js
-     * // listen on spesific wrapper
+     * // listen on specific wrapper
      * $.arrive('#container', function(){
      * console.log($(this));
      * });
@@ -452,11 +461,11 @@ interface HTMLScriptElement extends HTMLElement {
 
 interface HTMLElement
     extends Element,
-    DocumentAndElementEventHandlers,
-    ElementCSSInlineStyle,
-    ElementContentEditable,
-    GlobalEventHandlers,
-    HTMLOrSVGElement {
+        DocumentAndElementEventHandlers,
+        ElementCSSInlineStyle,
+        ElementContentEditable,
+        GlobalEventHandlers,
+        HTMLOrSVGElement {
     mozMatchesSelector: (selectors: string) => boolean;
     msMatchesSelector: (selectors: string) => boolean;
 
@@ -540,12 +549,12 @@ interface Window {
 
 interface Document
     extends Node,
-    DocumentAndElementEventHandlers,
-    DocumentOrShadowRoot,
-    GlobalEventHandlers,
-    NonElementParentNode,
-    ParentNode,
-    XPathEvaluatorBase {
+        DocumentAndElementEventHandlers,
+        DocumentOrShadowRoot,
+        GlobalEventHandlers,
+        NonElementParentNode,
+        ParentNode,
+        XPathEvaluatorBase {
     /**
      * window.addEventListener
      *

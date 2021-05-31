@@ -367,6 +367,12 @@ function createJSON(jsObj, tabs) {
     }
 }
 
+/**
+ * Loading.io
+ * @param {string} text
+ * @param {Function} callback
+ * @param {"enable" | "enabled" | "disable" | "disabled"} mode
+ */
 function loadingio(text, callback, mode) {
     if (typeof text == "undefined" || typeof text == "boolean" || !text) {
         text = "Please wait";
@@ -464,13 +470,6 @@ function parse_proxy(str) {
  */
 function toogleClass(element, className) {
     return element.classList.toggle(className);
-}
-
-function UNIQUE_ID() {
-    // Math.random should be unique because of its seeding algorithm.
-    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-    // after the decimal.
-    return "_" + Math.random().toString(36).substr(2, 9);
 }
 
 /**

@@ -1,5 +1,7 @@
 /// <reference path="./Object.d.ts" />
 /// <reference path="./globals.d.ts" />
+/// <reference types="@types/grecaptcha" />
+/// <reference types="@types/google.analytics" />
 
 const reCaptcha = {
     /**
@@ -112,7 +114,7 @@ const reCaptcha = {
                  */
                 function (token: string) {
                     reCaptcha.reCaptcha_buttons(false, null);
-                    console.info(token);
+                    //console.info(token);
                     reCaptcha.insert(token);
                     if (typeof callback == "function") {
                         callback(token);

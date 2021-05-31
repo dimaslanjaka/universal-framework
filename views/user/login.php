@@ -1,4 +1,4 @@
-<section>
+<section class="container-fluid">
   <div class="row">
     <div class="col-md-12">
       <!-- Card -->
@@ -30,10 +30,10 @@
             </div>
 
             <div class="row">
-              <div class="col-md-6">
+              <div class="col">
                 <button class="btn btn-block z-depth-0 my-4 waves-effect" type="submit">Sign in</button>
               </div>
-              <div class="col-md-6">
+              <div class="col">
                 <a class="btn btn-block z-depth-0 my-4 waves-effect" href="/signup">Sign up</a>
               </div>
             </div>

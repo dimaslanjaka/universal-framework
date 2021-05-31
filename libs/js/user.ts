@@ -34,24 +34,33 @@ class user {
         }
     }
 
-    login(user: string, pass: string) {
-        fetch("/server/user", {
+    /**
+     * User login
+     * @param user
+     * @param pass
+     * @param callback
+     * @example
+     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+        console.log(arguments);
+        if (!err){
+            console.log('login successful');
+        }
+    }});
+     */
+    login(opt: { user: string; pass: string; callback?: (err: boolean, data: object) => any; recaptcha?: string }) {
+        const data = new URLSearchParams();
+        data.append("user", opt.user);
+        data.append("pass", opt.pass);
+        fetch("/server/user?login", {
             method: "post",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-
-            //make sure to serialize your JSON body
-            body: JSON.stringify({
-                login: makeid(5),
-                user: user,
-                pass: pass,
-            }),
-        }).then((response) => {
-            //do something awesome that makes the world a better place
-            console.log(response);
-        });
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                if (typeof opt.callback == "function") {
+                    opt.callback(response.error, response);
+                }
+            });
     }
 
     /**
@@ -93,14 +102,19 @@ class user {
 }
 
 if (!isnode()) {
+    const uclass = new user();
+
     /**
-     * @typedef {user} userc
+     * User Class
      */
-    const userc = new user();
+    function userClass() {
+        return uclass;
+    }
+
     if (typeof window !== "undefined" && typeof window.user === "undefined") {
-        window.user = userc;
+        window.user = userClass();
     }
     if (typeof jQuery !== "undefined") {
-        jQuery.user = userc;
+        jQuery.user = userClass();
     }
 }

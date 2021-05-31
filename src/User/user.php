@@ -30,29 +30,29 @@ class user
     private $password;
     private $role;
     private $user;
-  /**
-   * PDO instance.
-   *
-   * @var pdo
-   */
+    /**
+     * PDO instance.
+     *
+     * @var pdo
+     */
     protected $pdo = null;
     private $db = ['user', 'pass', 'dbname', 'host', 'charset'];
-  /**
-   * Meta instance.
-   *
-   * @var meta
-   */
+    /**
+     * Meta instance.
+     *
+     * @var meta
+     */
     private $meta_instance;
 
     public function __construct($user, $pass, $db, $host = 'localhost', $charset = 'utf8mb4')
     {
         if (!empty($user) && !empty($db)) {
             $this->db = [
-            'user' => $user,
-            'pass' => $pass,
-            'dbname' => $db,
-            'host' => $host,
-            'charset' => $charset,
+                'user' => $user,
+                'pass' => $pass,
+                'dbname' => $db,
+                'host' => $host,
+                'charset' => $charset,
             ];
             $this->pdo = new pdo($user, $pass, $db, $host, $charset);
             $this->pdo->connect($user, $pass, $db, $host, $charset);
@@ -72,11 +72,11 @@ class user
         user::$_instance = $this;
     }
 
-  /**
-   * Check username is exists.
-   *
-   * @return bool
-   */
+    /**
+     * Check username is exists.
+     *
+     * @return bool
+     */
     public function is_user_exists($username)
     {
         $check = $this->pdo->query("SELECT * FROM 'userdata';")->row_array();
@@ -118,15 +118,15 @@ class user
         return $result;
     }
 
-  /**
-   * Hidding additional information into backend response.
-   *
-   * @param array $result
-   *
-   * @return array
-   *
-   * @author DimasLanjaka <dimaslanjaka@gmail.com>
-   */
+    /**
+     * Hidding additional information into backend response.
+     *
+     * @param array $result
+     *
+     * @return array
+     *
+     * @author DimasLanjaka <dimaslanjaka@gmail.com>
+     */
     public function hide_additional($result)
     {
         if (isset($result['role'])) {
@@ -145,11 +145,11 @@ class user
         return $result;
     }
 
-  /**
-   * Current instance.
-   *
-   * @return user
-   */
+    /**
+     * Current instance.
+     *
+     * @return user
+     */
     public static function instance()
     {
         return $GLOBALS['user_instance'];
@@ -160,11 +160,11 @@ class user
         return self::getInstance()->admin_pattern;
     }
 
-  /**
-   * Static Chain.
-   *
-   * @return $this
-   */
+    /**
+     * Static Chain.
+     *
+     * @return $this
+     */
     public static function getInstance()
     {
         if (null === self::$_instance) {
@@ -190,23 +190,23 @@ class user
         }
     }
 
-  /**
-   * Access Management.
-   *
-   * @return access
-   */
+    /**
+     * Access Management.
+     *
+     * @return access
+     */
     public function access()
     {
         return new access($this);
     }
 
-  /**
-   * Get All Users.
-   *
-   * @return array|null
-   *
-   * @throws Exception
-   */
+    /**
+     * Get All Users.
+     *
+     * @return array|null
+     *
+     * @throws Exception
+     */
     public function getUsers()
     {
         if (!$this->pdo) {
@@ -223,13 +223,13 @@ class user
         return $result;
     }
 
-  /**
-   * Get PDO Instance.
-   *
-   * @param pdo $pdo set new instance
-   *
-   * @return pdo
-   */
+    /**
+     * Get PDO Instance.
+     *
+     * @param pdo $pdo set new instance
+     *
+     * @return pdo
+     */
     public function pdo_instance(pdo $pdo = null)
     {
         if ($pdo) {
@@ -240,13 +240,13 @@ class user
         return $this->pdo;
     }
 
-  /**
-   * Check user can do something.
-   *
-   * @return array
-   *
-   * @throws Exception
-   */
+    /**
+     * Check user can do something.
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
     public function can($what)
     {
         if ($this->is_login()) {
@@ -257,11 +257,11 @@ class user
         }
     }
 
-  /**
-   * Check user is login.
-   *
-   * @return bool
-   */
+    /**
+     * Check user is login.
+     *
+     * @return bool
+     */
     public function is_login()
     {
         $isLogin = isset($_SESSION['login']['username']) && !empty(trim($_SESSION['login']['username']));
@@ -278,13 +278,13 @@ class user
         return $isLogin;
     }
 
-  /**
-   * Get \User\meta instance.
-   *
-   * @return meta
-   *
-   * @throws Exception
-   */
+    /**
+     * Get \User\meta instance.
+     *
+     * @return meta
+     *
+     * @throws Exception
+     */
     public function meta()
     {
         $this->pdo_required();
@@ -295,13 +295,13 @@ class user
         return $this->meta_instance;
     }
 
-  /**
-   * Check pdo active.
-   *
-   * @return void
-   *
-   * @throws Exception
-   */
+    /**
+     * Check pdo active.
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
     public function pdo_required()
     {
         if (!$this->pdo) {
@@ -309,12 +309,12 @@ class user
         }
     }
 
-  /**
-   * Get user data.
-   *
-   * @return array|int|string|null if empty not logged in
-   * @noinspection PhpUndefinedMethodInspection
-   */
+    /**
+     * Get user data.
+     *
+     * @return array|int|string|null if empty not logged in
+     * @noinspection PhpUndefinedMethodInspection
+     */
     public function userdata($what)
     {
         if ($this->is_login()) {
@@ -334,11 +334,11 @@ class user
         return null;
     }
 
-  /**
-   * If not admin auto redirect.
-   *
-   * @return void
-   */
+    /**
+     * If not admin auto redirect.
+     *
+     * @return void
+     */
     public function admin_required($redirect = '/user/login')
     {
         if (!$this->is_admin()) {
@@ -347,11 +347,11 @@ class user
         }
     }
 
-  /**
-   * Check current user is superadmin.
-   *
-   * @return bool
-   */
+    /**
+     * Check current user is superadmin.
+     *
+     * @return bool
+     */
     public function is_admin()
     {
         if ($this->is_login()) {
@@ -359,21 +359,21 @@ class user
         }
     }
 
-  /**
-   * Get Current user role.
-   *
-   * @return string
-   */
+    /**
+     * Get Current user role.
+     *
+     * @return string
+     */
     public function get_role()
     {
         return isset($_SESSION['login']['role']) ? $_SESSION['login']['role'] : 'UNAUTHORIZED';
     }
 
-  /**
-   * Get All Available Roles.
-   *
-   * @return array
-   */
+    /**
+     * Get All Available Roles.
+     *
+     * @return array
+     */
     public function get_roles()
     {
         if (!$this->pdo) {
@@ -384,35 +384,50 @@ class user
         return $list;
     }
 
-  /**
-   * Get user data.
-   *
-   * @see \User\user::userdata
-   */
+    /**
+     * Get user data.
+     *
+     * @see \User\user::userdata
+     */
     public function data($name)
     {
         return $this->userdata($name);
     }
 
-    public function update_last_seen()
+    public function update_last_login($username = null)
     {
-        if ($this->is_login()) {
-            $currentUsername = $this->userdata('username');
-            $run = $this
+        if (empty($username)) {
+            $username = $this->username;
+        }
+
+        $run = $this
             ->pdo
-            ->query("UPDATE `userdata` SET `last_seen` = NOW() WHERE `username` = '{$currentUsername}';")
+            ->query("UPDATE `userdata` SET `last_login` = NOW() WHERE `username` = '{$username}';")
             ->exec();
 
-            return $run;
-        }
+        return $run;
     }
 
-  /**
-   * Change password.
-   *
-   * @param int    $id   user id want to update
-   * @param string $pass new password
-   */
+    public function update_last_seen($username = null)
+    {
+        if (empty($username)) {
+            $username = $this->username;
+        }
+
+        $run = $this
+            ->pdo
+            ->query("UPDATE `userdata` SET `last_seen` = NOW() WHERE `username` = '{$username}';")
+            ->exec();
+
+        return $run;
+    }
+
+    /**
+     * Change password.
+     *
+     * @param int    $id   user id want to update
+     * @param string $pass new password
+     */
     public function update_password($id, $pass)
     {
         if (!$this->pdo) {
@@ -451,11 +466,11 @@ class user
         $this->pdo->SQL_Exec($q, ['id' => $id]);
     }
 
-  /**
-   * Check user is logged in or redirect them.
-   *
-   * @return $this
-   */
+    /**
+     * Check user is logged in or redirect them.
+     *
+     * @return $this
+     */
     public function login_required($redirect = '/user/login')
     {
         if (!$this->is_login()) {
@@ -465,11 +480,11 @@ class user
         return $this;
     }
 
-  /**
-   * Get current database name.
-   *
-   * @return array
-   */
+    /**
+     * Get current database name.
+     *
+     * @return array
+     */
     public function get_dbname()
     {
         return $this->pdo->query('select database()')->row_array();
@@ -482,12 +497,14 @@ class user
         return aesEncrypt(CONFIG['security']['salt'], $password);
     }
 
-  /**
-   * Select user by username or email
-   *
-   * @param string $identifier
-   * @return array
-   */
+    /**
+     * Select user by username or email
+     *
+     * @param string $identifier
+     *
+     * @return array
+     * @throws Exception
+     */
     public function select($identifier)
     {
         if (!$this->pdo) {
@@ -499,16 +516,18 @@ class user
         return $this->pdo->select('userdata', "*")->whereString("`username` = '$identifier' OR `email` = '$identifier'")->row_array();
     }
 
-  /**
-   * Login
-   *
-   * @param string $username
-   * @param string $password
-   * @return bool
-   */
+    /**
+     * Login
+     *
+     * @param string $username
+     * @param string $password
+     *
+     * @return bool
+     * @throws Exception
+     */
     public function login($username, $password)
     {
-      // decode when get method
+        // decode when get method
         if ('GET' == $_SERVER['REQUEST_METHOD']) {
             $username = urldecode($username);
             $password = urldecode($password);
@@ -517,20 +536,28 @@ class user
         if (isset($data['password'])) {
             $decrypt_ori = aesDecrypt($data['password'], CONFIG['security']['salt']);
             $decrypt_new = aesDecrypt($password, CONFIG['security']['salt']);
+            $this->last_seen = $this->update_last_seen($data['username']);
+            $this->last_login = $this->update_last_login($data['username']);
+            foreach ($data as $key => $value) {
+                $this->{$key} = $value;
+            }
+            $_SESSION['login'] = $data;
             return $decrypt_new === $decrypt_ori;
         }
 
         return false;
     }
 
-
-  /**
-   * Login
-   * @deprecated 1.1.0
-   * @param string $username
-   * @param string $password
-   * @return void
-   */
+    /**
+     * Login
+     *
+     * @param string $username
+     * @param string $password
+     *
+     * @return array
+     * @throws Exception
+     * @deprecated 1.1.0
+     */
     public function login_($username, $password)
     {
         if (!$this->pdo) {
@@ -547,9 +574,9 @@ class user
         $password = aesEncrypt(CONFIG['security']['salt'], $password);
 
         $query = "SELECT * FROM `$db` WHERE username=:username AND password=:password";
-      //var_dump($username, $password, $query);
+        //var_dump($username, $password, $query);
         $exec = $this->pdo->SQL_Fetch($query, ['username' => $username, 'password' => $password]);
-      //var_dump($this->pdo, $exec);
+        //var_dump($this->pdo, $exec);
         $result = [];
         if (!empty($exec)) {
             if (isset($exec['id'])) {
@@ -564,7 +591,7 @@ class user
                 }
                 $this->pdo->SQL_Exec($query);
             } else {
-              //var_dump($exec);
+                //var_dump($exec);
                 $result['error'] = true;
             }
         } else {
@@ -580,13 +607,13 @@ class user
         return $result;
     }
 
-  /**
-   * Check Login.
-   *
-   * @param Function $callback
-   *
-   * @author Dimaslanjaka <dimaslanjaka@gmail.com>
-   */
+    /**
+     * Check Login.
+     *
+     * @param callable $callback
+     *
+     * @author Dimaslanjaka <dimaslanjaka@gmail.com>
+     */
     public function check_login($callback)
     {
         if (isset($_SESSION['login'])) {
@@ -598,20 +625,20 @@ class user
         } else {
             if (is_callable($callback)) {
                 call_user_func($callback, [
-                'error' => true,
-                'message' => 'User Login required. Please relogin from login page',
-                'unauthorized' => true,
+                    'error' => true,
+                    'message' => 'User Login required. Please relogin from login page',
+                    'unauthorized' => true,
                 ]);
             }
         }
     }
 
-  /**
-   * Update Display Name.
-   *
-   * @param Number $id
-   * @param string $display
-   */
+    /**
+     * Update Display Name.
+     *
+     * @param Number $id
+     * @param string $display
+     */
     public function update_display_name($id, $display)
     {
         if (!$this->pdo) {
@@ -624,13 +651,13 @@ class user
         $this->json($chk);
     }
 
-  /**
-   * JSON formatter.
-   *
-   * @param array $data
-   * @param bool  $header
-   * @param bool  $print
-   */
+    /**
+     * JSON formatter.
+     *
+     * @param array $data
+     * @param bool  $header
+     * @param bool  $print
+     */
     public function json($data = [], $header = true, $print = true)
     {
         return json::json($data, $header, $print);
@@ -645,8 +672,8 @@ class user
             throw new Exception('Error Processing Change Role Request', 1);
         }
         $chk = [
-        'error' => true,
-        'message' => 'insufficient privileges',
+            'error' => true,
+            'message' => 'insufficient privileges',
         ];
         if ($this->is_admin()) {
             $db = $this->dbname;

@@ -1904,7 +1904,13 @@ function strpad(val) {
 function trueTypeOf(obj) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
 }
-const siteConfig = { "google": { "key": "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI", "recaptcha": { "key": "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" }, "analystics": { "id": "UA-106238155-1" } } };
+const siteConfig = {
+    google: {
+        key: "AIzaSyDgRnuOT2hP-KUOeQhGoLfOOPHCNYhznFI",
+        recaptcha: { key: "6LdSg5gUAAAAAKrfCL7OkHCFrS3m09xoWyvFKieF" },
+        analystics: { id: "UA-106238155-1" },
+    },
+};
 let root;
 //declare let global: any;
 (function () {
@@ -7821,6 +7827,72 @@ function formsaver(show_debug = false) {
         }
     }
 }
+/// <reference path="globals.d.ts" />
+function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
+    let relNoFollow = "";
+    if (noFollow) {
+        relNoFollow = ' rel="nofollow"';
+    }
+    if (string.toLowerCase().indexOf("www.") === 0 && includeW3) {
+        string = '<a href="http://' + string + '" target="' + target + '"' + relNoFollow + ">" + string + "</a>";
+    }
+    else {
+        string = '<a href="' + string + '" target="' + target + '"' + relNoFollow + ">" + string + "</a>";
+    }
+    if (buildHashtagUrl) {
+        string = string.replace(/\B#(\w+)/g, "<a href=" + buildHashtagUrl("$1") + ' target="' + target + '"' + relNoFollow + ">#$1</a>");
+    }
+    return string;
+}
+if (!isnode()) {
+    (function ($) {
+        $.fn.linkify = function (opts) {
+            return this.each(function () {
+                var buildHashtagUrl;
+                var includeW3 = true;
+                var target = "_self";
+                var noFollow = true;
+                var regex = /((http|https|ftp)\:\/\/|\bw{3}\.)[a-z0-9\-\.]+\.[a-z]{2,3}(:[a-z0-9]*)?\/?([a-z\u00C0-\u017F0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*/gi;
+                var txt = this.innerHTML;
+                var output = "";
+                var replacement;
+                var matchLen;
+                var lastIndex = 0;
+                if (opts) {
+                    if (typeof opts == "function") {
+                        buildHashtagUrl = opts;
+                    }
+                    else {
+                        if (typeof opts.hashtagUrlBuilder == "function") {
+                            buildHashtagUrl = opts.hashtagUrlBuilder;
+                        }
+                        if (typeof opts.includeW3 == "boolean") {
+                            includeW3 = opts.includeW3;
+                        }
+                        if (typeof opts.target == "string") {
+                            target = opts.target;
+                        }
+                        if (typeof opts.noFollow == "boolean") {
+                            noFollow = opts.noFollow;
+                        }
+                    }
+                }
+                let match;
+                while ((match = regex.exec(txt)) !== null) {
+                    matchLen = match[0].length;
+                    replacement = linkify(match[0], buildHashtagUrl, includeW3, target, noFollow);
+                    output += txt.substring(lastIndex, match.index + matchLen).replace(match[0], replacement);
+                    lastIndex = match.index + matchLen;
+                }
+                // Include the rest of the text.
+                if (lastIndex !== txt.length) {
+                    output += txt.substring(lastIndex);
+                }
+                $(this).html(output);
+            });
+        };
+    })(jQuery);
+}
 /*
  * JavaScript MD5
  * https://github.com/blueimp/JavaScript-MD5
@@ -8407,6 +8479,8 @@ if (!isnode()) {
 }
 /// <reference path="./Object.d.ts" />
 /// <reference path="./globals.d.ts" />
+/// <reference types="@types/grecaptcha" />
+/// <reference types="@types/google.analytics" />
 const reCaptcha = {
     /**
      * @type {Number} counter executions
@@ -8515,7 +8589,7 @@ const reCaptcha = {
              */
             function (token) {
                 reCaptcha.reCaptcha_buttons(false, null);
-                console.info(token);
+                //console.info(token);
                 reCaptcha.insert(token);
                 if (typeof callback == "function") {
                     callback(token);
@@ -9145,22 +9219,32 @@ class user {
             return undefined;
         }
     }
-    login(user, pass) {
-        fetch("/server/user", {
+    /**
+     * User login
+     * @param user
+     * @param pass
+     * @param callback
+     * @example
+     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+        console.log(arguments);
+        if (!err){
+            console.log('login successful');
+        }
+    }});
+     */
+    login(opt) {
+        const data = new URLSearchParams();
+        data.append("user", opt.user);
+        data.append("pass", opt.pass);
+        fetch("/server/user?login", {
             method: "post",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            //make sure to serialize your JSON body
-            body: JSON.stringify({
-                login: makeid(5),
-                user: user,
-                pass: pass,
-            }),
-        }).then((response) => {
-            //do something awesome that makes the world a better place
-            console.log(response);
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((response) => {
+            if (typeof opt.callback == "function") {
+                opt.callback(response.error, response);
+            }
         });
     }
     /**
@@ -9201,15 +9285,18 @@ class user {
     }
 }
 if (!isnode()) {
+    const uclass = new user();
     /**
-     * @typedef {user} userc
+     * User Class
      */
-    const userc = new user();
+    function userClass() {
+        return uclass;
+    }
     if (typeof window !== "undefined" && typeof window.user === "undefined") {
-        window.user = userc;
+        window.user = userClass();
     }
     if (typeof jQuery !== "undefined") {
-        jQuery.user = userc;
+        jQuery.user = userClass();
     }
 }
 if (!isnode()) {
@@ -9541,6 +9628,12 @@ function createJSON(jsObj, tabs) {
         return JSON.stringify(jsObj, null, 4); // stringify with 4 spaces at each level}
     }
 }
+/**
+ * Loading.io
+ * @param {string} text
+ * @param {Function} callback
+ * @param {"enable" | "enabled" | "disable" | "disabled"} mode
+ */
 function loadingio(text, callback, mode) {
     if (typeof text == "undefined" || typeof text == "boolean" || !text) {
         text = "Please wait";
@@ -9628,12 +9721,6 @@ function parse_proxy(str) {
  */
 function toogleClass(element, className) {
     return element.classList.toggle(className);
-}
-function UNIQUE_ID() {
-    // Math.random should be unique because of its seeding algorithm.
-    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-    // after the decimal.
-    return "_" + Math.random().toString(36).substr(2, 9);
 }
 /**
  * jQuery pseudo builder

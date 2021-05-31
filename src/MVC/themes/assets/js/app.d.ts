@@ -12,7 +12,7 @@
 /// <reference types="jquery" />
 /// <reference types="node" />
 /// <reference types="react" />
-/// <reference types="google.analytics" />
+/// <reference types="@types/google.analytics" />
 /// <reference types="datatables.net" />
 /// <reference lib="dom" />
 declare const CryptoJSAesJson: {
@@ -2115,6 +2115,7 @@ declare class formSaver2 {
     static get_identifier(el: any): string;
     constructor(el: any, options: any);
 }
+declare function linkify(string: string, buildHashtagUrl: linkifyConfig["hashtagUrlBuilder"], includeW3: linkifyConfig["includeW3"], target: linkifyConfig["target"], noFollow: linkifyConfig["noFollow"]): string;
 /**
  * Add integers, wrapping at 2^32.
  * This uses 16-bit operations internally to work around bugs in interpreters.
@@ -2499,7 +2500,25 @@ declare class user {
      * get userdata
      */
     get(key: string): any;
-    login(user: string, pass: string): void;
+    /**
+     * User login
+     * @param user
+     * @param pass
+     * @param callback
+     * @example
+     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+        console.log(arguments);
+        if (!err){
+            console.log('login successful');
+        }
+    }});
+     */
+    login(opt: {
+        user: string;
+        pass: string;
+        callback?: (err: boolean, data: object) => any;
+        recaptcha?: string;
+    }): void;
     /**
      * fetch userdata
      * @param callback
@@ -2558,7 +2577,13 @@ declare function get_currency_symbol(): string;
  * @param {boolean} tabs
  */
 declare function createJSON(jsObj: any, tabs: boolean): string;
-declare function loadingio(text: any, callback: any, mode: any, ...args: any[]): void;
+/**
+ * Loading.io
+ * @param {string} text
+ * @param {Function} callback
+ * @param {"enable" | "enabled" | "disable" | "disabled"} mode
+ */
+declare function loadingio(text: string, callback: Function, mode: "enable" | "enabled" | "disable" | "disabled", ...args: any[]): void;
 /**
  function target(a) {
     alert(a);
@@ -2585,7 +2610,6 @@ declare function parse_proxy(str: string): Array<any>;
  * @param {string} className class name
  */
 declare function toogleClass(element: Element, className: string): boolean;
-declare function UNIQUE_ID(): string;
 /**
  * jQuery pseudo builder
  * @param {string} string
