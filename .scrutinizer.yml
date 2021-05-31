@@ -12,6 +12,10 @@ build:
       - bin
       - node_modules
       - ~/.composer
+  environment:
+    google_chrome:
+      use_latest: true
+    node: v10.14.2
   nodes:
     analysis:
       resources:
@@ -20,6 +24,8 @@ build:
         override: true
       tests:
         override:
+          - command: 'npm install npm@latest typescript node-sass sass -g'
           - js-scrutinizer-run
-          - eslint-run "libs/**"
+          - eslint-run "libs/js/**"
+          - eslint-run "libs/compiler/**"
 
