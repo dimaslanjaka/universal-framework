@@ -160,5 +160,6 @@
     "intelephense.diagnostics.run": "onSave",
     "php-cs-fixer.allowRisky": true,
     "php-cs-fixer.showOutput": false,
-    "php-cs-fixer.executablePath": "D:/Workspaces/PHP/universal-framework/libs/bin/php-cs-fixer/php-cs-fixer.phar"
+    "php-cs-fixer.executablePath": "D:/Workspaces/PHP/universal-framework/libs/bin/php-cs-fixer/php-cs-fixer.phar",
+    "phpcs.standard": "./phpcs.xml.dist"
 }

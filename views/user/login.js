@@ -4,6 +4,7 @@ $(document).on("submit", "form", function (e) {
     e.preventDefault();
     const t = $(this).get(0);
     let serialize = serializeArray(t);
+    console.log(serializeArray2Object(serialize));
     userClass().login(serialize[0].value, serialize[1].value, function (err, data) {
         if (!err) {
             toastr.success("Login sucessfully", "Login information");

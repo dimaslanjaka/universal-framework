@@ -40,25 +40,25 @@ class user {
      * @param pass
      * @param callback
      * @example
-     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+     * userClass().login('username', 'password', function (err, data) {
         console.log(arguments);
         if (!err){
             console.log('login successful');
         }
-    }});
+    });
      */
-    login(opt: { user: string; pass: string; callback?: (err: boolean, data: object) => any; recaptcha?: string }) {
+    login(user: string, pass: string, callback?: (err: boolean, data: object) => any) {
         const data = new URLSearchParams();
-        data.append("user", opt.user);
-        data.append("pass", opt.pass);
+        data.append("user", user);
+        data.append("pass", pass);
         fetch("/server/user?login", {
             method: "post",
             body: data,
         })
             .then((response) => response.json())
             .then((response) => {
-                if (typeof opt.callback == "function") {
-                    opt.callback(response.error, response);
+                if (typeof callback == "function") {
+                    callback(response.error, response);
                 }
             });
     }

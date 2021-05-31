@@ -1063,6 +1063,19 @@ function serializeArray(form) {
     });
     return arr;
 }
+/**
+ * Transform {@link serializeArray} into object key value
+ * @param obj
+ * @see serializeArray
+ * @returns
+ */
+function serializeArray2Object(obj) {
+    var result = {};
+    obj.forEach(function (item, i, arr) {
+        console.log(item);
+    });
+    return result;
+}
 var STORAGE = /** @class */ (function () {
     function STORAGE() {
     }
@@ -8788,25 +8801,25 @@ var user = /** @class */ (function () {
      * @param pass
      * @param callback
      * @example
-     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+     * userClass().login('username', 'password', function (err, data) {
         console.log(arguments);
         if (!err){
             console.log('login successful');
         }
-    }});
+    });
      */
-    user.prototype.login = function (opt) {
+    user.prototype.login = function (user, pass, callback) {
         var data = new URLSearchParams();
-        data.append("user", opt.user);
-        data.append("pass", opt.pass);
+        data.append("user", user);
+        data.append("pass", pass);
         fetch("/server/user?login", {
             method: "post",
             body: data,
         })
             .then(function (response) { return response.json(); })
             .then(function (response) {
-            if (typeof opt.callback == "function") {
-                opt.callback(response.error, response);
+            if (typeof callback == "function") {
+                callback(response.error, response);
             }
         });
     };

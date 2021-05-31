@@ -394,6 +394,10 @@ declare function get_device(): {
  * @param listener - function to attach for each event as a listener
  */
 declare function setEventListener(element: HTMLElement, eventNames: "click" | "mouseover" | "submit" | "change", listener: EventListenerOrEventListenerObject): void;
+interface serializeArrayResult {
+    name: string;
+    value: string;
+}
 /**
  * Serialize all form data into an array of key/value pairs
  * (c) 2020 Chris Ferdinandi, MIT License, [https://gomakethings.com]{@link https://gomakethings.com}
@@ -406,10 +410,14 @@ declare function setEventListener(element: HTMLElement, eventNames: "click" | "m
  * var data = serializeArray(form);
  * console.log(data);
  */
-declare function serializeArray(form: HTMLFormElement): {
-    name: string;
-    value: string;
-}[];
+declare function serializeArray(form: HTMLFormElement): serializeArrayResult[];
+/**
+ * Transform {@link serializeArray} into object key value
+ * @param obj
+ * @see serializeArray
+ * @returns
+ */
+declare function serializeArray2Object(obj: serializeArrayResult[]): object;
 declare class STORAGE {
     /**
      * Reflection class constructor
@@ -2506,19 +2514,14 @@ declare class user {
      * @param pass
      * @param callback
      * @example
-     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+     * userClass().login('username', 'password', function (err, data) {
         console.log(arguments);
         if (!err){
             console.log('login successful');
         }
-    }});
+    });
      */
-    login(opt: {
-        user: string;
-        pass: string;
-        callback?: (err: boolean, data: object) => any;
-        recaptcha?: string;
-    }): void;
+    login(user: string, pass: string, callback?: (err: boolean, data: object) => any): void;
     /**
      * fetch userdata
      * @param callback

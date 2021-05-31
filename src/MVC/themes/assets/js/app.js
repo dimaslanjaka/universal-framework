@@ -1026,6 +1026,19 @@ function serializeArray(form) {
     });
     return arr;
 }
+/**
+ * Transform {@link serializeArray} into object key value
+ * @param obj
+ * @see serializeArray
+ * @returns
+ */
+function serializeArray2Object(obj) {
+    const result = {};
+    obj.forEach(function (item, i, arr) {
+        console.log(item);
+    });
+    return result;
+}
 class STORAGE {
     /**
      * Reflection class constructor
@@ -9225,25 +9238,25 @@ class user {
      * @param pass
      * @param callback
      * @example
-     * userClass().login({user: 'username', pass: 'password', callback: function (err, data) {
+     * userClass().login('username', 'password', function (err, data) {
         console.log(arguments);
         if (!err){
             console.log('login successful');
         }
-    }});
+    });
      */
-    login(opt) {
+    login(user, pass, callback) {
         const data = new URLSearchParams();
-        data.append("user", opt.user);
-        data.append("pass", opt.pass);
+        data.append("user", user);
+        data.append("pass", pass);
         fetch("/server/user?login", {
             method: "post",
             body: data,
         })
             .then((response) => response.json())
             .then((response) => {
-            if (typeof opt.callback == "function") {
-                opt.callback(response.error, response);
+            if (typeof callback == "function") {
+                callback(response.error, response);
             }
         });
     }
