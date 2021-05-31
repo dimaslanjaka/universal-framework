@@ -35,7 +35,6 @@ build:
       neo4j: false
       variables:
         SYMFONY_ENV: 'test' # In case project use Environment variables
-    tests: false
 
 tools:
   php_analyzer:
