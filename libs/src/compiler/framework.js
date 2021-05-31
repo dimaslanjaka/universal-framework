@@ -8796,9 +8796,6 @@ var user = /** @class */ (function () {
     }});
      */
     user.prototype.login = function (opt) {
-        if (opt === void 0) { opt = {
-            recaptcha: null,
-        }; }
         var data = new URLSearchParams();
         data.append("user", opt.user);
         data.append("pass", opt.pass);
