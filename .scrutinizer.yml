@@ -35,6 +35,12 @@ build:
       neo4j: false
       variables:
         SYMFONY_ENV: 'test' # In case project use Environment variables
+    tests:
+      override:
+        - php-scrutinizer-run
+        - command: phpcs-run
+          use_website_config: false
+        - js-scrutinizer-run
 
 tools:
   php_analyzer:
