@@ -25,6 +25,10 @@ build:
       - node_modules
       - ~/.composer
   environment:
+    before:
+      - "sudo apt-get update"
+      - "sudo apt-get -y install libapache2-mod-php5 libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-dev libpng-dev zlib1g-dev"
+      - "pecl channel-update pecl.php.net"
     rabbitmq: false
     mysql: true
     postgresql: false
