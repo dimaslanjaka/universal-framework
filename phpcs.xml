@@ -1,0 +1,9 @@
+build:
+  nodes:
+    analysis:
+      tests:
+        override:
+        - phpcs-run
+
+        # If you have a phpcs.xml in a sub-folder
+        #- phpcs-run --standard=build/sub/folder/phpcs.xml build/sub/folder
