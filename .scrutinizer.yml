@@ -1,22 +1,3 @@
-checks:
-  php:
-    code_rating: true
-    duplication: true
-
-build_failure_conditions:
-  - 'project.metric_change("scrutinizer.quality", < -0.10)'
-  - 'elements.rating(<= D).exists'                                # No classes/methods with a rating of D or worse
-  - 'elements.rating(<= D).new.exists'                            # No new classes/methods with a rating of D or worse allowed
-  - 'issues.label("coding-style").exists'                         # No coding style issues allowed
-  - 'issues.label("coding-style").new.exists'                     # No new coding style issues allowed
-  - 'issues.severity(>= MAJOR).new.exists'                        # New issues of major or higher severity
-  - 'issues.severity(>= MAJOR).exists'                            # New major or higher severity issues
-  - 'project.metric("scrutinizer.quality", < 9)'                  # Code Quality Rating drops below 9
-  - 'project.metric("scrutinizer.test_coverage", < 0.80)'         # Code Coverage drops below 80%
-  - 'project.metric_change("scrutinizer.test_coverage", < -0.1)'  # Code Coverage decreased from previous inspection by more than 10%
-  - 'patches.label("Doc Comments").exists'                        # No doc comments patches allowed
-  - 'patches.label("Spacing").exists'                             # No spacing patches allowed
-
 build:
   cache:
     directories:
@@ -24,61 +5,9 @@ build:
       - bin
       - node_modules
       - ~/.composer
-  environment:
-    rabbitmq: false
-    mysql: true
-    postgresql: false
-    mongodb: false
-    elasticsearch: false
-    redis: false
-    memcached: false
-    neo4j: false
-    php:
-      compile_options: "--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild"
-      ini:
-        memory_limit: "-1"
-      version: 7.1
-  tests:
-    override:
-      - php-scrutinizer-run
-      - command: phpcs-run
-        use_website_config: false
-      - js-scrutinizer-run
-
-tools:
-  php_analyzer:
-    enabled: true
-    config:
-      checkstyle:
-        enabled: true
-        naming:
-          isser_method_name: ^.*$
-          utility_class_name: ^.*$
-      doc_comment_fixes:
-        enabled: false
-      reflection_fixes:
-        enabled: false
-      use_statement_fixes:
-        enabled: false
-      simplify_boolean_return:
-        enabled: true
-  external_code_coverage: false
-  php_code_coverage: false
-  php_changetracking: true
-  php_cpd: false
-  php_cs_fixer: true
-  php_mess_detector: false
-  php_pdepend: false
-  sensiolabs_security_checker: true
-
-filter:
-  paths:
-    - src/*
-
-coding_style:
-  php:
-    spaces:
-      before_parentheses:
-        closure_definition: true
-      around_operators:
-        concatenation: false
+  nodes:
+    analysis:
+      project_setup:
+        override: true
+      tests:
+        override: [ js-scrutinizer-run ]
