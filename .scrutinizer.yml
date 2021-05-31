@@ -47,13 +47,6 @@ build:
     environment:
         # Legacy services, use service containers for more flexibility/speed (see below)
         mysql:                    5.5
-        postgresql:           false
-        redis:                false
-        elasticsearch:        "2"
-        rabbitmq:             false
-        mongodb:              false
-        neo4j:                false
-        memcached:            false
         php:
             # Run "php -i | grep -i configure" in the build container for defaults
             compile_options:    '--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild'
