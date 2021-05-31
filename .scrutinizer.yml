@@ -25,7 +25,6 @@ build:
       - node_modules
       - ~/.composer
   environment:
-    # Depends of what the project requires
     rabbitmq: false
     mysql: true
     postgresql: false
