@@ -97,7 +97,7 @@
         "doc": "phpdoc --ansi --template docs-src/data/templates/vuepress"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "^3.5",
+        "squizlabs/php_codesniffer": "^3.6",
         "phpunit/phpunit": "^5.7|6.2|^7.0|4.8.*",
         "friendsofphp/php-cs-fixer": "*",
         "phpdocumentor/reflection": "*",
