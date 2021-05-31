@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dimaslanjaka/universal-framework.png?branch=master)](https://travis-ci.org/dimaslanjaka/universal-framework)
 [![CircleCI](https://circleci.com/gh/dimaslanjaka/universal-framework.svg?style=shield)](https://circleci.com/gh/dimaslanjaka/universal-framework)
+[![Build Status](https://scrutinizer-ci.com/g/dimaslanjaka/universal-framework/badges/build.png?b=master)](https://scrutinizer-ci.com/g/dimaslanjaka/universal-framework/build-status/master)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdimaslanjaka%2Funiversal-framework?ref=badge_shield)
 
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/dimaslanjaka/universal-framework/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)

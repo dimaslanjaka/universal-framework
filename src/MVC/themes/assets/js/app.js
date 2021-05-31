@@ -1035,7 +1035,8 @@ function serializeArray(form) {
 function serializeArray2Object(obj) {
     const result = {};
     obj.forEach(function (item, i, arr) {
-        console.log(item);
+        //console.log(item);
+        result[item.name] = item.value;
     });
     return result;
 }
