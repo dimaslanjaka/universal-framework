@@ -43,15 +43,6 @@ tools:
         timeout: 600
         runs: 3
 
-coding_style:
-    php:
-        indentation:
-            general:
-                size: 4
-        spaces:
-            around_operators:
-                concatenation: true
-
 build:
     environment:
         php:
@@ -96,3 +87,19 @@ build:
                     - composer install -W
             environment:
                 php: 7.1
+
+coding_style:
+    php:
+        indentation:
+            general:
+                use_tabs: false
+                size: 4
+            switch:
+                indent_case: true
+        spaces:
+            around_operators:
+                concatenation: true
+            other:
+                after_type_cast: true
+            before_parentheses:
+                closure_definition: true
