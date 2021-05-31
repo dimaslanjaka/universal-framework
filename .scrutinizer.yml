@@ -23,6 +23,16 @@ build:
       - cd libs/src/gulp-jsdoc3 && npm install
       - cd libs/src/smartform && npm install
   nodes:
+    jsdoc3:
+      root_path: './libs/src/gulp-jsdoc3'
+      project_setup:
+        override:
+          - commands: npm install
+    formsaver:
+      root_path: './libs/src/smartform'
+      project_setup:
+        override:
+          - commands: npm install
     analysis:
       project_setup:
         override: true
