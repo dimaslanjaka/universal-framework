@@ -75,3 +75,15 @@ build:
                       use_website_config: false
                     - js-scrutinizer-run
         tests: true
+        php56:
+            dependencies:
+                override:
+                    - composer install
+            environment:
+                php: 5.6
+        php71:
+            dependencies:
+                override:
+                    - composer install
+            environment:
+                php: 7.1
