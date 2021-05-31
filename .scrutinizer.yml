@@ -62,7 +62,7 @@ build:
     dependencies:
         before:
             - "sudo apt-get update"
-            - "sudo apt-get -y install dnsutils libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-dev libpng-dev zlib1g-dev"
+            - "sudo apt-get -y install libapache2-mod-php5 libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-dev libpng-dev zlib1g-dev"
             - "pecl channel-update pecl.php.net"
             #- "sudo docker-php-ext-configure gd"
             #- "sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite"
