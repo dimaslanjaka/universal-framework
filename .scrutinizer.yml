@@ -54,8 +54,8 @@ build:
         before:
             - "sudo apt-get update"
             - "sudo apt-get -y install dnsutils libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-dev libpng-dev zlib1g-dev"
-            - "sudo docker-php-ext-configure gd"
-            - "sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite"
+            #- "sudo docker-php-ext-configure gd"
+            #- "sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite"
     cache:
         directories:
             - node_modules
