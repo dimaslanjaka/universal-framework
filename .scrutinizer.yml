@@ -50,6 +50,10 @@ coding_style:
                 concatenation: true
 
 build:
+    environment:
+        php:
+            #version: 7.4.13
+            compile_options: '--enable-gd --with-openssl --enable-mbstring --enable-intl'
     dependencies:
         before:
             - "sudo apt-get update"
