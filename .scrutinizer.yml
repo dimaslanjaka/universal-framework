@@ -1,4 +1,7 @@
 filter:
+    paths:
+        - "src/"
+        - "libs/"
     excluded_paths:
         - "test/*"
         - "*.min.js"
