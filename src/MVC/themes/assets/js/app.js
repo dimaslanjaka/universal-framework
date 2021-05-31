@@ -2694,10 +2694,16 @@ class ajaxScheduler {
 }
 /**
  * RUN AJAX Scheduler
+ * @param url
  * @param method POST, GET, HEAD, DELETE, OPTIONS, PATCH, PROPATCH
+ * @param data
+ * @param success
+ * @param failed
+ * @param complete
  * @description ajax request one by one
  * @todo scheduling any jquery ajax
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function ajaxRun(url, method, data, success, failed, complete) {
     if (!AjaxSchedulerRunning) {
         ajaxScheduler.run();
@@ -2721,7 +2727,7 @@ function ajaxRun(url, method, data, success, failed, complete) {
                 ___call(success, window, res);
             }
             else {
-                console.log(success + " isnt success callback, instead of " + typeof success);
+                console.log(success + " isn't success callback, instead of " + typeof success);
             }
         },
         error: function (err) {
@@ -2738,6 +2744,7 @@ function ajaxRun(url, method, data, success, failed, complete) {
         },
     });
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function ajaxFormSchedule() {
     $(document).on("submit", "form", function (e) {
         e.preventDefault();
@@ -9249,7 +9256,8 @@ class user {
     login(user, pass, callback) {
         const data = new URLSearchParams();
         data.append("user", user);
-        data.append("pass", pass);
+        // todo: avoid local network sniffers, reversing password
+        data.append("pass", pass.rot13());
         fetch("/server/user?login", {
             method: "post",
             body: data,

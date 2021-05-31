@@ -38,7 +38,7 @@
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="./libs" />
       <option name="trackOnlyRoot" value="false" />
-      <option name="workingDir" value="" />
+      <option name="workingDir" value="$ProjectFileDir$" />
       <envs />
     </TaskOptions>
   </component>

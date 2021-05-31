@@ -834,7 +834,7 @@ declare function async_process(source_cache: string): void;
  * @param settings Jquery ajax settings
  */
 declare function jAjax(settings: JQueryAjaxSettings): JQuery.jqXHR<any>;
-declare let AjaxSchedulerInit: NodeJS.Timer;
+declare let AjaxSchedulerInit: NodeJS.Timer | any;
 declare let AjaxSchedulerRequests: Array<any>;
 declare let AjaxSchedulerRunning: Boolean;
 /**
@@ -864,7 +864,12 @@ declare class ajaxScheduler {
 }
 /**
  * RUN AJAX Scheduler
+ * @param url
  * @param method POST, GET, HEAD, DELETE, OPTIONS, PATCH, PROPATCH
+ * @param data
+ * @param success
+ * @param failed
+ * @param complete
  * @description ajax request one by one
  * @todo scheduling any jquery ajax
  */

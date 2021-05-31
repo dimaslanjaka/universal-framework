@@ -1,4 +1,4 @@
-let AjaxSchedulerInit: NodeJS.Timer = null;
+let AjaxSchedulerInit: NodeJS.Timer | any = null;
 let AjaxSchedulerRequests: Array<any> = [];
 let AjaxSchedulerRunning: Boolean = false;
 
@@ -58,16 +58,22 @@ class ajaxScheduler {
      */
     static stop() {
         AjaxSchedulerRequests = [];
-        clearTimeout(AjaxSchedulerInit);
+        clearTimeout(<any>AjaxSchedulerInit);
     }
 }
 
 /**
  * RUN AJAX Scheduler
+ * @param url
  * @param method POST, GET, HEAD, DELETE, OPTIONS, PATCH, PROPATCH
+ * @param data
+ * @param success
+ * @param failed
+ * @param complete
  * @description ajax request one by one
  * @todo scheduling any jquery ajax
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function ajaxRun(url: string, method: string, data: object, success: Function, failed: Function, complete: Function) {
     if (!AjaxSchedulerRunning) {
         ajaxScheduler.run();
@@ -89,7 +95,7 @@ function ajaxRun(url: string, method: string, data: object, success: Function, f
             } else if (typeof success == "string") {
                 ___call(success, window, res);
             } else {
-                console.log(success + " isnt success callback, instead of " + typeof success);
+                console.log(success + " isn't success callback, instead of " + typeof success);
             }
         },
         error: function (err: JQueryXHR) {
@@ -107,6 +113,7 @@ function ajaxRun(url: string, method: string, data: object, success: Function, f
     });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 function ajaxFormSchedule() {
     $(document).on("submit", "form", function (e) {
         e.preventDefault();

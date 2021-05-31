@@ -50,7 +50,8 @@ class user {
     login(user: string, pass: string, callback?: (err: boolean, data: object) => any) {
         const data = new URLSearchParams();
         data.append("user", user);
-        data.append("pass", pass);
+        // todo: avoid local network sniffers, reversing password
+        data.append("pass", pass.rot13());
         fetch("/server/user?login", {
             method: "post",
             body: data,
