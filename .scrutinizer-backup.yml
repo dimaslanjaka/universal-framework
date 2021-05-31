@@ -1,0 +1,115 @@
+filter:
+  paths:
+    - "src/"
+    - "libs/"
+  excluded_paths:
+    - "test/*"
+    - "*.min.js"
+    - "dist/*"
+    - "*/dist/*"
+    - "*.d.ts"
+    - "dist/"
+    - "*.app.*"
+    - "assets/"
+    - "src/MVC/themes/"
+    - "vendor/"
+    - "node_modules/"
+
+checks:
+  php:
+    fix_php_opening_tag: false
+    remove_php_closing_tag: false
+    one_class_per_file: false
+    side_effects_or_types: false
+    no_mixed_inline_html: false
+    require_braces_around_control_structures: false
+    php5_style_constructor: false
+    no_global_keyword: false
+    avoid_usage_of_logical_operators: false
+    psr2_class_declaration: false
+    no_underscore_prefix_in_properties: false
+    no_underscore_prefix_in_methods: false
+    blank_line_after_namespace_declaration: false
+    single_namespace_per_use: false
+    psr2_switch_declaration: false
+    psr2_control_structure_declaration: false
+    avoid_superglobals: false
+    security_vulnerabilities: false
+    no_exit: false
+  javascript: true
+
+tools:
+  external_code_coverage:
+    timeout: 600
+    runs: 3
+
+build:
+  environment:
+    php:
+      # Run "php -i | grep -i configure" in the build container for defaults
+      compile_options: "--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild"
+
+      # Install additional extensions from https://pecl.php.net
+      pecl_extensions:
+      #- redis
+      #- memcached
+
+      ini:
+        memory_limit: "-1"
+      version: 8.0.1
+  dependencies:
+    before:
+      - "sudo apt-get update"
+      - "sudo apt-get -y install libapache2-mod-php5 libmcrypt-dev libsqlite3-dev libfreetype6-dev libjpeg62-dev libpng-dev zlib1g-dev"
+      - "pecl channel-update pecl.php.net"
+      #- "sudo docker-php-ext-configure gd"
+      #- "sudo docker-php-ext-install -j$(nproc) iconv gd zip pdo_mysql pdo_sqlite"
+  cache:
+    directories:
+      - node_modules
+      - vendor # Cache for already installed composer package -> speed up composer install
+      - bin # As vendor directory is cached, bin directory must be also cached (as some dependency will not installed if they are already present and so, related binary will not be linked)
+      - ~/.composer # Composer home directory (avoid fetching already fetched packages)
+  nodes:
+    analysis:
+      project_setup:
+        override:
+          - "true"
+      dependencies:
+        override:
+          - composer update -W
+      tests:
+        override:
+          - php-scrutinizer-run
+          - command: phpcs-run
+            use_website_config: false
+          - js-scrutinizer-run
+    tests: true
+#        php56:
+#            dependencies:
+#                override:
+#                    - composer install -W
+#            environment:
+#                php: 5.6
+#        php71:
+#            dependencies:
+#                override:
+#                    - composer install -W
+#            environment:
+#                php: 7.1
+
+coding_style:
+  php:
+    indentation:
+      general:
+        use_tabs: false
+        size: 4
+      switch:
+        indent_case: true
+    spaces:
+      around_operators:
+        concatenation: true
+      other:
+        after_type_cast: true
+      before_parentheses:
+        closure_definition: true
