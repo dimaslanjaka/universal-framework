@@ -46,8 +46,17 @@ tools:
 build:
     environment:
         php:
+            # Run "php -i | grep -i configure" in the build container for defaults
+            compile_options:    '--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild'
+
+            # Install additional extensions from https://pecl.php.net
+            pecl_extensions:
+              - redis
+              - memcached
+
+            ini:
+                memory_limit:   "-1"
             #version: 7.4.13
-            compile_options: '--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl'
     dependencies:
         before:
             - "sudo apt-get update"
