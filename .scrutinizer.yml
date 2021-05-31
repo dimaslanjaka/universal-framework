@@ -58,7 +58,7 @@ build:
 
             ini:
                 memory_limit:   "-1"
-            #version: 7.4.13
+            version: 8.0.1
     dependencies:
         before:
             - "sudo apt-get update"
