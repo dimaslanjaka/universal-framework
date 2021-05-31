@@ -47,7 +47,7 @@ build:
     environment:
         php:
             #version: 7.4.13
-            compile_options: '--enable-gd --with-openssl --enable-mbstring --enable-intl'
+            compile_options: '--enable-gd --with-openssl --enable-mbstring --enable-intl --enable-mbstring --with-curl'
     dependencies:
         before:
             - "sudo apt-get update"
