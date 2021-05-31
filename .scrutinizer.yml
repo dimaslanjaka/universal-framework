@@ -1,3 +1,10 @@
+filter:
+  excluded_paths:
+    - "tests/"
+    - "test/"
+    - "assets/"
+  dependency_paths:
+    - "dist/"
 build:
   cache:
     directories:
@@ -7,7 +14,10 @@ build:
       - ~/.composer
   nodes:
     analysis:
+      resources:
+        cpus: 4
       project_setup:
         override: true
       tests:
         override: [ js-scrutinizer-run ]
+
