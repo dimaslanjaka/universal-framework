@@ -63,7 +63,7 @@ build:
         compatibility:
             dependencies:
                 override:
-                    - composer update
+                    - composer update -W
         analysis:
             project_setup:
                 override:
@@ -78,12 +78,12 @@ build:
         php56:
             dependencies:
                 override:
-                    - composer install
+                    - composer install -W
             environment:
                 php: 5.6
         php71:
             dependencies:
                 override:
-                    - composer install
+                    - composer install -W
             environment:
                 php: 7.1
