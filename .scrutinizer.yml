@@ -19,8 +19,6 @@ build:
     node: v10.14.2
   nodes:
     analysis:
-      resources:
-        cpus: 2
       project_setup:
         override: true
       tests:
