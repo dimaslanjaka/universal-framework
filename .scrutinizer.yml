@@ -20,8 +20,6 @@ build:
   dependencies:
     before:
       - npm install npm@latest typescript node-sass sass -g
-      - cd libs/src/gulp-jsdoc3 && npm install
-      - cd libs/src/smartform && npm install
   nodes:
     jsdoc3:
       root_path: './libs/src/gulp-jsdoc3'
