@@ -34,10 +34,10 @@ build:
     memcached: true
     neo4j: false
     php:
-      compile_options: "--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild"
+      #compile_options: "--enable-gd --with-openssl --enable-mbstring --enable-intl --with-curl --enable-sigchild"
       ini:
         memory_limit: "-1"
-      version: 7.1-dev
+      version: 7.1
   tests:
     override:
       - php-scrutinizer-run
