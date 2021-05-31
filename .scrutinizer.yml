@@ -17,13 +17,16 @@ build:
     google_chrome:
       use_latest: true
     node: v10.14.2
+  dependencies:
+    before:
+      - npm install npm@latest typescript node-sass sass -g
+      - cd libs/src/gulp-jsdoc3 && npm install
   nodes:
     analysis:
       project_setup:
         override: true
       tests:
         override:
-          - command: 'npm install npm@latest typescript node-sass sass -g'
           - js-scrutinizer-run
           - eslint-run "libs/js/**"
           - eslint-run "libs/compiler/**"
