@@ -23,22 +23,22 @@ build:
       - vendor        # Cache for already installed composer package -> speed up composer install
       - bin           # As vendor directory is cached, bin directory must be also cached (as some dependency will not installed if they are already present and so, related binary will not be linked)
       - ~/.composer   # Composer home directory (avoid fetching already fetched packages)
-    environment:
-      # Depends of what the project requires
-      rabbitmq: false
-      mysql: true
-      postgresql: false
-      mongodb: false
-      elasticsearch: false
-      redis: true
-      memcached: true
-      neo4j: false
-    tests:
-      override:
-        - php-scrutinizer-run
-        - command: phpcs-run
-          use_website_config: false
-        - js-scrutinizer-run
+  environment:
+    # Depends of what the project requires
+    rabbitmq: false
+    mysql: true
+    postgresql: false
+    mongodb: false
+    elasticsearch: false
+    redis: true
+    memcached: true
+    neo4j: false
+  tests:
+    override:
+      - php-scrutinizer-run
+      - command: phpcs-run
+        use_website_config: false
+      - js-scrutinizer-run
 
 tools:
   php_analyzer:
