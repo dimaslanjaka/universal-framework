@@ -57,10 +57,10 @@ tools:
   external_code_coverage: false
   php_code_coverage: false
   php_changetracking: true
-  php_cpd: true
-  php_cs_fixer: false
-  php_mess_detector: true
-  php_pdepend: true
+  php_cpd: false
+  php_cs_fixer: true
+  php_mess_detector: false
+  php_pdepend: false
   sensiolabs_security_checker: true
 
 filter:
