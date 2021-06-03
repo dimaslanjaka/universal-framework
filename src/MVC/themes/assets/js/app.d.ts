@@ -2035,6 +2035,13 @@ declare function rp(angka: number, prefix?: string | any): string;
  */
 declare function autoHeight_(element: HTMLElement | JQuery<HTMLElement>): JQuery<any>;
 /**
+ * unique id generator
+ * @param length digit number string
+ * @returns random string
+ */
+declare function makeid(length: any): string;
+declare function makeid(length: number): string;
+/**
  * this will check the checked radio in a group, and return the value
  * @param el
  * @returns
@@ -2051,30 +2058,24 @@ declare function getCheckedValue(el: any): {};
  */
 declare function formsaver(show_debug?: boolean): void;
 /**
- * unique id generator
- * @param length digit number string
- * @returns random string
- */
-declare function makeid(length: any): string;
-/**
  * Local Storage key
  */
-declare var storageKey: string;
-declare var formFieldBuild: any;
-declare var formSaved: string;
+declare const storageKey: string;
+declare let formFieldBuild: any;
+declare const formSaved: string;
 /**
  * Element Indexer
  */
-declare var formField: any;
-declare var uniqueid: string;
+declare const formField: any;
+declare const uniqueid: string;
 /**
  * check if running in browser
  */
-declare var isBrowser: Function;
+declare const isBrowser: Function;
 /**
  * Element Counter
  */
-declare var Count: number;
+declare let Count: number;
 declare class lStorage extends Storage {
     constructor(prefix?: string);
     prefix: string;
@@ -2133,6 +2134,7 @@ declare class formSaver2 {
     /**
      * Restore form value
      * @param el
+     * @param debug
      * @returns
      */
     static restore(el: any, debug?: boolean): void;
@@ -2585,6 +2587,7 @@ declare function countNewLines(placeholder: string): string | number;
  * @param {Function} callback
  */
 declare function findDups(arr: Array<any>, callback: Function): any;
+declare function makeid(length: any): string;
 /**
  * Auto Generate ID
  * @param {Number} length

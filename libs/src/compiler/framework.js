@@ -216,6 +216,9 @@ var BotDetector = /** @class */ (function () {
     };
     return BotDetector;
 }());
+if (!isnode()) {
+    module.exports.BotDetector = BotDetector;
+}
 /// <reference types="crypto-js" />
 var CryptoJSAesJson = {
     stringify: function (cipherParams) {

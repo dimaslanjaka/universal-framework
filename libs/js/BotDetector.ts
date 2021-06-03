@@ -189,3 +189,7 @@ class BotDetector {
         }, self.timeout);
     }
 }
+
+if (!isnode()) {
+    module.exports.BotDetector = BotDetector;
+}
