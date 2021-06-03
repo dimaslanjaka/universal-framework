@@ -15,6 +15,35 @@
 /// <reference types="@types/google.analytics" />
 /// <reference types="datatables.net" />
 /// <reference lib="dom" />
+declare class BotDetector {
+    static Tests: {
+        KEYUP: string;
+        MOUSE: string;
+        SWIPE: string;
+        SWIPE_TOUCHSTART: string;
+        SWIPE_TOUCHMOVE: string;
+        SWIPE_TOUCHEND: string;
+        SCROLL: string;
+        GESTURE: string;
+        GYROSCOPE: string;
+        DEVICE_MOTION: string;
+        DEVICE_ORIENTATION: string;
+        DEVICE_ORIENTATION_MOZ: string;
+    };
+    isBot: boolean;
+    tests: {};
+    detected: boolean;
+    cases: {};
+    callback: any;
+    timeout: any;
+    allMatched: boolean;
+    lastRotationData: any;
+    constructor(args: any);
+    update(notify?: boolean): void;
+    bindEvent(e: any, type: any, handler?: any): void;
+    unbindEvent(e: any, type: any, handle?: any): void;
+    monitor(): void;
+}
 declare const CryptoJSAesJson: {
     stringify: (cipherParams: CryptoJS.lib.CipherParams) => string;
     parse: (jsonStr: string) => CryptoJS.lib.CipherParams;
