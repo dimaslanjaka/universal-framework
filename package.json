@@ -20,7 +20,7 @@
         "chalk": "^4.1.1",
         "codemirror": "^5.61.1",
         "cross-spawn": "^7.0.3",
-        "datatables.net": "^1.10.21",
+        "datatables.net": "^1.10.25",
         "datatables.net-autofill": "^2.3.6",
         "datatables.net-autofill-bs4": "^2.3.6",
         "datatables.net-bs4": "^1.10.21",
