@@ -14,7 +14,7 @@
         "animate.css": "^4.1.1",
         "ansi-escapes": "^4.3.1",
         "archiver": "^5.0.2",
-        "axios": "^0.21.0",
+        "axios": "^0.21.3",
         "basscss": "^8.1.0",
         "bl": "^4.0.3",
         "chalk": "^4.1.1",
