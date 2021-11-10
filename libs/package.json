@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "amd-loader": "*",
-    "axios": "*",
+    "axios": "0.21.3",
     "bluebird": "*",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
