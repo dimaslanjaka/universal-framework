@@ -4,7 +4,7 @@
   "description": "Youtube Downloader",
   "main": "login.js",
   "dependencies": {
-    "googleapis": "^48.0.0",
+    "googleapis": "^49.0.0",
     "mkdirp": "^1.0.4",
     "youtube-mp3-downloader": "^0.7.7",
     "ytdl-core": "*",
