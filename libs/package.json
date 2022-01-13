@@ -11,7 +11,7 @@
     "ncp": "*",
     "nodemon": "*",
     "rimraf": "*",
-    "shelljs": "*",
+    "shelljs": "0.8.5",
     "systemjs": "*",
     "ts-loader": "^5.3.0",
     "ts-node": "^8.10.2",
