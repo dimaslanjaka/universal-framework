@@ -1,20 +1,17 @@
 <?php
+/**
+ * Front to the WordPress application. This file doesn't do anything, but loads
+ * wp-blog-header.php which does and tells WordPress to load the theme.
+ *
+ * @package WordPress
+ */
 
-session_cache_limiter('nocache');
-include __DIR__ . '/wp-loader.php';
+/**
+ * Tells WordPress to load the WordPress theme and output it.
+ *
+ * @var bool
+ */
+define( 'WP_USE_THEMES', true );
 
-if (class_exists('router')) {
-  $request = router::i()->request;
-  $subrequest = explode('/', $request);
-  if (!preg_match('/^(analystic|loader\-wizard)/m', $subrequest[0]) || !class_exists('dimas')) {
-    if (preg_match('/^(\d{2,4}|search|views\/|wp\-|page\-|blog|robot?s\.txt)|^sitemap$/m', $subrequest[0]) || empty($subrequest[0]) || !class_exists('dimas')) {
-      define('WP_USE_THEMES', true);
-      require dirname(__FILE__) . '/wp-blog-header.php';
-    } else {
-      include __DIR__ . '/router.php';
-    }
-  }
-} else {
-  define('WP_USE_THEMES', true);
-  require dirname(__FILE__) . '/wp-blog-header.php';
-}
+/** Loads the WordPress Environment and Template */
+require __DIR__ . '/wp-blog-header.php';

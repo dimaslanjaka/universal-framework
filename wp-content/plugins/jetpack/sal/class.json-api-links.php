@@ -22,7 +22,9 @@ class WPCOM_JSON_API_Links {
 		$this->api = WPCOM_JSON_API::init();
 	}
 	private function __clone() { }
-	private function __wakeup() { }
+	public function __wakeup() {
+		die( "Please don't __wakeup WPCOM_JSON_API_Links" );
+	}
 
 	/**
 	 * Generate a URL to an endpoint
@@ -195,8 +197,10 @@ class WPCOM_JSON_API_Links {
 				}
 
 				// Make sure the endpoint exists at the same version
-				if ( version_compare( $this->api->version, $endpoint['min_version'], '>=') &&
-					 version_compare( $this->api->version, $endpoint['max_version'], '<=') ) {
+				if ( null !== $this->api->version &&
+					version_compare( $this->api->version, $endpoint['min_version'], '>=' ) &&
+					version_compare( $this->api->version, $endpoint['max_version'], '<=' )
+				) {
 					array_push(
 						$matches_by_version[ $this->api->version ],
 						(object) array( 'version' => $this->api->version, 'regex' => $endpoint_path_regex )

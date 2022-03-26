@@ -5,6 +5,9 @@
  * @package AMP
  */
 
+use AmpProject\Dom\Document;
+use AmpProject\Html\Attribute;
+
 /**
  * Class AMP_O2_Player_Sanitizer
  *
@@ -12,6 +15,7 @@
  *
  * @since 1.0
  * @see https://www.ampproject.org/docs/reference/components/amp-o2-player
+ * @internal
  */
 class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 	/**
@@ -30,7 +34,7 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 	private static $amp_tag = 'amp-o2-player';
 
 	/**
-	 * Amp O2 Player class.
+	 * AMP O2 Player class.
 	 *
 	 * @since 1.0
 	 * @var string CSS class to identify O2 Player <div> to replace with AMP version.
@@ -54,24 +58,17 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 	private static $width = '480';
 
 	/**
-	 * Sanitize the O2 Player elements from the HTML contained in this instance's DOMDocument.
+	 * Sanitize the O2 Player elements from the HTML contained in this instance's Dom\Document.
 	 *
 	 * @since 1.0
 	 */
 	public function sanitize() {
 		/**
-		 * XPath.
-		 *
-		 * @var DOMXPath $xpath
-		 */
-		$xpath = new DOMXPath( $this->dom );
-
-		/**
 		 * Node list.
 		 *
 		 * @var DOMNodeList $nodes
 		 */
-		$nodes     = $xpath->query( self::$xpath_selector );
+		$nodes     = $this->dom->xpath->query( self::$xpath_selector );
 		$num_nodes = $nodes->length;
 
 		if ( 0 === $num_nodes ) {
@@ -80,8 +77,9 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 
 		for ( $i = $num_nodes - 1; $i >= 0; $i-- ) {
 			$node = $nodes->item( $i );
-
-			$this->create_amp_o2_player( $this->dom, $node );
+			if ( $node instanceof DOMElement ) {
+				$this->create_amp_o2_player( $this->dom, $node );
+			}
 		}
 
 	}
@@ -90,10 +88,10 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 	 * Replaces node with amp-o2-player
 	 *
 	 * @since 1.0
-	 * @param DOMDocument $dom  The HTML Document.
-	 * @param DOMElement  $node The DOMNode to adjust and replace.
+	 * @param Document   $dom  The HTML Document.
+	 * @param DOMElement $node The DOMNode to adjust and replace.
 	 */
-	private function create_amp_o2_player( $dom, $node ) {
+	private function create_amp_o2_player( Document $dom, DOMElement $node ) {
 		$o2_attributes = $this->get_o2_player_attributes( $node->getAttribute( 'src' ) );
 
 		if ( ! empty( $o2_attributes ) ) {
@@ -107,9 +105,15 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 				]
 			);
 
-			$amp_o2_player = AMP_DOM_Utils::create_node( $dom, self::$amp_tag, $component_attributes );
-
 			$parent_node = $node->parentNode;
+
+			// Remove the ID from the original node so that PHP DOM doesn't fail to set it on the replacement element.
+			if ( $parent_node->hasAttribute( Attribute::ID ) ) {
+				$component_attributes['id'] = $parent_node->getAttribute( Attribute::ID );
+				$parent_node->removeAttribute( Attribute::ID );
+			}
+
+			$amp_o2_player = AMP_DOM_Utils::create_node( $dom, self::$amp_tag, $component_attributes );
 
 			// replaces the wrapper that contains the script with amp-o2-player element.
 			$parent_node->parentNode->replaceChild( $amp_o2_player, $parent_node );
@@ -137,5 +141,4 @@ class AMP_O2_Player_Sanitizer extends AMP_Base_Sanitizer {
 		}
 		return [];
 	}
-
 }

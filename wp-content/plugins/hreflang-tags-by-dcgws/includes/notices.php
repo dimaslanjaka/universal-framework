@@ -49,7 +49,7 @@ if ( ! class_exists( 'HREFLangTags_Admin_Notices' ) ) {
                       if ( $admin_notice->dismiss_option ) {
                           echo ' is-dismissible" data-dismiss-url="' . esc_url( $dismiss_url );
                       } ?>">
-                        <h2><?php _e('HREFLANG Tags Excluse Offer - Only for Users of Free Version','hreflang-tags-by-dcgws'); ?></h2>
+                        <h2><?php _e('HREFLANG Tags Information','hreflang-tags-by-dcgws'); ?></h2>
                         <p><?php echo $admin_notice->message; ?></p>
                       </div><?php
                     }

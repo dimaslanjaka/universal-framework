@@ -130,7 +130,7 @@ a#updraftcentral_addsite_expertoptions_show {
   #updraftcentral_dashboard input[type=number],
   #updraftcentral_dashboard input[type=time] {
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1rem;
     line-height: 1.25;
     color: #6E7078;
@@ -154,6 +154,11 @@ a#updraftcentral_addsite_expertoptions_show {
     height: 34px;
     width: auto;
     display: inline-block; }
+    #updraftcentral_dashboard input[type=text]:focus,
+    #updraftcentral_dashboard input[type=number]:focus,
+    #updraftcentral_dashboard input[type=password]:focus,
+    #updraftcentral_dashboard select:focus {
+      border-color: #94979F; }
     #updraftcentral_dashboard input[type=text].field-error,
     #updraftcentral_dashboard input[type=number].field-error,
     #updraftcentral_dashboard input[type=password].field-error,
@@ -223,7 +228,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -236,7 +241,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -247,13 +252,13 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard .btn.btn-primary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .btn.btn-primary:hover, #updraftcentral_dashboard .btn.btn-primary:focus {
-        background-color: #e58652; }
+        background-color: #b5521c; }
     #updraftcentral_dashboard .btn.btn-secondary {
       width: auto;
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -270,7 +275,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -280,7 +285,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 1px solid #DE6726 !important;
       background: transparent;
       background-color: transparent;
-      font-weight: 300; }
+      font-weight: 400; }
       #updraftcentral_dashboard .btn.btn-outline-primary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .btn.btn-outline-primary:hover, #updraftcentral_dashboard .btn.btn-outline-primary:focus {
@@ -293,7 +298,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -303,7 +308,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 1px solid #94979F !important;
       background: transparent;
       background-color: transparent;
-      font-weight: 300; }
+      font-weight: 400; }
       #updraftcentral_dashboard .btn.btn-outline-secondary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .btn.btn-outline-secondary:hover, #updraftcentral_dashboard .btn.btn-outline-secondary:focus {
@@ -311,6 +316,11 @@ a#updraftcentral_addsite_expertoptions_show {
         background: #94979F;
         background-color: #94979F;
         border: 1px solid #94979F !important; }
+    #updraftcentral_dashboard .btn.btn-refresh {
+      color: #94979F;
+      background: transparent; }
+      #updraftcentral_dashboard .btn.btn-refresh:hover, #updraftcentral_dashboard .btn.btn-refresh:focus {
+        color: #DE6726; }
     #updraftcentral_dashboard .btn.active.focus, #updraftcentral_dashboard .btn.active:focus, #updraftcentral_dashboard .btn.focus, #updraftcentral_dashboard .btn.btn:active.focus, #updraftcentral_dashboard .btn.btn:active:focus, #updraftcentral_dashboard .btn.btn:focus {
       -webkit-box-shadow: none;
       box-shadow: none; }
@@ -323,7 +333,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -333,7 +343,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -350,7 +360,7 @@ a#updraftcentral_addsite_expertoptions_show {
     #updraftcentral_dashboard .button-primary:hover, #updraftcentral_dashboard .button-primary:focus,
     #updraftcentral_dashboard #updraftplus-settings-save:hover,
     #updraftcentral_dashboard #updraftplus-settings-save:focus {
-      background-color: #e58652; }
+      background-color: #b5521c; }
   #updraftcentral_dashboard #updraftcentral_dashboard_newsite.btn {
     border-radius: 50%;
     width: 55px;
@@ -365,7 +375,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -375,7 +385,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 1px solid #94979F !important;
     background: transparent;
     background-color: transparent;
-    font-weight: 300;
+    font-weight: 400;
     margin-top: 10px;
     padding: 0.2rem 0.8rem;
     margin-right: 4px; }
@@ -397,7 +407,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -411,7 +421,7 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard .restore-button .button-primary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .restore-button .button-primary:hover, #updraftcentral_dashboard .restore-button .button-primary:focus {
-        background-color: #e58652; }
+        background-color: #b5521c; }
       @media screen and (min-width: 1200px) {
         #updraftcentral_dashboard .restore-button .button-primary {
           float: left;
@@ -427,7 +437,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -578,23 +588,27 @@ a#updraftcentral_addsite_expertoptions_show {
         font-size: 18px;
         line-height: 1;
         margin-right: 12px; }
+    #updraftcentral_dashboard #updraft-central-navigation button.btn {
+      padding: 0; }
+      #updraftcentral_dashboard #updraft-central-navigation button.btn:focus, #updraftcentral_dashboard #updraft-central-navigation button.btn:hover {
+        background-color: #ececec; }
+        #updraftcentral_dashboard #updraft-central-navigation button.btn:focus span.dashicons, #updraftcentral_dashboard #updraft-central-navigation button.btn:hover span.dashicons {
+          mix-blend-mode: exclusion; }
     #updraftcentral_dashboard #updraft-central-navigation .dashicons {
       font-size: 30px;
       color: #C6C9D5;
       height: 30px;
       width: 30px;
       cursor: pointer; }
-      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraftcentral-help {
+      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraftcentral-help-icon {
         background: url(../images/icons/help-icon.svg) no-repeat center center; }
-      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraftcentral-settings {
+      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraftcentral-settings-icon {
         background: url(../images/icons/settings-icon.svg) no-repeat center center; }
       #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraftcentral-profile {
         display: none;
         background: url(../images/icons/profile-icon.svg) no-repeat center center; }
-      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraft-full-screen {
+      #updraftcentral_dashboard #updraft-central-navigation .dashicons.updraft-full-screen-icon {
         background: url(../images/icons/fullscreen-icon.svg) no-repeat center center; }
-      #updraftcentral_dashboard #updraft-central-navigation .dashicons.dashicons-editor-expand:before {
-        content: ''; }
     #updraftcentral_dashboard #updraft-central-navigation .updraft-mobile-menu {
       color: #94979F;
       float: left; }
@@ -634,6 +648,8 @@ a#updraftcentral_addsite_expertoptions_show {
       @media screen and (max-width: 670px) {
         #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar {
           border-right: 1px solid #EAEDF0; } }
+      #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container:focus-within {
+        background: #f9f9f9; }
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container.hidden-modules {
         border-top: 1px solid #EAEDF0; }
         #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container.hidden-modules .updraft-menu-item:hover {
@@ -643,6 +659,11 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-active,
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-links-active {
         background: #fff; }
+      #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container:focus-within .updraft-menu-item,
+      #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container:focus-within .updraft-menu-item-links,
+      #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container:focus-within .updraft-menu-item-active,
+      #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item-container:focus-within .updraft-menu-item-links-active {
+        background: #f9f9f9; }
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .menu-label {
         margin: 0;
         padding: 0; }
@@ -656,11 +677,14 @@ a#updraftcentral_addsite_expertoptions_show {
         vertical-align: middle;
         padding: 0 0 0 18px;
         border-left: 4px solid #fff;
-        cursor: pointer; }
-        #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item:hover {
+        cursor: pointer;
+        font-weight: normal; }
+        #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item:hover, #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item:focus {
           background: #fff;
           color: #6E7078;
           border-left: 4px solid #DE6726; }
+          #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item:hover .menu-label, #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item:focus .menu-label {
+            color: #DE6726; }
         #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .updraft-menu-item .dashicons {
           height: 48px;
           width: auto;
@@ -707,6 +731,11 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar.sidebar-folded .updraft-menu-item {
         padding: 0 0 0 18px !important; }
       #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .module-visibility {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: none;
+        border: none;
         position: absolute;
         cursor: pointer;
         right: 5px;
@@ -714,8 +743,24 @@ a#updraftcentral_addsite_expertoptions_show {
         padding: 7px;
         z-index: 1;
         color: #C6C9D5; }
-        #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .module-visibility span:hover {
-          color: #C6C9D5; }
+        #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .module-visibility:hover span {
+          color: #6E7078; }
+        #updraftcentral_dashboard #updraft-central-content-container .updraft-central-sidebar .module-visibility:focus span {
+          color: #DE6726; }
+  #updraftcentral_dashboard #updraft-central-sidebar-button .updraft-central-sidebar-button-icon {
+    display: inline-block;
+    position: relative;
+    padding: 8px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border-radius: 3px; }
+    #updraftcentral_dashboard #updraft-central-sidebar-button .updraft-central-sidebar-button-icon img {
+      vertical-align: middle;
+      -webkit-transform: translateY(-3px);
+      transform: translateY(-3px); }
+  #updraftcentral_dashboard #updraft-central-sidebar-button:focus .updraft-central-sidebar-button-icon {
+    -webkit-box-shadow: 0 0 0 2px #de6726;
+    box-shadow: 0 0 0 2px #de6726; }
   @media screen and (min-width: 670px) {
     #updraftcentral_dashboard #updraft-central-sidebar-button {
       display: block;
@@ -724,19 +769,9 @@ a#updraftcentral_addsite_expertoptions_show {
       -webkit-transform: translatey(50%);
       transform: translatey(50%);
       background-color: #fff;
-      width: auto;
+      width: 100%;
       border-radius: 0;
-      z-index: 1000; }
-      #updraftcentral_dashboard #updraft-central-sidebar-button .updraft-central-sidebar-button-icon {
-        display: inline-block;
-        position: relative;
-        top: 50%;
-        right: 0;
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
-        left: 50%; } }
+      z-index: 1000; } }
   #updraftcentral_dashboard #updraftcentral_dashboard_existingsites {
     width: 100%;
     display: block;
@@ -784,13 +819,13 @@ a#updraftcentral_addsite_expertoptions_show {
             #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_row_sitelabel .updraft_site_title {
               min-width: 330px;
               max-width: 500px; } }
-        #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_row_sitelabel .updraftcentral_site_url_after_description {
-          width: 100%;
-          max-width: 100%; }
       #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_site_url_after_description {
         font-size: 0.875rem;
         padding: 0;
         display: inline-block; }
+        #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_site_url_after_description:hover, #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_site_url_after_description:focus {
+          color: #9f4818;
+          text-decoration: underline; }
       #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_row_site_buttons {
         padding: 0; }
       #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_site_row .updraftcentral_site_sort_icon {
@@ -809,7 +844,13 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary {
         background: transparent;
         color: #6E7078 !important;
-        font-size: 0.813rem !important; }
+        font-size: 0.813rem !important;
+        font-weight: normal; }
+        #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary:hover, #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary:focus, #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary[aria-expanded=true] {
+          color: #DE6726 !important;
+          background-color: #ECECEC; }
+          #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary:hover span.dashicons, #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary:focus span.dashicons, #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary[aria-expanded=true] span.dashicons {
+            mix-blend-mode: multiply; }
         #updraftcentral_dashboard #updraftcentral_dashboard_existingsites .updraftcentral_row_site_buttons .btn-primary .dashicons {
           width: 100%;
           height: auto;
@@ -890,7 +931,10 @@ a#updraftcentral_addsite_expertoptions_show {
       height: 52px;
       padding: 12px 12px;
       border: 1px solid #EAEDF0;
-      border-radius: 0 !important; }
+      border-radius: 0 !important;
+      font-weight: normal; }
+      #updraftcentral_dashboard #updraftcentral_sites_search_area .form-control.udc_search_tag:focus {
+        border-color: #6E7078; }
   #updraftcentral_dashboard .updraftcentral-filter-search label {
     display: none; }
   #updraftcentral_dashboard .updraftcentral-filter-search .input-group-btn {
@@ -911,9 +955,9 @@ a#updraftcentral_addsite_expertoptions_show {
       border-radius: 3px;
       height: 12px;
       float: left; }
-  #updraftcentral_dashboard .updraft_existing_backups_output > .dashicons-image-rotate,
-  #updraftcentral_dashboard .updraft_site_settings_output > .dashicons-image-rotate,
-  #updraftcentral_dashboard .updraft_module_output > .dashicons-image-rotate {
+  #updraftcentral_dashboard .updraft_existing_backups_output > button.btn-refresh,
+  #updraftcentral_dashboard .updraft_site_settings_output > button.btn-refresh,
+  #updraftcentral_dashboard .updraft_module_output > button.btn-refresh {
     margin-bottom: 20px; }
   #updraftcentral_dashboard .updraftcentral_action_box {
     padding: 0;
@@ -1010,7 +1054,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -1025,7 +1069,7 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard .advanced_settings_container .advanced_tools.export_settings .button-primary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .advanced_settings_container .advanced_tools.export_settings .button-primary:hover, #updraftcentral_dashboard .advanced_settings_container .advanced_tools.export_settings .button-primary:focus {
-        background-color: #e58652; }
+        background-color: #b5521c; }
       @media screen and (min-width: 1200px) {
         #updraftcentral_dashboard .advanced_settings_container .advanced_tools.export_settings .button-primary {
           float: left;
@@ -1037,7 +1081,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -1051,7 +1095,7 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard .advanced_settings_container .advanced_tools.wipe_settings .button-primary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .advanced_settings_container .advanced_tools.wipe_settings .button-primary:hover, #updraftcentral_dashboard .advanced_settings_container .advanced_tools.wipe_settings .button-primary:focus {
-        background-color: #e58652; }
+        background-color: #b5521c; }
       @media screen and (min-width: 1200px) {
         #updraftcentral_dashboard .advanced_settings_container .advanced_tools.wipe_settings .button-primary {
           float: left;
@@ -1193,11 +1237,18 @@ a#updraftcentral_addsite_expertoptions_show {
           color: #F00; }
     #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container {
       -webkit-column-count: auto !important;
+      -moz-column-count: auto !important;
       column-count: auto !important;
-      height: auto; }
+      height: auto;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
       @media screen and (max-width: 582px) {
         #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container {
           -webkit-column-count: auto !important;
+          -moz-column-count: auto !important;
           column-count: auto !important; } }
       #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
         width: 30%;
@@ -1207,18 +1258,16 @@ a#updraftcentral_addsite_expertoptions_show {
         background-color: #fff;
         border: 1px solid #e0e0e0;
         border-radius: 0;
-        display: inline-block;
-        vertical-align: middle; }
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        word-break: break-word; }
         @media screen and (max-width: 582px) {
           #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
-            width: 47%;
-            height: 95px; } }
-        @media screen and (min-width: 582px) {
-          #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
-            height: 120px; } }
-        @media screen and (min-width: 1200px) {
-          #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
-            height: 80px; } }
+            width: 47%; } }
         #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-unchecked,
         #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-checked {
           margin: 0 0 0 7px;
@@ -1229,6 +1278,16 @@ a#updraftcentral_addsite_expertoptions_show {
         #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-unchecked-image,
         #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-checked-image {
           vertical-align: middle; }
+        body.updraftcentral-medium #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
+          width: 47%; }
+          body.updraftcentral-medium #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-unchecked-image,
+          body.updraftcentral-medium #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-checked-image {
+            width: 60px; }
+        body.updraftcentral-small #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label {
+          width: 100%; }
+          body.updraftcentral-small #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-unchecked-image,
+          body.updraftcentral-small #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container label span.labelauty-checked-image {
+            width: 60px; }
       #updraftcentral_dashboard .updraft_site_settings_output #remote-storage-container input.labelauty:checked + label {
         background-color: #EAEDF0 !important; }
     #updraftcentral_dashboard .updraft_site_settings_output #remote_storage_tabs td {
@@ -1279,7 +1338,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -1289,7 +1348,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 0 none;
     font-size: 0.938rem;
     font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     border-radius: 3px;
     padding: .4rem 1rem;
     line-height: 1.5;
@@ -1299,7 +1358,7 @@ a#updraftcentral_addsite_expertoptions_show {
     border: 1px solid #DE6726 !important;
     background: transparent;
     background-color: transparent;
-    font-weight: 300; }
+    font-weight: 400; }
     #updraftcentral_dashboard .updraftcentral_wpo_rows .button-secondary.wp-optimize-settings-optimization-run-button:hover {
       border: 0 none; }
     #updraftcentral_dashboard .updraftcentral_wpo_rows .button-secondary.wp-optimize-settings-optimization-run-button:hover {
@@ -1371,7 +1430,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -1391,7 +1450,7 @@ a#updraftcentral_addsite_expertoptions_show {
       border: 0 none;
       font-size: 0.938rem;
       font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 300;
+      font-weight: 400;
       border-radius: 3px;
       padding: .4rem 1rem;
       line-height: 1.5;
@@ -1402,7 +1461,7 @@ a#updraftcentral_addsite_expertoptions_show {
       #updraftcentral_dashboard .updraftcentral_updraftvault_table .btn-sm.btn-secondary:hover {
         border: 0 none; }
       #updraftcentral_dashboard .updraftcentral_updraftvault_table .btn-sm.btn-secondary:hover, #updraftcentral_dashboard .updraftcentral_updraftvault_table .btn-sm.btn-secondary:focus {
-        background-color: #e58652; }
+        background-color: #b5521c; }
     #updraftcentral_dashboard .updraftcentral_updraftvault_table .row {
       border-bottom: 1px solid #EAEDF0;
       border-top: 0 none; }
@@ -1553,7 +1612,7 @@ a#updraftcentral_addsite_expertoptions_show {
 .bootbox.modal .modal-body input[type=radio],
 .bootbox.modal .modal-body input[type=number] {
   font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
   color: #6E7078;
@@ -1582,6 +1641,13 @@ a#updraftcentral_addsite_expertoptions_show {
   height: 34px;
   width: auto;
   display: inline-block; }
+  #updraftcentral_modal_dialog .modal-body input[type=text]:focus,
+  #updraftcentral_modal_dialog .modal-body input[type=password]:focus,
+  #updraftcentral_modal_dialog .modal-body select:focus,
+  .bootbox.modal .modal-body input[type=text]:focus,
+  .bootbox.modal .modal-body input[type=password]:focus,
+  .bootbox.modal .modal-body select:focus {
+    border-color: #94979F; }
   #updraftcentral_modal_dialog .modal-body input[type=text].field-error,
   #updraftcentral_modal_dialog .modal-body input[type=password].field-error,
   #updraftcentral_modal_dialog .modal-body select.field-error,
@@ -1681,7 +1747,7 @@ a#updraftcentral_addsite_expertoptions_show {
   border: 0 none;
   font-size: 0.938rem;
   font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   border-radius: 3px;
   padding: .4rem 1rem;
   line-height: 1.5;
@@ -1701,7 +1767,7 @@ a#updraftcentral_addsite_expertoptions_show {
   .bootbox.modal .btn-primary:focus,
   .bootbox.modal .modal-footer .btn-primary:hover,
   .bootbox.modal .modal-footer .btn-primary:focus {
-    background-color: #e58652; }
+    background-color: #b5521c; }
 
 #updraftcentral_modal_dialog .btn-secondary,
 #updraftcentral_modal_dialog .modal-footer .btn-secondary,
@@ -1711,7 +1777,7 @@ a#updraftcentral_addsite_expertoptions_show {
   border: 0 none;
   font-size: 0.938rem;
   font-family: "Source Sans Pro", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   border-radius: 3px;
   padding: .4rem 1rem;
   line-height: 1.5;
@@ -1912,6 +1978,11 @@ a#updraftcentral_addsite_expertoptions_show {
 #updraftcentral_notice_container .updraftcentral_notice_level_info {
   border: none; }
 
+#updraftcentral_dashboard_existingsites .updraft_site_actions.show .dropdown-menu[x-placement="bottom-end"].dropdown-menu-right.show {
+  -webkit-transform: none !important;
+  transform: none !important;
+  right: 0 !important; }
+
 .dropdown-menu {
   min-width: 160px !important;
   border: 1px solid #EAEDF0 !important;
@@ -1931,13 +2002,13 @@ a#updraftcentral_addsite_expertoptions_show {
     padding: 7px 12px !important;
     color: #6E7078 !important;
     font-size: 0.913rem !important;
-    font-weight: 300; }
+    font-weight: normal; }
     .dropdown-menu .dropdown-item:hover {
       background: #F3F5F7 !important; }
   .dropdown-menu .updraft-dropdown-item {
     color: #6E7078;
     font-size: 0.913rem !important;
-    font-weight: 300; }
+    font-weight: normal; }
 
 .more-option-container {
   display: block !important; }

@@ -180,6 +180,7 @@ input.labelauty.backblaze + label > span.labelauty-unchecked-image {
 #updraftcentral_dashboard_existingsites .updraftcentral_row_extracontents .updraft_site_settings_output #remote-storage-container {
   -ms-column-count: 3;
   -webkit-column-count: 3;
+  -moz-column-count: 3;
   column-count: 3;
   height: auto;
   width: auto; }

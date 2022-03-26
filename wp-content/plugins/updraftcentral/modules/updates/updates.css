@@ -262,6 +262,58 @@ span#updates_dequeue_selected_items {
 .translation-updates-container #translation-version-column {
   width: 30%; }
 
+div.updates_table_container #updates_backup_choice_dropdown {
+  margin-right: 20px !important; }
+
+div.uc_no_patch_releases {
+  padding: 5px 30px 30px 30px; }
+
+.uc-fetch-label {
+  position: absolute;
+  width: 180px;
+  font-size: 15px;
+  right: -13px;
+  margin-top: 3px;
+  color: #777; }
+
+.uc-fetch-label-sm {
+  font-size: 15px;
+  color: #777;
+  width: 100%; }
+
+.mass-updates-lastfetched-label {
+  font-size: 14px; }
+
+.updates_table_container label {
+  vertical-align: inherit !important; }
+
+div.updraftcentral_updates_force_check {
+  float: right; }
+
+.uc-fetch-label {
+  width: auto;
+  right: 25px; }
+
+.uc-fetch-label,
+.uc-fetch-label-sm {
+  font-family: "Source Sans Pro", roboto, "Helvetica Neue", arial, sans-serif; }
+
+.uc-updates-filter-row .column {
+  padding-left: 0;
+  padding-right: 0; }
+
+.updates_table_container.per-site {
+  margin-top: 50px; }
+
+.updraftcentral_updates_force_check {
+  margin-top: -45px; }
+
+#updates_container div.updates_table_container.mass_updates .filter-by-keyword-container input {
+  margin-left: 0; }
+
+.updraftcentral_updates_force_check::before {
+  cursor: pointer !important; }
+
 @media (min-width: 1200px) {
   span#updates_queue_selected_items,
   span#updates_dequeue_selected_items {

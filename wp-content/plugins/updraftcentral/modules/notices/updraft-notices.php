@@ -38,8 +38,7 @@ abstract class Updraft_Notices_1_0 {
 		if ($also_require_active) return class_exists($product);
 		if (!function_exists('get_plugins')) include_once(ABSPATH.'wp-admin/includes/plugin.php');
 		$plugins = get_plugins();
-		$product_file = false;
-		foreach ($plugins as $key => $value) {
+		foreach ($plugins as $value) {
 			if ($value['TextDomain'] == $product) {
 				// we have found the plugin so return false so that we do not display this advert
 				return false;
@@ -48,7 +47,7 @@ abstract class Updraft_Notices_1_0 {
 		return true;
 	}
 
-	protected function translation_needed($plugin_base_dir, $product_name) {
+	protected function translation_needed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Declaration of UpdraftCentral_Notices::translation_needed() should be compatible with Updraft_Notices_1_0::translation_needed
 		$wplang = get_locale();
 		if (strlen($wplang) < 1 || 'en_US' == $wplang || 'en_GB' == $wplang) return false;
 		if (defined('WP_LANG_DIR') && is_file(WP_LANG_DIR.'/plugins/'.$product_name.'-'.$wplang.'.mo')) return false;
@@ -56,7 +55,7 @@ abstract class Updraft_Notices_1_0 {
 		return true;
 	}
 	
-	protected function url_start($html_allowed = false, $url, $https = false, $website_home = null) {
+	protected function url_start($html_allowed, $url, $https = false, $website_home = null) {
 		$proto = ($https) ? 'https' : 'http';
 		if (strpos($url, $website_home) !== false) {
 			return $html_allowed ? "<a href=".apply_filters(str_replace('.', '_', $website_home).'_link', $proto.'://'.$url).">" : "";
@@ -147,7 +146,7 @@ abstract class Updraft_Notices_1_0 {
 		return $available_notices[0];
 	}
 
-	protected function skip_seasonal_notices($notice_data) {
+	protected function skip_seasonal_notices($notice_data) { // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Declaration of UpdraftCentral_Notices::_() should be compatible with Updraft_Notices_1_0::_
 		return false;
 	}
 

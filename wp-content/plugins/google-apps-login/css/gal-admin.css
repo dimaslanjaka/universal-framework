@@ -199,3 +199,84 @@ fieldset.block legend.blocktitle {
     box-shadow: 0 0 0 5px #ddd!important;
     margin-left: 20px!important;
 }
+.images img {
+    height: 46px;
+}
+.google-apps-header {
+    height: 46px;
+    min-width: 191px;
+    display: flex;
+    align-items: center;
+    /*justify-content: center;*/
+    /*font-family: 'Roboto' !important;*/
+    font-size: 0.875rem;
+    letter-spacing: 0.1px;
+}
+.inner {
+    height: 40px;
+    min-width: 185px;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0px 1px 2px 0px #0000004d;
+}
+
+.inner {
+    background: #4285f4;
+    color: #fff;
+}
+.dark-pressed .inner {
+    background-color: #3367d6;
+    box-shadow: 0px 2px 2px 0px #0000003d;
+}
+.light .inner {
+    background: #fff;
+    color: #757575;
+}
+.google-apps-header.dark-focus {
+    background: #c6dafb;
+    width: 198px;
+}
+.icon {
+    height: 40px;
+    width: 40px;
+    display: block;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    background-image: url(../img/google.svg);
+    background-color: #fff;
+    border: 1px solid #4285f4;
+    border-radius: 2px;
+    overflow: hidden;
+}
+.icon.dark-focus {border-color: #4285f4;}
+.inner span {
+    margin: 10px 10px;
+    font-weight: 600;
+}
+.light .icon.dark-focus {
+    border-color: #fff;
+}
+.light .icon.dark-normal {
+    border-color: #fff;
+}
+.dark-pressed.light .inner {
+    background: #eee;
+}
+
+.light .icon.dark-pressed {
+    border-color: #eee;
+    background-color: #eee;
+}
+.icon.dark-disabled {
+    background-image: url('../img/google-disabled.svg');
+    border-color: #ebebeb;
+    background-color: #ebebeb;
+}
+.dark-disabled .inner {
+    background: #ebebeb;
+    color: #8d8d8d;
+    box-shadow: none;
+}

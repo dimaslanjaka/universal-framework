@@ -7,8 +7,8 @@
         <div class="row">
             <div class="col-md-5 col-sm-10 col-10">
                 <span class="plugin-name">
-                    <div class="label label-danger row_data plugins">{{udclion.updates.plugin}} <a href="{{plugin_uri}}" target="_blank">{{name}}</a> ({{version}})</div>
-                    <div class="hidden-md-up">
+                    <div class="row_data plugins"><span class="label label-warning badge badge-warning">{{udclion.updates.plugin}}</span> <a href="{{plugin_uri}}" target="_blank">{{name}}</a> ({{version}})</div>
+                    <div class="hidden-md-up d-md-none">
                         <div class="website-upgrade-to">{{udclion.updates.update_to}} {{update.new_version}}</div>
                     </div>
 					{{#unless update.plugin}}
@@ -18,11 +18,14 @@
 					{{/unless}}
                 </span>
             </div>
-            <div class="col-md-3 text-md-left hidden-sm-down">
+            <div class="col-md-3 text-md-left hidden-sm-down d-none d-md-block">
                 <span class="plugin-version">{{udclion.updates.update_to}} {{update.new_version}}</span>
             </div>
-            <div class="col-md-3 text-md-right hidden-sm-down">
+            <div class="col-md-3 text-md-right hidden-sm-down d-none d-md-block">
                 <span class="plugin-website">{{../website}}</span>
+                {{#if ../last_fetched}}
+                    <div class="mass-updates-lastfetched-label">{{udclion.updates.last_fetched}}: <span class="updates-lastfetched-hour">{{../last_fetched}}</span></div>
+                {{/if}}
             </div>
             <div class="col-md-1 col-sm-2 col-2 text-left text-md-right remove-pad-right">
                 <button type="button" class="btn btn-sm btn-secondary update-info" title="{{udclion.updates.update_info}}">

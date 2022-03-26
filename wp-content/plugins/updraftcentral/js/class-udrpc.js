@@ -655,12 +655,18 @@ var UpdraftPlus_Remote_Communications = function(key_name_indicator, can_generat
 					response_callback.call(this, response);
 				},
 				error: function(request, status, error_thrown) {
-					console.log("UDRPC: Error in send_post (url="+url+")");
-					console.log(request);
-					console.log(status);
-					// https://api.jquery.com/jquery.ajax/ says: 'When an HTTP error occurs, (this parameter) receives the textual portion of the HTTP status, such as "Not Found" or "Internal Server Error."'
-					// "Unauthorized" is what you get when HTTP authentication is required. "Timeout" when there's a timeout.
-					console.log(error_thrown);
+					// We don't actually need these errors if the browser was reloaded because users can no longer
+					// take any action since it's already been too late. These error info will only be shown if the
+					// browser reload action is not the one causing the error due to an abrupt halting of a current AJAX process.
+					if (!UpdraftCentral.reloaded) {
+						console.log("UDRPC: Error in send_post (url="+url+")");
+						console.log(request);
+						console.log(status);
+						// https://api.jquery.com/jquery.ajax/ says: 'When an HTTP error occurs, (this parameter) receives the textual portion of the HTTP status, such as "Not Found" or "Internal Server Error."'
+						// "Unauthorized" is what you get when HTTP authentication is required. "Timeout" when there's a timeout.
+						console.log(error_thrown);
+					}
+
 					if (spinner_where) {
 						jQuery(spinner_where).removeClass('updraftcentral_spinner');
 					}

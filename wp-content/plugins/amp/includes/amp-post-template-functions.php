@@ -7,23 +7,37 @@
 
 /**
  * Register hooks.
+ *
+ * @internal
  */
 function amp_post_template_init_hooks() {
+	if ( version_compare( strtok( get_bloginfo( 'version' ), '-' ), '5.7', '>=' ) ) {
+		add_action( 'amp_post_template_head', 'wp_robots' );
+	} else {
+		add_action( 'amp_post_template_head', 'noindex' );
+	}
 	add_action( 'amp_post_template_head', 'amp_post_template_add_title' );
 	add_action( 'amp_post_template_head', 'amp_post_template_add_canonical' );
-	add_action( 'amp_post_template_head', 'amp_post_template_add_scripts' );
 	add_action( 'amp_post_template_head', 'amp_post_template_add_fonts' );
-	add_action( 'amp_post_template_head', 'amp_post_template_add_boilerplate_css' );
-	add_action( 'amp_post_template_head', 'amp_print_schemaorg_metadata' );
 	add_action( 'amp_post_template_head', 'amp_add_generator_metadata' );
 	add_action( 'amp_post_template_head', 'wp_generator' );
+	add_action( 'amp_post_template_head', 'amp_post_template_add_block_styles' );
+	add_action( 'amp_post_template_head', 'amp_post_template_add_default_styles' );
 	add_action( 'amp_post_template_css', 'amp_post_template_add_styles', 99 );
-	add_action( 'amp_post_template_data', 'amp_post_template_add_analytics_script' );
 	add_action( 'amp_post_template_footer', 'amp_post_template_add_analytics_data' );
+
+	add_action( 'admin_bar_init', [ AMP_Theme_Support::class, 'init_admin_bar' ] );
+	add_action( 'amp_post_template_footer', 'wp_admin_bar_render' );
+
+	// Printing scripts here is done primarily for the benefit of the admin bar. Note that wp_enqueue_scripts() is not called.
+	add_action( 'amp_post_template_head', 'wp_print_head_scripts' );
+	add_action( 'amp_post_template_footer', 'wp_print_footer_scripts' );
 }
 
 /**
  * Add title.
+ *
+ * @internal
  *
  * @param AMP_Post_Template $amp_template template.
  */
@@ -36,6 +50,8 @@ function amp_post_template_add_title( $amp_template ) {
 /**
  * Add canonical link.
  *
+ * @internal
+ *
  * @param AMP_Post_Template $amp_template Template.
  */
 function amp_post_template_add_canonical( $amp_template ) {
@@ -45,59 +61,50 @@ function amp_post_template_add_canonical( $amp_template ) {
 }
 
 /**
- * Print scripts.
- *
- * @see amp_register_default_scripts()
- * @see amp_filter_script_loader_tag()
- * @param AMP_Post_Template $amp_template Template.
- */
-function amp_post_template_add_scripts( $amp_template ) {
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo amp_render_scripts(
-		array_merge(
-			[
-				// Just in case the runtime has been overridden by amp_post_template_data filter.
-				'amp-runtime' => $amp_template->get( 'amp_runtime_script' ),
-			],
-			$amp_template->get( 'amp_component_scripts', [] )
-		)
-	);
-}
-
-/**
  * Print fonts.
+ *
+ * @internal
  *
  * @param AMP_Post_Template $amp_template Template.
  */
 function amp_post_template_add_fonts( $amp_template ) {
 	$font_urls = $amp_template->get( 'font_urls', [] );
-	foreach ( $font_urls as $slug => $url ) {
+	foreach ( $font_urls as $url ) {
 		printf( '<link rel="stylesheet" href="%s">', esc_url( esc_url( $url ) ) ); // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
 	}
 }
 
 /**
- * Print boilerplate CSS.
+ * Add block styles for core blocks and third-party blocks.
  *
- * @since 0.3
- * @see amp_get_boilerplate_code()
+ * @internal
+ *
+ * @since 1.5.0
  */
-function amp_post_template_add_boilerplate_css() {
-	echo amp_get_boilerplate_code(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+function amp_post_template_add_block_styles() {
+	add_theme_support( 'wp-block-styles' );
+	if ( function_exists( 'wp_common_block_scripts_and_styles' ) ) {
+		wp_common_block_scripts_and_styles();
+	}
+
+	// Note that this will also print the admin-bar styles since WP_Admin_Bar::initialize() has been called.
+	wp_styles()->do_items();
 }
 
 /**
- * Print Schema.org metadata.
+ * Print default styles.
  *
- * @deprecated Since 0.7
+ * @since 2.0.1
+ * @internal
  */
-function amp_post_template_add_schemaorg_metadata() {
-	_deprecated_function( __FUNCTION__, '0.7', 'amp_print_schemaorg_metadata' );
-	amp_print_schemaorg_metadata();
+function amp_post_template_add_default_styles() {
+	wp_print_styles( 'amp-default' );
 }
 
 /**
  * Print styles.
+ *
+ * @internal
  *
  * @param AMP_Post_Template $amp_template Template.
  */
@@ -119,20 +126,40 @@ function amp_post_template_add_styles( $amp_template ) {
 }
 
 /**
- * Add analytics scripts.
+ * Add custom analytics.
  *
- * @param array $data Data.
- * @return array Data.
+ * This is currently only used for legacy AMP post templates.
+ *
+ * @since 0.5
+ * @see amp_get_analytics()
+ * @internal
+ *
+ * @param array $analytics Analytics.
+ * @return array Analytics.
  */
-function amp_post_template_add_analytics_script( $data ) {
-	if ( ! empty( $data['amp_analytics'] ) ) {
-		$data['amp_component_scripts']['amp-analytics'] = 'https://cdn.ampproject.org/v0/amp-analytics-0.1.js';
-	}
-	return $data;
+function amp_add_custom_analytics( $analytics = [] ) {
+	$analytics = amp_get_analytics( $analytics );
+
+	/**
+	 * Add amp-analytics tags.
+	 *
+	 * This filter allows you to easily insert any amp-analytics tags without needing much heavy lifting.
+	 * This filter should be used to alter entries for legacy AMP templates.
+	 *
+	 * @since 0.4
+	 *
+	 * @param array   $analytics An associative array of the analytics entries we want to output. Each array entry must have a unique key, and the value should be an array with the following keys: `type`, `attributes`, `script_data`. See readme for more details.
+	 * @param WP_Post $post      The current post.
+	 */
+	$analytics = apply_filters( 'amp_post_template_analytics', $analytics, get_queried_object() );
+
+	return $analytics;
 }
 
 /**
  * Print analytics data.
+ *
+ * @internal
  *
  * @since 0.3.2
  */

@@ -114,14 +114,16 @@ class Schema_WP_Welcome {
 			left: 0;
 			width: 100%;
 		}
+		.about-wrap h2 {
+			font-size: 1.6em;
+			font-weight: bold;
+			text-align: left;
+			margin: 2em 0 1em 0;
+		}
 		.about-wrap .schema-wp-badge {
 			position: absolute;
 			top: 0;
 			right: 0;
-		}
-		.schema-wp-welcome-screenshots {
-			float: right;
-			margin-left: 60px !important;
 		}
 		.schema-wp-info-notice {
 			border-left: 4px solid #5b9dd9;

@@ -3,13 +3,14 @@
  *
  */
 (function($) {
+	"use strict";
 	$(document).ready( function() {
 		jQuery.bwsTooltip = function( pointer_options ) {
 			var pointer_buttons = pointer_options['buttons'];
 			/* extend pointer options - add close button */
 			pointer_options = $.extend( pointer_options, {
 				buttons: function(event, t) {
-					var button;
+					var button = '';
 					/* check and add dismiss-type buttons */
 					for ( var but in pointer_buttons ) {
 						if ( typeof pointer_buttons[ but ]['type'] != 'undefined' && pointer_buttons[ but ]['type'] == 'dismiss' && typeof pointer_buttons[ but ]['text'] != 'undefined' && pointer_buttons[ but ]['text'] != '' ) {
@@ -17,7 +18,7 @@
 						}
 					}
 					button = jQuery( button );
-					button.bind('click.pointer', function () {
+					button.on('click.pointer', function () {
 						t.element.pointer('close');
 					});
 					return button;
@@ -51,6 +52,9 @@
 					};
 				}
 				/* adjust position of pointer */
+				var topPos,
+					leftPos,
+					pointerZindex;
 				topPos = parseInt( $( "." + pointer_options["tooltip_id"] ).css("top") ) + parseInt( pointer_options['position']['pos-top'] );
 				leftPos = parseInt( $( "." + pointer_options["tooltip_id"] ).css("left") ) + parseInt( pointer_options['position']['pos-left'] );
 				if ( pointer_options['position']['align'] == 'left' ) {

@@ -19,6 +19,7 @@ RewriteRule . index.php [L]
 </IfModule>
 
 # END WordPress
+
 <filesMatch "\.(html|htm|js|css)$">
   FileETag None
   <ifModule mod_headers.c>

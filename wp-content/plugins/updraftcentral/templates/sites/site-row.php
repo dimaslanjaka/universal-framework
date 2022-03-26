@@ -1,4 +1,4 @@
-<div data-site_id="<?php echo $site->site_id;?>">
+<div class="ui-sortable-handle" data-site_id="<?php echo $site->site_id;?>">
 	<div class="row updraftcentral_site_row<?php if (!empty($site->unlicensed)) echo ' site_unlicensed';?><?php if ($suspended) echo ' suspended';?>" <?php echo $site_data_attributes;?>>
 
 		<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 order-1 updraftcentral_row_sitelabel" title="<?php _e('Drag to set the site order', 'updraftcentral'); ?>">
@@ -17,7 +17,42 @@
 				?>
 				<div class="updraft_site_title">
 					<span class="updraftcentral_site_sort_icon dashicons dashicons-sort" title="<?php _e('Drag to set the site order', 'updraftcentral'); ?>"></span>
-					<span title="<?php esc_attr_e($site->url); ?>"><?php echo htmlspecialchars($site->description);?></span>
+					<span title="<?php esc_attr_e($site->url); ?>"><?php echo htmlspecialchars($site->description);?><?php echo $site_alert_icon; ?></span>
+					<?php
+					
+						$container_class = '';
+						if (empty($available_updates['plugins']) && empty($available_updates['themes']) && empty($available_updates['core']) && empty($available_updates['translations'])) {
+							$container_class = 'updates_count_container_hidden';
+						}
+
+						$plugin_class = '';
+						if (empty($available_updates['plugins'])) {
+							$plugin_class = 'updates_count_item_hidden';
+						}
+
+						$theme_class = '';
+						if (empty($available_updates['themes'])) {
+							$theme_class = 'updates_count_item_hidden';
+						}
+
+						$core_class = '';
+						if (empty($available_updates['core'])) {
+							$core_class = 'updates_count_item_hidden';
+						}
+
+						$translation_class = '';
+						if (empty($available_updates['translations'])) {
+							$translation_class = 'updates_count_item_hidden';
+						}
+
+					?>
+					<div class="updraft_updates_count_container <?php echo $container_class; ?>">
+						<span class="updraft_updates_count_label"><?php _e('Available Updates', 'updraftcentral'); ?>:</span>
+						<span class="badge badge-warning updraft_updates_count_item updraft_available_plugins <?php echo $plugin_class; ?>"><?php _e('Plugins', 'updraftcentral'); ?><span class="updraft_updates_count updraft_plugins_count">(<?php echo $available_updates['plugins'];?>)</span></span>
+						<span class="badge badge-info updraft_updates_count_item updraft_available_themes <?php echo $theme_class; ?>"><?php _e('Themes', 'updraftcentral'); ?><span class="updraft_updates_count updraft_themes_count">(<?php echo $available_updates['themes'];?>)</span></span>
+						<span class="badge badge-danger updraft_updates_count_item updraft_available_core <?php echo $core_class; ?>"><?php _e('WordPress Core', 'updraftcentral'); ?></span>
+						<span class="badge badge-success updraft_updates_count_item updraft_available_translations <?php echo $translation_class; ?>"><?php _e('Translations', 'updraftcentral'); ?></span>
+					</div>
 				</div>
 				<br class="updraft-full-hidden">
 				<a href="<?php esc_attr_e($site->url); ?>" target="_blank" class="updraftcentral_site_url_after_description"><?php esc_attr_e($site->url); ?></a>

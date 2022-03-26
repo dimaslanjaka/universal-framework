@@ -5,10 +5,34 @@
  * @package AMP
  */
 
+use AmpProject\Amp;
+use AmpProject\AmpWP\ConfigurationArgument;
+use AmpProject\AmpWP\Dom\Options;
+use AmpProject\AmpWP\ExtraThemeAndPluginHeaders;
+use AmpProject\AmpWP\Optimizer\OptimizerService;
+use AmpProject\AmpWP\Optimizer\Transformer\AmpSchemaOrgMetadata;
+use AmpProject\AmpWP\Optimizer\Transformer\AmpSchemaOrgMetadataConfiguration;
+use AmpProject\AmpWP\Option;
+use AmpProject\AmpWP\QueryVar;
+use AmpProject\AmpWP\Sandboxing;
+use AmpProject\AmpWP\Services;
+use AmpProject\AmpWP\ValidationExemption;
+use AmpProject\DevMode;
+use AmpProject\Dom\Document;
+use AmpProject\Extension;
+use AmpProject\Html\Attribute;
+use AmpProject\Html\RequestDestination;
+use AmpProject\Html\Tag;
+use AmpProject\Optimizer;
+use AmpProject\Optimizer\Configuration\TransformedIdentifierConfiguration;
+use AmpProject\Optimizer\Transformer\TransformedIdentifier;
+
 /**
  * Class AMP_Theme_Support
  *
  * Callbacks for adding AMP-related things when theme support is added.
+ *
+ * @internal
  */
 class AMP_Theme_Support {
 
@@ -18,41 +42,6 @@ class AMP_Theme_Support {
 	 * @var string
 	 */
 	const SLUG = 'amp';
-
-	/**
-	 * Response cache group name.
-	 *
-	 * @var string
-	 */
-	const RESPONSE_CACHE_GROUP = 'amp-response';
-
-	/**
-	 * Post-processor cache effectiveness group name.
-	 *
-	 * @var string
-	 */
-	const POST_PROCESSOR_CACHE_EFFECTIVENESS_GROUP = 'post_processor_cache_effectiveness_group';
-
-	/**
-	 * Post-processor cache effectiveness key name.
-	 *
-	 * @var string
-	 */
-	const POST_PROCESSOR_CACHE_EFFECTIVENESS_KEY = 'post_processor_cache_effectiveness';
-
-	/**
-	 * Cache miss threshold for determining when to disable post-processor cache.
-	 *
-	 * @var int
-	 */
-	const CACHE_MISS_THRESHOLD = 20;
-
-	/**
-	 * Cache miss URL option name.
-	 *
-	 * @var string
-	 */
-	const CACHE_MISS_URL_OPTION = 'amp_cache_miss_url';
 
 	/**
 	 * Slug identifying standard website mode.
@@ -96,9 +85,9 @@ class AMP_Theme_Support {
 	const READER_MODE_TEMPLATE_DIRECTORY = 'amp';
 
 	/**
-	 * Sanitizer classes.
+	 * Sanitizers, with keys as class names and values as arguments.
 	 *
-	 * @var array
+	 * @var array[]
 	 */
 	protected static $sanitizer_classes = [];
 
@@ -135,14 +124,6 @@ class AMP_Theme_Support {
 	];
 
 	/**
-	 * Start time when init was called.
-	 *
-	 * @since 1.0
-	 * @var float
-	 */
-	public static $init_start_time;
-
-	/**
 	 * Whether output buffering has started.
 	 *
 	 * @since 0.7
@@ -151,23 +132,11 @@ class AMP_Theme_Support {
 	protected static $is_output_buffering = false;
 
 	/**
-	 * Theme support mode that was added via option.
+	 * Schema.org metadata
 	 *
-	 * This should be either null (reader), 'standard', or 'transitional'.
-	 *
-	 * @since 1.0
-	 * @var null|string
+	 * @var array
 	 */
-	protected static $support_added_via_option;
-
-	/**
-	 * Theme support mode which was added via the theme.
-	 *
-	 * This should be either null (reader), 'standard', or 'transitional'.
-	 *
-	 * @var null|string
-	 */
-	protected static $support_added_via_theme;
+	protected static $metadata;
 
 	/**
 	 * Initialize.
@@ -175,34 +144,33 @@ class AMP_Theme_Support {
 	 * @since 0.7
 	 */
 	public static function init() {
-		self::read_theme_support();
+		/**
+		 * Starts the server-timing measurement for the entire output buffer capture.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string      $event_name        Name of the event to record.
+		 * @param string|null $event_description Optional. Description of the event
+		 *                                       to record. Defaults to null.
+		 * @param string[]    $properties        Optional. Additional properties to add
+		 *                                       to the logged record.
+		 * @param bool        $verbose_only      Optional. Whether to only show the
+		 *                                       event in verbose mode. Defaults to
+		 *                                       false.
+		 */
+		do_action( 'amp_server_timing_start', 'amp_output_buffer' );
 
-		self::$init_start_time = microtime( true );
+		// Ensure extra theme support for core themes is in place.
+		AMP_Core_Theme_Sanitizer::extend_theme_support();
 
-		if ( AMP_Options_Manager::is_website_experience_enabled() && current_theme_supports( self::SLUG ) ) {
-			// Ensure extra theme support for core themes is in place.
-			AMP_Core_Theme_Sanitizer::extend_theme_support();
-
-			require_once AMP__DIR__ . '/includes/amp-post-template-functions.php';
-
-			add_action( 'widgets_init', [ __CLASS__, 'register_widgets' ] );
-
-			/*
-			 * Note that wp action is use instead of template_redirect because some themes/plugins output
-			 * the response at this action and then short-circuit with exit. So this is why the the preceding
-			 * action to template_redirect--the wp action--is used instead.
-			 */
+		/*
+		 * Note that wp action is use instead of template_redirect because some themes/plugins output
+		 * the response at this action and then short-circuit with exit. So this is why the the preceding
+		 * action to template_redirect--the wp action--is used instead.
+		 */
+		if ( ! is_admin() ) {
 			add_action( 'wp', [ __CLASS__, 'finish_init' ], PHP_INT_MAX );
-		} elseif ( AMP_Options_Manager::is_stories_experience_enabled() ) {
-			add_action(
-				'wp',
-				static function () {
-					if ( is_singular( AMP_Story_Post_Type::POST_TYPE_SLUG ) ) {
-						self::finish_init();
-					}
-				},
-				PHP_INT_MAX
-			);
 		}
 	}
 
@@ -212,13 +180,14 @@ class AMP_Theme_Support {
 	 * @since 1.0
 	 * @see AMP_Theme_Support::read_theme_support()
 	 * @see AMP_Theme_Support::get_support_mode()
-	 * @deprecated Use AMP_Theme_Support::get_support_mode_added_via_option().
+	 * @codeCoverageIgnore
+	 * @deprecated Support is always determined by the option.
 	 *
 	 * @return bool Support added via option.
 	 */
 	public static function is_support_added_via_option() {
-		_deprecated_function( __METHOD__, '1.2', 'AMP_Theme_Support::get_support_mode_added_via_option' );
-		return null !== self::$support_added_via_option;
+		_deprecated_function( __METHOD__, '2.0.0' );
+		return true;
 	}
 
 	/**
@@ -230,23 +199,37 @@ class AMP_Theme_Support {
 	 * @see AMP_Theme_Support::STANDARD_MODE_SLUG
 	 *
 	 * @since 1.2
+	 * @deprecated
+	 * @codeCoverageIgnore
 	 */
 	public static function get_support_mode_added_via_option() {
-		return self::$support_added_via_option;
+		_deprecated_function( __METHOD__, '2.0.0', 'AMP_Options_Manager::get_option' );
+		$value = AMP_Options_Manager::get_option( Option::THEME_SUPPORT );
+		if ( self::READER_MODE_SLUG === $value ) {
+			$value = null;
+		}
+		return $value;
 	}
 
 	/**
-	 * Get the theme support mode added via admin option.
+	 * Get the theme support mode added via theme.
 	 *
-	 * @return null|string Support added via option, with null meaning Reader, and otherwise being 'standard' or 'transitional'.
+	 * @return null|string Support added via theme, with null meaning Reader, and otherwise being 'standard' or 'transitional'.
 	 * @see AMP_Theme_Support::read_theme_support()
 	 * @see AMP_Theme_Support::TRANSITIONAL_MODE_SLUG
 	 * @see AMP_Theme_Support::STANDARD_MODE_SLUG
 	 *
 	 * @since 1.2
+	 * @deprecated
+	 * @codeCoverageIgnore
 	 */
 	public static function get_support_mode_added_via_theme() {
-		return self::$support_added_via_theme;
+		_deprecated_function( __METHOD__, '2.0.0', 'current_theme_supports' );
+		$theme_support_args = self::get_theme_support_args();
+		if ( ! $theme_support_args ) {
+			return null;
+		}
+		return empty( $theme_support_args[ self::PAIRED_FLAG ] ) ? self::STANDARD_MODE_SLUG : self::TRANSITIONAL_MODE_SLUG;
 	}
 
 	/**
@@ -258,101 +241,34 @@ class AMP_Theme_Support {
 	 * @see AMP_Theme_Support::STANDARD_MODE_SLUG
 	 *
 	 * @since 1.2
+	 * @deprecated
+	 * @codeCoverageIgnore
 	 */
 	public static function get_support_mode() {
-		$theme_support = self::get_support_mode_added_via_option();
-		if ( ! $theme_support ) {
-			$theme_support = self::get_support_mode_added_via_theme();
-		}
-		if ( ! $theme_support ) {
-			$theme_support = self::READER_MODE_SLUG;
-		}
-		return $theme_support;
+		_deprecated_function( __METHOD__, '2.0.0', 'AMP_Options_Manager::get_option' );
+		return AMP_Options_Manager::get_option( Option::THEME_SUPPORT );
 	}
 
 	/**
 	 * Check theme support args or add theme support if option is set in the admin.
 	 *
-	 * The DB option is only considered if the theme does not already explicitly support AMP.
+	 * In older versions of the plugin, the DB option was only considered if the theme does not already explicitly support AMP.
+	 * This is no longer the case. The DB option is the only value that is considered.
 	 *
-	 * @see AMP_Theme_Support::get_support_mode_added_via_theme()
-	 * @see AMP_Theme_Support::get_support_mode_added_via_option()
 	 * @see AMP_Post_Type_Support::add_post_type_support() For where post type support is added, since it is irrespective of theme support.
+	 * @deprecated
+	 * @codeCoverageIgnore
 	 */
 	public static function read_theme_support() {
-		self::$support_added_via_theme  = null;
-		self::$support_added_via_option = null;
-
-		$theme_support_option = AMP_Options_Manager::get_option( 'theme_support' );
-		if ( current_theme_supports( self::SLUG ) ) {
-			$args = self::get_theme_support_args();
-
-			// Validate theme support usage.
-			$keys = [ 'template_dir', 'comments_live_list', self::PAIRED_FLAG, 'templates_supported', 'available_callback', 'service_worker', 'nav_menu_toggle', 'nav_menu_dropdown' ];
-
-			if ( count( array_diff( array_keys( $args ), $keys ) ) !== 0 ) {
-				_doing_it_wrong(
-					'add_theme_support',
-					esc_html(
-						sprintf(  // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
-							/* translators: 1: comma-separated list of expected keys, 2: comma-separated list of actual keys */
-							__( 'Expected AMP theme support to keys (%1$s) but saw (%2$s)', 'amp' ),
-							implode( ', ', $keys ),
-							implode( ', ', array_keys( $args ) )
-						)
-					),
-					'1.0'
-				);
-			}
-
-			if ( isset( $args['available_callback'] ) ) {
-				_doing_it_wrong(
-					'add_theme_support',
-					sprintf(
-						/* translators: 1: available_callback. 2: supported_templates */
-						esc_html__( 'The %1$s is deprecated when adding amp theme support in favor of declaratively setting the %2$s.', 'amp' ),
-						'available_callback',
-						'supported_templates'
-					),
-					'1.0'
-				);
-			}
-
-			// See amp_is_canonical().
-			$is_paired = isset( $args[ self::PAIRED_FLAG ] ) ? $args[ self::PAIRED_FLAG ] : ! empty( $args['template_dir'] );
-
-			self::$support_added_via_theme  = $is_paired ? self::TRANSITIONAL_MODE_SLUG : self::STANDARD_MODE_SLUG;
-			self::$support_added_via_option = $theme_support_option;
-
-			// Make sure the user option can override what the theme has specified.
-			if ( $is_paired && self::STANDARD_MODE_SLUG === $theme_support_option ) {
-				$args[ self::PAIRED_FLAG ] = false;
-				add_theme_support( self::SLUG, $args );
-			} elseif ( ! $is_paired && self::TRANSITIONAL_MODE_SLUG === $theme_support_option ) {
-				$args[ self::PAIRED_FLAG ] = true;
-				add_theme_support( self::SLUG, $args );
-			} elseif ( self::READER_MODE_SLUG === $theme_support_option ) {
-				remove_theme_support( self::SLUG );
-			}
-		} elseif ( self::READER_MODE_SLUG !== $theme_support_option ) {
-			$is_paired = ( self::TRANSITIONAL_MODE_SLUG === $theme_support_option );
-			add_theme_support(
-				self::SLUG,
-				[
-					self::PAIRED_FLAG => $is_paired,
-				]
-			);
-			self::$support_added_via_option = $is_paired ? self::TRANSITIONAL_MODE_SLUG : self::STANDARD_MODE_SLUG;
-		} elseif ( AMP_Validation_Manager::is_theme_support_forced() ) {
-			self::$support_added_via_option = self::STANDARD_MODE_SLUG;
-			add_theme_support( self::SLUG );
-		}
+		_deprecated_function( __METHOD__, '2.0.0' );
 	}
 
 	/**
 	 * Get the theme support args.
 	 *
 	 * This avoids having to repeatedly call `get_theme_support()`, check the args, shift an item off the array, and so on.
+	 * Note that if the theme's `style.css` has the `AMP` header with a value that when converted to a boolean evaluates to `true`, then this function will return the same
+	 * as if the theme had done `add_theme_support('amp')`.
 	 *
 	 * @since 1.0
 	 *
@@ -360,18 +276,27 @@ class AMP_Theme_Support {
 	 */
 	public static function get_theme_support_args() {
 		if ( ! current_theme_supports( self::SLUG ) ) {
+			$theme_header = wp_get_theme()->get( ExtraThemeAndPluginHeaders::AMP_HEADER );
+			if ( rest_sanitize_boolean( $theme_header ) && ExtraThemeAndPluginHeaders::AMP_HEADER_LEGACY !== $theme_header ) {
+				return [
+					self::PAIRED_FLAG => true,
+				];
+			}
 			return false;
 		}
 		$support = get_theme_support( self::SLUG );
-		if ( true === $support ) {
-			return [
-				self::PAIRED_FLAG => false,
-			];
+		if ( isset( $support[0] ) && is_array( $support[0] ) ) {
+			$args = $support[0];
+		} else {
+			$args = [];
 		}
-		if ( ! isset( $support[0] ) || ! is_array( $support[0] ) ) {
-			return [];
+		if ( ! isset( $args[ self::PAIRED_FLAG ] ) ) {
+			// Formerly when paired was not supplied it defaulted to be false. However, the reality is that
+			// the vast majority of themes should be built to work in AMP and non-AMP because AMP can be
+			// disabled for any URL just by disabling AMP for the post.
+			$args[ self::PAIRED_FLAG ] = true;
 		}
-		return $support[0];
+		return $args;
 	}
 
 	/**
@@ -384,7 +309,7 @@ class AMP_Theme_Support {
 	 */
 	public static function supports_reader_mode() {
 		return (
-			! self::get_support_mode_added_via_theme()
+			! current_theme_supports( self::SLUG )
 			&&
 			(
 				is_dir( trailingslashit( get_template_directory() ) . self::READER_MODE_TEMPLATE_DIRECTORY )
@@ -400,33 +325,37 @@ class AMP_Theme_Support {
 	 * @since 0.7
 	 */
 	public static function finish_init() {
-		if ( ! is_amp_endpoint() ) {
-			/*
-			 * Redirect to AMP-less variable if AMP is not available for this URL and yet the query var is present.
-			 * Temporary redirect is used for admin users because implied transitional mode and template support can be
-			 * enabled by user ay any time, so they will be able to make AMP available for this URL and see the change
-			 * without wrestling with the redirect cache.
-			 */
-			if ( isset( $_GET[ amp_get_slug() ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				self::redirect_non_amp_url( current_user_can( 'manage_options' ) ? 302 : 301, true );
-			}
-
-			amp_add_frontend_actions();
+		if ( ! amp_is_request() ) {
 			return;
 		}
 
-		self::ensure_proper_amp_location();
+		if ( amp_is_legacy() ) {
+			// Make sure there is no confusion when serving the legacy Reader template that the normal theme hooks should not be used.
+			remove_theme_support( self::SLUG );
 
-		$theme_support = self::get_theme_support_args();
-		if ( ! empty( $theme_support['template_dir'] ) ) {
-			self::add_amp_template_filters();
+			add_filter(
+				'template_include',
+				static function() {
+					return AMP__DIR__ . '/includes/templates/reader-template-loader.php';
+				},
+				PHP_INT_MAX
+			);
+		} else {
+			$theme_support = self::get_theme_support_args();
+			if ( false === $theme_support ) {
+				// Make sure that 'amp' theme support is present for plugins can use `current_theme_supports('amp')` as
+				// a signal for whether to use standard template hooks instead of legacy Reader AMP post template hooks.
+				add_theme_support( self::SLUG );
+			} elseif ( ! empty( $theme_support['template_dir'] ) ) {
+				self::add_amp_template_filters();
+			}
 		}
 
 		self::add_hooks();
 		self::$sanitizer_classes = amp_get_content_sanitizers();
 		self::$sanitizer_classes = AMP_Validation_Manager::filter_sanitizer_args( self::$sanitizer_classes );
 		self::$embed_handlers    = self::register_content_embed_handlers();
-		self::$sanitizer_classes['AMP_Embed_Sanitizer']['embed_handlers'] = self::$embed_handlers;
+		self::$sanitizer_classes[ AMP_Embed_Sanitizer::class ]['embed_handlers'] = self::$embed_handlers;
 
 		foreach ( self::$sanitizer_classes as $sanitizer_class => $args ) {
 			if ( method_exists( $sanitizer_class, 'add_buffering_hooks' ) ) {
@@ -436,94 +365,20 @@ class AMP_Theme_Support {
 	}
 
 	/**
-	 * Ensure that the current AMP location is correct.
-	 *
-	 * @since 1.0
-	 *
-	 * @param bool $exit Whether to exit after redirecting.
-	 * @return bool Whether redirection was done. Naturally this is irrelevant if $exit is true.
-	 */
-	public static function ensure_proper_amp_location( $exit = true ) {
-		$has_query_var = false !== get_query_var( amp_get_slug(), false ); // May come from URL param or endpoint slug.
-		$has_url_param = isset( $_GET[ amp_get_slug() ] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-		if ( amp_is_canonical() || is_singular( AMP_Story_Post_Type::POST_TYPE_SLUG ) ) {
-			/*
-			 * When AMP-first/canonical, then when there is an /amp/ endpoint or ?amp URL param,
-			 * then a redirect needs to be done to the URL without any AMP indicator in the URL.
-			 * Permanent redirect is used for unauthenticated users since switching between modes
-			 * should happen infrequently. For admin users, this is kept temporary to allow them
-			 * to not be hampered by browser remembering permanent redirects and preventing test.
-			 */
-			if ( $has_query_var || $has_url_param ) {
-				return self::redirect_non_amp_url( current_user_can( 'manage_options' ) ? 302 : 301, $exit );
-			}
-		} else {
-			/*
-			 * When in AMP transitional mode *with* theme support, then the proper AMP URL has the 'amp' URL param
-			 * and not the /amp/ endpoint. The URL param is now the exclusive way to mark AMP in transitional mode
-			 * when amp theme support present. This is important for plugins to be able to reliably call
-			 * is_amp_endpoint() before the parse_query action.
-			 */
-			if ( $has_query_var && ! $has_url_param ) {
-				$old_url = amp_get_current_url();
-				$new_url = add_query_arg( amp_get_slug(), '', amp_remove_endpoint( $old_url ) );
-				if ( $old_url !== $new_url ) {
-					// A temporary redirect is used for admin users to allow them to see changes between reader mode and transitional modes.
-					wp_safe_redirect( $new_url, current_user_can( 'manage_options' ) ? 302 : 301 );
-					// @codeCoverageIgnoreStart
-					if ( $exit ) {
-						exit;
-					}
-					return true;
-					// @codeCoverageIgnoreEnd
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Redirect to non-AMP version of the current URL, such as because AMP is canonical or there are unaccepted validation errors.
-	 *
-	 * If the current URL is already AMP-less then do nothing.
-	 *
-	 * @since 0.7
-	 * @since 1.0 Added $exit param.
-	 * @since 1.0 Renamed from redirect_canonical_amp().
-	 *
-	 * @param int  $status Status code (301 or 302).
-	 * @param bool $exit   Whether to exit after redirecting.
-	 * @return bool Whether redirection was done. Naturally this is irrelevant if $exit is true.
-	 */
-	public static function redirect_non_amp_url( $status = 302, $exit = true ) {
-		$current_url = amp_get_current_url();
-		$non_amp_url = amp_remove_endpoint( $current_url );
-		if ( $non_amp_url === $current_url ) {
-			return false;
-		}
-
-		wp_safe_redirect( $non_amp_url, $status );
-		// @codeCoverageIgnoreStart
-		if ( $exit ) {
-			exit;
-		}
-		return true;
-		// @codeCoverageIgnoreEnd
-	}
-
-	/**
 	 * Determines whether transitional mode is available.
 	 *
 	 * When 'amp' theme support has not been added or canonical mode is enabled, then this returns false.
 	 *
 	 * @since 0.7
+	 * @deprecated No longer used. Consider instead `! amp_is_canonical() && amp_is_available()`.
+	 * @todo There are ecosystem plugins which are still using this method. See <https://wpdirectory.net/search/01EPD9M5CKWHJ7NMQ1WE0YGPJ5>.
 	 *
 	 * @see amp_is_canonical()
+	 * @see amp_is_available()
 	 * @return bool Whether available.
 	 */
 	public static function is_paired_available() {
-		if ( ! current_theme_supports( self::SLUG ) ) {
+		if ( amp_is_legacy() ) {
 			return false;
 		}
 
@@ -562,18 +417,17 @@ class AMP_Theme_Support {
 	/**
 	 * Determine template availability of AMP for the given query.
 	 *
-	 * This is not intended to return whether AMP is available for a _specific_ post. For that, use `post_supports_amp()`.
+	 * This is not intended to return whether AMP is available for a _specific_ post. For that, use `amp_is_post_supported()`.
 	 *
 	 * @since 1.0
 	 * @global WP_Query $wp_query
-	 * @see post_supports_amp()
+	 * @see amp_is_post_supported()
 	 *
 	 * @param WP_Query|WP_Post|null $query Query or queried post. If null then the global query will be used.
 	 * @return array {
 	 *     Template availability.
 	 *
 	 *     @type bool        $supported Whether the template is supported in AMP.
-	 *     @type bool|null   $immutable Whether the supported status is known to be unchangeable.
 	 *     @type string|null $template  The ID of the matched template (conditional), such as 'is_singular', or null if nothing was matched.
 	 *     @type string[]    $errors    List of the errors or reasons for why the template is not available.
 	 * }
@@ -598,9 +452,16 @@ class AMP_Theme_Support {
 		$default_response = [
 			'errors'    => [],
 			'supported' => false,
-			'immutable' => null,
+			'immutable' => false, // Obsolete.
 			'template'  => null,
 		];
+
+		if ( amp_is_legacy() ) {
+			return array_merge(
+				$default_response,
+				[ 'errors' => [ 'legacy_reader_mode' ] ]
+			);
+		}
 
 		if ( ! ( $query instanceof WP_Query ) ) {
 			_doing_it_wrong( __METHOD__, esc_html__( 'No WP_Query available.', 'amp' ), '1.0' );
@@ -610,53 +471,7 @@ class AMP_Theme_Support {
 			);
 		}
 
-		$theme_support_args = self::get_theme_support_args();
-		if ( false === $theme_support_args ) {
-			return array_merge(
-				$default_response,
-				[ 'errors' => [ 'no_theme_support' ] ]
-			);
-		}
-
-		// Support available_callback from 0.7, though it is deprecated.
-		if ( isset( $theme_support_args['available_callback'] ) && is_callable( $theme_support_args['available_callback'] ) ) {
-			/**
-			 * Queried object.
-			 *
-			 * @var WP_Post $queried_object
-			 */
-			$queried_object = $query->get_queried_object();
-			if ( ( is_singular() || $query->is_posts_page ) && ! post_supports_amp( $queried_object ) ) {
-				return array_merge(
-					$default_response,
-					[
-						'errors'    => [ 'no-post-support' ],
-						'supported' => false,
-						'immutable' => true,
-					]
-				);
-			}
-
-			$response = array_merge(
-				$default_response,
-				[
-					'supported' => call_user_func( $theme_support_args['available_callback'] ),
-					'immutable' => true,
-				]
-			);
-			if ( ! $response['supported'] ) {
-				$response['errors'][] = 'available_callback';
-			}
-			return $response;
-		}
-
-		$all_templates_supported_by_theme_support = false;
-		if ( isset( $theme_support_args['templates_supported'] ) ) {
-			$all_templates_supported_by_theme_support = 'all' === $theme_support_args['templates_supported'];
-		}
-		$all_templates_supported = (
-			$all_templates_supported_by_theme_support || AMP_Options_Manager::get_option( 'all_templates_supported' )
-		);
+		$all_templates_supported = AMP_Options_Manager::get_option( Option::ALL_TEMPLATES_SUPPORTED );
 
 		// Make sure global $wp_query is set in case of conditionals that unfortunately look at global scope.
 		$prev_query = $wp_query;
@@ -686,7 +501,6 @@ class AMP_Theme_Support {
 				$matching_templates[ $id ] = [
 					'template'  => $id,
 					'supported' => ! empty( $supportable_template['supported'] ),
-					'immutable' => ! empty( $supportable_template['immutable'] ),
 				];
 			}
 		}
@@ -849,7 +663,7 @@ class AMP_Theme_Support {
 			$matching_template['errors'][] = 'template_unsupported';
 		}
 
-		// For singular queries, post_supports_amp() is given the final say.
+		// For singular queries, amp_is_post_supported() is given the final say.
 		if ( $query->is_singular() || $query->is_posts_page ) {
 			/**
 			 * Queried object.
@@ -872,13 +686,18 @@ class AMP_Theme_Support {
 	/**
 	 * Get the templates which can be supported.
 	 *
+	 * @param array $options Optional AMP options to override what has been saved.
 	 * @return array Supportable templates.
 	 */
-	public static function get_supportable_templates() {
+	public static function get_supportable_templates( $options = [] ) {
+		$options = array_merge(
+			AMP_Options_Manager::get_options(),
+			$options
+		);
+
 		$templates = [
 			'is_singular' => [
-				'label'       => __( 'Singular', 'amp' ),
-				'description' => __( 'Required for the above content types.', 'amp' ),
+				'label' => __( 'Singular', 'amp' ),
 			],
 		];
 		if ( 'page' === get_option( 'show_on_front' ) ) {
@@ -972,15 +791,12 @@ class AMP_Theme_Support {
 		/**
 		 * Filters list of supportable templates.
 		 *
-		 * A theme or plugin can force a given template to be supported or not by preemptively
-		 * setting the 'supported' flag for a given template. Otherwise, if the flag is undefined
-		 * then the user will be able to toggle it themselves in the admin. Each array item should
-		 * have a key that corresponds to a template conditional function. If the key is such a
-		 * function, then the key is used to evaluate whether the given template entry is a match.
-		 * Otherwise, a supportable template item can include a callback value which is used instead.
-		 * Each item needs a 'label' value. Additionally, if the supportable template is a subset of
-		 * another condition (e.g. is_singular > is_single) then this relationship needs to be
-		 * indicated via the 'parent' value.
+		 * Each array item should have a key that corresponds to a template conditional function.
+		 * If the key is such a function, then the key is used to evaluate whether the given template
+		 * entry is a match. Otherwise, a supportable template item can include a callback value which
+		 * is used instead. Each item needs a 'label' value. Additionally, if the supportable template
+		 * is a subset of another condition (e.g. is_singular > is_single) then this relationship needs
+		 * to be indicated via the 'parent' value.
 		 *
 		 * @since 1.0
 		 *
@@ -988,34 +804,37 @@ class AMP_Theme_Support {
 		 */
 		$templates = apply_filters( 'amp_supportable_templates', $templates );
 
-		$theme_support_args        = self::get_theme_support_args();
-		$theme_supported_templates = [];
-		if ( isset( $theme_support_args['templates_supported'] ) ) {
-			$theme_supported_templates = $theme_support_args['templates_supported'];
+		$supported_templates = $options[ Option::SUPPORTED_TEMPLATES ];
+		$are_all_supported   = $options[ Option::ALL_TEMPLATES_SUPPORTED ];
+
+		$did_filter_supply_supported = false;
+		$did_filter_supply_immutable = false;
+		foreach ( $templates as $id => &$template ) {
+			if ( isset( $template['supported'] ) ) {
+				$did_filter_supply_supported = true;
+			}
+			if ( isset( $template['immutable'] ) ) {
+				$did_filter_supply_immutable = true;
+			}
+
+			$template['supported']      = $are_all_supported || in_array( $id, $supported_templates, true );
+			$template['user_supported'] = $template['supported']; // Obsolete.
+			$template['immutable']      = false; // Obsolete.
 		}
 
-		$supported_templates = AMP_Options_Manager::get_option( 'supported_templates' );
-		foreach ( $templates as $id => &$template ) {
-
-			// Capture user-elected support from options. This allows us to preserve the original user selection through programmatic overrides.
-			$template['user_supported'] = in_array( $id, $supported_templates, true );
-
-			// Consider supported templates from theme support args.
-			if ( ! isset( $template['supported'] ) ) {
-				if ( 'all' === $theme_supported_templates ) {
-					$template['supported'] = true;
-				} elseif ( is_array( $theme_supported_templates ) && isset( $theme_supported_templates[ $id ] ) ) {
-					$template['supported'] = $theme_supported_templates[ $id ];
-				}
-			}
-
-			// Make supported state immutable if it was programmatically set.
-			$template['immutable'] = isset( $template['supported'] );
-
-			// Set supported state from user preference.
-			if ( ! $template['immutable'] ) {
-				$template['supported'] = AMP_Options_Manager::get_option( 'all_templates_supported' ) || $template['user_supported'];
-			}
+		if ( $did_filter_supply_supported ) {
+			_doing_it_wrong(
+				'add_filter',
+				esc_html__( 'The AMP plugin no longer allows `amp_supportable_templates` filters to specify a template as being `supported`. This is now managed only in AMP Settings.', 'amp' ),
+				'2.0.0'
+			);
+		}
+		if ( $did_filter_supply_immutable ) {
+			_doing_it_wrong(
+				'add_filter',
+				esc_html__( 'The AMP plugin no longer allows `amp_supportable_templates` filters to specify a template\'s support as being `immutable`. This is now managed only in AMP Settings.', 'amp' ),
+				'2.0.0'
+			);
 		}
 
 		return $templates;
@@ -1026,23 +845,20 @@ class AMP_Theme_Support {
 	 */
 	public static function add_hooks() {
 
-		// Remove core actions which are invalid AMP.
-		remove_action( 'wp_head', 'wp_post_preview_js', 1 );
+		// This is not needed when post embeds are embedded via <amp-wordpress-embed>. See <https://github.com/ampproject/amp-wp/issues/809>.
 		remove_action( 'wp_head', 'wp_oembed_add_host_js' );
 
-		// Replace JS-based emoji with PHP-based, if the JS-based emoji replacement was not already removed.
-		if ( has_action( 'wp_head', 'print_emoji_detection_script' ) ) {
-			remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-			remove_action( 'wp_print_styles', 'print_emoji_styles' );
-			add_action( 'wp_print_styles', [ __CLASS__, 'print_emoji_styles' ] );
-			add_filter( 'the_title', 'wp_staticize_emoji' );
-			add_filter( 'the_excerpt', 'wp_staticize_emoji' );
-			add_filter( 'the_content', 'wp_staticize_emoji' );
-			add_filter( 'comment_text', 'wp_staticize_emoji' );
-			add_filter( 'widget_text', 'wp_staticize_emoji' );
-		}
+		// Prevent emoji detection and emoji loading since platforms/browsers now support emoji natively (and Twemoji is not AMP-compatible).
+		add_filter( 'wp_resource_hints', [ __CLASS__, 'filter_resource_hints_to_remove_emoji_dns_prefetch' ], 10, 2 );
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+
+		// The AMP version of the skip link is implemented by AMP_Accessibility_Sanitizer::add_skip_link().
+		remove_action( 'wp_footer', 'gutenberg_the_skip_link' );
+		remove_action( 'wp_footer', 'the_block_template_skip_link' );
 
 		// @todo The wp_mediaelement_fallback() should still run to be injected inside of the audio/video generated by wp_audio_shortcode()/wp_video_shortcode() respectively.
+		// @todo When custom scripts appear on the page, this logic should be skipped. So the removal of MediaElement.js script & styles should perhaps be done by the script sanitizer instead.
 		// Prevent MediaElement.js scripts/styles from being enqueued.
 		add_filter(
 			'wp_video_shortcode_library',
@@ -1069,8 +885,11 @@ class AMP_Theme_Support {
 		add_action( 'admin_bar_init', [ __CLASS__, 'init_admin_bar' ] );
 		add_action( 'wp_head', 'amp_add_generator_metadata', 20 );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ], 0 ); // Enqueue before theme's styles.
-		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'dequeue_customize_preview_scripts' ], 1000 );
+		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'dequeue_customize_preview_scripts' ], 1000 ); // @todo Not really needed anymore since all Customizer assets get dev mode exemptions.
 		add_filter( 'customize_partial_render', [ __CLASS__, 'filter_customize_partial_render' ] );
+		if ( is_customize_preview() ) {
+			add_filter( 'style_loader_tag', [ __CLASS__, 'filter_customize_preview_style_loader_tag' ], 10, 2 );
+		}
 
 		add_action( 'wp_footer', 'amp_print_analytics' );
 
@@ -1081,13 +900,6 @@ class AMP_Theme_Support {
 		$priority = defined( 'PHP_INT_MIN' ) ? PHP_INT_MIN : ~PHP_INT_MAX; // phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
 		add_action( 'template_redirect', [ __CLASS__, 'start_output_buffering' ], $priority );
 
-		// Commenting hooks.
-		add_filter( 'comment_form_defaults', [ __CLASS__, 'filter_comment_form_defaults' ] );
-		add_filter( 'comment_reply_link', [ __CLASS__, 'filter_comment_reply_link' ], 10, 4 );
-		add_filter( 'cancel_comment_reply_link', [ __CLASS__, 'filter_cancel_comment_reply_link' ], 10, 3 );
-		add_action( 'comment_form', [ __CLASS__, 'amend_comment_form' ], 100 );
-		remove_action( 'comment_form', 'wp_comment_form_unfiltered_html_nonce' );
-		add_filter( 'wp_kses_allowed_html', [ __CLASS__, 'whitelist_layout_in_wp_kses_allowed_html' ], 10 );
 		add_filter( 'get_header_image_tag', [ __CLASS__, 'amend_header_image_with_video_header' ], PHP_INT_MAX );
 		add_action(
 			'wp_print_footer_scripts',
@@ -1096,23 +908,39 @@ class AMP_Theme_Support {
 			},
 			0
 		);
-		add_action(
-			'wp_enqueue_scripts',
-			static function() {
-				wp_dequeue_script( 'comment-reply' ); // Handled largely by AMP_Comments_Sanitizer and *reply* methods in this class.
-			}
-		);
+	}
 
-		// @todo Add character conversion.
+	/**
+	 * Filter resource hints to remove the emoji CDN (s.w.org).
+	 *
+	 * @since 2.2
+	 * @see wp_resource_hints()
+	 *
+	 * @param string[] $urls URLs.
+	 * @param string   $type Resource hint relation.
+	 * @return string[] Filtered URLs.
+	 */
+	public static function filter_resource_hints_to_remove_emoji_dns_prefetch( $urls, $type ) {
+		if ( 'dns-prefetch' === $type ) {
+			$urls = array_filter(
+				$urls,
+				static function ( $url ) {
+					return 's.w.org' !== wp_parse_url( $url, PHP_URL_HOST );
+				}
+			);
+		}
+		return $urls;
 	}
 
 	/**
 	 * Register/override widgets.
 	 *
+	 * @deprecated As of 2.0 the AMP_Core_Block_Handler will sanitize the core widgets instead.
 	 * @global WP_Widget_Factory
 	 * @return void
 	 */
 	public static function register_widgets() {
+		_deprecated_function( __METHOD__, '2.0.0' );
 		global $wp_widget_factory;
 		foreach ( $wp_widget_factory->widgets as $registered_widget ) {
 			$registered_widget_class_name = get_class( $registered_widget );
@@ -1164,10 +992,10 @@ class AMP_Theme_Support {
 					__METHOD__,
 					esc_html(
 						sprintf(
-							/* translators: 1: embed handler. 2: AMP_Embed_Handler */
+							/* translators: 1: embed handler. 2: AMP_Base_Embed_Handler */
 							__( 'Embed Handler (%1$s) must extend `%2$s`', 'amp' ),
 							esc_html( $embed_handler_class ),
-							'AMP_Embed_Handler'
+							AMP_Base_Embed_Handler::class
 						)
 					),
 					'0.1'
@@ -1185,6 +1013,7 @@ class AMP_Theme_Support {
 	/**
 	 * Add the comments template placeholder marker
 	 *
+	 * @codeCoverageIgnore
 	 * @deprecated 1.1.0 This functionality was moved to AMP_Comments_Sanitizer
 	 *
 	 * @param array $args the args for the comments list.
@@ -1195,17 +1024,6 @@ class AMP_Theme_Support {
 		$amp_walker     = new AMP_Comment_Walker();
 		$args['walker'] = $amp_walker;
 		return $args;
-	}
-
-	/**
-	 * Amend the comment form with the redirect_to field to persist the AMP page after submission.
-	 */
-	public static function amend_comment_form() {
-		?>
-		<?php if ( is_singular() && ! amp_is_canonical() ) : ?>
-			<input type="hidden" name="redirect_to" value="<?php echo esc_url( amp_get_permalink( get_the_ID() ) ); ?>">
-		<?php endif; ?>
-		<?php
 	}
 
 	/**
@@ -1228,58 +1046,36 @@ class AMP_Theme_Support {
 	}
 
 	/**
-	 * Get canonical URL for current request.
+	 * Get the canonical/self (non-paired) URL for current request.
 	 *
-	 * @see rel_canonical()
-	 * @global WP $wp
-	 * @global WP_Rewrite $wp_rewrite
+	 * For paired AMP sites, this is not the actual "canonical" URL but rather just the non-amphtml version of the current
+	 * paired URL. For AMP-first sites, this returns just the current self URL. If desiring to have an actual semantically
+	 * canonical URL, then a plugin should be added which adds the desired link to the page. As it stands, this method
+	 * is only used to add canonical links when a page lacks it in the first place.
+	 *
 	 * @link https://www.ampproject.org/docs/reference/spec#canon.
-	 * @link https://core.trac.wordpress.org/ticket/18660
 	 *
-	 * @return string Canonical non-AMP URL.
+	 * @return string Canonical/self URL.
 	 */
 	public static function get_current_canonical_url() {
-		global $wp, $wp_rewrite;
-
-		$url = null;
-		if ( is_singular() ) {
-			$url = wp_get_canonical_url();
+		$current_url = amp_get_current_url();
+		if ( ! amp_is_canonical() ) {
+			$current_url = amp_remove_paired_endpoint( $current_url );
 		}
-
-		// For non-singular queries, make use of the request URI and public query vars to determine canonical URL.
-		if ( empty( $url ) ) {
-			$added_query_vars = $wp->query_vars;
-			if ( ! $wp_rewrite->permalink_structure || empty( $wp->request ) ) {
-				$url = home_url( '/' );
-			} else {
-				$url = home_url( user_trailingslashit( $wp->request ) );
-				parse_str( $wp->matched_query, $matched_query_vars );
-				foreach ( $wp->query_vars as $key => $value ) {
-
-					// Remove query vars that were matched in the rewrite rules for the request.
-					if ( isset( $matched_query_vars[ $key ] ) ) {
-						unset( $added_query_vars[ $key ] );
-					}
-				}
-			}
-		}
-
-		if ( ! empty( $added_query_vars ) ) {
-			$url = add_query_arg( $added_query_vars, $url );
-		}
-
-		return amp_remove_endpoint( $url );
+		return $current_url;
 	}
 
 	/**
 	 * Get the ID for the amp-state.
 	 *
 	 * @since 0.7
+	 * @deprecated Logic moved to AMP_Comments_Sanitizer.
 	 *
 	 * @param int $post_id Post ID.
 	 * @return string ID for amp-state.
 	 */
 	public static function get_comment_form_state_id( $post_id ) {
+		_deprecated_function( __METHOD__, '2.2' );
 		return sprintf( 'commentform_post_%d', $post_id );
 	}
 
@@ -1288,30 +1084,51 @@ class AMP_Theme_Support {
 	 *
 	 * @since 0.7
 	 * @see comment_form()
+	 * @deprecated Logic moved to AMP_Comments_Sanitizer.
 	 *
-	 * @param array $args Comment form args.
+	 * @param array $default_args Comment form arg defaults.
 	 * @return array Filtered comment form args.
 	 */
-	public static function filter_comment_form_defaults( $args ) {
-		$state_id = self::get_comment_form_state_id( get_the_ID() );
+	public static function filter_comment_form_defaults( $default_args ) {
+		_deprecated_function( __METHOD__, '2.2' );
 
+		// Obtain the actual args provided to the comment_form() function since it is not available in the filter.
+		$args      = [];
+		$backtrace = debug_backtrace(); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace -- Due to limitation in WordPress core.
+		foreach ( $backtrace as $call ) {
+			if ( 'comment_form' === $call['function'] ) {
+				$args = isset( $call['args'][0] ) ? $call['args'][0] : [];
+				break;
+			}
+		}
+
+		// Abort if the comment_form() was called with arguments which we cannot override the defaults for.
+		// @todo This and the debug_backtrace() call above would be unnecessary if WordPress had a comment_form_args filter.
+		$overridden_keys = [ 'cancel_reply_before', 'title_reply', 'title_reply_before', 'title_reply_to' ];
+		foreach ( $overridden_keys as $key ) {
+			if ( array_key_exists( $key, $args ) && array_key_exists( $key, $default_args ) && $default_args[ $key ] !== $args[ $key ] ) {
+				return $default_args;
+			}
+		}
+
+		$state_id     = self::get_comment_form_state_id( get_the_ID() );
 		$text_binding = sprintf(
 			'%s.replyToName ? %s : %s',
 			$state_id,
 			str_replace(
 				'%s',
 				sprintf( '" + %s.replyToName + "', $state_id ),
-				wp_json_encode( $args['title_reply_to'], JSON_UNESCAPED_UNICODE )
+				wp_json_encode( $default_args['title_reply_to'], JSON_UNESCAPED_UNICODE )
 			),
-			wp_json_encode( $args['title_reply'], JSON_UNESCAPED_UNICODE )
+			wp_json_encode( $default_args['title_reply'], JSON_UNESCAPED_UNICODE )
 		);
 
-		$args['title_reply_before'] .= sprintf(
+		$default_args['title_reply_before'] .= sprintf(
 			'<span [text]="%s">',
 			esc_attr( $text_binding )
 		);
-		$args['cancel_reply_before'] = '</span>' . $args['cancel_reply_before'];
-		return $args;
+		$default_args['cancel_reply_before'] = '</span>' . $default_args['cancel_reply_before'];
+		return $default_args;
 	}
 
 	/**
@@ -1319,6 +1136,7 @@ class AMP_Theme_Support {
 	 *
 	 * @since 0.7
 	 * @see get_comment_reply_link()
+	 * @deprecated Logic moved to AMP_Comments_Sanitizer.
 	 *
 	 * @param string     $link    The HTML markup for the comment reply link.
 	 * @param array      $args    An array of arguments overriding the defaults.
@@ -1326,6 +1144,7 @@ class AMP_Theme_Support {
 	 * @return string Comment reply link.
 	 */
 	public static function filter_comment_reply_link( $link, $args, $comment ) {
+		_deprecated_function( __METHOD__, '2.2' );
 
 		// Continue to show default link to wp-login when user is not logged-in.
 		if ( get_option( 'comment_registration' ) && ! is_user_logged_in() ) {
@@ -1358,6 +1177,7 @@ class AMP_Theme_Support {
 	 *
 	 * @since 0.7
 	 * @see get_cancel_comment_reply_link()
+	 * @deprecated Logic moved to AMP_Comments_Sanitizer.
 	 *
 	 * @param string $formatted_link The HTML-formatted cancel comment reply link.
 	 * @param string $link           Cancel comment reply link URL.
@@ -1365,6 +1185,8 @@ class AMP_Theme_Support {
 	 * @return string Cancel reply link.
 	 */
 	public static function filter_cancel_comment_reply_link( $formatted_link, $link, $text ) {
+		_deprecated_function( __METHOD__, '2.2' );
+
 		if ( empty( $text ) ) {
 			$text = __( 'Click here to cancel reply.', 'default' );
 		}
@@ -1530,12 +1352,34 @@ class AMP_Theme_Support {
 	 */
 	public static function filter_admin_bar_style_loader_tag( $tag, $handle ) {
 		if (
-			in_array( $handle, wp_styles()->registered['admin-bar']->deps, true ) ?
+			is_array( wp_styles()->registered['admin-bar']->deps ) && in_array( $handle, wp_styles()->registered['admin-bar']->deps, true ) ?
 				self::is_exclusively_dependent( wp_styles(), $handle, 'admin-bar' ) :
 				self::has_dependency( wp_styles(), $handle, 'admin-bar' )
 		) {
 			$tag = preg_replace( '/(?<=<link)(?=\s|>)/i', ' ' . AMP_Rule_Spec::DEV_MODE_ATTRIBUTE, $tag );
 		}
+		return $tag;
+	}
+
+	/**
+	 * Add data-ampdevmode attribute to any enqueued style that depends on the `customizer-preview` handle.
+	 *
+	 * @since 2.0
+	 *
+	 * @param string $tag    The link tag for the enqueued style.
+	 * @param string $handle The style's registered handle.
+	 * @return string Tag.
+	 */
+	public static function filter_customize_preview_style_loader_tag( $tag, $handle ) {
+		$customize_preview = 'customize-preview';
+		if (
+			is_array( wp_styles()->registered[ $customize_preview ]->deps ) && in_array( $handle, wp_styles()->registered[ $customize_preview ]->deps, true )
+				? self::is_exclusively_dependent( wp_styles(), $handle, $customize_preview )
+				: self::has_dependency( wp_styles(), $handle, $customize_preview )
+		) {
+			$tag = preg_replace( '/(?<=<link)(?=\s|>)/i', ' ' . AMP_Rule_Spec::DEV_MODE_ATTRIBUTE, $tag );
+		}
+
 		return $tag;
 	}
 
@@ -1550,7 +1394,7 @@ class AMP_Theme_Support {
 	 */
 	public static function filter_admin_bar_script_loader_tag( $tag, $handle ) {
 		if (
-			in_array( $handle, wp_scripts()->registered['admin-bar']->deps, true ) ?
+			is_array( wp_scripts()->registered['admin-bar']->deps ) && in_array( $handle, wp_scripts()->registered['admin-bar']->deps, true ) ?
 				self::is_exclusively_dependent( wp_scripts(), $handle, 'admin-bar' ) :
 				self::has_dependency( wp_scripts(), $handle, 'admin-bar' )
 		) {
@@ -1562,7 +1406,7 @@ class AMP_Theme_Support {
 	/**
 	 * Ensure the markup exists as required by AMP and elements are in the optimal loading order.
 	 *
-	 * Ensure meta[charset], meta[name=viewport], and link[rel=canonical] exist, as the whitelist sanitizer
+	 * Ensure meta[charset], meta[name=viewport], and link[rel=canonical] exist, as the validating sanitizer
 	 * may have removed an illegal meta[http-equiv] or meta[name=viewport]. For a singular post, core only outputs a
 	 * canonical URL by default. Adds the preload links.
 	 *
@@ -1570,259 +1414,212 @@ class AMP_Theme_Support {
 	 * @link https://www.ampproject.org/docs/reference/spec#required-markup
 	 * @link https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/
 	 * @todo All of this might be better placed inside of a sanitizer.
-	 * @todo Consider removing any scripts that are not among the $script_handles.
 	 *
-	 * @param DOMDocument $dom            Document.
-	 * @param string[]    $script_handles AMP script handles for components identified during output buffering.
+	 * @param Document             $dom            Document.
+	 * @param string[]             $script_handles AMP script handles for components identified during output buffering.
+	 * @param AMP_Base_Sanitizer[] $sanitizers     Sanitizers.
 	 */
-	public static function ensure_required_markup( DOMDocument $dom, $script_handles = [] ) {
-		/**
-		 * Elements.
-		 *
-		 * @var DOMElement $meta
-		 * @var DOMElement $script
-		 * @var DOMElement $link
-		 * @var DOMElement $style
-		 * @var DOMElement $noscript
-		 */
-
-		$xpath = new DOMXPath( $dom );
-
-		// Make sure the HEAD element is in the doc.
-		$head = $dom->getElementsByTagName( 'head' )->item( 0 );
-		if ( ! $head ) {
-			$head = $dom->createElement( 'head' );
-			$dom->documentElement->insertBefore( $head, $dom->documentElement->firstChild );
-		}
-
-		// Ensure there is a schema.org script in the document.
-		// @todo Consider applying the amp_schemaorg_metadata filter on the contents when a script is already present.
-		$schema_org_meta_script = $xpath->query( '//script[ @type = "application/ld+json" ][ contains( ./text(), "schema.org" ) ]' )->item( 0 );
-		if ( ! $schema_org_meta_script ) {
-			$script = $dom->createElement( 'script' );
-			$script->setAttribute( 'type', 'application/ld+json' );
-			$script->appendChild( $dom->createTextNode( wp_json_encode( amp_get_schemaorg_metadata(), JSON_UNESCAPED_UNICODE ) ) );
-			$head->appendChild( $script );
-		}
-
+	public static function ensure_required_markup( Document $dom, $script_handles = [], $sanitizers = [] ) {
 		// Gather all links.
-		$links         = [
-			'preconnect' => [
+		$links = [
+			Attribute::REL_PRECONNECT => [
 				// Include preconnect link for AMP CDN for browsers that don't support preload.
 				AMP_DOM_Utils::create_node(
 					$dom,
-					'link',
+					Tag::LINK,
 					[
-						'rel'  => 'preconnect',
-						'href' => 'https://cdn.ampproject.org',
+						Attribute::REL  => Attribute::REL_PRECONNECT,
+						Attribute::HREF => 'https://cdn.ampproject.org',
 					]
 				),
 			],
 		];
-		$link_elements = $head->getElementsByTagName( 'link' );
+
+		$link_elements = $dom->head->getElementsByTagName( Tag::LINK );
+
+		/**
+		 * Link element.
+		 *
+		 * @var DOMElement $link
+		 */
 		foreach ( $link_elements as $link ) {
-			if ( $link->hasAttribute( 'rel' ) ) {
-				$links[ $link->getAttribute( 'rel' ) ][] = $link;
+			if ( $link->hasAttribute( Attribute::REL ) ) {
+				$links[ $link->getAttribute( Attribute::REL ) ][] = $link;
 			}
 		}
 
 		// Ensure rel=canonical link.
-		$rel_canonical = null;
 		if ( empty( $links['canonical'] ) ) {
 			$rel_canonical = AMP_DOM_Utils::create_node(
 				$dom,
-				'link',
+				Tag::LINK,
 				[
-					'rel'  => 'canonical',
-					'href' => self::get_current_canonical_url(),
+					Attribute::REL  => Attribute::REL_CANONICAL,
+					Attribute::HREF => self::get_current_canonical_url(),
 				]
 			);
-			$head->appendChild( $rel_canonical );
+			$dom->head->appendChild( $rel_canonical );
 		}
 
-		/*
-		 * Ensure meta charset and meta viewport are present.
-		 *
-		 * "AMP is already quite restrictive about which markup is allowed in the <head> section. However,
-		 * there are a few basic optimizations that you can apply. The key is to structure the <head> section
-		 * in a way so that all render-blocking scripts and custom fonts load as fast as possible."
-		 *
-		 * "1. The first tag should be the meta charset tag, followed by any remaining meta tags."
-		 *
-		 * {@link https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/ Optimize the AMP Runtime loading}
-		 */
-		$meta_charset         = null;
-		$meta_viewport        = null;
-		$meta_amp_script_srcs = [];
-		$meta_elements        = [];
-		foreach ( $head->getElementsByTagName( 'meta' ) as $meta ) {
-			if ( $meta->hasAttribute( 'charset' ) ) { // There will not be a meta[http-equiv] because the sanitizer removed it.
-				$meta_charset = $meta;
-			} elseif ( 'viewport' === $meta->getAttribute( 'name' ) ) {
-				$meta_viewport = $meta;
-			} elseif ( 'amp-script-src' === $meta->getAttribute( 'name' ) ) {
-				$meta_amp_script_srcs[] = $meta;
-			} else {
-				$meta_elements[] = $meta;
-			}
-		}
-
-		// Handle meta charset.
-		if ( ! $meta_charset ) {
-			// Warning: This probably means the character encoding needs to be converted.
-			$meta_charset = AMP_DOM_Utils::create_node(
-				$dom,
-				'meta',
-				[
-					'charset' => 'utf-8',
-				]
-			);
-		} else {
-			$head->removeChild( $meta_charset ); // So we can move it.
-		}
-		$head->insertBefore( $meta_charset, $head->firstChild );
-
-		// Handle meta viewport.
-		if ( ! $meta_viewport ) {
-			$meta_viewport = AMP_DOM_Utils::create_node(
-				$dom,
-				'meta',
-				[
-					'name'    => 'viewport',
-					'content' => 'width=device-width',
-				]
-			);
-		} else {
-			$head->removeChild( $meta_viewport ); // So we can move it.
-		}
-		$head->insertBefore( $meta_viewport, $meta_charset->nextSibling );
-
-		// Handle meta amp-script-src elements.
-		$first_meta_amp_script_src = array_shift( $meta_amp_script_srcs );
-		if ( $first_meta_amp_script_src ) {
-			$meta_elements[] = $first_meta_amp_script_src;
-
-			// Merge (and remove) any subsequent meta amp-script-src elements.
-			if ( ! empty( $meta_amp_script_srcs ) ) {
-				$content_values = [ $first_meta_amp_script_src->getAttribute( 'content' ) ];
-				foreach ( $meta_amp_script_srcs as $meta_amp_script_src ) {
-					$meta_amp_script_src->parentNode->removeChild( $meta_amp_script_src );
-					$content_values[] = $meta_amp_script_src->getAttribute( 'content' );
-				}
-				$first_meta_amp_script_src->setAttribute( 'content', implode( ' ', $content_values ) );
-				unset( $meta_amp_script_src, $content_values );
-			}
-		}
-		unset( $meta_amp_script_srcs, $first_meta_amp_script_src );
-
-		// Insert all the the meta elements next in the head.
-		$previous_node = $meta_viewport;
-		foreach ( $meta_elements as $meta_element ) {
-			$meta_element->parentNode->removeChild( $meta_element );
-			$head->insertBefore( $meta_element, $previous_node->nextSibling );
-			$previous_node = $meta_element;
-		}
+		// Store the last meta tag as the previous node to append to.
+		$meta_tags     = $dom->head->getElementsByTagName( Tag::META );
+		$previous_node = $meta_tags->length > 0 ? $meta_tags->item( $meta_tags->length - 1 ) : $dom->head->firstChild;
 
 		// Handle the title.
-		$title = $head->getElementsByTagName( 'title' )->item( 0 );
+		$title = $dom->head->getElementsByTagName( Tag::TITLE )->item( 0 );
 		if ( $title ) {
 			$title->parentNode->removeChild( $title ); // So we can move it.
-			$head->insertBefore( $title, $previous_node->nextSibling );
+			$dom->head->insertBefore( $title, $previous_node->nextSibling );
 			$previous_node = $title;
 		}
-
-		// @see https://github.com/ampproject/amphtml/blob/2fd30ca984bceac05905bd5b17f9e0010629d719/src/render-delaying-services.js#L39-L43 AMPHTML Render Delaying Services SERVICES definition.
-		$render_delaying_extensions = [
-			'amp-experiment',
-			'amp-dynamic-css-classes',
-			'amp-story',
-		];
 
 		// Obtain the existing AMP scripts.
 		$amp_scripts     = [];
 		$ordered_scripts = [];
 		$head_scripts    = [];
-		$runtime_src     = wp_scripts()->registered['amp-runtime']->src;
-		foreach ( $head->getElementsByTagName( 'script' ) as $script ) { // Note that prepare_response() already moved body scripts to head.
+		$runtime_src     = wp_scripts()->registered[ Amp::RUNTIME ]->src;
+
+		/**
+		 * Script element.
+		 *
+		 * @var DOMElement $script
+		 */
+		foreach ( $dom->head->getElementsByTagName( Tag::SCRIPT ) as $script ) { // Note that prepare_response() already moved body scripts to head.
 			$head_scripts[] = $script;
 		}
 		foreach ( $head_scripts as $script ) {
-			$src = $script->getAttribute( 'src' );
+			$src = $script->getAttribute( Attribute::SRC );
 			if ( ! $src || 'https://cdn.ampproject.org/' !== substr( $src, 0, 27 ) ) {
 				continue;
 			}
 			if ( $runtime_src === $src ) {
-				$amp_scripts['amp-runtime'] = $script;
-			} elseif ( $script->hasAttribute( 'custom-element' ) ) {
-				$amp_scripts[ $script->getAttribute( 'custom-element' ) ] = $script;
-			} elseif ( $script->hasAttribute( 'custom-template' ) ) {
-				$amp_scripts[ $script->getAttribute( 'custom-template' ) ] = $script;
+				$amp_scripts[ Amp::RUNTIME ] = $script;
+			} elseif ( $script->hasAttribute( Attribute::CUSTOM_ELEMENT ) ) {
+				$amp_scripts[ $script->getAttribute( Attribute::CUSTOM_ELEMENT ) ] = $script;
+			} elseif ( $script->hasAttribute( Attribute::CUSTOM_TEMPLATE ) ) {
+				$amp_scripts[ $script->getAttribute( Attribute::CUSTOM_TEMPLATE ) ] = $script;
 			} else {
 				continue;
 			}
 			$script->parentNode->removeChild( $script ); // So we can move it.
 		}
 
-		// Create scripts for any components discovered from output buffering.
+		// Create scripts for any components discovered from output buffering that are missing.
 		foreach ( array_diff( $script_handles, array_keys( $amp_scripts ) ) as $missing_script_handle ) {
 			if ( ! wp_script_is( $missing_script_handle, 'registered' ) ) {
 				continue;
 			}
 			$attrs = [
-				'src'   => wp_scripts()->registered[ $missing_script_handle ]->src,
-				'async' => '',
+				Attribute::SRC   => wp_scripts()->registered[ $missing_script_handle ]->src,
+				Attribute::ASYNC => '',
 			];
-			if ( 'amp-mustache' === $missing_script_handle ) {
-				$attrs['custom-template'] = $missing_script_handle;
+			if ( Extension::MUSTACHE === $missing_script_handle ) {
+				$attrs[ Attribute::CUSTOM_TEMPLATE ] = $missing_script_handle;
 			} else {
-				$attrs['custom-element'] = $missing_script_handle;
+				$attrs[ Attribute::CUSTOM_ELEMENT ] = $missing_script_handle;
 			}
 
-			$amp_scripts[ $missing_script_handle ] = AMP_DOM_Utils::create_node( $dom, 'script', $attrs );
+			$amp_scripts[ $missing_script_handle ] = AMP_DOM_Utils::create_node( $dom, Tag::SCRIPT, $attrs );
 		}
 
-		/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-		 *
-		 * "2. Next, preload the AMP runtime v0.js <script> tag with <link as=script href=https://cdn.ampproject.org/v0.js rel=preload>.
-		 * The AMP runtime should start downloading as soon as possible because the AMP boilerplate hides the document via body { visibility:hidden }
-		 * until the AMP runtime has loaded. Preloading the AMP runtime tells the browser to download the script with a higher priority."
-		 * {@link https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/ Optimize the AMP Runtime loading}
-		 */
-		$prioritized_preloads = [];
-		if ( ! isset( $links['preload'] ) ) {
-			$links['preload'] = [];
-		}
-
-		$prioritized_preloads[] = AMP_DOM_Utils::create_node(
-			$dom,
-			'link',
-			[
-				'rel'  => 'preload',
-				'as'   => 'script',
-				'href' => $runtime_src,
-			]
+		// Remove scripts that had already been added but couldn't be detected from output buffering.
+		$extension_specs            = AMP_Allowed_Tags_Generated::get_extension_specs();
+		$superfluous_script_handles = array_diff(
+			array_keys( $amp_scripts ),
+			array_merge( $script_handles, [ Amp::RUNTIME ] )
 		);
+
+		// Allow the amp-carousel script as a special case to be on the page when there is no <amp-carousel> since the
+		// amp-lightbox-gallery component will lazy-load the amp-carousel script when a lightbox is opened, and since
+		// amp-carousel v0.1 is still the 'latest' version, this can mean that fixes needed with the 0.2 version won't
+		// be present on the page. Adding the amp-carousel v0.2 script is a stated workaround suggested in an AMP core
+		// issue: <https://github.com/ampproject/amphtml/issues/35402#issuecomment-887837815>.
+		if ( in_array( 'amp-lightbox-gallery', $script_handles, true ) ) {
+			$superfluous_script_handles = array_diff( $superfluous_script_handles, [ 'amp-carousel' ] );
+		}
+
+		// When opting-in to POST forms, omit the amp-form component entirely since it blocks submission.
+		if (
+			in_array( Extension::FORM, $script_handles, true )
+			&&
+			$dom->xpath->query( '//form[ @action and @method and translate( @method, "POST", "post" ) = "post" ]' )->length > 0
+		) {
+			$superfluous_script_handles[] = Extension::FORM;
+		}
+
+		foreach ( $superfluous_script_handles as $superfluous_script_handle ) {
+			if ( ! empty( $extension_specs[ $superfluous_script_handle ]['requires_usage'] ) ) {
+				unset( $amp_scripts[ $superfluous_script_handle ] );
+			}
+		}
+
+		// Make sure that Bento versions are used when required, either by explicitly requesting Bento or when the document is non-valid AMP.
+		$is_using_bento = (
+			array_key_exists( AMP_Tag_And_Attribute_Sanitizer::class, $sanitizers )
+			&&
+			$sanitizers[ AMP_Tag_And_Attribute_Sanitizer::class ]->get_arg( 'prefer_bento' )
+		);
+		if ( $is_using_bento ) {
+			$bento_extension_count = 0;
+
+			// Override all required scripts with the available Bento versions.
+			foreach ( $amp_scripts as $extension_name => $script_element ) {
+				if ( ! empty( $extension_specs[ $extension_name ]['bento']['version'] ) ) {
+					$script_element->setAttribute(
+						Attribute::SRC,
+						sprintf(
+							'https://cdn.ampproject.org/v0/%s-%s.js',
+							$extension_name,
+							$extension_specs[ $extension_name ]['bento']['version']
+						)
+					);
+					$bento_extension_count++;
+				}
+			}
+
+			// Enable Bento experiment per <https://amp.dev/documentation/guides-and-tutorials/start/bento_guide/?format=websites#enable-bento-experiment>.
+			// @todo Remove this once Bento no longer requires an experiment to opt-in.
+			if ( $bento_extension_count > 0 ) {
+				$bento_experiment_script = $dom->createElement( Tag::SCRIPT );
+				$bento_experiment_script->appendChild(
+					$dom->createTextNode( '(self.AMP = self.AMP || []).push(function (AMP) { AMP.toggleExperiment("bento", true); });' )
+				);
+
+				ValidationExemption::mark_node_as_px_verified( $bento_experiment_script );
+				if ( DevMode::isActiveForDocument( $dom ) ) {
+					$bento_experiment_script->setAttributeNode( $dom->createAttribute( Attribute::DATA_AMPDEVMODE ) );
+				}
+
+				$dom->head->appendChild( $bento_experiment_script );
+			}
+		}
 
 		/*
 		 * "3. If your page includes render-delaying extensions (e.g., amp-experiment, amp-dynamic-css-classes, amp-story),
 		 * preload those extensions as they're required by the AMP runtime for rendering the page."
+		 * @TODO: Move into RewriteAmpUrls transformer, as that will support self-hosting as well.
 		 */
+		$prioritized_preloads = [];
+		if ( ! isset( $links[ Attribute::REL_PRELOAD ] ) ) {
+			$links[ Attribute::REL_PRELOAD ] = [];
+		}
+
 		$amp_script_handles = array_keys( $amp_scripts );
-		foreach ( array_intersect( $render_delaying_extensions, $amp_script_handles ) as $script_handle ) {
-			if ( ! in_array( $script_handle, $render_delaying_extensions, true ) ) {
+		foreach ( array_intersect( Amp::RENDER_DELAYING_EXTENSIONS, $amp_script_handles ) as $script_handle ) {
+			if ( ! in_array( $script_handle, Amp::RENDER_DELAYING_EXTENSIONS, true ) ) {
 				continue;
 			}
 			$prioritized_preloads[] = AMP_DOM_Utils::create_node(
 				$dom,
-				'link',
+				Tag::LINK,
 				[
-					'rel'  => 'preload',
-					'as'   => 'script',
-					'href' => $amp_scripts[ $script_handle ]->getAttribute( 'src' ),
+					Attribute::REL  => Attribute::REL_PRELOAD,
+					Attribute::AS_  => RequestDestination::SCRIPT,
+					Attribute::HREF => $amp_scripts[ $script_handle ]->getAttribute( Attribute::SRC ),
 				]
 			);
 		}
-		$links['preload'] = array_merge( $prioritized_preloads, $links['preload'] );
+		$links[ Attribute::REL_PRELOAD ] = array_merge( $prioritized_preloads, $links[ Attribute::REL_PRELOAD ] );
 
 		/*
 		 * "4. Use preconnect to speedup the connection to other origin where the full resource URL is not known ahead of time,
@@ -1830,7 +1627,7 @@ class AMP_Theme_Support {
 		 *
 		 * Note that \AMP_Style_Sanitizer::process_link_element() will ensure preconnect links for Google Fonts are present.
 		 */
-		$link_relations = [ 'preconnect', 'dns-prefetch', 'preload', 'prerender', 'prefetch' ];
+		$link_relations = [ Attribute::REL_PRECONNECT, Attribute::REL_DNS_PREFETCH, Attribute::REL_PRELOAD, Attribute::REL_PRERENDER, Attribute::REL_PREFETCH ];
 		foreach ( $link_relations as $rel ) {
 			if ( ! isset( $links[ $rel ] ) ) {
 				continue;
@@ -1839,20 +1636,20 @@ class AMP_Theme_Support {
 				if ( $link->parentNode ) {
 					$link->parentNode->removeChild( $link ); // So we can move it.
 				}
-				$head->insertBefore( $link, $previous_node->nextSibling );
+				$dom->head->insertBefore( $link, $previous_node->nextSibling );
 				$previous_node = $link;
 			}
 		}
 
 		// "5. Load the AMP runtime."
-		if ( isset( $amp_scripts['amp-runtime'] ) ) {
-			$ordered_scripts['amp-runtime'] = $amp_scripts['amp-runtime'];
-			unset( $amp_scripts['amp-runtime'] );
+		if ( isset( $amp_scripts[ Amp::RUNTIME ] ) ) {
+			$ordered_scripts[ Amp::RUNTIME ] = $amp_scripts[ Amp::RUNTIME ];
+			unset( $amp_scripts[ Amp::RUNTIME ] );
 		} else {
-			$script = $dom->createElement( 'script' );
-			$script->setAttribute( 'async', '' );
-			$script->setAttribute( 'src', $runtime_src );
-			$ordered_scripts['amp-runtime'] = $script;
+			$script = $dom->createElement( Tag::SCRIPT );
+			$script->setAttribute( Attribute::ASYNC, '' );
+			$script->setAttribute( Attribute::SRC, $runtime_src );
+			$ordered_scripts[ Amp::RUNTIME ] = $script;
 		}
 
 		/*
@@ -1860,7 +1657,7 @@ class AMP_Theme_Support {
 		 *
 		 * {@link https://amp.dev/documentation/guides-and-tutorials/optimize-and-measure/optimize_amp/ AMP Hosting Guide}
 		 */
-		foreach ( $render_delaying_extensions as $extension ) {
+		foreach ( Amp::RENDER_DELAYING_EXTENSIONS as $extension ) {
 			if ( isset( $amp_scripts[ $extension ] ) ) {
 				$ordered_scripts[ $extension ] = $amp_scripts[ $extension ];
 				unset( $amp_scripts[ $extension ] );
@@ -1871,60 +1668,12 @@ class AMP_Theme_Support {
 		 * "7. Specify the <script> tags for remaining extensions (e.g., amp-bind ...). These extensions are not render-delaying
 		 * and therefore should not be preloaded as they might take away important bandwidth for the initial render."
 		 */
+		ksort( $amp_scripts );
 		$ordered_scripts = array_merge( $ordered_scripts, $amp_scripts );
 		foreach ( $ordered_scripts as $ordered_script ) {
-			$head->insertBefore( $ordered_script, $previous_node->nextSibling );
+			$dom->head->insertBefore( $ordered_script, $previous_node->nextSibling );
 			$previous_node = $ordered_script;
 		}
-
-		/*
-		 * "8. Specify any custom styles by using the <style amp-custom> tag."
-		 */
-		$style = $xpath->query( './style[ @amp-custom ]', $head )->item( 0 );
-		if ( $style ) {
-			// Ensure the CSS manifest comment remains before style[amp-custom].
-			if ( $style->previousSibling instanceof DOMComment ) {
-				$comment = $style->previousSibling;
-				$comment->parentNode->removeChild( $comment );
-				$head->insertBefore( $comment, $previous_node->nextSibling );
-				$previous_node = $comment;
-			}
-
-			$style->parentNode->removeChild( $style );
-			$head->insertBefore( $style, $previous_node->nextSibling );
-			$previous_node = $style;
-		}
-
-		/*
-		 * "9. Add any other tags allowed in the <head> section. In particular, any external fonts should go last since
-		 * they block rendering."
-		 */
-
-		/*
-		 * "10. Finally, specify the AMP boilerplate code. By putting the boilerplate code last, it prevents custom styles
-		 * from accidentally overriding the boilerplate css rules."
-		 */
-		$style = $xpath->query( './style[ @amp-boilerplate ]', $head )->item( 0 );
-		if ( ! $style ) {
-			$style = $dom->createElement( 'style' );
-			$style->setAttribute( 'amp-boilerplate', '' );
-			$style->appendChild( $dom->createTextNode( amp_get_boilerplate_stylesheets()[0] ) );
-		} else {
-			$style->parentNode->removeChild( $style ); // So we can move it.
-		}
-		$head->appendChild( $style );
-
-		$noscript = $xpath->query( './noscript[ style[ @amp-boilerplate ] ]', $head )->item( 0 );
-		if ( ! $noscript ) {
-			$noscript = $dom->createElement( 'noscript' );
-			$style    = $dom->createElement( 'style' );
-			$style->setAttribute( 'amp-boilerplate', '' );
-			$style->appendChild( $dom->createTextNode( amp_get_boilerplate_stylesheets()[1] ) );
-			$noscript->appendChild( $style );
-		} else {
-			$noscript->parentNode->removeChild( $noscript ); // So we can move it.
-		}
-		$head->appendChild( $noscript );
 
 		unset( $previous_node );
 	}
@@ -1968,6 +1717,9 @@ class AMP_Theme_Support {
 			newrelic_disable_autorum();
 		}
 
+		// Obtain Schema.org metadata so that it will be available.
+		self::$metadata = (array) amp_get_schemaorg_metadata();
+
 		ob_start( [ __CLASS__, 'finish_output_buffering' ] );
 		self::$is_output_buffering = true;
 	}
@@ -1996,7 +1748,60 @@ class AMP_Theme_Support {
 	 */
 	public static function finish_output_buffering( $response ) {
 		self::$is_output_buffering = false;
-		return self::prepare_response( $response );
+
+		try {
+			$response = self::prepare_response( $response );
+		} catch ( Error $error ) { // Only PHP 7+.
+			$response = self::render_error_page( $error );
+		} catch ( Exception $exception ) {
+			$response = self::render_error_page( $exception );
+		}
+
+		/**
+		 * Fires when server timings should be sent.
+		 *
+		 * This is immediately before the processed output buffer is sent to the client.
+		 *
+		 * @since 2.0
+		 * @internal
+		 */
+		do_action( 'amp_server_timing_send' );
+		return $response;
+	}
+
+	/**
+	 * Render error page.
+	 *
+	 * @param Throwable $throwable Exception or (as of PHP7) Error.
+	 */
+	private static function render_error_page( $throwable ) {
+		$title   = __( 'Failed to prepare AMP page', 'amp' );
+		$message = __( 'A PHP error occurred while trying to prepare the AMP response. This may not be caused by the AMP plugin but by some other active plugin or the current theme. You will need to review the error details to determine the source of the error.', 'amp' );
+
+		$error_page = Services::get( 'dev_tools.error_page' );
+
+		$error_page
+			->with_title( $title )
+			->with_message( $message )
+			->with_throwable( $throwable )
+			->with_response_code( 500 );
+
+		// Add link to non-AMP version if not canonical.
+		if ( ! amp_is_canonical() ) {
+			$non_amp_url = amp_remove_paired_endpoint( amp_get_current_url() );
+
+			// Prevent user from being redirected back to AMP version.
+			if ( true === AMP_Options_Manager::get_option( Option::MOBILE_REDIRECT ) ) {
+				$non_amp_url = add_query_arg( QueryVar::NOAMP, QueryVar::NOAMP_MOBILE, $non_amp_url );
+			}
+
+			$error_page->with_back_link(
+				$non_amp_url,
+				__( 'Go to non-AMP version', 'amp' )
+			);
+		}
+
+		return $error_page->render();
 	}
 
 	/**
@@ -2014,11 +1819,23 @@ class AMP_Theme_Support {
 			$dom  = AMP_DOM_Utils::get_dom_from_content( $partial );
 			$args = [
 				'content_max_width'    => ! empty( $content_width ) ? $content_width : AMP_Post_Template::CONTENT_MAX_WIDTH, // Back-compat.
-				'use_document_element' => false,
-				'allow_dirty_styles'   => true,
-				'allow_dirty_scripts'  => false,
+				'use_document_element' => true,
 			];
 			AMP_Content_Sanitizer::sanitize_document( $dom, self::$sanitizer_classes, $args ); // @todo Include script assets in response?
+
+			// Move any amp-custom to include in the partial response.
+			$amp_custom_style = $dom->xpath->query( '//style[ @amp-custom ]' )->item( 0 );
+			if ( $amp_custom_style instanceof DOMElement ) {
+				$amp_custom_style->removeAttribute( Attribute::AMP_CUSTOM );
+				$amp_custom_style->setAttribute( 'amp-custom-partial', '' );
+				$amp_custom_style->textContent = str_replace(
+					'/*# sourceURL=amp-custom.css */',
+					'/*# sourceURL=amp-custom-partial.css */',
+					$amp_custom_style->textContent
+				);
+				$dom->body->appendChild( $amp_custom_style ); // @todo This could cause layout problems. It may be preferable to move to the head.
+			}
+
 			$partial = AMP_DOM_Utils::get_content_from_dom( $dom );
 		}
 		return $partial;
@@ -2030,13 +1847,13 @@ class AMP_Theme_Support {
 	 * @since 0.7
 	 *
 	 * @param string $response HTML document response. By default it expects a complete document.
-	 * @param array  $args     Args to send to the preprocessor/sanitizer.
+	 * @param array  $args     Args to send to the preprocessor/sanitizer/optimizer.
 	 * @return string AMP document response.
 	 * @global int $content_width
 	 */
 	public static function prepare_response( $response, $args = [] ) {
 		global $content_width;
-		$prepare_response_start = microtime( true );
+		$last_error = error_get_last();
 
 		if ( isset( $args['validation_error_callback'] ) ) {
 			_doing_it_wrong( __METHOD__, 'Do not supply validation_error_callback arg.', '1.0' );
@@ -2066,6 +1883,9 @@ class AMP_Theme_Support {
 			if ( is_bool( $status_code ) ) {
 				$status_code = 200; // Not a web server environment.
 			}
+			if ( ! headers_sent() ) {
+				header( 'Content-Type: application/json; charset=utf-8' );
+			}
 			return wp_json_encode(
 				[
 					'status_code' => $status_code,
@@ -2074,257 +1894,184 @@ class AMP_Theme_Support {
 			);
 		}
 
-		/*
-		 * Abort if the response was not HTML. To be post-processed as an AMP page, the output-buffered document must
-		 * have the HTML mime type and it must start with <html> followed by <head> tag (with whitespace, doctype, and comments optionally interspersed).
-		 */
-		if ( 'text/html' !== substr( AMP_HTTP::get_response_content_type(), 0, 9 ) || ! preg_match( '#^(?:<!.*?>|\s+)*<html.*?>(?:<!.*?>|\s+)*<head\b(.*?)>#is', $response ) ) {
+		// Abort if response type is not HTML.
+		if ( Attribute::TYPE_HTML !== substr( AMP_HTTP::get_response_content_type(), 0, 9 ) ) {
 			return $response;
 		}
 
-		/**
-		 * Filters whether response (post-processor) caching is enabled.
-		 *
-		 * When enabled and when an external object cache is present, the output of the post-processor phase is stored in
-		 * in the object cache. When another request is made that generates the same HTML output, the previously-cached
-		 * post-processor output will then be served immediately and bypass needlessly re-running the sanitizers.
-		 * This does not apply when:
-		 *
-		 * - AMP validation is being performed.
-		 * - The response is in the Customizer preview.
-		 * - Response caching is disabled due to a high-rate of cache misses.
-		 *
-		 * @param bool $enable_response_caching Whether response caching is enabled.
-		 */
-		$enable_response_caching = apply_filters( 'amp_response_caching_enabled', ! ( defined( 'WP_DEBUG' ) && WP_DEBUG ) || ! empty( $args['enable_response_caching'] ) );
-		$enable_response_caching = (
-			$enable_response_caching
-			&&
-			! AMP_Validation_Manager::should_validate_response()
-			&&
-			! is_customize_preview()
-		);
+		// Abort if an expected template action didn't fire or if the HTML tag does not have the AMP attribute.
+		if ( ! (
+			did_action( 'wp_head' )
+			||
+			did_action( 'wp_footer' )
+			||
+			did_action( 'amp_post_template_head' )
+			||
+			did_action( 'amp_post_template_footer' )
+			||
+			preg_match(
+				sprintf(
+					'#^(?:<!.*?>|\s+)*+<html(?=\s)[^>]*?\s(%1$s|%2$s|%3$s)(\s|=|>)#is',
+					preg_quote( Attribute::AMP, '#' ),
+					preg_quote( Attribute::AMP_EMOJI, '#' ),
+					preg_quote( Attribute::AMP_EMOJI_ALT, '#' )
+				),
+				$response
+			)
+		) ) {
+			// Detect whether redirect happened and prevent failing a validation request when that happens,
+			// since \AMP_Validation_Manager::validate_url() follows redirects.
+			$sent_location_header = false;
+			foreach ( headers_list() as $sent_header ) {
+				if ( preg_match( '#^location:#i', $sent_header ) ) {
+					$sent_location_header = true;
+					break;
+				}
+			}
+			$did_redirect = $status_code >= 300 && $status_code < 400 && $sent_location_header;
 
-		// When response caching is enabled, determine if it should be turned off for cache misses.
-		$caches_for_url = null;
-		if ( $enable_response_caching ) {
-			list( $disable_response_caching, $caches_for_url ) = self::check_for_cache_misses();
-			$enable_response_caching                           = ! $disable_response_caching;
+			if ( AMP_Validation_Manager::is_validate_request() && ! $did_redirect ) {
+				if ( ! headers_sent() ) {
+					status_header( 400 );
+					header( 'Content-Type: application/json; charset=utf-8' );
+				}
+				return wp_json_encode(
+					[
+						'code'    => 'RENDERED_PAGE_NOT_AMP',
+						'message' => __( 'The requested URL did not result in an AMP page being rendered.', 'amp' ),
+					]
+				);
+			}
+
+			return $response;
 		}
 
-		// @todo Both allow_dirty_styles and allow_dirty_scripts should eventually use AMP dev mode instead.
+		// Enforce UTF-8 encoding as it is a requirement for AMP.
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: text/html; charset=utf-8' );
+		}
+
 		$args = array_merge(
 			[
 				'content_max_width'    => ! empty( $content_width ) ? $content_width : AMP_Post_Template::CONTENT_MAX_WIDTH, // Back-compat.
 				'use_document_element' => true,
-				'allow_dirty_styles'   => self::is_customize_preview_iframe(), // Dirty styles only needed when editing (e.g. for edit shortcuts).
-				'allow_dirty_scripts'  => is_customize_preview(), // Scripts are always needed to inject changeset UUID.
 				'user_can_validate'    => AMP_Validation_Manager::has_cap(),
 			],
-			$args,
-			compact( 'enable_response_caching' )
+			$args
 		);
 
-		$current_url = amp_get_current_url();
-		$non_amp_url = amp_remove_endpoint( $current_url );
-
-		/*
-		 * Set response cache hash, the data values dictates whether a new hash key should be generated or not.
-		 * This is also used as the ETag.
-		 */
-		$response_cache_key = md5(
-			wp_json_encode(
-				[
-					$args,
-					$response,
-					self::$sanitizer_classes,
-					self::$embed_handlers,
-					AMP__VERSION,
-				]
-			)
-		);
-
-		/*
-		 * Per rfc7232:
-		 * "The server generating a 304 response MUST generate any of the
-		 * following header fields that would have been sent in a 200 (OK)
-		 * response to the same request: Cache-Control, Content-Location, Date,
-		 * ETag, Expires, and Vary." The only one of these headers which would
-		 * not have been set yet during the WordPress template generation is
-		 * the ETag. The AMP plugin sends a Vary header at amp_init.
-		 */
-		AMP_HTTP::send_header( 'ETag', '"' . $response_cache_key . '"' );
-
-		/*
-		 * Handle responses that are cached by the browser, returning 304 response if the response cache key
-		 * matches any ETags mentioned in If-None-Match request header. Note that if the client request indicates a
-		 * weak validator (prefixed by W/) then this will be ignored. The MD5 strings will be extracted from the
-		 * If-None-Match request header and if any of them match the $response_cache_key then a 304 Not Modified
-		 * response is returned.
+		/**
+		 * Stops the server-timing measurement for the entire output buffer capture.
 		 *
-		 * Such 304 Not Modified responses are only enabled when using a stable release. This is not enabled for
-		 * non-stable releases (like 1.2-beta2) because the plugin would be under active development and such caching
-		 * would make it more difficult to see changes applied to the sanitizers. (A browser's cache would have to be
-		 * disabled or the developer would have to always do hard reloads.)
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string $event_name Name of the event to stop.
 		 */
-		$has_matching_etag = (
-			false === strpos( AMP__VERSION, '-' )
-			&&
-			isset( $_SERVER['HTTP_IF_NONE_MATCH'] )
-			&&
-			preg_match_all( '#\b[0-9a-f]{32}\b#', wp_unslash( $_SERVER['HTTP_IF_NONE_MATCH'] ), $etag_match_candidates )
-			&&
-			in_array( $response_cache_key, $etag_match_candidates[0], true )
-		);
-		if ( $has_matching_etag ) {
-			status_header( 304 );
-			return '';
-		}
+		do_action( 'amp_server_timing_stop', 'amp_output_buffer' );
 
-		// Return cache if enabled and found.
-		$cache_response = null;
-		if ( true === $args['enable_response_caching'] ) {
-			$response_cache = wp_cache_get( $response_cache_key, self::RESPONSE_CACHE_GROUP );
-
-			// Make sure that all of the validation errors should be sanitized in the same way; if not, then the cached body should be discarded.
-			$blocking_error_count = 0;
-			if ( isset( $response_cache['validation_results'] ) ) {
-				foreach ( $response_cache['validation_results'] as $validation_result ) {
-					if ( ! $validation_result['sanitized'] ) {
-						$blocking_error_count++;
-					}
-					$should_sanitize = AMP_Validation_Error_Taxonomy::is_validation_error_sanitized( $validation_result['error'] );
-					if ( $should_sanitize !== $validation_result['sanitized'] ) {
-						unset( $response_cache['body'] );
-						break;
-					}
-				}
-			}
-
-			// Short-circuit response with cached body.
-			if ( isset( $response_cache['body'] ) ) {
-
-				// Re-send the headers that were sent before when the response was first cached.
-				if ( isset( $response_cache['headers'] ) ) {
-					foreach ( $response_cache['headers'] as $header ) {
-						if ( in_array( $header, AMP_HTTP::$headers_sent, true ) ) {
-							continue; // Skip sending headers that were already sent prior to post-processing.
-						}
-						AMP_HTTP::send_header( $header['name'], $header['value'], wp_array_slice_assoc( $header, [ 'replace', 'status_code' ] ) );
-					}
-				}
-
-				AMP_HTTP::send_server_timing( 'amp_processor_cache_hit', -$prepare_response_start );
-
-				// Redirect to non-AMP version.
-				if ( ! amp_is_canonical() && ! is_singular( AMP_Story_Post_Type::POST_TYPE_SLUG ) && $blocking_error_count > 0 ) {
-					if ( AMP_Validation_Manager::has_cap() ) {
-						$non_amp_url = add_query_arg( AMP_Validation_Manager::VALIDATION_ERRORS_QUERY_VAR, $blocking_error_count, $non_amp_url );
-					}
-
-					/*
-					 * Temporary redirect because AMP page may return with blocking validation errors when auto-accepting sanitization
-					 * is not enabled. A 302 will allow the errors to be fixed without needing to bust any redirect caches.
-					 */
-					wp_safe_redirect( $non_amp_url, 302 );
-				}
-				return $response_cache['body'];
-			}
-
-			$cache_response = static function( $body, $validation_results ) use ( $response_cache_key, $caches_for_url ) {
-				$caches_for_url[] = $response_cache_key;
-				wp_cache_set(
-					AMP_Theme_Support::POST_PROCESSOR_CACHE_EFFECTIVENESS_KEY,
-					$caches_for_url,
-					AMP_Theme_Support::POST_PROCESSOR_CACHE_EFFECTIVENESS_GROUP,
-					600 // 10 minute cache.
-				);
-
-				return wp_cache_set(
-					$response_cache_key,
-					[
-						'headers'            => AMP_HTTP::$headers_sent,
-						'body'               => $body,
-						'validation_results' => $validation_results,
-					],
-					AMP_Theme_Support::RESPONSE_CACHE_GROUP,
-					MONTH_IN_SECONDS
-				);
-			};
-		}
-
-		AMP_HTTP::send_server_timing( 'amp_output_buffer', -self::$init_start_time, 'AMP Output Buffer' );
-
-		$dom_parse_start = microtime( true );
-
-		/*
-		 * Make sure that <meta charset> is present in output prior to parsing.
-		 * Note that the meta charset is supposed to appear within the first 1024 bytes.
-		 * See <https://www.w3.org/International/questions/qa-html-encoding-declarations>.
+		/**
+		 * Starts the server-timing measurement for the dom parsing subsystem.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string      $event_name        Name of the event to record.
+		 * @param string|null $event_description Optional. Description of the event
+		 *                                       to record. Defaults to null.
+		 * @param string[]    $properties        Optional. Additional properties to add
+		 *                                       to the logged record.
+		 * @param bool        $verbose_only      Optional. Whether to only show the
+		 *                                       event in verbose mode. Defaults to
+		 *                                       false.
 		 */
-		if ( ! preg_match( '#<meta[^>]+charset=#i', substr( $response, 0, 1024 ) ) ) {
-			$meta_charset = sprintf( '<meta charset="%s">', esc_attr( get_bloginfo( 'charset' ) ) );
+		do_action( 'amp_server_timing_start', 'amp_dom_parse', '', [], true );
 
-			$response = preg_replace(
-				'/(<head\b.*?>)/is',
-				'$1' . $meta_charset,
-				$response,
-				1,
-				$count
-			);
+		$dom = Document::fromHtml( $response, Options::DEFAULTS );
+
+		if ( AMP_Validation_Manager::is_validate_request() ) {
+			AMP_Validation_Manager::remove_illegal_source_stack_comments( $dom );
 		}
 
-		$dom   = AMP_DOM_Utils::get_dom( $response );
-		$xpath = new DOMXPath( $dom );
-		$head  = $dom->getElementsByTagName( 'head' )->item( 0 );
+		/**
+		 * Stops the server-timing measurement for the dom parsing subsystem.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string $event_name Name of the event to stop.
+		 */
+		do_action( 'amp_server_timing_stop', 'amp_dom_parse' );
 
-		// Move anything after </html>, such as Query Monitor output added at shutdown, to be moved before </body>.
-		$body = $dom->getElementsByTagName( 'body' )->item( 0 );
-		if ( $body ) {
-			while ( $dom->documentElement->nextSibling ) {
-				// Trailing elements after </html> will get wrapped in additional <html> elements.
-				if ( 'html' === $dom->documentElement->nextSibling->nodeName ) {
-					while ( $dom->documentElement->nextSibling->firstChild ) {
-						$body->appendChild( $dom->documentElement->nextSibling->firstChild );
-					}
-					$dom->removeChild( $dom->documentElement->nextSibling );
-				} else {
-					$body->appendChild( $dom->documentElement->nextSibling );
-				}
-			}
-		}
-
-		AMP_HTTP::send_server_timing( 'amp_dom_parse', -$dom_parse_start, 'AMP DOM Parse' );
+		/**
+		 * Starts the server-timing measurement for the AMP Sanitizer subsystem.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string      $event_name        Name of the event to record.
+		 * @param string|null $event_description Optional. Description of the event
+		 *                                       to record. Defaults to null.
+		 * @param string[]    $properties        Optional. Additional properties to add
+		 *                                       to the logged record.
+		 * @param bool        $verbose_only      Optional. Whether to only show the
+		 *                                       event in verbose mode. Defaults to
+		 *                                       false.
+		 */
+		do_action( 'amp_server_timing_start', 'amp_sanitizer' );
 
 		// Make sure scripts from the body get moved to the head.
-		if ( isset( $head ) ) {
-			foreach ( $xpath->query( '//body//script[ @custom-element or @custom-template or @src = "https://cdn.ampproject.org/v0.js" ]' ) as $script ) {
-				$head->appendChild( $script->parentNode->removeChild( $script ) );
-			}
+		foreach ( $dom->xpath->query( '//body//script[ @custom-element or @custom-template or @src = "https://cdn.ampproject.org/v0.js" ]' ) as $script ) {
+			$dom->head->appendChild( $script->parentNode->removeChild( $script ) );
 		}
 
 		// Ensure the mandatory amp attribute is present on the html element.
-		if ( ! $dom->documentElement->hasAttribute( 'amp' ) && ! $dom->documentElement->hasAttribute( '⚡️' ) ) {
-			$dom->documentElement->setAttribute( 'amp', '' );
+		if ( ! $dom->documentElement->hasAttribute( Attribute::AMP )
+			&& ! $dom->documentElement->hasAttribute( Attribute::AMP_EMOJI )
+			&& ! $dom->documentElement->hasAttribute( Attribute::AMP_EMOJI_ALT ) ) {
+			$dom->documentElement->setAttribute( Attribute::AMP, '' );
 		}
 
-		$assets = AMP_Content_Sanitizer::sanitize_document( $dom, self::$sanitizer_classes, $args );
+		$sanitization_results = AMP_Content_Sanitizer::sanitize_document( $dom, self::$sanitizer_classes, $args );
 
-		// Determine what the validation errors are.
-		$blocking_error_count = 0;
-		$validation_results   = [];
-		foreach ( AMP_Validation_Manager::$validation_results as $validation_result ) {
-			if ( ! $validation_result['sanitized'] ) {
-				$blocking_error_count++;
-			}
-			unset( $validation_result['error']['sources'] );
-			$validation_results[] = $validation_result;
+		/**
+		 * Stops the server-timing measurement for the AMP Sanitizer subsystem.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string $event_name Name of the event to stop.
+		 */
+		do_action( 'amp_server_timing_stop', 'amp_sanitizer' );
+
+		// Respond early with results if performing a validate request.
+		if ( AMP_Validation_Manager::is_validate_request() ) {
+			return AMP_Validation_Manager::send_validate_response(
+				$sanitization_results,
+				$status_code,
+				$last_error
+			);
 		}
 
-		$dom_serialize_start = microtime( true );
+		/**
+		 * Starts the server-timing measurement for the AMP DOM serialization.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string      $event_name        Name of the event to record.
+		 * @param string|null $event_description Optional. Description of the event
+		 *                                       to record. Defaults to null.
+		 * @param string[]    $properties        Optional. Additional properties to add
+		 *                                       to the logged record.
+		 * @param bool        $verbose_only      Optional. Whether to only show the
+		 *                                       event in verbose mode. Defaults to
+		 *                                       false.
+		 */
+		do_action( 'amp_server_timing_start', 'amp_dom_serialize', '', [], true );
 
 		// Gather all component scripts that are used in the document and then render any not already printed.
-		$amp_scripts = $assets['scripts'];
+		$amp_scripts = $sanitization_results['scripts'];
 		foreach ( self::$embed_handlers as $embed_handler ) {
 			$amp_scripts = array_merge(
 				$amp_scripts,
@@ -2341,149 +2088,170 @@ class AMP_Theme_Support {
 			}
 		}
 
-		self::ensure_required_markup( $dom, array_keys( $amp_scripts ) );
+		self::ensure_required_markup( $dom, array_keys( $amp_scripts ), $sanitization_results['sanitizers'] );
 
-		if ( $blocking_error_count > 0 && ! AMP_Validation_Manager::should_validate_response() ) {
-			/*
-			 * In AMP-first, strip html@amp attribute to prevent GSC from complaining about a validation error
-			 * already surfaced inside of WordPress. This is intended to not serve dirty AMP, but rather a
-			 * non-AMP document (intentionally not valid AMP) that contains the AMP runtime and AMP components.
+		$effective_sandboxing_level = Sandboxing::get_effective_level( $dom );
+		$has_validation_exemptions  = 3 !== $effective_sandboxing_level;
+
+		$enable_optimizer = array_key_exists( ConfigurationArgument::ENABLE_OPTIMIZER, $args )
+			? $args[ ConfigurationArgument::ENABLE_OPTIMIZER ]
+			: true;
+
+		/**
+		 * Filter whether the generated HTML output should be run through the AMP Optimizer or not.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param bool $enable_optimizer Whether the generated HTML output should be run through the AMP Optimizer or not.
+		 */
+		$enable_optimizer = apply_filters( 'amp_enable_optimizer', $enable_optimizer );
+
+		if ( $enable_optimizer ) {
+			/**
+			 * Starts the server-timing measurement for the AMP Optimizer subsystem.
+			 *
+			 * @since 2.0
+			 * @internal
+			 *
+			 * @param string      $event_name        Name of the event to record.
+			 * @param string|null $event_description Optional. Description of the event
+			 *                                       to record. Defaults to null.
+			 * @param string[]    $properties        Optional. Additional properties to add
+			 *                                       to the logged record.
+			 * @param bool        $verbose_only      Optional. Whether to only show the
+			 *                                       event in verbose mode. Defaults to
+			 *                                       false.
 			 */
-			if ( amp_is_canonical() || is_singular( AMP_Story_Post_Type::POST_TYPE_SLUG ) ) {
-				$dom->documentElement->removeAttribute( 'amp' );
-				$dom->documentElement->removeAttribute( '⚡️' );
+			do_action( 'amp_server_timing_start', 'amp_optimizer' );
 
-				/*
-				 * Make sure that document.write() is disabled to prevent dynamically-added content (such as added
-				 * via amp-live-list) from wiping out the page by introducing any scripts that call this function.
-				 */
-				if ( $head ) {
-					$script = $dom->createElement( 'script' );
-					$script->appendChild( $dom->createTextNode( 'document.addEventListener( "DOMContentLoaded", function() { document.write = function( text ) { throw new Error( "[AMP-WP] Prevented document.write() call with: "  + text ); }; } );' ) );
-					$head->appendChild( $script );
-				}
-			} elseif ( ! self::is_customize_preview_iframe() ) {
-				$response = esc_html__( 'Redirecting to non-AMP version.', 'amp' );
+			$errors = new Optimizer\ErrorCollection();
 
-				if ( $cache_response ) {
-					$cache_response( $response, $validation_results );
-				}
+			$args['skip_css_max_byte_count_enforcement'] = (
+				$has_validation_exemptions
+				||
+				DevMode::isActiveForDocument( $dom )
+			);
+			self::get_optimizer( $args )->optimizeDom( $dom, $errors );
 
-				// Indicate the number of validation errors detected at runtime in a query var on the non-AMP page for display in the admin bar.
-				if ( AMP_Validation_Manager::has_cap() ) {
-					$non_amp_url = add_query_arg( AMP_Validation_Manager::VALIDATION_ERRORS_QUERY_VAR, $blocking_error_count, $non_amp_url );
-				}
+			if ( count( $errors ) > 0 ) {
+				$error_messages = array_map(
+					static function( Optimizer\Error $error ) {
+						return ' - ' . $error->getCode() . ': ' . $error->getMessage();
+					},
+					iterator_to_array( $errors )
+				);
+				$dom->head->appendChild(
+					$dom->createComment( "\n" . __( 'AMP optimization could not be completed due to the following:', 'amp' ) . "\n" . implode( "\n", $error_messages ) . "\n" )
+				);
+				// @todo Include errors elsewhere than HTML comment?
+			}
 
-				/*
-				 * Temporary redirect because AMP page may return with blocking validation errors when auto-accepting sanitization
-				 * is not enabled. A 302 will allow the errors to be fixed without needing to bust any redirect caches.
-				 */
-				wp_safe_redirect( $non_amp_url, 302 );
-				return $response;
+			/**
+			 * Stops the server-timing measurement for the AMP Optimizer subsystem.
+			 *
+			 * @since 2.0
+			 * @internal
+			 *
+			 * @param string $event_name Name of the event to stop.
+			 */
+			do_action( 'amp_server_timing_stop', 'amp_optimizer' );
+		}
+
+		$can_serve = AMP_Validation_Manager::finalize_validation( $dom );
+
+		// Redirect to the non-AMP version if not on an AMP-first site.
+		if ( ! $can_serve && ! amp_is_canonical() ) {
+			$non_amp_url = amp_remove_paired_endpoint( amp_get_current_url() );
+
+			// Redirect to include query var to preventing AMP from even being considered available.
+			$non_amp_url = add_query_arg( QueryVar::NOAMP, QueryVar::NOAMP_AVAILABLE, $non_amp_url );
+
+			wp_safe_redirect( $non_amp_url, 302 ); // phpcs:ignore WordPressVIPMinimum.Security.ExitAfterRedirect.NoExit -- This is in an output buffer callback handler.
+			return esc_html__( 'Redirecting since AMP version not available.', 'amp' );
+		}
+
+		// Prevent serving a page as AMP if it is explicitly not valid as otherwise Google Search Console will complain.
+		if (
+			$has_validation_exemptions
+			||
+			( $dom->documentElement->hasAttribute( DevMode::DEV_MODE_ATTRIBUTE ) && ! is_user_logged_in() )
+		) {
+			$dom->documentElement->removeAttribute( Attribute::AMP );
+			$dom->documentElement->removeAttribute( Attribute::AMP_EMOJI );
+			$dom->documentElement->removeAttribute( Attribute::AMP_EMOJI_ALT );
+
+			/*
+			 * Make sure that document.write() is disabled to prevent dynamically-added content (such as added
+			 * via amp-live-list) from wiping out the page by introducing any scripts that call this function.
+			 */
+			if ( array_key_exists( Extension::LIVE_LIST, $amp_scripts ) ) {
+				$script = $dom->createElement( Tag::SCRIPT );
+				$script->appendChild( $dom->createTextNode( 'document.addEventListener( "DOMContentLoaded", function() { document.write = function( text ) { throw new Error( "[AMP-WP] Prevented document.write() call with: "  + text ); }; } );' ) );
+				ValidationExemption::mark_node_as_px_verified( $script );
+				$script->setAttributeNode( $dom->createAttribute( DevMode::DEV_MODE_ATTRIBUTE ) );
+				$dom->head->appendChild( $script );
 			}
 		}
 
-		// @todo If 'utf-8' is not the blog charset, then we'll need to do some character encoding conversation or "entityification".
-		if ( 'utf-8' !== strtolower( get_bloginfo( 'charset' ) ) ) {
-			/* translators: %s: the charset of the current site. */
-			trigger_error( esc_html( sprintf( __( 'The database has the %s encoding when it needs to be utf-8 to work with AMP.', 'amp' ), get_bloginfo( 'charset' ) ) ), E_USER_WARNING ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
-		}
+		/**
+		 * Fires immediately before the DOM is serialized to send as the response body.
+		 *
+		 * @since 2.2
+		 * @internal
+		 *
+		 * @param Document $dom                        Document prior to serialization.
+		 * @param int      $effective_sandboxing_level Effective sandboxing level.
+		 */
+		do_action( 'amp_finalize_dom', $dom, $effective_sandboxing_level );
 
-		AMP_Validation_Manager::finalize_validation(
-			$dom,
-			[
-				'remove_source_comments' => ! isset( $_GET['amp_preserve_source_comments'] ), // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			]
-		);
+		$response = $dom->saveHTML();
 
-		$response  = "<!DOCTYPE html>\n";
-		$response .= AMP_DOM_Utils::get_content_from_dom_node( $dom, $dom->documentElement );
-
-		AMP_HTTP::send_server_timing( 'amp_dom_serialize', -$dom_serialize_start, 'AMP DOM Serialize' );
-
-		// Cache response if enabled.
-		if ( $cache_response ) {
-			$cache_response( $response, $validation_results );
-		}
+		/**
+		 * Stops the server-timing measurement for the AMP DOM serialization.
+		 *
+		 * @since 2.0
+		 * @internal
+		 *
+		 * @param string $event_name Name of the event to stop.
+		 */
+		do_action( 'amp_server_timing_stop', 'amp_dom_serialize' );
 
 		return $response;
 	}
 
 	/**
-	 * Check for cache misses. When found, store in an option to retain the URL.
+	 * Optimizer instance to use.
 	 *
-	 * @since 1.0
-	 *
-	 * @return array {
-	 *     State.
-	 *
-	 *     @type bool       Flag indicating if the threshold has been exceeded.
-	 *     @type string[]   Collection of URLs.
-	 * }
+	 * @param array $args Associative array of arguments to pass into the transformation engine.
+	 * @return OptimizerService Optimizer transformation engine to use.
 	 */
-	private static function check_for_cache_misses() {
-		// If the cache miss threshold is exceeded, return true.
-		if ( self::exceeded_cache_miss_threshold() ) {
-			return [ true, null ];
-		}
-
-		// Get the cache miss URLs.
-		$cache_miss_urls = wp_cache_get( self::POST_PROCESSOR_CACHE_EFFECTIVENESS_KEY, self::POST_PROCESSOR_CACHE_EFFECTIVENESS_GROUP );
-		$cache_miss_urls = is_array( $cache_miss_urls ) ? $cache_miss_urls : [];
-
-		$exceeded_threshold = (
-			! empty( $cache_miss_urls )
-			&&
-			count( $cache_miss_urls ) >= self::CACHE_MISS_THRESHOLD
+	private static function get_optimizer( $args ) {
+		add_filter(
+			'amp_enable_ssr',
+			static function () use ( $args ) {
+				return array_key_exists( ConfigurationArgument::ENABLE_SSR, $args )
+					? $args[ ConfigurationArgument::ENABLE_SSR ]
+					: true;
+			},
+			defined( 'PHP_INT_MIN' ) ? PHP_INT_MIN : ~PHP_INT_MAX // phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
 		);
 
-		if ( ! $exceeded_threshold ) {
-			return [ $exceeded_threshold, $cache_miss_urls ];
-		}
+		// Supply the Schema.org metadata, previously obtained just before output buffering began, to the AmpSchemaOrgMetadataConfiguration.
+		add_filter(
+			'amp_optimizer_config',
+			function ( $config ) use ( $args ) {
+				if ( is_array( self::$metadata ) ) {
+					$config[ AmpSchemaOrgMetadata::class ][ AmpSchemaOrgMetadataConfiguration::METADATA ] = self::$metadata;
+				}
+				if ( ! empty( $args['skip_css_max_byte_count_enforcement'] ) ) {
+					$config[ TransformedIdentifier::class ][ TransformedIdentifierConfiguration::ENFORCED_CSS_MAX_BYTE_COUNT ] = false;
+				}
+				return $config;
+			},
+			defined( 'PHP_INT_MIN' ) ? PHP_INT_MIN : ~PHP_INT_MAX // phpcs:ignore PHPCompatibility.Constants.NewConstants.php_int_minFound
+		);
 
-		// When the threshold is exceeded, store the URL for cache miss and turn off response caching.
-		update_option( self::CACHE_MISS_URL_OPTION, amp_get_current_url() );
-		AMP_Options_Manager::update_option( 'enable_response_caching', false );
-		return [ true, null ];
-	}
-
-	/**
-	 * Reset the cache miss URL option.
-	 *
-	 * @since 1.0
-	 */
-	public static function reset_cache_miss_url_option() {
-		if ( get_option( self::CACHE_MISS_URL_OPTION ) ) {
-			delete_option( self::CACHE_MISS_URL_OPTION );
-		}
-	}
-
-	/**
-	 * Checks if cache miss threshold has been exceeded.
-	 *
-	 * @since 1.0
-	 *
-	 * @return bool
-	 */
-	public static function exceeded_cache_miss_threshold() {
-		$url = get_option( self::CACHE_MISS_URL_OPTION, false );
-		return ! empty( $url );
-	}
-
-	/**
-	 * Adds 'data-amp-layout' to the allowed <img> attributes for wp_kses().
-	 *
-	 * @since 0.7
-	 *
-	 * @param array $context Allowed tags and their allowed attributes.
-	 * @return array $context Filtered allowed tags and attributes.
-	 */
-	public static function whitelist_layout_in_wp_kses_allowed_html( $context ) {
-		if ( ! empty( $context['img']['width'] ) && ! empty( $context['img']['height'] ) ) {
-			$context['img']['data-amp-layout'] = true;
-		}
-
-		return $context;
+		return Services::get( 'injector' )->make( OptimizerService::class );
 	}
 
 	/**
@@ -2495,17 +2263,19 @@ class AMP_Theme_Support {
 	 */
 	public static function enqueue_assets() {
 		// Enqueue default styles expected by sanitizer.
-		wp_enqueue_style( 'amp-default', amp_get_asset_url( 'css/amp-default.css' ), [], AMP__VERSION );
-		wp_styles()->add_data( 'amp-default', 'rtl', 'replace' );
+		wp_enqueue_style( 'amp-default' );
 	}
 
 	/**
 	 * Print the important emoji-related styles.
 	 *
+	 * @deprecated No longer used since platforms/browsers now support emoji natively. See <https://core.trac.wordpress.org/ticket/35498#comment:7>.
+	 * @codeCoverageIgnore
 	 * @see print_emoji_styles()
 	 * @staticvar bool $printed
 	 */
 	public static function print_emoji_styles() {
+		_deprecated_function( __FUNCTION__, '2.2.0' );
 		static $printed = false;
 
 		if ( $printed ) {
@@ -2540,6 +2310,7 @@ class AMP_Theme_Support {
 	 * @since 1.0
 	 * @link https://github.com/WordPress/wordpress-develop/blob/d002fde80e5e3a083e5f950313163f566561517f/src/wp-includes/js/wp-custom-header.js#L54
 	 * @link https://github.com/WordPress/wordpress-develop/blob/d002fde80e5e3a083e5f950313163f566561517f/src/wp-includes/js/wp-custom-header.js#L78
+	 * @todo If custom scripts are included on the page, this logic should likely not be performed and a regular <video> should appear.
 	 *
 	 * @param string $image_markup The image markup to filter.
 	 * @return string $html Filtered markup.
@@ -2555,13 +2326,13 @@ class AMP_Theme_Support {
 		$parsed_url       = wp_parse_url( $video_settings['videoUrl'] );
 		$query            = isset( $parsed_url['query'] ) ? wp_parse_args( $parsed_url['query'] ) : [];
 		$video_attributes = [
-			'media'    => '(min-width: ' . $video_settings['minWidth'] . 'px)',
-			'width'    => $video_settings['width'],
-			'height'   => $video_settings['height'],
-			'layout'   => 'responsive',
-			'autoplay' => '',
-			'loop'     => '',
-			'id'       => 'wp-custom-header-video',
+			Attribute::MEDIA    => '(min-width: ' . $video_settings['minWidth'] . 'px)',
+			Attribute::WIDTH    => $video_settings[ Attribute::WIDTH ],
+			Attribute::HEIGHT   => $video_settings[ Attribute::HEIGHT ],
+			Attribute::LAYOUT   => 'responsive',
+			Attribute::AUTOPLAY => '',
+			Attribute::LOOP     => '',
+			Attribute::ID       => 'wp-custom-header-video',
 		];
 
 		$youtube_id = null;
@@ -2576,7 +2347,7 @@ class AMP_Theme_Support {
 		// If the video URL is for YouTube, return an <amp-youtube> element.
 		if ( ! empty( $youtube_id ) ) {
 			$video_markup = AMP_HTML_Utils::build_tag(
-				'amp-youtube',
+				Extension::YOUTUBE,
 				array_merge(
 					$video_attributes,
 					[
@@ -2599,11 +2370,11 @@ class AMP_Theme_Support {
 			$video_markup .= '<style>#wp-custom-header-video .amp-video-eq { display:none; }</style>';
 		} else {
 			$video_markup = AMP_HTML_Utils::build_tag(
-				'amp-video',
+				Extension::VIDEO,
 				array_merge(
 					$video_attributes,
 					[
-						'src' => $video_settings['videoUrl'],
+						Attribute::SRC => $video_settings['videoUrl'],
 					]
 				)
 			);

@@ -3,8 +3,8 @@ Contributors: PressForward, AramZS, boonebgorges, lmrhody, asmmap, regan008, joa
 Donate link:
 Tags: aggregate, aggregation, aggregator, atom, attribution, circulate, collect, community, content curation, curate, curation, curation tool, discuss, distribute, editorial, feed, network, news, opml, OPML, read, reader, reblog, reblogging, republish, review, RSS, rss, share, syndicate, syndication, workflow
 Requires at least: 3.0.1
-Tested up to: 5.2.2
-Stable tag: 5.2.2
+Tested up to: 5.8
+Stable tag: 5.2.8
 License: AGPLv3
 License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -81,6 +81,29 @@ A list of FAQs can be found in our [User Manual](https://pressforwardadmin.gitbo
 9. Send items to introduce, format, and publish in the WordPress Posts panel.
 
 == Changelog ==
+
+= 5.2.8 =
+* Fix admin styling and JavaScript after Bootstrap 5.x updates
+* Improve admin load speed with caching techniques
+
+= 5.2.7 =
+* Rebuild CSS and JS assets
+
+= 5.2.6 =
+* Fixed improper sanitization of content nominated via bookmarklet
+
+= 5.2.5 =
+* Fixed incorrect function name introduced in 5.2.4
+* Improved compatibility with latest versions of PHP
+
+= 5.2.4 =
+* Security fix: Fixed potential XSS vulnerability
+* Security hardening against XSS and CSRF
+
+= 5.2.3 =
+* Security fix: Removed potential iframe vulnerabilities in library test directories.
+* Removed unnecessary files to reduce plugin size.
+* Fixed syntax error.
 
 = 5.2.2 =
 

@@ -7,8 +7,8 @@
         <div class="row">
             <div class="col-md-5 col-sm-10 col-10">
                 <span class="core-name">
-                    <div class="label label-danger row_data wordpress_core">{{udclion.updates.wordpress_core}} <a href="https://wordpress.org" target="_blank">{{udclion.updates.wordpress}}</a> ({{installed.version}})</div>
-                    <div class="hidden-md-up">
+                    <div class="row_data wordpress_core"><span class="label label-danger badge badge-danger">{{udclion.updates.wordpress_core}}</span> <a href="https://wordpress.org" target="_blank">{{udclion.updates.wordpress}}</a> ({{installed.version}})</div>
+                    <div class="hidden-md-up d-md-none">
                         <div class="website-upgrade-to">{{udclion.updates.update_to}} {{version}}</div>
                     </div>
 					{{#unless version}}
@@ -18,11 +18,14 @@
 					{{/unless}}
                 </span>
             </div>
-            <div class="col-md-3 text-md-left hidden-sm-down">
+            <div class="col-md-3 text-md-left hidden-sm-down d-none d-md-block">
                 <span class="core-version">{{udclion.updates.update_to}} {{version}}</span>
             </div>
-            <div class="col-md-3 text-md-right hidden-sm-down">
+            <div class="col-md-3 text-md-right hidden-sm-down d-none d-md-block">
                 <span class="core-website">{{../website}}</span>
+                {{#if ../last_fetched}}
+                    <div class="mass-updates-lastfetched-label">{{udclion.updates.last_fetched}}: <span class="updates-lastfetched-hour">{{../last_fetched}}</span></div>
+                {{/if}}
             </div>
             <div class="col-md-1 col-sm-2 col-2 text-left text-md-right remove-pad-right">
                 <button type="button" class="btn btn-sm btn-secondary update-info" title="{{udclion.updates.update_info}}">

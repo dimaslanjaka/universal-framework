@@ -402,7 +402,6 @@ function schema_wp_custom_meta_box_field( $field, $meta = null, $repeatable = nu
 		
 }
 
-
 /**
  * Finds any item in any level of an array
  *
@@ -439,7 +438,6 @@ function schema_wp_meta_box_find_field_type($keySearch, $array) {
     return false;
 }
 
-
 /**
  * Find repeatable
  *
@@ -454,7 +452,11 @@ function schema_wp_meta_box_find_field_type($keySearch, $array) {
  *
  * @return	bool				whether or not the type is in the provided array
  */
-function schema_wp_meta_box_find_repeatable( $needle = 'repeatable', $haystack ) {
+function schema_wp_meta_box_find_repeatable( $needle = 'repeatable', $haystack = array() ) {
+	
+	if ( empty($haystack) ) 
+		return false;
+
 	foreach ( $haystack as $h )
 		if ( isset( $h['type'] ) && $h['type'] == $needle )
 			return true;
@@ -475,7 +477,11 @@ function schema_wp_meta_box_find_repeatable( $needle = 'repeatable', $haystack )
  *
  * @return	bool				whether or not the type is in the provided array
  */
-function schema_wp_meta_box_find_repeatable_row( $needle = 'repeatable_row', $haystack ) {
+function schema_wp_meta_box_find_repeatable_row( $needle = 'repeatable_row', $haystack = array() ) {
+	
+	if ( empty($haystack) ) 
+		return false;
+
 	foreach ( $haystack as $h )
 		if ( isset( $h['type'] ) && $h['type'] == $needle )
 			return true;

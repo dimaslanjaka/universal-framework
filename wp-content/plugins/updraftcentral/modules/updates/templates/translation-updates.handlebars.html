@@ -2,10 +2,10 @@
 <div class="row update-item updates-translation-update updates-update" data-entity="translation" data-website_id="{{website_id}}" data-translation-info="{{as_json}}">
 	<div class="update-type col-sm-6 col-lg-5 col-12">
 		<div class="translations-available">
-			{{udclion.updates.translations_available}}
+			<span class="label label-success badge badge-success row_data translations">{{udclion.updates.translation}}</span> {{udclion.updates.translations_available}}
 		</div>
 	</div>
-	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down">
+	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down d-none d-sm-block">
 		<div class="text-lg-right">
 			<span class="translation-count">{{translations.length}} {{udclion.updates.updates}}</span>
 		</div>

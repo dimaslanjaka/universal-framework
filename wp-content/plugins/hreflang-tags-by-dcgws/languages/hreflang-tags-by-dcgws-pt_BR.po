@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: HREFLANG Tags\n"
-"POT-Creation-Date: 2020-01-16 00:41+0800\n"
-"PO-Revision-Date: 2020-01-16 00:42+0800\n"
+"POT-Creation-Date: 2020-01-23 08:47+0800\n"
+"PO-Revision-Date: 2020-01-23 08:48+0800\n"
 "Last-Translator: David Robert Davis, Jr <david.davis@dcgws.com>\n"
 "Language-Team: David Robert Davis, Jr <david.davis@dcgws.com>\n"
 "Language: pt_BR\n"
@@ -22,6 +22,14 @@ msgstr ""
 
 #: hreflang-init.php:58
 #, php-format
+#| msgid ""
+#| "Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
+#| "support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> "
+#| "Do not miss out on this limited time offer.</strong> Includes our newly "
+#| "improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
+#| "pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
+#| "start-2020\">Click Here</a> to download right now. Use the discount code "
+#| "50TOSTART20!"
 msgid ""
 "Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
 "support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do "
@@ -29,7 +37,7 @@ msgid ""
 "improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
 "pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
 "start-2020\">Click Here</a> to download right now. Use the discount code "
-"50TOSTART20!"
+"50TOSTART20"
 msgstr ""
 "Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
 "support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do "
@@ -37,7 +45,7 @@ msgstr ""
 "improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
 "pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
 "start-2020\">Click Here</a> to download right now. Use the discount code "
-"50TOSTART20!"
+"50TOSTART20"
 
 #: hreflang-main.php:26 includes/functions.php:314 includes/functions.php:340
 msgid "HREFLANG Tags"
@@ -60,10 +68,26 @@ msgid "Validation Tool"
 msgstr "Ferramenta de validação"
 
 #: hreflang-main.php:117
+msgid "PROFESSIONAL TRANSLATION SERVICES"
+msgstr "SERVIÇOS DE TRADUÇÃO PROFISSIONAL"
+
+#: hreflang-main.php:118
+msgid ""
+"A translation agency that offers quality translation services in 85 world "
+"languages."
+msgstr ""
+"Uma agência de tradução que oferece serviços de tradução de qualidade em 85 "
+"idiomas do mundo."
+
+#: hreflang-main.php:120
+msgid "Check our Website for a free quote."
+msgstr "Confira nosso site para um orçamento gratuito."
+
+#: hreflang-main.php:125
 msgid "Remove this ad?"
 msgstr "Remova este anúncio"
 
-#: hreflang-main.php:118
+#: hreflang-main.php:126
 msgid "Upgrade to HREFLANG Pro"
 msgstr "Atualize para o HREFLANG Pro"
 
@@ -86,7 +110,7 @@ msgid "Select one"
 msgstr "Selecionar Um"
 
 #: includes/notices.php:52
-msgid "HREFLANG Tags Excluse Offer - Only for Users of Free Version"
+msgid "HREFLANG Tags Exclusive Offer - Only for Users of Free Version"
 msgstr ""
 "Oferta de exclusão de tags HREFLANG - apenas para usuários de versão gratuita"
 

@@ -2,8 +2,8 @@
 Contributors: maximeschoeni
 Tags: multilanguage, multilingual, language, translation
 Requires at least: 4.5
-Tested up to: 5.0
-Stable tag: 2.6
+Tested up to: 5.7
+Stable tag: 2.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Sublanguage is a multilanguage plugin for wordpress.
 
 - [NEW] support for Gutenberg (beta feature)
 - translation UI for posts content, title, permalink, excerpt and meta (for posts, pages and custom posts)
-- translation UI for terms name, slug, description and meta
+- translation UI for terms name, slug and description
 - translation UI for attachments title, caption, description, alt and meta
 - translation UI for nav menus
 - translation UI for options
@@ -63,7 +63,7 @@ Add languages
 Add a language switch on the site (within a menu)
 
 1. click the "Appearance" tab
-2. click the "Menus" sub-tab. 
+2. click the "Menus" sub-tab.
 3. choose or create a menu
 4. click "Screen Options" (top right) and verify "Language" is checked
 5. open the "language" tab on the left, check the checkbox and click "Add to Menu". Repeat it once for every language.
@@ -101,7 +101,7 @@ Translate menu items when your menu is using custom links or item names differen
 
 = How to clean uninstall this plugin? =
 
-In menu click on `Languages`, remove all language custom posts and empty trash. Deleting a language will permanently delete all translations 
+In menu click on `Languages`, remove all language custom posts and empty trash. Deleting a language will permanently delete all translations
 associated to this language. Deleting main language will not delete original posts.
 
 = How to add a language switch on template file ? =
@@ -109,12 +109,12 @@ associated to this language. Deleting main language will not delete original pos
 Add this function in your template file
 
 	do_action('sublanguage_print_language_switch');
-	
+
 = How to customize the language switch output? =
 
 Add this in your `function.php` file and customize it:
 
-	add_action('sublanguage_custom_switch', 'my_custom_switch', 10, 2); 
+	add_action('sublanguage_custom_switch', 'my_custom_switch', 10, 2);
 
 	/**
 	 * @param array of WP_Post language custom post
@@ -130,14 +130,14 @@ Add this in your `function.php` file and customize it:
 		</li>
 	<?php } ?>
 	</ul>
-	<?php 
+	<?php
 
 	}
 
 = How to have language switch in navigation menus ? =
 
-If you are using menus and you want the language switch into a menu, 
-go to Display > Menu, open option drawer and verify 'language' is selected. 
+If you are using menus and you want the language switch into a menu,
+go to Display > Menu, open option drawer and verify 'language' is selected.
 Then add as much 'language item' as you have languages.
 You can even distribute languages on different hierarchy level.
 If you need current language to be on the first level and further language on the second, you will also want to check `current language first` in `Settings -> Sublanguage`
@@ -152,10 +152,10 @@ For echoing post title, you need to ensure ´the_title´ filter is called.
 
 	// echoing post title inside the loop
 	the_title();
-	
+
 	// echoing post title outside the loop
 	echo get_the_title($some_post->ID);
-	
+
 	// but...
 	echo $post->post_title;	// -> Does not translate
 
@@ -163,21 +163,21 @@ For echoing post content, you need to ensure ´the_content´ filter is called.
 
 	// echoing content inside the loop
 	the_content();
-	
+
 	// or...
 	echo apply_filters('the_content', get_the_content());
 
 	// but...
 	echo $post->post_content; // -> Does not translate
 	echo get_the_content(); // -> Does not translate
-	
+
 	// echoing post content outside the loop:
 	echo apply_filters('sublanguage_translate_post_field', $some_post->post_content, $some_post, 'post_content');
-	
+
 Same for Excerpts.
 
-Permalinks are automatically translated, inside or outside the loop: 
-	
+Permalinks are automatically translated, inside or outside the loop:
+
 	// echoing permalink
 	echo get_permalink($post->ID);
 
@@ -197,7 +197,7 @@ Use the global `$sublanguage`, like this:
 
 Alternatively you can use a sublanguage filter to call a user function with `$current_language` value in parameters:
 
-Function to use in your template file: 
+Function to use in your template file:
 
 	echo apply_filters('sublanguage_custom_translate', 'text to translate', 'my_custom_translation', 'optional value');
 
@@ -209,15 +209,15 @@ Code to add in your `function.php` file:
 	 * @param mixed $args. Optional arguments
 	 */
 	function my_custom_translation($original_text, $current_language, $optional_arg) {
-	
+
 		if ($current_language->post_name == 'fr') {
-			
+
 			return 'texte traduit en français!';
-		
+
 		}
-	
+
 		return $original_text;
-	
+
 	}
 
 Note: of course, for a basic usage like this, you should use the standard localization way: `__('text to translate', 'my_domain')`.
@@ -252,11 +252,11 @@ Add this action to enqueue a small script to define values in javascript:
 	add_action('init', 'my_init');
 
 	function my_init() {
-		
+
 		do_action('sublanguage_prepare_ajax');
-		
+
 	}
-	
+
 This will first define a global in javascript. Use `console.log(sublanguage)` to explore it.
 
 Furthermore, a small script will automatically add a language attribute in every jquery ajax call. You can change this language using `sublanguage.current` (in javascript). This language will be used if you need to get/update posts/terms using ajax.
@@ -269,7 +269,7 @@ If you want to create a custom importer for posts and terms, you can use these 2
 
     do_action( 'sublanguage_import_post', $data);
     do_action( 'sublanguage_import_term', $taxonomy, $data);
-    
+
 These functions are documented in sublanguage/include/admin.php. See examples on [github](https://github.com/maximeschoeni/sublanguage#import-posts-and-terms).
 
 = Will this plugin affect my site performance? =
@@ -298,13 +298,31 @@ Use any language instead, then update, then edit language title, slug and locale
 
 == Changelog ==
 
+= 2.8 =
+
+- Fix Bug that erase other language content when a post is saved multiple times with Gutenberg.
+- Fix Bug when a post has a translated post_name for main language causing a canonical loop
+- Allow special characters in cpt archive url or slug
+- Activate rewrite also when property is not set when registering post type
+
+= 2.7.1 =
+
+- Fix bug in Sublanguage::catch_translation: in some case (eg. querying posts page) query_vars "page" property become the pagename, leading to 404 error.
+
+= 2.7 =
+
+- Fix bug when data is not a string in /js/ajax.js
+- Class Sublanguage_Site now extends Sublanguage_Rewrite instead of Sublanguage_Current
+- Add filter 'sublanguage_untranslated_meta' to handle a translation input placeholder
+- Remove trailing slash on translated home url
+
 = 2.6 =
 
 - Support revisions in classic editor
 - Partial support revisions in Gutenberg (autosave still bugged)
 - Gutenberg UI remove language manager stupid block
 - Fix bug when using differently parented pages with same slug
-- Fix bug in Gutenberg when saving twice in sub-language 
+- Fix bug in Gutenberg when saving twice in sub-language
 - Fix bug when inserting empty post and sub-language data not empty
 - Fix permalink correct language slug in Gutenberg
 
@@ -336,7 +354,7 @@ Use any language instead, then update, then edit language title, slug and locale
 - Overwrite rewrite rules for pages using every root pages
 - Separate custom post type permalink base and archive slug
 - Customize notice message when editing language
-- Fix bug: nav menu items couldn't be hidden 
+- Fix bug: nav menu items couldn't be hidden
 - Improve default post type options settings
 - Enable nav menu item classes translation
 
@@ -383,7 +401,7 @@ Use any language instead, then update, then edit language title, slug and locale
 
 - Correct link url when inserting internal link from editor links popup in admin
 - Better language detection with Autodetect Language option
-- Fix a bug occuring when language switch is used in more than one menu 
+- Fix a bug occuring when language switch is used in more than one menu
 - Redirect correctly when Auto-detect language is on and show language slug is off
 - Syntaxical changes to prepare 2.0 migration
 - Remove html escaping when saving option translation
@@ -416,7 +434,7 @@ Use any language instead, then update, then edit language title, slug and locale
 - Adds `Sublanguage_site::get_default_language_switch` function
 - Bug fix: terms were not translated correctly when using shared terms (on `wp_term_taxonomy` table).
 - Bug fix: removed use of filter for `'home_url'` except in `post.php` page, in order to prevent possible bugs when rebuilding permalinks
-- Bug fix: styles in admin terms UI 
+- Bug fix: styles in admin terms UI
 
 = 1.4.7 =
 
@@ -509,4 +527,3 @@ Undocumented modifications.
 == Upgrade Notice ==
 
 No notice yet.
-

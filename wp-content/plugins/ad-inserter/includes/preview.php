@@ -1,8 +1,5 @@
 <?php
 
-//ini_set ('display_errors', 1);
-//error_reporting (E_ALL);
-
 function alt_styles_data ($alt_styles_text) {
   if (strpos ($alt_styles_text, "||") !== false) {
     $styles = explode ("||", $alt_styles_text);
@@ -32,7 +29,7 @@ function padding_margin_code ($close_button, $class, $sticky_parameters, $wrappe
 }
 
 
-function check_count_rotate_code ($obj, $check, $count, $rotate, $viewport) {
+function check_count_rotate_code ($obj, $check, $count, $rotate, $viewport, $fallback) {
 
   if ($obj->check_names !== null) : ?>
     <div style="display: inline-block; margin: 10px 0;">
@@ -97,12 +94,29 @@ function check_count_rotate_code ($obj, $check, $count, $rotate, $viewport) {
     </div>
 <?php
   endif;
+
+  if ($obj->fallback_names !== null) : ?>
+    <div style="display: inline-block; margin: 10px 0;">
+      <div style="display: inline-block; vertical-align: middle;">
+        FALLBACK
+      </div>
+    <select id="fallback" style="min-width: 50px; margin: 0 10px 0 5px;">
+<?php
+    foreach ($obj->fallback_names as $index => $fallback_name) {
+      echo '<option value="', $index, '" ', $fallback == $index ? AD_SELECT_SELECTED : AD_EMPTY_VALUE, '>', $fallback_name, '</option>';
+    }
+?>
+    </select>
+    </div>
+<?php
+  endif;
 }
 
 
 function generate_code_preview (
   $block,
-  $preview_parameters) {
+  $preview_parameters,
+  $code_only = false) {
 
   global $block_object, $ai_wp_data, $wp_version;
 
@@ -111,6 +125,9 @@ function generate_code_preview (
   $obj = new ai_Block ($block);
   $obj->wp_options = $block_object [$block]->wp_options;
 
+  $head_code            = isset ($preview_parameters ['head'])              ? $preview_parameters ['head']              : null;
+  $processed_code       = isset ($preview_parameters ['processed_code'])    ? $preview_parameters ['processed_code']    : null;
+  $footer_code          = isset ($preview_parameters ['footer'])            ? $preview_parameters ['footer']            : null;
   $block_name           = isset ($preview_parameters ['name'])              ? $preview_parameters ['name']              : $obj->get_ad_name();
   $code                 = isset ($preview_parameters ['code'])              ? $preview_parameters ['code']              : $obj->get_ad_data();
   $alignment_type       = isset ($preview_parameters ['alignment'])         ? $preview_parameters ['alignment']         : $obj->get_alignment_type();
@@ -122,6 +139,12 @@ function generate_code_preview (
   $wrapper_css          = isset ($preview_parameters ['alignment_css'])     ? $preview_parameters ['alignment_css']     : $obj->get_alignment_style ();
   $custom_css_code      = isset ($preview_parameters ['custom_css'])        ? $preview_parameters ['custom_css']        : $obj->get_custom_css();
   $close_button         = isset ($preview_parameters ['close'])             ? $preview_parameters ['close']             : $obj->get_close_button ();
+  $background           = isset ($preview_parameters ['background'])        ? $preview_parameters ['background']        : $obj->get_background ();
+  $body_background      = isset ($preview_parameters ['body_background'])   ? $preview_parameters ['body_background']   : $obj->get_set_body_background ();
+  $background_image     = isset ($preview_parameters ['background_image'])  ? $preview_parameters ['background_image']  : $obj->get_background_image ();
+  $background_color     = isset ($preview_parameters ['background_color'])  ? $preview_parameters ['background_color']  : $obj->get_background_color ();
+  $background_repeat    = isset ($preview_parameters ['background_repeat']) ? $preview_parameters ['background_repeat'] : $obj->get_background_repeat ();
+  $background_size      = isset ($preview_parameters ['background_size'])   ? $preview_parameters ['background_size']   : $obj->get_background_size ();
   $process_php          = isset ($preview_parameters ['php'])               ? $preview_parameters ['php']               : $obj->get_process_php ();
   $show_label           = isset ($preview_parameters ['label'])             ? $preview_parameters ['label']             : $obj->get_show_label ();
   $read_only            = isset ($preview_parameters ['read_only'])         ? $preview_parameters ['read_only']         : 0;
@@ -130,8 +153,13 @@ function generate_code_preview (
   $count                = isset ($preview_parameters ['count'])             ? $preview_parameters ['count']             : 0;
   $rotate               = isset ($preview_parameters ['rotate'])            ? $preview_parameters ['rotate']            : 0;
   $viewport             = isset ($preview_parameters ['viewport'])          ? $preview_parameters ['viewport']          : 0;
+  $fallback             = isset ($preview_parameters ['fallback'])          ? $preview_parameters ['fallback']          : 0;
 
-  $separators = isset ($preview_parameters ['check']) || isset ($preview_parameters ['count']) || isset ($preview_parameters ['rotate']) || isset ($preview_parameters ['viewport']);
+  $separators = isset ($preview_parameters ['check']) || isset ($preview_parameters ['count']) || isset ($preview_parameters ['rotate']) || isset ($preview_parameters ['viewport']) || isset ($preview_parameters ['fallback']);
+
+  if ($background && $body_background) {
+    $vertical_position = AI_STICK_TO_THE_TOP;
+  }
 
   $obj->wp_options [AI_OPTION_BLOCK_NAME]           = $block_name;
   $obj->wp_options [AI_OPTION_CODE]                 = $code;
@@ -142,6 +170,14 @@ function generate_code_preview (
   $obj->wp_options [AI_OPTION_VERTICAL_MARGIN]      = $vertical_margin;
   $obj->wp_options [AI_OPTION_ANIMATION]            = $animation;
   $obj->wp_options [AI_OPTION_CLOSE_BUTTON]         = $close_button;
+
+  $obj->wp_options [AI_OPTION_BACKGROUND]           = $background;
+  $obj->wp_options [AI_OPTION_SET_BODY_BACKGROUND]  = $body_background;
+  $obj->wp_options [AI_OPTION_BACKGROUND_IMAGE]     = $background_image;
+  $obj->wp_options [AI_OPTION_BACKGROUND_COLOR]     = $background_color;
+  $obj->wp_options [AI_OPTION_BACKGROUND_REPEAT]    = $background_repeat;
+  $obj->wp_options [AI_OPTION_BACKGROUND_SIZE]      = $background_size;
+
   $obj->wp_options [AI_OPTION_PROCESS_PHP]          = $process_php;
   $obj->wp_options [AI_OPTION_SHOW_LABEL]           = $show_label;
 
@@ -152,8 +188,10 @@ function generate_code_preview (
   $sticky = false;
   $class = '';
   $sticky_parameters = '';
-  $functions = function_exists ('ai_extract_features_2');
+  $functions = ai_pro () && function_exists ('ai_extract_features_2');
   $iframe_resize = $iframe && $obj->get_iframe_height () == '';
+
+  $fixed_background = $background && $horizontal_position == AI_STICK_HORIZONTAL_CENTER;
 
   if (!$adsense) {
     switch ($alignment_type) {
@@ -184,24 +222,28 @@ function generate_code_preview (
     }
   }
 
+
   // Head code must be called before ai_getProcessedCode (to process head PHP)
-  ob_start ();
-  ai_wp_head_hook ();
+  if ($head_code === null) {
+    ob_start ();
+    ai_wp_head_hook ();
 
-  if ($functions && !$ai_wp_data [AI_CLOSE_BUTTONS]) {
-    echo "<style>\n";
-    echo ".ai-close {position: relative;}\n";
-    echo ".ai-close-button {position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; background: url(".plugins_url ('css/images/close-button.png', AD_INSERTER_FILE).") no-repeat center center; cursor: pointer; z-index: 9; display: none;}\n";
-    echo ".ai-close-show {display: block;}\n";
-    echo ".ai-close-left {right: unset; left: -10px;}\n";
-    echo ".ai-close-bottom {top: unset; bottom: -11px;}\n";
-    echo ".ai-close-fit {width: fit-content; width: -moz-fit-content;}\n";
-    echo "</style>\n";
+    if ($functions && !$ai_wp_data [AI_CLOSE_BUTTONS]) {
+      echo "<style>\n";
+      echo ".ai-close {position: relative;}\n";
+      echo ".ai-close-button {position: absolute; top: -8px; right: -8px; width: 24px; height: 24px; background: url(".plugins_url ('css/images/close-button.png', AD_INSERTER_FILE).") no-repeat center center; cursor: pointer; z-index: 9; display: none;}\n";
+      echo ".ai-close-show {display: block;}\n";
+      echo ".ai-close-left {right: unset; left: -10px;}\n";
+      echo ".ai-close-bottom {top: unset; bottom: -11px;}\n";
+  //    echo ".ai-close-fit {width: fit-content; width: -moz-fit-content;}\n";
+      echo ".ai-close-none {visibility: hidden;}\n";
+      echo "</style>\n";
+    }
+    $head_code = ob_get_clean ();
+
+    // Disable AdSense Auto ads (page level ads)
+    $head_code = str_replace ('enable_page_level_ads', 'disabled_page_level_ads', $head_code);
   }
-  $head_code = ob_get_clean ();
-
-  // Disable AdSense Auto ads (page level ads)
-  $head_code = str_replace ('enable_page_level_ads', 'disabled_page_level_ads', $head_code);
 
   $ai_wp_data [AI_FORCE_SERVERSIDE_CODE] = true;
 
@@ -209,19 +251,32 @@ function generate_code_preview (
   $obj->count_index  = $count;
   $obj->rotate_index = $rotate;
   $obj->viewport_index = $viewport;
+  $obj->fallback_index = $fallback;
 
   $obj->hide_debug_labels = true;
   $block_code = $obj->ai_getProcessedCode (true);
   $obj->hide_debug_labels = false;
   $ai_wp_data [AI_FORCE_SERVERSIDE_CODE] = false;
 
-  $head_code = ai_process_head_codes ($head_code);
+  if ($processed_code === null) {
+    $head_code = ai_process_head_codes ($head_code);
 
-  // Fix for relative urls
-  $block_code = str_replace ('src="wp-content', 'src="../wp-content', $block_code);
-  $block_code = str_replace ("src='wp-content", "src='../wp-content", $block_code);
-  $block_code = str_replace ('href="wp-content', 'href="../wp-content', $block_code);
-  $block_code = str_replace ("href='wp-content", "href='../wp-content", $block_code);
+    // Fix for relative urls
+    $block_code = str_replace ('src="wp-content', 'src="../wp-content', $block_code);
+    $block_code = str_replace ("src='wp-content", "src='../wp-content", $block_code);
+    $block_code = str_replace ('href="wp-content', 'href="../wp-content', $block_code);
+    $block_code = str_replace ("href='wp-content", "href='../wp-content", $block_code);
+  } else $block_code = $processed_code;
+
+  if ($footer_code === null) {
+    ob_start ();
+    ai_wp_footer_hook ();
+    $footer_code = ob_get_clean ();
+  }
+
+  if ($code_only) {
+    return array ('head' => $head_code, 'block' => $block_code, 'footer' => $footer_code);
+  }
 
 ?><html>
 <head>
@@ -231,7 +286,7 @@ function generate_code_preview (
 <script type='text/javascript' src='<?php echo includes_url ('js/jquery/jquery.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
 <script type='text/javascript' src='<?php echo admin_url ('load-scripts.php?c=0&amp;load%5B%5D=jquery-core,jquery-migrate,utils,jquery-ui-core&amp;ver='); ?><?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
 <script type='text/javascript' src='<?php echo includes_url ('js/jquery/ui/effect.min.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
-<script type='text/javascript' src='<?php echo includes_url ('js/jquery/ui/widget.min.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
+<!--<script type='text/javascript' src='<?php echo includes_url ('js/jquery/ui/widget.min.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>-->
 <script type='text/javascript' src='<?php echo includes_url ('js/jquery/ui/button.min.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
 <script type='text/javascript' src='<?php echo includes_url ('js/jquery/ui/spinner.min.js'); ?>?ver=<?php echo $wp_version, '+', AD_INSERTER_VERSION; ?>'></script>
 <link rel='stylesheet' href='<?php echo plugins_url ('css/jquery-ui-1.10.3.custom.min.css', AD_INSERTER_FILE); ?>?ver=<?php echo AD_INSERTER_VERSION; ?>' media='all' />
@@ -245,6 +300,10 @@ function generate_code_preview (
 <link rel='stylesheet' href='<?php echo plugins_url ('includes/aos/ai-aos.css', AD_INSERTER_FILE); ?>?ver=<?php echo AD_INSERTER_VERSION.rand (1, 10000000); ?>'>
 <script src='<?php echo plugins_url ('includes/aos/aos.js', AD_INSERTER_FILE); ?>?ver=<?php echo AD_INSERTER_VERSION; ?>'></script>
 <?php endif; ?>
+
+<script src='<?php echo plugins_url ('includes/colorpicker/js/bootstrap-colorpicker.min.js', AD_INSERTER_FILE); ?>'></script>
+<link rel="stylesheet" href='<?php echo plugins_url ('includes/colorpicker/css/bootstrap-colorpicker.min.css', AD_INSERTER_FILE); ?>'>
+
 <script src='<?php echo plugins_url ('includes/js/ad-inserter-check.js', AD_INSERTER_FILE); ?>?ver=<?php echo AD_INSERTER_VERSION; ?>'></script>
 <link rel='stylesheet' href='<?php echo plugins_url ('css/ai-settings.css', AD_INSERTER_FILE); ?>?ver=<?php echo AD_INSERTER_VERSION; ?>'>
 <script>
@@ -254,6 +313,7 @@ function generate_code_preview (
   <?php echo get_frontend_javascript_debugging () ? 'ai_debugging = true;' : ''; ?>
   var sticky = <?php echo $sticky ? 'true' : 'false'; ?>;
   var remove_transform = <?php echo $sticky && $sticky_parameters != '' ? 'true' : 'false'; ?>;
+  var fixed_background = <?php echo $fixed_background != '' ? 'true' : 'false'; ?>;
 
   if (sticky) window.moveTo (0, 0);
   if (sticky) window.resizeTo (screen.width, screen.height - 40);
@@ -349,6 +409,23 @@ function generate_code_preview (
     var STICKY_CONTEXT_SPINNER              = 5;
     var STICKY_CONTEXT_CUSTOM_CSS           = 6;
     var STICKY_CONTEXT_ANIMATION            = 7;
+    var STICKY_CONTEXT_BACKGROUND           = 8;
+    var STICKY_CONTEXT_BACKGROUND_COLOR     = 9;
+    var STICKY_CONTEXT_BACKGROUND_SIZE      = 10;
+    var STICKY_CONTEXT_BACKGROUND_REPEAT    = 11;
+
+    var AI_BACKGROUND_REPEAT_DEFAULT        = 0;
+    var AI_BACKGROUND_REPEAT_NO             = 1;
+    var AI_BACKGROUND_REPEAT_YES            = 2;
+    var AI_BACKGROUND_REPEAT_HORIZONTALY    = 3;
+    var AI_BACKGROUND_REPEAT_VERTICALLY     = 4;
+    var AI_BACKGROUND_REPEAT_SPACE          = 5;
+    var AI_BACKGROUND_REPEAT_ROUND          = 6;
+
+    var AI_BACKGROUND_SIZE_DEFAULT          = 0;
+    var AI_BACKGROUND_SIZE_COVER            = 1;
+    var AI_BACKGROUND_SIZE_FIT              = 2;
+    var AI_BACKGROUND_SIZE_FILL             = 3;
 
     var sticky_context = STICKY_CONTEXT_INIT;
 
@@ -363,6 +440,9 @@ function generate_code_preview (
     const ID_CSS_ALIGNMENT_STICKY_TOP     = "#css-" + AI_ALIGNMENT_STICKY_TOP;
     const ID_CSS_ALIGNMENT_STICKY_BOTTOM  = "#css-" + AI_ALIGNMENT_STICKY_BOTTOM;
     const ID_CSS_ALIGNMENT_STICKY         = "#css-" + AI_ALIGNMENT_STICKY;
+    const ID_CSS_ALIGNMENT_STICKY_WRAPPER = "#alignment-css-" + AI_ALIGNMENT_STICKY;
+
+
 
     const AI_ALIGNMENT_CSS_STICKY = '<?php echo AI_ALIGNMENT_CSS_STICKY; ?>';
 
@@ -414,12 +494,14 @@ function generate_code_preview (
         var vertical_margin     = spinner_vertical_margin.spinner ("value");
         var horizontal_margin   = spinner_horizontal_margin.spinner ("value");
         var animation           = $("select#animation option:selected").attr ('value');
+        var background          = $("input#background").is(":checked") ? '1' : '0';
       } else {
           var horizontal          = 0;
           var vertical            = 0;
           var vertical_margin     = 0;
           var horizontal_margin   = 0;
           var animation           = 0;
+          var background          = 0;
         }
 
       var check   = $("select#check option:selected").attr('value');
@@ -434,11 +516,14 @@ function generate_code_preview (
       var viewport = $("select#viewport option:selected").attr('value');
       if (typeof viewport == 'undefined') viewport = 0; else viewport = parseInt (viewport);
 
+      var fallback = $("select#fallback option:selected").attr('value');
+      if (typeof fallback == 'undefined') fallback = 0; else fallback = parseInt (fallback);
+
       var param = {
         'action':             'ai_ajax_backend',
         'read_only':          <?php echo $read_only; ?>,
         'preview':            block,
-        'ai_check':           b64d ('<?php echo base64_encode (wp_create_nonce ("adinserter_data")); ?>'),
+        'ai_check':           b64d ('<?php echo base64_encode (wp_create_nonce ("adinserter_data")); ?>')<?php if (!$read_only) : ?>,
         'name':               '<?php echo base64_encode ($block_name); ?>',
         'code':               '<?php echo base64_encode ($code); ?>',
         'alignment':          btoa (alignment),
@@ -452,11 +537,13 @@ function generate_code_preview (
         'php':                <?php echo $process_php ? '1' : '0'; ?>,
         'label':              <?php echo $show_label ? '1' : '0'; ?>,
         'close':              close_button,
-        'iframe':             <?php echo $iframe ? '1' : '0'; ?>,
+        'background':         background,
+        'iframe':             <?php echo $iframe ? '1' : '0'; ?><?php endif; ?>,
         'check':              check,
         'count':              count,
         'rotate':             rotate,
-        'viewport':           viewport
+        'viewport':           viewport,
+        'fallback':           fallback
       };
 
 //      console.log (param);
@@ -466,8 +553,7 @@ function generate_code_preview (
 
     function update_highlighting () {
       if ($('body').hasClass ("highlighted")) {
-        $("#highlight-button").click ();
-        $("#highlight-button").click ();
+        setTimeout (function() {$("#highlight-button").click ();$("#highlight-button").click ();}, 2);
       }
     }
 
@@ -538,6 +624,17 @@ function generate_code_preview (
           $("select#horizontal-position").val (settings.find ("select#horizontal-position-" + block + " option:selected").attr('value')).change();
           $("select#vertical-position").val (settings.find ("select#vertical-position-" + block + " option:selected").attr('value')).change();
           $("select#animation").val (settings.find ("select#animation-" + block + " option:selected").attr('value')).change();
+
+          if (settings.find ("input#background-" + block).is(":checked")) {
+            $("input#background").attr ('checked', '1').change();
+
+//            if (fixed_background) {
+              $("input#bkg-image").attr('value', settings.find ("#bkg-image-url-" + block).val ());
+              $("input#bkg-color").colorpicker ('setValue', settings.find ("#bkg-color-" + block).val ());
+              $("select#bkg-repeat").val (settings.find ("select#bkg-repeat-" + block + " option:selected").attr('value')).change();
+              $("select#bkg-size").val (settings.find ("select#bkg-size-" + block + " option:selected").attr('value')).change();
+//            }
+          } else $("input#background").removeAttr ('checked').change();
         }
 
         process_display_elements ();
@@ -546,6 +643,7 @@ function generate_code_preview (
 
     function apply_to_settings () {
       if (window.opener != null && !window.opener.closed) {
+
         var settings = $(window.opener.document).contents ();
 
         var selected_alignment  = $("select#block-alignment option:selected");
@@ -584,6 +682,21 @@ function generate_code_preview (
 
           var new_animation = $("select#animation option:selected").attr('value');
           settings.find ("select#animation-" + block).val (new_animation).change ();
+
+          if ($("input#background").is(":checked")) {
+            settings.find ("input#background-" + block).attr ('checked', '1').change();
+
+            if (fixed_background || (new_horizontal_position == AI_STICK_HORIZONTAL_CENTER)) {
+              var new_color = $("input#bkg-color").attr('value');
+              settings.find ("#bkg-color-" + block).colorpicker ('setValue', new_color);
+
+              var new_repeat = $("select#bkg-repeat option:selected").attr('value');
+              settings.find ("select#bkg-repeat-" + block).val (new_repeat);
+
+              var new_size = $("select#bkg-size option:selected").attr('value');
+              settings.find ("select#bkg-size-" + block).val (new_size);
+            }
+          } else settings.find ("input#background-" + block).removeAttr ('checked').change();
         }
 
         window.opener.change_block_alignment (block);
@@ -656,9 +769,11 @@ function generate_code_preview (
 
           update_sticky_elements (STICKY_CONTEXT_SPINNER);
 
-          var new_css = $('#css-' + AI_ALIGNMENT_STICKY).text ();
-          wrapper.attr ('data-css', new_css);
-          wrapper.attr ('style', new_css);
+          // set by process_display_elements ()
+//          var new_css = $('#css-' + AI_ALIGNMENT_STICKY).text ();
+//          wrapper.attr ('data-css', new_css);
+//          wrapper.attr ('style', new_css);
+
           if (remove_transform) wrapper.css ('transform', '');
           update_custom_css ();
           update_sticky_elements (STICKY_CONTEXT_SPINNER);
@@ -757,7 +872,8 @@ function generate_code_preview (
       } else
       if (alignment == AI_ALIGNMENT_STICKY) {
         $(ID_CSS_ALIGNMENT_STICKY).css('display', 'inline-block');
-          style = $(ID_CSS_ALIGNMENT_STICKY).text ();
+//          style = $(ID_CSS_ALIGNMENT_STICKY).text ();
+          style = $(ID_CSS_ALIGNMENT_STICKY_WRAPPER).text ();
       } else
       if (alignment == AI_ALIGNMENT_CUSTOM_CSS) {
         $("#custom-css").show();
@@ -774,6 +890,29 @@ function generate_code_preview (
         $("#demo-box").hide ();
         $("#demo-box-no-wrapping").show ();
       }
+
+      $("#highlight-button").css ('visibility', 'visible');
+      $('#fixed-background-settings').hide ();
+
+      if (!$("input#background").is(":checked")) {
+        wrapper.addClass ('ai-close');
+        if (typeof ai_install_close_buttons == 'function') {
+          ai_install_close_buttons ();
+        }
+        $('#animation-settings').show ();
+        $('#sticky-positions').removeClass ('ai-background');
+      } else {
+          $('#animation-settings').hide ();
+          $('#sticky-positions').addClass ('ai-background');
+          if ($("select#horizontal-position option:selected").attr('value') == AI_STICK_HORIZONTAL_CENTER) {
+            $('#fixed-background-settings').show ();
+
+            if ($('body').hasClass ("highlighted")) {
+              $("#highlight-button").click ();
+            }
+            $("#highlight-button").css ('visibility', 'hidden');
+          }
+        }
 
       wrapper.attr ("data-css", style);
       wrapper.attr ("style", style);
@@ -867,40 +1006,46 @@ function generate_code_preview (
       }
     }
 
+//    function update_background_parameters () {
+//      if (fixed_background) {
+//        $("input#bkg-color").colorpicker ('setValue', wrapper.css ("background-color"));
+//      }
+//    }
+
     function update_close_button () {
       var close_button = wrapper.find ('.ai-close-button');
       if (wrapper.hasClass ('ai-close') && typeof close_button != 'undefined') {
 
         var alignment   = $("select#block-alignment option:selected").attr ('value');
 
-        if (alignment != AI_ALIGNMENT_NO_WRAPPING) {
+        if (alignment != AI_ALIGNMENT_NO_WRAPPING && !$("input#background").is(":checked")) {
           $("#close-button-selection").show ();
 
           var selected_close_button =  $("#close-button-0 option:selected").attr('value');
-          var button_class = 'ai-close-button';
+          var button_class = 'ai-close-button ai-close-unprocessed';
 
           switch (parseInt (selected_close_button)) {
             case AI_CLOSE_NONE:
-              button_class = 'ai-close-button ai-close-hidden';
+              button_class = 'ai-close-button ai-close-unprocessed ai-close-hidden';
               break;
             case AI_CLOSE_TOP_RIGHT:
-              button_class = 'ai-close-button';
+              button_class = 'ai-close-button ai-close-unprocessed';
               break;
             case AI_CLOSE_TOP_LEFT:
-              button_class = 'ai-close-button ai-close-left';
+              button_class = 'ai-close-button ai-close-unprocessed ai-close-left';
               break;
             case AI_CLOSE_BOTTOM_RIGHT:
-              button_class = 'ai-close-button ai-close-bottom';
+              button_class = 'ai-close-button ai-close-unprocessed ai-close-bottom';
               break;
             case AI_CLOSE_BOTTOM_LEFT:
-              button_class = 'ai-close-button ai-close-bottom ai-close-left';
+              button_class = 'ai-close-button ai-close-unprocessed ai-close-bottom ai-close-left';
               break;
           }
 
           close_button.attr ('class', button_class);
         } else {
             $("#close-button-selection").hide ();
-            close_button.addClass ('ai-close-hidden');
+            close_button.addClass ('ai-close-hidden').removeClass ('ai-close-unprocessed');
           }
       }
     }
@@ -911,30 +1056,43 @@ function generate_code_preview (
       const MAIN_CONTENT_ELEMENT = SETTINGS.find ('#main-content-element').val ().trim ();
       const MAIN_CONTENT_FIXED_WIDTH = parseInt (MAIN_CONTENT_ELEMENT) == MAIN_CONTENT_ELEMENT;
 
+      var background = $("input#background").is(":checked");
+
       custom_css = custom_css.replace (/\s+/g, '');
       var sticky_classes = [];
 
-      if (custom_css.indexOf ("position:fixed") != - 1 &&
-          custom_css.indexOf ("z-index:") != - 1 &&
-          custom_css.indexOf ("display:none") != - 1) {
-        if (!MAIN_CONTENT_FIXED_WIDTH &&
-          custom_css.indexOf (";left:auto") != - 1) {
-          sticky_classes.push ('ai-sticky-content');
-          sticky_classes.push ('ai-sticky-left');
-        } else
-        if (!MAIN_CONTENT_FIXED_WIDTH &&
-          custom_css.indexOf ("right:auto") != - 1) {
-          sticky_classes.push ('ai-sticky-content');
-          sticky_classes.push ('ai-sticky-right');
-        };
+      if (!MAIN_CONTENT_FIXED_WIDTH &&
+          custom_css.indexOf ("position:fixed") != - 1 &&
+          custom_css.indexOf ("z-index:") != - 1) {
+            if (custom_css.indexOf ("display:none") != - 1) {
+              if (custom_css.indexOf (";left:auto") != - 1) {
+                sticky_classes.push ('ai-sticky-content');
+                sticky_classes.push ('ai-sticky-left');
+              } else
+              if (custom_css.indexOf ("right:auto") != - 1) {
+                sticky_classes.push ('ai-sticky-content');
+                sticky_classes.push ('ai-sticky-right');
+              };
 
-        if (custom_css.indexOf ("margin-bottom:auto") != - 1) {
-          sticky_classes.push ('ai-sticky-content');
-          sticky_classes.push ('ai-sticky-scroll');
-        };
+              if (custom_css.indexOf ("margin-bottom:auto") != - 1) {
+                if (background)
+                  sticky_classes.push ('ai-sticky-background');
+                else
+                  sticky_classes.push ('ai-sticky-content');
+
+                sticky_classes.push ('ai-sticky-scroll');
+              };
+            } else
+
+            if (background && custom_css.indexOf ("z-index:-") == - 1) {
+//              if (custom_css.indexOf (";top:0;left:0") != - 1) sticky_classes.push ('ai-fixed-background'); // to avoid detecting ai-sticky-left
+//              else
+              if (custom_css.indexOf (";left:0") != - 1) {sticky_classes.push ('ai-sticky-background'); sticky_classes.push ('ai-sticky-left');}
+              else if (custom_css.indexOf (";right:0") != - 1) {sticky_classes.push ('ai-sticky-background'); sticky_classes.push ('ai-sticky-right');}
+            }
       }
 
-    //  console.log ('sticky_classes', sticky_classes);
+//      console.log ('sticky_classes', sticky_classes);
 
       return sticky_classes;
     }
@@ -945,34 +1103,109 @@ function generate_code_preview (
 
       if (sticky_context != context) return;
 
-      var alignment = parseInt ($("select#block-alignment option:selected").attr ('value'));
+      var alignment           = parseInt ($("select#block-alignment option:selected").attr ('value'));
       var horizontal_position = parseInt ($("select#horizontal-position option:selected").attr('value'));
       var vertical_position   = parseInt ($("select#vertical-position option:selected").attr('value'));
+      var background          = $("input#background").is(":checked");
+      var body_background     = horizontal_position == AI_STICK_HORIZONTAL_CENTER && <?php echo $body_background ? 'true' : 'false'; ?>;
+      var animation           = parseInt ($("select#animation option:selected").attr ('value'))
+      var background_repeat   = parseInt ($("select#bkg-repeat option:selected").attr('value'));
+      var background_size     = parseInt ($("select#bkg-size option:selected").attr('value'));
+      var background_color    = $("#bkg-color").attr('value').trim ();
+      var background_image    = $("#bkg-image").attr('value').trim ();
+
+      var background_css = '';
 
       if (alignment != AI_ALIGNMENT_CUSTOM_CSS) {
         var selected_horizontal_position = $("select#horizontal-position option:selected");
         var selected_vertical_position   = $("select#vertical-position option:selected");
 
-        var custom_vertical_position_css = selected_vertical_position.data ('css-' + horizontal_position);
+        var custom_vertical_position_css = selected_vertical_position.data ('css-bkg');
 
-        if (typeof custom_vertical_position_css != 'undefined') var vertical_position_css = custom_vertical_position_css; else
-          var vertical_position_css = selected_vertical_position.data ('css');
+        if (background && typeof custom_vertical_position_css != 'undefined') {
+          if (body_background) {
+            var vertical_position_css = $("select#vertical-position").data ('css-body-bkg');
+          } else var vertical_position_css = custom_vertical_position_css;
+        } else {
+            var custom_vertical_position_css = selected_vertical_position.data ('css-' + horizontal_position);
 
-        var custom_horizontal_position_css = selected_horizontal_position.data ('css-' + vertical_position);
+            if (typeof custom_vertical_position_css != 'undefined') var vertical_position_css = custom_vertical_position_css; else
+              var vertical_position_css = selected_vertical_position.data ('css');
+          }
 
-        if (typeof custom_horizontal_position_css != 'undefined') var horizontal_position_css = custom_horizontal_position_css; else
-          var horizontal_position_css = selected_horizontal_position.data ('css');
+        var custom_horizontal_position_css = selected_horizontal_position.data ('css-bkg');
+
+        if (background && typeof custom_horizontal_position_css != 'undefined') {
+          var horizontal_position_css = custom_horizontal_position_css;
+        } else {
+            var custom_horizontal_position_css = selected_horizontal_position.data ('css-' + vertical_position);
+
+            if (typeof custom_horizontal_position_css != 'undefined') var horizontal_position_css = custom_horizontal_position_css; else
+              var horizontal_position_css = selected_horizontal_position.data ('css');
+          }
 
         var sticky_css = vertical_position_css + horizontal_position_css;
+
+        if (horizontal_position == AI_STICK_HORIZONTAL_CENTER && background) {
+          if (background_color != '') {
+            sticky_css = sticky_css + ' background-color: ' + background_color + ';';
+          }
+
+          if (background_image != '') {
+            sticky_css = sticky_css + ' background-image: url(' + background_image + ');';
+          }
+
+          if (background_size != AI_BACKGROUND_SIZE_DEFAULT) {
+            switch (background_size) {
+              case AI_BACKGROUND_SIZE_COVER:
+                sticky_css = sticky_css + ' background-size: cover;';
+                break;
+              case AI_BACKGROUND_SIZE_FIT:
+                sticky_css = sticky_css + ' background-size: contain;';
+                break;
+              case AI_BACKGROUND_SIZE_FILL:
+                sticky_css = sticky_css + ' background-size: 100% 100%;';
+                break;
+            }
+          }
+
+          if (background_repeat != AI_BACKGROUND_REPEAT_DEFAULT) {
+            switch (background_repeat) {
+              case AI_BACKGROUND_REPEAT_NO:
+                sticky_css = sticky_css + ' background-repeat: no-repeat;';
+                break;
+              case AI_BACKGROUND_REPEAT_YES:
+                sticky_css = sticky_css + ' background-repeat: repeat;';
+                break;
+              case AI_BACKGROUND_REPEAT_HORIZONTALY:
+                sticky_css = sticky_css + ' background-repeat: repeat-x;';
+                break;
+              case AI_BACKGROUND_REPEAT_VERTICALLY:
+                sticky_css = sticky_css + ' background-repeat: repeat-y;';
+                break;
+              case AI_BACKGROUND_REPEAT_SPACE:
+                sticky_css = sticky_css + ' background-repeat: space;';
+                break;
+              case AI_BACKGROUND_REPEAT_ROUND:
+                sticky_css = sticky_css + ' background-repeat: round;';
+                break;
+            }
+          }
+        }
+
       } else {
+          // Used for display
           var sticky_css = $('#css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text ();
+
+          // Used for wrapper alignment
+          var sticky_css = $('#alignment-css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text ();
         }
 
       var vertical_margin = spinner_vertical_margin.spinner ("value");
       var horizontal_margin = spinner_horizontal_margin.spinner ("value");
 
       if (vertical_margin == null) vertical_margin = '';
-      if (horizontal_margin == null) horizontal_margin = '';
+      if (horizontal_margin == null || background) horizontal_margin = '';
 
       sticky_css = window.opener.update_sticky_margins (sticky_css, horizontal_margin, vertical_margin);
 
@@ -985,9 +1218,41 @@ function generate_code_preview (
         }
       }
 
-      $('#css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text (sticky_css);
+      // Used for the display - don't show it yet (ajax request will do it, only set wrapper alignment css
+//      $('#css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text (sticky_css);
 
-      wrapper.removeClass ('ai-sticky-content').removeClass ('ai-sticky-left').removeClass ('ai-sticky-right').removeClass ('ai-sticky-scroll');
+      // Used for wrapper alignment
+      $('#alignment-css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text (sticky_css);
+
+      // Get exact CSS from the backend
+      var set_body_background = <?php echo $body_background ? '1' : '0'; ?>;
+
+      var parameters =
+        '&h_pos=' + horizontal_position +
+        '&v_pos=' + vertical_position +
+        '&h_mar=' + horizontal_margin +
+        '&v_mar=' + vertical_margin +
+        '&anim='  + animation +
+        '&bkg=' + (background  ? '1' : '0') +
+        '&body_bkg=' + set_body_background +
+        '&bkg_col=' + b64e (background_color) +
+        '&bkg_img=' + b64e (background_image) +
+        '&bkg_size=' + background_size +
+        '&bkg_rpt=' + background_repeat;
+
+      jQuery.get (ajaxurl + '?action=ai_ajax_backend&sticky_css='+block+parameters+'&ai_check=' + b64d ('<?php echo base64_encode (wp_create_nonce ("adinserter_data")); ?>'), function (data) {
+        if (data != '') {
+          // Used for display
+          $('#css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text (data);
+
+          // Used for wrapper alignment
+          $('#alignment-css-' + AI_ALIGNMENT_STICKY + ' .ai-sticky-css').text (data);
+        }
+      });
+
+
+//      wrapper.removeClass ('ai-sticky-content').removeClass ('ai-sticky-left').removeClass ('ai-sticky-right').removeClass ('ai-sticky-scroll').removeClass ('ai-sticky-background').removeClass ('ai-fixed-background');
+      wrapper.removeClass ('ai-sticky-content').removeClass ('ai-sticky-left').removeClass ('ai-sticky-right').removeClass ('ai-sticky-scroll').removeClass ('ai-sticky-background');
 
       switch (parseInt (alignment)) {
         case AI_ALIGNMENT_STICKY:
@@ -1000,12 +1265,32 @@ function generate_code_preview (
               wrapper.addClass ('ai-sticky-content');
               wrapper.addClass ('ai-sticky-right');
             }
+
+            if (background) {
+              if (horizontal_position == AI_STICK_TO_THE_LEFT || horizontal_position == AI_STICK_TO_THE_CONTENT_LEFT) {
+                wrapper.addClass ('ai-sticky-background');
+                wrapper.addClass ('ai-sticky-left');
+              } else
+              if (horizontal_position == AI_STICK_TO_THE_RIGHT || horizontal_position == AI_STICK_TO_THE_CONTENT_RIGHT) {
+                wrapper.addClass ('ai-sticky-background');
+                wrapper.addClass ('ai-sticky-right');
+              }
+//              else
+//              if (horizontal_position == AI_STICK_HORIZONTAL_CENTER) {
+//                wrapper.addClass ('ai-fixed-background');
+//              }
+            }
           }
 
           if (vertical_position == AI_SCROLL_WITH_THE_CONTENT) {
-            wrapper.addClass ('ai-sticky-content');
+            if (background)
+              wrapper.addClass ('ai-sticky-background');
+            else
+              wrapper.addClass ('ai-sticky-content');
+
             wrapper.addClass ('ai-sticky-scroll');
           }
+
           break;
         case AI_ALIGNMENT_CUSTOM_CSS:
           var custom_css = $("#custom-css").val ().replace (/\s+/g, '');
@@ -1023,106 +1308,111 @@ function generate_code_preview (
           break;
       }
 
-      wrapper.removeClass ('ai-center-h').removeClass ('ai-center-v').removeClass ('ai-sticky-turn');
-      wrapper.attr ('data-aos', '');
+//      console.log ('sticky classes', wrapper.attr ('class'));
 
-      var animation = parseInt ($("select#animation option:selected").attr ('value'));
+      wrapper.removeClass ('ai-center-h').removeClass ('ai-center-v').removeClass ('ai-sticky-turn');
+
+//      var animation = parseInt ($("select#animation option:selected").attr ('value'));
 
       var data_aos = '';
       var direction = '';
 
-      switch (horizontal_position) {
-        case AI_STICK_TO_THE_LEFT:
-        case AI_STICK_TO_THE_CONTENT_LEFT:
-          direction = 'right';
-          break;
-        case AI_STICK_HORIZONTAL_CENTER:
-          wrapper.addClass ('ai-center-h');
-          switch (vertical_position) {
-            case AI_STICK_TO_THE_TOP:
-            case AI_SCROLL_WITH_THE_CONTENT:
-              direction = 'down';
-              break;
-            case AI_STICK_VERTICAL_CENTER:
-              direction = 'left';
-              switch (animation) {
-                case AI_ANIMATION_SLIDE:
-                case AI_ANIMATION_SLIDE_FADE:
-                  animation = AI_ANIMATION_FADE;
-                  break;
-                case AI_ANIMATION_ZOOM_IN:
-                case AI_ANIMATION_ZOOM_OUT:
-                  direction = 'up';
-                  break;
-              }
-              break;
-            case AI_STICK_TO_THE_BOTTOM:
-              direction = 'up';
-              break;
-          }
-          break;
-        case AI_STICK_TO_THE_CONTENT_RIGHT:
-        case AI_STICK_TO_THE_RIGHT:
-          direction = 'left';
-          break;
-      }
+      if (!background) {
+        wrapper.attr ('data-aos', '');
 
-      if (vertical_position == AI_STICK_VERTICAL_CENTER) wrapper.addClass ('ai-center-v');
+        switch (horizontal_position) {
+          case AI_STICK_TO_THE_LEFT:
+          case AI_STICK_TO_THE_CONTENT_LEFT:
+            direction = 'right';
+            break;
+          case AI_STICK_HORIZONTAL_CENTER:
+            wrapper.addClass ('ai-center-h');
+            switch (vertical_position) {
+              case AI_STICK_TO_THE_TOP:
+              case AI_SCROLL_WITH_THE_CONTENT:
+                direction = 'down';
+                break;
+              case AI_STICK_VERTICAL_CENTER:
+                direction = 'left';
+                switch (animation) {
+                  case AI_ANIMATION_SLIDE:
+                  case AI_ANIMATION_SLIDE_FADE:
+                    animation = AI_ANIMATION_FADE;
+                    break;
+                  case AI_ANIMATION_ZOOM_IN:
+                  case AI_ANIMATION_ZOOM_OUT:
+                    direction = 'up';
+                    break;
+                }
+                break;
+              case AI_STICK_TO_THE_BOTTOM:
+                direction = 'up';
+                break;
+            }
+            break;
+          case AI_STICK_TO_THE_CONTENT_RIGHT:
+          case AI_STICK_TO_THE_RIGHT:
+            direction = 'left';
+            break;
+        }
 
-//      console.log ('direction', direction);
-//      console.log ('animation', animation);
-//      console.log ('horizontal_position', horizontal_position);
+        if (vertical_position == AI_STICK_VERTICAL_CENTER) wrapper.addClass ('ai-center-v');
 
-      switch (horizontal_position) {
-        case AI_STICK_TO_THE_LEFT:
-          if (animation == AI_ANIMATION_TURN) direction = 'left';
-          break;
-        case AI_STICK_TO_THE_RIGHT:
-          if (animation == AI_ANIMATION_TURN) direction = 'right';
-          break;
-        case AI_STICK_TO_THE_CONTENT_LEFT:
-        case AI_STICK_TO_THE_CONTENT_RIGHT:
-          if (animation == AI_ANIMATION_SLIDE) animation = AI_ANIMATION_SLIDE_FADE;
-          break;
-      }
+  //      console.log ('direction', direction);
+  //      console.log ('animation', animation);
+  //      console.log ('horizontal_position', horizontal_position);
 
-      switch (animation) {
-        case AI_ANIMATION_FADE:
-          data_aos = 'fade';
-          break;
-        case AI_ANIMATION_SLIDE:
-          data_aos = 'slide-' + direction;
-          break;
-        case AI_ANIMATION_SLIDE_FADE:
-          data_aos = 'fade-' + direction;
-          break;
-        case AI_ANIMATION_TURN:
-          wrapper.addClass ('ai-sticky-turn');
-          data_aos = 'flip-' + direction;
-          break;
-        case AI_ANIMATION_FLIP:
-          if (direction == 'right') direction = 'left'; else
-            if (direction == 'left') direction = 'right';
-          data_aos = 'flip-' + direction;
-          break;
-        case AI_ANIMATION_ZOOM_IN:
-          data_aos = 'zoom-in-' + direction;
-          break;
-        case AI_ANIMATION_ZOOM_OUT:
-          data_aos = 'zoom-out-' + direction;
-          break;
-      }
+        switch (horizontal_position) {
+          case AI_STICK_TO_THE_LEFT:
+            if (animation == AI_ANIMATION_TURN) direction = 'left';
+            break;
+          case AI_STICK_TO_THE_RIGHT:
+            if (animation == AI_ANIMATION_TURN) direction = 'right';
+            break;
+          case AI_STICK_TO_THE_CONTENT_LEFT:
+          case AI_STICK_TO_THE_CONTENT_RIGHT:
+            if (animation == AI_ANIMATION_SLIDE) animation = AI_ANIMATION_SLIDE_FADE;
+            break;
+        }
 
-      remove_transform = false;
-      if (data_aos != '') {
-        wrapper.attr ('data-aos', data_aos);
-        remove_transform = true;
+        switch (animation) {
+          case AI_ANIMATION_FADE:
+            data_aos = 'fade';
+            break;
+          case AI_ANIMATION_SLIDE:
+            data_aos = 'slide-' + direction;
+            break;
+          case AI_ANIMATION_SLIDE_FADE:
+            data_aos = 'fade-' + direction;
+            break;
+          case AI_ANIMATION_TURN:
+            wrapper.addClass ('ai-sticky-turn');
+            data_aos = 'flip-' + direction;
+            break;
+          case AI_ANIMATION_FLIP:
+            if (direction == 'right') direction = 'left'; else
+              if (direction == 'left') direction = 'right';
+            data_aos = 'flip-' + direction;
+            break;
+          case AI_ANIMATION_ZOOM_IN:
+            data_aos = 'zoom-in-' + direction;
+            break;
+          case AI_ANIMATION_ZOOM_OUT:
+            data_aos = 'zoom-out-' + direction;
+            break;
+        }
+
+        remove_transform = false;
+        if (data_aos != '') {
+          wrapper.attr ('data-aos', data_aos);
+          remove_transform = true;
+        }
       }
     }
 
     function update_sticky_elements (context) {
 
-//      console.log ('update_sticky_elements', context, 'sticky_context', sticky_context);
+      console.log ('update_sticky_elements', context, 'sticky_context', sticky_context);
 
       if (sticky_context != context) return;
 
@@ -1200,6 +1490,7 @@ function generate_code_preview (
 
       update_sticky_elements (STICKY_CONTEXT_HORIZONTAL_POSITION);
       update_highlighting ();
+      update_wrapper_size ();
 
       wrapper.css ('transition-property', 'none');
       setTimeout (function() {wrapper.css ('transition-property', '');}, 10);
@@ -1222,6 +1513,7 @@ function generate_code_preview (
 
       update_sticky_elements (STICKY_CONTEXT_VERTICAL_POSITION);
       update_highlighting ();
+      update_wrapper_size ();
 
       wrapper.css ('transition-property', 'none');
       setTimeout (function() {wrapper.css ('transition-property', '');}, 10);
@@ -1235,7 +1527,6 @@ function generate_code_preview (
 
 //      console.log ('select#animation change');
 
-//      if (sticky_context == STICKY_CONTEXT_VERTICAL_POSITION) $("select#block-alignment").val (AI_ALIGNMENT_STICKY).change();
       update_sticky_css (STICKY_CONTEXT_ANIMATION);
       process_display_elements ();
       update_close_button ();
@@ -1249,6 +1540,69 @@ function generate_code_preview (
       setTimeout (function() {wrapper.css ('transition-property', '');}, 10);
 
       if (sticky_context == STICKY_CONTEXT_ANIMATION) sticky_context = STICKY_CONTEXT_NONE;
+    });
+
+    $("input#background").change (function() {
+      if (sticky_context == STICKY_CONTEXT_NONE) sticky_context = STICKY_CONTEXT_BACKGROUND;
+
+//      console.log ('input#background change');
+
+      update_sticky_css (STICKY_CONTEXT_BACKGROUND);
+      process_display_elements ();
+      update_close_button ();
+
+//      console.log ('input#background');
+
+      update_sticky_elements (STICKY_CONTEXT_BACKGROUND);
+      update_highlighting ();
+      update_wrapper_size ();
+
+      wrapper.css ('transition-property', 'none');
+      setTimeout (function() {wrapper.css ('transition-property', '');}, 10);
+
+      if (sticky_context == STICKY_CONTEXT_BACKGROUND) sticky_context = STICKY_CONTEXT_NONE;
+    });
+
+    $("input#bkg-color").colorpicker ({useAlpha: false, useHashPrefix: true, format: 'hex', fallbackColor: '#fffffe'}).on ('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
+      if (sticky_context == STICKY_CONTEXT_NONE) sticky_context = STICKY_CONTEXT_BACKGROUND_COLOR;
+
+      update_sticky_css (STICKY_CONTEXT_BACKGROUND_COLOR);
+      process_display_elements ();
+      update_sticky_elements (STICKY_CONTEXT_BACKGROUND_COLOR);
+
+      if (sticky_context == STICKY_CONTEXT_BACKGROUND_COLOR) sticky_context = STICKY_CONTEXT_NONE;
+    }).on ('input', function() {
+      if (sticky_context == STICKY_CONTEXT_NONE) sticky_context = STICKY_CONTEXT_BACKGROUND_COLOR;
+
+      update_sticky_css (STICKY_CONTEXT_BACKGROUND_COLOR);
+      process_display_elements ();
+      update_sticky_elements (STICKY_CONTEXT_BACKGROUND_COLOR);
+
+      if (sticky_context == STICKY_CONTEXT_BACKGROUND_COLOR) sticky_context = STICKY_CONTEXT_NONE;
+    });
+
+    $("select#bkg-repeat").change (function() {
+      if (sticky_context == STICKY_CONTEXT_NONE) sticky_context = STICKY_CONTEXT_BACKGROUND_REPEAT;
+
+//      console.log ('select#bkg-repeat change');
+
+      update_sticky_css (STICKY_CONTEXT_BACKGROUND_REPEAT);
+      process_display_elements ();
+      update_sticky_elements (STICKY_CONTEXT_BACKGROUND_REPEAT);
+
+      if (sticky_context == STICKY_CONTEXT_BACKGROUND_REPEAT) sticky_context = STICKY_CONTEXT_NONE;
+    });
+
+    $("select#bkg-size").change (function() {
+      if (sticky_context == STICKY_CONTEXT_NONE) sticky_context = STICKY_CONTEXT_BACKGROUND_SIZE;
+
+//      console.log ('select#bkg-size change');
+
+      update_sticky_css (STICKY_CONTEXT_BACKGROUND_SIZE);
+      process_display_elements ();
+      update_sticky_elements (STICKY_CONTEXT_BACKGROUND_SIZE);
+
+      if (sticky_context == STICKY_CONTEXT_BACKGROUND_SIZE) sticky_context = STICKY_CONTEXT_NONE;
     });
 
     $("#animate-button").button ({
@@ -1334,7 +1688,8 @@ function generate_code_preview (
         $("select#block-alignment").val (AI_ALIGNMENT_CUSTOM_CSS).change();
       } else
       if (alignment == AI_ALIGNMENT_STICKY) {
-        $("#custom-css").show().val ($(ID_CSS_ALIGNMENT_STICKY).text ());
+//        $("#custom-css").show().val ($(ID_CSS_ALIGNMENT_STICKY).text ());
+        $("#custom-css").show().val ($(ID_CSS_ALIGNMENT_STICKY_WRAPPER).text ());
         $("select#block-alignment").val (AI_ALIGNMENT_CUSTOM_CSS).change();
       }
     });
@@ -1367,7 +1722,9 @@ function generate_code_preview (
     }).click (function () {
       $('body').toggleClass ("highlighted");
 
-      if (!$('body').hasClass ("highlighted")) {
+      var wrapper_visible = wrapper.is (':visible');
+
+      if (!$('body').hasClass ("highlighted") || !wrapper_visible) {
         $(".highlighting").remove ();
         $('.ai-debug-ad-info').remove();
         return;
@@ -1476,8 +1833,9 @@ function generate_code_preview (
       code_blocks.each (function () {
         var element_tag = $(this).prop("tagName").toLowerCase();
 
-        // Don't highlight close button
-        if (element_tag == 'span' && $(this).hasClass ('ai-close-button')) return true;
+        // Don't highlight attributes
+//        if (element_tag == 'span' && $(this).hasClass ('ai-close-button')) return true;
+        if (element_tag == 'div' && $(this).hasClass ('ai-attributes')) return true;
 
         if (element_tag == 'a') {
           var a_children = $(this).children ();
@@ -1487,7 +1845,8 @@ function generate_code_preview (
         } else filtered_code_blocks = filtered_code_blocks.add ($(this));
       });
 
-//      code_blocks.each (function () {
+//      console.log ('filtered_code_blocks', filtered_code_blocks);
+
       filtered_code_blocks.each (function () {
         var element_tag = $(this).prop("tagName");
         if (typeof element_tag != 'undefined') element_tag = element_tag.toLowerCase();
@@ -1498,9 +1857,12 @@ function generate_code_preview (
 
           var element_display       = $(this).css ('display');
           var element_left          = element_offset.left;
+          var element_right         = element_offset.right;
           var element_top           = element_offset.top;
           var element_outer_width   = $(this).outerWidth ();
           var element_outer_height  = $(this).outerHeight ();
+
+          var background            = $("input#background").is(":checked");
 
           if (debug) {
             console.log ("");
@@ -1523,6 +1885,12 @@ function generate_code_preview (
             overlay_background_div_position = 'fixed';
             fixed_offset_top = $(document).scrollTop();
             fixed_offset_left = $(document).scrollLeft();
+
+            var set_element_right = false;
+            if (background) {
+              element_outer_width   = wrapper.outerWidth ();
+              element_outer_height  = wrapper.outerHeight ();
+            }
           }
 
           var new_id = "code-" + code_index;
@@ -1533,6 +1901,9 @@ function generate_code_preview (
             offset ({top:  element_top - fixed_offset_top, left: element_left - fixed_offset_left}).
             attr ("id", new_id).
             addClass ("highlighting"));
+            if (background && wrapper.css ('display') == 'flex' && wrapper.css ('align-items') == 'flex-end') {
+              $('#'+new_id).css ({left: '', right: wrapper.css ('right')});
+            }
           last_code_div = new_id;
 
           var new_bkg_id = "code-background-" + code_index;
@@ -1543,6 +1914,9 @@ function generate_code_preview (
             offset ({top:  element_top - fixed_offset_top, left: element_left - fixed_offset_left}).
             attr ("id", new_bkg_id).
             addClass ("highlighting"));
+            if (background && wrapper.css ('display') == 'flex' && wrapper.css ('align-items') == 'flex-end') {
+              $('#'+new_bkg_id).css ({left: '', right: wrapper.css ('right')});
+            }
           last_bkg_div = new_bkg_id;
         }
       });
@@ -1551,13 +1925,15 @@ function generate_code_preview (
 
     $("#use-button").button ({
     }).click (function () {
-      apply_to_settings ();
-      window.close();
+      $('#ai-loading').show ();
+      setTimeout (function() {apply_to_settings (); window.close();}, 1);
     });
 
     $("#reset-button").button ({
     }).click (function () {
-      load_from_settings ();
+      $('#ai-loading').show ();
+      setTimeout (function() {load_from_settings (); $('#ai-loading').hide ();}, 1);
+
     });
 
     $("#cancel-button").button ({
@@ -1632,6 +2008,7 @@ function generate_code_preview (
       $(this).attr ('title', titles [index]);
     });
 
+
     var titles = new Array();
     $("select#vertical-position").imagepicker({hide_select: false}).find ('option').each (function (index) {
       titles.push ($(this).data ('title'));
@@ -1679,6 +2056,20 @@ function generate_code_preview (
       load_preview_block ();
     });
 
+    $("select#fallback").change (function() {
+      load_preview_block ();
+    });
+
+    window.onscroll = function () {ai_scroll_update ()};
+
+    function ai_scroll_update () {
+      if (sticky) {
+        if ($('body').hasClass ("highlighted")) {
+          $("#highlight-button").click ();
+        }
+      }
+    }
+
     }) (jQuery);
   }
 
@@ -1722,6 +2113,7 @@ body.sticky {
   padding: 20px 10px;
   border: 1px solid #eee;
   border-radius: 5px;
+  background: #fff;
 }
 
 .responsive-table td {
@@ -1925,6 +2317,14 @@ select {
 .ai-info-1 {background: #000; color: #fff;}
 .ai-info-2 {background: #fff; color: #000;}
 
+.highlighted #wrapper ins.adsbygoogle[data-ad-status="unfilled"] {background: url(http://via.placeholder.com/800x800/ffffff/000000.png?text=NO%20AD%20SERVED); background-size: cover; background-repeat: no-repeat; background-position: center;}
+
+input {
+/*  cursor: pointer;*/
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
 </style>
 <?php echo $head_code; ?>
 </head>
@@ -1938,11 +2338,28 @@ select {
     <table class="screen" cellspacing=0 cellpadding=0>
       <tr>
 <?php
+
+    $viewport_data = array ();
+    for ($viewport = 1; $viewport <= 6; $viewport ++) {
+      $viewport_name  = get_viewport_name ($viewport);
+      $viewport_width = get_viewport_width ($viewport);
+      if ($viewport_name != '') {
+        $viewport_data []= array ('index' => $viewport, 'name' => $viewport_name, 'width' => $viewport_width);
+      }
+    }
+
+    usort ($viewport_data, 'ai_compare_viewport');
+    $widest_viewport_name = $viewport_data [0]['name'];
+    $viewport_data = array_reverse ($viewport_data);
+
     $previous_width = 0;
     $previous_name = '';
-    for ($viewport_index = 6 - 1; $viewport_index > 0; $viewport_index --) {
-      $viewport_name  = get_viewport_name ($viewport_index);
-      $viewport_width = get_viewport_width ($viewport_index);
+
+//    for ($viewport_index = 6 - 1; $viewport_index > 0; $viewport_index --) {
+    foreach ($viewport_data as $index => $viewport) {
+
+      $viewport_name  = $viewport ['name'];
+      $viewport_width = $viewport ['width'];
       if ($viewport_name != '' && $viewport_width != 0) {
         echo "<td class='viewport-box' data='", $viewport_width, "' style='background: #eee; text-align: center; border: 1px solid #888; border-left-width: 0; min-width: ", $viewport_width - $previous_width - 1, "px'>",
           $previous_name, "<span style='float: left; margin-left: 5px;'>", $previous_width != 0 ? $previous_width . "px" : "", "</span></td>";
@@ -1950,7 +2367,7 @@ select {
       $previous_name  = $viewport_name;
       $previous_width = $viewport_width;
     }
-    echo "<td style='background: #eee; text-align: left; border: 1px solid #888; border-left-width: 0; min-width: 2000px'><span style='margin-left: 30px;'>", get_viewport_name (1), "</span><span style='float: left; margin-left: 5px;'>", $previous_width != 0 ? $previous_width . "px" : "", "</span></td>";
+    echo "<td style='background: #eee; text-align: left; border: 1px solid #888; border-left-width: 0; min-width: 2000px'><span style='margin-left: 30px;'>", $widest_viewport_name, "</span><span style='float: left; margin-left: 5px;'>", $previous_width != 0 ? $previous_width . "px" : "", "</span></td>";
 ?>
       </tr>
     </table>
@@ -1983,7 +2400,7 @@ select {
   </div>
 
   <div style="float: right; width: 90px; margin-left: 20px;">
-    <button id="highlight-button" type="button" style="margin: 0 0 10px 0; font-size: 12px; width: 90px; height: 35px; float: right;" title="<?php _e ('Highlight inserted code', 'ad-inserter'); ?>" ><?php _e ('Highlight', 'ad-inserter'); ?></button>
+    <button id="highlight-button" type="button" style="margin: 0 0 10px 0; font-size: 12px; width: 90px; height: 35px; float: right;<?php if ($fixed_background) echo " visibility: hidden;"; ?>" title="<?php _e ('Highlight inserted code', 'ad-inserter'); ?>" ><?php _e ('Highlight', 'ad-inserter'); ?></button>
 <?php if (!$read_only) : ?>
     <button id="use-button" type="button" style="margin: 0 0 10px 0; font-size: 12px; width: 90px; height: 35px; float: right;" title="<?php _e ('Use current settings', 'ad-inserter'); ?>" ><?php _e ('Use', 'ad-inserter'); ?></button>
     <button id="reset-button" type="button" style="margin: 0 0 10px 0; font-size: 12px; width: 90px; height: 35px; float: right;" title="<?php _e ('Reset to block settings', 'ad-inserter'); ?>" ><?php _e ('Reset', 'ad-inserter'); ?></button>
@@ -2004,6 +2421,8 @@ select {
     <h2><?php _e ('AdSense ad unit', 'ad-inserter'); ?></h2>
 <?php endif; ?>
     <h3 id="block-name" style="text-align: left;"><?php echo $block_name; ?></h3>
+
+    <img id="ai-loading" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>loading.gif" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 10px; display: none;" />
   </div>
 
 <?php if (!$read_only) : ?>
@@ -2092,7 +2511,7 @@ select {
   <div id="alignment-editor" style="margin: 20px 0;">
 <?php else : ?>
   <div style="margin: 10px 0;">
-<?php check_count_rotate_code ($obj, $check, $count, $rotate, $viewport); ?>
+<?php check_count_rotate_code ($obj, $check, $count, $rotate, $viewport, $fallback); ?>
   </div>
   <div id="alignment-editor" style="margin: 20px 0; display: none;">
 <?php endif; ?>
@@ -2102,7 +2521,7 @@ select {
     <div style="">
 
       <div style="margin: 10px 0;">
-<?php if (!$read_only) check_count_rotate_code ($obj, $check, $count, $rotate, $viewport); ?>
+<?php if (!$read_only) check_count_rotate_code ($obj, $check, $count, $rotate, $viewport, $fallback); ?>
       </div>
 
       <div style="float: left;">
@@ -2117,15 +2536,61 @@ select {
         <div id="alignment-style" style="margin: 4px 0; min-height: 74px;"></div>
       </div>
 
-      <div style="float: right; text-align: right;">
-<?php if (function_exists ('ai_close_button_select')) ai_close_button_select (0, $close_button, $close_button, 'close-button-0'); ?>
+      <div id="fixed-background-settings" style="float: right;<?php if (!$fixed_background) echo " display: none;"; ?>">
+        <input id="bkg-image" style="display: none;" type="text" size="12" maxlength="200" value="<?php echo $background_color; ?>" />
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <?php _e ('Background color', 'ad-inserter'); ?>
+              </td>
+              <td>
+                <input id="bkg-color" style="font-family: monospace;" title="<?php _e ("Color to be used for the background", 'ad-inserter'); ?>" type="text" size="7" maxlength="7" value="<?php echo $background_color; ?>" />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php _e ('Image size', 'ad-inserter'); ?>
+              </td>
+              <td>
+                <select id="bkg-size">
+                   <option value="<?php echo AI_BACKGROUND_SIZE_DEFAULT; ?>" <?php echo ($background_size == AI_BACKGROUND_SIZE_DEFAULT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_DEFAULT_BKG_SIZE; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_SIZE_COVER; ?>" <?php echo ($background_size == AI_BACKGROUND_SIZE_COVER) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_COVER; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_SIZE_FIT; ?>" <?php echo ($background_size == AI_BACKGROUND_SIZE_FIT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FIT_BKG_SIZE; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_SIZE_FILL; ?>" <?php echo ($background_size == AI_BACKGROUND_SIZE_FILL) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FILL; ?></option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php _e ('Repeat image', 'ad-inserter'); ?>
+              </td>
+              <td>
+                <select id="bkg-repeat">
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_DEFAULT; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_DEFAULT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_DEFAULT_BKG_REPEAT; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_NO; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_NO) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_NO; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_YES; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_YES) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_YES; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_HORIZONTALY; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_HORIZONTALY) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_HORIZONTALY; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_VERTICALLY; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_VERTICALLY) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_VERTICALLY; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_SPACE; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_SPACE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SPACE; ?></option>
+                   <option value="<?php echo AI_BACKGROUND_REPEAT_ROUND; ?>" <?php echo ($background_repeat == AI_BACKGROUND_REPEAT_ROUND) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_ROUND; ?></option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="close-button-selection" style="float: right; text-align: right;<?php if ($fixed_background) echo "; display: none;"; ?>">
+<?php if (ai_pro () && function_exists ('ai_close_button_select')) ai_close_button_select (0, $close_button, $close_button, 'close-button-0'); ?>
         <div id="close-buttons" style="margin: 4px 0; min-height: 74px;"></div>
       </div>
+
       <div style="clear: both;"></div>
 
     </div>
 
-    <div style="margin: 8px 0;">
+    <div id="sticky-positions" style="margin: 8px 0;<?php if ($fixed_background) echo " display: none;"; ?>">
       <div style="float: left;">
         <div style="margin: 4px 0;">
           <?php _e ('Horizontal position', 'ad-inserter'); ?>
@@ -2134,6 +2599,7 @@ select {
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-left"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_LEFT; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_LEFT_BKG; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_LEFT; ?>"
                value="<?php echo AI_STICK_TO_THE_LEFT; ?>"
                <?php echo ($horizontal_position == AI_STICK_TO_THE_LEFT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_LEFT; ?></option>
@@ -2141,14 +2607,16 @@ select {
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-content-left"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_CONTENT_LEFT; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_CONTENT_LEFT_BKG; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_CONTENT_LEFT; ?>"
                value="<?php echo AI_STICK_TO_THE_CONTENT_LEFT; ?>"
                <?php echo ($horizontal_position == AI_STICK_TO_THE_CONTENT_LEFT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_CONTENT_LEFT; ?></option>
-             <option
+             <option id="ai-stick-horizontal-center"
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-center-horizontal"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_CENTER_HORIZONTAL; ?>"
                data-css-<?php echo AI_STICK_VERTICAL_CENTER; ?>="<?php echo AI_ALIGNMENT_CSS_STICK_CENTER_HORIZONTAL_V; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_CENTER_HORIZONTAL_BKG; ?>"
                data-title="<?php echo AI_TEXT_CENTER; ?>"
                value="<?php echo AI_STICK_HORIZONTAL_CENTER; ?>"
                <?php echo ($horizontal_position == AI_STICK_HORIZONTAL_CENTER) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_CENTER; ?></option>
@@ -2156,6 +2624,7 @@ select {
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-content-right"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_CONTENT_RIGHT; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_CONTENT_RIGHT_BKG; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_CONTENT_RIGHT; ?>"
                value="<?php echo AI_STICK_TO_THE_CONTENT_RIGHT; ?>"
                <?php echo ($horizontal_position == AI_STICK_TO_THE_CONTENT_RIGHT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_CONTENT_RIGHT; ?></option>
@@ -2164,6 +2633,7 @@ select {
                data-img-class="automatic-insertion preview im-sticky-right"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_RIGHT; ?>"
                data-css-<?php echo AI_SCROLL_WITH_THE_CONTENT; ?>="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_RIGHT_SCROLL; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_RIGHT_BKG; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_RIGHT; ?>"
                value="<?php echo AI_STICK_TO_THE_RIGHT; ?>"
                <?php echo ($horizontal_position == AI_STICK_TO_THE_RIGHT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_RIGHT; ?></option>
@@ -2184,12 +2654,13 @@ select {
       <div style="float: right;">
         <div style="margin: 4px 0;">
           <?php _e ('Vertical position', 'ad-inserter'); ?>
-          <select id="vertical-position">
+          <select id="vertical-position" data-css-body-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_TOP; ?>">
              <option
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-top"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_TOP_OFFSET; ?>"
                data-css-<?php echo AI_STICK_HORIZONTAL_CENTER; ?>="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_TOP; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_TOP; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_TOP; ?>"
                value="<?php echo AI_STICK_TO_THE_TOP; ?>"
                <?php echo ($vertical_position == AI_STICK_TO_THE_TOP) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_TOP; ?></option>
@@ -2204,6 +2675,7 @@ select {
                data-img-src="<?php echo plugins_url ('css/images/blank.png', AD_INSERTER_FILE); ?>"
                data-img-class="automatic-insertion preview im-sticky-scroll"
                data-css="<?php echo AI_ALIGNMENT_CSS_SCROLL_WITH_THE_CONTENT; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_SCROLL_WITH_THE_CONTENT_BKG; ?>"
                data-title="<?php echo AI_TEXT_SCROLL_WITH_THE_CONTENT; ?>"
                value="<?php echo AI_SCROLL_WITH_THE_CONTENT; ?>"
                <?php echo ($vertical_position == AI_SCROLL_WITH_THE_CONTENT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SCROLL_WITH_THE_CONTENT; ?></option>
@@ -2212,6 +2684,7 @@ select {
                data-img-class="automatic-insertion preview im-sticky-bottom"
                data-css="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_BOTTOM_OFFSET; ?>"
                data-css-<?php echo AI_STICK_HORIZONTAL_CENTER; ?>="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_BOTTOM; ?>"
+               data-css-bkg="<?php echo AI_ALIGNMENT_CSS_STICK_TO_THE_BOTTOM; ?>"
                data-title="<?php echo AI_TEXT_STICK_TO_THE_BOTTOM; ?>"
                value="<?php echo AI_STICK_TO_THE_BOTTOM; ?>"
                <?php echo ($vertical_position == AI_STICK_TO_THE_BOTTOM) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_STICK_TO_THE_BOTTOM; ?></option>
@@ -2232,29 +2705,36 @@ select {
       <div style="clear: both;"></div>
     </div>
 
-    <div style="margin: 8px 0;">
-      <span style="vertical-align: middle;">
-        <?php _e ('Animation', 'ad-inserter'); ?>
-        <select id="animation">
-           <option value="<?php echo AI_ANIMATION_NONE; ?>" <?php echo ($animation  == AI_ANIMATION_NONE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_NONE; ?></option>
-           <option value="<?php echo AI_ANIMATION_FADE; ?>" <?php echo ($animation  == AI_ANIMATION_FADE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FADE; ?></option>
-           <option value="<?php echo AI_ANIMATION_SLIDE; ?>" <?php echo ($animation  == AI_ANIMATION_SLIDE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SLIDE; ?></option>
-           <option value="<?php echo AI_ANIMATION_SLIDE_FADE; ?>" <?php echo ($animation  == AI_ANIMATION_SLIDE_FADE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SLIDE_FADE; ?></option>
-           <option value="<?php echo AI_ANIMATION_TURN; ?>" <?php echo ($animation  == AI_ANIMATION_TURN) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_TURN; ?></option>
-           <option value="<?php echo AI_ANIMATION_FLIP; ?>" <?php echo ($animation  == AI_ANIMATION_FLIP) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FLIP; ?></option>
-           <option value="<?php echo AI_ANIMATION_ZOOM_IN; ?>" <?php echo ($animation  == AI_ANIMATION_ZOOM_IN) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_ZOOM_IN; ?></option>
-           <option value="<?php echo AI_ANIMATION_ZOOM_OUT; ?>" <?php echo ($animation  == AI_ANIMATION_ZOOM_OUT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_ZOOM_OUT; ?></option>
-        </select>
-      </span>
-      <button id="animate-button" type="button" style="margin: 0 0 0 10px; height: 30px; font-size: 12px;"><?php _e ('Animate', 'ad-inserter'); ?></button>
-    </div>
+    <div style="margin: 8px 0; min-height: 30px;<?php if ($fixed_background) echo " display: none;"; ?>">
+      <span id="animation-settings">
+        <span style="vertical-align: middle;">
+          <?php _e ('Animation', 'ad-inserter'); ?>
+          <select id="animation">
+             <option value="<?php echo AI_ANIMATION_NONE; ?>" <?php echo ($animation  == AI_ANIMATION_NONE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_NONE; ?></option>
+             <option value="<?php echo AI_ANIMATION_FADE; ?>" <?php echo ($animation  == AI_ANIMATION_FADE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FADE; ?></option>
+             <option value="<?php echo AI_ANIMATION_SLIDE; ?>" <?php echo ($animation  == AI_ANIMATION_SLIDE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SLIDE; ?></option>
+             <option value="<?php echo AI_ANIMATION_SLIDE_FADE; ?>" <?php echo ($animation  == AI_ANIMATION_SLIDE_FADE) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_SLIDE_FADE; ?></option>
+             <option value="<?php echo AI_ANIMATION_TURN; ?>" <?php echo ($animation  == AI_ANIMATION_TURN) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_TURN; ?></option>
+             <option value="<?php echo AI_ANIMATION_FLIP; ?>" <?php echo ($animation  == AI_ANIMATION_FLIP) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_FLIP; ?></option>
+             <option value="<?php echo AI_ANIMATION_ZOOM_IN; ?>" <?php echo ($animation  == AI_ANIMATION_ZOOM_IN) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_ZOOM_IN; ?></option>
+             <option value="<?php echo AI_ANIMATION_ZOOM_OUT; ?>" <?php echo ($animation  == AI_ANIMATION_ZOOM_OUT) ? AD_SELECT_SELECTED : AD_EMPTY_VALUE; ?>><?php echo AI_TEXT_ZOOM_OUT; ?></option>
+          </select>
+        </span>
 
+        <button id="animate-button" type="button" style="margin: 0 0 0 10px; height: 30px; font-size: 12px;"><?php _e ('Animate', 'ad-inserter'); ?></button>
+      </span>
+
+      <span style="float: right; margin-top: 2px;">
+        <input id="background" type="checkbox" <?php if ($background) echo 'checked '; ?> />
+        <label for="background"><?php _e ('Background', 'ad-inserter'); ?></label>
+      </span>
+    </div>
 
 <?php else : ?>
 
     <div style="margin: 20px 0 0 0;">
 
-      <?php check_count_rotate_code ($obj, $check, $count, $rotate, $viewport); ?>
+      <?php check_count_rotate_code ($obj, $check, $count, $rotate, $viewport, $fallback); ?>
 
       <div style="display: inline-block;">
         <div style="display: inline-block; vertical-align: middle;">
@@ -2275,8 +2755,9 @@ select {
       </div>
       <span id="css-index" style="display: inline-block; min-width: 30px; min-height: 12px; margin: 0 0 0 10px; font-size: 14px;" title="CSS code index"></span>
       &nbsp;&nbsp;&nbsp;
+
       <span id="close-button-selection" style="display: <?php echo $alignment_type == AI_ALIGNMENT_NO_WRAPPING || $close_button == AI_CLOSE_NONE ? 'none': 'inline'; ?>;">
-<?php if (function_exists ('ai_close_button_select')) ai_close_button_select (0, $close_button, $close_button, 'close-button-0'); ?>
+<?php if (ai_pro () && function_exists ('ai_close_button_select')) ai_close_button_select (0, $close_button, $close_button, 'close-button-0'); ?>
       </span>
     </div>
 
@@ -2284,14 +2765,26 @@ select {
 
 <?php endif; ?>
 
+    <div style="display: none;">
+<?php
+  if (function_exists ('ai_preview_style_css')) {
+    ob_start ();
+    ai_preview_style_css ($obj, $horizontal_position, $vertical_position, $horizontal_margin, $vertical_margin);
+    $html = ob_get_clean ();
+    echo str_replace ('id="css-', 'id="alignment-css-', $html);
+  }
+?>
+
+    </div>
+
     <table class="responsive-table"<?php if ($sticky) echo 'style="height: 60px;"'; ?>>
       <tr>
         <td style="vertical-align: middle; padding:0;">
           <span id="css-label" style="vertical-align: middle; margin: 4px 0 0 0 0; width: 36px; font-size: 14px; font-weight: bold; display: none;">CSS</span>
         </td>
         <td style="width: 100%; height: 32px; padding:0;">
-          <input id="custom-css" style="width: 100%; display: inline-block; padding: 5px 0 0 3px; border-radius: 4px; display: none; font-size: 12px; font-family: monospace, Courier, 'Courier New'; font-weight: bold;" type="text" value="<?php echo $custom_css_code; ?>" size="70" maxlength="500" title="Custom CSS code for wrapping div" />
-          <span style="width: 100%; display: inline-block; padding: 5px 0 0 5px; font-family: monospace, Courier, 'Courier New'; font-size: 12px; font-weight: bold; cursor: pointer; white-space: normal;">
+          <input id="custom-css" style="width: 100%; display: inline-block; padding: 4px 0 0 4px; border-radius: 4px; display: none; font-size: 12px; font-family: monospace, Courier, 'Courier New'; font-weight: bold;" type="text" value="<?php echo $custom_css_code; ?>" size="70" maxlength="500" title="Custom CSS code for wrapping div" />
+          <span style="width: 100%; display: inline-block; padding: 4px 0 0 5px; font-family: monospace, Courier, 'Courier New'; font-size: 12px; font-weight: bold; cursor: pointer; white-space: normal;">
             <span id="css-no-wrapping" style="vertical-align: middle; display: none;"></span>
             <span id="css-<?php echo AI_ALIGNMENT_DEFAULT; ?>" class="css-code" style="vertical-align: middle; display: none;" title="CSS code for wrapping div, click to edit"><?php echo $obj->alignment_style (AI_ALIGNMENT_DEFAULT); ?></span>
             <span id="css-<?php echo AI_ALIGNMENT_LEFT; ?>" class="css-code" style="vertical-align: middle;display: none;" title="CSS code for wrapping div, click to edit"><?php echo $obj->alignment_style (AI_ALIGNMENT_LEFT); ?></span>
@@ -2389,14 +2882,16 @@ Single pages (posts and static pages) have also additional setting for individua
   </div>
   </div>
 
-<?php ai_wp_footer_hook (); ?>
+<?php echo $footer_code ?>
 <script>
 <?php if (function_exists ('ai_extract_features_2')) echo ai_get_js ('ai-cookie'), ai_get_js ('ai-close'); ?>
 <?php
+  echo ai_get_js ('ai-base64');
   if ($sticky) echo ai_get_js ('ai-sticky');
-  echo ai_get_js ('ai-rotate');
+  echo ai_get_js ('ai-rotation');
   if (function_exists ('add_footer_inline_scripts_2')) {
     echo ai_get_js ('ai-load');
+    echo ai_get_js ('ai-parallax');
   }
   if ($sticky) echo "setTimeout (function() {AOS.init();}, 200);\n";
   if (defined ('AI_ADSENSE_OVERLAY')) {

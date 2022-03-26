@@ -8,6 +8,9 @@
 
 /**
  * Class AMP_Editor_Blocks
+ *
+ * @todo Remove this when AMP-specific blocks are removed. They have been deprecated as of <https://github.com/ampproject/amp-wp/issues/4556>.
+ * @internal
  */
 class AMP_Editor_Blocks {
 
@@ -21,9 +24,9 @@ class AMP_Editor_Blocks {
 	/**
 	 * AMP components that have blocks.
 	 *
-	 * @var array
+	 * @var string[]
 	 */
-	public $amp_blocks = [
+	const AMP_BLOCKS = [
 		'amp-mathml',
 		'amp-timeago',
 		'amp-o2-player',
@@ -33,7 +36,6 @@ class AMP_Editor_Blocks {
 		'amp-jwplayer',
 		'amp-brid-player',
 		'amp-ima-video',
-		'amp-fit-text',
 	];
 
 	/**
@@ -41,7 +43,7 @@ class AMP_Editor_Blocks {
 	 */
 	public function init() {
 		if ( function_exists( 'register_block_type' ) ) {
-			add_filter( 'wp_kses_allowed_html', [ $this, 'whitelist_block_atts_in_wp_kses_allowed_html' ], 10, 2 );
+			add_filter( 'wp_kses_allowed_html', [ $this, 'include_block_atts_in_wp_kses_allowed_html' ], 10, 2 );
 
 			/*
 			 * Dirty AMP is required when a site is in AMP-first mode but not all templates are being served
@@ -62,32 +64,20 @@ class AMP_Editor_Blocks {
 	}
 
 	/**
-	 * Whitelist elements and attributes used for AMP.
+	 * Allowlist elements and attributes used for AMP.
 	 *
-	 * This prevents AMP markup from being deleted in
+	 * This prevents AMP markup from being deleted when the user doesn't have the `unfiltered_html` capability.
 	 *
 	 * @param array  $tags    Array of allowed post tags.
 	 * @param string $context Context.
 	 * @return mixed Modified array.
 	 */
-	public function whitelist_block_atts_in_wp_kses_allowed_html( $tags, $context ) {
+	public function include_block_atts_in_wp_kses_allowed_html( $tags, $context ) {
 		if ( 'post' !== $context ) {
 			return $tags;
 		}
 
-		foreach ( $tags as &$tag ) {
-			if ( ! is_array( $tag ) ) {
-				continue;
-			}
-			$tag['data-amp-layout']              = true;
-			$tag['data-amp-noloading']           = true;
-			$tag['data-amp-lightbox']            = true;
-			$tag['data-close-button-aria-label'] = true;
-		}
-
-		unset( $tag );
-
-		foreach ( $this->amp_blocks as $amp_block ) {
+		foreach ( self::AMP_BLOCKS as $amp_block ) {
 			if ( ! isset( $tags[ $amp_block ] ) ) {
 				$tags[ $amp_block ] = [];
 			}
@@ -128,8 +118,8 @@ class AMP_Editor_Blocks {
 	 * @return string Content (unmodified).
 	 */
 	public function tally_content_requiring_amp_scripts( $content ) {
-		if ( ! is_amp_endpoint() ) {
-			$pattern = sprintf( '/<(%s)\b.*?>/s', implode( '|', $this->amp_blocks ) );
+		if ( ! amp_is_request() ) {
+			$pattern = sprintf( '/<(%s)\b.*?>/s', implode( '|', self::AMP_BLOCKS ) );
 			if ( preg_match_all( $pattern, $content, $matches ) ) {
 				$this->content_required_amp_scripts = array_merge(
 					$this->content_required_amp_scripts,
@@ -144,7 +134,7 @@ class AMP_Editor_Blocks {
 	 * Print AMP scripts required for AMP components used in a non-AMP document (dirty AMP).
 	 */
 	public function print_dirty_amp_scripts() {
-		if ( ! is_amp_endpoint() && ! empty( $this->content_required_amp_scripts ) ) {
+		if ( ! amp_is_request() && ! empty( $this->content_required_amp_scripts ) ) {
 			wp_scripts()->do_items( $this->content_required_amp_scripts );
 		}
 	}

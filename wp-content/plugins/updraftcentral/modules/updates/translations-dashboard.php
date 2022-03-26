@@ -104,4 +104,8 @@ return array(
 	'per_page' => __('Per page', 'updraftcentral'),
 	'latest_version' => __('latest version', 'updraftcentral'),
 	'up_to_date' => __('up to date', 'updraftcentral'),
+	'only_patch_releases' => __('Only patch releases', 'updraftcentral'),
+	'no_patch_releases' => __('There are no patch releases available.', 'updraftcentral'),
+	'last_fetched' => __('Last fetched', 'updraftcentral'),
+	'translation' => __('Translation', 'updraftcentral'),
 );

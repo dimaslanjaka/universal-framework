@@ -1,6 +1,6 @@
 <div class="updates_table_container mass_updates">
 	<div class="row justify-content-between filter-section">
-		<div class="col-12 col-md-12 col-lg-4 col-xl-3">
+		<div class="col-12 col-md-12 col-lg-3 col-xl-2">
 			<div class="sort-elements">
 				<div>
 					<div >
@@ -18,7 +18,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-12 col-lg-8 col-xl-9">
+		<div class="col-12 col-md-12 col-lg-9 col-xl-10">
 			<div class="filter-elements">
 					<div class="filter_type">
 						<input type="checkbox" id="filter_plugin" name="filter_plugin" class="uc_updates_filter_type" value="plugin" checked> <label for="filter_plugin" class="filter_spacer">{{udclion.updates.plugins}} (<span class="filter_plugin_count">0</span>)</label>
@@ -31,6 +31,9 @@
 					</div>
 					<div class="filter_type">
 						<input type="checkbox" id="filter_translation" name="filter_translation" class="uc_updates_filter_type" value="translation" checked> <label for="filter_translation">{{udclion.updates.translations}} (<span class="filter_translation_count">0</span>)</label>
+					</div>
+					<div class="filter_type">
+						<input type="checkbox" id="filter_patch_release" name="filter_patch_release" class="uc_updates_filter_type" value="patch_release"> <label for="filter_patch_release">{{udclion.updates.only_patch_releases}}</label>
 					</div>
 			</div>
 		</div>
@@ -51,7 +54,7 @@
 					<option value="no">{{udclion.updates.no}}</option>
 					</select>
 				</label>
-				<div id="btn-reload-updates"><span class="dashicons dashicons-image-rotate"></span></div>
+				<button class="btn btn-refresh" id="btn-reload-updates"><span class="dashicons dashicons-image-rotate"></span></button>
 			</div>
 		</div>
 	</div>

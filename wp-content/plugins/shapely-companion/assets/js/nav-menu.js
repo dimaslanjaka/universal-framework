@@ -5,7 +5,7 @@
 
   api = wpNavMenu;
 
-  $( '#submit-shapelysection' ).click( function( evt ) {
+  $( '#submit-shapelysection' ).on('click', function( evt ) {
     var section = $( '#shapelysectionsdiv' ).find( '#shapely-section-item-widget' ).val(),
         label = $( '#shapelysectionsdiv' ).find( '#shapely-section-item-name' ).val(),
         url = $( '#shapelysectionsdiv' ).find( '#shapely-section-item-url' ).val();
@@ -37,9 +37,9 @@
     $( '#shapelysectionsdiv .spinner' ).removeClass( 'is-active' );
 
     // Set custom link form back to defaults
-    $( '#shapelysectionsdiv #shapely-section-item-widget' ).val( '0' ).blur();
-    $( '#shapelysectionsdiv #shapely-section-item-url' ).val( '' ).blur();
-    $( '#shapelysectionsdiv #shapely-section-item-name' ).val( '' ).blur();
+    $( '#shapelysectionsdiv #shapely-section-item-widget' ).val( '0' ).trigger('blur');
+    $( '#shapelysectionsdiv #shapely-section-item-url' ).val( '' ).trigger('blur');
+    $( '#shapelysectionsdiv #shapely-section-item-name' ).val( '' ).trigger('blur');
 
   }
 

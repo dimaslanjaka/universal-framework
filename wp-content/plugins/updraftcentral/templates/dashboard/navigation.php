@@ -26,9 +26,9 @@ if (!defined('ABSPATH')) die('No direct access.');
 				<span class="updraftcentral_licences_total"><?php echo ($how_many_licences_available < 0) ? '&#8734;' : $how_many_licences_available;?></span>
 		</a>
 		<?php endif;?>
-		<span class="dashicons updraftcentral-settings" title="<?php esc_attr_e('Settings', 'updraftcentral');?>"></span>
-		<span class="dashicons updraftcentral-help" title="<?php esc_attr_e('Help', 'updraftcentral');?>"></span>
-		<span class="dashicons dashicons-editor-expand updraft-full-screen" title="<?php esc_attr_e('Full screen', 'updraftcentral');?>"></span>
+		<button class="btn updraftcentral-settings" type="button"><span class="dashicons updraftcentral-settings-icon" title="<?php esc_attr_e('Settings', 'updraftcentral');?>"></span>
+		<button class="btn updraftcentral-help" type="button"><span class="dashicons updraftcentral-help-icon" title="<?php esc_attr_e('Help', 'updraftcentral');?>"></span>
+		<button class="btn updraft-full-screen" type="button"><span class="dashicons updraft-full-screen-icon" title="<?php esc_attr_e('Full screen', 'updraftcentral');?>"></span>
 		<span class="dashicons updraftcentral-profile" title="<?php esc_attr_e('Profile', 'updraftcentral');?>"></span>
 		<?php do_action('updraftcentral_main_navigation_after_icons'); ?>
 	</div>

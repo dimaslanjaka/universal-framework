@@ -2,7 +2,7 @@
 /*
  * UnderConstructionPage
  * Hard Worker theme
- * (c) WebFactory Ltd, 2015 - 2019
+ * (c) WebFactory Ltd, 2015 - 2021
  */
 
 

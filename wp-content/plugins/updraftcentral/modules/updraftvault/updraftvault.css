@@ -80,3 +80,9 @@
       float: none; }
     .updraftcentral_dashboard div.updraftcentral_updraftvault_table .updraftvault_column_right {
       float: none; } }
+
+@media (min-width: 768px) {
+  .updraftcentral_updraftvault_table .d-md-block {
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important; } }

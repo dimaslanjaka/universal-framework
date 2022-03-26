@@ -49,7 +49,8 @@
       }
 
       attributes = extend({
-        path: '/'
+        path: '/',
+        sameSite: 'Lax'
       }, api.defaults, attributes);
 
       if (typeof attributes.expires === 'number') {
@@ -171,6 +172,10 @@ ai_check_block = function (block) {
   var ai_debug = typeof ai_debugging !== 'undefined'; // 1
 //  var ai_debug = false;
 
+  if (block == null) {
+    return true;
+  }
+
   var ai_cookie_name = 'aiBLOCKS';
   var ai_cookie = AiCookies.getJSON (ai_cookie_name);
   ai_debug_cookie_status = '';
@@ -193,9 +198,15 @@ ai_check_block = function (block) {
 
   if (ai_cookie.hasOwnProperty (block)) {
     for (var cookie_block_property in ai_cookie [block]) {
+
       if (cookie_block_property == 'x') {
 
-        var code_hash = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0].dataset.aiHash;
+        var code_hash = '';
+        var block_object = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0]
+        if ("aiHash" in block_object.dataset) {
+          code_hash = block_object.dataset.aiHash;
+        }
+
         var cookie_code_hash = '';
         if (ai_cookie [block].hasOwnProperty ('h')) {
           cookie_code_hash = ai_cookie [block]['h'];
@@ -232,7 +243,12 @@ ai_check_block = function (block) {
       } else
       if (cookie_block_property == 'i') {
 
-        var code_hash = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0].dataset.aiHash;
+        var code_hash = '';
+        var block_object = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0]
+        if ("aiHash" in block_object.dataset) {
+          code_hash = block_object.dataset.aiHash;
+        }
+
         var cookie_code_hash = '';
         if (ai_cookie [block].hasOwnProperty ('h')) {
           cookie_code_hash = ai_cookie [block]['h'];
@@ -289,7 +305,12 @@ ai_check_block = function (block) {
       }
       if (cookie_block_property == 'c') {
 
-        var code_hash = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0].dataset.aiHash;
+        var code_hash = '';
+        var block_object = document.querySelectorAll ('span[data-ai-block="'+block+'"]') [0]
+        if ("aiHash" in block_object.dataset) {
+          code_hash = block_object.dataset.aiHash;
+        }
+
         var cookie_code_hash = '';
         if (ai_cookie [block].hasOwnProperty ('h')) {
           cookie_code_hash = ai_cookie [block]['h'];
@@ -345,6 +366,24 @@ ai_check_block = function (block) {
         }
       }
     }
+
+    if (ai_cookie.hasOwnProperty ('G') && ai_cookie ['G'].hasOwnProperty ('cpt')) {
+      if (ai_cookie ['G']['cpt'] == 0) {
+
+        var date = new Date();
+        var timestamp = Math.round (date.getTime() / 1000);
+        var closed_for = ai_cookie ['G']['ct'] - timestamp;
+
+        if (closed_for > 0) {
+          var message = 'max global clicks per time reached (' + Math. round (10000 * closed_for / 24 / 3600) / 10000 + ' days = ' + closed_for + ' s)';
+          ai_debug_cookie_status = message;
+          if (ai_debug) console.log ('AI CHECK GLOBAL', message);
+          if (ai_debug) console.log ('');
+
+          return false;
+        }
+      }
+    }
   }
 
   ai_debug_cookie_status = 'OK';
@@ -355,34 +394,70 @@ ai_check_block = function (block) {
 }
 
 ai_check_and_insert_block = function (block, id) {
+
+  var ai_debug = typeof ai_debugging !== 'undefined'; // 2
+//  var ai_debug = false;
+
+  if (block == null) {
+    return true;
+  }
+
   var ai_block_divs = document.getElementsByClassName (id);
   if (ai_block_divs.length) {
     var ai_block_div = ai_block_divs [0];
     var wrapping_div = ai_block_div.closest ('.AI_FUNCT_GET_BLOCK_CLASS_NAME');
-    if (ai_check_block (block)) {
+
+    var insert_block = ai_check_block (block);
+
+    if (!insert_block) {
+//      if (ai_debug) console.log ('AI CHECK FAILED, !insert_block', block);
+      // Check for a fallback block
+      if (parseInt (ai_block_div.getAttribute ('limits-fallback')) != 0 && ai_block_div.hasAttribute ('data-fallback-code')) {
+
+        if (ai_debug) console.log ('AI CHECK FAILED, INSERTING FALLBACK BLOCK', ai_block_div.getAttribute ('limits-fallback'));
+
+        ai_block_div.setAttribute ('data-code', ai_block_div.getAttribute ('data-fallback-code'));
+
+        if (wrapping_div.hasAttribute ('data-ai')) {
+          if (ai_block_div.hasAttribute ('fallback-tracking') && ai_block_div.hasAttribute ('fallback_level')) {
+            wrapping_div.setAttribute ('data-ai-' + ai_block_div.getAttribute ('fallback_level'), ai_block_div.getAttribute ('fallback-tracking'));
+          }
+        }
+
+        insert_block = true;
+      }
+    }
+
+    if (insert_block) {
       ai_insert_code (ai_block_div);
       if (wrapping_div) {
-        wrapping_div.classList.remove ('ai-list-block');
-        wrapping_div.style.visibility = '';
-        if (wrapping_div.classList.contains ('ai-remove-position')) {
-          wrapping_div.style.position = '';
+
+        var debug_block = wrapping_div.querySelectorAll ('.ai-debug-block');
+        if (wrapping_div && debug_block.length) {
+          wrapping_div.classList.remove ('ai-list-block');
+          wrapping_div.classList.remove ('ai-list-block-ip');
+          wrapping_div.classList.remove ('ai-list-block-filter');
+          wrapping_div.style.visibility = '';
+          if (wrapping_div.classList.contains ('ai-remove-position')) {
+            wrapping_div.style.position = '';
+          }
         }
+
       }
     } else {
         var ai_block_div_data = ai_block_div.closest ('div[data-ai]');
-        if (typeof ai_block_div_data.getAttribute ("data-ai") != "undefined") {
+        if (ai_block_div_data != null && typeof ai_block_div_data.getAttribute ("data-ai") != "undefined") {
           var data = JSON.parse (b64d (ai_block_div_data.getAttribute ("data-ai")));
           if (typeof data !== "undefined" && data.constructor === Array) {
             data [1] = "";
-
-//            console.log ("AI CHECK TRACKING ", b64d (ai_block_div_data.getAttribute ("data-ai")), ' <= ', JSON.stringify (data));
-
             ai_block_div_data.setAttribute ("data-ai", b64e (JSON.stringify (data)));
           }
         }
         var debug_block = wrapping_div.querySelectorAll ('.ai-debug-block');
         if (wrapping_div && debug_block.length) {
           wrapping_div.classList.remove ('ai-list-block');
+          wrapping_div.classList.remove ('ai-list-block-ip');
+          wrapping_div.classList.remove ('ai-list-block-filter');
           wrapping_div.style.visibility = '';
           if (wrapping_div.classList.contains ('ai-remove-position')) {
             wrapping_div.style.position = '';
@@ -394,7 +469,10 @@ ai_check_and_insert_block = function (block, id) {
   }
 
   var ai_debug_bars = document.querySelectorAll ('.' + id + '-dbg');
-  for (let ai_debug_bar of ai_debug_bars) {
+
+//  for (let ai_debug_bar of ai_debug_bars) {
+  for (var index = 0, len = ai_debug_bars.length; index < len; index++) {
+    var ai_debug_bar = ai_debug_bars [index];
     ai_debug_bar.querySelector ('.ai-status').textContent = ai_debug_cookie_status;
     ai_debug_bar.querySelector ('.ai-cookie-data').textContent = ai_get_cookie_text (block);
     ai_debug_bar.classList.remove (id + '-dbg');
@@ -403,7 +481,7 @@ ai_check_and_insert_block = function (block, id) {
 
 function ai_load_cookie () {
 
-  var ai_debug = typeof ai_debugging !== 'undefined'; // 2
+  var ai_debug = typeof ai_debugging !== 'undefined'; // 3
 //  var ai_debug = false;
 
   var ai_cookie_name = 'aiBLOCKS';
@@ -422,7 +500,7 @@ function ai_load_cookie () {
 
 function ai_get_cookie (block, property) {
 
-  var ai_debug = typeof ai_debugging !== 'undefined'; // 3
+  var ai_debug = typeof ai_debugging !== 'undefined'; // 4
 //  var ai_debug = false;
 
   var value = '';
@@ -450,7 +528,7 @@ function ai_set_cookie (block, property, value) {
   }
 
   var ai_cookie_name = 'aiBLOCKS';
-  var ai_debug = typeof ai_debugging !== 'undefined'; // 4
+  var ai_debug = typeof ai_debugging !== 'undefined'; // 5
 //  var ai_debug = false;
 
   if (ai_debug) console.log ('AI COOKIE SET block:', block, 'property:', property, 'value:', value);
@@ -555,9 +633,15 @@ ai_get_cookie_text = function (block) {
     ai_cookie = {};
   }
 
-  if (ai_cookie.hasOwnProperty (block)) {
-    return JSON.stringify (ai_cookie [block]).replace (/\"/g, '').replace ('{', '').replace('}', '');
+  var global_data = '';
+  if (ai_cookie.hasOwnProperty ('G')) {
+    global_data = 'G[' + JSON.stringify (ai_cookie ['G']).replace (/\"/g, '').replace ('{', '').replace('}', '') + '] ';
   }
 
-  return '';
+  var block_data = '';
+  if (ai_cookie.hasOwnProperty (block)) {
+    block_data = JSON.stringify (ai_cookie [block]).replace (/\"/g, '').replace ('{', '').replace('}', '');
+  }
+
+  return global_data + block_data;
 }

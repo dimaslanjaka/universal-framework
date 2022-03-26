@@ -3,14 +3,14 @@
 Plugin Name: HREFLANG Tags Lite
 Plugin URI: https://wordpress.org/plugins/hreflang-tags-by-dcgws/
 Description: Smart implementation of HREFLANG meta tags into the head section of your WordPress site.
-Version: 1.8.8
-Author: DCGWS Internet Solutions
+Version: 2.0.0
+Author: Vagary Digital
 Author URI: http://dcgws.com
 License: GPLv2 or later
 Text Domain: hreflang-tags-by-dcgws
 Domain Path: /languages
 
-    Copyright 2016  DCGWS Internet Solutions  (email : website.solutions@dcgws.com)
+    Copyright 2016  Vagary Digital (email : website.solutions@dcgws.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ if ('hreflang-tags-by-dcgws.php' == basename($_SERVER['SCRIPT_FILENAME']))
 
 
 if (! defined('HREFLANG_VERSION'))
-    define('HREFLANG_VERSION', '1.8.8');
+    define('HREFLANG_VERSION', '2.0.0');
 
 if (! defined('HREFLANG_PLUGIN_FILE'))
     define('HREFLANG_PLUGIN_FILE', __FILE__);

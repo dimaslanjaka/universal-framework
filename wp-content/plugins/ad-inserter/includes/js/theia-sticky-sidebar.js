@@ -7,7 +7,7 @@
  * Copyright 2013-2016 WeCodePixels and other contributors
  * Released under the MIT license
  */
-
+;
 (function ($) {
     $.fn.theiaStickySidebar = function (options) {
         var defaults = {
@@ -370,4 +370,3 @@
     }
 })(jQuery);
 
-//# sourceMappingURL=maps/theia-sticky-sidebar.js.map

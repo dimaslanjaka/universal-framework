@@ -5,10 +5,16 @@
  * @package AMP
  */
 
+use AmpProject\AmpWP\ValidationExemption;
+use AmpProject\DevMode;
+use AmpProject\Html\Attribute;
+
 /**
  * Class AMP_Audio_Sanitizer
  *
  * Converts <audio> tags to <amp-audio>
+ *
+ * @internal
  */
 class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 	use AMP_Noscript_Fallback;
@@ -28,6 +34,7 @@ class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 	 */
 	protected $DEFAULT_ARGS = [
 		'add_noscript_fallback' => true,
+		'native_audio_used'     => false,
 	];
 
 	/**
@@ -36,13 +43,16 @@ class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 	 * @return array Mapping.
 	 */
 	public function get_selector_conversion_mapping() {
+		if ( $this->args['native_audio_used'] ) {
+			return [];
+		}
 		return [
 			'audio' => [ 'amp-audio' ],
 		];
 	}
 
 	/**
-	 * Sanitize the <audio> elements from the HTML contained in this instance's DOMDocument.
+	 * Sanitize the <audio> elements from the HTML contained in this instance's Dom\Document.
 	 *
 	 * @since 0.2
 	 */
@@ -53,15 +63,22 @@ class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 			return;
 		}
 
-		if ( $this->args['add_noscript_fallback'] ) {
+		if ( $this->args['add_noscript_fallback'] && ! $this->args['native_audio_used'] ) {
 			$this->initialize_noscript_allowed_attributes( self::$tag );
 		}
 
 		for ( $i = $num_nodes - 1; $i >= 0; $i-- ) {
+			/** @var DOMElement $node */
 			$node = $nodes->item( $i );
 
 			// Skip element if already inside of an AMP element as a noscript fallback, or it has a dev mode exemption.
-			if ( $this->is_inside_amp_noscript( $node ) || $this->has_dev_mode_exemption( $node ) ) {
+			if ( $this->is_inside_amp_noscript( $node ) || DevMode::hasExemptionForNode( $node ) ) {
+				continue;
+			}
+
+			// If native audio is being used, just mark it as unvalidated.
+			if ( $this->args['native_audio_used'] ) {
+				ValidationExemption::mark_node_as_px_verified( $node );
 				continue;
 			}
 
@@ -73,6 +90,9 @@ class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 			if ( ! empty( $new_attributes['src'] ) ) {
 				$sources[] = $new_attributes['src'];
 			}
+
+			// Remove the ID from the original node so that PHP DOM doesn't fail to set it on the replacement element.
+			$node->removeAttribute( Attribute::ID );
 
 			/**
 			 * Original node.
@@ -147,7 +167,14 @@ class AMP_Audio_Sanitizer extends AMP_Base_Sanitizer {
 			 * See: https://github.com/ampproject/amphtml/issues/2261
 			 */
 			if ( empty( $sources ) ) {
-				$this->remove_invalid_child( $node );
+				$this->remove_invalid_child(
+					$node,
+					[
+						'code'       => AMP_Tag_And_Attribute_Sanitizer::ATTR_REQUIRED_BUT_MISSING,
+						'attributes' => [ 'src' ],
+						'spec_name'  => 'amp-audio',
+					]
+				);
 			} else {
 				$node->parentNode->replaceChild( $new_node, $node );
 

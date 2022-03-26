@@ -1,7 +1,7 @@
 /*
  * UnderConstructionPage
  * Main backend CSS
- * (c) Web factory Ltd, 2015 - 2019
+ * (c) Web factory Ltd, 2015 - 2022
  */
 
 @import url('//fonts.googleapis.com/css?family=Roboto:900');
@@ -41,6 +41,7 @@
   padding: 1px 12px;
   background-color: #fafafa;
   display: inline-block;
+  max-width: 700px;
 }
 
 .settings_page_ucp .button:hover,
@@ -190,7 +191,6 @@ div.ucp-thumb .ribbon i {
   background-color: #ff7900e6;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   color: #fff;
-  font: 700 18px/1 'Lato', sans-serif;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   text-align: center;
@@ -453,7 +453,8 @@ span.select2-container .select2-search--inline .select2-search__field {
 /* tabs */
 
 .settings_page_ucp .ui-tabs {
-  max-width: 100%;
+  max-width: 1000px;
+  width: 100%;
   position: relative;
   padding: 0px;
   zoom: 1;
@@ -1020,7 +1021,7 @@ Any+Time is a trademark of Andrew M. Andrews III */
 
 .ucp-pro-feature p {
   margin: 10px 0 0 0;
-  text-align: justify;
+  text-align: left;
 }
 
 h3.ucp-pro-logo {
@@ -1056,6 +1057,7 @@ h3.ucp-pro-logo span {
 .ucp-upsell-dialog .ui-dialog-titlebar-close {
   color: #fff;
   height: 55px;
+  font-size: 0px;
 }
 .ucp-upsell-dialog .ui-dialog-titlebar-close:hover {
   color: #333;
@@ -1187,56 +1189,6 @@ option.ucp-promo {
 }
 /* upsell dialog */
 
-/* mailoptin upsell dialog */
-.mailoptin-upsell-dialog .ui-dialog-titlebar {
-  background: #2980b9;
-  text-align: center;
-  height: 55px;
-}
-.mailoptin-upsell-dialog .ui-dialog-titlebar img {
-  height: 32px;
-  display: inline-block;
-  margin: 11px 0 0 0;
-}
-.mailoptin-upsell-dialog .ui-dialog-titlebar-close {
-  color: #fff;
-  height: 55px;
-}
-.mailoptin-upsell-dialog .ui-dialog-titlebar-close:hover {
-  color: #333;
-}
-.mailoptin-upsell-dialog .ui-dialog-content {
-  padding: 0;
-}
-.mailoptin-upsell-dialog .ui-tabs-nav {
-  text-align: center;
-}
-.mailoptin-upsell-dialog .ui-tabs .upsell-tab {
-  padding: 20px 15px;
-  text-align: center;
-}
-.mailoptin-upsell-dialog a {
-  color: #333;
-}
-.mailoptin-upsell-dialog a:hover {
-  color: #000;
-}
-option.mailoptin-promo {
-  color: #2980b9;
-}
-.mailoptin-pro-feature {
-  display: inline-block;
-  width: 32%;
-  background: rgba(128, 128, 128, 0.03);
-  margin: 0 5px 20px 5px;
-  padding: 10px;
-  box-sizing: border-box;
-  vertical-align: top;
-  position: relative;
-  border-top: 1px solid #2980b9;
-}
-/* upsell dialog */
-
 /* weglot upsell dialog */
 .weglot-upsell-dialog .ui-dialog-titlebar {
   background: linear-gradient(140deg, #335ee2 10%, #271f50 90%);
@@ -1276,78 +1228,6 @@ option.weglot-promo {
 }
 /* upsell dialog */
 
-#ucp_security_ninja .button-primary {
-  text-decoration: none;
-  border-radius: 0px !important;
-  border-width: 0px !important;
-  border-color: transparent !important;
-  background: #499ed7;
-  color: #fff;
-  font-weight: bold !important;
-  box-shadow: none !important;
-  padding: 11px 40px;
-  height: auto !important;
-  text-transform: uppercase;
-  display: inline-block;
-  box-shadow: none !important;
-  outline: none !important;
-  white-space: inherit;
-}
-
-.sn-box p {
-  font-size: 15px;
-  text-align: left;
-  max-width: 800px;
-  display: inline-block;
-  line-height: 1.8;
-}
-
-.sn-box {
-  margin: 10px 5px 20px 5px;
-  text-align: center;
-  background: #f9f9f9;
-  padding: 30px 50px;
-  border: 1px solid #e5e5e5;
-}
-
-.sn-box h2 {
-  border-bottom: none;
-  font-size: 2em;
-  line-height: 1.1;
-}
-
-.sn-box h2 span {
-  position: relative;
-}
-
-.sn-box h2 span:after {
-  border-bottom: 3px solid #499ed7;
-  background-color: #499ed7;
-  content: '';
-  width: 100%;
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-}
-
-#ucp_security_ninja .ucp-tab-content {
-  max-width: 800px;
-}
-
-#ucp_security_ninja .textcenter {
-  text-align: center;
-}
-
-.security-ninja-logo {
-  margin: 10px 0 20px 0;
-  display: block;
-  text-align: center;
-}
-
-.security-ninja-logo img {
-  height: 80px;
-}
-
 #support-hero {
   text-align: center;
   margin: 40px 0;
@@ -1371,10 +1251,52 @@ option.weglot-promo {
   line-height: 120%;
 }
 
+.settings_page_ucp .put-dismiss-notice,
+.settings_page_ucp .premio-notice,
 .settings_page_ucp div.fs-notice {
   display: none !important;
 }
 
-.settings_page_ucp .put-dismiss-notice {
-  display: none;
+#wpfssl-ad {
+  border: 3px solid #42982e;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 10px 20px;
+  background: white;
+  position: absolute;
+  top: 160px;
+  left: 1030px;
+  sdisplay: none;
+}
+
+@media screen and (max-width: 1600px) {
+  #wpfssl-ad {
+    display: none !important;
+  }
+}
+
+#wpfssl-ad a.button {
+  padding: 11px 20px;
+  color: white;
+  background: #42982e;
+  font-weight: 600;
+  border: none;
+  line-height: 1.5;
+  height: auto;
+  margin-bottom: 10px;
+  white-space: normal;
+  max-width: 90%;
+}
+
+#wpfssl-ad a.button:hover,
+#wpfssl-ad a.button:active,
+#wpfssl-ad a.button:focus {
+  box-shadow: 0px 0px 10px 0px rgb(50 138 210 / 52%);
+  background: #42982e;
+  color: white;
+  border: none;
+}
+
+.textcenter {
+  text-align: center;
 }

@@ -1,9 +1,9 @@
 {{#uc_each themes}}
-<div class="row update-item updates-theme-update updates-update" data-entity="theme" data-theme="{{update.theme}}" data-theme-info="{{as_json}}" data-new_version="{{update.new_version}}">
+<div class="row update-item updates-theme-update updates-update" data-entity="theme" data-theme="{{update.theme}}" data-theme-info="{{as_json}}" data-new_version="{{update.new_version}}" data-installed_version="{{version}}">
 	<div class="update-type col-sm-6 col-lg-5 col-12">
 		<div>
 			<span class="theme-name">
-				<span class="label label-info row_data themes">{{udclion.updates.theme}}</span>
+				<span class="label label-info badge badge-info row_data themes">{{udclion.updates.theme}}</span>
 				<a href="{{update.url}}">{{name}}</a> {{#if version}}({{version}}){{/if}}
 			</span>
 		</div>
@@ -13,7 +13,7 @@
 		</div>
 		{{/unless}}
 	</div>
-	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down">
+	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down d-none d-sm-block">
 		<div class="text-lg-right">
 			<div class="row_label">{{udclion.updates.version}}</div>
 			<span class="theme-version">{{udclion.updates.update_to}} {{update.new_version}}</span>

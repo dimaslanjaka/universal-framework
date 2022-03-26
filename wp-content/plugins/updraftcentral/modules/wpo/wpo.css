@@ -414,6 +414,19 @@ span.select2-dropdown.select2-dropdown--below {
 span.select2-dropdown.select2-dropdown--above {
   margin-top: 0px !important; }
 
+#wp_optimize_status_box {
+  padding: 7px 15px 10px 15px !important;
+  border: 1px solid #CCC;
+  margin-top: 0 !important;
+  margin-bottom: 40px; }
+
+#wp_optimize_status_box p {
+  padding: 0 !important;
+  margin: 0 !important; }
+
+.wpo-run-optimizations__container #wp-optimize {
+  margin-bottom: 20px; }
+
 @media (min-width: 549px) {
   .updraftcentral_dashboard div.updraftcentral_wpo_rows .show_on_mobile_sizes {
     display: none !important; } }

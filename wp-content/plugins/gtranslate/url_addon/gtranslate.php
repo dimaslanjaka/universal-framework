@@ -27,7 +27,7 @@ if(isset($get_params['gurl']))
     unset($get_params['gurl']);
 
 if(count($get_params)) {
-    $page_url .= '?' . http_build_query($get_params);
+    $page_url .= '?' . rtrim(str_replace('=&', '&', http_build_query($get_params)), '=');
 }
 
 $main_lang = isset($data['default_language']) ? $data['default_language'] : $main_lang;
@@ -146,7 +146,7 @@ curl_setopt($ch, CURLOPT_URL, $page_url);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_HEADER, true);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+if(defined('CURL_IPRESOLVE_V4')) curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__).'/cacert.pem');
@@ -183,7 +183,7 @@ switch($_SERVER['REQUEST_METHOD']) {
 }
 
 // Debug
-if($debug or isset($_GET['enable_debug'])) {
+if($debug) {
     $fh = fopen(dirname(__FILE__).'/debug.txt', 'a');
     curl_setopt($ch, CURLOPT_VERBOSE, true);
     curl_setopt($ch, CURLOPT_STDERR, $fh);

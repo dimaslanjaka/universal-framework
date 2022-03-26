@@ -2,9 +2,9 @@ function ai_run_scripts () {
 AI_JS_CODE=1
 }
 
-function ai_load_translations () {
-AI_JS_CODE=2
-}
+//function ai_load_translations () {
+//AI_JS_CODE=2
+//}
 
 function ai_wait_for_jquery () {
   var ai_debug = typeof ai_debugging !== 'undefined'; // 1
@@ -36,7 +36,8 @@ function ai_wait_for_jquery () {
     head.appendChild (script);
   };
 
-  if (window.jQuery) {
+//  if (window.jQuery) {
+  if (window.jQuery && window.jQuery.fn) {
     if (ai_debug) console.log ('AI jQuery READY');
 
     ai_run_scripts ();
@@ -53,7 +54,7 @@ function ai_wait_for_jquery () {
           ai_get_script ('AI_JS_JQUERY1', null);
         });
 
-        ai_load_translations ();
+//        ai_load_translations ();
       }
 
       if (ai_jquery_waiting_counter < 30) {

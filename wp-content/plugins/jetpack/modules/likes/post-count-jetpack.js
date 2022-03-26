@@ -1,17 +1,17 @@
-var wpPostLikeCount = wpPostLikeCount || {};
+window.wpPostLikeCount = window.wpPostLikeCount || {};
 
-( function( $ ) {
-	wpPostLikeCount = jQuery.extend( wpPostLikeCount, {
-		request: function( options ) {
+( function ( $ ) {
+	window.wpPostLikeCount = jQuery.extend( window.wpPostLikeCount, {
+		request: function ( options ) {
 			return $.ajax( {
 				type: 'GET',
-				url: wpPostLikeCount.jsonAPIbase + options.path,
+				url: window.wpPostLikeCount.jsonAPIbase + options.path,
 				dataType: 'jsonp',
 				data: options.data,
-				success: function( response ) {
+				success: function ( response ) {
 					options.success( response );
 				},
-				error: function( response ) {
+				error: function ( response ) {
 					options.error( response );
 				},
 			} );

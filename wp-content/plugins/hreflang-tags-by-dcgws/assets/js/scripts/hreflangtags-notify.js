@@ -1,17 +1,1 @@
-/**
- * Admin code for dismissing notifications.
- *
- */
-(function( $ ) {
-    'use strict';
-    $( function() {
-        $( '.hreflangtags-notice' ).on( 'click', '.notice-dismiss', function( event, el ) {
-
-            var $notice = $(this).parent('.notice.is-dismissible');
-            var dismiss_url = $notice.attr('data-dismiss-url');
-            if ( dismiss_url ) {
-                $.get( dismiss_url );
-            }
-        });
-    } );
-})( jQuery );
+!function(i){"use strict";i(function(){i(".hreflangtags-notice").on("click",".notice-dismiss",function(t,s){var n=i(this).parent(".notice.is-dismissible").attr("data-dismiss-url");n&&i.get(n)})})}(jQuery);

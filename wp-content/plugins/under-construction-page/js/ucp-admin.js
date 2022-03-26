@@ -1,7 +1,7 @@
 /*
  * UnderConstructionPage
  * Main backend JS
- * (c) Web factory Ltd, 2015 - 2019
+ * (c) WebFactory Ltd, 2015 - 2022
  */
 
 
@@ -299,36 +299,6 @@ jQuery(document).ready(function($) {
     $('#upsell-dialog').dialog("option", "position", {my: "center", at: "center", of: window});
   });
 
-  $('#mailoptin-upsell-dialog').dialog({'dialogClass': 'wp-dialog ucp-dialog mailoptin-upsell-dialog',
-                              'modal': 1,
-                              'resizable': false,
-                              'title': 'Start Collecting Leads and Subscribers',
-                              'zIndex': 9999,
-                              'width': 550,
-                              'height': 'auto',
-                              'show': 'fade',
-                              'hide': 'fade',
-                              'open': function(event, ui) {
-                                ucp_fix_dialog_close(event, ui);
-                                $(this).siblings().find('span.ui-dialog-title').html(ucp.mailoptin_dialog_upsell_title);
-                              },
-                              'close': function(event, ui) { },
-                              'autoOpen': false,
-                              'closeOnEscape': true
-  });
-  $(window).resize(function(e) {
-    $('#mailoptin-upsell-dialog').dialog("option", "position", {my: "center", at: "center", of: window});
-  });
-
-
-  jQuery('#install-mailoptin').on('click',function(e){
-    $('#mailoptin-upsell-dialog').dialog('close');
-    jQuery('body').append('<div style="width:550px;height:450px; position:fixed;top:10%;left:50%;margin-left:-275px; color:#444; background-color: #fbfbfb;border:1px solid #DDD; border-radius:4px;box-shadow: 0px 0px 0px 4000px rgba(0, 0, 0, 0.85);z-index: 9999999;"><iframe src="' + ucp.mailoptin_install_url + '" style="width:100%;height:100%;border:none;" /></div>');
-    jQuery('#wpwrap').css('pointer-events', 'none');
-    e.preventDefault();
-    return false;
-  });
-
   $('#weglot-upsell-dialog').dialog({'dialogClass': 'wp-dialog ucp-dialog weglot-upsell-dialog',
                               'modal': 1,
                               'resizable': false,
@@ -358,7 +328,6 @@ jQuery(document).ready(function($) {
     e.preventDefault();
     return false;
   });
-
 
   // zebra on pricing table, per column
   $('#ucp-pricing-table').find('tr').each(function() {
@@ -412,23 +381,20 @@ jQuery(document).ready(function($) {
     return false;
   });
 
-
-  $('.settings_page_ucp').on('click', '.open-mailoptin-upsell', function(e) {
-    e.preventDefault();
-
-    $(this).blur();
-
-    $('#mailoptin-upsell-dialog').dialog('open');
-
-    return false;
-  });
-
   $('.settings_page_ucp').on('click', '.open-weglot-upsell', function(e) {
     e.preventDefault();
 
     $(this).blur();
 
     $('#weglot-upsell-dialog').dialog('open');
+
+    return false;
+  });
+
+  $('.settings_page_ucp').on('click change', '.open-smush-install', function(e) {
+    e.preventDefault();
+
+    $('#smush-install-link').trigger('click');
 
     return false;
   });
@@ -496,6 +462,31 @@ jQuery(document).ready(function($) {
   if (ucp.promo_countdown) {
     ucp_countdown_interval = setInterval(ucp_update_timer, 1000);
   }
+
+  function ucp_position_wpfssl_ad() {
+    pos_left = Math.round($('#ucp_tabs').width()) + 40;
+    pos_top = Math.round($('#ucp_tabs').offset().top) + 45;
+
+    $('#wpfssl-ad').css('top', pos_top + 'px').css('left', pos_left + 'px');
+    $('#wpfssl-ad').show();
+  } // ucp_position_wpfssl_ad
+
+  ucp_position_wpfssl_ad();
+  $(window).on('resize', function() {
+    ucp_position_wpfssl_ad();
+  })
+
+  $('.install-wpfssl').on('click',function(e){
+    if (!confirm('The free WP Force SSL plugin will be installed & activated from the official WordPress repository.')) {
+      return;
+    }
+
+    jQuery('body').append('<div style="width:550px;height:450px; position:fixed;top:10%;left:50%;margin-left:-275px; color:#444; background-color: #fbfbfb;border:1px solid #DDD; border-radius:4px;box-shadow: 0px 0px 0px 4000px rgba(0, 0, 0, 0.85);z-index: 9999999;"><iframe src="' + ucp.wpfssl_install_url + '" style="width:100%;height:100%;border:none;" /></div>');
+    jQuery('#wpwrap').css('pointer-events', 'none');
+
+    e.preventDefault();
+    return false;
+  });
 }); // on ready
 
 

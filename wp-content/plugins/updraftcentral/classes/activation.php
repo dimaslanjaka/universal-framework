@@ -32,6 +32,9 @@ class UpdraftCentral_Activation {
 		'0.7.1' => array(
 			'update_071_create_user_cron_table',
 		),
+		'0.8.19' => array(
+			'update_0819_create_events_table',
+		),
 	);
 
 	/**
@@ -98,8 +101,38 @@ class UpdraftCentral_Activation {
 					}
 				}
 			}
+			do_action('updraftcentral_version_updated', UpdraftCentral()->version);
 		}
 		update_option('updraftcentral_dbversion', UpdraftCentral()->version);
+	}
+
+	/**
+	 * Creates the "events" table
+	 *
+	 * @return void
+	 */
+	public static function update_0819_create_events_table() {
+		global $wpdb;
+
+		$our_prefix = $wpdb->base_prefix.self::$table_prefix;
+		$collate = self::get_collation();
+
+		if (!function_exists('dbDelta')) include_once ABSPATH.'wp-admin/includes/upgrade.php';
+		$create_tables = 'CREATE TABLE '.$our_prefix."events (
+			event_id bigint(20) NOT NULL auto_increment,
+			time int NOT NULL,
+			site_id bigint(20) NOT NULL,
+			event_type text NOT NULL,
+			event_name text NOT NULL,
+			event_data mediumtext,
+			event_status text NOT NULL,
+			event_result_data mediumtext,
+			PRIMARY KEY  (event_id),
+			KEY site_id (site_id)
+			) $collate;
+		";
+
+		dbDelta($create_tables);
 	}
 
 	/**
@@ -139,10 +172,10 @@ class UpdraftCentral_Activation {
 
 		$crons = _get_cron_array();
 		if (!empty($crons)) {
-			foreach ($crons as $timestamp => $cron) {
+			foreach ($crons as $cron) {
 				foreach ($cron as $key => $value) {
 					if (preg_match('#^updraftcentral#', $key)) {
-						foreach ($value as $serialized_key => $schedule) {
+						foreach ($value as $schedule) {
 							wp_clear_scheduled_hook($key, $schedule['args']);
 						}
 					}
@@ -245,6 +278,22 @@ class UpdraftCentral_Activation {
 			PRIMARY KEY  (id),
 			KEY user_id (user_id),
 			KEY last_run (last_run)
+			) $collate;
+		";
+
+		dbDelta($create_tables);
+
+		$create_tables = 'CREATE TABLE '.$our_prefix."events (
+			event_id bigint(20) NOT NULL auto_increment,
+			time int NOT NULL,
+			site_id bigint(20) NOT NULL,
+			event_type text NOT NULL,
+			event_name text NOT NULL,
+			event_data mediumtext,
+			event_status text NOT NULL,
+			event_result_data mediumtext,
+			PRIMARY KEY  (event_id),
+			KEY site_id (site_id)
 			) $collate;
 		";
 

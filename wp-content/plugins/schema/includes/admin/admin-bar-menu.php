@@ -36,9 +36,9 @@ function schema_wp_admin_bar_menu_items( $admin_bar ) {
 	$admin_bar->add_menu( array(
 		'id'	=> 'schema-test-item',
 		'title'	=> __('', 'schema-wp'),
-		'href'	=> 'https://developers.google.com/structured-data/testing-tool/?url='.$url,
+		'href'	=> 'https://validator.schema.org/?url='.$url,
 		'meta'	=> array(
-			'title'		=> __('Structured Data Testing Tool', 'schema-wp'),
+			'title'		=> __('Schema Markup Validator', 'schema-wp'),
 			'class'		=> 'schema_google_developers',
 			'target'	=> __('_blank')
 		),

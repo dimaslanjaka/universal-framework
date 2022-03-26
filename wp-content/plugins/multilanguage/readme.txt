@@ -1,10 +1,10 @@
-﻿=== Multilanguage by BestWebSoft ===
+=== Multilanguage by BestWebSoft - WordPress Translation Plugin and Language Switcher ===
 Contributors: bestwebsoft
 Donate link: https://bestwebsoft.com/donate/
 Tags: add translation, bilingual, multilanguage, multilanguage plugin, translate, translate posts, international, international plugin, multilingual, language switcher, switcher, translation-ready
-Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 1.3.4
+Requires at least: 4.5
+Tested up to: 5.8.1
+Stable tag: 1.4.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,9 @@ http://www.youtube.com/watch?v=Si6ulEWuY1E
 	* Custom
 * Translate Open Graph meta tags
 * Display translation availability in the posts and taxonomy lists
+* Compatible with:
+	* Classic Editor
+	* Block Editor (Gutenberg)
 * Add hreflang links to <head> section
 * Hide link slug for the default language
 * Translation-ready admin dashboard
@@ -68,10 +71,13 @@ http://www.youtube.com/watch?v=Si6ulEWuY1E
 > 	* Fields
 > * Translate:
 > 	* Post category and tag descriptions
+>	* Post slugs
 > 	* Widget titles
 > 	* Website title
 > 	* Website tagline
-> * Compatible with Elementor Page Builder [NEW]
+> * Compatible with Elementor Page Builder
+> * Compatible with Advanced Custom Fields
+> * Compatible with Yoast SEO
 > * Change language slug position in the website URL
 > * Create separate menus for different languages
 > * Display/hide widgets for different languages
@@ -85,12 +91,16 @@ If you have a feature suggestion or idea you'd like to see in the plugin, we'd l
 
 = Documentation & Videos =
 
-* [[Doc] Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ/)
-* [[Doc] How to use](https://docs.google.com/document/d/1y_c25pWDedi4FghjWj7W2Qleb-JsC10fGFinw4hy8T0/)
+* [[Doc] User Guide](https://bestwebsoft.com/documentation/multilanguage/multilanguage-user-guide/)
+* [[Doc] Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
 
 = Help & Support =
 
 Visit our Help Center if you have any questions, our friendly Support Team is happy to help - <https://support.bestwebsoft.com/>
+
+= Affiliate Program =
+
+Earn 20% commission by selling the premium WordPress plugins and themes by BestWebSoft — [https://bestwebsoft.com/affiliate/](https://bestwebsoft.com/affiliate/?utm_source=plugin&utm_medium=readme&utm_campaign=affiliate_program)
 
 = Translation =
 
@@ -114,7 +124,7 @@ Some of these translations are not complete. We are constantly adding new featur
 3. You can adjust the necessary settings using your WordPress admin panel > "Multilanguage".
 4. Plugin page is located in main menu.
 
-[View a Step-by-step Instruction on Multilanguage Installation](https://docs.google.com/document/d/1-hvn6WRvWnOqj5v5pLUk7Awyu87lq5B_dO-Tv-MC9JQ/)
+[View a Step-by-step Instruction on Multilanguage Installation](https://bestwebsoft.com/documentation/how-to-install-a-wordpress-product/how-to-install-a-wordpress-plugin/)
 
 == Frequently Asked Questions ==
 
@@ -177,13 +187,27 @@ When title and content fields in active language tab are empty when you are tryi
 
 3. Save changes.
 
+= How can I add a language that is not in the list? =
+
+You can add the necessary language by adding the appropriate line with language data to "languages.php" file (wp-content/plugins/multilanguage/include/languages.php).
+Follow the next steps:
+1. Find the wp-content/plugins/multilanguage/include/languages.php using the FTP software.
+2. Open the languages.php file in a text editor.
+3. Add a language following the example of others from the list.
+4. Save changes.
+5. Add the corresponding flag icon image (png, 16x11px) to the 'images/flags/' folder using the FTP software.
+
+When done, update the plugin settings page and you'll see the added language in the languages list.
+
+In order to find the correct language name and language locale please visit the following page: <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>
+
 = I have some problems with the plugin's work. What Information should I provide to receive proper support? =
 
 Please make sure that the problem hasn't been discussed yet on our forum (<https://support.bestwebsoft.com>). If no, please provide the following data along with your problem's description:
 - The link to the page where the problem occurs
 - The name of the plugin and its version. If you are using a pro version - your order number.
 - The version of your WordPress installation
-- Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://docs.google.com/document/d/1Wi2X8RdRGXk9kMszQy1xItJrpN0ncXgioH935MaBKtc/)
+- Copy and paste into the message your system status report. Please read more here: [Instruction on System Status](https://bestwebsoft.com/documentation/admin-panel-issues/system-status/)
 
 == Screenshots ==
 
@@ -192,14 +216,50 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 3. Plugin settings page.
 4. Plugin languages page.
 5. Edit language page.
-6. Post/page editor with translation tabs.
-7. Translation form for adding a new category.
-8. Translation form for editing a category.
-9. Translation form for adding a new tag.
-10. Adding and configuring language switcher widget in the admin panel.
-11. Adding language switcher into site menu.
+6. Post/page editor (Gutenberg).
+7. Post/page editor with translation tabs (Classic Editor).
+8. Translation form for adding a new category.
+9. Translation form for editing a category.
+10. Translation form for adding a new tag.
+11. Adding and configuring language switcher widget in the admin panel.
+12. Adding language switcher into site menu.
 
 == Changelog ==
+
+= V1.4.0 - 23.09.2021 =
+* Pro : The issue with compatibility with Elementor has been fixed.
+* Bugfix : The issue with rest api has been fixed.
+* Bugfix : The issue with localize exerpt has been fixed.
+* Update : BWS Panel section was updated.
+* Update : All functionality for WordPress 5.8.1 has been updated.
+
+= V1.3.9 - 30.08.2021 =
+* Pro : Functionality for downloading and updating the country table was updated.
+* Update : All functionality for WordPress 5.8 has been updated.
+
+= V1.3.8 - 06.07.2021 =
+* NEW: The ability to edit the title of language has been added.
+* Update : The plugin settings page was changed.
+* Update : BWS Panel section was updated.
+* Update : All functionality for WordPress 5.7.2 has been updated.
+* Pro: The ability to edit the post slug in different languages has been added.
+* Pro: The compatibility with Yoast SEO has been added.
+
+= V1.3.7 - 22.01.2021 =
+* Update : BWS Panel section was updated.
+* PRO: Functionality for downloading and updating the country table was updated.
+* Update : The plugin settings page was changed.
+* Update : All functionality for WordPress 5.6 has been updated.
+* Bugfix : Bug with displaying the language switcher in the admin panel has been fixed.
+* Bugfix : Bug with tags was fixed.
+
+= V1.3.6 - 03.06.2020 =
+* NEW: The compatibility with page builder Gutenberg has been added.
+
+= V1.3.5 - 27.04.2020 =
+* PRO: The compatibility with Advanced Custom Fields has been added.
+* Update : All functionality for WordPress 5.4 has been updated.
+* Update : BWS menu has been updated.
 
 = V1.3.4 - 04.09.2019 =
 * Update: The deactivation feedback has been changed. Misleading buttons have been removed.
@@ -369,8 +429,31 @@ Please make sure that the problem hasn't been discussed yet on our forum (<https
 
 == Upgrade Notice ==
 
+= V1.4.0 =
+* Plugin optimization completed.
+* The compatibility with new WordPress version updated.
+* Bugs fixed.
+
+= V1.3.9 =
+* The compatibility with new WordPress version updated.
+
+= V1.3.8 =
+* New features added.
+* The compatibility with new WordPress version updated.
+
+= V1.3.7 =
+* Functionality improved.
+* Plugin optimization completed.
+* Bugs fixed.
+
+= V1.3.6 =
+* New features added.
+
+= V1.3.5 =
+* Bugs fixed.
+
 = V1.3.4 =
-* Usability improved
+* Usability improved.
 
 = V1.3.3 =
 * New features added.

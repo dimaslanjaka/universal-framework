@@ -3,8 +3,8 @@ Contributors: dcgws
 Donate link: https://www.PayPal.Me/DCGWS/5usd
 Tags: hreflang, localization, metatags, seo, google, metabox, meta
 Requires at least: 4.4.0
-Tested up to: 5.3.2
-Stable tag: 1.8.8
+Tested up to: 5.7.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 == Description ==
 Smart implementation of HREFLANG meta tags into the head section of your WordPress site.
@@ -38,7 +38,7 @@ You can easily *[upgrade to the powerful Pro tools](https://www.hreflangtags.com
 
 If you enjoy using this plugin and it saves you time and/or money, please help out with a small donation to show your appreciation. This keeps me motivated to continue developing cool plugins for the community. Even $1 is fine!
 
-<a href="https://www.PayPal.Me/DCGWS/1usd">-> Click here to donate $1</a>
+<a href="https://www.PayPal.Me/DCGWSLLC/1">-> Click here to donate $1</a>
 
 == Installation ==
 
@@ -48,10 +48,6 @@ Follow the steps below to install the plugin.
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
-
-= Has this plugin reached End-of-Life? =
-
-I have decided to no longer add new features to our Lite version of HREFLANG Tags. However, after much thought and after considering all of our loyal users, we will continue to issue bug fixes or add new languages, as needed.
 
 = How can I purchase the Pro version? =
 
@@ -85,7 +81,7 @@ Incorrect language codes: Make sure that all language codes you use identify the
 
 = Do I have to add these tags one post/page at a time? =
 
-No. If you *[upgrade to our powerful Pro tools](http://dcgws.com/product/hreflang-tags-pro-plugin-wordpress/)*, you can update all of your pages and posts in one place, with a single click.
+No. If you *[upgrade to our powerful Pro tools](https://www.hreflangtags.com/)*, you can update all of your pages and posts in one place, with a single click.
 
 Check out this video.
 
@@ -105,9 +101,60 @@ Updates will be made available via Wordpress.org
 
 == Help ==
 
-Please contact at us http://dcgws.com/contact/ for any questions.
+Please contact at us https://www.hreflangtags.com/contact-us/ for any questions.
 
 == Changelog ==
+
+= 2.0.0 =
+* Updating statistics
+* Updated readme to indicate support for WP 5.7.1
+
+= 1.9.9 =
+* Improvement
+  * Blocks the loading of our js and css files unless logged in and in Dashboard.
+
+= 1.9.8 = 
+* Fully supports PHP 7.3+
+* Announcement of new Facebook group and page
+
+= 1.9.7 =
+* Updated readme to indicate support for WP 5.5.1
+
+= 1.9.6 =
+* Improvements
+  * code improvements
+
+= 1.9.5 =
+* Improvements
+  * added many new English regions
+
+= 1.9.4 =
+* improvements
+  * Added mt Maltese
+  * Added en-MT English (Malta)
+  * Added mt-MT Maltese (Malta)
+  * Bug fix in Admin HTML
+
+= 1.9.3 =
+* Improvements
+  * Code Improvements
+
+= 1.9.2 =
+* Improvements
+  * Bug fix
+
+= 1.9.1 =
+* Improvements
+  * Code Improvements
+
+= 1.9.0 =
+* improvements
+  * Added en-KE English (Kenya)
+
+= 1.8.9 =
+* Improvements
+  * Language improvements
+
 = 1.8.8 =
 * Improvements
 	* Added button to delete all hreflang tags

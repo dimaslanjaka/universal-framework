@@ -62,6 +62,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'hreflang_dashboard';
 		<a href="?page=HREFLANG&tab=hreflang_generator" class="nav-tab <?php echo $active_tab == 'hreflang_generator' ? 'nav-tab-active' : ''; ?>"><?php _e('HTML Code Generator', 'hreflang-tags-by-dcgws') ?></a>
 		<a href="?page=HREFLANG&tab=hreflang_bulk_editor" class="nav-tab <?php echo $active_tab == 'hreflang_bulk_editor' ? 'nav-tab-active' : ''; ?>"><?php _e('Bulk Editor', 'hreflang-tags-by-dcgws') ?></a>
 		<a href="?page=HREFLANG&tab=hreflang_validation_tool" class="nav-tab <?php echo $active_tab == 'hreflang_validation_tool' ? 'nav-tab-active' : ''; ?>"><?php _e('Validation Tool', 'hreflang-tags-by-dcgws') ?></a>
+		<a href="?page=HREFLANG&tab=hreflang_go_pro" class="nav-tab <?php echo $active_tab == 'hreflang_go_pro' ? 'nav-tab-active' : ''; ?>"><?php _e('Go Pro!', 'hreflang-tags-by-dcgws') ?></a>
 </h2>
 		<?php
 		if (!defined('HREFLANG_PLUGIN_MAIN_PATH'))
@@ -104,6 +105,16 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'hreflang_dashboard';
 			}
 
 		}
+
+		if ($active_tab == 'hreflang_go_pro') {
+
+			if (file_exists(HREFLANG_PLUGIN_MAIN_PATH . 'tabs/go_pro.php')) {
+				include_once (HREFLANG_PLUGIN_MAIN_PATH . 'tabs/go_pro.php');
+			} else {
+				echo 'File is missing';
+			}
+
+		}
 		?>
 </div>
 <div id="hreflang-sidebar-content" class="hreflang-content">
@@ -115,9 +126,8 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'hreflang_dashboard';
 	<br>
 	<p class="remove-ads">
 				<strong><?php _e('Remove this ad?','hreflang-tags-by-dcgws'); ?></strong><br>
-				<a target="_blank" href="https://www.hreflangtags.com/downloads/hreflang-tags-pro-plugin-wordpress/#utm_source=hreflang-config-main&utm_medium=banner&utm_campaign=hreflang-tags-pro"><?php _e('Upgrade to HREFLANG Pro','hreflang-tags-by-dcgws'); ?> »</a>
+				<a target="_blank" href="https://www.hreflangtags.com/downloads/hreflang-tags-pro-plugin-wordpress/#utm_source=hreflang-config-main&utm_medium=banner&utm_campaign=hreflang-tags-pro"><?php _e('Upgrade to HREFLANG Tags Pro','hreflang-tags-by-dcgws'); ?> »</a>
 			</p>
 </div>
 </div>
-
 </div>

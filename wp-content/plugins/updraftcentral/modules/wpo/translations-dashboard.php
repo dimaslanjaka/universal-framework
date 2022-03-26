@@ -17,4 +17,5 @@ return array(
 	'empty_schedule' => __('You need to complete the currently incomplete scheduled time settings or remove them.', 'updraftcentral'),
 	'table_was_not_deleted' => __('%s was not deleted. For more details, please check any logs configured in your logging destination settings.', 'updraftcentral'),
 	'are_you_sure_you_want_to_remove_this_table' => __('Are you sure you want to remove this table?', 'updraftcentral'),
+	'no_selected_items' => __('There are currently no items selected. Please select one or more optimization items and try again.', 'updraftcentral'),
 );

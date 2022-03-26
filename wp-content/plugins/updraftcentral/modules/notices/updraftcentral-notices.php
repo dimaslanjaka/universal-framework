@@ -77,11 +77,11 @@ class UpdraftCentral_Notices extends Updraft_Notices_1_0 {
 		return parent::is_plugin_installed($product, $also_require_active);
 	}
 
-	protected function translation_needed($plugin_base_dir = null, $product_name = null) {
+	protected function translation_needed($plugin_base_dir = null, $product_name = null) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Declaration of UpdraftCentral_Notices::translation_needed() should be compatible with Updraft_Notices_1_0::translation_needed
 		return parent::translation_needed(UD_CENTRAL_DIR, 'updraftcentral');
 	}
 	
-	protected function url_start($html_allowed = false, $url, $https = false, $website_home = 'updraftcentral.com') {
+	protected function url_start($html_allowed, $url, $https = false, $website_home = 'updraftcentral.com') {
 		return parent::url_start($html_allowed, $url, $https, $website_home);
 	}
 	

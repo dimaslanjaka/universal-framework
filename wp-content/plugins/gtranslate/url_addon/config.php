@@ -111,5 +111,8 @@ fy -> Frisian
 xh -> Xhosa
 */
 
-$servers = array('van', 'kars', 'sis', 'dvin', 'ani', 'evn');
+$servers = array('van', 'kars', 'sis', 'dvin', 'ani', 'evn', 'vagh', 'step', 'sis', 'tigr', 'ani', 'tigr');
+
+// IMPORTANT: If you turn debugging on, then sensitive information will be written into debug.txt file.
+// It is your responsibility to turn the debugging off and clear the debug.txt file.
 $debug = false;

@@ -1,5 +1,5 @@
 <?php
-define('WP_DEBUG', true);
+
 /**
  * The base configuration for WordPress
  *
@@ -31,9 +31,11 @@ define('FULL_URL', WP_PROTOCOL . "://" . WP_HOST . REQUEST);
 // ** MySQL settings ** //
 require __DIR__ . '/wp-key.php';
 $hostname = 'localhost';
-$name = $user = 'id10105269_wp_4148d433c360b34dc740617ffc97681b';
-$pass = 'e55f3cef203028c7a67e50401888ac145278034a';
+$user = 'root';
+$pass = '';
+$name = 'agcontents';
 
+/*
 if (preg_match('/localhost|127\.0\.0\.1|.*\.io/s', $host)) {
 	$user = 'root';
 	$pass = '';
@@ -47,7 +49,11 @@ if (preg_match('/localhost|127\.0\.0\.1|.*\.io/s', $host)) {
 	$name = 'wp497405_WMI';
 	$user = 'wp497_WMI';
 	$pass = 'X2^u2a3jfVhFqouc';
-}
+}*/
+
+// ftp localhost fix
+define('FS_METHOD', 'direct');
+
 /* The name of the database for WordPress */
 define('DB_NAME', $name);
 
@@ -78,14 +84,14 @@ define('WP_ALLOW_REPAIR', true);
  *
  * @since 2.6.0
  */
-define('AUTH_KEY', 'ZJu*tV0aScn]0Ca9D~RGTJaA718orRd27HG:V2Bo5n~p~1Y_kzYoPoZh9L5rl+2-');
-define('SECURE_AUTH_KEY', '|7C-h@9Nx1!e996q7Aj(i8/69:EbZbC]d4-e17h3Y899T(AD4yI|r3ibZ0p@OX6:');
-define('LOGGED_IN_KEY', '/@;@0ofO91%#%4N7yp4D4_mif861A1;guIf[l9~8Q@#/g0hbT0i-/:mstY192[/U');
-define('NONCE_KEY', '!FtOi+;;/20s:2B-R48b4aNr@Zj&99%S3y]1%!d1f4N*r9N76Xp;4k~IO+:l4Y8l');
-define('AUTH_SALT', 'Ez4:a57Wp7OYI6Uef-4mIVgs|K@98Mq3JaQkge%ae-@q:l3Mfmmqu|0NR0Jym52g');
-define('SECURE_AUTH_SALT', '_z!4hC/+1-N!9za+k3p)8##Luzb7XPDB+~FlZ+#9#e8s[#yrP/B5X:pg5|aLTt_7');
-define('LOGGED_IN_SALT', 'h(0%a!1mQ;Am5wmR#K2vGzljhw0r]BN/1+qd5lL(A-57N#052-44dHB_0wp6~[:G');
-define('NONCE_SALT', 'X0IppA5[dig5(!%;7o4Ny@ZsHR~x&z%G7rZ-Br1&:9O0#[_-N70)_7y6]K83nI6D');
+define('AUTH_KEY',         'a-YZxl=B&7j+Id^)2 hlxeidm[j5x{)+2B?F57|qhLq?ftYKY+u.K8eTS,*`6rKX');
+define('SECURE_AUTH_KEY',  '_xDdu$)%%v/qQKj78O[r5F8ySdn<Sv`W-6rMNycZz00zhfMou /,Jp{2:[-yM4jQ');
+define('LOGGED_IN_KEY',    '%,p-yTy`o!hUeE^Bei5MWVbr5]htj]K+4yFPqz.vc;8pQ>:WR>)Wd{A1#T`Wb0dX');
+define('NONCE_KEY',        'R6d@B^GLp{=uo0s!,KC;{3vGYlsFi~6]AWG`$da+cm?8 ~HvM:2]dOq05D^{[wF[');
+define('AUTH_SALT',        'B>iA`d(`/~#aWCIW1+hTVG1HDFg4mT2f!+#Lpj[S(m|!7)l20`V.|=_HU@Dm(H&&');
+define('SECURE_AUTH_SALT', '~QYxyJ$CM-wDNW-Fry]nZ< i+RA^o<UB?/9$x?M&ijo7sVUx9>gJi8;/7!E)5<CV');
+define('LOGGED_IN_SALT',   'Aq2BTU.)oDXiYquC1<|-~&Dn0 %sc,[g0)/WapzN?_%SK^n,(oQx,]~9bplX+OU-');
+define('NONCE_SALT',       '/v~ 1i/<l9R[io*YOuNW$Q-F;A=mAinCh:NOZ>(TRj*vIq=z#KrXkklyL+!0=~2]');
 
 /**
  * WordPress Database Table prefix.
@@ -93,7 +99,7 @@ define('NONCE_SALT', 'X0IppA5[dig5(!%;7o4Ny@ZsHR~x&z%G7rZ-Br1&:9O0#[_-N70)_7y6]K
  * You can have multiple installations in one database if you give each
  * a unique prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix = 'wmi_';
+$table_prefix = 'wp_';
 
 define('WP_ALLOW_MULTISITE', true);
 /*

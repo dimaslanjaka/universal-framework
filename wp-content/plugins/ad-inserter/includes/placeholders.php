@@ -1,8 +1,5 @@
 <?php
 
-//ini_set ('display_errors', 1);
-//error_reporting (E_ALL);
-
 function generate_placeholder_editor ($placeholder_url, $block) {
   global $wp_version;
 
@@ -265,13 +262,13 @@ function generate_placeholder_editor ($placeholder_url, $block) {
       update_placeholder ();
     });
 
-    $("input#background").colorpicker ().on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
+    $("input#background").colorpicker ({useAlpha: false, useHashPrefix: true, format: 'hex'}).on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
       update_placeholder ();
     }).on ('input', function() {
       update_placeholder ();
     });
 
-    $("input#text-color").colorpicker ().on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
+    $("input#text-color").colorpicker ({useAlpha: false, useHashPrefix: true, format: 'hex'}).on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
       update_placeholder ();
     }).on ('input', function() {
       update_placeholder ();
@@ -302,6 +299,7 @@ a, img {
 select, input {
   border-radius: 5px;
   padding: 2px 3px;
+  border: 1px solid #ddd;
 }
 
 div#placeholder-parameters {

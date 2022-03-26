@@ -1,9 +1,9 @@
 {{#uc_each core}}
-<div class="row update-item updates-core-update updates-update" data-entity="core" data-core-info="{{as_json}}" data-new_version="{{version}}">
+<div class="row update-item updates-core-update updates-update" data-entity="core" data-core-info="{{as_json}}" data-new_version="{{version}}" data-installed_version="{{installed.version}}">
 	<div class="update-type col-sm-6 col-lg-5 col-12">
 		<div>
 			<span class="core-name">
-				<span class="label label-danger row_data wordpress_core">{{udclion.updates.wordpress_core}}</span>
+				<span class="label label-danger badge badge-danger row_data wordpress_core">{{udclion.updates.wordpress_core}}</span>
 				<a href="https://wordpress.org">{{udclion.updates.wordpress}}</a> ({{installed.version}})
 			</span>
 		</div>
@@ -13,7 +13,7 @@
 		</div>
 		{{/unless}}
 	</div>
-	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down">
+	<div class="update-version col-sm-6 col-lg-3 hidden-xs-down d-none d-sm-block">
 		<div class="text-lg-right">
 			<div class="row_label">{{udclion.updates.version}}</div>
 			<span class="core-version">{{udclion.updates.update_to}} {{version}}</span>

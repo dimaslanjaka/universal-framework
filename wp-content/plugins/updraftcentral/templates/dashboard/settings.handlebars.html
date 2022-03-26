@@ -8,6 +8,17 @@
 			<div class="clear"></div>
 		</p>
 	
+	<h3>{{udclion.keyboard_shortcuts_heading}}</h3>
+	<p>{{udclion.keyboard_settings_message}}
+		<div class="uc-shortcuts-activate-container">
+			<div class="uc-activate-shortcuts-checkbox">
+			<input type="checkbox" id="uc-shortcuts-activate" name="uc-shortcuts-activate" value="active" {{#ifeq "active" shortcut_status}}checked{{/ifeq}}> {{udclion.tick_to_activate}}
+			</div>
+			<div class="uc-configure-shortcuts-link text-right"><a class="keyboard_shortcuts" href="#">{{udclion.configure_shortcuts}}</a></div>
+		</div>
+		<div class="clear"></div>
+	</p>
+
 	<h3>{{udclion.debugging_level}}</h3>
 	
 	<p>

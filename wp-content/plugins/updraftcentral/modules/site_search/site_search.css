@@ -13,6 +13,11 @@
   font-size: 1rem;
   padding: 0rem 0.5rem;
   border-radius: 0.25rem !important; }
+  .updraftcentral-search-area input[type="text"]:focus {
+    color: #37393f;
+    border-color: #37393f;
+    -webkit-box-shadow: 0 0 0 2px #37393f;
+    box-shadow: 0 0 0 2px #37393f; }
 
 #updraftcentral-search-info {
   font-style: italic;

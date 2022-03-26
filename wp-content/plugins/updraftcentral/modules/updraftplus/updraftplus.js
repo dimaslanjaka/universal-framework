@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	UpdraftCentral_Module_UpdraftPlus = new UpdraftCentral_UpdraftPlus_Module();
 	
 	// To allow labelauty remote storage buttons to be used with keyboard
@@ -32,6 +32,91 @@ jQuery(document).ready(function($) {
 	Handlebars.registerHelper('encodeURIComponent', function(uri) {
 		return encodeURIComponent(uri);
 	});
+
+	/**
+	 * Handlebars helper function to compare two values using a specifed operator
+	 *
+	 * @see https://stackoverflow.com/questions/8853396/logical-operator-in-a-handlebars-js-if-conditional#answer-16315366
+	 *
+	 * @param {mixed} v1 the first value to compare
+	 * @param {mixed} v2 the second value to compare
+	 *
+	 * @return {boolean} true if the first value matched against the second value, false otherwise
+	 */
+	Handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
+		switch (operator) {
+			case '==':
+				return (v1 == v2) ? options.fn(this) : options.inverse(this);
+			case '===':
+				return (v1 === v2) ? options.fn(this) : options.inverse(this);
+			case '!=':
+				return (v1 != v2) ? options.fn(this) : options.inverse(this);
+			case '!==':
+				return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+			case '<':
+				return (v1 < v2) ? options.fn(this) : options.inverse(this);
+			case '<=':
+				return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+			case '>':
+				return (v1 > v2) ? options.fn(this) : options.inverse(this);
+			case '>=':
+				return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+			case '&&':
+				return (v1 && v2) ? options.fn(this) : options.inverse(this);
+			case '||':
+				return (v1 || v2) ? options.fn(this) : options.inverse(this);
+			case 'typeof':
+				return (v1 === typeof v2) ? options.fn(this) : options.inverse(this);
+			case 'not_typeof':
+				return (v1 !== typeof v2) ? options.fn(this) : options.inverse(this);
+			default:
+				return options.inverse(this);
+		}
+	});
+
+	/**
+	 * Handlebars helper function for looping through a block of code a specified number of times
+	 *
+	 * @param {mixed} from the start value
+	 * @param {mixed} to   the end value where the loop will stop
+	 * @param {mixed} incr the increment number
+	 *
+	 * @return {mixed} the current processing number
+	 */
+	Handlebars.registerHelper('for', function(from, to, incr, block) {
+		var accum = '';
+		for (var i = from; i < to; i += incr)
+			accum += block.fn(i);
+		return accum;
+	});
+
+	/**
+	 * Assign value into a variable
+	 *
+	 * @param {string} name the variable name
+	 * @param {mixed}  val  the value
+	 */
+	Handlebars.registerHelper('set_var', function(name, val, options) {
+		if (!options.data.root) {
+			options.data.root = {};
+		}
+		options.data.root[name] = val;
+	});
+
+	/**
+	 * Get length of an array/object
+	 *
+	 * @param {mixed} object the object
+	 */
+	Handlebars.registerHelper('get_length', function(object) {
+		if ("undefined" !== typeof object && false === object instanceof Array) {
+			return Object.keys(object).length;
+		} else if (true === object instanceof Array) {
+			return object.length;
+		} else {
+			return 0;
+		}
+	});
 });
 
 /**
@@ -47,6 +132,9 @@ function UpdraftCentral_UpdraftPlus_Module() {
 	var settings_css_prefix = '#updraftcentral_dashboard_existingsites '+settings_css_sub_prefix;
 
 	var backup_listener_ticks = {};
+	var restored_items = new UpdraftCentral_Collection();
+	var selected_items = new UpdraftCentral_Collection();
+	var delete_action = 'single';
 	
 	/**
 	 * Inserts bulk delete elements (input boxes, bulk delete button) along with the collapsable info
@@ -56,18 +144,20 @@ function UpdraftCentral_UpdraftPlus_Module() {
 	 * @return {void}
 	 */
 	function insert_bulk_delete($site_row) {
-
-		var $button = $site_row.find('.updraftcentral_row_extracontents button.updraft_download_button');
-
 		var keys = [];
-		$button.wrapAll(function() {
-			var key = $(this).closest('tr').data('key');
+		$site_row.find('tr.updraft_existing_backups_row').each(function() {
+			var key = $(this).data('key');
+			var buttons = $(this).find('button.updraft_download_button');
 
-			if (-1 === $.inArray(key, keys)) {
-				keys.push(key);
-				$(this).parent().prepend('<a class="show-backup-data" data-key="'+key+'"><span class="dashicons dashicons-arrow-right"></span> '+udclion.updraftplus.select_backup_data+'</a>');
+			if (buttons.length) {
+				var container = buttons[0].closest('td');
+				if (-1 === $.inArray(key, keys)) {
+					keys.push(key);
+
+					$(container).prepend('<a class="show-backup-data" data-key="'+key+'"><span class="dashicons dashicons-arrow-right"></span> '+udclion.updraftplus.select_backup_data+'</a>');
+					$(container).find('button.updraft_download_button').wrapAll('<span class="backup-data-'+key+' hide-backup-data"></span>');
+				}
 			}
-			return '<span class="backup-data-'+key+' hide-backup-data"></span>';
 		});
 
 		UpdraftCentral.register_event_handler('click', 'a.show-backup-data', function() {
@@ -390,10 +480,11 @@ function UpdraftCentral_UpdraftPlus_Module() {
 	 * @param {String} [onlythesetableentities] a comma-separated list of table entities to back up (only relevant if databases are being backed up)
 	 * @param {*} [extradata] - arbitrary extra data to send with the backup request (though, of course, only relevant data will have any effect)
 	 * @param {string} [label] - a label to give to the backup
+	 * @param {String}  onlythesecloudservices An array of remote sorage locations to be backed up to
 	 *
 	 * @return {void}
 	 */
-	this.backupnow_go = function(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, extradata, label, onlythesetableentities) {
+	this.backupnow_go = function(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, extradata, label, onlythesetableentities, onlythesecloudservices) {
 		
 		var listener_title;
 		if (extradata && extradata.hasOwnProperty('_listener_title')) {
@@ -415,6 +506,10 @@ function UpdraftCentral_UpdraftPlus_Module() {
 
 		if ('' != onlythesetableentities) {
 			params.onlythesetableentities = onlythesetableentities;
+		}
+
+		if ('' != onlythesecloudservices) {
+			params.onlythesecloudservices = onlythesecloudservices;
 		}
 		
 		params.always_keep = (typeof extradata.always_keep !== 'undefined') ? extradata.always_keep : 0;
@@ -579,7 +674,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 			}, $site_row, function(response, code, error_code) {
 			$site_row.find('.updraftcentral_row_extracontents').css('opacity', '1.0');
 			if ('ok' == code && response) {
-				$site_row.find('.updraftcentral_row_extracontents').html('<div class="updraft_site_settings_output"><div class="dashicons dashicons-image-rotate updraftcentral_site_backup_settings"></div>'+UpdraftCentral_Library.sanitize_html(response.data.settings)+'</div>');
+				$site_row.find('.updraftcentral_row_extracontents').html('<div class="updraft_site_settings_output"><button class="btn btn-refresh updraftcentral_site_backup_settings"><span class="dashicons dashicons-image-rotate "></span></button>'+UpdraftCentral_Library.sanitize_html(response.data.settings)+'</div>');
 				if (response.data.hasOwnProperty('remote_storage_templates') && response.data.hasOwnProperty('remote_storage_options')) {
 					var html = '';
 					for (var method in response.data.remote_storage_templates) {
@@ -589,6 +684,18 @@ function UpdraftCentral_UpdraftPlus_Module() {
 							for (var instance_id in response.data.remote_storage_options[method]) {
 								if ('default' === instance_id) continue;
 								var context = response.data.remote_storage_options[method][instance_id];
+
+								if ('undefined' == typeof context['instance_conditional_logic']) {
+									context['instance_conditional_logic'] = {
+										type: '', // always by default
+										rules: [],
+									};
+								}
+								context['instance_conditional_logic'].day_of_the_week_options = udclion.updraftplus.conditional_logic.day_of_the_week_options;
+								context['instance_conditional_logic'].logic_options = udclion.updraftplus.conditional_logic.logic_options;
+								context['instance_conditional_logic'].operand_options = udclion.updraftplus.conditional_logic.operand_options;
+								context['instance_conditional_logic'].operator_options = udclion.updraftplus.conditional_logic.operator_options;
+
 								context['first_instance'] = first_instance;
 								if ('undefined' == typeof context['instance_enabled']) {
 									context['instance_enabled'] = 1;
@@ -636,6 +743,14 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					var context = response.data.remote_storage_options[method]['default'];
 					context['instance_id'] = 's-' + generate_instance_id(32);
 					context['instance_enabled'] = 1;
+					context['instance_conditional_logic'] = {
+						type: '', // always by default
+						rules: [],
+						day_of_the_week_options: udclion.updraftplus.conditional_logic.day_of_the_week_options,
+						logic_options: udclion.updraftplus.conditional_logic.logic_options,
+						operand_options: udclion.updraftplus.conditional_logic.operand_options,
+						operator_options: udclion.updraftplus.conditional_logic.operator_options,
+					};
 					var html = template(context);
 					$(html).hide().insertAfter('.' + method + '_add_instance_container:first').show('slow');
 				}
@@ -664,6 +779,66 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					} else {
 						$(this).siblings('label').html(udclion.updraftplus.instance_disabled);
 					}
+				});
+
+				jQuery('.updraftcentral_row_extracontents #remote-storage-holder').on("change", "select[class='logic_type']", function () {
+					updraft_settings_form_changed = true;
+					if ('' !== this.value) {
+						jQuery('div.logic', jQuery(this).parents('tr.updraftplusmethod')).show();
+						jQuery(this).parents('tr.updraftplusmethod').find('div.logic ul.rules > li').each(function() {
+							jQuery(this).find('select').each(function() {
+								jQuery(this).prop('disabled', false);
+							})
+						});
+					} else {
+						jQuery(this).parents('tr.updraftplusmethod').find('div.logic ul.rules > li').each(function() {
+							jQuery(this).find('select').each(function() {
+								jQuery(this).prop('disabled', true);
+							})
+						});
+						jQuery(this).parents('tr.updraftplusmethod').find('div.logic').hide();
+					}
+				});
+			
+				jQuery('.updraftcentral_row_extracontents #remote-storage-holder').on("change", "select[class='conditional_logic_operand']", function () {
+					updraft_settings_form_changed = true;
+					jQuery(this).parent().find('select:nth(2)').empty();
+					if ('day_of_the_week' === jQuery(this).val()) {
+						for (i=0; i<udclion.updraftplus.conditional_logic.day_of_the_week_options.length; i++) {
+							jQuery(this).parent().find('select:nth(2)').append(jQuery('<option value="'+udclion.updraftplus.conditional_logic.day_of_the_week_options[i].index+'"></option>').text(udclion.updraftplus.conditional_logic.day_of_the_week_options[i].value));
+						}
+					} else if ('day_of_the_month' === jQuery(this).val()) {
+						for (i=1; i<=31; i++) {
+							jQuery(this).parent().find('select:nth(2)').append(jQuery('<option value="'+i+'"></option>').text(i));
+						}
+					}
+				});
+			
+				jQuery('.updraftcentral_row_extracontents #remote-storage-holder').on("click", "div.conditional_remote_backup ul.rules li span", function () {
+					updraft_settings_form_changed = true;
+					var $ul = jQuery(this).parents('ul.rules');
+					if (jQuery(this).hasClass('remove-rule')) {
+						jQuery(this).parent().slideUp(function() {
+							jQuery(this).remove();
+							if (jQuery($ul).find('> li').length < 2) {
+								jQuery('li:nth(0) span.remove-rule', $ul).remove();
+							}
+						});
+					}
+				});
+
+				jQuery('.updraftcentral_row_extracontents #remote-storage-holder').on("click", "div.conditional_remote_backup input.add-new-rule", function () {
+					var $ul = jQuery(this).parent().find('ul.rules');
+					if (jQuery($ul).find('> li').length < 2) {
+						jQuery($ul).find('li:nth(0)').append('<span class="remove-rule"><svg viewbox="0 0 25 25"><line x1="6.5" y1="18.5" x2="18.5" y2="6.5" fill="none" stroke="#FF6347" stroke-width="3" vector-effect="non-scaling-stroke" ></line><line y1="6.5" x1="6.5" y2="18.5" x2="18.5" fill="none" stroke="#FF6347" stroke-width="3" vector-effect="non-scaling-stroke" ></line></svg></span>');
+					}
+					$cloned_item = jQuery($ul).find('> li').last().clone();
+					jQuery($cloned_item).find('> select').each(function() {
+						jQuery(this).prop('name', jQuery(this).prop('name').replace(/\[instance_conditional_logic\]\[rules\]\[[0-9]+\]/gi, '[instance_conditional_logic][rules]['+jQuery($ul).data('rules')+']'));
+					});
+					jQuery($ul).append($cloned_item);
+					jQuery($ul).data('rules', parseInt(jQuery($ul).data('rules')) + 1);
+					jQuery($cloned_item).find('select[name*="[operand]"]').trigger('change');
 				});
 
 				/**
@@ -848,6 +1023,11 @@ function UpdraftCentral_UpdraftPlus_Module() {
 			e.preventDefault();
 			$('#updraftcentral_modal #backupnow_database_moreoptions').slideToggle();
 		});
+
+		UpdraftCentral.register_modal_listener('#backupnow_includecloud_showmoreoptions', function(e) {
+			e.preventDefault();
+			$('#updraftcentral_modal #backupnow_includecloud_moreoptions').slideToggle();
+		});
 	}
 	
 	if ('notices' != UpdraftCentral.get_dashboard_mode()) { register_global_listeners(); }
@@ -972,7 +1152,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					
 					var $new_notice = add_dashboard_notice('<h2>'+udclion.updraftplus.settings_saved+' - '+site_url+'</h2><div class="updraftplus_saved_settings" data-site_id="'+site_id+'">'+response.data.messages+'</div>', 'notice', false);
 					
-					$('html, body').animate({
+					$('#updraft-central-content').animate({
 						scrollTop: $new_notice.offset().top
 					}, 1000);
 				}
@@ -1005,10 +1185,20 @@ function UpdraftCentral_UpdraftPlus_Module() {
 		}, false, 'change');
 		
 		UpdraftCentral.register_row_clicker('.updraft_existing_backups_output .updraft_existingbackup_date', function($site_row) {
-			var data = $(this).data('rawbackup');
-			if (data != null && data != '') {
-				UpdraftCentral.open_modal(udclion.updraftplus.raw, data, true, false);
-			}
+			var nonce = $(this).data('nonce');
+			var timestamp = $(this).data('timestamp');
+
+			UpdraftCentral.send_site_rpc('updraftplus.rawbackup_history', {
+				nonce: nonce,
+				timestamp: timestamp
+			}, UpdraftCentral.$site_row, function (response, code, error_code) {
+				if ('ok' == code && false !== response && response.hasOwnProperty('data')) {
+					if (response.data.hasOwnProperty('rawbackup')) {
+						UpdraftCentral.close_modal();
+						UpdraftCentral.open_modal(udclion.updraftplus.raw, response.data.rawbackup, true, false, null, false, 'modal-lg');
+					}
+				}
+			});
 		}, false, 'dblclick');
 		
 		register_modal_listener('#always_keep_this_backup', function(e) {
@@ -1020,7 +1210,6 @@ function UpdraftCentral_UpdraftPlus_Module() {
 				if ('ok' == code && false !== response && response.hasOwnProperty('data')) {
 					if (response.data.hasOwnProperty('rawbackup')) {
 						UpdraftCentral.close_modal();
-						$('.updraft_existing_backups_row_'+backup_key+' .updraft_existingbackup_date').data('rawbackup', response.data.rawbackup);
 						UpdraftCentral.open_modal(udclion.updraftplus.raw, response.data.rawbackup, true, false);
 					}
 				}
@@ -1041,6 +1230,8 @@ function UpdraftCentral_UpdraftPlus_Module() {
 						backup_timestamp: $(this_button).data('backup_timestamp'),
 						showdata: $(this_button).data('showdata')
 					} }, spinner_where);
+
+					restored_items.add($(this_button).data('backup_timestamp'), $(this_button).closest('tr.updraft_existing_backups_row').data('nonce'));
 				});
 				
 			}
@@ -1092,8 +1283,14 @@ function UpdraftCentral_UpdraftPlus_Module() {
 			hasremote = (hasremote === '0') ? false : true;
 			var nonce = $(this).data('nonce').toString();
 			var key = $(this).data('key').toString();
+
+			delete_action = 'single';
 			if (nonce) {
-				updraft_delete(key, nonce, hasremote);
+				if (restored_items.exists(key)) {
+					updraft_get_existing_backups_panel($site_row);
+				} else {
+					updraft_delete(key, nonce, hasremote);
+				}
 			} else {
 				console.log("UDCentral: UpdraftPlus: A delete link was clicked, but the backup ID could not be found");
 			}
@@ -1112,26 +1309,34 @@ function UpdraftCentral_UpdraftPlus_Module() {
 		UpdraftCentral.register_row_clicker('.updraft_existing_backups_output button#btn-backup-bulk-delete', function($site_row) {
 			var keys = [],
 				hasremote = false,
-				nonce;
+				nonce,
+				hasrestored = false;
 
-			$('.delete-backup-container input.delete_backup_item').each(function() {
-				if ($(this).is(':checked')) {
-					var delete_link = $(this).closest('tr.updraft_existing_backups_row').find('a.updraft-delete-link');
-					var key = delete_link.data('key');
+			selected_items.clear();
+			$('.delete-backup-container input.delete_backup_item:checked').each(function() {
+				var delete_link = $(this).closest('tr.updraft_existing_backups_row').find('a.updraft-delete-link');
+				var key = delete_link.data('key');
 
-					if ('undefined' !== typeof key && key) {
-						keys.push(key.toString());
-						nonce = delete_link.data('nonce');
+				if ('undefined' !== typeof key && key) {
+					keys.push(key.toString());
+					nonce = delete_link.data('nonce');
 
-						if (!hasremote) {
-							hasremote = ('undefined' === typeof delete_link.data('hasremote') || delete_link.data('hasremote') === '0') ? false : true;
-						}
+					if (!hasremote) {
+						hasremote = ('undefined' === typeof delete_link.data('hasremote') || delete_link.data('hasremote') === '0') ? false : true;
 					}
+
+					if (restored_items.exists(key)) hasrestored = true;
+					selected_items.add(key, $(this).closest('tr.updraft_existing_backups_row').data('nonce'));
 				}
 			});
 
+			delete_action = 'multiple';
 			if (keys.length) {
-				updraft_delete(keys.join(), nonce, hasremote);
+				if (hasrestored) {
+					updraft_get_existing_backups_panel($site_row);
+				} else {
+					updraft_delete(keys.join(), nonce, hasremote);
+				}
 			} else {
 				console.log("UDCentral: UpdraftPlus: The bulk delete button was clicked, but none of the backup IDs could be found");
 			}
@@ -1596,6 +1801,13 @@ function UpdraftCentral_UpdraftPlus_Module() {
 			data[item_key] = $(item).val();
 		});
 		
+		if ('webdav' === method && (!data.hasOwnProperty('url') || null === data.url)) {
+			var url = $('.updraftplusmethod.webdav input[name="updraft_webdav\[settings\]\['+instance_id+'\]\[url\]"]').val();
+			if ('undefined' !== typeof url && url.length) {
+				data.url = url;
+			}
+		}
+		
 		UpdraftCentral.send_site_rpc('updraftplus.test_storage_settings', data, $site_row, function(response, code, error_code) {
 			
 			if ('ok' == code && response) {
@@ -1657,8 +1869,44 @@ function UpdraftCentral_UpdraftPlus_Module() {
 			}, $site_row, function(response, code, error_code) {
 			$site_row.find('.updraftcentral_row_extracontents').css('opacity', '1.0');
 			if ('ok' == code && response) {
-				$site_row.find('.updraftcentral_row_extracontents').html('<div class="updraft_existing_backups_output"><div class="dashicons dashicons-image-rotate updraftcentral_site_backups_manage" style="float:right;"></div>'+UpdraftCentral_Library.sanitize_html(response.data.output)+'</div>');
+				$site_row.find('.updraftcentral_row_extracontents').html('<div class="updraft_existing_backups_output"><button class="btn btn-refresh updraftcentral_site_backups_manage"><span class="dashicons dashicons-image-rotate" ></span></button>'+UpdraftCentral_Library.sanitize_html(response.data.output)+'</div>');
 				insert_bulk_delete($site_row);
+
+				if (restored_items.count()) {
+					var backups_table, backups_checker;
+					backups_checker = setInterval(function() {
+						backups_table = $('table.existing-backups-table');
+						if (backups_table.length) {
+							clearInterval(backups_checker);
+
+							switch (delete_action) {
+								case 'single':
+									var items = restored_items.get_items();
+									restored_items.clear();
+
+									if (items.length) {
+										$('tr.updraft_existing_backups_row[data-nonce="'+items[0]+'"]').find('a.updraft-delete-link').trigger('click');
+									}
+									break;
+								case 'multiple':
+									var items = selected_items.get_items();
+									selected_items.clear();
+									restored_items.clear();
+
+									if (items.length) {
+										for (var i=0; i<items.length; i++) {
+											$('tr.updraft_existing_backups_row[data-nonce="'+items[i]+'"]').find('input.delete_backup_item').prop('checked', true);
+										}
+
+										$('button#btn-backup-bulk-delete').trigger('click');
+									}
+									break;
+								default:
+									break;
+							}
+						}
+					}, 1000);
+				}
 			}
 		});
 	}
@@ -1717,6 +1965,18 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					} else {
 						onlythesetableentities = true;
 					}
+
+					var send_list_cloud = false;
+					var onlythesecloudservices = '';
+					jQuery('#backupnow_includecloud_moreoptions input[type="checkbox"]').each(function(index) {
+						if (!jQuery(this).is(':checked')) { send_list_cloud = true; return; }
+					});
+					
+					if (send_list_cloud) {
+						onlythesecloudservices = jQuery("input[name^='updraft_include_remote_service_']").serializeArray();
+					} else {
+						onlythesecloudservices = true;
+					}
 					
 					var always_keep = $('#always_keep').is(':checked') ? 1 : 0;
 
@@ -1730,8 +1990,18 @@ function UpdraftCentral_UpdraftPlus_Module() {
 						return;
 					}
 
+					if ('' == onlythesecloudservices && 0 == backupnow_nocloud) {
+						alert(udclion.updraftplus.nocloudserviceschosen);
+						jQuery('#backupnow_includecloud_moreoptions').show();
+						return;
+					}
+
 					if (!send_list) {
 						onlythesetableentities = null;
+					}
+
+					if (!send_list_cloud) {
+						onlythesecloudservices = null;
 					}
 					
 					if (backupnow_nodb && backupnow_nofiles) {
@@ -1741,7 +2011,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					
 					UpdraftCentral.close_modal();
 					
-					UpdraftCentral_Module_UpdraftPlus.backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, { always_keep: always_keep, incremental: incremental}, $('#updraftcentral_modal #backupnow_label').val(), onlythesetableentities);
+					UpdraftCentral_Module_UpdraftPlus.backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, { always_keep: always_keep, incremental: incremental}, $('#updraftcentral_modal #backupnow_label').val(), onlythesetableentities, onlythesecloudservices);
 					}, action_button, function() {
 						if (!incremental_installed && 'incremental' == type) {
 							jQuery('#updraftcentral_modal .incremental-free-only').show();
@@ -1873,14 +2143,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 								if (resp.result == 'error') {
 									UpdraftCentral_Library.dialog.alert('<h2>'+udclion.error+'</h2>'+resp.message);
 								} else if (resp.result == 'success') {
-
-									if (resp.hasOwnProperty('history')) {
-										UpdraftCentral.$site_row.find('.updraftcentral_row_extracontents').html('<div class="updraft_existing_backups_output">'+UpdraftCentral_Library.sanitize_html(resp.history)+'</div>');
-										insert_bulk_delete($site_row);
-									} else {
-										updraft_get_existing_backups_panel(UpdraftCentral.$site_row);
-									}
-								
+									updraft_get_existing_backups_panel(UpdraftCentral.$site_row);
 									UpdraftCentral.close_modal();
 								
 									var message = resp.message;

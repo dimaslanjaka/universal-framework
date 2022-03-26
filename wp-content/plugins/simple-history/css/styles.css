@@ -1,10 +1,3 @@
-/*
-
-The spinner that wp uses:;
-/wp-includes/images/spinner.gif
-
-*/
-
 /* clearfix */
 .SimpleHistory__cf:before,
 .SimpleHistory__cf:after {
@@ -47,9 +40,7 @@ The spinner that wp uses:;
 /* on its own page */
 /*.dashboard_page_simple_history_page .SimpleHistoryLogitemsWrap {*/
 .SimpleHistoryGuiWrap {
-	/*float: left;*/
 	position: relative;
-	margin-right: 340px;
 	min-height: 200px;
 	background-color: rgba(255, 255, 255, 0.75);
 }
@@ -60,16 +51,21 @@ The spinner that wp uses:;
 
 .SimpleHistoryGuiWrap .SimpleHistoryGui {
 	width: 100%;
-	float: left;
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (min-width: 960px) {
 	.SimpleHistoryGuiWrap {
-		float: none;
-		margin-right: auto;
-	}
-	.SimpleHistoryGui {
-		float: none;
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-wrap: nowrap;
+		flex-wrap: nowrap;
+		-webkit-box-align: start;
+		-ms-flex-align: start;
+		align-items: flex-start;
+		-webkit-box-pack: justify;
+		-ms-flex-pack: justify;
+		justify-content: space-between;
 	}
 }
 
@@ -215,11 +211,6 @@ Style different log levels.
 	color: #eee;
 }
 
-.SimpleHistoryLogitem:hover {
-	/* same bg color as twitter uses on hover */
-	/*background: rgb(245, 248, 250);*/
-}
-
 .SimpleHistoryLogitem a {
 	text-decoration: none;
 }
@@ -238,10 +229,6 @@ Style different log levels.
 	overflow: hidden;
 	/*opacity: .8;*/
 	margin-top: 5px;
-}
-
-.SimpleHistoryLogitem:hover .SimpleHistoryLogitem__senderImage {
-	/*opacity: 1;*/
 }
 
 .SimpleHistoryLogitem__senderImage img {
@@ -268,7 +255,6 @@ Style different log levels.
 .SimpleHistoryLogitem__text,
 .SimpleHistoryLogitem__details,
 .SimpleHistoryLogitem__details p {
-	xfont-size: 16px;
 	line-height: 1.4;
 }
 
@@ -318,9 +304,8 @@ Style different log levels.
 
 .SimpleHistoryLogitem__keyValueTable tr > td:first-child {
 	text-align: right;
-	/*font-weight: bold;*/
 	padding-right: 1em;
-	color: #aaa;
+	color: #757575;
 	white-space: nowrap;
 }
 
@@ -330,6 +315,7 @@ Style different log levels.
 
 .SimpleHistoryLogitem__keyValueTable__addedThing {
 	text-decoration: none;
+	margin-right: 0.5em;
 }
 
 .SimpleHistoryLogitem__keyValueTable__removedThing {
@@ -385,14 +371,6 @@ Images/thumbs can be styles nicely
 	max-width: 200px;
 	max-height: 125px;
 	height: auto;
-}
-
-/*
-when occasions are added
-*/
-.SimpleHistoryLogitem--occasionsOpened {
-	/*box-shadow: 0px 10px 10px -6px rgba(0, 0, 0, 0.3);
-	z-index: 1;*/
 }
 
 /* remove border below */
@@ -480,9 +458,6 @@ when occasions are added
 customizations for the dashboard
 i.e. the log is inside a .postbox element
 */
-
-.postbox {
-}
 #simple_history_dashboard_widget .inside {
 	padding: 0;
 	margin-top: 0;
@@ -504,10 +479,6 @@ i.e. the log is inside a .postbox element
 
 .postbox .SimpleHistoryLogitem {
 	padding: 12px 5px 12px 16px;
-}
-
-.postbox .SimpleHistoryLogitem:first-child {
-	/*padding-top: 0;*/
 }
 
 .postbox .SimpleHistoryLogitem::before {
@@ -550,11 +521,8 @@ i.e. the log is inside a .postbox element
 	line-height: 1.5;
 }
 
-.postbox .SimpleHistoryPaginationLink,
 .postbox .SimpleHistoryPaginationCurrentPage {
-	font-size: 13px;
-	line-height: 19px;
-	height: 24px;
+	vertical-align: top;
 }
 
 /*
@@ -583,10 +551,6 @@ Styles for filter
 /*
 Pagination, below logRows
 */
-
-.SimpleHistoryLogitems__pagination {
-}
-
 .SimpleHistoryPaginationPages {
 	text-align: center;
 	padding-top: 20px;
@@ -599,18 +563,15 @@ Pagination, below logRows
 	padding-bottom: 8px;
 }
 
-.SimpleHistoryPaginationLink.SimpleHistoryPaginationLink {
-	/*line-height: 30px;*/
-	/*background: rgb(238, 238, 238);*/
-	/*background: rgba(0, 0, 0, 0.05);*/
-	/*padding: 0 10px 3px;
-	text-decoration: none;*/
+.SimpleHistoryPaginationLinks .SimpleHistoryPaginationLink {
+	vertical-align: baseline;
+	min-width: 30px;
+	min-height: 30px;
+	margin: 0;
+	padding: 0 4px;
 	font-size: 16px;
-}
-
-.SimpleHistoryPaginationLink.SimpleHistoryPaginationLink:hover {
-	/*color: rgb(255, 255, 255);*/
-	/*background: rgb(46, 162, 204);*/
+	line-height: 1.625;
+	text-align: center;
 }
 
 .SimpleHistoryPaginationLink.SimpleHistoryPaginationLink.disabled {
@@ -621,8 +582,13 @@ Pagination, below logRows
 }
 
 .SimpleHistoryPaginationCurrentPage {
-	/*padding-top: 0;*/
+	margin: 0 2px 0 0;
+	font-size: 13px;
 	text-align: center;
+}
+
+.SimpleHistoryPaginationInput .total-pages {
+	margin-right: 2px;
 }
 
 /*
@@ -635,9 +601,6 @@ animations/effects
 /*
 Modal window with detailss
 */
-.SimpleHistory-modal {
-}
-
 .SimpleHistory-modal__background {
 	position: fixed;
 	top: 0;
@@ -759,10 +722,6 @@ Modal window with detailss
 
 .SimpleHistory-modal .SimpleHistoryLogitem:hover {
 	background: inherit;
-}
-
-.SimpleHistory-modal .SimpleHistoryLogitem__senderImage {
-	/*opacity: 1;*/
 }
 
 .SimpleHistoryLogitem__moreDetails {
@@ -898,8 +857,6 @@ Modal window with detailss
 }
 
 /* if not hits when using filter function + if ajax error */
-.SimpleHistory--hasNoHits {
-}
 
 .SimpleHistory--hasNoHits .SimpleHistoryLogitems__pagination {
 	display: none;
@@ -967,5 +924,22 @@ Modal window with detailss
 	box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
-.SimpleHistory__diff__contentsInner {
+.SimpleHistory__diff.SimpleHistory__diff {
+	border-spacing: 1px;
+}
+
+.SimpleHistory__diff.SimpleHistory__diff td,
+.SimpleHistory__diff.SimpleHistory__diff td:first-child {
+	text-align: left;
+	white-space: normal;
+	font-size: 13px;
+	line-height: 1.3;
+	padding: 0.25em 0.5em;
+	padding: 0.5em 0.5em 0.5em 2em;
+	color: rgb(75, 75, 75);
+	font-family: "Open Sans", sans-serif;
+}
+
+.SimpleHistory__diff.SimpleHistory__diff tbody tr td:nth-child(2) {
+	width: auto;
 }

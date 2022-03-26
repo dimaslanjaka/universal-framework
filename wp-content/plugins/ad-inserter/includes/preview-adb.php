@@ -1,8 +1,5 @@
 <?php
 
-//ini_set ('display_errors', 1);
-//error_reporting (E_ALL);
-
 function ai_media_buttons () {
   echo '<button type="button" id="add-p" class="button" style="width: 36px;" title="',  __('Add dummy paragraph', 'ad-inserter'),  '">+</button>';
   echo '<button type="button" id="remove-p" class="button" style="width: 36px;" title="',  __('Remove dummy paragraph', 'ad-inserter'),  '">-</button>';
@@ -25,18 +22,20 @@ function ai_mce_buttons_2 ($buttons, $id) {
   return $buttons;
 }
 
-function generate_code_preview_adb ($client_code, $process_php) {
+function generate_code_preview_adb ($client_code, $process_php, $code_only = false, $head = null, $adb_message = null, $footer = null) {
   global $block_object, $ai_wp_data;
 
   $ai_wp_data [AI_WP_DEBUGGING] = 0;
 
-  $obj = new ai_AdA ();
-  $obj->wp_options = $block_object [AI_ADB_MESSAGE_OPTION_NAME]->wp_options;
+  if ($adb_message === null) {
+    $obj = new ai_AdA ();
+    $obj->wp_options = $block_object [AI_ADB_MESSAGE_OPTION_NAME]->wp_options;
 
-  $obj->wp_options [AI_OPTION_CODE]         = $client_code;
-  $obj->wp_options [AI_OPTION_PROCESS_PHP]  = $process_php;
+    $obj->wp_options [AI_OPTION_CODE]         = $client_code;
+    $obj->wp_options [AI_OPTION_PROCESS_PHP]  = $process_php;
 
-  $adb_message = $obj->ai_getCode ();
+    $adb_message = $obj->ai_getCode ();
+  }
 
   wp_enqueue_script ('ai-adb-js',   plugins_url ('includes/js/ad-inserter-check.js', AD_INSERTER_FILE), array (
     'jquery',
@@ -54,10 +53,23 @@ function generate_code_preview_adb ($client_code, $process_php) {
   add_filter ('mce_buttons',   'ai_mce_buttons',   99999, 2);
   add_filter ('mce_buttons_2', 'ai_mce_buttons_2', 99999, 2);
 
-  ob_start ();
-  wp_head ();
-  $head = ob_get_clean ();
-  $head = preg_replace ('#<title>([^<]*)</title>#', '<title>' . AD_INSERTER_NAME . ' ' . __('Ad Blocking Detected Message Preview', 'ad-inserter') . '</title>', $head);
+  if ($head === null) {
+    ob_start ();
+    wp_head ();
+    $head = ob_get_clean ();
+    $head = preg_replace ('#<title>([^<]*)</title>#', '<title>' . AD_INSERTER_NAME . ' ' . __('Ad Blocking Detected Message Preview', 'ad-inserter') . '</title>', $head);
+  }
+
+  if ($footer === null) {
+    ob_start ();
+    wp_footer ();
+    $footer = ob_get_clean ();
+  }
+
+  if ($code_only) {
+    return array ('head' => $head, 'message' => $adb_message, 'footer' => $footer);
+  }
+
 ?>
 <html>
 <head>
@@ -120,9 +132,9 @@ function generate_code_preview_adb ($client_code, $process_php) {
     if (typeof textarea_id == 'undefined' ) textarea_id = editor_id;
 
     if (jQuery('#wp-' + editor_id + '-wrap').hasClass ('tmce-active') && tinyMCE.get (editor_id)) {
-      return tinyMCE.get(editor_id).getContent();
+      return tinyMCE.get (editor_id).getContent ();
     } else {
-        return jQuery('#'+textarea_id).val();
+        return jQuery ('#'+textarea_id).val();
       }
   }
 
@@ -239,7 +251,7 @@ function generate_code_preview_adb ($client_code, $process_php) {
         }
       });
 
-      load_from_settings ();
+      setTimeout (load_from_settings, 350);
     }
 
     initialize_preview ();
@@ -354,7 +366,7 @@ input[type="text"] {
     <input style="display: table-cell; border-radius: 5px; width: 100%; padding-left: 5px;" type="text" id="overlay-css" value="" size="50" maxlength="200" />
   </div>
 
-<?php wp_footer (); ?>
+<?php echo $footer; ?>
 </body>
 </html>
 <?php

@@ -84,7 +84,7 @@
   display: none;
   color: red; }
 
-#backupnow_includefiles_moreoptions, #backupnow_database_moreoptions {
+#backupnow_includefiles_moreoptions, #backupnow_database_moreoptions, #backupnow_includecloud_moreoptions {
   margin: 4px 16px 6px 16px;
   border: 1px dotted;
   padding: 6px 10px; }
@@ -92,7 +92,7 @@
 #backupnow_includefiles_moreoptions label, #backupnow_database_moreoptions label {
   margin-top: 10px; }
 
-#backupnow_database_moreoptions {
+#backupnow_database_moreoptions, #backupnow_includecloud_moreoptions {
   max-height: 250px;
   overflow: auto; }
 
@@ -153,3 +153,74 @@ div.backup_date_label > img.stored_icon {
 
 #updraftcentral_modal .incremental-backups-only, #updraftcentral_modal .incremental-free-only {
   display: none; }
+
+.updraft_site_settings_output .conditional_remote_backup select.logic_type {
+  width: 400px !important; }
+
+.updraft_site_settings_output .conditional_remote_backup div.logic ul.rules li > select {
+  width: auto !important; }
+
+.updraft_site_settings_output .conditional_remote_backup div.logic ul.rules span svg {
+  width: 20px;
+  vertical-align: middle;
+  cursor: pointer; }
+
+.updraft_site_settings_output .conditional_remote_backup div.logic ul.rules span svg > line {
+  stroke: #DE6726 !important; }
+
+tr.updraft_existing_backups_row div.updraftplus-upload {
+  float: none !important; }
+
+#updraftcentral_dashboard_existingsites .updraft_existing_backups_row a.show-backup-data {
+  border-bottom: none !important; }
+
+tr.updraft_existing_backups_row div.updraftplus-upload {
+  margin-top: 0 !important; }
+
+#updraftcentral_dashboard .restore-button .button-primary,
+#updraftcentral_dashboard .updraftplus-upload .button-primary,
+#updraftcentral_dashboard .updraftplus-remove .no-decoration,
+#updraftcentral_dashboard .updraft-viewlogdiv .no-decoration {
+  margin: 0 5px 5px 0 !important; }
+
+.updraft_existing_backups_row .before-restore-button .button {
+  width: 80px !important; }
+
+#updraftcentral_dashboard .updraftplus-upload .updraft-upload-link {
+  width: auto;
+  border: 0 none;
+  font-size: 0.938rem;
+  font-weight: 400;
+  border-radius: 3px;
+  padding: .4rem 1rem;
+  line-height: 1.5;
+  display: inline-block;
+  border-radius: 3px;
+  height: auto;
+  float: none; }
+
+#backupnow_always_keep_container > label {
+  display: inline;
+  margin-left: 0;
+  padding-left: 0; }
+
+.backup-now #updraftcentral_modal label,
+.backup-now #updraftcentral_modal em {
+  vertical-align: unset !important; }
+
+@media (min-width: 1025px) {
+  tr.updraft_existing_backups_row div.updraftplus-upload {
+    float: left !important; }
+  .updraft_existing_backups_row .updraft_existingbackup_storage {
+    display: none !important; }
+  .updraft_existing_backups_row .updraft_existingbackup_date {
+    width: 20%; }
+  .updraft_existing_backups_row .updraft_existingbackup_data {
+    width: 40%; }
+  .updraft_existing_backups_row .before-restore-button {
+    width: 40%; } }
+
+@media (max-width: 415px) {
+  #updraftcentral_dashboard .updraftplus-remove {
+    margin-top: 0 !important;
+    padding: 0 !important; } }

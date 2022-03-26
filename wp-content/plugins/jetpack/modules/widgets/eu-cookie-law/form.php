@@ -1,3 +1,14 @@
+<?php
+/**
+ * EU Cookie Law Widget form.
+ *
+ * @package automattic/jetpack
+ */
+
+use Automattic\Jetpack\Redirect;
+
+// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable
+?>
 <p>
 	<strong>
 		<?php esc_html_e( 'Banner text', 'jetpack' ); ?>
@@ -79,10 +90,21 @@
 				<span class="notice notice-warning custom-policy" style="display: none;">
 					<span style="display: block; margin: .5em 0;">
 						<strong><?php esc_html_e( 'Caution:', 'jetpack' ); ?></strong>
-						<?php echo sprintf(
-							__( 'For GDPR compliance, please make sure your policy contains <a href="%s" target="_blank">privacy information relating to Jetpack Ads</a>.', 'jetpack' ),
-							esc_url( 'https://jetpack.com/support/ads/#privacy' )
-						); ?>
+						<?php
+						echo sprintf(
+							wp_kses(
+								/* Translators: %s is the URL to a Jetpack support article. */
+								__( 'For GDPR compliance, please make sure your policy contains <a href="%s" target="_blank">privacy information relating to Jetpack Ads</a>.', 'jetpack' ),
+								array(
+									'a' => array(
+										'href'   => array(),
+										'target' => array(),
+									),
+								)
+							),
+							esc_url( Redirect::get_url( 'jetpack-support-ads', array( 'anchor' => 'privacy' ) ) )
+						);
+						?>
 					</span>
 				</span>
 			<?php endif; ?>
@@ -97,7 +119,7 @@
 	<label>
 		<input
 			class="widefat"
-			name="<?php echo $this->get_field_name( 'policy-link-text' ); ?>"
+			name="<?php echo esc_attr( $this->get_field_name( 'policy-link-text' ) ); ?>"
 			type="text"
 			value="<?php echo esc_attr( $instance['policy-link-text'] ); ?>"
 		/>
@@ -113,7 +135,7 @@
 	<label>
 		<input
 			class="widefat"
-			name="<?php echo $this->get_field_name( 'button' ); ?>"
+			name="<?php echo esc_attr( $this->get_field_name( 'button' ) ); ?>"
 			type="text"
 			value="<?php echo esc_attr( $instance['button'] ); ?>"
 		/>
@@ -124,7 +146,7 @@
 
 <p>
 	<strong>
-		<?php _ex( 'Capture consent & hide the banner', 'action', 'jetpack' ); ?>
+		<?php esc_html_x( 'Capture consent & hide the banner', 'action', 'jetpack' ); ?>
 	</strong>
 	<ul>
 		<li>
@@ -186,7 +208,7 @@
 
 <p>
 	<strong>
-		<?php _ex( 'Consent expires after', 'action', 'jetpack' ); ?>
+		<?php esc_html_x( 'Consent expires after', 'action', 'jetpack' ); ?>
 	</strong>
 	<ul>
 		<li>
@@ -207,7 +229,7 @@
 
 <p>
 	<strong>
-		<?php _e( 'Color scheme', 'jetpack' ); ?>
+		<?php esc_html_e( 'Color scheme', 'jetpack' ); ?>
 	</strong>
 	<ul>
 		<li>
@@ -239,7 +261,7 @@
 
 <p>
 	<strong>
-		<?php _e( 'Position', 'jetpack' ); ?>
+		<?php esc_html_e( 'Position', 'jetpack' ); ?>
 	</strong>
 	<ul>
 		<li>
@@ -271,7 +293,7 @@
 
 <p class="small">
 	<?php esc_html_e( 'It is your own responsibility to ensure that your site complies with the relevant laws.', 'jetpack' ); ?>
-	<a href="https://jetpack.com/support/extra-sidebar-widgets/eu-cookie-law-widget/">
+	<a href="<?php echo esc_url( Redirect::get_url( 'jetpack-support-extra-sidebar-widgets-eu-cookie-law-widget' ) ); ?>">
 		<?php esc_html_e( 'Click here for more information', 'jetpack' ); ?>
 	</a>
 </p>

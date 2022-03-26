@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
 	new UpdraftCentral_UpdraftVault_Management();
 });
 

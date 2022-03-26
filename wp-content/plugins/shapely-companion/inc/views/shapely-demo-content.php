@@ -5,8 +5,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 ?>
 <div id="demo_content">
-	
-		<?php if ( ! Shapely_Notify_System::shapely_has_plugin( 'shapely-companion' ) || ! Shapely_Notify_System::shapely_has_plugin( 'jetpack' ) || ! Shapely_Notify_System::shapely_has_plugin( 'contact-form-7' ) ) : ?>
+
+		<?php if ( ! Shapely_Notify_System::shapely_has_plugin( 'shapely-companion' ) || ! Shapely_Notify_System::shapely_has_plugin( 'jetpack' ) || ! Shapely_Notify_System::shapely_has_plugin( 'kali-forms' ) ) : ?>
 			<div>
 				<p><?php _e( 'In order to import the demo content you need to complete all the recommended actions from above.', 'shapely-companion' ); ?></p>
 			</div>

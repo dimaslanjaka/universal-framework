@@ -156,7 +156,7 @@ if ( ! class_exists( 'Jetpack_Flickr_Widget' ) ) {
 					);
 				}
 			} else {
-				echo $args['before_title'] . esc_html( $instance['title'] ) . $args['after_title'];
+				echo $args['before_title'] . $instance['title'] . $args['after_title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				require( dirname( __FILE__ ) . '/flickr/widget.php' );
 			}
 			echo $args['after_widget'];
@@ -190,7 +190,7 @@ if ( ! class_exists( 'Jetpack_Flickr_Widget' ) ) {
 			}
 
 			if ( isset( $new_instance['items'] ) ) {
-				$instance['items'] = intval( $new_instance['items'] );
+				$instance['items'] = (int) $new_instance['items'];
 			}
 
 			if ( isset( $new_instance['target'] ) ) {

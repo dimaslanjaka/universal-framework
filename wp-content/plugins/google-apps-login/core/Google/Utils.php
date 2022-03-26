@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,7 +64,7 @@ class GoogleGAL_Utils
     $strlenVar = strlen($str);
     $d = $ret = 0;
     for ($count = 0; $count < $strlenVar; ++ $count) {
-      $ordinalValue = ord($str{$ret});
+      $ordinalValue = ord($str[$ret]);
       switch (true) {
         case (($ordinalValue >= 0x20) && ($ordinalValue <= 0x7F)):
           // characters U-00000000 - U-0000007F (same as ASCII)

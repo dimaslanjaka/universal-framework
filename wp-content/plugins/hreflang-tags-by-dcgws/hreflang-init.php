@@ -53,8 +53,5 @@ if (get_option('hreflang-enable-admin-menu', 'false' ) == 'true' ){
 $plugin = plugin_basename( HREFLANG_PLUGIN_FILE );
 add_filter( "plugin_action_links_$plugin", "hreflang_plugin_settings_link", 10, 4 );
 $notices = HREFLangTags_Admin_Notices::get_instance();
-$date_now = date("Y-m-d");
-if ($date_now <= '2020-02-01' && $date_now >= '2020-01-15') {
-	$text = __('Upgrade to one of our Lifetime Pro licenses and receive free upgrades and support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do not miss out on this limited time offer.</strong> Includes our newly improved Bulk Editor. <a href="https://www.hreflangtags.com/lifetime-pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-start-2020">Click Here</a> to download right now. Use the discount code 50TOSTART20!','hreflang-tags-by-dcgws');
-	$notices->info( $text, 'start-2020-dismissed' );
-}
+$text = __('Now through December 31, 2021 save 25% on ALL of our <a href="https://www.hreflangtags.com/pricing/"><b>Professional</b></a> and <a href="https://www.hreflangtags.com/lifetime-pricing/"><b>Lifetime Licenses</b></a>. Choose the license best suited to your needs and enter the code BYEBYECOVID19 at checkout.','hreflang-tags-by-dcgws');
+$notices->info( $text, 'bye-bye-covid' );

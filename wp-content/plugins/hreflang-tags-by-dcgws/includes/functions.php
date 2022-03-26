@@ -16,7 +16,7 @@ if (!function_exists('hreflang_array_sort')) {
 	function hreflang_array_sort($array, $on, $order=SORT_ASC){
 	    $new_array = array();
 	    $sortable_array = array();
-	    if (count($array) > 0) {
+	    if (is_array($array) && !empty($array)) {
 	        foreach ($array as $k => $v) {
 	            if (!empty($v) && is_array($v)) {
 	                foreach ($v as $k2 => $v2) {
@@ -36,9 +36,11 @@ if (!function_exists('hreflang_array_sort')) {
 	                arsort($sortable_array);
 	                break;
 	        }
-	        foreach ($sortable_array as $k => $v) {
-	            $new_array[$k] = $array[$k];
-	        }
+					if (is_array($sortable_array) && !empty($sortable_array)) {
+						foreach ($sortable_array as $k => $v) {
+		            $new_array[$k] = $array[$k];
+		        }
+					}
 	    }
 	    return $new_array;
 	}
@@ -82,20 +84,21 @@ if (!function_exists('hreflang_plugin_settings_link')) {
 	}
 }
 if (!function_exists('hreflang_admin_actions')) {
-// plugin activation actions
+	// plugin activation actions
 	function hreflang_admin_actions() {
 		global $hreflang_settings_page;
 		if (current_user_can('manage_options')) {
 			if (function_exists('add_meta_box')) {
 				$hreflang_settings_page = add_menu_page("HREFLANG", "HREFLANG", "manage_options", "HREFLANG", "hreflang_menu", plugins_url('hreflang-tags-by-dcgws/hreflang.png'));
 			} else {
-				$hreflang_settings_page = add_submenu_page("index.php", "HREFLANG", "HREFLANG", "manage_options", "HREFLANG", "hreflang_menu", plugins_url('hreflang-tags-by-dcgws/hreflang.png'));
+				$hreflang_settings_page = add_submenu_page("index.php", "HREFLANG", "HREFLANG", "manage_options", "HREFLANG", "hreflang_menu", null);
 			} // end if addmetabox
 		}
 	}
 }
 if (!function_exists('hreflang_enqueue')) {
 	function hreflang_enqueue($hook) {
+		if (is_admin() && is_user_logged_in())
 	    wp_enqueue_script( 'hreflang_tags_js', plugin_dir_url( HREFLANG_PLUGIN_FILE ) . 'assets/js/hreflang-tags-by-dcgws.js',array('jquery') );
 			wp_enqueue_style( 'hreflang_tags_styles', plugin_dir_url( HREFLANG_PLUGIN_FILE ) . 'assets/css/hreflang-tags-by-dcgws.css');
 	}
@@ -107,8 +110,8 @@ if (!function_exists('add_hreflang_to_head')) {
 			$terms = get_queried_object();
 			if ($terms) {
 				$hreflang_data = get_term_meta($terms->term_id);
-				$metatag = '<!-- / HREFLANG Tags by DCGWS -->'."\n";
-				if (!empty($hreflang_data)) {
+				$metatag = '<!-- / HREFLANG Tags by DCGWS Version '.HREFLANG_VERSION.' -->'."\n";
+				if (is_array($hreflang_data) && !empty($hreflang_data)) {
 					foreach($hreflang_data as $key=>$value) {
 						if (stristr($key,'hreflang')) {
 							$key_array = explode('-',$key);
@@ -134,8 +137,8 @@ if (!function_exists('add_hreflang_to_head')) {
 				if (!is_home() && !is_author() && !is_tag() && !is_shop()) {
 					if ($post) {
 						$hreflang_data = get_post_meta($post->ID);
-						$metatag = '<!-- / HREFLANG Tags by DCGWS -->'."\n";
-						if (!empty($hreflang_data)) {
+						$metatag = '<!-- / HREFLANG Tags by DCGWS Version '.HREFLANG_VERSION.' -->'."\n";
+						if (is_array($hreflang_data) && !empty($hreflang_data)) {
 							foreach($hreflang_data as $key=>$value) {
 								if (stristr($key,'hreflang')) {
 									$key_array = explode('-',$key);
@@ -160,7 +163,7 @@ if (!function_exists('add_hreflang_to_head')) {
 				if (!is_home() && !is_author() && !is_tag()) {
 					if ($post) {
 						$hreflang_data = get_post_meta($post->ID);
-						$metatag = '<!-- / HREFLANG Tags by DCGWS -->'."\n";
+						$metatag = '<!-- / HREFLANG Tags by DCGWS Version '.HREFLANG_VERSION.' -->'."\n";
 						if (is_array($hreflang_data) && !empty($hreflang_data)) {
 							foreach($hreflang_data as $key=>$value) {
 								if (stristr($key,'hreflang')) {
@@ -207,14 +210,16 @@ if (!function_exists('hreflang_save_meta_data')) {
 						}
 					}
 				}
-				foreach($_POST['hreflang-href'] as $href) {
-					if (trim($href) == '' || $href == 'Select one') {
-						$i++;
-						continue;
-					}
-					else {
-						update_post_meta($post->ID,'hreflang-'.$_POST['hreflang-lang'][$i],$href);
-						$i++;
+				if (is_array($_POST['hreflang-href']) && !empty($_POST['hreflang-href'])) {
+					foreach($_POST['hreflang-href'] as $href) {
+						if (trim($href) == '' || $href == 'Select one') {
+							$i++;
+							continue;
+						}
+						else {
+							update_post_meta($post->ID,'hreflang-'.$_POST['hreflang-lang'][$i],$href);
+							$i++;
+						}
 					}
 				}
 			}
@@ -257,9 +262,11 @@ if (!function_exists('hreflang_meta_box')) {
 			    echo '<label for="meta-box-dropdown">'.__('Language','hreflang-tags-by-dcgws').'</label>';
 			    echo '<select name="hreflang-lang[]" id="hreflang-lang">';
 		       	echo '<option>'.__('Select one','hreflang-tags-by-dcgws').'</option>';
-		       	foreach ($hreflanguages as $lang => $lang_array) {
-		      		echo '<option value="'.$lang.'">'.$lang_array['english_name'].'</option>';
-		 	     }
+						if (is_array($hreflanguages) && !empty($hreflanguages)) {
+							foreach ($hreflanguages as $lang => $lang_array) {
+			      		echo '<option value="'.$lang.'">'.$lang_array['english_name'].'</option>';
+			 	     }
+						}
 		    	echo '</select>';
 		    	echo '<button class="add-new-hreflang-tag"><span class="dashicons dashicons-plus"></span></button>';
 				echo '</div>';
@@ -303,8 +310,10 @@ if (!function_exists('hreflang_meta_box')) {
 	}
 }
 function add_hreflang_meta_box() {
-	foreach (get_option('hreflang_post_types') as $hreflang_post_type) {
-    	add_meta_box('hreflang-meta-box','HREFLANG Tags','hreflang_meta_box',$hreflang_post_type, 'advanced', 'high', null);
+	if (is_array(get_option('hreflang_post_types')) && !empty(get_option('hreflang_post_types'))) {
+		foreach (get_option('hreflang_post_types') as $hreflang_post_type) {
+	    	add_meta_box('hreflang-meta-box','HREFLANG Tags','hreflang_meta_box',$hreflang_post_type, 'advanced', 'high', null);
+		}
 	}
 }
 if (!function_exists('add_hreflang_to_category_form')) {
@@ -422,14 +431,16 @@ if (!function_exists('hreflang_save_term_meta_data')) {
 					}
 				}
 			}
-			foreach($_POST['hreflang-href'] as $href) {
-				if (trim($href) == '' || $href == 'Select one') {
-					$i++;
-					continue;
-				}
-				else {
-					update_term_meta($term_id,'hreflang-'.$_POST['hreflang-lang'][$i],$href);
-					$i++;
+			if (is_array($_POST['hreflang-href']) && !empty($_POST['hreflang-href'])) {
+				foreach($_POST['hreflang-href'] as $href) {
+					if (trim($href) == '' || $href == 'Select one') {
+						$i++;
+						continue;
+					}
+					else {
+						update_term_meta($term_id,'hreflang-'.$_POST['hreflang-lang'][$i],$href);
+						$i++;
+					}
 				}
 			}
 		}

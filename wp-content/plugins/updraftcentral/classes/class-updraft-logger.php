@@ -193,17 +193,17 @@ class Updraft_Logger implements Updraft_Logger_Interface {
 	/**
 	 * Logs with an arbitrary level.
 	 *
-	 * @param  mixed  $level
 	 * @param  string $message
+	 * @param  mixed  $level
 	 * @param  array  $context
 	 * @return null
 	 */
-	public function log($level, $message, array $context = array()) {
+	public function log($message, $level, array $context = array()) {
 
 		if (empty($this->_loggers)) return false;
 
 		foreach ($this->_loggers as $logger) {
-			$logger->log($level, $message, $context);
+			$logger->log($message, $level, $context);
 		}
 
 	}

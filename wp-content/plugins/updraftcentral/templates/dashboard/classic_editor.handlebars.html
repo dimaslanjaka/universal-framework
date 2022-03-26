@@ -1,0 +1,35 @@
+<div id="classic-editor-dashboard">
+	<div class="post-action-buttons">
+		<div id="uc-logo-container">
+			<img class="logo-landscape" src="{{logo}}" alt="UpdraftCentral" width="165" height="30">
+		</div>
+		<div id="uc-editor-buttons">
+			<button id="uc-editor-close" class="btn btn-primary">{{udclion.close_editor}}</button>
+			{{#ifeq "publish" post.post_status}}
+			<button id="uc-switch-draft" class="btn btn-primary">{{udclion.switch_to_draft}}</button>
+			{{/ifeq}}
+			<a id="uc_preview_changes" target="_blank"><button id="uc-preview-changes" class="btn btn-primary">{{udclion.preview_changes}}</button></a>
+		</div>
+	</div>
+	<div class="post-body-container">
+		<div class="title-container">
+			<input type="text" name="post_title" size="30" value="{{post.post_title}}" id="title" spellcheck="true" autocomplete="off" />
+		</div>
+		<div class="inside-container">
+			<div class="inside">
+				<div id="edit-slug-box" class="hide-if-no-js">
+					<strong>{{udclion.permalink}}:</strong>
+					<span id="uc-permalink"><a href="{{misc.link}}" onclick="UpdraftCentral_Library.open_browser_at(UpdraftCentral.$site_row, { module: 'direct_url', url: '{{misc.link}}' }, jQuery('#updraftcentral_dashboard_wrapper'));return false;">{{misc.site_url}}<span id="editable-post-name">{{misc.slug}}</span>/</a></span>
+					‎<span id="edit-slug-buttons"><button type="button" class="edit-slug button button-small hide-if-no-js" aria-label="Edit permalink">{{udclion.edit}}</button></span>
+					<span id="editable-post-name-full">{{misc.slug}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="post-area-container">
+			{{{editor}}}
+		</div>
+	</div>
+	<div class="post-side-container">
+		{{{metaboxes}}}
+	</div>
+</div>

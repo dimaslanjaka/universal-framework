@@ -62,11 +62,11 @@ jQuery(document).ready(function($) {
   };
 
   if (typeof ai_sticky_sidebar_delay == 'undefined') {
-    ai_sticky_sidebar_delay = 20;
+    ai_sticky_sidebar_delay = 200;
   }
 
   setTimeout (function() {
-    ai_set_sidebars (jQuery);
+    ai_set_sidebars ($);
   }, ai_sticky_sidebar_delay);
 });
 

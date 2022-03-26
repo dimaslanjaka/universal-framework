@@ -57,6 +57,12 @@ class UpdraftCentral_User {
 		// Save timeout settings
 		add_filter('updraftcentral_dashboard_ajaxaction_save_timeout', array($this, 'dashboard_ajaxaction_save_timeout'), 10, 2);
 
+		add_filter('updraftcentral_dashboard_ajaxaction_cache_response', array($this, 'dashboard_ajaxaction_cache_response'), 10, 2);
+		add_filter('updraftcentral_dashboard_ajaxaction_get_sites_information', array($this, 'dashboard_ajaxaction_get_sites_information'), 10, 1);
+		add_filter('updraftcentral_dashboard_ajaxaction_save_settings', array($this, 'dashboard_ajaxaction_save_settings'), 10, 2);
+		add_filter('updraftcentral_site_alert_icon', array($this, 'dashboard_site_alert_icon'), 10, 1);
+		add_filter('updraftcentral_dashboard_ajaxaction_log_event', array($this, 'dashboard_ajaxaction_log_event'), 10, 2);
+
 		// Load licence manager - this needs loading before the sites themselves are
 		if (!class_exists('UpdraftCentral_Licence_Manager')) include_once UD_CENTRAL_DIR.'/classes/licence-manager.php';
 
@@ -67,6 +73,281 @@ class UpdraftCentral_User {
 
 		$this->load_user_sites();
 
+	}
+
+	/**
+	 * Returns an icon string if a site is not reacheable in the last 96 hours
+	 *
+	 * @param integer $site_id The ID of the site to check
+	 * @return string
+	 */
+	public function dashboard_site_alert_icon($site_id) {
+		$meta = $this->rc->site_meta->get_site_meta($site_id, 'background_request_error', true, false, true);
+
+		if (!empty($meta) && is_array($meta) && !empty($meta['created'])) {
+			$result = $meta['meta_value'];
+
+			if (!empty($result) && is_array($result) && isset($result['message'])) {
+				$timestamp = $meta['created'];
+				$elapsed_hours = (time() - $timestamp)/3600;
+	
+				// If it has not been possible to contact the site using our background/cron mechanism in the last 96 hours
+				// then display an alert icon next to the site.
+				if ($elapsed_hours >= 96) {
+						$message = !empty($result['message']) ? $result['message'] : __('Could not connect to remote site successfully.', 'updraftcentral');
+					return '<span class="dashicons dashicons-warning uc_site_alert_icon" title="'.$message.'"></span>';
+				}
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Saves a copy of the remote response as a result of executing the
+	 * the submitted command along with its parameters.
+	 *
+	 * @param array $response  A response array where we insert our request response
+	 * @param array $post_data Parameters passed as an additional argument(s) to the request
+	 * @return array
+	 */
+	public function dashboard_ajaxaction_log_event($response, $post_data) {
+		global $wpdb;
+		$our_prefix = $wpdb->base_prefix.$this->rc->table_prefix;
+
+		$response['responsetype'] = 'ok';
+		$response['message'] = 'success';
+		$data = $post_data['data'];
+
+		if (!empty($data)) {
+			$format = array('%d', '%s', '%s', '%s', '%s', '%s', '%d');
+			if (isset($data['bulk']) && 1 === intval($data['bulk'])) {
+				$data = $data['data'];
+				if (is_array($data)) {
+					for ($i=0; $i<count($data); $i++) {
+						$data[$i]['time'] = time();
+						$wpdb->insert($our_prefix.'events', $data[$i], $format);
+					}
+				}
+			} else {
+				$data['time'] = time();
+				$wpdb->insert($our_prefix.'events', $data, $format);
+			}
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Saves a copy of the remote (successful) response as a result of executing the
+	 * the submitted command along with its parameters.
+	 *
+	 * @param array $response  A response array where we insert our request response
+	 * @param array $post_data Parameters passed as an additional argument(s) to the request
+	 * @return array
+	 */
+	public function dashboard_ajaxaction_cache_response($response, $post_data) {
+		$response['responsetype'] = 'ok';
+		$response['message'] = 'success';
+		$data = $post_data['data'];
+		$site_meta = $this->rc->site_meta;
+
+		if (isset($data['data']['force_refresh'])) {
+			// Make sure that we are passing an actual boolean value rather than a string
+			// representation of any boolean passed to the "force_refresh" parameter.
+			$data['data']['force_refresh'] = filter_var($data['data']['force_refresh'], FILTER_VALIDATE_BOOLEAN);
+		}
+
+		if (!isset($data['data'])) $data['data'] = array();
+		$cache_key = $this->generate_cache_key($data['site_id'], $data['command'], $data['data']);
+
+		if (!empty($data['response_data'])) {
+			$check = $site_meta->get_site_meta($data['site_id'], $cache_key, true);
+			if (!empty($check)) {
+				$result = $site_meta->update_site_meta($data['site_id'], $cache_key, $data['response_data']);
+			} else {
+				$result = $site_meta->add_site_meta($data['site_id'], $cache_key, $data['response_data']);
+			}
+
+			if (false !== $result) {
+				$result = $this->get_sites_cached_responses(array($cache_key));
+				if (!empty($result)) {
+					$response['data'] = $result[0];
+				}
+			}
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Retrieves the previously stored site responses when running each designated
+	 * (scheduled) commands through cron
+	 *
+	 * @param array $response A response array where we insert our request response
+	 * @return array
+	 */
+	public function dashboard_ajaxaction_get_sites_information($response) {
+
+		$response['responsetype'] = 'ok';
+		$response['message'] = 'success';
+
+		// Load sites information in the "sites_info" key. We separate the "load_sites_info" as to
+		// allow the developer to either call the same function from ajax (as this function's case) or
+		// from PHP (e.g. calling the "load_sites_info" function directly from the UpdraftCentral_User class).
+		//
+		// Calling it from PHP we can either attach it to the "udclion" localized variable for quick and easy access
+		// or create a separate (dedicated) localize variable for it.
+		$response['sites_info'] = $this->load_sites_info();
+
+		return $response;
+	}
+
+	/**
+	 * Loads sites information as a result from a previously run cron process
+	 *
+	 * @return array
+	 */
+	public function load_sites_info() {
+		$cached_data = array();
+
+		// Retrieves all (scheduled) commands that were registered using the
+		// "updraftcentral_scheduled_commands" filter.
+		$scheduled_commands = apply_filters('updraftcentral_scheduled_commands', array());
+		if (!empty($scheduled_commands)) {
+			if (!is_array($this->sites)) $this->load_user_sites();
+
+			foreach ($scheduled_commands as $item) {
+				$command = $item['command'];
+				$data = $item['data'];
+
+				$meta_keys = array();
+				if (is_array($this->sites)) {
+					foreach ($this->sites as $site) {
+						// We're going to pull the data based on the contructed keys (in the "meta_keys" array) otherwise it
+						// would take a very long time to complete the whole get_sites_information process if we run individual
+						// queries for each sites because the user could probably have 200 sites or more.
+						$cache_key = $this->generate_cache_key($site->site_id, $command, $data);
+						$meta_keys[] = $cache_key;
+					}
+				}
+
+				if (!empty($meta_keys)) {
+					$cached_data[$command] = $this->get_sites_cached_responses($meta_keys);
+				}
+			}
+		}
+
+		return $cached_data;
+	}
+
+	/**
+	 * Retrieves all stored (cached) responses based from a list f unique keys for each site when
+	 * running the scheduled commands from cron
+	 *
+	 * @param array $meta_keys A list of unique keys to retrieve
+	 *
+	 * @return array|object|null
+	 */
+	private function get_sites_cached_responses($meta_keys) {
+		global $wpdb;
+		$our_prefix = $wpdb->base_prefix.$this->rc->table_prefix;
+
+		$responses = $wpdb->get_results("SELECT `site_id`, `created`, `meta_value` as `response` FROM ".$our_prefix."sitemeta WHERE `meta_key` IN ('".implode("','", $meta_keys)."')");
+		return $responses;
+	}
+
+	/**
+	 * Retrieves available items for update from the stored/cached data
+	 *
+	 * @param integer $site_id The ID of the site where to pull the available updates from
+	 *
+	 * @return array
+	 */
+	private function get_updates_count_from_cache($site_id) {
+		global $wpdb;
+
+		$site_meta = $this->rc->site_meta;
+		$our_prefix = $wpdb->base_prefix.$this->rc->table_prefix;
+
+		$cache_key = $this->generate_cache_key($site_id, 'updates.get_updates', array('force_refresh' => false));
+		$response = $site_meta->get_site_meta($site_id, $cache_key, true);
+
+		$counts = array('plugins' => 0, 'themes' => 0, 'core' => 0, 'translations' => 0);
+		if (is_array($response) && !empty($response)) {
+			if (isset($response['reply']) && isset($response['reply']['data'])) {
+				$data = $response['reply']['data'];
+				foreach ($data as $key => $value) {
+					if (isset($counts[$key])) {
+						if ('translations' === $key && isset($value['items'])) {
+							$counts[$key] = count($value['items']);
+						} else {
+							$counts[$key] = count($value);
+						}
+					}
+				}
+			}
+		}
+
+		return $counts;
+	}
+
+	/**
+	 * Generates a unique key out from the site id, command and data parameters to
+	 * be used as a "meta_key" field when saving the data to the DB.
+	 *
+	 * @param integer $site_id The ID of the site where the command is to be executed
+	 * @param string  $command The current command to execute
+	 * @param array   $data    An array containing the command parameters
+	 * @return string - The generated key
+	 */
+	public function generate_cache_key($site_id, $command, $data) {
+		// N.B. The "meta_key" field format in the "sites_meta" table is done this way in order to store distinct
+		// responses for each command submitted. So, we better reconstruct the same key for each sites before
+		// saving and retrieving any available data to/in the DB as cached information.
+		$command_data_key = '_command'.$command.serialize($data);
+		return 'cached_data_'.md5('_site'.$site_id.$command_data_key);
+	}
+
+	/**
+	 * Saves updraftcentral settings
+	 *
+	 * @param array $response  A response array where we insert our request response
+	 * @param array $post_data Parameters passed as an additional argument(s) to the request
+	 * @return array
+	 */
+	public function dashboard_ajaxaction_save_settings($response, $post_data) {
+		$response['responsetype'] = 'ok';
+		$response['message'] = 'success';
+
+		$data = $post_data['data'];
+
+		// Save timeout settings
+		if (!empty($data['timeout'])) {
+			update_user_meta($this->user_id, 'updraftcentral_dashboard_user_defined_timeout', $data['timeout']);
+		}
+
+		// Save keyboard shortcuts status
+		if (!empty($data['shortcut_status'])) {
+			update_user_meta($this->user_id, 'updraftcentral_dashboard_shortcut_status', $data['shortcut_status']);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Gets the keyboard shortcut active/inactive status
+	 *
+	 * @return integer
+	 */
+	public function get_keyboard_shortcut_status() {
+		$shortcut_status = 'active';	// Default: "active" (UpdraftCentral keyboard shortcuts features is active by default)
+		if (!empty($this->user_id)) {
+			$value = get_user_meta($this->user_id, 'updraftcentral_dashboard_shortcut_status', true);
+			if (!empty($value)) $shortcut_status = $value;
+		}
+
+		return $shortcut_status;
 	}
 
 	/**
@@ -1234,23 +1515,27 @@ class UpdraftCentral_User {
 				$sites_meta_sql .= absint($site->site_id);
 			}
 			$sites_meta_sql .= ')';
-			$sites_meta = $wpdb->get_results($sites_meta_sql);
+			$sites_meta = $wpdb->get_results($sites_meta_sql, ARRAY_A);
+
+			if (!empty($sites_meta)) {
+				$sites_meta = array_map(array(UpdraftCentral(), 'maybe_json_decode'), $sites_meta);
+			}
 		} else {
 			$sites_meta = array();
 		}
 		
 		if (is_array($sites_meta)) {
 			foreach ($sites_meta as $meta_row) {
-				if (isset($meta_row->site_id)) {
+				if (isset($meta_row['site_id'])) {
 					// N.B. Since we're trying to include the 'created' column in the site metadata when loaded or pulled from
 					// the database, therefore, we assign an anonymous object to encapsulate the value of the current meta_key along with
 					// its created column.
 
 					$meta = new stdClass();
-					$meta->value = $meta_row->meta_value;
-					$meta->created = $meta_row->created;
+					$meta->value = $meta_row['meta_value'];
+					$meta->created = $meta_row['created'];
 
-					$this->sites_meta[$meta_row->site_id][$meta_row->meta_key] = $meta;
+					$this->sites_meta[$meta_row['site_id']][$meta_row['meta_key']] = $meta;
 				}
 			}
 		}
@@ -1349,8 +1634,10 @@ class UpdraftCentral_User {
 					$suspended = !empty($tagged);
 
 					$site_data_attributes = apply_filters('updraftcentral_site_data_attributes', $site_data_attributes, $this->sites[$site_id_meta]);
+					$site_alert_icon = apply_filters('updraftcentral_site_alert_icon', $site_id_meta);
+					$available_updates = $this->get_updates_count_from_cache($site_id_meta);
 					
-					$ret .= $this->rc->include_template('sites/site-row.php', true, array('site' => $this->sites[$site_id_meta], 'site_meta' => $site_meta, 'site_data_attributes' => $site_data_attributes, 'suspended' => $suspended));
+					$ret .= $this->rc->include_template('sites/site-row.php', true, array('site' => $this->sites[$site_id_meta], 'site_meta' => $site_meta, 'site_data_attributes' => $site_data_attributes, 'suspended' => $suspended, 'site_alert_icon' => $site_alert_icon, 'available_updates' => $available_updates));
 				}
 			}
 		}

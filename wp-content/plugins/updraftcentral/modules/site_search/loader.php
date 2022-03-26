@@ -68,4 +68,4 @@ class UpdraftCentral_Module_Site_Search {
 	}
 }
 
-$updraftcentral_module_site_search = new UpdraftCentral_Module_Site_Search();
+$updraftcentral_module_site_search = new UpdraftCentral_Module_Site_Search();// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Unused variable $updraftcentral_module_site_search

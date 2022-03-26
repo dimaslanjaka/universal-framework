@@ -28,8 +28,6 @@ class PF_Readability {
 			$url = pressforward( 'controller.http_tools' )->resolve_full_url( $url );
 			// var_dump($url); die();
 			$descrip = rawurldecode( $descrip );
-		if ( get_magic_quotes_gpc() ) {
-			$descrip = stripslashes( $descrip ); }
 
 		if ( $authorship == 'aggregation' ) {
 			$aggregated = true;
@@ -108,33 +106,37 @@ class PF_Readability {
 	public function make_it_readable( $quickresponse = false ) {
 
 		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST[ PF_SLUG . '_nomination_nonce' ], 'nomination' ) ) {
-			die( __( "Nonce check failed. Please ensure you're supposed to be nominating stories.", 'pf' ) ); }
+		if ( ! isset( $_POST[ PF_SLUG . '_nomination_nonce' ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ PF_SLUG . '_nomination_nonce' ] ) ), 'nomination' ) ) {
+			die( esc_html__( "Nonce check failed. Please ensure you're supposed to be nominating stories.", 'pf' ) ); }
 		ob_start();
 		libxml_use_internal_errors( true );
 		$read_status = 'readable';
-		$item_id     = $_POST['read_item_id'];
-		$post_id     = $_POST['post_id'];
-		$force       = $_POST['force'];
-		$url         = $_POST['url'];
+		$item_id     = isset( $_POST['read_item_id'] ) ? intval( $_POST['read_item_id'] ) : 0;
+		$post_id     = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+		$force       = isset( $_POST['force'] ) ? sanitize_text_field( wp_unslash( $_POST['force'] ) ) : '';
+		$url         = isset( $_POST['url'] ) ? sanitize_text_field( wp_unslash( $_POST['url'] ) ) : '';
 		// error_reporting(0);
 		if ( ( false === ( $itemReadReady = get_transient( 'item_readable_content_' . $item_id ) ) ) || $force == 'force' ) {
 
+			$authorship = isset( $_POST['authorship'] ) ? sanitize_text_field( wp_unslash( $_POST['authorship'] ) ) : '';
+
+			$content = isset( $_POST['content'] ) ? wp_kses_post( wp_unslash( $_POST['content'] ) ) : '';
+
 			$args = array(
 				'force'      => $force,
-				'descrip'    => $_POST['content'],
-				'url'        => $_POST['url'],
-				'authorship' => $_POST['authorship'],
-				'post_id'    => $_POST['post_id'],
+				'descrip'    => $content,
+				'url'        => $url,
+				'authorship' => $authorship,
+				'post_id'    => $post_id,
 			);
 
 			$readable_ready = $this->get_readable_text( $args );
 
 			$read_status   = $readable_ready['status'];
 			$itemReadReady = $readable_ready['readable'];
-			$url           = $readable_ready['url'];
-			if ( ! strpos( $itemReadReady, $url ) ) {
-				$itemReadReady = $this->process_in_oembeds( $url, $itemReadReady );
+			$readable_url  = $readable_ready['url'];
+			if ( ! strpos( $itemReadReady, $readable_url ) ) {
+				$itemReadReady = $this->process_in_oembeds( $readable_url, $itemReadReady );
 			}
 
 			set_transient( 'item_readable_content_' . $item_id, $itemReadReady, 60 * 60 * 24 );
@@ -153,6 +155,7 @@ class PF_Readability {
 				'ID'           => $post_id,
 				'post_content' => $content,
 			);
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput
 			if ( strlen( $_POST['content'] ) < strlen( $content ) ) {
 				$update_check = wp_update_post( $update_ready, true );
 				if ( ! is_wp_error( $update_check ) ) {
@@ -163,7 +166,7 @@ class PF_Readability {
 					pressforward( 'controller.metas' )->update_pf_meta( $post_id, 'readable_status', 0 );
 					$error = $update_check->get_error_message();
 				}
-				$responseItemReadReady = $this->get_embed( $_POST['url'] ) . $itemReadReady;
+				$responseItemReadReady = $this->get_embed( $url ) . $itemReadReady;
 				$source_statement      = pressforward( 'utility.forward_tools' )->append_source_statement( $post_id, '', true );
 			} else {
 				$error            = 'Not Updated, retrieved content is longer than stored content.';
@@ -186,7 +189,7 @@ class PF_Readability {
 					'error'                   => $error,
 					'buffered'                => ob_get_contents(),
 					'domDoc_errors'           => $domDocErrors,
-					'readable_applied_to_url' => $_POST['url'],
+					'readable_applied_to_url' => $url,
 					'source_statement'        => $source_statement,
 				),
 			);
@@ -363,7 +366,14 @@ class PF_Readability {
 	}
 
 	public function get_embed( $item_link ) {
-		$oembed = wp_oembed_get( $item_link );
+		$transient_key = 'pressforward_oembed_' . md5( $item_link );
+
+		$oembed = get_transient( $transient_key );
+		if ( false === $oembed ) {
+			$oembed = wp_oembed_get( $item_link );
+			set_transient( $transient_key, $oembed, WEEK_IN_SECONDS );
+		}
+
 		if ( false != $oembed ) {
 			$providers = pressforward( 'schema.feed_item' )->oembed_capables();
 			foreach ( $providers as $provider ) {

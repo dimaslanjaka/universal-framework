@@ -2,9 +2,9 @@
 Contributors: DavidAnderson, DNutbourne, aporter, snightingale
 Tags: remote control, management dashboard, multiple site management, remote management, remote dashboard, updates
 Requires at least: 4.4
-Tested up to: 5.3
-Stable tag: 0.8.11
-Requires PHP: 5.3
+Tested up to: 5.9
+Stable tag: 0.8.19
+Requires PHP: 5.6
 Author: DavidAnderson
 Donate link: https://david.dw-perspective.org.uk/donate
 License: MIT
@@ -71,13 +71,36 @@ It has many more features:
 
 == Installation ==
 
-From our <a href="https://www.youtube.com/user/UpdraftPlus/videos">YouTube channel</a>, here's how to install:
+https://youtu.be/Gmi7AmtTDbU
 
-https://youtu.be/oNpJEaSlQbI
+How to install:
 
-And here's how to add a new site:
+= Using the WordPress dashboard =
 
-https://www.youtube.com/watch?v=B1ivZKk6D8w
+1. Navigate to the 'Add New' in the plugins dashboard
+2. Search for 'UpdraftCentral'
+3. Click 'Install Now'
+4. Activate the plugin on the Plugin dashboard
+
+= Uploading in WordPress Dashboard =
+
+1. Download the latest version of this plugin from https://wordpress.org/plugins/updraftcentral/
+2. Navigate to the 'Add New' in the plugins dashboard
+3. Navigate to the 'Upload' area
+4. Select the zip file (from step 1.) from your computer
+5. Click 'Install Now'
+6. Activate the plugin in the Plugin dashboard
+
+= Using FTP =
+
+1. Download the latest version of this plugin from https://wordpress.org/plugins/updraftcentral/
+2. Unzip the zip file, which will extract the updraftcentral directory to your computer
+3. Upload the updraftcentral directory to the /wp-content/plugins/ directory in your web space
+4. Activate the plugin in the Plugin dashboard
+
+From our <a href="https://www.youtube.com/user/UpdraftPlus/videos">YouTube channel</a>, here's how to add a new site:
+
+https://youtu.be/5uq39rJgSgw
 
 = Requirements =
 
@@ -90,7 +113,7 @@ The website being controlled must have all of these:
 The website that is running the dashboard (i.e. this plugin, UpdraftCentral) must have:
 
 - WordPress 4.4 (Dec 2015) or later
-- PHP 5.3 or later
+- PHP 5.6 or later
 
 The web browser that you visit the UpdraftCentral dashboard must not have not been end-of-lifed by its maker. Specifically, Internet Explorer 9 (or earlier) is not supported. UpdraftCentral is built using modern JavaScript technologies.
 
@@ -99,6 +122,98 @@ The web browser that you visit the UpdraftCentral dashboard must not have not be
 We recognise and thank all those whose code and/or libraries are used and/or modified under the terms of their open source licences in UpdraftCentral, at: https://updraftplus.com/acknowledgements/
 
 == Changelog ==
+
+= 0.8.19 - 19/Oct/2021 =
+
+* FIX: Fix empty page being displayed after the currently recorded site has been suspended
+* FIX: Fix NaN (not a number) issue when displaying dates on the plugin module's install area
+* FEATURE: Log update and install events
+* TWEAK: Show available updates for each site based on the background information gathering
+* TWEAK: Make spinner consistent in both single and mass update process
+* TWEAK: Display an alert icon if site not reachable
+* TWEAK: Use version 3 of the semaphore class when implementing semaphore locks
+* TWEAK: Add a table for logging events
+* TWEAK: Get raw backup history when double clicking the backup date
+
+= 0.8.18 - 30/Jun/2021 =
+
+* FIX: Fix inconsistent UI elements rendering on Chrome browser
+* FIX: Fix unexpected error popping up when editing page or post on a fresh WP install
+* FIX: Fix UpdraftCentral's keyboard shortcut feature
+* FIX: Fix post get stuck when loading for block editing
+* FIX: Fix empty credentials dialog popping up while running the updates process
+* FIX: Fix updraftvault layout
+* FIX: Fix tooltip issues
+* FIX: Fix sidebar's collapse/expand button issues
+* FIX: Fix content not changing when switching to another post or page when editing using the block editor in WordPress 5.7
+* FIX: Fix modal dialog on fullscreen
+* FIX: Fix intermittent loading of cached data
+* TWEAK: Add useful entries to the site menu which are shortcuts to common functions
+* TWEAK: Retrieve fresh data and cached it after a successful update is done
+* TWEAK: Added Update URI header field to avoid accidentally being overwritten with an update of a plugin of a similar name from the WordPress.org Plugin Directory.
+* TWEAK: Prevent showing the communication error dialog when reloading UpdraftCentral
+* TWEAK: Load UpdraftCentral in full view on initial load
+* TWEAK: Improvements to feature media support
+* TWEAK: Replace hasUploadPermissions JS API with canUser
+* TWEAK: Store or cache remote response when user clicks the reload button 
+* TWEAK: Tweak updates module to incorporate loading of cached data whenever applicable
+
+= 0.8.17 - 08/Mar/2021 =
+
+* TWEAK: Remove unused JavaScript code that was part of the UDP's scheduled destination backups feature
+* TWEAK: Add dayjs library for use by the updates module
+* TWEAK: Fix deprecated Guzzle parameter used when sending from the mothership
+
+= 0.8.16 - 09/Feb/2021 =
+
+* TWEAK: Transfer post and page module's code into UpdraftCentral_Post class to completely remove redundancy
+
+= 0.8.15 - 22/Jan/2021 =
+
+* FEATURE: Backup destinations with conditional logic rules for scheduled backups
+* FIX: Fix WebDAV test error
+* TWEAK: Minor adjustments for both page and post modules
+* TWEAK: Add new methods that are needed when refactoring the fetching process
+* TWEAK: Prevent deprecation notice on PHP 8.0
+* TWEAK: Now marked as requiring (for the dashboard plugin) PHP 5.6+
+* TWEAK: Add the ability to disable semaphore logging
+* TWEAK: Add conditions/checks prior to using some metabox fields
+* TWEAK: Update bundled class-udrpc library
+* TWEAK: Supporting tweaks for page and post modules
+* TWEAK: Improve EUM plugin discovery
+* TWEAK: Tweak updraftcentral_get_site_metadata return value for single entry
+* TWEAK: Update jQuery document ready style to the one not deprecated in jQuery 3.0
+
+= 0.8.14 - 03/Jul/2020 =
+
+* FIX: Fix currently shown menu is not closed when a new tab is selected
+* FIX: Fix missing sites after editing site description and clicking choose another site to manage button
+* FIX: Fix computed cached key retrieval error
+* TWEAK: Call action updraftcentral_version_updated upon update
+* TWEAK: Load sites information from background process
+
+= 0.8.13 - 24/Jun/2020 =
+
+* FEATURE: Added the ability to choose the remote storage locations you want to send your backup to in the "Backup Now" modal
+* FIX: Fix scheduled commands execution through WP cron
+* FIX: Fix can't delete backup item without refreshing the list after a successful restore process
+* FIX: Fix layout/css glitch on the backup settings page
+* FIX: Fix popper.js related error and warning
+* TWEAK: Improve UX and accessibility with better keyboard navigation
+* TWEAK: Register updates retrieval to run in the background
+* TWEAK: Add editor class for page and post modules
+* TWEAK: Add new error message to the rpcerrors collection
+* TWEAK: Show upload errors in dialog as well as in browser console if debug level is set
+* TWEAK: Improve JavaScript's compatibility with minification and merging, in particular WP-Optimize
+* TWEAK: Add REST controller files for page and post modules
+* TWEAK: Add internal capability to install plugin or theme through zip file
+* TWEAK: Upgrade Bootstrap and Bootbox libraries to current versions
+* TWEAK: Force the connection method 'via_mothership' if the command is in the UpdraftClone namespace
+
+= 0.8.12 - 26/Mar/2020 =
+
+* FEATURE: Add the ability to allow user to deactivate keyboard shortcuts
+* FEATURE: Add option to select all 'patch' releases in mass updates area
 
 = 0.8.11 - 15/Jan/2020 =
 
@@ -467,4 +582,4 @@ For all our FAQs, and all other support documentation, please go here: https://u
 15. Manage themes on a controlled site (premium only)
 
 == Upgrade Notice ==
-* 0.8.11 : Support Easy Updates Manager Premium 9.0 series; other minor fixes/tweaks. A recommended update for all. Requires WP 4.4+
+* 0.8.19 : * FIX: Fix empty page being displayed after the currently recorded site has been suspended. FIX: Fix NaN (not a number) issue when displaying dates on the plugin module's install area.

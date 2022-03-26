@@ -6,7 +6,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -97,7 +97,6 @@ class GoogleGAL_Config
           'login_hint' => '',
           'request_visible_actions' => '',
           'access_type' => 'online',
-          'approval_prompt' => 'auto',
           'federated_signon_certs_url' =>
               'https://www.googleapis.com/oauth2/v1/certs',
         ),
@@ -322,7 +321,7 @@ class GoogleGAL_Config
    */
   public function setApprovalPrompt($approval)
   {
-    $this->setAuthConfig('approval_prompt', $approval);
+    $this->setAuthConfig('prompt', $approval);
   }
 
   /**

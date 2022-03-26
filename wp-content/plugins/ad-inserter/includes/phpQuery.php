@@ -2212,7 +2212,8 @@ class phpQueryObject
 				if (! $param)
 					break;
 					// nth-child(n+b) to nth-child(1n+b)
-				if ($param{0} == 'n')
+//        if ($param{0} == 'n')
+        if ($param[0] == 'n')
 					$param = '1'.$param;
 				// :nth-child(index/even/odd/equation)
 				if ($param == 'even' || $param == 'odd')
@@ -2238,7 +2239,8 @@ class phpQueryObject
 
 						new CallbackParam(), $param
 					);
-				else if (mb_strlen($param) > 1 && $param{1} == 'n')
+//        else if (mb_strlen($param) > 1 && $param{1} == 'n')
+        else if (mb_strlen($param) > 1 && $param[1] == 'n')
 					// an+b
 					$mapped = $this->map(
 //            create_function('$node, $param',
@@ -2281,10 +2283,13 @@ class phpQueryObject
               $prevs = pq($node)->prevAll()->size();
               $index = 1+$prevs;
               $b = mb_strlen($param) > 3
-                ? $param{3}
+//                ? $param{3}
+                ? $param[3]
                 : 0;
-              $a = $param{0};
-              if ($b && $param{2} == "-")
+//              $a = $param{0};
+              $a = $param[0];
+//              if ($b && $param{2} == "-")
+              if ($b && $param[2] == "-")
                 $b = -$b;
               if ($a > 0) {
                 return ($index-$b)%$a == 0

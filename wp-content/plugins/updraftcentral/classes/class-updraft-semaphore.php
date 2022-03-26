@@ -258,8 +258,11 @@ class Updraft_Semaphore_1_0 {
 	 *
 	 * @param String $message    - the error message
 	 * @param String $error_type - the error type
+	 *
+	 * @return void
 	 */
 	public function log($message, $error_type = 'info') {
+		if (defined('UPDRAFTCENTRAL_DISABLE_SEMAPHORE_LOG') && UPDRAFTCENTRAL_DISABLE_SEMAPHORE_LOG) return;
 
 		if (isset($this->_loggers)) {
 			foreach ($this->_loggers as $logger) {

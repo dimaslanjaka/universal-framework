@@ -19,7 +19,7 @@
 
     /* Client widget sorting and cloning*/
     /* Font awsome selector */
-    $( 'select.shapely-icon' ).change( function() {
+    $( 'select.shapely-icon' ).on('change', function() {
       $( this ).siblings( 'span' ).removeClass().addClass( 'fa ' + $( this ).val() );
     } );
 

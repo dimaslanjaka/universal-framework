@@ -49,6 +49,7 @@
 }
 .gt-notice-body .dashicons {
     font-size: 17px;
+    vertical-align: middle;
 }
 .gt-red {
     color: #ED494D;

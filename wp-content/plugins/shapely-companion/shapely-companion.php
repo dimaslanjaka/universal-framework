@@ -1,40 +1,22 @@
 <?php
-/**
-* Plugin Name:       	Shapely Companion
-* Plugin URI:        	https://colorlib.com/wp/themes/shapely/
-* Description:       	Shapely Companion is a companion plugin for Shapely theme.
-* Version:       		1.2.4
-* Author: 				Colorlib
-* Author URI: 			https://colorlib.com/
-* Tested up to: 		5.1
-* Requires: 			4.6 or higher
-* License: 				GPLv3 or later
-* License URI: 			http://www.gnu.org/licenses/gpl-3.0.html
-* Requires PHP: 		5.6
-* Text Domain: 			shapely-companion
-* Domain Path: 			/languages
-*
-* Copyright 2016-2019 Colorlib support@colorlib.com
-*
-* This program is free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License, version 3, as
-* published by the Free Software Foundation.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+/*
+ * Plugin Name:       Shapely Companion
+ * Plugin URI:        https://colorlib.com/wp/themes/shapely/
+ * Description:       Shapely Companion is a companion plugin for Shapely theme.
+ * Version:           1.2.6
+ * Author:            Colorlib
+ * Author URI:        https://colorlib.com
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       shapely-companion
+ * Domain Path:       /languages
+ */
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'SHAPELY_COMPANION', '1.2.4' );
+define( 'SHAPELY_COMPANION', '1.2.6' );
 
 /**
  * Load the Dashboard Widget

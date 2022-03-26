@@ -51,7 +51,7 @@ class PF_Loops {
 				$args['relationship'] = $func_args[4];
 			}
 		} else {
-			$args = func_get_arg( 0 );
+			$args = $func_args[0];
 		}
 
 		// Make sure default values are set.
@@ -64,6 +64,7 @@ class PF_Loops {
 				'relationship'     => false,
 				'search_terms'     => '',
 				'exclude_archived' => false,
+				'count_total'      => false,
 			), $args
 		);
 
@@ -181,7 +182,7 @@ class PF_Loops {
 		$post_args['post_status'] = 'publish';
 		// die();
 		if ( isset( $_GET['feed'] ) ) {
-			$post_args['post_parent'] = $_GET['feed'];
+			$post_args['post_parent'] = intval( $_GET['feed'] );
 		} elseif ( isset( $_GET['folder'] ) ) {
 			$parents_in_folder = new \WP_Query(
 				array(
@@ -193,7 +194,8 @@ class PF_Loops {
 						array(
 							'taxonomy' => pressforward( 'schema.feeds' )->tag_taxonomy,
 							'field'    => 'term_id',
-							'terms'    => $_GET['folder'],
+							// phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+							'terms'    => wp_unslash( $_GET['folder'] ),
 						),
 					),
 				)
@@ -248,7 +250,16 @@ class PF_Loops {
 			$c++;
 		}
 
-		return $feedObject;
+		if ( $r['count_total'] ) {
+			$retval = [
+				'items'         => $feedObject,
+				'max_num_pages' => $feed_items->max_num_pages,
+			];
+		} else {
+			$retval = $feedObject;
+		}
+
+		return $retval;
 	}
 
 

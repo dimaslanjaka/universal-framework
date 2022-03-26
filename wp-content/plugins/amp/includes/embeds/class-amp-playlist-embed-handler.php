@@ -12,6 +12,7 @@
  * Creates AMP-compatible markup for the WordPress 'playlist' shortcode.
  *
  * @package AMP
+ * @internal
  */
 class AMP_Playlist_Embed_Handler extends AMP_Base_Embed_Handler {
 
@@ -95,9 +96,9 @@ class AMP_Playlist_Embed_Handler extends AMP_Base_Embed_Handler {
 	 * @return void
 	 */
 	public function unregister_embed() {
-		if ( $this->removed_shortcode_callback ) {
+		if ( isset( $this->removed_shortcode_callback ) ) {
 			add_shortcode( self::SHORTCODE, $this->removed_shortcode_callback );
-			$this->removed_shortcode_callback = null;
+			unset( $this->removed_shortcode_callback );
 		}
 		add_action( 'wp_playlist_scripts', 'wp_playlist_scripts' );
 	}
@@ -175,7 +176,7 @@ class AMP_Playlist_Embed_Handler extends AMP_Base_Embed_Handler {
 					<div>
 						<div class="wp-playlist-current-item">
 							<?php if ( $image_url ) : ?>
-								<amp-img src="<?php echo esc_url( $image_url ); ?>" height="<?php echo esc_attr( $dimensions['height'] ); ?>" width="<?php echo esc_attr( $dimensions['width'] ); ?>"></amp-img>
+								<img src="<?php echo esc_url( $image_url ); ?>" height="<?php echo esc_attr( $dimensions['height'] ); ?>" width="<?php echo esc_attr( $dimensions['width'] ); ?>">
 							<?php endif; ?>
 							<div class="wp-playlist-caption">
 								<span class="wp-playlist-item-meta wp-playlist-item-title"><?php echo esc_html( $title ); ?></span>
@@ -330,5 +331,4 @@ class AMP_Playlist_Embed_Handler extends AMP_Base_Embed_Handler {
 
 		return '';
 	}
-
 }

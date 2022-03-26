@@ -63,6 +63,7 @@ define('AI_TEXT_DEFAULT',               _x('Default', 'alignment', 'ad-inserter'
 define('AI_TEXT_LEFT',                  _x('Left', 'alignment', 'ad-inserter'));
 define('AI_TEXT_RIGHT',                 _x('Right', 'alignment', 'ad-inserter'));
 define('AI_TEXT_CENTER',                _x('Center', 'alignment', 'ad-inserter'));
+define('AI_TEXT_POSITION_CENTER',       _x('Center', 'position', 'ad-inserter'));
 define('AI_TEXT_FLOAT_LEFT',            _x('Float left', 'alignment', 'ad-inserter'));
 define('AI_TEXT_FLOAT_RIGHT',           _x('Float right', 'alignment', 'ad-inserter'));
 define('AI_TEXT_NO_WRAPPING',           _x('No wrapping', 'alignment', 'ad-inserter'));
@@ -111,6 +112,7 @@ define ('AI_TEXT_TABLET_DEVICES',         __('tablet devices', 'ad-inserter'));
 define ('AI_TEXT_PHONE_DEVICES',          __('phone devices', 'ad-inserter'));
 define ('AI_TEXT_DESKTOP_TABLET_DEVICES', __('desktop and tablet devices', 'ad-inserter'));
 define ('AI_TEXT_DESKTOP_PHONE_DEVICES',  __('desktop and phone devices', 'ad-inserter'));
+define ('AI_TEXT_ALL_DEVICES',            __('all devices', 'ad-inserter'));
 
 define ('AI_TEXT_STICK_TO_THE_LEFT',           __('Stick to the left', 'ad-inserter'));
 define ('AI_TEXT_STICK_TO_THE_CONTENT_LEFT',   __('Stick to the content left', 'ad-inserter'));
@@ -132,7 +134,21 @@ define ('AI_TEXT_TURN',                   __('Turn', 'ad-inserter'));
 define ('AI_TEXT_PAGE_LOADED',            __('Page loaded', 'ad-inserter'));
 define ('AI_TEXT_PAGE_SCROLLED_PC',       __('Page scrolled (%)', 'ad-inserter'));
 define ('AI_TEXT_PAGE_SCROLLED_PX',       __('Page scrolled (px)', 'ad-inserter'));
-define ('AI_TEXT_ELEMENT_VISIBLE',        __('Element visible', 'ad-inserter'));
+define ('AI_TEXT_ELEMENT_SCROLLS_IN',     __('Element scrolls in', 'ad-inserter'));
+define ('AI_TEXT_ELEMENT_SCROLLS_OUT',    __('Element scrolls out', 'ad-inserter'));
+
+define('AI_TEXT_DEFAULT_BKG_REPEAT',      _x('Default', 'image repeat', 'ad-inserter'));
+define('AI_TEXT_NO',                      __('No', 'ad-inserter'));
+define('AI_TEXT_YES',                     __('Yes', 'ad-inserter'));
+define('AI_TEXT_HORIZONTALY',             __('Horizontally', 'ad-inserter'));
+define('AI_TEXT_VERTICALLY',              __('Vertically', 'ad-inserter'));
+define('AI_TEXT_SPACE',                   __('Space', 'ad-inserter'));
+define('AI_TEXT_ROUND',                   __('Round', 'ad-inserter'));
+
+define('AI_TEXT_DEFAULT_BKG_SIZE',        _x('Default', 'image size', 'ad-inserter'));
+define('AI_TEXT_COVER',                   __('Cover', 'ad-inserter'));
+define('AI_TEXT_FIT_BKG_SIZE',            _x('Fit', 'image size', 'ad-inserter'));
+define('AI_TEXT_FILL',                    __('Fill', 'ad-inserter'));
 
 define ('AI_TEXT_INSERT_IMMEDIATELY',              __('Insert immediately', 'ad-inserter'));
 define ('AI_TEXT_DELAY_INSERTION',                 __('Delay insertion', 'ad-inserter'));
@@ -159,6 +175,9 @@ define ('AI_TEXT_HIDE',                   _x('Hide', 'Action when ad blocking de
 define ('AI_TEXT_INTERNAL',               _x('Internal', 'tracking', 'ad-inserter'));
 define ('AI_TEXT_ADVANCED',               _x('Advanced', 'detection', 'ad-inserter'));
 define ('AI_TEXT_ENABLED',                __('Enabled', 'ad-inserter'));
+
+define ('AI_TEXT_AUTO',                   _x('Auto', 'Manual loading', 'ad-inserter'));
+define ('AI_TEXT_ALWAYS',                 _x('Always', 'Manual loading', 'ad-inserter'));
 
 define ('AI_TEXT_TOP_RIGHT',              __('Top right', 'ad-inserter'));
 define ('AI_TEXT_TOP_LEFT',               __('Top left', 'ad-inserter'));
@@ -206,11 +225,16 @@ $ai_admin_translations = array (
   'days_5'                      => _n('day', 'days', 5, 'ad-inserter'),
   'warning'                     => __('Warning', 'ad-inserter'),
   'delete'                      => __('Delete', 'ad-inserter'),
+  'delete_all'                  => __('Delete all', 'ad-inserter'),
   'switch'                      => __('Switch', 'ad-inserter'),
   'cancel'                      => __('Cancel', 'ad-inserter'),
+  'ok'                          => __('OK', 'ad-inserter'),
   'delete_all_statistics'       => __('Delete all statistics data?', 'ad-inserter'),
+  'rotation_active'             => __('Rotation code editor active. Click on the rotation button to generate code.', 'ad-inserter'),
+
                                     // translators: %s: dates
   'delete_statistics_between'   => sprintf (__('Delete statistics data between %s and %s?', 'ad-inserter'), '{start_date}', '{end_date}'),
+  'delete_website'              => __('Delete website?', 'ad-inserter'),
   'cancel_rearrangement'        => __('Cancel block order rearrangement', 'ad-inserter'),
   'rearrange_block_order'       => __('Rearrange block order', 'ad-inserter'),
   'downloading'                 => __('downloading...', 'ad-inserter'),
@@ -231,6 +255,7 @@ $ai_admin_translations = array (
   'position_available'          => __('Position available', 'ad-inserter'),
   'select_header_image'         => __('Select or upload header image', 'ad-inserter'),
   'select_banner_image'         => __('Select or upload banner image', 'ad-inserter'),
+  'select_background_image'     => __('Select or upload background image', 'ad-inserter'),
   'use_this_image'              => __('Use this image', 'ad-inserter'),
   'switch_to_physical_ads_txt'  => __('Switching to physical ads.txt file will delete virtual ads.txt file.', 'ad-inserter'),
 
@@ -245,17 +270,25 @@ $ai_admin_translations = array (
 
 
 $ai_front_translations = array (
-  'wp_ai'                       => $wp_version . '+' . AD_INSERTER_VERSION,
+//  'wp_ai'                       => $wp_version . '+' . AD_INSERTER_VERSION,
+
+  // Debugging
   'insertion_before'            => __('BEFORE', 'ad-inserter'),
   'insertion_after'             => __('AFTER', 'ad-inserter'),
   'insertion_prepend'           => __('PREPEND CONTENT', 'ad-inserter'),
   'insertion_append'            => __('APPEND CONTENT', 'ad-inserter'),
   'insertion_replace_content'   => __('REPLACE CONTENT', 'ad-inserter'),
   'insertion_replace_element'   => __('REPLACE ELEMENT', 'ad-inserter'),
+  'visible'                     => _x('VISIBLE', 'Block', 'ad-inserter'),
+  'hidden'                      => _x('HIDDEN', 'Block', 'ad-inserter'),
+  'fallback'                    => _x('FALLBACK', 'alternative block', 'ad-inserter'),
+  'automatically_placed'        => __('Automatically placed by AdSense Auto ads code', 'ad-inserter'),
+
+  // Element selection
   'cancel'                      => __('Cancel', 'ad-inserter'),
   'use'                         => __('Use', 'ad-inserter'),
   'add'                         => __('Add', 'ad-inserter'),
-  'parent'                      => __('Parent', 'ad-inserter'),
+  'parent'                      => _x('Parent', 'Element', 'ad-inserter'),
   'cancel_element_selection'    => __('Cancel element selection', 'ad-inserter'),
   'select_parent_element'       => __('Select parent element', 'ad-inserter'),
   'css_selector'                => __('CSS selector', 'ad-inserter'),
@@ -263,7 +296,4 @@ $ai_front_translations = array (
   'element'                     => __('ELEMENT', 'ad-inserter'),
   'path'                        => __('PATH', 'ad-inserter'),
   'selector'                    => __('SELECTOR', 'ad-inserter'),
-  'visible'                     => _x('VISIBLE', 'Block', 'ad-inserter'),
-  'hidden'                      => _x('HIDDEN', 'Block', 'ad-inserter'),
-  'automatically_placed'        => __('Automatically placed by AdSense Auto ads code', 'ad-inserter')
 );

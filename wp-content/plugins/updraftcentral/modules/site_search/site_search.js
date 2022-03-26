@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
 	UpdraftCentral_Site_Search = UpdraftCentral_Site_Search();
 });
 

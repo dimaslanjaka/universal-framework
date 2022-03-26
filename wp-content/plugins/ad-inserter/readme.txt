@@ -1,12 +1,12 @@
 === Ad Inserter - Ad Manager & AdSense Ads ===
 
-Contributors: spacetime
+Contributors: adinserter, spacetime
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LHGZEMRTR7WB4
-Tags: ads, adsense, ad rotation, ad manager, amp, amazon, ad blocking detection, header code, banners, adverts, sticky fixed widgets, dfp
-Requires at least: 4.6
-Tested up to: 5.3
+Tags: ads, adsense, ad rotation, ad manager, amp, amazon, ad blocking detection, header code, banners, in-feed ads, sticky fixed widgets, hooks
+Requires at least: 4.9
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 2.6.1
+Stable tag: 2.7.12
 License: GPLv3
 
 Manage Google AdSense, Media.net, Amazon banners, ads.txt, ad rotation, sticky widgets, AMP ads, DFP, tracking, AdSense header and footer code
@@ -15,7 +15,7 @@ Manage Google AdSense, Media.net, Amazon banners, ads.txt, ad rotation, sticky w
 
 Ad management plugin with many advanced advertising features to insert ad codes at optimal positions.
 
-Supports all kinds of ads including **Google AdSense**, **Google Ad Manager** (DFP - DoubleClick for publishers), contextual **Amazon Native Shopping Ads**, **Media.net** and **rotating banners.**
+Supports all kinds of ads including **Google AdSense**, **Google Ad Manager** (DFP - DoubleClick for publishers), contextual **Amazon Native Shopping Ads**, **Media.net** , **Infolinks** and **rotating banners.**
 
 This plugin is more than AdSense plugin or plugin for ads. It provides many advanced options to insert opt-in forms, header scripts, Javascript, CSS, HTML, PHP, analytics, tracking or advert code anywhere on the page.
 
@@ -67,6 +67,7 @@ It's all about the [settings](https://adinserter.pro/documentation).
 *   Insert images, HTML, CSS, Javascript or PHP code
 *   Code generator for banners and placeholders
 *   AdSense code generator
+*   Support to detect, hide or replace blank AdSense blocks
 *   Visual advert editor - create adverts from scratch
 *   Manual insertion: widgets, shortcodes, PHP function call
 *   Sticky (fixed) widgets (sticky sidebar - the sidebar does not move when the page is scrolled)
@@ -79,6 +80,8 @@ It's all about the [settings](https://adinserter.pro/documentation).
 *   PHP code processing
 *   Ad labels - show customized label above adverts
 *   ads.txt editor
+*   Support for [GDPR consent checks](https://adinserter.pro/faq/gdpr-compliance-cookies-consent)
+*   Support for IAB TCF 2.0 GDPR consent API (used by Quantcast Choice)
 *   Ad rotation (server-side and client-side - works with caching)
 *   Timed ad rotation - define times to rotate adverts in a single ad block
 *   Create rich media ads with standard WordPress TinyMCE editor
@@ -87,6 +90,7 @@ It's all about the [settings](https://adinserter.pro/documentation).
 *   [Blacklist/Whitelist](https://adinserter.pro/documentation/black-and-white-lists) categories, tags, taxonomies, post IDs, urls, url query parameters, cookies, referrers, browsers, operating systems
 *   Easy copying and pasting ads or settings using internal clipboard
 *   Can wait for jQuery when it is deferred
+*   Use it with Google Site Kit or replace it to have more control over ad placement
 *   Simple troubleshooting with many debugging functions
 *   Function to visualize inserted blocks
 *   Function to visualize AdSense ads with ad names and IDs
@@ -112,7 +116,7 @@ It's all about the [settings](https://adinserter.pro/documentation).
 
 **Pro version** supports additional [advanced features](https://adinserter.pro/documentation/features):
 
-*   Geolocation using Webnet77 or [MaxMind](http://www.maxmind.com/) databases (works also with caching)
+*   Geolocation using internal or [MaxMind](http://www.maxmind.com/) databases (works also with caching)
 *   Country, state, region and city level geotargeting
 *   Blacklist/Whitelist IP addresses or countries/cities (works also with caching)
 *   Ad impression and click statistics (works also with `<iframe>` Javascript ads like Google AdSense)
@@ -122,15 +126,18 @@ It's all about the [settings](https://adinserter.pro/documentation).
 *   Frequency capping - limit impressions or clicks
 *   Click fraud protection
 *   Lazy loading
-*   [Sticky ads](https://adinserter.pro/documentation/alignments-and-styles#sticky-ads) with optional close button
+*   [Sticky ads](https://adinserter.pro/documentation/sticky-ads) with optional close button
 *   Sticky sidebar ads (stick to the screen or to the content)
 *   Floating slide-in banner adverts
-*   [Sticky (floating) ads](https://adinserter.pro/documentation/alignments-and-styles#sticky-ads) with animations (fade, slide, turn, flip, zoom)
+*   [Sticky (floating) ads](https://adinserter.pro/documentation/sticky-ads) with animations (fade, slide, turn, flip, zoom)
 *   Animation trigger for sticky ads (page scroll in % or px, HTML element becomes visible)
+*   [background ads (skin ads)](https://adinserter.pro/documentation/sticky-ads#background-ads)
+*   Parallax ads
 *   Support for sticky ad bar
-*   Support for scheduling with fallback option
+*   Support for scheduling date and time with fallback option
+*   Support to show ads as soon as the GDPR consent is given
 *   Support for ads in iframes
-*   Ad blocking detection - replace ads, protect content
+*   Anti ad blocking features - replace ads, protect content
 *   Ad blocking statistics
 *   Multisite options to limit settings on the sites
 *   Individual post/page exception management
@@ -222,6 +229,23 @@ The easiest way to check inserted blocks is to use **Label blocks** debugging fu
 Please note that when you disable the plugin you also disable insertion of all codes and blocks you have configured.
 Therefore, if your issues go away when you disable the plugin THIS DOES NOT INDICATE any issue with the plugin! You need to try to [disable individual codes](https://adinserter.pro/documentation/debugging#back-end) to see which one is causing trouble.
 
+= What is remote debugging? =
+
+Ad Inserter is basically used to insert ad codes according to the settings.
+When the code is not inserted where it is expected or the inserted HTML/Javascript code does not display anything, you as the site administrator can use [debugging functions](https://adinserter.pro/documentation/debugging) to diagnose insertions.
+
+Those tools are normally available to the administrator of the website and are shown as a menu item in the admin bar.
+When you will ask for help on the [support forum](https://wordpress.org/support/plugin/ad-inserter/) we'll ask you to enable remote debugging so the support team will be able to access debugging tools via url.
+
+This will allow the support team to:
+
+*   Label inserted blocks - a border will be drawn around the blocks and a bar will be shown above them so the support will be able to see if/where and which blocks are inserted.
+*   Show possible positions for automatic insertion - in places where WP hooks are called a label is placed so the support will be able to see where your theme calls WP hooks
+*   See processing log - the log is inserted as HTML comment at the end of the page and shows data and settings used by Ad Inserter and the log of the plugin functions/hooks called during page generation - the support will be able to see the reason why some block was not inserted, how many times `the_content` hook is called, etc.
+*   Disable block insertions - sometimes the issues are caused by the inserted code - this way the support will be able to quickly disable insertions of Ad Inserter blocks to see the difference
+
+Pages with debugging info are not cached - the debugging process will not be visible to anybody else. Once the help is not needed anymore you can disable remote debugging.
+
 = I have installed code for AdSense and I see ads placed at random positions. =
 
 You are probably using code for [AdSense Auto ads](https://adinserter.pro/documentation/adsense-ads#auto-ads).
@@ -233,8 +257,10 @@ Auto ads may not be suitable for some WordPress themes or layouts. In such cases
 
 = I have installed code for AdSense but the ad blocks are blank. =
 
-Blank ad block means that the code is inserted properly only the ad code doesn't display ads.
-Please check <a href="https://adinserter.pro/documentation/troubleshooting#ads-not-displayed">Ads Not Displayed</a> for more information. You can also try other ad networks.
+Blank ad block means that the code is inserted properly, only the ad code doesn't display ads.
+This happens when Google for some reason does not serve ads for the website, page or specific ad block - the block remains unfilled.
+Ad Inserter can detect, [hide](https://adinserter.pro/documentation/adsense-ads#hiding-blank-adsense-blocks) or [replace](https://adinserter.pro/documentation/adsense-ads#replacing-blank-adsense-blocks) blank AdSense blocks.
+Please check <a href="https://adinserter.pro/documentation/troubleshooting#ads-not-displayed">Ads Not Displayed</a> for more information.
 
 = What is GDPR? =
 
@@ -250,25 +276,24 @@ Of course, the ads you may insert with the plugin may use own cookies - please c
 
 = How to display a GDPR compliant cookie message? =
 
-You can use any plugin for GDPR compliance / cookie consent. For example:
-
-*   [Cookie Notice for GDPR](https://wordpress.org/plugins/cookie-notice/)
-*   [Cookie Consent](https://wordpress.org/plugins/uk-cookie-consent/)
-*   [GDPR Cookie Consent](https://wordpress.org/plugins/cookie-law-info/)
+You can use any plugin for GDPR compliance / cookie consent. You can also prevent inserting ad codes and displaying ads before the consent is given - check [How to show ads based on visitors' consent](https://adinserter.pro/faq/gdpr-compliance-cookies-consent).
 
 PLEASE NOTE: Installing GDPR plugin alone does not make your site GDPR compliant. Since ads you insert may use various cookies, you may need to make sure you have necessary configurations in place. Please check next question regarding showing ads based on visitor's consent.
 
 = How to show ads based on visitor's consent? =
 
-Ad Inserter supports inserting (showing) ads based on cookies or cookie values. You can define cookie conditions by black/whitelisting *Url parameters* (where also [cookies are checked](https://adinserter.pro/documentation/black-and-white-lists#cookies)).
+Ad Inserter supports inserting ad codes (and showing ads) based on cookies or cookie values. You can define cookie conditions by black/whitelisting *Url parameters* (where also [cookies are checked](https://adinserter.pro/documentation/black-and-white-lists#cookies)).
 
 PLEASE NOTE: If you are using caching (very likely) you also need to set **Dynamic blocks** to **Client-side insert** (tab &#9881; / tab General) in order to check cookies in visitor's browser and not when the page is generated.
 
-For example, If you are using one of the following plugins for cookie consent you need to **whitelist the following cookie and value in Url parameter list**:
+For example, If you are using one of the following plugins for the consents you need to **whitelist the following cookie and value in Url parameter list**:
 
-*   [GDPR Cookie Consent](https://wordpress.org/plugins/cookie-law-info/) - Whitelist `viewed_cookie_policy=yes`
+*   [CookieYes | GDPR Cookie Consent & Compliance Notice](https://wordpress.org/plugins/cookie-law-info/) - Whitelist `cookielawinfo-checkbox-advertisement=yes`
 *   [Cookie Notice for GDPR](https://wordpress.org/plugins/cookie-notice/) - Whitelist `cookie_notice_accepted=true`
 *   [Cookie Consent](https://wordpress.org/plugins/uk-cookie-consent/) - Whitelist `catAccCookies=1`
+*   [Quantcast Choice](https://wordpress.org/plugins/quantcast-choice/) or any other solution based on IAB TCF 2.0 - For Google ads (AdSense) whitelist `tcf-google, tcf-no-gdpr`
+
+Make sure **Dynamic blocks** are set to **Client-side insert** (tab &#9881; / tab General). For more details please check [How to show ads based on visitors' consent](https://adinserter.pro/faq/gdpr-compliance-cookies-consent).
 
 = Will Ad Inserter work when jQuery is deferred? =
 
@@ -330,6 +355,256 @@ If you are not happy to reveal this information and you have opted in, simply di
 
 == Changelog ==
 
+= 2.7.12 =
+- Security fix for settings page save url
+- Added support to disable ad blocking detection for specific devices
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.11 =
+- Security fix for sites using constants to prevent file editing or unfiltered HTML
+- Added filters before the options are saved
+- Added support for a shortcode for comma separated list of categories with quotes (for Google Ad Manager)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.10 =
+- Security fix for XSS (Reported by Krzysztof Zajac via WPScan)
+- Added support to detect and replace blank AdSense blocks
+- Added support to load and save plugins settings to a file (Pro only)
+- Added support for parallax ads (Pro only)
+- Few fixes
+
+= 2.7.9 =
+- Bug fix for timed rotations
+- Bug fix for tr_TR translation
+- Improved checks for cookies
+- Improved compatibility with PHP 8.1
+- Added separate list for cookies
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.8 =
+- Bug fix for paragraph counting and clearance
+- Bug fix for undefined constant error
+
+= 2.7.7 =
+- Few bug fixes
+
+= 2.7.6 =
+- Improved compatibility with PHP 8
+- Added translation for tr_TR
+- Added support to wait for an interaction before the block is loaded (Pro only)
+- Added support to delay insertion of the block (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.5 =
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.4 =
+- Updated Google API
+- Improved labels for AdSense Auto ads
+- Added external tracking support for WP username (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.3 =
+- Improved ad blocking detection
+- Improved compatibility with PHP 8
+- Improved check for update server accessibility (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.2 =
+- Added shortcuts for TCF v2 consent cookie checks
+- Added support for adinserter shortcode to get post ID
+- Improved ad blocking detection
+- Changed internal IP to country database (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.1 =
+- Added shortcuts for TCF v2 consent cookie checks
+- Improved ad blocking detection
+- Changed internal IP to country database (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.1 =
+- Improved ad blocking detection
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.0 =
+- Added support to list range of post IDs
+- Added support for browser language in client lists
+- Added support for client-side checks for filter hook ai_block_insertion_check
+- Added support for remote plugin managenent (Pro only)
+- Added support for scheduling check shortcode (Pro only)
+- Added support for daily scheduling time (Pro onlyl)
+- Added support for css attribute in check options (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.27 =
+- Added support for scheduled rotation
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.26 =
+- Few bug fixes (Pro only)
+
+= 2.6.25 =
+- Added support for block names in adinserter shortcode block attributes
+- Added support for default custom field values
+- Added support to list post ID range
+- Improved ad blocking detection
+- Reduced layout shift when using CHECK shortcodes
+- Fix for expanded shortcodes in the rotate code generator
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.24 =
+- Added support for consent attribute for code generator for AdSense and Amazon AMP ads
+- Added support for random number shortcode
+- Added support for && and !! operators in client-side client list checks
+- Added scheduling time on blocks list (Pro only)
+- Improved undismissible message when ad blocking is detected
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.23 =
+- Reduced layout shift when using lists and client-side dynamic blocks
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.22 =
+- Various security fixes
+- Updated AdSense API authorization process
+- Reduced layout shift when using client-side device detection
+- Added option to block IP addresses for click fraud protection (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.21 =
+- Improved compatibility with PHP 8
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.20 =
+- Added support for alt text and lazy loading for banner code generator
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.19 =
+- Improved code to reduce layout shift when using client-side device detection
+- Added translation for es_ES
+- Added translation for fr_FR
+- Added translation for it_IT
+- Improved compatibility with PHP 8
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.18 =
+- Added support to change Dynamic blocks setting for adinserter PHP function call
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.17 =
+- Fix for double client-side insertions when using geolocation (Pro only)
+
+= 2.6.16 =
+- Added support for ad blocking detection action every n pageviews
+- Added support to individually disable pageview or click tracking (Pro only)
+- Changed IAB TCF v2 cookie check name from euconsent-v2 to tcf-v2 (euconsent-v2 will still work)
+- Fix for category check on category pages
+- Fix for issues with Safari browser
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.15 =
+- No ad blocking detection actions for crawlers and bots
+- Fix for processing Ad Inserter shortcodes inside HTML tags
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.14 =
+- Added support to insert [embed] shortcodes
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.13 =
+- Few minor bug fixes
+
+= 2.6.12 =
+- Improved ad blocking detection
+- Added options to delay client-side insertions at HTML element
+- Added support to check for multiple cookie values (needed for IAB TCF 2.0)
+- Added filter hooks for block processing
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.11 =
+- Added support for IAB Transparency & Consent Framework 2.0
+- Added support for taxonomy for primary category
+- Added support for taxonomy for post meta data
+- Added support to invert contain/do not contain text condition for paragraph counting
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.10 =
+- Added user taxonomy items for logged-in and not logged-in users
+- Added option to define tab setup delay (for the plugin settings page)
+- Added option to insert unique ad rotation options when block is inserted more than once
+- Added support for client-side device detection for AMP pages (for method Show)
+- Added support for code generator for Amazon AMP ads
+- Added support for custom tracking events (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.9 =
+- Added option for paragraph counting to search only tag attributes for text
+- Added option to embed block Javascript code (to be loaded with Ajax calls)
+- Added support to prevent duplicate insertions when the_content filter is called more than once (experimental)
+- Added support for the client list to check for partial user agent strings
+- Added support for check of cookie object properties
+- Improved ad blocking detection
+- Viewports no longer need to be in descending width order
+- Added option to protect inserted block content (Pro only)
+- Added support for adb scripts path filter hook (Pro only)
+- Added support to export statistics data to CSV file (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.8 =
+- Added support to disable PHP processing by PHP constant
+- Added support to repeat COUNT options
+- Added support for offset for %n paragraph number (%n@o)
+- Added support for options to skip insertion for first and last paragraphs
+- Added support for hook filter 'ai_block_insertion_check'
+- Added support for background ads (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.7 =
+- Added support for various shortcodes for post categories
+- Added support for various shortcodes for post tags
+- Added support for user action on click (Pro only)
+- Added support for manual loading (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.6 =
+- Fix for exceptions list not showing all exceptions
+- Improved ad blocking detection
+- Fix for close button in preview window (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.5 =
+- Added support for url data shortcode
+- Added warning if not all exceptions were cleared
+- Added support for MaxMind country only database (Pro only)
+- Added support for ip to country lookup filter hook (Pro only)
+- Fix for country groups in CHECK separators (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.4 =
+- Fix for use of undefined constant warning (Pro only)
+
+= 2.6.3 =
+- Added support for shortcodes to disable block insertion
+- Added support for child taxonomy list items
+- Added random parameter to Ajax requests for geolocation (Pro only)
+- Added options to define external tracking event category, action and label (Pro only)
+- Number of custom hooks increased to 20
+- Fix to prevent insertion into head section when using Rank Math plugin
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.6.2 =
+- Added support to disable caching of block PHP code
+- Added support to pause blocks on the blocks list
+- Added support for no url parameters list item
+- Added support for client-side scheduling (Pro only)
+- Added support for server-side scheduling using W3TC (Pro only)
+- Added support for multisite:site-id taxonomy list item (Pro only)
+- Updated MaxMind GeoLite2 database download using license key (Pro only)
+- Changed settings format in the database to prevent export/import issues with MySQL/PhpMyAdmin
+- Fix for [ADINSERTER counter] shortcode not expanding inside HTML tags
+- Few minor bug fixes, cosmetic changes and code improvements
+
 = 2.6.1 =
 - Fix for errors on the settings page
 - Fix for non English characters in ads
@@ -350,444 +625,134 @@ If you are not happy to reveal this information and you have opted in, simply di
 - Default value for Wait for jQuery set to Enabled
 - Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.5.10 =
-- Optimized Javascript code to allow advanced optimizations
-- Added support to wait for jQuery so it can be deferred
-- Added support for children categories in lists
-- Added support to load settings page in safe mode
-- Added warning notice if PHP version is below 5.6
-- Improved user interface for lists
-- Modified Javascript code that was wrongly replaced by CDN url
-- Fix for updates server access warning message (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.9 =
-- Added support for block name class
-- Added support for code generator for AdSense sticky AMP ads
-- Fix for paragraph clearance issues
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.8 =
-- Added support to call function adinserter () with block name
-- Added support to insert header code with HEAD separator only once
-- Additional info for errors when saving settings
-- Improved support for insertion between posts on AMP pages
-- Implemented compatibility with other plugins using phpQuery library
-- Added support for shortcode to disable tracking on specific pages (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.7 =
-- Fix for error when saving settings
-
-= 2.5.6 =
-- Added support for PenCi Soledad AMP plugin
-- Fix for php processing on multisite installations
-- Fix for client-side referrer check
-- Fix for header and footer code on AMP pages using AMP plugin
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.5 =
-- Added support for client list (black/whitelist operating systems, browsers, device names)
-- Fix for replaced tags with default value {name:default-value}
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.4 =
-- Minor bug fix regarding update checks (Pro only)
-
-= 2.5.3 =
-- Added support for warning when Ad Inserter is disabled by AMPforWP Plugin Manager
-- Added support for block shortcode attributes
-- Added support for post ID list to include all posts or static pages
-- Added option for maximum number of paragraphs
-- Added support to check for update server accessibility (Pro only)
-- Added ids to ad blocking popup message and overlay elements
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.2 =
-- Added options to define paragraph counting inside container elements
-- Added support to pin block list (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.1 =
-- Few minor bug fixes (Pro only)
-
-= 2.5.0 =
-- Improved user interface
-- Simplified user interface for individual post/page exceptions
-- Added support for virtual ads.txt file
-- Added support for frequency capping (Pro only)
-- Added support for click fraud detection (Pro only)
-- Changed url prefix for public reports to avoid possible url collisions (Pro only)
-- Fix for shortcode processing when blocks were used before init hook
-- Many minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.23 =
-- Added support to define custom fields with shortocdes
-- Added support to delay showing ads for specified number of pageviews (Pro only)
-- Added support to remember closed ad for specified time period (Pro only)
-- Added support to automatically close ad after specified time period (Pro only)
-- Fix for false positive ad blocking detection (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.22 =
-- Fix for remote code execution vulnerability - credit to Wordfence
-
-= 2.4.21 =
-- Fix for possible error Class not found (Pro only)
-
-= 2.4.20 =
-- Fix for path traversal vulnerability - credit to Wilfried Becard of Synacktiv (https://synacktiv.com)
-- Fix for block rearrangement issues
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.19 =
-- Added support for taxonomy for Yoast primary category
-- Layout changes to accomodate longer translated texts
-- Fix for escape character not saved in header, footer and ad blocking message code
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.18 =
-- Added support for full width responsive AdSense code option
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.17 =
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.16 =
-- Fix for compatibility with AMP for WP - Accelerated Mobile Pages for WordPress
-- Few minor bug fixes
-
-= 2.4.15 =
-- Fix for improved compatibility with other plugins
-- Few minor bug fixes and cosmetic changes
-
-= 2.4.14 =
-- Fix for ROTATE shortcodes with option name identical to block name
-- Fix for possible conflict with output buffering in other plugins
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.13 =
-- Added shortcode to disable ad blocking detection code
-- Added options to disable ad blocking actions for administrators or logged in users
-- Added option to change PDF report footer (Pro only)
-- Added support for public ad impression and click reports (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.12 =
-- Added ads.txt editor
-- Added option to prevent disabling caching for logged in administrators
-- Improved compatibility with PHP 7.2
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.11 =
-- Fix for saving code with slashes
-- Fix for rotation editor code import
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.10 =
-- Added support for counter shortcodes
-- Added support for code separator selection for code preview
-- Added support for group rotations
-- Added support for CHECK separator (Pro only)
-- Added links to test pages for check for available positions
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.9 =
-- Added support for HEAD separator
-- Added support for DoubleClick for Publishers (DFP) ads
-- Added support to generate statistics reports in PDF format (Pro only)
-- Fix for ad label when using AMP separator
-- Fix for AdSense code fixed by viewport
-- Fix for error when checking for available positions
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.8 =
-- Added support for automatic insertion before/after image
-- Added support for theme checker for available positions for automatic insertion
-
-= 2.4.7 =
-- Fix for lazy loading in Ajax calls (Pro only)
-- Fix for country list editor (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.6 =
-- Improved ad blocking detection (detects Firefox content blocking)
-- Added support for wildcards for referrers (domains)
-- Added debugging notice when JavaScript errors are detected
-- Added support to load blocks in iframes (Pro only)
-- Added geolocation support for country subdivisions and cities (Pro only)
-- Added option to hide license key on client websites (Pro only)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.5 =
-- Added support for AMP WP - Google AMP For WordPress
-- Added support to individually disable insertions for debugging purposes
-- Improved HTML element selection tool
-- Fix for Call to undefined function wp_get_current_user()
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.4 =
-- Fix for Fatal error: Call to undefined function mb_strtoupper()
-
-= 2.4.3 =
-- Added support for insertion before/after every N paragraphs (%N)
-- Added support for i18n
-- Fix for insertion on admin pages
-- Fix for client-side cookie check
-- Fix for loaded styles from other plugins/themes on the settings page
-- Fix for client-side insertion near HTML elements using :eq selector
-- Fix for deactivation feedback form not closing
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.2 =
-- Added support for visual HTML element selection
-- Fix for client-side insertion inside HTML elements
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.1 =
-- Added option to insert into HTML element (prepend, append, replace content)
-- Added option to remove HTML element
-- Added option to not show deactivation feedback form
-- Added support for negative relative positions for paragraph counting
-- Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.0 =
-- Improved code for client-side insertion
-- Added support for usage tracking
-- Fix for compatibility with older PHP versions (below 5.4)
-- Few minor bug fixes, cosmetic changes and code improvements
-
-
 = Earlier versions =
 
 For the changelog of earlier versions, please refer to the separate changelog.txt file.
 
 == Upgrade Notice ==
 
-= 2.6.1 =
-Fix for errors on the settings page;
-Fix for non English characters in ads;
-Fix for sticky widgets;
-Few minor bug fixes
+= 2.7.12 =
+Security fix for settings page save url;
+Added support to disable ad blocking detection for specific devices;
+Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.6.0 =
-Added support for VIEWPORT separator;
-Added support for viewport check in CHECK separators (Pro only);
-Added support to show processing log on front-end;
-Added support to show link to the Ad Inserter Pro settings page on multisite Sites page (Pro only);
-Added support to detect and prevent document.write after DOM is ready;
-Added support for scheduling hours (Pro only);
-Added support for scheduling days in week (Pro only);
-Added support for W3TC insertion debugging info;
-Improved Javascript code for client-side functions;
+= 2.7.11 =
+Security fix for sites using constants to prevent file editing or unfiltered HTML;
+Added filters before the options are saved;
+Added support for a shortcode for comma separated list of categories with quotes (for Google Ad Manager);
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.10 =
+Security fix for XSS (Reported by Krzysztof Zajac via WPScan);
+Added support to detect and replace blank AdSense blocks;
+Added support to load and save plugins settings to a file (Pro only);
+Added support for parallax ads (Pro only);
+Few fixes
+
+= 2.7.9 =
+Bug fix for timed rotations;
+Bug fix for tr_TR translation;
+Improved checks for cookies;
+Improved compatibility with PHP 8.1;
+Added separate list for cookies;
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.8 =
+Bug fix for paragraph counting and clearance;
+Bug fix for undefined constant error
+
+= 2.7.7 =
+Few bug fixes
+
+= 2.7.6 =
+Improved compatibility with PHP 8;
+Added translation for tr_TR;
+Added support to wait for an interaction before the block is loaded (Pro only);
+Added support to delay insertion of the block (Pro only);
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.5 =
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.4 =
+Updated Google API;
+Improved labels for AdSense Auto ads;
+Added external tracking support for WP username (Pro only);
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.3 =
 Improved ad blocking detection;
-Default value for Wait for jQuery set to Enabled;
+Improved compatibility with PHP 8;
+Improved check for update server accessibility (Pro only);
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.5.10 =
-Optimized Javascript code to allow advanced optimizations;
-Added support to wait for jQuery so it can be deferred;
-Added support for children categories in lists;
-Added support to load settings page in safe mode;
-Added warning notice if PHP version is below 5.6;
-Improved user interface for lists;
-Modified Javascript code that was wrongly replaced by CDN url;
-Fix for updates server access warning message (Pro only);
+= 2.7.2 =
+Added shortcuts for TCF v2 consent cookie checks;
+Added support for adinserter shortcode to get post ID;
+Improved ad blocking detection;
+Changed internal IP to country database (Pro only);
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.5.9 =
-Added support for block name class;
-Added support for code generator for AdSense sticky AMP ads;
-Fix for paragraph clearance issues;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.8 =
-Added support to call function adinserter () with block name;
-Added support to insert header code with HEAD separator only once;
-Additional info for errors when saving settings;
-Improved support for insertion between posts on AMP pages;
-Implemented compatibility with other plugins using phpQuery library;
-Added support for shortcode to disable tracking on specific pages (Pro only);
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.7 =
-Fix for error when saving settings
-
-= 2.5.6 =
-Added support for PenCi Soledad AMP plugin;
-Fix for php processing on multisite installations;
-Fix for client-side referrer check;
-Fix for header and footer code on AMP pages using AMP plugin;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.5 =
-Added support for client list (black/whitelist operating systems, browsers, device names);
-Fix for replaced tags with default value {name:default-value};
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.4 =
-Minor bug fix regarding update checks (Pro only)
-
-= 2.5.3 =
-Added support for warning when Ad Inserter is disabled by AMPforWP Plugin Manager;
-Added support for block shortcode attributes;
-Added support for post ID list to include all posts or static pages;
-Added option for maximum number of paragraphs;
-Added support to check for update server accessibility (Pro only);
-Added ids to ad blocking popup message and overlay elements;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.2 =
-Added options to define paragraph counting inside container elements;
-Added support to pin block list (Pro only);
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.5.1 =
-Few minor bug fixes (Pro only)
-
-= 2.5.0 =
-Improved user interface;
-Simplified user interface for individual post/page exceptions;
-Added support for virtual ads.txt file;
-Added support for frequency capping (Pro only);
-Added support for click fraud detection (Pro only);
-Changed url prefix for public reports to avoid possible url collisions (Pro only);
-Fix for shortcode processing when blocks were used before init hook;
-Many minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.23 =
-Added support to define custom fields with shortocdes;
-Added support to delay showing ads for specified number of pageviews (Pro only);
-Added support to remember closed ad for specified time period (Pro only);
-Added support to automatically close ad after specified time period (Pro only);
-Fix for false positive ad blocking detection (Pro only);
+= 2.7.1 =
+Added shortcuts for TCF v2 consent cookie checks;
+Improved ad blocking detection;
+Changed internal IP to country database (Pro only);
 Few minor bug fixes, cosmetic changes and code improvements;
 
-= 2.4.22 =
-Fix for remote code execution vulnerability
-
-= 2.4.21 =
-Fix for possible error Class not found (Pro only)
-
-= 2.4.20 =
-Fix for path traversal vulnerability;
-Fix for block rearrangement issues;
+= 2.7.1 =
+Improved ad blocking detection;
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.19 =
-Added support for taxonomy for Yoast primary category;
-Layout changes to accomodate longer translated texts;
-Fix for escape character not saved in header, footer and ad blocking message code;
+= 2.7.0 =
+Added support to list range of post IDs;
+Added support for browser language in client lists;
+Added support for client-side checks for filter hook ai_block_insertion_check;
+Added support for remote plugin managenent (Pro only);
+Added support for scheduling check shortcode (Pro only);
+Added support for daily scheduling time (Pro onlyl);
+Added support for css attribute in check options (Pro only);
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.18 =
-Added support for full width responsive AdSense code option;
+= 2.6.27 =
+Added support for scheduled rotation;
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.17 =
+= 2.6.26 =
+Few bug fixes (Pro only)
+
+= 2.6.25 =
+Added support for block names in adinserter shortcode block attributes;
+Added support for default custom field values;
+Added support to list post ID range;
+Improved ad blocking detection;
+Reduced layout shift when using CHECK shortcodes;
+Fix for expanded shortcodes in the rotate code generator;
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.16 =
-Fix for compatibility with AMP for WP - Accelerated Mobile Pages for WordPress;
-Few minor bug fixes
-
-= 2.4.15 =
-Fix for improved compatibility with other plugins;
-Few minor bug fixes and cosmetic changes
-
-= 2.4.14 =
-Fix for ROTATE shortcodes with option name identical to block name;
-Fix for possible conflict with output buffering in other plugins;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.13 =
-Added shortcode to disable ad blocking detection code;
-Added options to disable ad blocking actions for administrators or logged in users;
-Added option to change PDF report footer (Pro only);
-Added support for public ad impression and click reports (Pro only);
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.12 =
-Added ads.txt editor;
-Added Added option to prevent disabling caching for logged in administrators;
-Improved compatibility with PHP 7.2;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.11 =
-Fix for saving code with slashes;
-Fix for rotation editor code import;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.10 =
-Added support for counter shortcodes;
-Added support for code separator selection for code preview;
-Added support for group rotations;
-Added support for CHECK separator (Pro only);
-Added links to test pages for check for available positions;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.9 =
-Added support for HEAD separator;
-Added support for DoubleClick for Publishers (DFP) ads;
-Added support to generate statistics reports in PDF format (Pro only);
-Fix for ad label when using AMP separator;
-Fix for AdSense code fixed by viewport;
-Fix for error when checking for available positions;
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.8 =
-Added support for automatic insertion before/after image;
-Added support for theme checker for available positions for automatic insertion
-
-= 2.4.7 =
-Fix for lazy loading in Ajax calls (Pro only);
-Fix for country list editor (Pro only);
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.6 =
-Improved ad blocking detection (detects Firefox content blocking);
-Added support for wildcards for referrers (domains);
-- Added debugging notice when JavaScript errors are detected
-Added support to load blocks in iframes (Pro only);
-Added geolocation support for country subdivisions and cities (Pro only);
-Added option to hide license key on client websites (Pro only);
-Few minor bug fixes, cosmetic changes and code improvements
-
-= 2.4.5 =
-Added support for AMP WP - Google AMP For WordPress;
-Added support to individually disable insertions for debugging purposes;
-Improved HTML element selection tool;
-Fix for Call to undefined function wp_get_current_user();
+= 2.6.24 =
+Added support for consent attribute for code generator for AdSense and Amazon AMP ads;
+Added support for random number shortcode;
+Added support for && and !! operators in client-side client list checks;
+Added scheduling time on blocks list (Pro only);
+Improved undismissible message when ad blocking is detected;
 Few minor bug fixes, cosmetic changes and code improvements;
 
-= 2.4.4 =
-Fix for Fatal error: Call to undefined function mb_strtoupper()
-
-= 2.4.3 =
-Added support for insertion before/after every N paragraphs (%N);
-Added support for i18n;
-Fix for insertion on admin pages;
-Fix for client-side cookie check;
-Fix for loaded styles from other plugins/themes on the settings page;
-Fix for client-side insertion near HTML elements using :eq selector;
-Fix for deactivation feedback form not closing;
+= 2.6.23 =
+Reduced layout shift when using lists and client-side dynamic blocks;
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.2 =
-Added support for visual HTML element selection;
-Fix for client-side insertion inside HTML elements;
+= 2.6.22 =
+Various security fixes;
+Updated AdSense API authorization process;
+Reduced layout shift when using client-side device detection;
+Added option to block IP addresses for click fraud protection (Pro only);
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.1 =
-Added option to insert into HTML element (prepend, append, replace content);
-Added option to remove HTML element;
-Added option to not show deactivation feedback form;
-Added support for negative relative positions for paragraph counting;
+= 2.6.21 =
+Improved compatibility with PHP 8;
 Few minor bug fixes, cosmetic changes and code improvements
 
-= 2.4.0 =
-Improved code for client-side insertion;
-Added support for usage tracking;
-Fix for compatibility with older PHP versions (below 5.4);
+= 2.6.20 =
+Added support for alt text and lazy loading for banner code generator;
 Few minor bug fixes, cosmetic changes and code improvements
 

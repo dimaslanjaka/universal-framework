@@ -34,11 +34,11 @@ msgstr "Vous n'avez pas d'autorisation d'accès"
 #: /home/lucien/src/google-apps-login/core/core_google_apps_login.php:246
 msgid ""
 "The admin needs to configure Google Apps Login plugin - please follow <a "
-"href=\"http://wp-glogin.com/installing-google-apps-login/#main-settings\" "
+"href=\"https://wp-glogin.com/installing-google-apps-login/#main-settings\" "
 "target=\"_blank\">instructions here</a>"
 msgstr ""
 "L'administrateur doit configurer le module d'extension de connexion Google "
-"Apps  - veuillez suivre <a href=\"http://wp-glogin.com/installing-google-"
+"Apps  - veuillez suivre <a href=\"https://wp-glogin.com/installing-google-"
 "apps-login/#main-settings\" target=\"_blank\"> instructions ici</a>"
 
 #: /home/lucien/src/google-apps-login/core/core_google_apps_login.php:262

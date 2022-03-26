@@ -46,10 +46,22 @@
 }
 .bws-modal .bws-modal-footer {
     border-top: #eeeeee solid 1px;
-    text-align: right;   
+}
+.bws-modal .bws-modal-footer .bws-modal-skip-link {
+    text-decoration: none;
+    float: right;
+    display: inline-block;
+    padding: 7px;
 }
 .bws-modal .bws-modal-footer .button {
     margin: 0 7px;    
+    float: left;
+}
+.rtl .bws-modal .bws-modal-footer .bws-modal-skip-link {
+    float: left;
+}
+.rtl .bws-modal .bws-modal-footer .button {
+    float: right;
 }
 .bws-modal .bws-modal-footer .button:first-child {
     margin: 0;
@@ -71,7 +83,8 @@ body.has-bws-modal {
 .bws-modal.bws-modal-deactivation-feedback .bws-modal-reason-input input,
 .bws-modal.bws-modal-deactivation-feedback .bws-modal-reason-input textarea,
 .bws-modal.bws-modal-deactivation-feedback .bws-modal-internal-message input,
-.bws-modal.bws-modal-deactivation-feedback .bws-modal-internal-message textarea {
+.bws-modal.bws-modal-deactivation-feedback .bws-modal-internal-message textarea,
+.bws-modal.bws-modal-request-feature textarea {
     width: 100%;
 }
 .bws-modal.bws-modal-deactivation-feedback li.bws-modal-reason.has-internal-message .bws-modal-internal-message {

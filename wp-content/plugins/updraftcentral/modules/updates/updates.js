@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+jQuery(function() {
 	new UpdraftCentral_Updates();
 });
 
@@ -26,6 +26,7 @@ function UpdraftCentral_Updates() {
 	var queued_items;
 	var selected_sites;
 	var default_items_per_page = 50;
+	var mass_updates_reload_triggered = false;
 	
 	/**
 	 * Initializes Credentials ans Sites objects
@@ -55,6 +56,87 @@ function UpdraftCentral_Updates() {
 	 */
 	var post_modal_open = function() {
 		jQuery('#updraftcentral_modal ul#updates-sections-list li:first').addClass('selected');
+	}
+	
+	/**
+	 * Refreshes the available updates information/display based from the latest cached data
+	 *
+	 * @param {integer} site_id  - the ID of the site where the available updates display is associated with
+	 *
+	 * @return {void}
+	 */
+	function refresh_available_updates_display(site_id) {
+
+		var cached_response = UpdraftCentral.get_cached_response(site_id, 'updates.get_updates');
+		if (null !== cached_response && UpdraftCentral.is_data_good_to_use(cached_response.created)) {
+
+			var data = cached_response.reply.data;
+			if ('undefined' !== typeof data && data) {
+				var $site_row = $('.updraftcentral_site_row[data-site_id="'+site_id+'"');
+				if ($site_row.length) {
+					var container = $site_row.find('.updraft_updates_count_container');
+					var block;
+					var items = {
+						plugins: data.hasOwnProperty('plugins') ? data.plugins : [],
+						themes: data.hasOwnProperty('themes') ? data.themes : [],
+						core: data.hasOwnProperty('core') ? data.core : [],
+						translations: (data.hasOwnProperty('translations') && data.translations.hasOwnProperty('items')) ? data.translations.items : []
+					};
+					
+					if (container.length) {
+						if (0 === items.core.length && 0 === items.plugins.length && 0 === items.themes.length && 0 === items.translations.length) {
+							// We don't have any updates available, thus, we're going to hide the entire container/section
+							if (!container.hasClass('updates_count_container_hidden')) container.addClass('updates_count_container_hidden');
+						} else {
+							container.removeClass('updates_count_container_hidden');
+							for (var prop in items) {
+								block = container.find('.updraft_available_'+prop);
+								if (block.length) {
+									if (0 === items[prop].length) {
+										block.addClass('updates_count_item_hidden');
+									} else {
+										block.removeClass('updates_count_item_hidden');
+										if ('plugins' === prop || 'themes' === prop) {
+											block.find('.updraft_'+prop+'_count').html('('+items[prop].length+')');
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Updates the cache entry for the given site after a successful updates process. Runs silently in the background.
+	 *
+	 * @param {Object} $site_row  - the jQuery object for the site
+	 *
+	 * @return {object} - A jQuery promise object
+	 */
+	function update_cache_entry_after_updates($site_row) {
+		var deferred = jQuery.Deferred();
+		var update_options = {
+			force_refresh: true
+		}
+
+		UpdraftCentral.send_site_rpc('updates.get_updates', update_options , $site_row, function(response, code, error_code) {
+			if ('ok' == code && response && 'updates' == UpdraftCentral.get_dashboard_mode()) {
+				// Cache response and display this data in the future until the user is going to issue a new request
+				// to retrieve new and fresh data from the remote sites by clicking the "Reload" button.
+				
+				update_options.force_refresh = false;
+				UpdraftCentral.cache_response($site_row.data('site_id'), 'updates.get_updates', update_options, response).then(function(data) {
+					deferred.resolve(data);
+				});
+			} else {
+				deferred.reject(null);
+			}
+		}, null);
+
+		return deferred.promise();
 	}
 	
 	/**
@@ -381,7 +463,7 @@ function UpdraftCentral_Updates() {
 			var credentials_required = false;
 			
 			for (var entity in requests) {
-				if (requests[entity]) {
+				if (UpdraftCentral_Library.parseBool(requests[entity])) {
 					credentials_required = true;
 				}
 			}
@@ -743,158 +825,237 @@ function UpdraftCentral_Updates() {
 		UpdraftCentral.send_site_rpc('updates.do_updates', uc_updates, $site_row, function(response, code, error_code) {
 			
 			if ('ok' == code && response) {
-				var any_successes = false;
-				var any_errors = false;
-				
-				jQuery(response.data.plugins).each(function(index, plugin) {
+				update_cache_entry_after_updates($site_row).always(function(data) {
+					var any_successes = false;
+					var any_errors = false;
+					var log_data = [];
 					
-					var plugin_file = plugin.plugin;
-					var $update_row = $site_row.find('.updraft_updates_output .updates-plugin-update[data-plugin-file="'+plugin_file+'"]');
-					if (mass_updates_processing) {
-						$update_row = $container.find('.row.update-item.updates-plugin-update[data-plugin-file="'+plugin_file+'"][data-website_id="' + site.id + '"]');
-					}
-					var entity_info = $update_row.data('plugin-info');
-					var latest_version = $update_row.data('new_version');
+					jQuery(response.data.plugins).each(function(index, plugin) {
+						var plugin_file = plugin.plugin;
+						var $update_row = $site_row.find('.updraft_updates_output .updates-plugin-update[data-plugin-file="'+plugin_file+'"]');
+						if (mass_updates_processing) {
+							$update_row = $container.find('.row.update-item.updates-plugin-update[data-plugin-file="'+plugin_file+'"][data-website_id="' + site.id + '"]');
+						}
+						var entity_info = $update_row.data('plugin-info');
+						var latest_version = $update_row.data('new_version');
+						var status = plugin.hasOwnProperty('error') ? 'failure' : 'success';
+						if (plugin.hasOwnProperty('error') && 'undefined' !== typeof udclion.updates.update_error_messages[plugin.error]) {
+							// Make sure that we don't overwrite the remove response message if there are any.
+							// We only attach local messages if the message property is undefined.
+							if ('undefined' === typeof plugin.message) {
+								plugin.message = udclion.updates.update_error_messages[plugin.error];
+							}
+						}
+						
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.plugin',
+							event_data: JSON.stringify(entity_info),
+							event_status: status,
+							event_result_data: JSON.stringify(plugin)
+						});
+						
+						// Making sure that we don't treat the up to date status as error by
+						// checking the return error code for the "up_to_date" value and the requested
+						// new version is not equal to the item's old version which signifies that its
+						// already at its latest, thus, the reason why the request failed.
+						var versions = { latest: latest_version, old: plugin.oldVersion };
+						if (plugin.hasOwnProperty('error') && !is_latest_version(plugin.error, plugin.messages, versions)) {
+							if (debug_level > 0) {
+								console.log('send_remote_updates (updates.do_updates): error_code='+plugin.error+',latest_version='+latest_version+',old_version='+plugin.oldVersion);
+								console.log('send_remote_updates (failed update): response object (follows):');
+								console.log(plugin);
+							}
+							any_errors = true;
+							update_error(plugin, $site_row, $update_row, entity_info);
+						} else {
+							any_successes = true;
+							if (debug_level > 0 && plugin.hasOwnProperty('messages')) {
+								console.log(plugin.messages)
+							}
+							
+							refresh_available_updates_display($site_row.data('site_id'));
+							$update_row.slideUp('slow', function() {
+								$update_row.remove();
+							});
+						}
+					});
 					
-					// Making sure that we don't treat the up to date status as error by
-					// checking the return error code for the "up_to_date" value and the requested
-					// new version is not equal to the item's old version which signifies that its
-					// already at its latest, thus, the reason why the request failed.
-					var versions = { latest: latest_version, old: plugin.oldVersion };
-					if (plugin.hasOwnProperty('error') && !is_latest_version(plugin.error, plugin.messages, versions)) {
-						if (debug_level > 0) {
-							console.log('send_remote_updates (updates.do_updates): error_code='+plugin.error+',latest_version='+latest_version+',old_version='+plugin.oldVersion);
-							console.log('send_remote_updates (failed update): response object (follows):');
-							console.log(plugin);
+					jQuery(response.data.themes).each(function(index, theme) {
+						var theme_slug = theme.theme;
+						var $update_row = $site_row.find('.updraft_updates_output .updates-theme-update[data-theme="'+theme_slug+'"]');
+						if (mass_updates_processing) {
+							$update_row = $container.find('.row.update-item.updates-theme-update[data-theme="'+theme_slug+'"][data-website_id="' + site.id + '"]');
 						}
-						any_errors = true;
-						update_error(plugin, $site_row, $update_row, entity_info);
-					} else {
-						any_successes = true;
-						if (debug_level > 0 && plugin.hasOwnProperty('messages')) {
-							console.log(plugin.messages)
+						var entity_info = $update_row.data('theme-info');
+						var latest_version = $update_row.data('new_version');
+						var status = theme.hasOwnProperty('error') ? 'failure' : 'success';
+						if (theme.hasOwnProperty('error') && 'undefined' !== typeof udclion.updates.update_error_messages[theme.error]) {
+							// Make sure that we don't overwrite the remove response message if there are any.
+							// We only attach local messages if the message property is undefined.
+							if ('undefined' === typeof theme.message) {
+								theme.message = udclion.updates.update_error_messages[theme.error];
+							}
 						}
-						$update_row.slideUp('slow', function() {
-							$update_row.remove();
+	
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.theme',
+							event_data: JSON.stringify(entity_info),
+							event_status: status,
+							event_result_data: JSON.stringify(theme)
 						});
-					}
+	
+						// Making sure that we don't treat the up to date status as error by
+						// checking the return error code for the "up_to_date" value and the requested
+						// new version is not equal to the item's old version which signifies that its
+						// already at its latest, thus, the reason why the request failed.
+						var versions = { latest: latest_version, old: theme.oldVersion };
+						if (theme.hasOwnProperty('error') && !is_latest_version(theme.error, theme.messages, versions)) {
+							if (debug_level > 0) {
+								console.log('send_remote_updates (updates.do_updates): error_code='+theme.error+',latest_version='+latest_version+',old_version='+theme.oldVersion);
+								console.log('send_remote_updates (failed update): response object (follows):');
+								console.log(theme);
+							}
+							any_errors = true;
+							update_error(theme, $site_row, $update_row, entity_info);
+						} else {
+							any_successes = true;
+							if (debug_level > 0 && theme.hasOwnProperty('messages')) {
+								console.log(theme.messages)
+							}
+							
+							refresh_available_updates_display($site_row.data('site_id'));
+							$update_row.slideUp('slow', function() {
+								$update_row.remove();
+							});
+						}
+					});
 					
-				});
-				
-				jQuery(response.data.themes).each(function(index, theme) {
-					var theme_slug = theme.theme;
-					var $update_row = $site_row.find('.updraft_updates_output .updates-theme-update[data-theme="'+theme_slug+'"]');
-					if (mass_updates_processing) {
-						$update_row = $container.find('.row.update-item.updates-theme-update[data-theme="'+theme_slug+'"][data-website_id="' + site.id + '"]');
-					}
-					var entity_info = $update_row.data('theme-info');
-					var latest_version = $update_row.data('new_version');
-
-					// Making sure that we don't treat the up to date status as error by
-					// checking the return error code for the "up_to_date" value and the requested
-					// new version is not equal to the item's old version which signifies that its
-					// already at its latest, thus, the reason why the request failed.
-					var versions = { latest: latest_version, old: theme.oldVersion };
-					if (theme.hasOwnProperty('error') && !is_latest_version(theme.error, theme.messages, versions)) {
-						if (debug_level > 0) {
-							console.log('send_remote_updates (updates.do_updates): error_code='+theme.error+',latest_version='+latest_version+',old_version='+theme.oldVersion);
-							console.log('send_remote_updates (failed update): response object (follows):');
-							console.log(theme);
+					jQuery(response.data.core).each(function(index, core) {
+						var $update_row = $site_row.find('.updraft_updates_output .updates-core-update');
+						if (mass_updates_processing) {
+							$update_row = $container.find('.row.update-item.updates-core-update[data-website_id="' + site.id + '"]');
 						}
-						any_errors = true;
-						update_error(theme, $site_row, $update_row, entity_info);
-					} else {
-						any_successes = true;
-						if (debug_level > 0 && theme.hasOwnProperty('messages')) {
-							console.log(theme.messages)
+						var entity_info = $update_row.data('core-info');
+						var latest_version = $update_row.data('new_version');
+						var status = core.hasOwnProperty('error') ? 'failure' : 'success';
+						entity_info.name = udclion.updates.wordpress;
+						if (core.hasOwnProperty('error') && 'undefined' !== typeof udclion.updates.update_error_messages[core.error]) {
+							// Make sure that we don't overwrite the remove response message if there are any.
+							// We only attach local messages if the message property is undefined.
+							if ('undefined' === typeof core.message) {
+								core.message = udclion.updates.update_error_messages[core.error];
+							}
 						}
-						$update_row.slideUp('slow', function() {
-							$update_row.remove();
+	
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.core',
+							event_data: JSON.stringify(entity_info),
+							event_status: status,
+							event_result_data: JSON.stringify(core)
 						});
-					}
-				});
-				
-				jQuery(response.data.core).each(function(index, core) {
-					var $update_row = $site_row.find('.updraft_updates_output .updates-core-update');
-					if (mass_updates_processing) {
-						$update_row = $container.find('.row.update-item.updates-core-update[data-website_id="' + site.id + '"]');
-					}
-					var entity_info = $update_row.data('core-info');
-					var latest_version = $update_row.data('new_version');
-					entity_info.name = udclion.updates.wordpress;
-
-					// Making sure that we don't treat the up to date status as error by
-					// checking the return error code for the "up_to_date" value and the requested
-					// new version is not equal to the item's old version which signifies that it's
-					// already at its latest, thus, the reason why the request failed.
-					var versions = { latest: latest_version, old: core.oldVersion };
-					if (core.hasOwnProperty('error') && !is_latest_version(core.error, core.messages, versions)) {
-						if (debug_level > 0) {
-							console.log('send_remote_updates (updates.do_updates): error_code='+core.error+',latest_version='+latest_version+',old_version='+core.oldVersion);
-							console.log('send_remote_updates (failed update): response object (follows):');
-							console.log(core);
+	
+						// Making sure that we don't treat the up to date status as error by
+						// checking the return error code for the "up_to_date" value and the requested
+						// new version is not equal to the item's old version which signifies that it's
+						// already at its latest, thus, the reason why the request failed.
+						var versions = { latest: latest_version, old: core.oldVersion };
+						if (core.hasOwnProperty('error') && !is_latest_version(core.error, core.messages, versions)) {
+							if (debug_level > 0) {
+								console.log('send_remote_updates (updates.do_updates): error_code='+core.error+',latest_version='+latest_version+',old_version='+core.oldVersion);
+								console.log('send_remote_updates (failed update): response object (follows):');
+								console.log(core);
+							}
+							any_errors = true;
+							update_error(core, $site_row, $update_row, entity_info);
+						} else {
+							any_successes = true;
+							if (debug_level > 0 && core.hasOwnProperty('messages')) {
+								console.log(core.messages)
+							}
+							
+							refresh_available_updates_display($site_row.data('site_id'));
+							$update_row.slideUp('slow', function() {
+								$update_row.remove();
+							});
 						}
-						any_errors = true;
-						update_error(core, $site_row, $update_row, entity_info);
-					} else {
-						any_successes = true;
-						if (debug_level > 0 && core.hasOwnProperty('messages')) {
-							console.log(core.messages)
+					});
+					
+					jQuery(response.data.translations).each(function(index, translation) {
+						var $update_row = $site_row.find('.updraft_updates_output .updates-translation-update[data-website_id="'+site.id+'"]');
+						if (mass_updates_processing) {
+							$update_row = $container.find('.row.update-item.updates-translation-update[data-website_id="'+site.id+'"]');
 						}
-						$update_row.slideUp('slow', function() {
-							$update_row.remove();
+						var entity_info = $update_row.data('translation-info');
+						var status = translation.hasOwnProperty('error') ? 'failure' : 'success';
+						if (translation.hasOwnProperty('error') && 'undefined' !== typeof udclion.updates.update_error_messages[translation.error]) {
+							// Make sure that we don't overwrite the remove response message if there are any.
+							// We only attach local messages if the message property is undefined.
+							if ('undefined' === typeof translation.message) {
+								translation.message = udclion.updates.update_error_messages[translation.error];
+							}
+						}
+	
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.translation',
+							event_data: JSON.stringify(entity_info),
+							event_status: status,
+							event_result_data: JSON.stringify(translation)
 						});
-					}
-				});
-				
-				jQuery(response.data.translations).each(function(index, translation) {
-					var $update_row = $site_row.find('.updraft_updates_output .updates-translation-update[data-website_id="'+site.id+'"]');
-					if (mass_updates_processing) {
-						$update_row = $container.find('.row.update-item.updates-translation-update[data-website_id="'+site.id+'"]');
-					}
-					var entity_info = $update_row.data('translation-info');
-
-					// N.B. Checking the latest version against the old version the ones applied to
-					// plugins, themes and core (in the logic above) is not applicable to the
-					// "translation" updates since a translation update request for a certain site will
-					// update all available translations it can find in one go and we don't received
-					// individual translations status for each translation being updated. Checking
-					// the return error code for the 'up_to_date' field value will suffice in this case.
-					if (translation.hasOwnProperty('error') && !is_latest_version(translation.error, translation.messages)) {
-						if (debug_level > 0) {
-							console.log('send_remote_updates (updates.do_updates): error_code='+translation.error);
-							console.log('send_remote_updates (failed update): response object (follows):');
-							console.log(translation);
+	
+						// N.B. Checking the latest version against the old version the ones applied to
+						// plugins, themes and core (in the logic above) is not applicable to the
+						// "translation" updates since a translation update request for a certain site will
+						// update all available translations it can find in one go and we don't received
+						// individual translations status for each translation being updated. Checking
+						// the return error code for the 'up_to_date' field value will suffice in this case.
+						if (translation.hasOwnProperty('error') && !is_latest_version(translation.error, translation.messages)) {
+							if (debug_level > 0) {
+								console.log('send_remote_updates (updates.do_updates): error_code='+translation.error);
+								console.log('send_remote_updates (failed update): response object (follows):');
+								console.log(translation);
+							}
+							any_errors = true;
+							update_error(translation, $site_row, $update_row, entity_info);
+						} else {
+							any_successes = true;
+							if (debug_level > 0 && translation.hasOwnProperty('messages')) {
+								console.log(translation.messages)
+							}
+							
+							refresh_available_updates_display($site_row.data('site_id'));
+							$update_row.slideUp('slow', function() {
+								$update_row.remove();
+							});
 						}
-						any_errors = true;
-						update_error(translation, $site_row, $update_row, entity_info);
-					} else {
-						any_successes = true;
-						if (debug_level > 0 && translation.hasOwnProperty('messages')) {
-							console.log(translation.messages)
-						}
-						$update_row.slideUp('slow', function() {
-							$update_row.remove();
-						});
+					});
+					
+					if (any_successes && !any_errors && site.save_credentials_in_browser) {
+						UpdraftCentral.storage_set('filesystem_credentials_'+site.site_hash, site.site_credentials, true);
 					}
+	
+					UpdraftCentral.bulk_log_event(log_data).always(function() {
+						// We're making sure that we're returning the promise object in
+						// order not to leave the subscriber of this promise object hanging, thus, allowing
+						// it to continue with other pending process.
+						if (any_errors) {
+							deferred.reject(response);
+						} else {
+							deferred.resolve(response);
+						}
+					});
 				});
-				
-				if (any_successes && !any_errors && site.save_credentials_in_browser) {
-					UpdraftCentral.storage_set('filesystem_credentials_'+site.site_hash, site.site_credentials, true);
-				}
-
-				// We're making sure that we're returning the promise object in
-				// order not to leave the subscriber of this promise object hanging, thus, allowing
-				// it to continue with other pending process.
-				if (any_errors) {
-					deferred.reject(response);
-				} else {
-					deferred.resolve(response);
-				}
-
 			} else {
 				// Error: still want to reset UI state
 				var errors = [];
+				var log_data = [];
 
 				if (uc_updates.hasOwnProperty('plugins')) {
 					jQuery(uc_updates.plugins).each(function(index, plugin) {
@@ -905,6 +1066,17 @@ function UpdraftCentral_Updates() {
 						}
 						var entity_info = $update_row.data('plugin-info');
 						plugin.error = 'update_failed';
+						if (response.hasOwnProperty('data')) plugin.debug = response.data;
+
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.plugin',
+							event_data: JSON.stringify(entity_info),
+							event_status: 'failure',
+							event_result_data: JSON.stringify(plugin)
+						});
+
 						update_error(plugin, $site_row, $update_row, entity_info);
 						errors.push({
 							entity_info: entity_info,
@@ -922,6 +1094,17 @@ function UpdraftCentral_Updates() {
 						}
 						var entity_info = $update_row.data('theme-info');
 						theme.error = 'update_failed';
+						if (response.hasOwnProperty('data')) theme.debug = response.data;
+
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.theme',
+							event_data: JSON.stringify(entity_info),
+							event_status: 'failure',
+							event_result_data: JSON.stringify(theme)
+						});
+
 						update_error(theme, $site_row, $update_row, entity_info);
 						errors.push({
 							entity_info: entity_info,
@@ -939,6 +1122,17 @@ function UpdraftCentral_Updates() {
 						var entity_info = $update_row.data('core-info');
 						entity_info.name = udclion.updates.wordpress;
 						core.error = 'update_failed';
+						if (response.hasOwnProperty('data')) core.debug = response.data;
+
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.core',
+							event_data: JSON.stringify(entity_info),
+							event_status: 'failure',
+							event_result_data: JSON.stringify(core)
+						});
+
 						update_error(core, $site_row, $update_row, entity_info);
 						errors.push({
 							entity_info: entity_info,
@@ -955,6 +1149,17 @@ function UpdraftCentral_Updates() {
 						}
 						var entity_info = $update_row.data('translation-info');
 						translation.error = 'update_failed';
+						if (response.hasOwnProperty('data')) translation.debug = response.data;
+
+						log_data.push({
+							site_id: $site_row.data('site_id'),
+							event_type: 'update',
+							event_name: 'update.translation',
+							event_data: JSON.stringify(entity_info),
+							event_status: 'failure',
+							event_result_data: JSON.stringify(translation)
+						});
+
 						update_error(translation, $site_row, $update_row, entity_info);
 						errors.push({
 							entity_info: entity_info,
@@ -963,8 +1168,10 @@ function UpdraftCentral_Updates() {
 					});
 				}
 
-				// Return errors
-				deferred.reject(errors);
+				UpdraftCentral.bulk_log_event(log_data).always(function() {
+					// Return errors
+					deferred.reject(errors);
+				});
 			}
 		}, null, timeout);
 
@@ -1216,7 +1423,7 @@ function UpdraftCentral_Updates() {
 			var credentials_required = false;
 			
 			for (var entity in requests) {
-				if (requests[entity]) {
+				if (UpdraftCentral_Library.parseBool(requests[entity])) {
 					credentials_required = true;
 				}
 			}
@@ -1240,6 +1447,170 @@ function UpdraftCentral_Updates() {
 		return deferred.promise();
 	}
 
+	/**
+	 * Loads and displays the items for update
+	 *
+	 * @param {object} response     The response return by the remote site
+	 * @param {object} $container   A jQuery object that holds the container of the mass updates area/form.
+	 * @param {object} progress_bar An UpdraftCentral_Task_Progress instance
+	 * @param {object} $site_row    A jQuery object representing the currently processed site.
+	 *
+	 * @return {object} - A jQuery promise object
+	 */
+	function process_loaded_updates(response, $container, progress_bar, $site_row) {
+		var deferred = jQuery.Deferred();
+		var site_id = $site_row.data('site_id');
+		var site = new UpdraftCentral_Site($site_row);
+
+		if (sites.exists(site_id)) {
+			site = sites.item(site_id);
+		}
+
+		var template = '',
+			output = '',
+			param = {},
+			entities = {
+				plugins: null,
+				themes: null,
+				core: null,
+				translations: null
+			};
+
+		if (response.data) {
+			dayjs.extend(dayjs_plugin_relativeTime);
+			var tonow = dayjs().fromNow();
+
+			if (response.data.hasOwnProperty('plugins') && response.data.plugins.length) {
+				param = { plugins: response.data.plugins, website: site.site_description, website_id: site.id, host_url: site.site_url };
+				param = $.extend({
+					last_fetched: (response.hasOwnProperty('last_fetched')) ? response.last_fetched : tonow
+				}, param);
+
+				entities.plugins = UpdraftCentral.template_replace('updates-plugin-mass-updates', param);
+				output += entities.plugins;
+			}
+			
+			if (response.data.hasOwnProperty('themes') && response.data.themes.length) {
+				param = { themes: response.data.themes, website: site.site_description, website_id: site.id, host_url: site.site_url };
+				param = $.extend({
+					last_fetched: (response.hasOwnProperty('last_fetched')) ? response.last_fetched : tonow
+				}, param);
+
+				entities.themes = UpdraftCentral.template_replace('updates-theme-mass-updates', param);
+				output += entities.themes;
+			}
+			
+			if (response.data.hasOwnProperty('core') && response.data.core.length) {
+				param = { core: response.data.core, website: site.site_description, website_id: site.id, host_url: site.site_url };
+				param = $.extend({
+					last_fetched: (response.hasOwnProperty('last_fetched')) ? response.last_fetched : tonow
+				}, param);
+
+				entities.core = UpdraftCentral.template_replace('updates-core-mass-updates', param);
+				output += entities.core;
+			}
+			
+			if (response.data.hasOwnProperty('translations') && response.data.translations) {
+				var name = udclion.updates.translations+' ('+site.site_description+')';
+				param = { translations: response.data.translations.items, as_json: JSON.stringify(response.data.translations.items), website_id: site.id, website: site.site_description, name: name };
+				param = $.extend({
+					last_fetched: (response.hasOwnProperty('last_fetched')) ? response.last_fetched : tonow
+				}, param);
+
+				entities.translations = UpdraftCentral.template_replace('updates-translation-mass-updates', param);
+				output += entities.translations;
+			}
+			
+			if (response.data.hasOwnProperty('meta')) {
+				if (typeof response.data.meta.automatic_backups !== 'undefined') {
+					site.automatic_backups = response.data.meta.automatic_backups;
+				}
+			}
+		}
+		
+		if (entities.plugins || entities.themes || entities.core || entities.translations) {
+			var output_container = $container.find('.updraft_updates_output');
+			var option = jQuery('<option/>', {
+				value: site.site_description
+			});
+
+			output = UpdraftCentral_Library.sanitize_html(output);
+			option.html(site.site_description);
+			// output_container.find('select[name="uc_updates_filter_website"]').append(option);
+
+			// Add Site to Sites Collection:
+			if (!sites.exists(site_id)) sites.add(site.id, site);
+
+			// Preload Site Updates
+			preload_site_updates_credentials(site, output).then(function(result) {
+				// Calling the update method of the progress bar will signal
+				// that the current item being processed has been completed, thus,
+				// re-evaluating and re-calculating the actual progress percentage.
+				progress_bar.update();
+
+				// Add item as we load them.
+				if (!$container.find('div.updraftcentral_table').is(':visible')) {
+					$container.find('div.updraftcentral_table').show();
+				}
+				$container.find('div.updraftcentral_table > .tbody').append(output);
+				$container.find('div.updraftcentral_table > .tbody input[name="uc_updates_check_item"]').attr('disabled', true);
+
+				// Show entity counts:
+				var $mass_container = jQuery('div.updates_table_container.mass_updates');
+				var plugin_count = $mass_container.find('.row.update-item[data-entity="plugin"]:visible').length,
+					theme_count = $mass_container.find('.row.update-item[data-entity="theme"]:visible').length,
+					core_count = $mass_container.find('.row.update-item[data-entity="core"]:visible').length;
+					translation_count = $mass_container.find('.row.update-item[data-entity="translation"]:visible').length;
+					
+				$mass_container.find('.filter-elements span.filter_plugin_count').html(plugin_count);
+				$mass_container.find('.filter-elements span.filter_theme_count').html(theme_count);
+				$mass_container.find('.filter-elements span.filter_core_count').html(core_count);
+				$mass_container.find('.filter-elements span.filter_translation_count').html(translation_count);
+
+				if (typeof response.data !== 'undefined') {
+					if (typeof response.data.plugins !== 'undefined' && response.data.plugins.length) {
+						fill_wporg_metadata($site_row, response.data.plugins, 'plugin', $container.find('div.updraftcentral_table > .tbody'));
+					}
+					if (typeof response.data.themes !== 'undefined' && response.data.themes.length) {
+						fill_wporg_metadata($site_row, response.data.themes, 'theme', $container.find('div.updraftcentral_table > .tbody'));
+					}
+				}
+
+				deferred.resolve({
+					output: output,
+					output_container: output_container,
+					response: result,
+					skip: false
+				});
+			}).fail(function(result) {
+				// Now, that we updated the UpdraftCentral.send_site_rpc() to return generic error
+				// as fail to the callback function, therefore, we need to return this area as "resolve"
+				// but with a "skip" response to true, so that the overall process can continue with the
+				// rest of the websites currently being queued. Otherwise, the entire process will be aborted
+				// when 1 website fails (D3 Queue Library feature).
+				deferred.resolve({
+					skip: true,
+					response: result,
+					site: $site_row.data('site_description')
+				});
+
+			});
+
+
+		} else {
+
+			// Don't return this as "reject" or error, if no update items are returned for plugin, theme
+			// and core meaning that the site is up to date. Thus, we're sending it back
+			// as "resolve" or success, to let the process continue without aborting the entire process.
+			deferred.resolve({
+				skip: true,
+				response: udclion.updates.no_updates,
+				site: $site_row.data('site_description')
+			});
+		}
+
+		return deferred.promise();
+	}
 
 	/**
 	 * Loads items for update from a given site
@@ -1259,7 +1630,7 @@ function UpdraftCentral_Updates() {
 			force_refresh: false
 		}
 		
-		if (jQuery(this).hasClass('updraftcentral_updates_force_check')) {
+		if (mass_updates_reload_triggered) {
 			update_options.force_refresh = true;
 		}
 
@@ -1269,160 +1640,47 @@ function UpdraftCentral_Updates() {
 		// to true, and anything you put as a label will use instead.
 		progress_bar.set_current_label(udclion.updates.loading_updates_from + ' "' + $site_row.data('site_description') + '"...', true);
 
-
 		// Starts the progress bar routine.
 		progress_bar.start();
 
+		// A chunk of logic from previous implementation have been transferred to the "process_loaded_updates" method
+		// to make that block reusable.
+		var cached_response = UpdraftCentral.get_cached_response($site_row.data('site_id'), 'updates.get_updates');
+		if (null !== cached_response && UpdraftCentral.is_data_good_to_use(cached_response.created) && !mass_updates_reload_triggered) {
+			dayjs.extend(dayjs_plugin_relativeTime);
+			var response = $.extend({
+				last_fetched: dayjs.unix(cached_response.created).fromNow()
+			}, cached_response.reply);
 		
-		UpdraftCentral.send_site_rpc('updates.get_updates', update_options , $site_row, function(response, code, error_code) {
-			if ('ok' == code && response && 'updates' == UpdraftCentral.get_dashboard_mode()) {
-				var site_id = $site_row.data('site_id');
-				var site = new UpdraftCentral_Site($site_row);
-
-				if (sites.exists(site_id)) {
-					site = sites.item(site_id);
-				}
-
-				var template = '',
-					output = '',
-					entities = {
-						plugins: null,
-						themes: null,
-						core: null,
-						translations: null
-					};
-				
-				if (response.data) {
-					if (response.data.hasOwnProperty('plugins') && response.data.plugins.length) {
-						entities.plugins = UpdraftCentral.template_replace('updates-plugin-mass-updates', { plugins: response.data.plugins, website: site.site_description, website_id: site.id, host_url: site.site_url });
-						output += entities.plugins;
-					}
-					
-					if (response.data.hasOwnProperty('themes') && response.data.themes.length) {
-						entities.themes = UpdraftCentral.template_replace('updates-theme-mass-updates', { themes: response.data.themes, website: site.site_description, website_id: site.id, host_url: site.site_url });
-						output += entities.themes;
-					}
-					
-					if (response.data.hasOwnProperty('core') && response.data.core.length) {
-						entities.core = UpdraftCentral.template_replace('updates-core-mass-updates', { core: response.data.core, website: site.site_description, website_id: site.id, host_url: site.site_url });
-						output += entities.core;
-					}
-					
-					if (response.data.hasOwnProperty('translations') && response.data.translations) {
-						var name = udclion.updates.translations+' ('+site.site_description+')';
-						entities.translations = UpdraftCentral.template_replace('updates-translation-mass-updates', { translations: response.data.translations.items, as_json: JSON.stringify(response.data.translations.items), website_id: site.id, website: site.site_description, name: name });
-						output += entities.translations;
-					}
-					
-					if (response.data.hasOwnProperty('meta')) {
-						if (typeof response.data.meta.automatic_backups !== 'undefined') {
-							site.automatic_backups = response.data.meta.automatic_backups;
-						}
-					}
-				}
-				
-				if (entities.plugins || entities.themes || entities.core || entities.translations) {
-
-					var output_container = $container.find('.updraft_updates_output');
-					var option = jQuery('<option/>', {
-						value: site.site_description
-					});
-
-					output = UpdraftCentral_Library.sanitize_html(output);
-					option.html(site.site_description);
-					// output_container.find('select[name="uc_updates_filter_website"]').append(option);
-
-					
-					// Add Site to Sites Collection:
-					if (!sites.exists(site_id)) sites.add(site.id, site);
-					
-					// Preload Site Updates
-					preload_site_updates_credentials(site, output).then(function(result) {
-
-						// Calling the update method of the progress bar will signal
-						// that the current item being processed has been completed, thus,
-						// re-evaluating and re-calculating the actual progress percentage.
-						progress_bar.update();
-
-						// Add item as we load them.
-						if (!$container.find('div.updraftcentral_table').is(':visible')) {
-							$container.find('div.updraftcentral_table').show();
-						}
-						$container.find('div.updraftcentral_table > .tbody').append(output);
-						$container.find('div.updraftcentral_table > .tbody input[name="uc_updates_check_item"]').attr('disabled', true);
-
-						// Show entity counts:
-						var $mass_container = jQuery('div.updates_table_container.mass_updates');
-						var plugin_count = $mass_container.find('.row.update-item[data-entity="plugin"]:visible').length,
-							theme_count = $mass_container.find('.row.update-item[data-entity="theme"]:visible').length,
-							core_count = $mass_container.find('.row.update-item[data-entity="core"]:visible').length;
-							translation_count = $mass_container.find('.row.update-item[data-entity="translation"]:visible').length;
-							
-						$mass_container.find('.filter-elements span.filter_plugin_count').html(plugin_count);
-						$mass_container.find('.filter-elements span.filter_theme_count').html(theme_count);
-						$mass_container.find('.filter-elements span.filter_core_count').html(core_count);
-						$mass_container.find('.filter-elements span.filter_translation_count').html(translation_count);
-
-						if (typeof response.data !== 'undefined') {
-							if (typeof response.data.plugins !== 'undefined' && response.data.plugins.length) {
-								fill_wporg_metadata($site_row, response.data.plugins, 'plugin', $container.find('div.updraftcentral_table > .tbody'));
-							}
-							if (typeof response.data.themes !== 'undefined' && response.data.themes.length) {
-								fill_wporg_metadata($site_row, response.data.themes, 'theme', $container.find('div.updraftcentral_table > .tbody'));
-							}
-						}
-
-						deferred.resolve({
-							output: output,
-							output_container: output_container,
-							response: result,
-							skip: false
+			process_loaded_updates(response, $container, progress_bar, $site_row).then(function(result) {
+				deferred.resolve(result);
+			});
+		} else {
+			UpdraftCentral.send_site_rpc('updates.get_updates', update_options , $site_row, function(response, code, error_code) {
+				if ('ok' == code && response && 'updates' == UpdraftCentral.get_dashboard_mode()) {
+						// Cache response and display this data in the future until the user is going to issue a new request
+						// to retrieve new and fresh data from the remote sites by clicking the "Reload" button.
+						UpdraftCentral.cache_response($site_row.data('site_id'), 'updates.get_updates', { force_refresh: false }, response).then(function(data) {
+							process_loaded_updates(response, $container, progress_bar, $site_row).then(function(result) {
+								refresh_available_updates_display($site_row.data('site_id'));
+								deferred.resolve(result);
+							});
 						});
-					}).fail(function(result) {
-
-						// Now, that we updated the UpdraftCentral.send_site_rpc() to return generic error
-						// as fail to the callback function, therefore, we need to return this area as "resolve"
-						// but with a "skip" response to true, so that the overall process can continue with the
-						// rest of the websites currently being queued. Otherwise, the entire process will be aborted
-						// when 1 website fails (D3 Queue Library feature).
-						deferred.resolve({
-							skip: true,
-							response: result,
-							site: $site_row.data('site_description')
-						});
-
-					});
-
-
 				} else {
-
-					// Don't return this as "reject" or error, if no update items are returned for plugin, theme
-					// and core meaning that the site is up to date. Thus, we're sending it back
-					// as "resolve" or success, to let the process continue without aborting the entire process.
+					// Same reason as above, we let the process continue with the rest of the
+					// queued websites waiting to be processed.
 					deferred.resolve({
 						skip: true,
-						response: udclion.updates.no_updates,
+						response: (response && response.hasOwnProperty('error')) ? response.error : response,
 						site: $site_row.data('site_description')
 					});
+	
+					// Here, we're sending a response to the callback call from UpdraftCentral.send_site_rpc()
+					// that we will be handling the error in this call.
+					return true;
 				}
-
-			} else {
-
-				// Same reason as above, we let the process continue with the rest of the
-				// queued websites waiting to be processed.
-				deferred.resolve({
-					skip: true,
-					response: (response && response.hasOwnProperty('error')) ? response.error : response,
-					site: $site_row.data('site_description')
-				});
-
-				// Here, we're sending a response to the callback call from UpdraftCentral.send_site_rpc()
-				// that we will be handling the error in this call.
-				return true;
-			}
-
-		}, null, 90);
-
+			}, null, 90);
+		}
 
 		return deferred.promise();
 	}
@@ -1457,6 +1715,76 @@ function UpdraftCentral_Updates() {
 		});
 
 		$container.html($items);
+	}
+
+	/**
+	 * Show no patch releases available message if applicable
+	 *
+	 * @return {void}
+	 */
+	function maybe_show_empty_release_message() {
+		var container = $('.updraftcentral_table');
+		var no_patch_div = container.find('.uc_no_patch_releases');
+		var mass_opt = $('input#filter_patch_release');
+		var site_opt = $('input#filter_site_patch_release');
+
+		// Hide message by default
+		if (no_patch_div.length) no_patch_div.hide();
+
+		var is_mass_update_section = false;
+		if (mass_opt.is(':visible')) is_mass_update_section = true;
+
+		if ((mass_opt.length && mass_opt.is(':visible') && mass_opt.is(':checked')) || (site_opt.length && site_opt.is(':visible') && site_opt.is(':checked'))) {
+			// If we've already got the no matching items message in mass update then there's
+			// no point in displaying the no patch release message there after.
+			var bypass = is_mass_update_section ? container.find('div#no_matching_items').length : false;
+
+			if (0 === container.find('div.update-item:visible').length && !bypass) {
+				if (no_patch_div.length) {
+					no_patch_div.show();
+				} else {
+					var div = $('<div/>', {
+						class: 'uc_no_patch_releases text-center'
+					});
+
+					div.html(udclion.updates.no_patch_releases);
+					container.append(div);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Apply patch release filter when checkbox option is checked
+	 *
+	 * @param {array} sorted_items The items to filter
+	 * @return {void}
+	 */
+	function maybe_apply_patch_release_filter(sorted_items) {
+		if ($('input#filter_patch_release').is(':checked')) {
+			$.each(sorted_items, function(index, value) {
+				var update_item = jQuery(value);
+				if ('undefined' !== typeof update_item && update_item) {
+					var installed_version = update_item.data('installed_version') || '';
+					if ('number' == typeof installed_version) installed_version = installed_version.toString();
+
+					var new_version = update_item.data('new_version') || '';
+					if ('number' == typeof new_version) new_version = new_version.toString();
+
+					if (installed_version.length && new_version.length) {
+						var iv = installed_version.split('.');
+						var nv = new_version.split('.');
+						if ('undefined' !== typeof iv[1] && 'undefined' !== typeof nv[1] && iv[0]+'.'+iv[1] == nv[0]+'.'+nv[1]) {
+							update_item.show();
+						} else {
+							update_item.hide();
+						}
+					} else {
+						update_item.hide();
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -1683,6 +2011,14 @@ function UpdraftCentral_Updates() {
 		$mass_container.find('.filter-elements span.filter_theme_count').html(theme_count);
 		$mass_container.find('.filter-elements span.filter_core_count').html(core_count);
 		$mass_container.find('.filter-elements span.filter_translation_count').html(translation_count);
+
+		// Apply patch release filter if applicable, meaning if
+		// the patch release checkbox is checked
+		maybe_apply_patch_release_filter(sorted_items);
+
+		// Show no available patch releases message depending from
+		// the patch release filter result
+		maybe_show_empty_release_message();
 	}
 
 	/**
@@ -1724,6 +2060,9 @@ function UpdraftCentral_Updates() {
 			// Reset mass updates loading flag
 			mass_updates_loading = false;
 
+			// Reset mass updates reload flag
+			mass_updates_reload_triggered = false;
+
 			// Enable reload button
 			options.container.find('button#btn-reload-updates').removeClass('disabled');
 
@@ -1756,8 +2095,6 @@ function UpdraftCentral_Updates() {
 					options.site_runner.progress.reset();
 				}, 2000);
 			}
-
-			
 		}
 	}
 
@@ -1906,11 +2243,180 @@ function UpdraftCentral_Updates() {
 	}
 
 	/**
+	 * Loads and displays the items for update (for individual site)
+	 *
+	 * @param {object} $site_row A jQuery object representing the currently processed site.
+	 * @param {object} response  The current response from the remote site
+	 *
+	 * @return {void}
+	 */
+	function load_updates_response($site_row, response) {
+		var site_id = $site_row.data('site_id');
+		var site = new UpdraftCentral_Site($site_row);
+		
+		if (sites.exists(site_id)) {
+			site = sites.item(site_id);
+		}
+		
+		// We make sure that we have a task runner instance
+		// for the given Site.
+		if (!uc_runners.exists(site.id)) {
+			uc_runners.add(site.id, new UpdraftCentral_Tasks_Runner({
+				concurrency: 1
+			}));
+		} else {
+			var uc_runner = uc_runners.item(site.id);
+			uc_runner.clear_tasks();
+
+			// Update current runner instance
+			uc_runners.update(site.id, uc_runner);
+		}
+		
+		var $row_extra_contents = $site_row.find('.updraftcentral_row_extracontents');
+		var output = '',
+			entities = {
+				plugins: null,
+				themes: null,
+				core: null,
+				translations: null
+			};
+		
+		if (response.data) {
+			if (response.data.hasOwnProperty('plugins') && response.data.plugins.length) {
+				entities.plugins = UpdraftCentral.template_replace('updates-plugin-updates', { plugins: response.data.plugins});
+			}
+			
+			if (response.data.hasOwnProperty('themes') && response.data.themes.length) {
+				entities.themes = UpdraftCentral.template_replace('updates-theme-updates', { themes: response.data.themes});
+			}
+			
+			if (response.data.hasOwnProperty('core') && response.data.core.length) {
+				entities.core = UpdraftCentral.template_replace('updates-core-updates', { core: response.data.core});
+			}
+			
+			if (response.data.hasOwnProperty('translations') && response.data.translations) {
+				entities.translations = UpdraftCentral.template_replace('updates-translation-updates', { translations: response.data.translations.items, as_json: JSON.stringify(response.data.translations.items), website_id: site.id });
+			}
+			
+			if (response.data.hasOwnProperty('meta')) {
+				if (typeof response.data.meta.automatic_backups !== 'undefined') {
+					site.automatic_backups = response.data.meta.automatic_backups;
+				}
+			}
+		}
+		
+		if (entities.plugins || entities.themes || entities.core || entities.translations) {
+			output = UpdraftCentral.template_replace('updates-table-header', entities);
+		} else {
+			output = "<h5>" + udclion.updates.no_updates + "</h5>";
+		}
+		
+		$row_extra_contents.html('<div class="updraft_updates_output updraft_module_output">' +
+		'<div class="dashicons dashicons-image-rotate updraftcentral_action_show_updates updraftcentral_updates_force_check"></div>' + UpdraftCentral_Library.sanitize_html(output) + '</div>');
+		
+		if (response.data.hasOwnProperty('plugins') && response.data.plugins.length) {
+			fill_wporg_metadata($site_row, response.data.plugins, 'plugin');
+		}
+		if (response.data.hasOwnProperty('themes') && response.data.themes.length) {
+			fill_wporg_metadata($site_row, response.data.themes, 'theme');
+		}
+		
+		// Add Site to Sites Collection:
+		if (!sites.exists(site_id)) sites.add(site.id, site);
+		
+		// Preload Site Updates
+		load_site_updates(site);
+	}
+
+	/**
+	 * Handles the displaying and removing of the fetch labels (e.g. "Last fetched: an hour ago")
+	 *
+	 * @param {number} created An epoch time representing the time when the data was entered or updated
+	 *
+	 * @return {void}
+	 */
+	function remove_show_fetch_labels(created) {
+		var force_check = $('.updraftcentral_updates_force_check'),
+			last_fetched,
+			fetch_label;
+		
+		fetch_label = force_check.find('.uc-fetch-label');
+		if ('undefined' !== typeof fetch_label && fetch_label.length) {
+			fetch_label.remove();
+		}
+
+		if ('undefined' !== typeof created && created) {
+			dayjs.extend(dayjs_plugin_relativeTime);
+			last_fetched = udclion.updates.last_fetched+': '+dayjs.unix(created).fromNow();
+			force_check.append('<div class="uc-fetch-label">'+last_fetched+'</div>');
+			force_check.find('.uc-fetch-label').on('click', function(event) {
+				// Since we embed the last fetch label into the reload icon, therefore, we need to prevent the event
+				// to bubble up, so that, if users click the label it won't trigger the reload process. It was only meant
+				// to display information and not to trigger an action.
+				event.stopPropagation();
+			});
+		}
+	}
+
+	/**
 	 * Registers all available row clickers and listeners for this tab
 	 *
 	 * @see {@link http://api.jquery.com/on}
 	 */
 	jQuery('#updraftcentral_dashboard_existingsites').on('updraftcentral_dashboard_mode_set_updates', function() {
+
+		/**
+		 * Handles the patch release filter action for a single site
+		 *
+		 * @see {UpdraftCentral.register_event_handler}
+		 * @borrows {UpdraftCentral_Updates.process_sort_filter_actions}
+		 */
+		UpdraftCentral.register_event_handler('click', 'input#filter_site_patch_release', function() {
+			var patch_release_option = $(this);
+
+			$('.updraftcentral_table div.update-item').each(function() {
+				var update_item = $(this);
+				if (patch_release_option.is(':checked')) {
+					if ('undefined' !== typeof update_item && update_item) {
+						var installed_version = update_item.data('installed_version') || '';
+
+						// We do this to make sure that we're actually processing a numerical string value since we're going
+						// to use the `split` and `length` functions of the string prototype. Otherwise, if we received
+						// a real number then it would raise an error that says 'split is not a function' message.
+						if ('number' == typeof installed_version) installed_version = installed_version.toString();
+
+						var new_version = update_item.data('new_version') || '';
+						if ('number' == typeof new_version) new_version = new_version.toString(); // Same explanation as above.
+
+						if (installed_version.length && new_version.length) {
+							var iv = installed_version.split('.');
+							var nv = new_version.split('.');
+							if ('undefined' !== typeof iv[1] && 'undefined' !== typeof nv[1] && iv[0]+'.'+iv[1] == nv[0]+'.'+nv[1]) {
+								update_item.show();
+							} else {
+								update_item.hide();
+							}
+						} else {
+							update_item.hide();
+						}
+					}
+				} else {
+					update_item.show();
+				}
+			});
+
+			maybe_show_empty_release_message();
+		});
+
+		/**
+		 * Handles the patch release filter action
+		 *
+		 * @see {UpdraftCentral.register_event_handler}
+		 * @borrows {UpdraftCentral_Updates.process_sort_filter_actions}
+		 */
+		UpdraftCentral.register_event_handler('click', 'input#filter_patch_release', function() {
+			process_sort_filter_actions();
+		});
 
 		/**
 		 * Add/remove single item to/from queue
@@ -2159,6 +2665,12 @@ function UpdraftCentral_Updates() {
 					console.log('Mass updates execution started...');
 				}
 
+				if ($container) {
+					if (!$('.updraftcentral_spinner').is(':visible')) {
+						$($container).prepend('<div class="updraftcentral_spinner"></div>');
+					}
+				}
+
 				// Setting mass updates processing flag
 				mass_updates_processing = true;
 				
@@ -2262,6 +2774,10 @@ function UpdraftCentral_Updates() {
 							}
 						});
 
+						if ($('.updraftcentral_spinner').is(':visible')) {
+							$('.updraftcentral_spinner').remove();
+						}
+
 						// Unsetting mass updates processing flag
 						mass_updates_processing = false;
 
@@ -2348,6 +2864,7 @@ function UpdraftCentral_Updates() {
 		 */
 		UpdraftCentral.register_event_handler('click', '#updates_container #btn-reload-updates', function() {
 			if (!jQuery(this).hasClass('disabled')) {
+				mass_updates_reload_triggered = true;
 				jQuery(document).find('button.updraftcentral_action_show_all_updates').trigger('click');
 			}
 		});
@@ -2475,7 +2992,18 @@ function UpdraftCentral_Updates() {
 
 
 			site_runner.progress.set_container($form_container.find('div.progress-section div.udc-progress-bar'));
+
+			// We need to make sure that we have a spinner displayed when loading updates from
+			// multiple sites to make it consistent with the rest of the process.
+			if (!$('.updraftcentral_spinner').is(':visible')) {
+				$form_container.prepend('<div class="updraftcentral_spinner"></div>');
+			}
+
 			site_runner.process_tasks().then(function(result) {
+
+				// Remove the spinner after all the updates are loaded (mass loading).
+				$form_container.find('.updraftcentral_spinner').remove();
+
 				if (debug_level > 0) {
 					console.log('Tasks execution has been completed!');
 				}
@@ -2626,7 +3154,6 @@ function UpdraftCentral_Updates() {
 						// Update processing status:
 						site.update_processing = true;
 						sites.update(site.id, site);
-						
 						
 						uc_runner.process_tasks().then(function(result) {
 							if (debug_level > 0) {
@@ -2832,96 +3359,40 @@ function UpdraftCentral_Updates() {
 		 * @see {UpdraftCentral.register_row_clicker}
 		 */
 		UpdraftCentral.register_row_clicker('.updraftcentral_action_show_updates', function($site_row) {
-			var update_options = {
-				force_refresh: false
-			}
-			
-			if (jQuery(this).hasClass('updraftcentral_updates_force_check')) {
-				update_options.force_refresh = true;
-			}
-			
-			UpdraftCentral.send_site_rpc('updates.get_updates', update_options , $site_row, function(response, code, error_code) {
-				if ('ok' == code && response && 'updates' == UpdraftCentral.get_dashboard_mode()) {
-					var site_id = $site_row.data('site_id');
-					var site = new UpdraftCentral_Site($site_row);
-					
-					if (sites.exists(site_id)) {
-						site = sites.item(site_id);
-					}
-					
-					// We make sure that we have a task runner instance
-					// for the given Site.
-					if (!uc_runners.exists(site.id)) {
-						uc_runners.add(site.id, new UpdraftCentral_Tasks_Runner({
-							concurrency: 1
-						}));
-					} else {
-						var uc_runner = uc_runners.item(site.id);
-						uc_runner.clear_tasks();
-
-						// Update current runner instance
-						uc_runners.update(site.id, uc_runner);
-					}
-					
-					var $row_extra_contents = $site_row.find('.updraftcentral_row_extracontents');
-					var output = '',
-						entities = {
-							plugins: null,
-							themes: null,
-							core: null,
-							translations: null
-						};
-					
-					if (response.data) {
-						if (response.data.hasOwnProperty('plugins') && response.data.plugins.length) {
-							entities.plugins = UpdraftCentral.template_replace('updates-plugin-updates', { plugins: response.data.plugins});
-						}
-						
-						if (response.data.hasOwnProperty('themes') && response.data.themes.length) {
-							entities.themes = UpdraftCentral.template_replace('updates-theme-updates', { themes: response.data.themes});
-						}
-						
-						if (response.data.hasOwnProperty('core') && response.data.core.length) {
-							entities.core = UpdraftCentral.template_replace('updates-core-updates', { core: response.data.core});
-						}
-						
-						if (response.data.hasOwnProperty('translations') && response.data.translations) {
-							entities.translations = UpdraftCentral.template_replace('updates-translation-updates', { translations: response.data.translations.items, as_json: JSON.stringify(response.data.translations.items), website_id: site.id });
-						}
-						
-						if (response.data.hasOwnProperty('meta')) {
-							if (typeof response.data.meta.automatic_backups !== 'undefined') {
-								site.automatic_backups = response.data.meta.automatic_backups;
-							}
-						}
-					}
-					
-					if (entities.plugins || entities.themes || entities.core || entities.translations) {
-						output = UpdraftCentral.template_replace('updates-table-header', entities);
-					} else {
-						output = "<h5>" + udclion.updates.no_updates + "</h5>";
-					}
-					
-					$row_extra_contents.html('<div class="updraft_updates_output updraft_module_output">' +
-					'<div class="dashicons dashicons-image-rotate updraftcentral_action_show_updates updraftcentral_updates_force_check"></div>' + UpdraftCentral_Library.sanitize_html(output) + '</div>');
-					
-					if (response.data.plugins.length) {
-						fill_wporg_metadata($site_row, response.data.plugins, 'plugin');
-					}
-					if (response.data.themes.length) {
-						fill_wporg_metadata($site_row, response.data.themes, 'theme');
-					}
-					
-					// Add Site to Sites Collection:
-					if (!sites.exists(site_id)) sites.add(site.id, site);
-					
-					// Preload Site Updates
-					load_site_updates(site);
+			// Transferred a chunk of logic to "load_updates_response" method for reusability.
+			var cached_response = UpdraftCentral.get_cached_response($site_row.data('site_id'), 'updates.get_updates');
+			if (null !== cached_response && !jQuery(this).hasClass('updraftcentral_updates_force_check') && UpdraftCentral.is_data_good_to_use(cached_response.created)) {
+				load_updates_response($site_row, cached_response.reply);
+				remove_show_fetch_labels(cached_response.created);
+			} else {
+				var update_options = {
+					force_refresh: false
 				}
-			});
+				
+				if (jQuery(this).hasClass('updraftcentral_updates_force_check')) {
+					update_options.force_refresh = true;
+				}
+			
+				// Calling the function without parameters will only remove the labels but not show them.
+				// We need this so that we don't show the labels while the reload (remote request) is currently
+				// in progress.
+				remove_show_fetch_labels();
+
+				UpdraftCentral.send_site_rpc('updates.get_updates', update_options , $site_row, function(response, code, error_code) {
+					if ('ok' == code && response && 'updates' == UpdraftCentral.get_dashboard_mode()) {
+						// Cache response and display this data in the future until the user is going to issue a new request
+						// to retrieve new and fresh data from the remote sites by clicking the "Reload" button.
+						UpdraftCentral.cache_response($site_row.data('site_id'), 'updates.get_updates', { force_refresh: false }, response).then(function(data) {
+							load_updates_response($site_row, response);
+							remove_show_fetch_labels(dayjs().unix());
+							refresh_available_updates_display($site_row.data('site_id'));
+						});
+					}
+				});
+			}
+					
 		}, true);
-		
-		
+
 		/**
 		 * Shows a much more detailed messages from the log when
 		 * an error has occured.

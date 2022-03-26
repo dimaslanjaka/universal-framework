@@ -175,7 +175,8 @@ class DST_Client {
   public function __construct ($_settings = array ()) {
 
     if (!isset ($_settings ['main_file'])) {
-      $debug_backtrace = debug_backtrace (false, 1);
+//      $debug_backtrace = debug_backtrace (false, 1);
+      $debug_backtrace = debug_backtrace (0, 1);
       $_settings ['main_file'] = $debug_backtrace [0]['file'];
     }
 

@@ -1,0 +1,14 @@
+node_modules
+.git
+.git*
+phpunit*
+phpcs*
+vendor
+composer.lock
+package-lock.json
+Libraries/*/*.md
+Libraries/*/.travis*
+Libraries/*/.scrutinizer*
+Libraries/*/.git*
+Libraries/*/phpunit*
+Libraries/*/run-tests.sh

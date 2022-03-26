@@ -2,15 +2,15 @@
 /*
 Plugin Name: GTranslate
 Plugin URI: https://gtranslate.io/?xyz=998
-Description: Makes your website <strong>multilingual</strong> and available to the world using Google Translate. For support visit <a href="https://wordpress.org/support/plugin/gtranslate">GTranslate Support</a>.
-Version: 2.8.51
+Description: Translate your website and make it multilingual. For support visit <a href="https://wordpress.org/support/plugin/gtranslate">GTranslate Support Forum</a>.
+Version: 2.9.9
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io
 Text Domain: gtranslate
 
 */
 
-/*  Copyright 2010 - 2019 Edvard Ananyan  (email : edo888@gmail.com)
+/*  Copyright 2010 - 2022 GTranslate Inc. ( website: https://gtranslate.com )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -77,12 +77,12 @@ class GTranslate extends WP_Widget {
         wp_enqueue_script('jquery');
 
         // make sure main_lang is set correctly in config.php file
-        if($data['pro_version']) {
+        if($data['pro_version'] or $data['enterprise_version']) {
             include dirname(__FILE__) . '/url_addon/config.php';
 
             if($main_lang != $data['default_language']) { // update main_lang in config.php
                 $config_file = dirname(__FILE__) . '/url_addon/config.php';
-                if(is_writable($config_file)) {
+                if(is_readable($config_file) and is_writable($config_file)) {
                     $config = file_get_contents($config_file);
                     $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.$data['default_language'].'\'', $config);
                     file_put_contents($config_file, $config);
@@ -131,7 +131,7 @@ class GTranslate extends WP_Widget {
             $allowed_languages = json_encode($allowed_languages);
 
             echo "<script>jQuery(document).ready(function() {";
-            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
+            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;case 'he': var preferred_language = 'iw'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
             if($data['widget_look'] == 'dropdown_with_flags') {
                 echo "var lang_html = jQuery('div.switcher div.option').find('img[alt=\"'+preferred_language+'\"]').parent().html();if(typeof lang_html != 'undefined')jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));";
             } elseif($data['widget_look'] == 'popup') {
@@ -172,7 +172,7 @@ class GTranslate extends WP_Widget {
             $allowed_languages = json_encode($allowed_languages);
 
             echo "<script>jQuery(document).ready(function() {";
-            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
+            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;case 'he': var preferred_language = 'iw'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
             if($data['widget_look'] == 'dropdown_with_flags') {
                 echo "var lang_html = jQuery('div.switcher div.option').find('img[alt=\"'+preferred_language+'\"]').parent().html();if(typeof lang_html != 'undefined')jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));";
             } elseif($data['widget_look'] == 'popup') {
@@ -212,7 +212,7 @@ class GTranslate extends WP_Widget {
                 $allowed_languages = json_encode($allowed_languages);
 
                 $data['widget_code'] .= "<script>jQuery(document).ready(function() {";
-                $data['widget_code'] .= "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
+                $data['widget_code'] .= "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;case 'he': var preferred_language = 'iw'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
                 if($data['widget_look'] == 'dropdown_with_flags') {
                     $data['widget_code'] .= "var lang_html = jQuery('div.switcher div.option').find('img[alt=\"'+preferred_language+'\"]').parent().html();if(typeof lang_html != 'undefined')jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));";
                 } elseif($data['widget_look'] == 'popup') {
@@ -247,6 +247,10 @@ class GTranslate extends WP_Widget {
 
         wp_enqueue_script('jquery-ui-sortable');
         wp_enqueue_script('jquery-effects-core');
+
+        wp_enqueue_script('wp-color-picker');
+        wp_enqueue_style( 'wp-color-picker');
+        wp_add_inline_script('wp-color-picker', 'jQuery(document).ready(function($) {$(".color-field").wpColorPicker({change:function(e,c){$("#"+e.target.getAttribute("id")+"_hidden").val(c.color.toString());e.target.value = c.color.toString();RefreshDoWidgetCode();}});});');
 
         /* code editor for widget_code textarea
         if(function_exists('wp_enqueue_code_editor')) {
@@ -295,6 +299,49 @@ if(language_codes2.length == 0)
 
 var languages_map = {en_x: 0, en_y: 0, ar_x: 100, ar_y: 0, bg_x: 200, bg_y: 0, zhCN_x: 300, zhCN_y: 0, zhTW_x: 400, zhTW_y: 0, hr_x: 500, hr_y: 0, cs_x: 600, cs_y: 0, da_x: 700, da_y: 0, nl_x: 0, nl_y: 100, fi_x: 100, fi_y: 100, fr_x: 200, fr_y: 100, de_x: 300, de_y: 100, el_x: 400, el_y: 100, hi_x: 500, hi_y: 100, it_x: 600, it_y: 100, ja_x: 700, ja_y: 100, ko_x: 0, ko_y: 200, no_x: 100, no_y: 200, pl_x: 200, pl_y: 200, pt_x: 300, pt_y: 200, ro_x: 400, ro_y: 200, ru_x: 500, ru_y: 200, es_x: 600, es_y: 200, sv_x: 700, sv_y: 200, ca_x: 0, ca_y: 300, tl_x: 100, tl_y: 300, iw_x: 200, iw_y: 300, id_x: 300, id_y: 300, lv_x: 400, lv_y: 300, lt_x: 500, lt_y: 300, sr_x: 600, sr_y: 300, sk_x: 700, sk_y: 300, sl_x: 0, sl_y: 400, uk_x: 100, uk_y: 400, vi_x: 200, vi_y: 400, sq_x: 300, sq_y: 400, et_x: 400, et_y: 400, gl_x: 500, gl_y: 400, hu_x: 600, hu_y: 400, mt_x: 700, mt_y: 400, th_x: 0, th_y: 500, tr_x: 100, tr_y: 500, fa_x: 200, fa_y: 500, af_x: 300, af_y: 500, ms_x: 400, ms_y: 500, sw_x: 500, sw_y: 500, ga_x: 600, ga_y: 500, cy_x: 700, cy_y: 500, be_x: 0, be_y: 600, is_x: 100, is_y: 600, mk_x: 200, mk_y: 600, yi_x: 300, yi_y: 600, hy_x: 400, hy_y: 600, az_x: 500, az_y: 600, eu_x: 600, eu_y: 600, ka_x: 700, ka_y: 600, ht_x: 0, ht_y: 700, ur_x: 100, ur_y: 700};
 
+function SyncCustomDomains() {
+    jQuery('#custom_domains_status_sync').show();
+
+    jQuery.ajax({
+        url: 'https://tdns.gtranslate.net/tdn-bin/load-custom-domains',
+        type: 'GET',
+        dataType: 'json',
+        headers: {"X-GT-Domain": window.gt_debug_main_domain||location.hostname},
+        success: function(data) {
+            jQuery('#custom_domains_status_sync').hide();
+
+            if(data.err) { // todo: nice alert box
+                if(data.err == 'no license')
+                    alert('No subscription found for "' + (window.gt_debug_main_domain||location.hostname) + '". Please subscribe at https://gtranslate.io/');
+                else if(data.err == 'no settings')
+                    alert('Make sure your subscription for "' + (window.gt_debug_main_domain||location.hostname) + '" has Language Hosting feature and Custom domains are configured in your GTranslate dashboard: https://my.gtranslate.io/settings#advanced');
+                else
+                    alert(data.err);
+
+                jQuery('#custom_domains').prop('checked', false);
+                RefreshDoWidgetCode();
+
+                return;
+            }
+
+            jQuery('#custom_domains_data').val(JSON.stringify(data));
+            jQuery('#custom_domains_list_tbl tr.lang_domain_row').remove();
+            for(l in data)
+                jQuery('#custom_domains_list_tbl tr:last').after('<tr class="lang_domain_row"><td>'+l+'</td><td>'+data[l]+'</td></tr>');
+            jQuery('.custom_domains_list').show();
+        },
+        error: function(e) {
+            alert('Something strange happened, please try again later.');
+
+            jQuery('#custom_domains').prop('checked', false);
+            RefreshDoWidgetCode();
+
+            jQuery('#custom_domains_status_sync').hide();
+            jQuery('.custom_domains_list').hide();
+        }
+    });
+}
+
 function RefreshDoWidgetCode() {
     var new_line = "\\n";
     var widget_preview = '<!-- GTranslate: https://gtranslate.io/ -->'+new_line;
@@ -303,14 +350,27 @@ function RefreshDoWidgetCode() {
     var widget_look = jQuery('#widget_look').val();
     var default_language = jQuery('#default_language').val();
     var flag_size = jQuery('#flag_size').val();
+    var flag_style = jQuery('#flag_style').val();
+    var monochrome_flags = jQuery('#monochrome_flags:checked').length > 0 ? true : false;
     var pro_version = jQuery('#pro_version:checked').length > 0 ? true : false;
     var enterprise_version = jQuery('#enterprise_version:checked').length > 0 ? true : false;
+    var custom_domains = jQuery('#custom_domains:checked').length > 0 ? true : false;
+    var custom_domains_data = JSON.parse(jQuery('#custom_domains_data').val()||'{}');
     var new_window = jQuery('#new_window:checked').length > 0 ? true : false;
     var show_in_menu = jQuery('#show_in_menu').val();
     var floating_language_selector = jQuery('#floating_language_selector').val();
     var native_language_names = jQuery('#native_language_names:checked').length > 0 ? true : false;
-    var analytics = jQuery('#analytics:checked').length > 0 ? true : false;
     var detect_browser_language = jQuery('#detect_browser_language:checked').length > 0 ? true : false;
+    var email_translation = jQuery('#email_translation:checked').length > 0 ? true : false;
+    var switcher_text_color = jQuery('#switcher_text_color').val();
+    var switcher_arrow_color = jQuery('#switcher_arrow_color').val();
+    var switcher_border_color = jQuery('#switcher_border_color').val();
+    var switcher_background_color = jQuery('#switcher_background_color').val();
+    var switcher_background_shadow_color = jQuery('#switcher_background_shadow_color').val();
+    var switcher_background_hover_color = jQuery('#switcher_background_hover_color').val();
+    var dropdown_text_color = jQuery('#dropdown_text_color').val();
+    var dropdown_hover_color = jQuery('#dropdown_hover_color').val();
+    var dropdown_background_color = jQuery('#dropdown_background_color').val();
 
     // make sure default language is on
     if(widget_look == 'flags_dropdown' || widget_look == 'dropdown_with_flags' || widget_look == 'flags' || widget_look == 'flags_name' || widget_code == 'flags_code' || widget_look == 'popup')
@@ -320,17 +380,32 @@ function RefreshDoWidgetCode() {
 
     if(pro_version || enterprise_version) {
         translation_method = 'redirect';
+        if(enterprise_version) {
+            jQuery('#custom_domains_option').show();
+            if(custom_domains)
+                jQuery('.custom_domains_list').show();
+            else
+                jQuery('.custom_domains_list').hide();
+        } else {
+            jQuery('#custom_domains_option').hide();
+            jQuery('.custom_domains_list').hide();
+        }
+
         jQuery('#new_window_option').show();
         jQuery('#url_translation_option').show();
         jQuery('#hreflang_tags_option').show();
         jQuery('#email_translation_option').show();
-        //jQuery('#auto_switch_option').hide();
+        if(email_translation)
+            jQuery('#email_translation_debug_option').show();
+        else
+            jQuery('#email_translation_debug_option').hide();
     } else {
+        jQuery('#custom_domains_option').hide();
         jQuery('#new_window_option').hide();
         jQuery('#url_translation_option').hide();
         jQuery('#hreflang_tags_option').hide();
         jQuery('#email_translation_option').hide();
-        //jQuery('#auto_switch_option').show();
+        jQuery('#email_translation_debug_option').hide();
     }
 
     if(widget_look == 'dropdown' || widget_look == 'flags_dropdown' || widget_look == 'globe' || widget_look == 'lang_names' || widget_look == 'lang_codes') {
@@ -360,10 +435,16 @@ function RefreshDoWidgetCode() {
         jQuery('#line_break_option').hide();
     }
 
-    if(widget_look == 'dropdown_with_flags' || widget_look == 'dropdown' || widget_look == 'lang_names' || widget_look == 'lang_codes' || widget_look == 'globe') {
-        jQuery('#flag_size_option').hide();
+    if(widget_look == 'dropdown' || widget_look == 'lang_names' || widget_look == 'lang_codes' || widget_look == 'globe') {
+        jQuery('#flag_size_option,#flag_style_option,#flag_monochrome_option').hide();
     } else {
-        jQuery('#flag_size_option').show();
+        jQuery('#flag_size_option,#flag_style_option,#flag_monochrome_option').show();
+    }
+
+    if(widget_look == 'dropdown_with_flags') {
+        jQuery('.switcher_color_options').show();
+    } else {
+        jQuery('.switcher_color_options').hide();
     }
 
     if(native_language_names) {
@@ -392,31 +473,36 @@ function RefreshDoWidgetCode() {
                     lang_name = gt_lang_array[lang];
 
                     var href = '#';
-                    if(pro_version)
+                    if(pro_version) {
                         href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(0, 3).join('/'), '$site_url'.split('/').slice(0, 3).join('/')+'/'+lang);
-                    else if(enterprise_version)
-                        href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                        if(lang != default_language && href.endsWith('/'+lang)) href += '/';
+                    } else if(enterprise_version) {
+                        if(custom_domains && typeof custom_domains_data == 'object' && custom_domains_data[lang])
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), custom_domains_data[lang]);
+                        else
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                    }
 
                     widget_preview += '<a href="'+href+'" onclick="doGTranslate(\''+default_language+'|'+lang+'\');return false;" title="'+lang_name+'" class="glink nturl notranslate">';
 
                     //adding language flag
                     if(widget_look == 'flags' || widget_look == 'flags_dropdown' || widget_look == 'flags_name' || widget_look == 'flags_code') {
                         if(lang == 'en' && jQuery('#alt_us:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/en-us.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-us'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'en' && jQuery('#alt_ca:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/en-ca.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-ca'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'pt' && jQuery('#alt_br:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/pt-br.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/pt-br'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'es' && jQuery('#alt_mx:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-mx.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-mx'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'es' && jQuery('#alt_ar:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-ar.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-ar'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'es' && jQuery('#alt_co:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-co.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-co'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else if(lang == 'fr' && jQuery('#alt_qc:checked').length)
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/fr-qc.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/fr-qc'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                         else
-                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/'+lang+'.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
+                            widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/'+lang+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang_name+'" />';
                     }
 
                     // adding language name/code
@@ -457,29 +543,38 @@ function RefreshDoWidgetCode() {
 
         // Adding onfly html and css
         if(translation_method == 'onfly') {
-            widget_code += '<style type="text/css">'+new_line;
-            widget_code += "#goog-gt-tt {display:none !important;}"+new_line;
-            widget_code += ".goog-te-banner-frame {display:none !important;}"+new_line;
-            widget_code += ".goog-te-menu-value:hover {text-decoration:none !important;}"+new_line;
-            widget_code += ".goog-text-highlight {background-color:transparent !important;box-shadow:none !important;}"+new_line;
-            widget_code += "body {top:0 !important;}"+new_line;
-            widget_code += "#google_translate_element2 {display:none!important;}"+new_line;
-            widget_code += '</style>'+new_line+new_line;
+            widget_code += '<style>';
+            widget_code += "#goog-gt-tt{display:none!important;}";
+            widget_code += ".goog-te-banner-frame{display:none!important;}";
+            widget_code += ".goog-te-menu-value:hover{text-decoration:none!important;}";
+            widget_code += ".goog-text-highlight{background-color:transparent!important;box-shadow:none!important;}";
+            widget_code += "body{top:0!important;}";
+            widget_code += "#google_translate_element2{display:none!important;}";
+            widget_code += '</style>'+new_line;
             widget_code += '<div id="google_translate_element2"></div>'+new_line;
-            widget_code += '<script type="text/javascript">'+new_line;
+            widget_code += '<script>';
             widget_code += 'function googleTranslateElementInit2() {new google.translate.TranslateElement({pageLanguage: \'';
             widget_code += default_language;
             widget_code += '\',autoDisplay: false';
-            widget_code += "}, 'google_translate_element2');}"+new_line;
+            widget_code += "}, 'google_translate_element2');}";
+            widget_code += "if(!window.gt_translate_script){window.gt_translate_script=document.createElement('script');gt_translate_script.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2';document.body.appendChild(gt_translate_script);}";
             widget_code += '<\/script>';
-            widget_code += '<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"><\/script>'+new_line;
+            //widget_code += '<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2"><\/script>'+new_line;
+        }
+
+        if(monochrome_flags && (widget_look == 'flags' || widget_look == 'flags_dropdown' || widget_look == 'flags_name' || widget_look == 'flags_code')) {
+            widget_preview += new_line+'<style>a.glink img {filter:grayscale(100%);-webkit-filter:grayscale(100%);}</style>'+new_line;
+        }
+
+        if(flag_style == '2d' && (widget_look == 'flags' || widget_look == 'flags_dropdown')) {
+            widget_preview += new_line+'<style>a.glink img {margin-right:2px;}</style>'+new_line;
         }
 
         if(widget_look == 'globe') {
             widget_preview += '<span class="gsatelites"></span><span class="gglobe"></span>';
 
             // Adding css
-            widget_preview += '<style type="text/css">'+new_line;
+            widget_preview += '<style>'+new_line;
             widget_preview += '.gglobe {background-image:url($wp_plugin_url/gtglobe.svg);opacity:0.8;border-radius:50%;height:40px;width:40px;cursor:pointer;display:block;-moz-transition: all 0.3s;-webkit-transition: all 0.3s;transition: all 0.3s;}'+new_line;
             widget_preview += '.gglobe:hover {opacity:1;-moz-transform: scale(1.2);-webkit-transform: scale(1.2);transform: scale(1.2);}'+new_line;
             widget_preview += '.gsatelite {background-color:#777777;opacity:0.95;border-radius:50%;height:24px;width:24px;cursor:pointer;position:absolute;z-index:100000;display:none;-moz-transition: all 0.3s;-webkit-transition: all 0.3s;transition: all 0.3s;}'+new_line;
@@ -487,7 +582,7 @@ function RefreshDoWidgetCode() {
             widget_preview += '</style>'+new_line+new_line;
 
             // Adding javascript
-            widget_preview += '<script type="text/javascript">'+new_line;
+            widget_preview += '<script>'+new_line;
             widget_preview += "function renderGSatelites($, e) { $('.gsatelite').remove();"+new_line;
             widget_preview += "var centerPosition = $('.gglobe').position();"+new_line;
             widget_preview += "centerPosition.left += Math.floor($('.gglobe').width() / 2) - 10;"+new_line;
@@ -517,21 +612,21 @@ function RefreshDoWidgetCode() {
             widget_preview += '<a href="#" class="switcher-popup glink nturl notranslate" onclick="openGTPopup(this)">';
 
             if(default_language == 'en' && jQuery('#alt_us:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/en-us.png" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-us'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'en' && jQuery('#alt_ca:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/en-ca.png" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-ca'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'pt' && jQuery('#alt_br:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/pt-br.png" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/pt-br'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_mx:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-mx.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-mx'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_ar:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-ar.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-ar'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_co:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/es-co.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-co'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else if(default_language == 'fr' && jQuery('#alt_qc:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/fr-qc.png" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/fr-qc'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
             else
-                widget_preview += '<img src="{$wp_plugin_url}/flags/'+flag_size+'/'+default_language+'.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+default_language+'" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/'+default_language+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+default_language+'" /> <span>'+gt_lang_array[default_language]+'</span><span style="color:#666;font-size:8px;font-weight:bold;">&#9660;</span></a>'+new_line;
 
             // lightbox and content
             widget_preview += '<div id="gt_fade" class="gt_black_overlay"></div>'+new_line;
@@ -547,29 +642,34 @@ function RefreshDoWidgetCode() {
                     lang_name = gt_lang_array[lang];
 
                     var href = '#';
-                    if(pro_version)
+                    if(pro_version) {
                         href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(0, 3).join('/'), '$site_url'.split('/').slice(0, 3).join('/')+'/'+lang);
-                    else if(enterprise_version)
-                        href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                        if(lang != default_language && href.endsWith('/'+lang)) href += '/';
+                    } else if(enterprise_version) {
+                        if(custom_domains && typeof custom_domains_data == 'object' && custom_domains_data[lang])
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), custom_domains_data[lang]);
+                        else
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                    }
 
                     widget_preview += '<a href="'+href+'" onclick="changeGTLanguage(\''+default_language+'|'+lang+'\', this);return false;" title="'+lang_name+'" class="glink nturl'+(default_language == lang ? ' selected' : '')+'">';
 
                     if(lang == 'en' && jQuery('#alt_us:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/en-us.png" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-us'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'en' && jQuery('#alt_ca:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/en-ca.png" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-ca'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'pt' && jQuery('#alt_br:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/pt-br.png" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/pt-br'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'es' && jQuery('#alt_mx:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/es-mx.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-mx'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'es' && jQuery('#alt_ar:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/es-ar.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-ar'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'es' && jQuery('#alt_co:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/es-co.png" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-co'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> <span>'+lang_name+'</span></a>';
                     else if(lang == 'fr' && jQuery('#alt_qc:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/fr-qc.png" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/fr-qc'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> <span>'+lang_name+'</span></a>';
                     else
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+flag_size+'/'+lang+'.png" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang+'" /> <span>'+lang_name+'</span></a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/'+lang+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang+'" /> <span>'+lang_name+'</span></a>';
 
                     count_languages++;
                 }
@@ -605,7 +705,8 @@ function RefreshDoWidgetCode() {
                 popup_columns = 5;
 
             // style
-            widget_preview += '<style type="text/css">'+new_line;
+            widget_preview += '<style>'+new_line;
+            if(monochrome_flags) widget_preview += 'a.glink img {filter:grayscale(100%);-webkit-filter:grayscale(100%);}'+new_line;
             widget_preview += '.gt_black_overlay {display:none;position:fixed;top:0%;left:0%;width:100%;height:100%;background-color:black;z-index:2017;-moz-opacity:0.8;opacity:.80;filter:alpha(opacity=80);}'+new_line;
             widget_preview += '.gt_white_content {display:none;position:fixed;top:50%;left:50%;width:'+popup_width+'px;height:'+popup_height+'px;margin:-'+(popup_height/2)+'px 0 0 -'+(popup_width/2)+'px;padding:6px 16px;border-radius:5px;background-color:white;color:black;z-index:19881205;overflow:auto;text-align:left;}'+new_line;
             widget_preview += '.gt_white_content a {display:block;padding:5px 0;border-bottom:1px solid #e7e7e7;white-space:nowrap;}'+new_line;
@@ -618,7 +719,7 @@ function RefreshDoWidgetCode() {
             widget_preview += '</style>'+new_line+new_line;
 
             // javascript
-            widget_preview += '<script type="text/javascript">'+new_line;
+            widget_preview += '<script>'+new_line;
             widget_preview += "function openGTPopup(a) {jQuery('.gt_white_content a img').each(function() {if(!jQuery(this)[0].hasAttribute('src'))jQuery(this).attr('src', jQuery(this).attr('data-gt-lazy-src'))});if(a === undefined){document.getElementById('gt_lightbox').style.display='block';document.getElementById('gt_fade').style.display='block';}else{jQuery(a).parent().find('#gt_lightbox').css('display', 'block');jQuery(a).parent().find('#gt_fade').css('display', 'block');}}"+new_line;
             widget_preview += "function closeGTPopup() {jQuery('.gt_white_content').css('display', 'none');jQuery('.gt_black_overlay').css('display', 'none');}"+new_line;
             widget_preview += "function changeGTLanguage(pair, a) {doGTranslate(pair);jQuery('a.switcher-popup').html(jQuery(a).html()+'<span style=\"color:#666;font-size:8px;font-weight:bold;\">&#9660;</span>');closeGTPopup();}"+new_line;
@@ -628,26 +729,46 @@ function RefreshDoWidgetCode() {
         }
 
         if(widget_look == 'dropdown_with_flags') {
+            var font_size = 10;
+            var widget_width = 163;
+            var arrow_size = 7;
+
+            if(flag_size == 16) {
+                font_size = 10;
+                widget_width = 163;
+                arrow_size = 7;
+            } else if(flag_size == 24) {
+                font_size = 12;
+                widget_width = 173;
+                arrow_size = 11;
+            } else if(flag_size == 32) {
+                font_size = 14;
+                widget_width = 193;
+                arrow_size = 12;
+            } else if(flag_size == 48) {
+                font_size = 16;
+                widget_width = 223;
+                arrow_size = 14;
+            }
+
             // Adding slider css
-            widget_preview += '<style type="text/css">'+new_line;
-            //widget_preview += 'span.gflag {font-size:16px;padding:1px 0;background-repeat:no-repeat;background-image:url($wp_plugin_url/16.png);}'+new_line;
-            //widget_preview += 'span.gflag img {border:0;margin-top:2px;}'+new_line;
-            widget_preview += '.switcher {font-family:Arial;font-size:10pt;text-align:left;cursor:pointer;overflow:hidden;width:163px;line-height:17px;}'+new_line;
-            widget_preview += '.switcher a {text-decoration:none;display:block;font-size:10pt;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}'+new_line;
-            //widget_preview += '.switcher a span.gflag {margin-right:3px;padding:0;display:block;float:left;}'+new_line;
-            widget_preview += '.switcher a img {vertical-align:middle;display:inline;border:0;padding:0;margin:0;opacity:0.8;}'+new_line;
+            widget_preview += '<style>'+new_line;
+            widget_preview += '.switcher {font-family:Arial;font-size:'+font_size+'pt;text-align:left;cursor:pointer;overflow:hidden;width:'+widget_width+'px;line-height:17px;}'+new_line;
+            widget_preview += '.switcher a {text-decoration:none;display:block;font-size:'+font_size+'pt;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;}'+new_line;
+            widget_preview += '.switcher a img {vertical-align:middle;display:inline;border:0;padding:0;margin:0;opacity:0.8;'+(monochrome_flags ? 'filter:grayscale(100%);-webkit-filter:grayscale(100%);' : '' )+'}'+new_line;
             widget_preview += '.switcher a:hover img {opacity:1;}'+new_line;
-            widget_preview += '.switcher .selected {background:#FFFFFF url($wp_plugin_url/switcher.png) repeat-x;position:relative;z-index:9999;}'+new_line;
-            widget_preview += '.switcher .selected a {border:1px solid #CCCCCC;background:url($wp_plugin_url/arrow_down.png) 146px center no-repeat;color:#666666;padding:3px 5px;width:151px;}'+new_line;
-            widget_preview += '.switcher .selected a.open {background-image:url($wp_plugin_url/arrow_up.png)}'+new_line;
-            widget_preview += '.switcher .selected a:hover {background:#F0F0F0 url($wp_plugin_url/arrow_down.png) 146px center no-repeat;}'+new_line;
-            widget_preview += '.switcher .option {position:relative;z-index:9998;border-left:1px solid #CCCCCC;border-right:1px solid #CCCCCC;border-bottom:1px solid #CCCCCC;background-color:#EEEEEE;display:none;width:161px;max-height:198px;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;overflow-y:auto;overflow-x:hidden;}'+new_line;
-            widget_preview += '.switcher .option a {color:#000;padding:3px 5px;}'+new_line;
-            widget_preview += '.switcher .option a:hover {background:#FFC;}'+new_line;
-            widget_preview += '.switcher .option a.selected {background:#FFC;}'+new_line;
+            widget_preview += '.switcher .selected {background:'+switcher_background_color+' linear-gradient(180deg, '+switcher_background_shadow_color+' 0%, '+switcher_background_color+' 70%);position:relative;z-index:9999;}'+new_line;
+            widget_preview += '.switcher .selected a {border:1px solid '+switcher_border_color+';color:'+switcher_text_color+';padding:3px 5px;width:'+(widget_width - 2 * 5 - 2 * 1)+'px;}'+new_line;
+            widget_preview += '.switcher .selected a:after {height:'+flag_size+'px;display:inline-block;position:absolute;right:'+(flag_size < 20 ? 5 : 10)+'px;width:15px;background-position:50%;background-size:'+arrow_size+'px;background-image:url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 285 285\'><path d=\'M282 76.5l-14.2-14.3a9 9 0 0 0-13.1 0L142.5 174.4 30.3 62.2a9 9 0 0 0-13.2 0L3 76.5a9 9 0 0 0 0 13.1l133 133a9 9 0 0 0 13.1 0l133-133a9 9 0 0 0 0-13z\' style=\'fill:'+escape(switcher_arrow_color)+'\'/></svg>");background-repeat:no-repeat;content:""!important;transition:all .2s;}'+new_line;
+            widget_preview += '.switcher .selected a.open:after {-webkit-transform: rotate(-180deg);transform:rotate(-180deg);}'+new_line;
+            widget_preview += '.switcher .selected a:hover {background:'+switcher_background_hover_color+'}'+new_line;
+            widget_preview += '.switcher .option {position:relative;z-index:9998;border-left:1px solid '+switcher_border_color+';border-right:1px solid '+switcher_border_color+';border-bottom:1px solid '+switcher_border_color+';background-color:'+dropdown_background_color+';display:none;width:'+(widget_width - 2 * 1)+'px;max-height:198px;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;overflow-y:auto;overflow-x:hidden;}'+new_line;
+            widget_preview += '.switcher .option a {color:'+dropdown_text_color+';padding:3px 5px;}'+new_line;
+            widget_preview += '.switcher .option a:hover {background:'+dropdown_hover_color+';}'+new_line;
+            widget_preview += '.switcher .option a.selected {background:'+dropdown_hover_color+';}'+new_line;
             widget_preview += '#selected_lang_name {float: none;}'+new_line;
             widget_preview += '.l_name {float: none !important;margin: 0;}'+new_line;
-            widget_preview += '.switcher .option::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 3px rgba(0,0,0,0.3);border-radius:5px;background-color:#F5F5F5;}'+new_line;
+            widget_preview += '.switcher .option::-webkit-scrollbar-track{-webkit-box-shadow:inset 0 0 3px rgba(0,0,0,0.3);border-radius:5px;background-color:#f5f5f5;}'+new_line;
             widget_preview += '.switcher .option::-webkit-scrollbar {width:5px;}'+new_line;
             widget_preview += '.switcher .option::-webkit-scrollbar-thumb {border-radius:5px;-webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);background-color:#888;}'+new_line;
             widget_preview += '</style>'+new_line;
@@ -659,21 +780,21 @@ function RefreshDoWidgetCode() {
             widget_preview += '<a href="#" onclick="return false;">';
 
             if(default_language == 'en' && jQuery('#alt_us:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/en-us.png" height="16" width="16" alt="en" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-us'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'en' && jQuery('#alt_ca:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/en-ca.png" height="16" width="16" alt="en" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-ca'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'pt' && jQuery('#alt_br:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/pt-br.png" height="16" width="16" alt="pt" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/pt-br'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_mx:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/es-mx.png" height="16" width="16" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-mx'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_ar:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/es-ar.png" height="16" width="16" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-ar'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'es' && jQuery('#alt_co:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/es-co.png" height="16" width="16" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-co'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else if(default_language == 'fr' && jQuery('#alt_qc:checked').length)
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/fr-qc.png" height="16" width="16" alt="fr" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/fr-qc'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> '+gt_lang_array[default_language]+'</a>'+new_line;
             else
-                widget_preview += '<img src="{$wp_plugin_url}/flags/16/'+default_language+'.png" height="16" width="16" alt="'+default_language+'" /> '+gt_lang_array[default_language]+'</a>'+new_line;
+                widget_preview += '<img src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/'+default_language+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+default_language+'" /> '+gt_lang_array[default_language]+'</a>'+new_line;
 
             widget_preview += '</div>'+new_line;
 
@@ -685,29 +806,34 @@ function RefreshDoWidgetCode() {
                     lang_name = gt_lang_array[lang];
 
                     var href = '#';
-                    if(pro_version)
+                    if(pro_version) {
                         href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(0, 3).join('/'), '$site_url'.split('/').slice(0, 3).join('/')+'/'+lang);
-                    else if(enterprise_version)
-                        href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                        if(lang != default_language && href.endsWith('/'+lang)) href += '/';
+                    } else if(enterprise_version) {
+                        if(custom_domains && typeof custom_domains_data == 'object' && custom_domains_data[lang])
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), custom_domains_data[lang]);
+                        else
+                            href = (lang == default_language) ? '$site_url' : '$site_url'.replace('$site_url'.split('/').slice(2, 3)[0].replace('www.', ''), lang + '.' + '$site_url'.split('/').slice(2, 3)[0].replace('www.', '')).replace('://www.', '://');
+                    }
 
                     widget_preview += '<a href="'+href+'" onclick="doGTranslate(\''+default_language+'|'+lang+'\');jQuery(\'div.switcher div.selected a\').html(jQuery(this).html());return false;" title="'+lang_name+'" class="nturl'+(default_language == lang ? ' selected' : '')+'">';
 
                     if(lang == 'en' && jQuery('#alt_us:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/en-us.png" height="16" width="16" alt="en" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-us'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> '+lang_name+'</a>';
                     else if(lang == 'en' && jQuery('#alt_ca:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/en-ca.png" height="16" width="16" alt="en" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/en-ca'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="en" /> '+lang_name+'</a>';
                     else if(lang == 'pt' && jQuery('#alt_br:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/pt-br.png" height="16" width="16" alt="pt" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/pt-br'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="pt" /> '+lang_name+'</a>';
                     else if(lang == 'es' && jQuery('#alt_mx:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/es-mx.png" height="16" width="16" alt="es" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-mx'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+lang_name+'</a>';
                     else if(lang == 'es' && jQuery('#alt_ar:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/es-ar.png" height="16" width="16" alt="es" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-ar'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+lang_name+'</a>';
                     else if(lang == 'es' && jQuery('#alt_co:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/es-co.png" height="16" width="16" alt="es" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/es-co'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="es" /> '+lang_name+'</a>';
                     else if(lang == 'fr' && jQuery('#alt_qc:checked').length)
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/fr-qc.png" height="16" width="16" alt="fr" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/fr-qc'+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="fr" /> '+lang_name+'</a>';
                     else
-                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/16/'+lang+'.png" height="16" width="16" alt="'+lang+'" /> '+lang_name+'</a>';
+                        widget_preview += '<img data-gt-lazy-src="{$wp_plugin_url}/flags/'+(flag_style=='3d'&&flag_size||'svg')+'/'+lang+(flag_style=='3d'&&'.png'||'.svg')+'" height="'+flag_size+'" width="'+flag_size+'" alt="'+lang+'" /> '+lang_name+'</a>';
 
                 }
             });
@@ -716,45 +842,38 @@ function RefreshDoWidgetCode() {
             widget_preview += '</div>'+new_line;
 
             // Adding slider javascript
-            widget_preview += '<script type="text/javascript">'+new_line;
+            widget_preview += '<script>'+new_line;
             widget_preview += "jQuery('.switcher .selected').click(function() {jQuery('.switcher .option a img').each(function() {if(!jQuery(this)[0].hasAttribute('src'))jQuery(this).attr('src', jQuery(this).attr('data-gt-lazy-src'))});if(!(jQuery('.switcher .option').is(':visible'))) {jQuery('.switcher .option').stop(true,true).delay(100).slideDown(500);jQuery('.switcher .selected a').toggleClass('open')}});"+new_line;
-            widget_preview += "jQuery('.switcher .option').bind('mousewheel', function(e) {var options = jQuery('.switcher .option');if(options.is(':visible'))options.scrollTop(options.scrollTop() - e.originalEvent.wheelDelta);return false;});"+new_line;
+            widget_preview += "jQuery('.switcher .option').bind('mousewheel', function(e) {var options = jQuery('.switcher .option');if(options.is(':visible'))options.scrollTop(options.scrollTop() - e.originalEvent.wheelDelta/10);return false;});"+new_line;
             widget_preview += "jQuery('body').not('.switcher').click(function(e) {if(jQuery('.switcher .option').is(':visible') && e.target != jQuery('.switcher .option').get(0)) {jQuery('.switcher .option').stop(true,true).delay(100).slideUp(500);jQuery('.switcher .selected a').toggleClass('open')}});"+new_line;
             widget_preview += '<\/script>'+new_line;
         }
 
         // Adding javascript
         widget_code += new_line+new_line;
-        widget_code += '<script type="text/javascript">'+new_line;
+        widget_code += '<script>'+new_line;
         if(pro_version && translation_method == 'redirect' && new_window) {
             widget_code += "function openTab(url) {var form=document.createElement('form');form.method='post';form.action=url;form.target='_blank';document.body.appendChild(form);form.submit();}"+new_line;
-            if(analytics)
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof _gaq!='undefined'){_gaq.push(['_trackEvent', 'GTranslate', lang, location.pathname+location.search]);}else {if(typeof ga!='undefined')ga('send', 'event', 'GTranslate', lang, location.pathname+location.search);}var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')openTab(location.protocol+'//'+location.host+gt_request_uri);else openTab(location.protocol+'//'+location.host+'/'+lang+gt_request_uri);}"+new_line;
-            else
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')openTab(location.protocol+'//'+location.host+gt_request_uri);else openTab(location.protocol+'//'+location.host+'/'+lang+gt_request_uri);}"+new_line;
+            widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.pathname+location.search);}var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')openTab(location.protocol+'//'+location.host+gt_request_uri);else openTab(location.protocol+'//'+location.host+'/'+lang+gt_request_uri);}"+new_line;
         } else if(pro_version && translation_method == 'redirect') {
-            if(analytics)
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof _gaq!='undefined'){_gaq.push(['_trackEvent', 'GTranslate', lang, location.pathname+location.search]);}else {if(typeof ga!='undefined')ga('send', 'event', 'GTranslate', lang, location.pathname+location.search);}var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')location.href=location.protocol+'//'+location.host+gt_request_uri;else location.href=location.protocol+'//'+location.host+'/'+lang+gt_request_uri;}"+new_line;
-            else
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')location.href=location.protocol+'//'+location.host+gt_request_uri;else location.href=location.protocol+'//'+location.host+'/'+lang+gt_request_uri;}"+new_line;
+            widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.pathname+location.search);}var plang=location.pathname.split('/')[1];if(plang.length !=2 && plang != 'zh-CN' && plang != 'zh-TW' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';if(lang == '"+default_language+"')location.href=location.protocol+'//'+location.host+gt_request_uri;else location.href=location.protocol+'//'+location.host+'/'+lang+gt_request_uri;}"+new_line;
         } else if(enterprise_version && translation_method == 'redirect' && new_window) {
             widget_code += "function openTab(url) {var form=document.createElement('form');form.method='post';form.action=url;form.target='_blank';document.body.appendChild(form);form.submit();}"+new_line;
-            if(analytics)
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof _gaq!='undefined'){_gaq.push(['_trackEvent', 'GTranslate', lang, location.hostname+location.pathname+location.search]);}else {if(typeof ga!='undefined')ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';openTab(location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri);}"+new_line;
-            else
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';openTab(location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri);}"+new_line;
+            if(custom_domains && typeof custom_domains_data == 'object') {
+                widget_code += "var gt_custom_domains = "+JSON.stringify(custom_domains_data)+";"+new_line;
+                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}if(gt_custom_domains[lang]){openTab(location.protocol+'//'+gt_custom_domains[lang]+gt_request_uri);}else{openTab(location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+'"+location.hostname.replace(RegExp('^www\.'), '')+"'+gt_request_uri);}}"+new_line;
+            } else
+                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';openTab(location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri);}"+new_line;
         } else if(enterprise_version && translation_method == 'redirect') {
-            if(analytics)
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof _gaq!='undefined'){_gaq.push(['_trackEvent', 'GTranslate', lang, location.hostname+location.pathname+location.search]);}else {if(typeof ga!='undefined')ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';location.href=location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri;}"+new_line;
-            else
-                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';location.href=location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri;}"+new_line;
+            if(custom_domains && typeof custom_domains_data == 'object') {
+                widget_code += "var gt_custom_domains = "+JSON.stringify(custom_domains_data)+";"+new_line;
+                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}if(gt_custom_domains[lang]){location.href=location.protocol+'//'+gt_custom_domains[lang]+gt_request_uri;}else{location.href=location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+'"+location.hostname.replace(RegExp('^www\.'), '')+"'+gt_request_uri;}}"+new_line;
+            } else
+                widget_code += "function doGTranslate(lang_pair) {if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var plang=location.hostname.split('.')[0];if(plang.length !=2 && plang.toLowerCase() != 'zh-cn' && plang.toLowerCase() != 'zh-tw' && plang != 'hmn' && plang != 'haw' && plang != 'ceb')plang='"+default_language+"';location.href=location.protocol+'//'+(lang == '"+default_language+"' ? '' : lang+'.')+location.hostname.replace('www.', '').replace(RegExp('^' + plang + '[.]'), '')+gt_request_uri;}"+new_line;
         } else if(translation_method == 'onfly') {
             widget_code += "function GTranslateGetCurrentLang() {var keyValue = document['cookie'].match('(^|;) ?googtrans=([^;]*)(;|$)');return keyValue ? keyValue[2].split('/')[2] : null;}"+new_line;
             widget_code += "function GTranslateFireEvent(element,event){try{if(document.createEventObject){var evt=document.createEventObject();element.fireEvent('on'+event,evt)}else{var evt=document.createEvent('HTMLEvents');evt.initEvent(event,true,true);element.dispatchEvent(evt)}}catch(e){}}"+new_line;
-            if(analytics)
-                widget_code += "function doGTranslate(lang_pair){if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(GTranslateGetCurrentLang() == null && lang == lang_pair.split('|')[0])return;if(typeof ga!='undefined'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}else{if(typeof _gaq!='undefined')_gaq.push(['_trackEvent', 'GTranslate', lang, location.hostname+location.pathname+location.search]);}var teCombo;var sel=document.getElementsByTagName('select');for(var i=0;i<sel.length;i++)if(/goog-te-combo/.test(sel[i].className)){teCombo=sel[i];break;}if(document.getElementById('google_translate_element2')==null||document.getElementById('google_translate_element2').innerHTML.length==0||teCombo.length==0||teCombo.innerHTML.length==0){setTimeout(function(){doGTranslate(lang_pair)},500)}else{teCombo.value=lang;GTranslateFireEvent(teCombo,'change');GTranslateFireEvent(teCombo,'change')}}"+new_line;
-            else
-                widget_code += "function doGTranslate(lang_pair){if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(GTranslateGetCurrentLang() == null && lang == lang_pair.split('|')[0])return;var teCombo;var sel=document.getElementsByTagName('select');for(var i=0;i<sel.length;i++)if(/goog-te-combo/.test(sel[i].className)){teCombo=sel[i];break;}if(document.getElementById('google_translate_element2')==null||document.getElementById('google_translate_element2').innerHTML.length==0||teCombo.length==0||teCombo.innerHTML.length==0){setTimeout(function(){doGTranslate(lang_pair)},500)}else{teCombo.value=lang;GTranslateFireEvent(teCombo,'change');GTranslateFireEvent(teCombo,'change')}}"+new_line;
+            widget_code += "function doGTranslate(lang_pair){if(lang_pair.value)lang_pair=lang_pair.value;if(lang_pair=='')return;var lang=lang_pair.split('|')[1];if(GTranslateGetCurrentLang() == null && lang == lang_pair.split('|')[0])return;if(typeof ga=='function'){ga('send', 'event', 'GTranslate', lang, location.hostname+location.pathname+location.search);}var teCombo;var sel=document.getElementsByTagName('select');for(var i=0;i<sel.length;i++)if(sel[i].className.indexOf('goog-te-combo')!=-1){teCombo=sel[i];break;}if(document.getElementById('google_translate_element2')==null||document.getElementById('google_translate_element2').innerHTML.length==0||teCombo.length==0||teCombo.innerHTML.length==0){setTimeout(function(){doGTranslate(lang_pair)},500)}else{teCombo.value=lang;GTranslateFireEvent(teCombo,'change');GTranslateFireEvent(teCombo,'change')}}"+new_line;
             if(widget_look == 'dropdown_with_flags') {
                 widget_code += "if(GTranslateGetCurrentLang() != null)jQuery(document).ready(function() {var lang_html = jQuery('div.switcher div.option').find('img[alt=\"'+GTranslateGetCurrentLang()+'\"]').parent().html();if(typeof lang_html != 'undefined')jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));});"+new_line;
             } else if(widget_look == 'popup') {
@@ -784,32 +903,64 @@ function ShowWidgetPreview(widget_preview) {
 
 jQuery('#pro_version').attr('checked', '$pro_version'.length > 0);
 jQuery('#enterprise_version').attr('checked', '$enterprise_version'.length > 0);
+jQuery('#custom_domains').attr('checked', '$custom_domains'.length > 0);
 jQuery('#url_translation').attr('checked', '$url_translation'.length > 0);
 jQuery('#add_hreflang_tags').attr('checked', '$add_hreflang_tags'.length > 0);
 jQuery('#email_translation').attr('checked', '$email_translation'.length > 0);
+jQuery('#email_translation_debug').attr('checked', '$email_translation_debug'.length > 0);
 jQuery('#new_window').attr('checked', '$new_window'.length > 0);
 jQuery('#show_in_menu').val('$show_in_menu');
 jQuery('#floating_language_selector').val('$floating_language_selector');
 jQuery('#native_language_names').attr('checked', '$native_language_names'.length > 0);
-jQuery('#analytics').attr('checked', '$analytics'.length > 0);
 jQuery('#detect_browser_language').attr('checked', '$detect_browser_language'.length > 0);
 jQuery('#add_new_line').attr('checked', '$add_new_line'.length > 0);
 jQuery('#default_language').val('$default_language');
 jQuery('#widget_look').val('$widget_look');
 jQuery('#flag_size').val('$flag_size');
+jQuery('#flag_style').val('$flag_style');
+jQuery('#monochrome_flags').attr('checked', '$monochrome_flags'.length > 0);
+jQuery('#switcher_text_color').val('$switcher_text_color');
+jQuery('#switcher_arrow_color').val('$switcher_arrow_color');
+jQuery('#switcher_border_color').val('$switcher_border_color');
+jQuery('#switcher_background_color').val('$switcher_background_color');
+jQuery('#switcher_background_shadow_color').val('$switcher_background_shadow_color');
+jQuery('#switcher_background_hover_color').val('$switcher_background_hover_color');
+jQuery('#dropdown_text_color').val('$dropdown_text_color');
+jQuery('#dropdown_hover_color').val('$dropdown_hover_color');
+jQuery('#dropdown_background_color').val('$dropdown_background_color');
 
 if(jQuery('#pro_version:checked').length || jQuery('#enterprise_version:checked').length) {
+    if(jQuery('#enterprise_version:checked').length) {
+        jQuery('#custom_domains_option').show();
+        if(jQuery('#custom_domains:checked').length)
+            jQuery('.custom_domains_list').show();
+        else
+            jQuery('.custom_domains_list').hide();
+    } else {
+        jQuery('#custom_domains_option').hide();
+        jQuery('.custom_domains_list').hide();
+    }
+
     jQuery('#new_window_option').show();
     jQuery('#url_translation_option').show();
     jQuery('#hreflang_tags_option').show();
     jQuery('#email_translation_option').show();
-    //jQuery('#auto_switch_option').hide();
+    if(jQuery('#email_translation:checked').length)
+        jQuery('#email_translation_debug_option').show();
+    else
+        jQuery('#email_translation_debug_option').hide();
 }
 
 if('$widget_look' == 'dropdown' || '$widget_look' == 'flags_dropdown' || '$widget_look' == 'globe' || '$widget_look' == 'lang_names' || '$widget_look' == 'lang_codes') {
     jQuery('#dropdown_languages_option').show();
 } else {
     jQuery('#dropdown_languages_option').hide();
+}
+
+if('$widget_look' == 'dropdown_with_flags') {
+    jQuery('.switcher_color_options').show();
+} else {
+    jQuery('.switcher_color_options').hide();
 }
 
 if('$widget_look' == 'globe') {
@@ -833,10 +984,10 @@ if('$widget_look' == 'flags_dropdown') {
     jQuery('#line_break_option').hide();
 }
 
-if('$widget_look' == 'dropdown_with_flags' || '$widget_look' == 'dropdown' || '$widget_look' == 'lang_names' || '$widget_look' == 'lang_codes' || '$widget_look' == 'globe') {
-    jQuery('#flag_size_option').hide();
+if('$widget_look' == 'dropdown' || '$widget_look' == 'lang_names' || '$widget_look' == 'lang_codes' || '$widget_look' == 'globe') {
+    jQuery('#flag_size_option,#flag_style_option,#flag_monochrome_option').hide();
 } else {
-    jQuery('#flag_size_option').show();
+    jQuery('#flag_size_option,#flag_style_option,#flag_monochrome_option').show();
 }
 
 if(jQuery('#native_language_names:checked').length) {
@@ -861,6 +1012,34 @@ jQuery(function(){
         RefreshDoWidgetCode();
     });
 });
+
+function light_color_scheme() {
+    jQuery('#switcher_text_color').iris('color', '#666');
+    jQuery('#switcher_arrow_color').iris('color', '#666');
+    jQuery('#switcher_border_color').iris('color', '#ccc');
+    jQuery('#switcher_background_color').iris('color', '#fff');
+    jQuery('#switcher_background_shadow_color').iris('color', '#efefef');
+    jQuery('#switcher_background_hover_color').iris('color', '#f0f0f0');
+    jQuery('#dropdown_text_color').iris('color', '#000');
+    jQuery('#dropdown_hover_color').iris('color', '#fff');
+    jQuery('#dropdown_background_color').iris('color', '#eee');
+
+    return false;
+}
+
+function dark_color_scheme() {
+    jQuery('#switcher_text_color').iris('color', '#f7f7f7');
+    jQuery('#switcher_arrow_color').iris('color', '#f2f2f2');
+    jQuery('#switcher_border_color').iris('color', '#161616');
+    jQuery('#switcher_background_color').iris('color', '#303030');
+    jQuery('#switcher_background_shadow_color').iris('color', '#474747');
+    jQuery('#switcher_background_hover_color').iris('color', '#3a3a3a');
+    jQuery('#dropdown_text_color').iris('color', '#eaeaea');
+    jQuery('#dropdown_hover_color').iris('color', '#748393');
+    jQuery('#dropdown_background_color').iris('color', '#474747');
+
+    return false;
+}
 EOT;
 
 // selected languages
@@ -1030,6 +1209,10 @@ EOT;
                         <td class="option_name">* <?php _e('Sub-domain URL structure', 'gtranslate'); ?>:<br><code><small>http://<b>es</b>.example.com/</small></code></td>
                         <td><input id="enterprise_version" name="enterprise_version" value="1" type="checkbox" onclick="if(jQuery('#pro_version').is(':checked') && jQuery('#enterprise_version').is(':checked'))jQuery('#pro_version').prop('checked', false);RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/> <a href="https://gtranslate.io/?xyz=998#pricing" target="_blank" title="If you already have a subscription, you can enable this.">* <?php _e('for paid plans only', 'gtranslate'); ?></a></td>
                     </tr>
+                    <tr id="custom_domains_option" style="display:none;">
+                        <td class="option_name"><?php _e('Custom domains', 'gtranslate'); ?>:<br><code><small>http://example.<b>es</b>/</small></code></td>
+                        <td><input id="custom_domains" name="custom_domains" value="1" type="checkbox" onclick="if(jQuery('#custom_domains').is(':checked'))SyncCustomDomains();RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/> <span id="custom_domains_status_sync" style="display:none;"><span class="dashicons dashicons-update gt-icon-spin"></span> <?php _e('Synchronizing...', 'gtranslate'); ?></span> <input type="hidden" id="custom_domains_data" name="custom_domains_data" value="<?php echo esc_attr(stripslashes($data['custom_domains_data'])); ?>"></td>
+                    </tr>
                     <tr id="url_translation_option" style="display:none;">
                         <td class="option_name"><?php _e('Enable URL Translation', 'gtranslate'); ?>:</td>
                         <td><input id="url_translation" name="url_translation" value="1" type="checkbox"/></td>
@@ -1039,16 +1222,16 @@ EOT;
                         <td><input id="add_hreflang_tags" name="add_hreflang_tags" value="1" type="checkbox"/></td>
                     </tr>
                     <tr id="email_translation_option" style="display:none;">
-                        <td class="option_name"><?php _e('Enable WooCommerce Email Translation', 'gtranslate'); ?> (beta):</td>
-                        <td><input id="email_translation" name="email_translation" value="1" type="checkbox"/></td>
+                        <td class="option_name"><?php _e('Enable WooCommerce Email Translation', 'gtranslate'); ?>:</td>
+                        <td><input id="email_translation" name="email_translation" value="1" type="checkbox" onclick="RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/></td>
+                    </tr>
+                    <tr id="email_translation_debug_option" style="display:none;">
+                        <td class="option_name"><?php _e('Debug Email Translation', 'gtranslate'); ?>:</td>
+                        <td><input id="email_translation_debug" name="email_translation_debug" value="1" type="checkbox"/></td>
                     </tr>
                     <tr id="new_window_option" style="display:none;">
                         <td class="option_name"><?php _e('Open in new window', 'gtranslate'); ?>:</td>
                         <td><input id="new_window" name="new_window" value="1" type="checkbox" onclick="RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/></td>
-                    </tr>
-                    <tr>
-                        <td class="option_name"><?php _e('Analytics', 'gtranslate'); ?>:</td>
-                        <td><input id="analytics" name="analytics" value="1" type="checkbox" onclick="RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/></td>
                     </tr>
                     <tr id="auto_switch_option">
                         <td class="option_name"><?php _e('Auto switch to browser language', 'gtranslate'); ?>:</td>
@@ -1096,6 +1279,19 @@ EOT;
                             <option value="48">48px</option>
                         </select>
                         </td>
+                    </tr>
+                    <tr id="flag_style_option">
+                        <td class="option_name"><?php _e('Flag style', 'gtranslate'); ?>:</td>
+                        <td>
+                        <select id="flag_style"  name="flag_style" onchange="RefreshDoWidgetCode()">
+                            <option value="3d" selected>3D (.png)</option>
+                            <option value="2d">2D (.svg)</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr id="flag_monochrome_option">
+                        <td class="option_name"><?php _e('Monochrome flags', 'gtranslate'); ?>:</td>
+                        <td><input id="monochrome_flags" name="monochrome_flags" value="1" type="checkbox" onclick="RefreshDoWidgetCode()" onchange="RefreshDoWidgetCode()"/></td>
                     </tr>
                     <tr id="flag_languages_option" style="display:none;">
                         <td class="option_name" colspan="2"><div><?php _e('Flag languages', 'gtranslate'); ?>: <a onclick="jQuery('.connectedSortable1 input').attr('checked', true);RefreshDoWidgetCode()" style="cursor:pointer;text-decoration:underline;"><?php _e('Check All', 'gtranslate'); ?></a> | <a onclick="jQuery('.connectedSortable1 input').attr('checked', false);RefreshDoWidgetCode()" style="cursor:pointer;text-decoration:underline;"><?php _e('Uncheck All', 'gtranslate'); ?></a> <span style="float:right;"><b>HINT</b>: To reorder the languages simply drag and drop them in the list below.</span></div><br />
@@ -1163,6 +1359,16 @@ EOT;
             </div>
         </div>
 
+        <input type="hidden" name="switcher_text_color" id="switcher_text_color_hidden" value="<?php echo $switcher_text_color; ?>" />
+        <input type="hidden" name="switcher_arrow_color" id="switcher_arrow_color_hidden" value="<?php echo $switcher_arrow_color; ?>" />
+        <input type="hidden" name="switcher_border_color" id="switcher_border_color_hidden" value="<?php echo $switcher_border_color; ?>" />
+        <input type="hidden" name="switcher_background_color" id="switcher_background_color_hidden" value="<?php echo $switcher_background_color; ?>" />
+        <input type="hidden" name="switcher_background_shadow_color" id="switcher_background_shadow_color_hidden" value="<?php echo $switcher_background_shadow_color; ?>" />
+        <input type="hidden" name="switcher_background_hover_color" id="switcher_background_hover_color_hidden" value="<?php echo $switcher_background_hover_color; ?>" />
+        <input type="hidden" name="dropdown_text_color" id="dropdown_text_color_hidden" value="<?php echo $dropdown_text_color; ?>" />
+        <input type="hidden" name="dropdown_hover_color" id="dropdown_hover_color_hidden" value="<?php echo $dropdown_hover_color; ?>" />
+        <input type="hidden" name="dropdown_background_color" id="dropdown_background_color_hidden" value="<?php echo $dropdown_background_color; ?>" />
+
         <input type="hidden" id="language_codes_order" name="language_codes" value="<?php echo $language_codes; ?>" />
         <input type="hidden" id="language_codes_order2" name="language_codes2" value="<?php echo $language_codes2; ?>" />
         <?php wp_nonce_field('gtranslate-save'); ?>
@@ -1175,7 +1381,7 @@ EOT;
 
         </div>
 
-        <script type="text/javascript">
+        <script>
         function gt_validate_form() {
            if(document.getElementById('use_encoding').checked)
                document.getElementById('widget_code').value =  btoa(encodeURIComponent(document.getElementById('widget_code').value));
@@ -1192,6 +1398,78 @@ EOT;
                     <h3 id="settings"><?php _e('Widget preview', 'gtranslate'); ?></h3>
                     <div class="inside">
                         <div id="widget_preview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="poststuff" class="custom_domains_list" style="display:none;">
+                <div class="postbox">
+                    <h3 id="settings"><?php _e('Language hosting', 'gtranslate'); ?></h3>
+                    <div class="inside">
+                        <table id="custom_domains_list_tbl" style="width:100%;" cellpadding="0">
+                            <tr>
+                                <th><?php _e('Language', 'gtranslate'); ?></th>
+                                <th><?php _e('Domain', 'gtranslate'); ?></th>
+                            </tr>
+                            <?php
+                            if(isset($data['custom_domains_data']) and !empty($data['custom_domains_data'])) {
+                                $custom_domains_data = json_decode(stripslashes($data['custom_domains_data']), true);
+
+                                if(is_array($custom_domains_data))
+                                    foreach($custom_domains_data as $k => $v)
+                                        echo '<tr class="lang_domain_row"><td>'.esc_html($k).'</td><td>'.esc_html($v).'</td></tr>';
+                            }
+                            ?>
+                        </table>
+                        <br>
+                        <input type="button" class="button-secondary" value="Synchronize" onclick="SyncCustomDomains();RefreshDoWidgetCode();" title="<?php esc_attr_e('Synchronize custom domains with GTranslate dashboard: https://my.gtranslate.io', 'gtranslate'); ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div id="poststuff" class="switcher_color_options">
+                <div class="postbox">
+                    <h3 id="settings"><?php _e('Color options', 'gtranslate'); ?> ( <a href="#" onclick="return light_color_scheme()">light</a> | <a href="#" onclick="return dark_color_scheme()">dark</a> )</h3>
+                    <div class="inside">
+                        <table style="width:100%;" cellpadding="0">
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher text color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_text_color" id="switcher_text_color" class="color-field" value="#666" data-default-color="#666" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher arrow color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_arrow_color" id="switcher_arrow_color" class="color-field" value="#666" data-default-color="#666" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher border color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_border_color" id="switcher_border_color" class="color-field" value="#ccc" data-default-color="#ccc" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher background color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_background_color" id="switcher_background_color" class="color-field" value="#fff" data-default-color="#fff" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher background shadow color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_background_shadow_color" id="switcher_background_shadow_color" class="color-field" value="#fff" data-default-color="#efefef" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Switcher background hover color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="switcher_background_hover_color" id="switcher_background_hover_color" class="color-field" value="#f0f0f0" data-default-color="#f0f0f0" /></td>
+                            </tr>
+
+                            <tr>
+                                <td class="option_name"><?php _e('Dropdown text color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="dropdown_text_color" id="dropdown_text_color" class="color-field" value="#000" data-default-color="#000" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Dropdown hover color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="dropdown_hover_color" id="dropdown_hover_color" class="color-field" value="#fff" data-default-color="#fff" /></td>
+                            </tr>
+                            <tr>
+                                <td class="option_name"><?php _e('Dropdown background color', 'gtranslate'); ?>:</td>
+                                <td><input type="text" name="dropdown_background_color" id="dropdown_background_color" class="color-field" value="#eee" data-default-color="#eee" /></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1214,8 +1492,6 @@ EOT;
                             <li style="margin:0;"><?php _e('Works in China', 'gtranslate'); ?></li>
                             <li style="margin:0;"><?php _e('Priority Live Chat support', 'gtranslate'); ?></li>
                         </ul>
-
-                        <p><?php _e('Prices starting from <b>$7.99/month</b>!', 'gtranslate'); ?></p>
 
                         <a href="https://gtranslate.io/?xyz=998#pricing" target="_blank" class="button-primary"><?php _e('Try Now (15 days free)', 'gtranslate'); ?></a> <a href="https://gtranslate.io/?xyz=998#faq" target="_blank" class="button-primary"><?php _e('FAQ', 'gtranslate'); ?></a> <a href="https://gtranslate.io/website-translation-quote" target="_blank" class="button-primary"><?php _e('Website Translation Quote', 'gtranslate'); ?></a> <a href="https://gtranslate.io/?xyz=998#contact" target="_blank" class="button-primary"><?php _e('Live Chat', 'gtranslate'); ?></a>
                     </div>
@@ -1246,17 +1522,33 @@ EOT;
                 <div class="postbox">
                     <h3 id="settings"><?php _e('Useful links', 'gtranslate'); ?></h3>
                     <div class="inside">
-                        <ul style="list-style-type:square;padding-left:20px;">
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/videos" target="_blank"><?php _e('Videos', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://docs.gtranslate.io/how-tos" target="_blank"><?php _e('How-tos', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/blog" target="_blank"><?php _e('Blog', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/about-us" target="_blank"><?php _e('About GTranslate team', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/?xyz=998#faq" target="_blank"><?php _e('FAQ', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://my.gtranslate.io/" target="_blank"><?php _e('User dashboard', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/?xyz=998#pricing" target="_blank"><?php _e('Compare plans', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://gtranslate.io/website-translation-quote" target="_blank"><?php _e('Website Translation Quote', 'gtranslate'); ?></a></li>
-                            <li style="margin:0;"><a style="text-decoration:none;" href="https://wordpress.org/support/plugin/gtranslate/reviews/" target="_blank"><?php _e('Reviews', 'gtranslate'); ?></a></li>
-                        </ul>
+                        <style>
+                        ul.useful_links_list {list-style-type:square;padding-left:20px;margin:0;}
+                        ul.useful_links_list li {margin:0;}
+                        ul.useful_links_list li a {text-decoration:none;}
+                        </style>
+                        <table style="width:100%;" cellpadding="4">
+                            <tr>
+                                <td>
+                                    <ul class="useful_links_list">
+                                        <li><a href="https://gtranslate.io/videos" target="_blank"><?php _e('Videos', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://docs.gtranslate.io/how-tos" target="_blank"><?php _e('How-tos', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/blog" target="_blank"><?php _e('Blog', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/about-us" target="_blank"><?php _e('About GTranslate team', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/?xyz=998#faq" target="_blank"><?php _e('FAQ', 'gtranslate'); ?></a></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="useful_links_list">
+                                        <li><a href="https://my.gtranslate.io/" target="_blank"><?php _e('User dashboard', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/?xyz=998#pricing" target="_blank"><?php _e('Compare plans', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/website-translation-quote" target="_blank"><?php _e('Website Translation Quote', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://gtranslate.io/detect-browser-language" target="_blank"><?php _e('Detect browser language', 'gtranslate'); ?></a></li>
+                                        <li><a href="https://wordpress.org/support/plugin/gtranslate/reviews/" target="_blank"><?php _e('Reviews', 'gtranslate'); ?></a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1281,8 +1573,14 @@ EOT;
             </div>
         </div>
 
-        <script type="text/javascript"><?php echo $script; ?></script>
-        <style type="text/css">
+        <script><?php echo $script; ?></script>
+        <style>
+        #widget_preview a:focus {box-shadow:none;outline:none;}
+        #custom_domains_list_tbl th {text-align:left;}
+        #custom_domains_list_tbl td {padding:5px 0;}
+        .switcher_color_options button {box-shadow:none !important;border:1px solid #b4b9be !important;border-radius:0 !important;}
+        .switcher_color_options h3 a {text-decoration:none;font-weight:400;}
+        .switcher_color_options h3 a:hover {text-decoration:underline;}
         .postbox #settings {padding-left:12px;}
         .og_left_col {      width: 59%;     }
         .og_right_col {     width: 39%;     float: right;       }
@@ -1300,6 +1598,12 @@ EOT;
 
         .connectedSortable1, .connectedSortable1 li, .connectedSortable2, .connectedSortable2 li {margin:0;padding:0;}
         .connectedSortable1 li label, .connectedSortable2 li label {cursor:move;}
+
+        @keyframes gt-icon-spin-animation {
+            0% {transform:rotate(0deg);}
+            100% {transform:rotate(359deg);}
+        }
+        .gt-icon-spin {animation:gt-icon-spin-animation 2s infinite linear;}
         </style>
 
         <script>window.intercomSettings = {app_id: "r70azrgx", 'platform': 'wordpress', 'translate_from': '<?php echo $default_language; ?>', 'is_sub_directory': <?php echo (empty($pro_version) ? '0' : '1'); ?>, 'is_sub_domain': <?php echo (empty($enterprise_version) ? '0' : '1'); ?>};(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/r70azrgx';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
@@ -1311,26 +1615,43 @@ EOT;
         check_admin_referer('gtranslate-save');
 
         $data = get_option('GTranslate');
+        if(!is_array($data))
+            GTranslate::load_defaults($data);
 
         $data['pro_version'] = isset($_POST['pro_version']) ? intval($_POST['pro_version']) : '';
         $data['enterprise_version'] = isset($_POST['enterprise_version']) ? intval($_POST['enterprise_version']) : '';
+        $data['custom_domains'] = isset($_POST['custom_domains']) ? intval($_POST['custom_domains']) : '';
+        $data['custom_domains_data'] = isset($_POST['custom_domains_data']) ? sanitize_text_field($_POST['custom_domains_data']) : '';
         $data['url_translation'] = isset($_POST['url_translation']) ? intval($_POST['url_translation']) : '';
         $data['add_hreflang_tags'] = isset($_POST['add_hreflang_tags']) ? intval($_POST['add_hreflang_tags']) : '';
         $data['email_translation'] = isset($_POST['email_translation']) ? intval($_POST['email_translation']) : '';
+        $data['email_translation_debug'] = isset($_POST['email_translation_debug']) ? intval($_POST['email_translation_debug']) : '';
         $data['new_window'] = isset($_POST['new_window']) ? intval($_POST['new_window']) : '';
         $data['show_in_menu'] = isset($_POST['show_in_menu']) ? sanitize_text_field($_POST['show_in_menu']) : '';
         $data['floating_language_selector'] = isset($_POST['floating_language_selector']) ? sanitize_text_field($_POST['floating_language_selector']) : 'no';
         $data['native_language_names'] = isset($_POST['native_language_names']) ? intval($_POST['native_language_names']) : '';
-        $data['analytics'] = isset($_POST['analytics']) ? intval($_POST['analytics']) : '';
         $data['detect_browser_language'] = isset($_POST['detect_browser_language']) ? intval($_POST['detect_browser_language']) : '';
         $data['add_new_line'] = isset($_POST['add_new_line']) ? intval($_POST['add_new_line']) : '';
         $data['default_language'] = isset($_POST['default_language']) ? sanitize_text_field($_POST['default_language']) : 'en';
         $data['translation_method'] = 'onfly';
         $data['widget_look'] = isset($_POST['widget_look']) ? sanitize_text_field($_POST['widget_look']) : 'flags_dropdown';
         $data['flag_size'] = isset($_POST['flag_size']) ? intval($_POST['flag_size']) : '16';
+        $data['flag_style'] = isset($_POST['flag_style']) ? sanitize_text_field($_POST['flag_style']) : '3d';
+        $data['monochrome_flags'] = isset($_POST['monochrome_flags']) ? intval($_POST['monochrome_flags']) : '';
         $data['incl_langs'] = (isset($_POST['incl_langs']) and is_array($_POST['incl_langs'])) ? $_POST['incl_langs'] : array($data['default_language']);
         $data['fincl_langs'] = (isset($_POST['fincl_langs']) and is_array($_POST['fincl_langs'])) ? $_POST['fincl_langs'] : array($data['default_language']);
         $data['alt_flags'] = (isset($_POST['alt_flags']) and is_array($_POST['alt_flags'])) ? $_POST['alt_flags'] : array();
+
+        $data['switcher_text_color'] = isset($_POST['switcher_text_color']) ? $_POST['switcher_text_color'] : '#666';
+        $data['switcher_arrow_color'] = isset($_POST['switcher_arrow_color']) ? $_POST['switcher_arrow_color'] : '#666';
+        $data['switcher_border_color'] = isset($_POST['switcher_border_color']) ? $_POST['switcher_border_color'] : '#ccc';
+        $data['switcher_background_color'] = isset($_POST['switcher_background_color']) ? $_POST['switcher_background_color'] : '#fff';
+        $data['switcher_background_shadow_color'] = isset($_POST['switcher_background_shadow_color']) ? $_POST['switcher_background_shadow_color'] : '#efefef';
+        $data['switcher_background_hover_color'] = isset($_POST['switcher_background_color']) ? $_POST['switcher_background_hover_color'] : '#f0f0f0';
+        $data['dropdown_text_color'] = isset($_POST['dropdown_text_color']) ? $_POST['dropdown_text_color'] : '#000';
+        $data['dropdown_hover_color'] = isset($_POST['dropdown_hover_color']) ? $_POST['dropdown_hover_color'] : '#fff'; // #ffc
+        $data['dropdown_background_color'] = isset($_POST['dropdown_background_color']) ? $_POST['dropdown_background_color'] : '#eee';
+
         $data['language_codes'] = (isset($_POST['language_codes']) and !empty($_POST['language_codes'])) ? sanitize_text_field($_POST['language_codes']) : 'af,sq,ar,hy,az,eu,be,bg,ca,zh-CN,zh-TW,hr,cs,da,nl,en,et,tl,fi,fr,gl,ka,de,el,ht,iw,hi,hu,is,id,ga,it,ja,ko,lv,lt,mk,ms,mt,no,fa,pl,pt,ro,ru,sr,sk,sl,es,sw,sv,th,tr,uk,ur,vi,cy,yi';
         $data['language_codes2'] = (isset($_POST['language_codes2']) and !empty($_POST['language_codes2'])) ? sanitize_text_field($_POST['language_codes2']) : 'af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ceb,ny,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,tl,fi,fr,fy,gl,ka,de,el,gu,ht,ha,haw,iw,hi,hmn,hu,is,ig,id,ga,it,ja,jw,kn,kk,km,ko,ku,ky,lo,la,lv,lt,lb,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,th,tr,uk,ur,uz,vi,cy,xh,yi,yo,zu';
 
@@ -1367,7 +1688,7 @@ EOT;
 
             // update main_lang in config.php
             $config_file = dirname(__FILE__) . '/url_addon/config.php';
-            if(is_writable($config_file)) {
+            if(is_readable($config_file) and is_writable($config_file)) {
                 $config = file_get_contents($config_file);
                 $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.$data['default_language'].'\'', $config);
                 file_put_contents($config_file, $config);
@@ -1381,16 +1702,21 @@ EOT;
     }
 
     public static function load_defaults(& $data) {
+        if(!is_array($data))
+            $data = array();
+
         $data['pro_version'] = isset($data['pro_version']) ? $data['pro_version'] : '';
         $data['enterprise_version'] = isset($data['enterprise_version']) ? $data['enterprise_version'] : '';
+        $data['custom_domains'] = isset($data['custom_domains']) ? $data['custom_domains'] : '';
+        $data['custom_domains_data'] = isset($data['custom_domains_data']) ? $data['custom_domains_data'] : '';
         $data['url_translation'] = isset($data['url_translation']) ? $data['url_translation'] : '';
         $data['add_hreflang_tags'] = isset($data['add_hreflang_tags']) ? $data['add_hreflang_tags'] : '';
         $data['email_translation'] = isset($data['email_translation']) ? $data['email_translation'] : '';
+        $data['email_translation_debug'] = isset($data['email_translation_debug']) ? $data['email_translation_debug'] : '';
         $data['new_window'] = isset($data['new_window']) ? $data['new_window'] : '';
         $data['show_in_menu'] = isset($data['show_in_menu']) ? $data['show_in_menu'] : ((isset($data['show_in_primary_menu']) and $data['show_in_primary_menu'] == 1) ? 'primary' : '');
         $data['floating_language_selector'] = isset($data['floating_language_selector']) ? $data['floating_language_selector'] : 'no';
         $data['native_language_names'] = isset($data['native_language_names']) ? $data['native_language_names'] : '';
-        $data['analytics'] = isset($data['analytics']) ? $data['analytics'] : '';
         $data['detect_browser_language'] = isset($data['detect_browser_language']) ? $data['detect_browser_language'] : '';
         $data['add_new_line'] = isset($data['add_new_line']) ? $data['add_new_line'] : '1';
 
@@ -1405,10 +1731,23 @@ EOT;
 
         $data['widget_look'] = isset($data['widget_look']) ? $data['widget_look'] : 'dropdown_with_flags';
         $data['flag_size'] = isset($data['flag_size']) ? $data['flag_size'] : '24';
+        $data['flag_style'] = isset($data['flag_style']) ? $data['flag_style'] : '3d';
+        $data['monochrome_flags'] = isset($data['monochrome_flags']) ? $data['monochrome_flags'] : '';
         $data['widget_code'] = isset($data['widget_code']) ? $data['widget_code'] : '';
         $data['incl_langs'] = isset($data['incl_langs']) ? $data['incl_langs'] : array('en', 'es', 'it', 'pt', 'de', 'fr', 'ru', 'nl', 'ar', 'zh-CN');
         $data['fincl_langs'] = isset($data['fincl_langs']) ? $data['fincl_langs'] : array('en', 'es', 'it', 'pt', 'de', 'fr', 'ru', 'nl', 'ar', 'zh-CN');
         $data['alt_flags'] = isset($data['alt_flags']) ? $data['alt_flags'] : array();
+
+        $data['switcher_text_color'] = isset($data['switcher_text_color']) ? $data['switcher_text_color'] : '#666';
+        $data['switcher_arrow_color'] = isset($data['switcher_arrow_color']) ? $data['switcher_arrow_color'] : '#666';
+        $data['switcher_border_color'] = isset($data['switcher_border_color']) ? $data['switcher_border_color'] : '#ccc';
+        $data['switcher_background_color'] = isset($data['switcher_background_color']) ? $data['switcher_background_color'] : '#fff';
+        $data['switcher_background_shadow_color'] = isset($data['switcher_background_shadow_color']) ? $data['switcher_background_shadow_color'] : '#efefef';
+        $data['switcher_background_hover_color'] = isset($data['switcher_background_hover_color']) ? $data['switcher_background_hover_color'] : '#fff';
+        $data['dropdown_text_color'] = isset($data['dropdown_text_color']) ? $data['dropdown_text_color'] : '#000';
+        $data['dropdown_hover_color'] = isset($data['dropdown_hover_color']) ? $data['dropdown_hover_color'] : '#fff'; // #ffc
+        $data['dropdown_background_color'] = isset($data['dropdown_background_color']) ? $data['dropdown_background_color'] : '#eee';
+
         $data['language_codes'] = (isset($data['language_codes']) and !empty($data['language_codes'])) ? $data['language_codes'] : 'af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ceb,ny,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,tl,fi,fr,fy,gl,ka,de,el,gu,ht,ha,haw,iw,hi,hmn,hu,is,ig,id,ga,it,ja,jw,kn,kk,km,ko,ku,ky,lo,la,lv,lt,lb,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,th,tr,uk,ur,uz,vi,cy,xh,yi,yo,zu';
         $data['language_codes2'] = (isset($data['language_codes2']) and !empty($data['language_codes2'])) ? $data['language_codes2'] : 'af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ceb,ny,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,tl,fi,fr,fy,gl,ka,de,el,gu,ht,ha,haw,iw,hi,hmn,hu,is,ig,id,ga,it,ja,jw,kn,kk,km,ko,ku,ky,lo,la,lv,lt,lb,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,th,tr,uk,ur,uz,vi,cy,xh,yi,yo,zu';
 
@@ -1457,7 +1796,7 @@ class GTranslateWidget extends WP_Widget {
             $allowed_languages = json_encode($allowed_languages);
 
             echo "<script>jQuery(document).ready(function() {";
-            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
+            echo "var allowed_languages = $allowed_languages;var accept_language = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();switch(accept_language) {case 'zh-cn': var preferred_language = 'zh-CN'; break;case 'zh': var preferred_language = 'zh-CN'; break;case 'zh-tw': var preferred_language = 'zh-TW'; break;case 'zh-hk': var preferred_language = 'zh-TW'; break;case 'he': var preferred_language = 'iw'; break;default: var preferred_language = accept_language.substr(0, 2); break;}if(preferred_language != '".$data['default_language']."' && GTranslateGetCurrentLang() == null && document.cookie.match('gt_auto_switch') == null && allowed_languages.indexOf(preferred_language) >= 0){doGTranslate('".$data['default_language']."|'+preferred_language);document.cookie = 'gt_auto_switch=1; expires=Thu, 05 Dec 2030 08:08:08 UTC; path=/;';";
             if($data['widget_look'] == 'dropdown_with_flags') {
                 echo "var lang_html = jQuery('div.switcher div.option').find('img[alt=\"'+preferred_language+'\"]').parent().html();if(typeof lang_html != 'undefined')jQuery('div.switcher div.selected a').html(lang_html.replace('data-gt-lazy-', ''));";
             } elseif($data['widget_look'] == 'popup') {
@@ -1697,7 +2036,7 @@ class GTranslate_Notices {
 
     public function gt_admin_notices() {
 
-        $deactivate_plugins= array('WP Translator' => 'wptranslator/WPTranslator.php', 'TranslatePress' => 'translatepress-multilingual/index.php', 'Google Language Translator' => 'google-language-translator/google-language-translator.php', 'Google Website Translator' => 'google-website-translator/google-website-translator.php', 'Weglot' => 'weglot/weglot.php', 'TransPosh' => 'transposh-translation-filter-for-wordpress/transposh.php');
+        $deactivate_plugins= array('WP Translator' => 'wptranslator/WPTranslator.php', 'TranslatePress' => 'translatepress-multilingual/index.php', 'Google Language Translator' => 'google-language-translator/google-language-translator.php', 'Google Website Translator' => 'google-website-translator/google-website-translator.php', 'Weglot' => 'weglot/weglot.php', 'TransPosh' => 'transposh-translation-filter-for-wordpress/transposh.php', 'Advanced Google Translate' => 'advanced-google-translate/advanced-google-translate.php', 'My WP Translate' => 'my-wp-translate/my-wp-translate.php', 'WPML Multilingual CMS' => 'sitepress-multilingual-cms/sitepress.php');
         foreach($deactivate_plugins as $name => $plugin_file) {
             if(is_plugin_active($plugin_file)) {
                 $deactivate_link = wp_nonce_url('plugins.php?action=deactivate&amp;plugin='.urlencode($plugin_file ).'&amp;plugin_status=all&amp;paged=1&amp;s=', 'deactivate-plugin_' . $plugin_file);
@@ -1740,6 +2079,35 @@ class GTranslate_Notices {
 
         $data = get_option('GTranslate');
         GTranslate::load_defaults($data);
+
+        // check if email debug is on and add a notice
+        if($data['email_translation_debug']) {
+            $settings_link = admin_url('options-general.php?page=gtranslate_options');
+            $view_debug_link = admin_url('plugin-editor.php?file=gtranslate%2Furl_addon%2Fdebug.txt&plugin=gtranslate%2Fgtranslate.php');
+            $notices['gt_debug_notice'] = array(
+                'title' => __('Email translation debug mode is ON.', 'gtranslate'),
+                'msg' => __('Please note that sensitive information can be written into gtranslate/url_addon/debug.txt file, which can be accessed publicly. It is your responsibility to deny public access to it and clean debug information after you are done.', 'gtranslate'),
+                'link' => '<li><span class="dashicons dashicons-admin-settings"></span><a href="'.$settings_link.'">' . __('GTranslate Settings', 'gtranslate') . '</a></li>' .
+                          '<li><span class="dashicons dashicons-visibility"></span><a href="'.$view_debug_link.'">' . __('View debug.txt', 'gtranslate') . '</a></li>',
+                'dismissible' => false,
+                'int' => 0
+            );
+        }
+
+        // check if translation debug is on and add a notice
+        include dirname(__FILE__) . '/url_addon/config.php';
+        if($debug) {
+            $edit_file_link = admin_url('plugin-editor.php?file=gtranslate%2Furl_addon%2Fconfig.php&plugin=gtranslate%2Fgtranslate.php');
+            $view_debug_link = admin_url('plugin-editor.php?file=gtranslate%2Furl_addon%2Fdebug.txt&plugin=gtranslate%2Fgtranslate.php');
+            $notices['gt_debug_notice'] = array(
+                'title' => __('Translation debug mode is ON.', 'gtranslate'),
+                'msg' => __('Please note that sensitive information can be written into gtranslate/url_addon/debug.txt file, which can be accessed publicly. It is your responsibility to deny public access to it and clean debug information after you are done.', 'gtranslate'),
+                'link' => '<li><span class="dashicons dashicons-edit"></span><a href="'.$edit_file_link.'">' . __('Edit config.php', 'gtranslate') . '</a></li>' .
+                          '<li><span class="dashicons dashicons-visibility"></span><a href="'.$view_debug_link.'">' . __('View debug.txt', 'gtranslate') . '</a></li>',
+                'dismissible' => false,
+                'int' => 0
+            );
+        }
 
         $upgrade_tips_ignore = esc_url(add_query_arg(array($this->prefix . '_admin_notice_ignore' => 'upgrade_tips')));
         $upgrade_tips_temp = esc_url(add_query_arg(array($this->prefix . '_admin_notice_temp_ignore' => 'upgrade_tips', 'gt_int' => 7)));
@@ -1816,7 +2184,12 @@ GTranslate::load_defaults($data);
 
 if($data['pro_version']) { // gtranslate redirect rules with PHP (for environments with no .htaccess support (pantheon, flywheel, etc.), usually .htaccess rules override this)
 
-    @list($request_uri, $query_params) = explode('?', $_SERVER['REQUEST_URI']);
+    $url_params = explode('?', $_SERVER['REQUEST_URI']);
+    $request_uri = $url_params[0];
+    if(isset($url_params[1]))
+        $query_params = $url_params[1];
+    else
+        $query_params = '';
 
     if(preg_match('/^\/(af|sq|am|ar|hy|az|eu|be|bn|bs|bg|ca|ceb|ny|zh-CN|zh-TW|co|hr|cs|da|nl|en|eo|et|tl|fi|fr|fy|gl|ka|de|el|gu|ht|ha|haw|iw|hi|hmn|hu|is|ig|id|ga|it|ja|jw|kn|kk|km|ko|ku|ky|lo|la|lv|lt|lb|mk|mg|ms|ml|mt|mi|mr|mn|my|ne|no|ps|fa|pl|pt|pa|ro|ru|sm|gd|sr|st|sn|sd|si|sk|sl|so|es|su|sw|sv|tg|ta|te|th|tr|uk|ur|uz|vi|cy|xh|yi|yo|zu)\/(af|sq|am|ar|hy|az|eu|be|bn|bs|bg|ca|ceb|ny|zh-CN|zh-TW|co|hr|cs|da|nl|en|eo|et|tl|fi|fr|fy|gl|ka|de|el|gu|ht|ha|haw|iw|hi|hmn|hu|is|ig|id|ga|it|ja|jw|kn|kk|km|ko|ku|ky|lo|la|lv|lt|lb|mk|mg|ms|ml|mt|mi|mr|mn|my|ne|no|ps|fa|pl|pt|pa|ro|ru|sm|gd|sr|st|sn|sd|si|sk|sl|so|es|su|sw|sv|tg|ta|te|th|tr|uk|ur|uz|vi|cy|xh|yi|yo|zu)\/(.*)$/', $request_uri, $matches)) {
         header('Location: ' . '/' . $matches[1] . '/' . $matches[3] . (empty($query_params) ? '' : '?'.$query_params), true, 301);
@@ -1864,7 +2237,7 @@ if(!empty($data['show_in_menu'])) {
                 $items .= '</li>';
 
                 if($data['widget_look'] == 'flags_dropdown') {
-                    $items .= '<style type="text/css">.menu-item-gtranslate a {display:inline !important;padding:0 !important;margin:0 !important;}</style>';
+                    $items .= '<style>.menu-item-gtranslate a {display:inline !important;padding:0 !important;margin:0 !important;}</style>';
                 }
 
             } else {
@@ -1928,7 +2301,7 @@ if($data['pro_version'] or $data['enterprise_version']) {
         add_action('admin_head', 'gtranslate_request_uri_var');
 
     function gtranslate_request_uri_var() {
-        echo "<script type='text/javascript'>var gt_request_uri = '".addslashes($_SERVER['REQUEST_URI'])."';</script>";
+        echo "<script>var gt_request_uri = '".addslashes(esc_url_raw($_SERVER['REQUEST_URI']))."';</script>";
     }
 }
 
@@ -1959,29 +2332,36 @@ if($data['add_hreflang_tags'] and ($data['pro_version'] or $data['enterprise_ver
         if($current_url !== false) {
             // adding default language
             if($data['default_language'] === 'iw')
-                echo '<link rel="alternate" hreflang="he" href="'.$current_url.'" />'."\n";
+                echo '<link rel="alternate" hreflang="he" href="'.esc_url($current_url).'" />'."\n";
             elseif($data['default_language'] === 'jw')
-                echo '<link rel="alternate" hreflang="jv" href="'.$current_url.'" />'."\n";
+                echo '<link rel="alternate" hreflang="jv" href="'.esc_url($current_url).'" />'."\n";
             else
-                echo '<link rel="alternate" hreflang="'.$data['default_language'].'" href="'.$current_url.'" />'."\n";
+                echo '<link rel="alternate" hreflang="'.$data['default_language'].'" href="'.esc_url($current_url).'" />'."\n";
 
             // adding enabled languages
             foreach($enabled_languages as $lang) {
                 $href = '';
                 $domain = str_replace('www.', '', $_SERVER['HTTP_HOST']);
 
-                if($data['enterprise_version'])
-                    $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $lang . '.' . $domain, $current_url);
-                elseif($data['pro_version'])
+                if($data['enterprise_version']) {
+                    if($data['custom_domains'] and !empty($data['custom_domains_data'])) {
+                        $custom_domains_data = json_decode(stripslashes($data['custom_domains_data']), true);
+                        if(isset($custom_domains_data[$lang]))
+                            $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $custom_domains_data[$lang], $current_url);
+                        else
+                            $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $lang . '.' . $domain, $current_url);
+                    } else
+                        $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $lang . '.' . $domain, $current_url);
+                } elseif($data['pro_version'])
                     $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $_SERVER['HTTP_HOST'] . '/' . $lang, $current_url);
 
                 if(!empty($href) and $lang != $data['default_language']) {
                     if($lang === 'iw')
-                        echo '<link rel="alternate" hreflang="he" href="'.$href.'" />'."\n";
+                        echo '<link rel="alternate" hreflang="he" href="'.esc_url($href).'" />'."\n";
                     elseif($lang === 'jw')
-                        echo '<link rel="alternate" hreflang="jv" href="'.$href.'" />'."\n";
+                        echo '<link rel="alternate" hreflang="jv" href="'.esc_url($href).'" />'."\n";
                     else
-                        echo '<link rel="alternate" hreflang="'.$lang.'" href="'.$href.'" />'."\n";
+                        echo '<link rel="alternate" hreflang="'.$lang.'" href="'.esc_url($href).'" />'."\n";
                 }
             }
         }
@@ -2043,7 +2423,9 @@ if(($data['pro_version'] or $data['enterprise_version']) and $data['detect_brows
         $accept_language = $_GET['gt_auto_switch_to'];
 
     if($accept_language == 'zh')
-        $accept_language == 'zh-CN';
+        $accept_language = 'zh-CN';
+    elseif($accept_language == 'he')
+        $accept_language = 'iw';
 
     if($accept_language != $data['default_language'] and in_array($accept_language, $allowed_languages) and !isset($_COOKIE['gt_auto_switch'])) {
         // set cookie for 30 days and redirect
@@ -2051,10 +2433,20 @@ if(($data['pro_version'] or $data['enterprise_version']) and $data['detect_brows
 
         if($data['pro_version'])
             header('Location: ' . home_url() . '/' . $accept_language . '/');
-        if($data['enterprise_version'] and isset($_SERVER['HTTP_HOST']))
-            header('Location: ' . str_replace('://'.$_SERVER['HTTP_HOST'], '://'.$accept_language.'.'.preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']), site_url()));
 
-        // todo: special redirect for language hosting
+        if($data['enterprise_version'] and isset($_SERVER['HTTP_HOST'])) {
+            if($data['custom_domains'] and !empty($data['custom_domains_data'])) {
+                $custom_domains_data = json_decode(stripslashes($data['custom_domains_data']), true);
+                if(isset($custom_domains_data[$accept_language]))
+                    $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $custom_domains_data[$accept_language], site_url());
+                else
+                    $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $accept_language . '.' . preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']), site_url());
+            } else
+                $href = str_ireplace('://' . $_SERVER['HTTP_HOST'], '://' . $accept_language . '.' . preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']), site_url());
+            header('Location: ' . $href);
+        }
+
+        header('Vary: Accept-Language');
 
         exit;
     }
@@ -2133,7 +2525,7 @@ if($data['pro_version'] or $data['enterprise_version']) {
                 $json = $jsons[$i];
                 $js = $jss[$i];
 
-                $return .= "<script id='$attribute_id' type='application/json'>$json</script>\n<script type='text/javascript'>$js</script>\n";
+                $return .= "<script id='$attribute_id' type='application/json'>$json</script>\n<script>$js</script>\n";
             }
 
             return $return . $tag;
@@ -2148,8 +2540,8 @@ if($data['pro_version'] or $data['enterprise_version']) {
             case 'wc-address-i18n': {
                 $data['gt_translate_keys'] = array(
                     array('key' => 'locale', 'format' => 'json'),
-                    'i18n_required_text',
-                    'i18n_optional_text',
+                    array('key' => 'i18n_required_text', 'format' => 'text'),
+                    array('key' => 'i18n_optional_text', 'format' => 'html'),
                 );
 
                 $locale = json_decode($data['locale']);
@@ -2190,6 +2582,10 @@ if($data['pro_version'] or $data['enterprise_version']) {
                 $data['locale'] = json_encode($locale);
             } break;
 
+            case 'wc-single-product': {
+                $data['gt_translate_keys'] = array('i18n_required_rating_text');
+            } break;
+
             case 'wc-checkout': {
                 $data['gt_translate_keys'] = array('i18n_checkout_error');
             } break;
@@ -2200,6 +2596,10 @@ if($data['pro_version'] or $data['enterprise_version']) {
 
             case 'wc-add-to-cart': {
                 $data['gt_translate_keys'] = array('i18n_view_cart', array('key' => 'cart_url', 'format' => 'url'));
+            } break;
+
+            case 'wc-add-to-cart-variation': {
+                $data['gt_translate_keys'] = array('i18n_no_matching_variations_text', 'i18n_make_a_selection_text', 'i18n_unavailable_text');
             } break;
 
             case 'wc-password-strength-meter': {
@@ -2221,11 +2621,7 @@ if($data['pro_version'] or $data['enterprise_version']) {
         return $false;
     }
 
-    //add_action('wp_print_scripts', 'gtranslate_filter_l10n_scripts', 1);
-    //add_action('wp_print_header_scripts', 'gtranslate_filter_l10n_scripts', 1);
-    //add_action('wp_print_footer_scripts', 'gtranslate_filter_l10n_scripts', 1);
-
-    add_filter('script_loader_tag', 'gtranslate_add_script_attributes', 100, 2);
+    //add_filter('script_loader_tag', 'gtranslate_add_script_attributes', 100, 2);
 
     add_filter('woocommerce_get_script_data', 'gt_filter_woocommerce_scripts_data', 10, 2 );
 
@@ -2242,6 +2638,9 @@ if($data['pro_version'] or $data['enterprise_version']) {
 
                 // translate woocommerce
                 if(strpos($message, 'woocommerce') !== false) {
+                    $data = get_option('GTranslate');
+                    GTranslate::load_defaults($data);
+
                     include dirname(__FILE__) . '/url_addon/config.php';
                     $server_id = intval(substr(md5(preg_replace('/^www\./', '', $_SERVER['HTTP_HOST'])), 0, 5), 16) % count($servers);
                     $server = $servers[$server_id];
@@ -2261,12 +2660,11 @@ if($data['pro_version'] or $data['enterprise_version']) {
                         $viewer_ip_address = $_SERVER['REMOTE_ADDR'];
 
                     $headers[] = 'X-GT-Viewer-IP: ' . $viewer_ip_address;
+                    $headers[] = 'User-Agent: GTranslate-Email-Translate';
 
                     // add X-Forwarded-For
                     if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) and !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
                         $headers[] = 'X-GT-Forwarded-For: ' . $_SERVER['HTTP_X_FORWARDED_FOR'];
-
-                    //file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Request URL: ' . $protocol.'://'.$server.'.tdn.gtranslate.net'.wp_make_link_relative(plugins_url('gtranslate/url_addon/gtranslate-email.php')) . "\n", FILE_APPEND);
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $protocol.'://'.$server.'.tdn.gtranslate.net'.wp_make_link_relative(plugins_url('gtranslate/url_addon/gtranslate-email.php').'?glang='.$_SERVER['HTTP_X_GT_LANG']));
@@ -2274,12 +2672,12 @@ if($data['pro_version'] or $data['enterprise_version']) {
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
                     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+                    if(defined('CURL_IPRESOLVE_V4')) curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
                     curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . '/url_addon/cacert.pem');
                     curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, array('body' => do_shortcode("<subject>$subject</subject><message>$message</message>"), 'access_key' => md5(substr(NONCE_SALT, 0, 10) . substr(NONCE_KEY, 0, 5))));
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, array('body' => base64_encode(do_shortcode("<subject>$subject</subject><message>$message</message>")), 'access_key' => md5(substr(NONCE_SALT, 0, 10) . substr(NONCE_KEY, 0, 5))));
 
-                    // Debug
-                    if(false) {
+                    if($data['email_translation_debug']) {
                         $fh = fopen(dirname(__FILE__) . '/url_addon/debug.txt', 'a');
                         curl_setopt($ch, CURLOPT_VERBOSE, true);
                         curl_setopt($ch, CURLOPT_STDERR, $fh);
@@ -2289,10 +2687,20 @@ if($data['pro_version'] or $data['enterprise_version']) {
                     $response_info = curl_getinfo($ch);
                     curl_close($ch);
 
-                    //file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Response: ' . $response . "\n", FILE_APPEND);
-                    //file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Response_info: ' . print_r($response_info, true) . "\n", FILE_APPEND);
+                    if($data['email_translation_debug']) {
+                        file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Response: ' . $response . "\n", FILE_APPEND);
+                        file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Response_info: ' . print_r($response_info, true) . "\n", FILE_APPEND);
+                    }
 
                     if(isset($response_info['http_code']) and $response_info['http_code'] == 200) {
+                        $response = json_decode($response, true);
+                        if(empty($response))
+                            return $args;
+
+                        $response = base64_decode($response['email-body']);
+                        if($response === false)
+                            return $args;
+
                         if($data['pro_version'])
                             $response = str_ireplace($host, $_SERVER['HTTP_HOST'] . '/' . $_SERVER['HTTP_X_GT_LANG'], $response);
 
@@ -2303,8 +2711,10 @@ if($data['pro_version'] or $data['enterprise_version']) {
                             $subject = $matches[1][0];
                             $message = $matches[2][0];
 
-                            //file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Translated Subject: ' . $subject . "\n", FILE_APPEND);
-                            //file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Translated Message: ' . $message . "\n", FILE_APPEND);
+                            if($data['email_translation_debug']) {
+                                file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Translated Subject: ' . $subject . "\n", FILE_APPEND);
+                                file_put_contents(dirname(__FILE__) . '/url_addon/debug.txt', 'Translated Message: ' . $message . "\n", FILE_APPEND);
+                            }
 
                             $args['subject'] = $subject;
                             $args['message'] = $message;
@@ -2316,19 +2726,44 @@ if($data['pro_version'] or $data['enterprise_version']) {
             return $args;
         }
 
-        add_filter('wp_mail', 'gt_translate_emails', 10, 1);
+        add_filter('wp_mail', 'gt_translate_emails', 10000, 1);
     }
 }
 
 if($data['enterprise_version']) {
     // solve wp_get_referer issue
     function gt_allowed_redirect_hosts($hosts) {
-        $gt_hosts = array();
+        $data = get_option('GTranslate');
+        GTranslate::load_defaults($data);
+
+        if($data['custom_domains'] and !empty($data['custom_domains_data'])) {
+            $custom_domains_data = json_decode(stripslashes($data['custom_domains_data']), true);
+            $gt_hosts = array_values($custom_domains_data);
+        } else {
+            $gt_hosts = array();
+        }
+
         if(isset($_SERVER['HTTP_X_GT_LANG']))
-            $gt_hosts[] = $_SERVER['HTTP_X_GT_LANG'] . '.' . str_replace('www.', '', $_SERVER['HTTP_HOST']);
+            $gt_hosts[] = $_SERVER['HTTP_X_GT_LANG'] . '.' . preg_replace('/^www\./', '', $_SERVER['HTTP_HOST']);
 
         return array_merge($hosts, $gt_hosts);
     }
 
     add_filter('allowed_redirect_hosts', 'gt_allowed_redirect_hosts');
+}
+
+// exclude javascript minification by cache plugins for free version
+if(($data['enterprise_version'] or $data['pro_version']) == false) {
+    function cache_exclude_js_gtranslate($excluded_js) {
+        if(is_array($excluded_js) or empty($excluded_js))
+            $excluded_js[] = 'translate.google.com/translate_a/element.js';
+
+        return $excluded_js;
+    }
+
+    // LiteSpeed Cache
+    add_filter('litespeed_optimize_js_excludes', 'cache_exclude_js_gtranslate');
+
+    // WP Rocket
+    add_filter('rocket_exclude_js', 'cache_exclude_js_gtranslate');
 }

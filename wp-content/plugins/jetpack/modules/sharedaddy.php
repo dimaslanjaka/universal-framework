@@ -1,6 +1,4 @@
 <?php
-use Automattic\Jetpack\Status;
-
 /**
  * Module Name: Sharing
  * Module Description: Add Twitter, Facebook and Google+ buttons at the bottom of each post, making it easy for visitors to share your content.
@@ -14,11 +12,15 @@ use Automattic\Jetpack\Status;
  * Feature: Engagement
  * Additional Search Queries: share, sharing, sharedaddy, social buttons, buttons, share facebook, share twitter, social media sharing, social media share, social share, icons, email, facebook, twitter, linkedin, pinterest, pocket, social widget, social media
  *
- * @package Jetpack
+ * @package automattic/jetpack
  */
 
+use Automattic\Jetpack\Connection\Manager as Connection_Manager;
+use Automattic\Jetpack\Redirect;
+use Automattic\Jetpack\Status;
+
 if ( ! function_exists( 'sharing_init' ) ) {
-	require dirname( __FILE__ ) . '/sharedaddy/sharedaddy.php';
+	require __DIR__ . '/sharedaddy/sharedaddy.php';
 }
 
 add_action( 'jetpack_modules_loaded', 'sharedaddy_loaded' );
@@ -37,10 +39,10 @@ function sharedaddy_loaded() {
  * @return string Sharing config URL
  */
 function jetpack_sharedaddy_configuration_url() {
-	if ( ( new Status() )->is_development_mode() || Jetpack::is_staging_site() || ! Jetpack::is_user_connected() ) {
+	$status = new Status();
+	if ( $status->is_offline_mode() || $status->is_staging_site() || ! ( new Connection_Manager( 'jetpack' ) )->is_user_connected() ) {
 		return admin_url( 'options-general.php?page=sharing' );
 	}
 
-	$site_suffix = Jetpack::build_raw_urls( get_home_url() );
-	return 'https://wordpress.com/marketing/sharing-buttons/' . $site_suffix;
+	return Redirect::get_url( 'calypso-marketing-sharing-buttons' );
 }

@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	new UpdraftCentral_EUM_Management();
 });
 
@@ -151,8 +151,9 @@ function UpdraftCentral_EUM_Management() {
 			$eum_location = get_eum_location($site_row);
 
 		UpdraftCentral.set_loading($eum_location);
-		is_eum_active($site_row, plugin_name).then(function(response) {
-			
+		// We will check any existing premium version of this plugin first, as it will only
+		// make sense to activate a premium version rather than the free one if both plugin exists.
+		is_eum_active($site_row, plugin_premium_name).then(function(response) {
 			if (response.installed && response.active) {
 				self.load_contents($site_row, section);
 			} else {
@@ -160,16 +161,15 @@ function UpdraftCentral_EUM_Management() {
 				// currently being processed or loaded.
 				self.current_section = section;
 				
-				// Free version is not installed so, let's give it one more try, perhaps a
-				// premium version is installed rather than a free one.
-				if (!response.active) {
-					
-					is_eum_active($site_row, plugin_premium_name).then(function(response) {
+				// Premium version is not installed so, let's give it one more try, perhaps a
+				// free version is installed rather than a premium one.
+				if (!response.installed) {
+					is_eum_active($site_row, plugin_name).then(function(response) {
 						if (response.installed && response.active) {
 							self.load_contents($site_row, section);
 							return;
 						} else {
-							html = get_message_template(response.installed, response.active, plugin_premium_name);
+							html = get_message_template(response.installed, response.active, plugin_name);
 							UpdraftCentral.done_loading($eum_location, html);
 						}
 					}).fail(function(response) {
@@ -178,7 +178,7 @@ function UpdraftCentral_EUM_Management() {
 					});
 
 				} else if (!response.active && response.installed) {
-					html = get_message_template(response.installed, response.active, plugin_name);
+					html = get_message_template(response.installed, response.active, plugin_premium_name);
 					UpdraftCentral.done_loading($eum_location, html);
 				}
 			}

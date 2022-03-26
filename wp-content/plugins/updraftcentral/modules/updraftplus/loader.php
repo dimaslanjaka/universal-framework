@@ -110,6 +110,43 @@ class UpdraftCentral_Module_UpdraftPlus {
 
 	public function udrclion($localize) {
 		$localize['updraftplus'] = include __DIR__.'/translations-dashboard.php';
+		$localize['updraftplus']['conditional_logic'] = array(
+			'day_of_the_week_options' => $this->list_days_of_the_week(),
+			'logic_options' => array(
+				array(
+					'label' => __('on every backup', 'updraftcentral'),
+					'value' => '',
+				),
+				array(
+					'label' => __('if any of the following conditions are matched:', 'updraftcentral'),
+					'value' => 'any',
+				),
+				array(
+					'label' => __('if all of the following conditions are matched:', 'updraftcentral'),
+					'value' => 'all',
+				),
+			),
+			'operand_options' => array(
+				array(
+					'label' => __('Day of the week', 'updraftcentral'),
+					'value' => 'day_of_the_week',
+				),
+				array(
+					'label' => __('Day of the month', 'updraftcentral'),
+					'value' => 'day_of_the_month',
+				),
+			),
+			'operator_options' => array(
+				array(
+					'label' => __('is', 'updraftcentral'),
+					'value' => 'is',
+				),
+				array(
+					'label' => __('is not', 'updraftcentral'),
+					'value' => 'is_not',
+				),
+			),
+		);
 
 		return $localize;
 	}
@@ -118,6 +155,25 @@ class UpdraftCentral_Module_UpdraftPlus {
 		global $updraft_central;
 		$updraft_central->include_template(self::MODULE_NAME.'/management-actions.php');
 	}
+
+	/**
+	 * Return a listing of days of the week
+	 *
+	 * @param Boolean $respect_start_of_week whether to use the WordPress's start_of_week setting
+	 * @return Array the days of the week
+	 */
+	private function list_days_of_the_week($respect_start_of_week = true) {
+		global $wp_locale;
+		$days_of_the_week = array();
+		$start = $respect_start_of_week ? get_option('start_of_week', 1) : 1;
+		for ($i = $start; $i < $start + 7; $i++) {
+			$days_of_the_week[] = array(
+				'index' => $i % 7,
+				'value' => $wp_locale->get_weekday($i % 7),
+			);
+		}
+		return $days_of_the_week;
+	}
 }
 
-$updraftcentral_module_updraftplus = new UpdraftCentral_Module_UpdraftPlus();
+$updraftcentral_module_updraftplus = new UpdraftCentral_Module_UpdraftPlus();// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Unused variable $updraftcentral_module_updraftplus

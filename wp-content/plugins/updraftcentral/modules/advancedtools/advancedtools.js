@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(function($) {
 
 	$('#updraftcentral_dashboard_existingsites').on('updraftcentral_dashboard_mode_set_advancedtools', function() {
 		

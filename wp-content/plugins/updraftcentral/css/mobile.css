@@ -32,7 +32,7 @@
     padding-right: 0.275em; }
   .updraft_existing_backups_output > .dashicons-image-rotate, .updraft_site_settings_output > .dashicons-image-rotate, .updraft_module_output > .dashicons-image-rotate {
     top: initial; }
-  span.dashicons.dashicons-editor-expand.updraft-full-screen {
+  span.dashicons.updraft-full-screen-icon {
     display: none; }
   td.updraft_existingbackup_date {
     text-align: center; }
@@ -70,7 +70,7 @@
     border-radius: 0 0 10px 10px; } }
 
 @media (min-width: 583px) {
-  span.dashicons.dashicons-editor-expand.updraft-full-screen {
+  span.dashicons.updraft-full-screen-icon {
     display: inline-block; }
   div.updraft_site_settings_output table th {
     display: table-cell; } }
@@ -232,9 +232,7 @@
     margin: 0 auto; }
   .updraft_site_settings_output input[type="text"], .updraft_site_settings_output input[type="email"], .updraft_site_settings_output input[type="url"], .updraft_site_settings_output input[type="password"], .updraft_site_settings_output input[type="search"], .updraft_site_settings_output input[type="tel"], .updraft_site_settings_output textarea, .updraft_site_settings_output select, #updraft_include_others_exclude input[type="text"], #updraft_include_uploads_exclude, #updraft_reportbox_0 input[name="updraft_email[0]"] {
     width: 100%;
-    max-width: 100%; }
-  input.labelauty + label {
-    height: 80px; } }
+    max-width: 100%; } }
 
 @media (max-width: 642px) {
   .updraft_existing_backups_output .download-backups ul {
@@ -310,13 +308,11 @@
   input.labelauty + label > span.labelauty-unchecked-image + span.labelauty-unchecked, input.labelauty + label > span.labelauty-checked-image + span.labelauty-checked {
     margin-left: 0 !important; }
   input.labelauty + label > span.labelauty-unchecked-image, input.labelauty + label > span.labelauty-checked-image {
-    width: 100% !important;
     background-position: center !important; }
   input.labelauty + label > span.labelauty-unchecked, input.labelauty + label > span.labelauty-checked {
     display: block;
     margin-top: 8px;
-    text-align: center;
-    width: 100%; }
+    text-align: center; }
   #updraft_include_others_exclude input[type="text"], input#updraft_include_uploads_exclude {
     display: inline-block;
     width: 100%; } }

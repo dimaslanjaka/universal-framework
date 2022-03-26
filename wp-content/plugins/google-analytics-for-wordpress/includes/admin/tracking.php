@@ -36,12 +36,12 @@ class MonsterInsights_Tracking {
 
 		// Retrieve current theme info
 		$theme_data    = wp_get_theme();
-		$tracking_mode = monsterinsights_get_option( 'tracking_mode', 'analytics' );
+		$tracking_mode = monsterinsights_get_option( 'tracking_mode', 'gtag' );
 		$events_mode   = monsterinsights_get_option( 'events_mode', 'none' );
 		$update_mode   = monsterinsights_get_option( 'automatic_updates', false );
 
 		if ( $tracking_mode === false ) {
-			$tracking_mode = 'analytics';
+			$tracking_mode = 'gtag';
 		}
 		if ( $events_mode === false ) {
 			$events_mode = 'none';
@@ -94,10 +94,6 @@ class MonsterInsights_Tracking {
 		$data['usercount']     = function_exists( 'get_user_count' ) ? get_user_count() : 'Not Set';
 		$data['usesauth']      = $usesauth;
 		$data['timezoneoffset']= date('P');
-		$data['installed_lite']= get_option( 'monsterinsights_installed_lite', array() );
-		$data['installed_pro'] = get_option( 'monsterinsights_installed_pro', array() );
-
-
 
 		// Retrieve current plugin information
 		if( ! function_exists( 'get_plugins' ) ) {

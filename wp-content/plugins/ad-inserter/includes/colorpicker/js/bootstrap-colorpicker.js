@@ -3821,6 +3821,13 @@ var Preview = function (_Extension) {
     value: function onUpdate(event) {
       _get(Preview.prototype.__proto__ || Object.getPrototypeOf(Preview.prototype), 'onUpdate', this).call(this, event);
 
+      // AI
+      if (!event.color) {
+        this.elementInner.css('backgroundColor', null).css('color', null).html('');
+        return;
+      }
+      // /AI
+
       this.elementInner.css('backgroundColor', event.color.toRgbString());
 
       if (this.options.showText) {

@@ -16,6 +16,42 @@ class UpdraftCentral_Module_Updates {
 
 		// Add available shortcuts for this module
 		add_filter('updraftcentral_keyboard_shortcuts', array($this, 'keyboard_shortcuts'));
+
+		// Run updates retrieval in the background using cron
+		add_filter('updraftcentral_scheduled_commands', array($this, 'run_updates_command'));
+		add_filter('updraftcentral_sub_menus', array($this, 'add_sub_menus'));
+	}
+
+	/**
+	 * Adds sub menu for the updates module
+	 *
+	 * @param array $menus An array containing the sub menus to display for each module
+	 * @return array
+	 */
+	public function add_sub_menus($menus) {
+		$menus['updates'] = array('Show all updates' => '.updraftcentral_action_show_all_updates');
+		return $menus;
+	}
+
+	public function run_updates_command($scheduled_commands) {
+		// N.B. Set the "force_refresh" to false to prevent the remote website to query the updates server (in wporg)
+		// as to avoid any unnecessary timeout while the process is going on and running in the background.
+		//
+		// Data should expire after 12 hrs (12*60*60 = 43200) from last retrieval. WordPress checks for updates every 12 hours
+		// or so, therefore, our 12 hrs check interval should be good. After expiration it will retrieve fresh data from the website
+		// to overwrite the old ones.
+		$scheduled_commands[] = array(
+			'command' => 'updates.get_updates',
+			'data' => array('force_refresh' => false),
+			'maximum_age' => 43200,
+			'is_long_running' => false // We're not issuing a force refresh here therefore this is not a long running process
+		);
+
+		// N.B. Setting commands as non-long running will combine (multiplexed) all non-long running commands into a single
+		// command and sent to the remote website. Request to the remote website will only be done once, instead of
+		// sending separate requests for each commands just like when you set the "is_long_running" field to true.
+
+		return $scheduled_commands;
 	}
 
 	/**
@@ -52,6 +88,9 @@ class UpdraftCentral_Module_Updates {
 		wp_enqueue_script('updraftcentral-dashboard-activities-'.self::MODULE_NAME, UD_CENTRAL_URL.'/modules/'.self::MODULE_NAME.'/'.self::MODULE_NAME.$min_or_not.'.js', array('updraftcentral-dashboard', 'jquery'), $enqueue_version);
 	
 		wp_enqueue_script('jquery-ui-progressbar', array('jquery', 'jquery-ui'));
+		wp_enqueue_script('day-js', UD_CENTRAL_URL.'/js/dayjs/dayjs.min.js', array(), $enqueue_version);
+		wp_enqueue_script('day-js-relative-time', UD_CENTRAL_URL.'/js/dayjs/relativeTime.js', array('day-js'), $enqueue_version);
+		wp_enqueue_script('day-js-localized-format', UD_CENTRAL_URL.'/js/dayjs/localizedFormat.js', array('day-js'), $enqueue_version);
 	}
 
 	public function load_dashboard_css($enqueue_version) {

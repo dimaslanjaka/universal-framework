@@ -1,12 +1,9 @@
 <?php
 
-//ini_set ('display_errors', 1);
-//error_reporting (E_ALL);
-
 function ai_editor_media_buttons () {
-  echo '<button type="button" id="use-button" class="button" style="width: 90px;" title="Use current settings"> ', __('Use', 'ad-inserter'), ' </button>';
-  echo '<button type="button" id="reset-button" class="button" style="width: 90px;" title="Reset to the saved settings"> ', __('Reset', 'ad-inserter'), ' </button>';
-  echo '<button type="button" id="cancel-button" class="button" style="width: 90px;" title="Use current settings"> ', __('Cancel', 'ad-inserter'), ' </button>';
+  echo '<button type="button" id="use-button" class="button" style="width: 90px; padding: 0 10px;" title="Use current settings"> ', __('Use', 'ad-inserter'), ' </button>';
+  echo '<button type="button" id="reset-button" class="button" style="width: 90px; padding: 0 10px;" title="Reset to the saved settings"> ', __('Reset', 'ad-inserter'), ' </button>';
+  echo '<button type="button" id="cancel-button" class="button" style="width: 90px; padding: 0 10px;" title="Use current settings"> ', __('Cancel', 'ad-inserter'), ' </button>';
 }
 
 function ai_editor_mce_buttons ($buttons, $id) {
@@ -216,7 +213,7 @@ function generate_code_editor ($block, $client_code, $process_php) {
         $('#code-preview').html ($('#ai-editor').val ());
       });
 
-      load_from_settings ();
+      setTimeout (load_from_settings, 300);
     }
 
     initialize_preview ();

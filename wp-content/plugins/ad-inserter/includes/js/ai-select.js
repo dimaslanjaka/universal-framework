@@ -226,28 +226,28 @@ jQuery (document).ready (function ($) {
 
   $('body').css ({'user-select': 'none', 'margin-top': '140px'});
 
-  $('body').prepend ('<section id="ai-selector-data"> \
-<table>                                                                       \
-  <tbody>                                                                     \
-    <tr>                                                                      \
-      <td class="data-name">' + ai_front.element + '</td>                     \
-      <td class="data-value"><section id="ai-selector-element"></section></td>        \
-      <td><button type="button" id="ai-cancel-button" style="min-width: 100px;" title="' + ai_front.cancel_element_selection + '"> ' + ai_front.cancel + ' </button></td>                                             \
-    </tr>                                                                     \
-    <tr>                                                                      \
-      <td>' + ai_front.path + '</td>                                          \
-      <td><section id="ai-selector-path"></section></td>                      \
-      <td><button type="button" id="ai-parent-button" style="min-width: 100px;" title="' + ai_front.select_parent_element + '"> ' + ai_front.parent + ' </button></td>                                                \
-    </tr>                                                                     \
-    <tr>                                                                      \
-      <td>' + ai_front.selector + '</td>                                      \
-      <td style="width: 100%;"><input id="ai-selector" type="text" value="" maxlength="500" title="' + ai_front.css_selector + '" /></td>                                                                             \
-      <td><button type="button" id="ai-use-button" style="min-width: 100px;" title="' + ai_front.use_current_selector + '"> ' + ai_front.use + ' </button>                                                            \
-          <button type="button" id="ai-add-button" style="min-width: 100px; display: none;" title="' + ai_front.add_current_selector + '"> ' + ai_front.add + ' </button></td>                                        \
-    </tr>                                                                     \
-  </tbody>                                                                    \
-</table>                                                                      \
-</section>');
+  $('body').prepend ('<section id="ai-selector-data">' +
+'<table>' +
+'  <tbody>' +
+'    <tr>' +
+'      <td class="data-name">' + ai_front.element + '</td>' +
+'      <td class="data-value"><section id="ai-selector-element"></section></td>' +
+'      <td><button type="button" id="ai-cancel-button" style="min-width: 110px;" title="' + ai_front.cancel_element_selection + '"> ' + ai_front.cancel + ' </button></td>' +
+'    </tr>' +
+'    <tr>' +
+'      <td>' + ai_front.path + '</td>' +
+'      <td><section id="ai-selector-path"></section></td>' +
+'      <td><button type="button" id="ai-parent-button" style="min-width: 110px;" title="' + ai_front.select_parent_element + '"> ' + ai_front.parent + ' </button></td>' +
+'    </tr>' +
+'    <tr>' +
+'      <td>' + ai_front.selector + '</td>' +
+'      <td style="width: 100%;"><input id="ai-selector" type="text" value="" maxlength="500" title="' + ai_front.css_selector + '" /></td>' +
+'      <td><button type="button" id="ai-use-button" style="min-width: 110px;" title="' + ai_front.use_current_selector + '"> ' + ai_front.use + ' </button>' +
+'          <button type="button" id="ai-add-button" style="min-width: 110px; display: none;" title="' + ai_front.add_current_selector + '"> ' + ai_front.add + ' </button></td>' +
+'    </tr>' +
+'  </tbody>' +
+'</table>' +
+'</section>');
 
   $('body').bind ('mouseover mouseout click', function (event) {
     var element = $(event.target);

@@ -37,7 +37,7 @@ $updraft_central->load_dashboard_js();
 $updraft_central->load_dashboard_css();
 
 // 'container' or 'container-fluid' class needed by Bootstrap
-echo '<div id="updraftcentral_dashboard" class="updraftcentral_dashboard container-fluid">';
+echo '<div id="updraftcentral_dashboard_wrapper"><div id="updraftcentral_dashboard" class="updraftcentral_dashboard container-fluid">';
 
 // A fixed page header? e.g. Show them how many licences they've got spare, and how to buy more.
 
@@ -101,4 +101,4 @@ echo '</div>';
 $updraft_central->include_template('dashboard/modal.php');
 
 // Close updraftcentral_dashboard div
-echo '</div>';
+echo '</div></div>';

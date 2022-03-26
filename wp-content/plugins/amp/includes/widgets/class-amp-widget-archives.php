@@ -4,11 +4,16 @@
  *
  * @since 0.7.0
  * @package AMP
+ * @codeCoverageIgnore
  */
+
+_deprecated_file( __FILE__, '2.0.0' );
 
 /**
  * Class AMP_Widget_Archives
  *
+ * @deprecated As of 2.0 the AMP_Core_Block_Handler will sanitize the core widgets instead.
+ * @internal
  * @since 0.7.0
  * @package AMP
  */
@@ -32,7 +37,7 @@ class AMP_Widget_Archives extends WP_Widget_Archives {
 	 * @return void.
 	 */
 	public function widget( $args, $instance ) {
-		if ( ! is_amp_endpoint() ) {
+		if ( ! amp_is_request() ) {
 			parent::widget( $args, $instance );
 			return;
 		}
@@ -83,7 +88,7 @@ class AMP_Widget_Archives extends WP_Widget_Archives {
 							break;
 					}
 					?>
-					<option value=""><?php echo esc_attr( $label ); ?></option>
+					<option value=""><?php echo esc_html( $label ); ?></option>
 					<?php wp_get_archives( $dropdown_args ); ?>
 				</select>
 			</form>
@@ -107,5 +112,4 @@ class AMP_Widget_Archives extends WP_Widget_Archives {
 		endif;
 		echo wp_kses_post( $args['after_widget'] );
 	}
-
 }

@@ -150,8 +150,9 @@ body[class*="-bws-panel"] .update-nag {
     font-size: 13px;
     padding: 8px 19px 8px 9px;
     text-align: left;
+    line-height: 1;
 }
-.bws-membership .bws-button {
+.bws-button {
     background: #dd6930;
     color: #fff;
     text-align: center;
@@ -259,7 +260,7 @@ table.bws-system-info tbody tr:nth-child(odd) {
     box-shadow: none;
 }
 .bws_product_image img {
-    height: 60px;
+    height: 64px;
 }
 .bws_product_content {
     max-width: 200px;

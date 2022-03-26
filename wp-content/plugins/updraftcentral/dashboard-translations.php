@@ -112,6 +112,7 @@ return array(
 	'rpcerrors' => array(
 		'ud_get_fragment_could_not_return' => __('The site could not return the requested information - perhaps you need to update it to a more recent UpdraftPlus version?', 'updraftcentral'),
 		'unknown_rpc_command' => __('The remote site did not recognise the command.', 'updraftcentral').' '.sprintf(__('Possibly you need to update the remote site to a more recent %s version.', 'updraftcentral'), 'UpdraftPlus'),
+		'rpc_fatal_error' => __('The remote site has encountered a fatal error while executing the requested command. Remote response follows: %s', 'updraftcentral')
 	),
 	'unsupported_browser' => __('Your web browser lacks capabilities that UpdraftCentral requires, and thus is not supported. Please update your browser to the latest version.', 'updraftcentral'),
 	'search' => __('Search', 'updraftcentral'),
@@ -178,6 +179,8 @@ return array(
 	'first' => __('First', 'updraftcentral'),
 	'last' => __('Last', 'updraftcentral'),
 	'total_items' => __('%s-%s of %s items', 'updraftcentral'),
+	'ok' => __('OK', 'updraftcentral'),
+	'cancel' => __('Cancel', 'updraftcentral'),
 	'add_all_sites' => __('All managed sites', 'updraftcentral'),
 	'add_all_sites_tagged' => __('Add all sites tagged: %s', 'updraftcentral'),
 	'export_import_settings' => __('Export/Import settings', 'updraftcentral'),
@@ -193,4 +196,15 @@ return array(
 	'import_response_heading' => __('Import response', 'updraftcentral'),
 	'import_successful' => __('Import process has succeeded. Your UpdraftCentral dashboard will now be reloaded to refresh your sites list.', 'updraftcentral'),
 	'encryption_phrase_required' => __('You have chosen encryption, but not entered an encryption phrase.', 'updraftcentral'),
+	'keyboard_settings_message' => __('Shortcuts are here to help you navigate UpdraftCentral features more quickly. If you wish to deactivate them, you can do so via the checkbox below.', 'updraftcentral'),
+	'tick_to_activate' => __('Tick to activate', 'updraftcentral'),
+	'configure_shortcuts' => __('Configure shortcuts', 'updraftcentral'),
+	'message' => __('Message', 'updraftcentral'),
+	'yes_activate' => __('Yes, activate', 'updraftcentral'),
+	'do_not_activate' => __('Do not activate', 'updraftcentral'),
+	'close_editor' => __('Close editor', 'updraftcentral'),
+	'switch_to_draft' => __('Switch to draft', 'updraftcentral'),
+	'preview_changes' => __('Preview changes', 'updraftcentral'),
+	'permalink' => __('Permalink', 'updraftcentral'),
+	'editor_nojs_message' => __('JavaScript is required for the block editor to work.', 'updraftcentral'),
 );

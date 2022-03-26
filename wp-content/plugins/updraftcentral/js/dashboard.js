@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(function($) {
 	UpdraftCentral = UpdraftCentral();
 	UpdraftCentral.init();
 });
@@ -203,11 +203,15 @@ var UpdraftCentral = function() {
 
 	var self = this;
 	var default_collapse_width = 60;
+	var observers = new UpdraftCentral_Collection();
+
 	this.ajax_request_processing = false;
 	this.uc_action_triggered = false;
 	this.uc_action_data = [];
 	this.event_trigger = new UpdraftCentral_Collection();
 	this.uc_module;
+	this.reloaded = false;
+	this.recorder = null;
 
 	/**
 	 * Initializes UpdraftCentral's functions
@@ -215,6 +219,11 @@ var UpdraftCentral = function() {
 	 * @returns {void}
 	 */
 	this.init = function() {
+		UpdraftCentral.add_reload_listener();
+
+		// Fill the entire page content area
+		UpdraftCentral.fill_content_area();
+
 		// Initialize and load recorder
 		UpdraftCentral.init_recorder();
 
@@ -232,6 +241,349 @@ var UpdraftCentral = function() {
 
 		// Set requested mode
 		UpdraftCentral.set_requested_mode();
+
+		// Initialize housekeeping listeners
+		UpdraftCentral.init_housekeeping();
+	}
+
+	/**
+	 * Logs event actions (e.g. update, install, delete, etc.)
+	 *
+	 * @param {int}    site_id     The ID of the site where the event was applied
+	 * @param {string} type        Type of event
+	 * @param {string} name        Event name
+	 * @param {string} status      The resulting status of the event
+	 * @param {array}  data        Some information regarding the event executed
+	 * @param {array}  result_data The result coming from the remote site
+	 *
+	 * @returns {Promise}
+	 */
+	this.log_event = function(site_id, type, name, status, data, result_data) {
+		var deferred = $.Deferred();
+		var resolved = false;
+
+		var log_data = {
+			site_id: site_id,
+			event_type: type,
+			event_name: (-1 === name.indexOf(type+'.')) ? type+'.'+name : name,
+			event_data: JSON.stringify(data),
+			event_status: status,
+			event_result_data: JSON.stringify(result_data)
+		}
+
+		UpdraftCentral.send_ajax('log_event', log_data, null, 'via_mothership_encrypting', UpdraftCentral.$site_row, function(resp, code, error_code) {
+			if ('ok' === code) {
+				if (resp.hasOwnProperty('message') && 'success' === resp.message) {
+					deferred.resolve();
+					resolved = true;
+				}
+			}
+
+			if (!resolved) deferred.reject(resp);
+		});
+
+		return deferred.promise();
+	}
+
+	/**
+	 * Logs event actions (e.g. update, install, delete, etc.) in bulk or multiple entries
+	 *
+	 * @param {array} log_data An array of log data to save (@see UpdraftCentral.log_event parameters)
+	 *
+	 * @returns {Promise}
+	 */
+	this.bulk_log_event = function(log_data) {
+		var deferred = $.Deferred();
+		var resolved = false;
+
+		UpdraftCentral.send_ajax('log_event', { bulk: 1, data: log_data }, null, 'via_mothership_encrypting', UpdraftCentral.$site_row, function(resp, code, error_code) {
+			if ('ok' === code) {
+				if (resp.hasOwnProperty('message') && 'success' === resp.message) {
+					deferred.resolve();
+					resolved = true;
+				}
+			}
+
+			if (!resolved) deferred.reject(resp);
+		});
+
+		return deferred.promise();
+	}
+
+	/**
+	 * Adds an event listener for the 'beforeunload' event which eventually sets the reloaded flag.
+	 * The reloaded flag will help determine whether an ajax process were halted abruptly due to reloading
+	 * or refreshing of the browser.
+	 *
+	 * @returns {void}
+	 */
+	this.add_reload_listener = function() {
+		// N.B. We need this to be declared first, otherwise, the succeeding "on('beforeunload')"" won't work
+		// as expected (not called). For some weird reason it appears to be relying on some previous handler declared or
+		// attached to the same 'beforeunload' event. This only happens though when the browser has been reloaded.
+		//
+		// Also, having an empty handler won't work too, so leave the console.log('') as it is.
+		window.addEventListener('beforeunload', function() {
+			console.log('');
+		});
+
+		$(window).on('beforeunload', function() {
+			UpdraftCentral.reloaded = true;
+		});
+	}
+
+	/**
+	 * Fill the entire page content with the UpdraftCentral dashboard when loaded
+	 *
+	 * @returns {void}
+	 */
+	this.fill_content_area = function() {
+		var uc_wrapper = $('#updraftcentral_dashboard_wrapper');
+
+		$('body').children(':not(script):not(style):not(link)').hide();
+		var wrapper = $('body > #wrapper');
+		var content;
+
+		if (0 === wrapper.length) {
+			wrapper = $('<div/>', {
+				id: 'wrapper'
+			}).prependTo($('body'));
+
+			content = wrapper.find('#content');
+			if (0 === content.length) {
+				content = $('<div/>', {
+					id: 'content'
+				}).appendTo(wrapper);
+			}
+		}
+
+		if ($('body > #wrapper > #content')) {
+			content = $('body > #wrapper > #content');
+			if (0 !== content.length) {
+				uc_wrapper.appendTo(content);
+			}
+			if (!content.is(':visible')) content.show();
+			if (!wrapper.is(':visible')) wrapper.show();
+		}
+
+		$('body').addClass('updraftcentral-fill-view');
+	}
+
+	/**
+	 * Clears the current editor container along with any events, mounted elements/components
+	 * and subscriptions that were previously attached to it. Helps prevent issues when switching
+	 * from page to post module and vice-versa.
+	 *
+	 * @param {object|null} data Event data that holds information when switching modes or null for calling directly
+	 *
+	 * @returns {void}
+	 */
+	this.clear_editor_container = function(data) {
+		if (null === data || data.new_mode !== data.previous_mode) {
+			var container = $('#gutenberg_editor_container');
+			var editor = container.find('#editor');
+	
+			if ('undefined' !== typeof editor && editor.length) {
+				if (!editor.is(':visible')) {
+					if ('undefined' !== typeof window._wpLoadBlockEditor) delete window._wpLoadBlockEditor;
+					if ('function' === typeof window.wp_data_unsubscribe) window.wp_data_unsubscribe();
+					if ('undefined' !== typeof ReactDOM && ReactDOM.hasOwnProperty('unmountComponentAtNode')) {
+						ReactDOM.unmountComponentAtNode(editor.get(0));
+					}
+	
+					wp.element.unmountComponentAtNode(editor.get(0));
+					editor.remove();
+					container.remove();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Initialize housekeeping listeners and handlers that fixes minor glitches
+	 *
+	 * @returns {void}
+	 */
+	this.init_housekeeping = function() {
+
+		// Make sure that any drop down menu currently opened will be close when a new tab is selected
+		$('#updraftcentral_dashboard_existingsites').on('updraftcentral_dashboard_mode_pre_set', function() {
+			$('#updraftcentral_dashboard .more-option-container.show').each(function() {
+				// We're are triggering the button instead of hiding the container directly as to keep
+				// and maintain any events associated with the drop down menu when it is closed.
+				$(this).find('button').trigger('click');
+			});
+		});
+
+		if ($('.uc_site_alert_icon').length) {
+			$('.uc_site_alert_icon').each(function() {
+				$(this).tooltip({
+					container: $('#updraftcentral_dashboard').get(0),
+					trigger: 'hover',
+					placement: 'top',
+					boundary: 'viewport'
+				});
+			});
+		}
+
+		$('#updraftcentral_dashboard_existingsites').on('updraftcentral_dashboard_mode_set_after', function() {
+			UpdraftCentral.reset_site_selection();
+		});
+	}
+
+	/**
+	 * Resets site selection if the current site being monitored/recorded has been suspended
+	 *
+	 * @returns {void}
+	 */
+	this.reset_site_selection = function() {
+		var current_site = self.recorder.get_current_site();
+		if ('undefined' !== typeof current_site && current_site) {
+			// Sync $site_row with the current site being monitored/recorded if they are not equal.
+			// The recorded site is more accurate than the $site_row value since it can be altered
+			// anytime by any module or logic. Thus, we need to sync them if they are not equal in order
+			// to avoid any unforeseen issues.
+			if (UpdraftCentral.$site_row.data('site_id') != current_site.data('site_id')) {
+				UpdraftCentral.$site_row = current_site;
+			}
+
+			if (current_site.hasClass('suspended')) {
+				self.recorder.reset_recorder();
+				$('.updraftcentral-search-area').show();
+				$('#updraftcentral_dashboard_existingsites').find('.ui-sortable-handle').show();
+				$('#updraft-central-content button.updraftcentral_action_choose_another_site').hide();
+			}
+		}
+	}
+
+	/**
+	 * Cache or saves the current remmote response for the given command
+	 *
+	 * @param {integer} site_id  The ID of the site where the response is to be pulled from
+	 * @param {string}  command  The command that was executed when the request was made
+	 * @param {object}  data     The data that was passed as parameters for the command
+	 * @param {object}  response The response from the remote website
+	 *
+	 * @returns {Promise}
+	 */
+	this.cache_response = function(site_id, command, data, response) {
+		var deferred = $.Deferred();
+		var resolved = false;
+
+		var store_data = {
+			site_id: site_id,
+			command: command,
+			data: data,
+			response_data: {
+				caught_output: '',
+				reply: response
+			}
+		}
+
+		var $site_row = $('.updraftcentral_site_row[data-site_id="'+site_id+'"');
+		UpdraftCentral.send_ajax('cache_response', store_data, null, 'via_mothership_encrypting', $site_row, function(resp, code, error_code) {
+			if ('ok' === code) {
+				if (resp.hasOwnProperty('data')) {
+					// Update sites info array if applicable to the current request (e.g. command existed in the collection)
+					if ('undefined' !== typeof udclion.sites_info[store_data.command]) {
+						var index = udclion.sites_info[store_data.command].findIndex(check_site_info, store_data.site_id);
+						if (-1 !== index) {
+							udclion.sites_info[store_data.command][index] = resp.data;
+						} else {
+							udclion.sites_info[store_data.command].push(resp.data);
+						}
+					}
+
+					deferred.resolve(resp.data);
+					resolved = true;
+				}
+			}
+
+			if (!resolved) deferred.reject();
+		});
+
+		return deferred.promise();
+	}
+
+	/**
+	 * Checks whether an existing item(object) exists in the array
+	 *
+	 * @param {object} item The current item in the loop
+	 *
+	 * @returns {bool}
+	 */
+	function check_site_info(item) {
+		return item.site_id == this;
+	}
+
+	/**
+	 * Retrieves a previously cached result for the given command
+	 *
+	 * @param {integer} site_id The ID of the site where the response is to be pulled from
+	 * @param {string}  command The command that was executed when the request was made
+	 *
+	 * @returns {array|null}
+	 */
+	this.get_cached_response = function(site_id, command) {
+		if ('undefined' !== typeof udclion.sites_info[command] && udclion.sites_info[command]) {
+			var info = udclion.sites_info[command];
+			if (info.length) {
+				var result = $.map(info, function(item, index) {
+					if (site_id == item.site_id) {
+						var response = JSON.parse(item.response);
+						if (response.hasOwnProperty('reply') && response.reply) {
+							return {
+								created: item.created,
+								reply: response.reply
+							};
+						}
+					} else {
+						return null;
+					}
+				});
+
+				if (result.length) return result[0];
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Check to see whether the data is still valid to use
+	 *
+	 * @param {integer} created The data's recorded time. An epoch representation of the time when it was created/updated.
+	 *
+	 * @returns {boolean}
+	 */
+	this.is_data_good_to_use = function(created) {
+		// Check if data is still good to use by running it against the data's recorded time.
+		// If the data is under 12 hours then we use it, otherwise, we send the request to
+		// the remote website to get a fresh set of information.
+		return parseInt(dayjs().diff(dayjs.unix(created), 'hour')) < 12;
+	}
+
+	/**
+	 * Loads sites' cached responses from a cron process
+	 *
+	 * @returns {object} jQuery promise object
+	 */
+	this.get_sites_information = function() {
+		var deferred = $.Deferred();
+		var resolved = false;
+
+		UpdraftCentral.send_ajax('get_sites_information', {}, null, 'via_mothership_encrypting', null, function(resp, code, error_code) {
+			if ('ok' === code) {
+				if (resp.hasOwnProperty('sites_info')) {
+					deferred.resolve(resp.sites_info);
+					resolved = true;
+				}
+			}
+
+			if (!resolved) deferred.reject();
+		});
+
+		return deferred.promise();
 	}
 
 	/**
@@ -268,27 +620,443 @@ var UpdraftCentral = function() {
 		if ('undefined' == typeof self.uc_module) self.uc_module = false;
 	}
 
+	this.plupload_init = function(module, site_filter) {
+
+		// We bail if we don't get either 'plugin' or 'theme' as the submitted module.
+		if ('undefined' == typeof module) return;
+
+		// Creates the uploader and pass the config
+		var config = JSON.parse(udclion[module].plupload_config);
+		var uploader = new plupload.Uploader(config);
+		var selected_sites = new UpdraftCentral_Collection();
+		var credentials = new UpdraftCentral_Credentials();
+
+		// Checks if browser supports drag and drop upload, makes some css adjustments if necessary
+		uploader.bind('Init', function(up) {
+			var uploaddiv = $('#plupload-upload-ui');
+			if (up.features.dragdrop) {
+				uploaddiv.addClass('drag-drop');
+				$('#drag-drop-area').bind('dragover.wp-uploader', function() {
+					uploaddiv.addClass('drag-over');
+				}).bind('dragleave.wp-uploader, drop.wp-uploader', function() {
+					uploaddiv.removeClass('drag-over');
+				});
+				
+			} else {
+				uploaddiv.removeClass('drag-drop');
+				$('#drag-drop-area').unbind('.wp-uploader');
+			}
+		});
+					
+		uploader.init();
+
+		// A file was added in the queue
+		uploader.bind('FilesAdded', function(up, files) {
+			// Limit number of files for upload set in config
+			if (config.hasOwnProperty('max_file_count') && config.max_file_count) {
+				if (files.length) {
+					var count = parseInt(config.max_file_count);
+					files = files.splice(0, count);
+				}
+		
+				if (uploader.files.length) {
+					$.each(uploader.files, function(index, file) {
+						if (file.id !== files[0].id) {
+							uploader.removeFile(file);
+							up.removeFile(file);
+						}
+					});
+					$('#filelist').empty();
+				}
+			}
+
+			plupload.each(files, function(file) {
+				if (! /\.zip$/.test(file.name)) {
+					UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+file.name+': '+udclion[module].notarchive+'</p>');
+					uploader.removeFile(file);
+					up.removeFile(file);
+					return;
+				}
+
+				// a file was added, you may want to update your DOM here...
+				$('#filelist').append('<div class="file" id="'+file.id+'"><b>'+file.name+'</b> (<span>'+plupload.formatSize(0)+'</span>/'+plupload.formatSize(file.size)+') <div class="fileprogress"></div></div>');
+			});
+			
+			up.refresh();
+			up.start();
+		});
+			
+		// Updates progress of the upload process
+		uploader.bind('UploadProgress', function(up, file) {
+			$('#' + file.id + " .fileprogress").width(file.percent + "%");
+			$('#' + file.id + " span").html(plupload.formatSize(parseInt(file.size * file.percent / 100)));
+		});
+
+		// Displays error when found
+		uploader.bind('Error', function(up, error) {
+			UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+udclion[module].uploaderr+' (code '+error.code+') : '+error.message+' - '+udclion[module].makesure+'</p>');
+		});
+
+		/**
+		 * Shows the activation options dialog. Primarily showing the user a message whether
+		 * he or she wishes to activate the plugin or theme after a successful installation/upload
+		 *
+		 * @param {object} up   Uploader instance
+		 * @param {object} file An object currently representing the file in process
+		 *
+		 * @return {void}
+		 */
+		function show_pre_install_message(up, file) {
+			var sites = selected_sites.get_items();
+			if (sites.length) {
+				UpdraftCentral_Library.dialog.confirm('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+udclion[module].install_zip_message+'</p>', function(result) {
+					var activate = (!result) ? 0 : 1;
+	
+					$.extend(up.settings.multipart_params, {
+						'site_id': UpdraftCentral.$site_row.data('site_id'),
+						'activate': activate,
+						'sites': UpdraftCentral_Library.base64_encode(JSON.stringify(sites)),
+					});
+	
+					var $location = UpdraftCentral.$site_row.find('.updraftcentral_row_extracontents');
+					UpdraftCentral.set_loading($location);
+	
+					// Continue upload
+					file.status = plupload.UPLOADING;
+					up.trigger('UploadFile', file);
+				}, null, { confirm: udclion.yes_activate, cancel: udclion.do_not_activate });
+			} else {
+				reset_uploader(up, file);
+			}
+		}
+
+		/**
+		 * Resets the uploader UI
+		 *
+		 * @param {object} up   Uploader instance
+		 * @param {object} file An object currently representing the file in process
+		 *
+		 * @return {void}
+		 */
+		function reset_uploader(up, file) {
+			$('#filelist').find('div#'+file.id).remove();
+			uploader.removeFile(file);
+			up.removeFile(file);
+			up.stop();
+			up.start();
+		}
+
+		/**
+		 * Check site requirements and load credentials. Allows input of credentials
+		 * if it is deemed needed when installing plugin or theme to the remote site
+		 *
+		 * @param {UpdraftCentral_Site} site The website to check and load credentials from
+		 *
+		 * @return {Promise}
+		 */
+		function load_site_creds(site) {
+			var deferred = jQuery.Deferred();
+			// Check to see if credentials is needed when installing/uploading plugins/themes
+			credentials.load_credentials(site).then(function(response) {
+				var show_form = false;
+				if (response.hasOwnProperty('request_filesystem_credentials')) {
+					var sysfolders = response.request_filesystem_credentials;
+					if (sysfolders.hasOwnProperty(module+'s') && UpdraftCentral_Library.parseBool(sysfolders[module+'s'])) {
+						show_form = true;
+					}
+				}
+
+				if (show_form) {
+					// Shows form where user is asked to input his/her FTP credentials that is
+					// needed to install/upload the plugin file.
+					credentials.get_credentials(site).then(function(response) {
+						// If we now have a valid credentials, we copy the relevant fields/flags
+						// to the current site before we proceed with the process.
+						site.site_credentials = response.site_credentials;
+						site.save_credentials_in_browser = response.save_credentials_in_browser;
+
+						if (site.save_credentials_in_browser) {
+							UpdraftCentral.storage_set('filesystem_credentials_'+site.site_hash, site.site_credentials, true);
+						}
+
+						deferred.resolve(site);
+					}).fail(function(response) {
+						deferred.resolve({});
+					});
+				} else {
+					deferred.resolve(site);
+				}
+			}).fail(function(response) {
+				deferred.resolve(site);
+			});
+
+			return deferred.promise();
+		}
+
+		/**
+		 * Checks and loads credentials of the selected sites
+		 *
+		 * @param {arrays}   items    An array containing the destination sites when installing plugins or themes
+		 * @param {Deferred} deferred jQuery's Deferred object
+		 *
+		 * @return {Promise}
+		 */
+		function check_site_creds(items, deferred) {
+			if ('undefined' == typeof deferred) var deferred = jQuery.Deferred();
+			if (items.length) {
+				var site_row = items.shift();
+
+				if ('undefined' !== typeof site_row) {
+					var site = new UpdraftCentral_Site(site_row);
+					if (!selected_sites.exists(site.id)) {
+						load_site_creds(site).then(function(response) {
+							// Add site id and creds to the selected sites collection to
+							// be pass along with the upload request
+							if (response.hasOwnProperty('id') && response.id) {
+								selected_sites.add(response.id, {
+									id: response.id,
+									description: response.site_description,
+									filesystem_credentials: response.site_credentials
+								});
+							}
+
+							check_site_creds(items, deferred);
+						});
+					}
+				}
+			} else {
+				deferred.resolve();
+			}
+
+			return deferred.promise();
+		}
+
+		// Pre-upload housekeeping
+		uploader.bind('BeforeUpload', function(up, file) {
+			var credentials = new UpdraftCentral_Credentials();
+			var selection = site_filter.get_selected_sites();
+
+			if (selection.hasOwnProperty('sites') && selection.sites.count()) {
+				var site_rows = selection.sites;
+				var up_status_container = $('#uc-install-status');
+
+				selected_sites.clear();
+				up_status_container.append('<span id="load-site-creds-msg">'+udclion[module].creds_check+'</span>');
+				up_status_container.append('<div class="injected-spinner updraftcentral_spinner"></div>');
+
+				check_site_creds(site_rows.get_items()).then(function(response) {
+					up_status_container.find('span#load-site-creds-msg').remove();
+					up_status_container.find('div.injected-spinner').remove();
+					show_pre_install_message(up, file);
+				});
+			} else {
+				// We normally won't reach this line since if no sites have been selected
+				// using the filter box it will automatically default to the currently manage site where the
+				// uploader interface is shown. We just add this line here just in case.
+				reset_uploader(up, file);
+			}
+
+			// Hold process until user confirms option
+			return false;
+		});
+
+		// Checks upload status. Primarily for files that were uploading in chunks.
+		uploader.bind('ChunkUploaded', function(up, file, response) {
+			// N.B. Uncomment below line if you want to track the number of bytes uploaded for every
+			// chunk request. Good for debugging purposes. I just added it just in case.
+			// console.log("Chunk uploaded.", result.offset, "of", result.total, "bytes.");
+
+			// Checking chunk result for error. If error is found then stop the upload process.
+			var result = JSON.parse(response.response);
+			var previous_status = file.status,
+				site_description, resp,
+				errors = '', error_count = 0,
+				error_display_limit = 3, message;
+
+			if (result.hasOwnProperty('e') && result.e) {
+				if (UpdraftCentral.get_debug_level() > 0) {
+					console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+udclion.message+' ('+result.e+');');
+				}
+				UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+vsprintf(udclion[module].upload_failed, [file.name, '<br/>', result.e])+'</p>');
+				
+				up.removeFile(file);
+				if (plupload.UPLOADING == previous_status && plupload.STARTED == up.state) {
+					up.stop();
+					up.start();
+				}
+			} else {
+				$.each(result, function(index, data) {
+					site_description = data.site_description;
+					resp = data.response;
+	
+					if ((resp.hasOwnProperty('error') && resp.error) || (resp.hasOwnProperty('responsetype') && 'error' == resp.responsetype)) {
+						message = udclion[module].upload_cutoff;
+						if (resp.hasOwnProperty('message') && resp.message) {
+							message = resp.message;
+						} else if (resp.hasOwnProperty('data') && resp.data) {
+							message = resp.data;
+						}
+
+						if (UpdraftCentral.get_debug_level() > 0) {
+							console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+site_description+': '+message);
+						}
+
+						if (error_display_limit > error_count) {
+							errors += site_description+': '+message+'<br/>';
+							error_count++;
+						}
+	
+						previous_status = file.status;
+						up.removeFile(file);
+		
+						if (plupload.UPLOADING == previous_status && plupload.STARTED == up.state) {
+							up.stop();
+							up.start();
+						}
+					}
+				});
+
+				if (error_count > 0) {
+					UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+vsprintf(udclion[module].upload_failed, [file.name, '<br/>', errors])+'</p>');
+				}
+			}
+		});
+
+		// A file was uploaded. Upload process has completed.
+		uploader.bind('FileUploaded', function(up, file, response) {
+			var $location = UpdraftCentral.$site_row.find('.updraftcentral_row_extracontents');
+			UpdraftCentral.done_loading($location);
+
+			if (response.status == '200') {
+				try {
+					var result = JSON.parse(response.response);
+					var success_count = 0,
+						installed_name = '',
+						errors = '',
+						error_count = 0,
+						error_display_limit = 3;
+
+					if (result.hasOwnProperty('e') && result.e) {
+						if (UpdraftCentral.get_debug_level() > 0) {
+							console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+udclion.message+' ('+result.e+');');
+						}
+						errors = result.e;
+					} else {
+						var site_description, resp, error_message, data;
+						$.each(result, function(index, data) {
+							site_description = data.site_description;
+							resp = data.response;
+
+							if (resp.hasOwnProperty('installed') && resp.installed) {
+									installed_name = resp.installed_data.Name;
+									success_count++;
+							} else {
+								if (resp.hasOwnProperty('message') && resp.message) {
+									if (UpdraftCentral.get_debug_level() > 0) {
+										console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+site_description+': '+resp.message);
+									}
+									error_message = resp.message;
+								} else {
+									error_message = sprintf(udclion[module].general_error, JSON.stringify(resp));
+									if (resp.hasOwnProperty('error') && resp.error && resp.hasOwnProperty('code') && resp.code) {
+										data = resp.data;
+	
+										if (data && data.hasOwnProperty('message') && data.message) {
+											error_message = data.message;
+										} else if ('string' === typeof data && data.length) {
+											error_message = data;
+										} else if ('undefined' !== typeof udclion[module][resp.code]) {
+											error_message = udclion[module][resp.code];
+										} else {
+											error_message = sprintf(udclion[module].general_error, resp.code);
+										}
+									}
+									
+									if (UpdraftCentral.get_debug_level() > 0) {
+										console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+site_description+': '+error_message);
+									}
+								}
+
+								if (error_display_limit > error_count) {
+									errors += site_description+': '+error_message+'<br/>';
+									error_count++;
+								}
+							}
+						});
+					}
+
+					if (success_count !== result.length) {
+						UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+vsprintf(udclion[module].upload_failed, [file.name, '<br/>', errors])+'</p>');
+					} else {
+						var settings = up.settings.multipart_params;
+						var action_message = udclion[module].installed;
+
+						if (settings.hasOwnProperty('activate') && settings.activate) {
+							action_message = udclion[module].installed_activated;
+						}
+					
+						var message = vsprintf(udclion[module].install_success_message, [action_message, '"'+installed_name+'"']);
+						UpdraftCentral_Library.dialog.alert('<h2>'+udclion[module].install_zip_heading+'</h2><p>'+message+'</p>');
+					}
+
+					reset_uploader(up, file);
+				} catch (err) {
+					// Log error and response objects in console. Helps in debugging on what went wrong.
+					if (UpdraftCentral.get_debug_level() > 0) {
+						console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+site_description+' - '+udclion[module].jsonnotunderstood);
+						console.log(err);
+						console.log(response);
+					}
+					reset_uploader(up, file);
+				}
+
+			} else {
+				// Log response objects in console. Helps in debugging on what went wrong.
+				if (UpdraftCentral.get_debug_level() > 0) {
+					console.log(udclion.error+': '+udclion[module].install_zip_heading.toLowerCase()+' ('+file.name+'); '+site_description+' ('+udclion[module].details_follows+'):');
+					console.log(response);
+				}
+				reset_uploader(up, file);
+			}
+		});
+	}
+
 	/**
 	 * Initilizes the collapse/expand menu tooltips
 	 *
 	 * @returns {void}
 	 */
 	this.init_tooltip = function() {
-		var collapse_icon = $('div#updraft-central-sidebar-button span.dashicons-arrow-left-alt2');
+		var collapse_icon = $('#updraft-central-sidebar-button span.arrow-left');
 		collapse_icon.data('animation', false);
 		collapse_icon.tooltip({
+			container: $('#updraftcentral_dashboard').get(0),
 			trigger: 'hover',
-			placement: 'right',
-			title: udclion.collapse_menu
+			placement: 'top',
+			title: udclion.collapse_menu,
+			boundary: 'viewport'
 		});
 
-		var expand_icon = $('div#updraft-central-sidebar-button span.dashicons-arrow-right-alt2');
+		var expand_icon = $('#updraft-central-sidebar-button span.arrow-right');
 		expand_icon.data('animation', false);
 		expand_icon.tooltip({
+			container: $('#updraftcentral_dashboard').get(0),
 			trigger: 'hover',
-			placement: 'right',
-			title: udclion.expand_menu
+			placement: 'top',
+			title: udclion.expand_menu,
+			boundary: 'viewport'
 		});
+
+		$('[data-toggle="tooltip"]').tooltip({
+			container: $('#updraftcentral_dashboard').get(0),
+			trigger: 'hover',
+			placement: 'top',
+			boundary: 'viewport'
+		});
+
+		// Disable initially since the sidebar menu tooltips will only be available if the menus are
+		// actually collapsed except for the expand/collapse button tooltip.
+		$('[data-toggle="tooltip"]').tooltip('disable');
 	}
 
 	/**
@@ -430,6 +1198,32 @@ var UpdraftCentral = function() {
 	}
 
 	/**
+	 * Saves updraftcentral user defined settings
+	 *
+	 * @param {object} settings  The settings to save.
+	 * @param {object} $location A jquery object representing the container where the spinner will be displayed
+	 *
+	 * @return {object} jQuery promise object
+	 */
+	this.save_settings = function(settings, $location) {
+		var deferred = $.Deferred();
+
+		UpdraftCentral.send_ajax('save_settings', settings, null, 'via_mothership_encrypting', $location, function(resp, code, error_code) {
+			if ('ok' === code) {
+				if (resp.hasOwnProperty('message')) {
+					if ('success' === resp.message) {
+						deferred.resolve();
+					} else {
+						deferred.reject();
+					}
+				}
+			}
+		});
+
+		return deferred.promise();
+	}
+
+	/**
 	 * Checks whether the user has "write" privilege to the remote website's directory. If not, then we'll ask the user
 	 * for their FTP Credentials to successfully install the desired entity (e.g plugin, theme or WP core).
 	 *
@@ -448,7 +1242,7 @@ var UpdraftCentral = function() {
 		credentials.load_credentials(site).then(function(response) {
 			var requests = response.request_filesystem_credentials;
 
-			if ('undefined' !== typeof requests[directory] && requests[directory]) {
+			if ('undefined' !== typeof requests[directory] && UpdraftCentral_Library.parseBool(requests[directory])) {
 				credentials.get_credentials(site).then(function(response) {
 					deferred.resolve({
 						site: site,
@@ -570,11 +1364,66 @@ var UpdraftCentral = function() {
 	}
 
 	/**
+	 * Shows or hides a module's sub menu
+	 *
+	 * @param {Object} elem   A jQuery object representing the collapsible icon.
+	 * @param {Object} menu   A jQuery object representing the menu to display.
+	 * @param {Object} parent The parent object/element of the menu.
+	 *
+	 * @return void
+	 */
+	function toggle_submenu(elem, menu, parent) {
+		var icon = elem.find('.updraft-sub-menu-arrow-left');
+		if (icon.is(':visible')) {
+			icon.hide();
+			elem.find('.updraft-sub-menu-arrow-down').show();
+			menu.appendTo(parent).show();
+		} else {
+			elem.find('.updraft-sub-menu-arrow-down').hide();
+			icon.show();
+			parent.find('.updraft-sub-menu').appendTo(elem).hide();
+		}
+	}
+
+	/**
 	 * Registers listener for ajax processing events
 	 *
 	 * @returns {void}
 	 */
 	this.init_process_listener = function() {
+
+		$('a.updraft-sub-menu-link').on('click', function(event) {
+			var data_selector = $(this).attr('data-selector');
+			var data_module = $(this).attr('data-module');
+			var module = $('#updraft-menu-item-'+data_module);
+			var button = $(data_selector);
+
+			if (module.length) module.trigger('click');
+			if (button.length) button.trigger('click');
+		});
+
+		$('.updraft-sub-menu-icon').on('click', function(event) {
+			event.stopPropagation();
+			var menu = $(this).find('.updraft-sub-menu');
+			var parent = $(this).closest('.updraft-menu-item-container');
+			var button = parent.find('button.updraft-menu-item');
+
+			// Hide any opened menu to avoid any unnecessary vertical space before
+			// opening a new menu.
+			$('.updraft-menu-item-container > .updraft-sub-menu').each(function() {
+				var other_menu = $(this);
+				var other_parent = $(this).closest('.updraft-menu-item-container');
+				var elem = other_parent.find('.updraft-sub-menu-icon');
+				var other_button = other_parent.find('button.updraft-menu-item');
+
+				if (button.attr('id') !== other_button.attr('id')) {
+					toggle_submenu(elem, other_menu, other_parent);
+				}
+			});
+
+			toggle_submenu($(this), menu, parent);
+		});
+
 		$(document).ajaxStop(function() {
 			if (0 === $.active) {
 				self.ajax_request_processing = false;
@@ -595,20 +1444,24 @@ var UpdraftCentral = function() {
 
 		$('#updraftcentral_dashboard').on('updraftcentral_dialog_opened', function(event) {
 			if ($.fullscreen.isFullScreen()) {
-				var dashboard_fullscreen = $('#updraftcentral_dashboard.updraft-fullscreen');
-				var backdrop = dashboard_fullscreen.find('div.modal-backdrop');
-				if (0 === backdrop.length) {
-					$(document.body).find('.modal-backdrop.show').appendTo(dashboard_fullscreen);
+				var wrapper = $('#updraftcentral_dashboard_wrapper.updraft-fullscreen');
+				var dashboard_fullscreen = wrapper.find('#updraftcentral_dashboard');
+				if (dashboard_fullscreen.length) {
+					var backdrop = dashboard_fullscreen.find('div.modal-backdrop');
+					if (0 === backdrop.length) {
+						$(document.body).find('.modal-backdrop.show').appendTo(dashboard_fullscreen);
+					}
 				}
 			}
 		});
 
 		$('#updraftcentral_dashboard').on('updraftcentral_dialog_closed', function(event) {
 			if ($.fullscreen.isFullScreen()) {
-				var bootbox_modal = $('#updraftcentral_dashboard.updraft-fullscreen div.bootbox.modal.show');
-				var modal = $('#updraftcentral_dashboard.updraft-fullscreen #updraftcentral_modal_dialog.modal.show');
+				var wrapper = $('#updraftcentral_dashboard_wrapper.updraft-fullscreen');
+				var bootbox_modal = wrapper.find('#updraftcentral_dashboard div.bootbox.modal.show');
+				var modal = wrapper.find('#updraftcentral_dashboard #updraftcentral_modal_dialog.modal.show');
 				if (0 === bootbox_modal.length && 0 === modal.length) {
-					var backdrop = $('#updraftcentral_dashboard.updraft-fullscreen div.modal-backdrop.show');
+					var backdrop = wrapper.find('#updraftcentral_dashboard div.modal-backdrop.show');
 					if (backdrop.length) backdrop.remove();
 				}
 			}
@@ -736,6 +1589,50 @@ var UpdraftCentral = function() {
 	this.site_order();
 
 	/**
+	 * WordPress is sending back this format '2018-12-01 7:30p' in terms of datetime format and dayJS
+	 * seems to have a problem when parsing WordPress's 12 hour datetime format, thus, we need to make
+	 * sure to convert it to a 24 hour format before passing to dayjs for processing.
+	 *
+	 * @param {string} datetime The string to convert
+	 *
+	 * @return {string}
+	 */
+	this.convertTo24HourFormat = function(datetime) {
+		var dt = datetime.split(' ');
+		if ('undefined' !== typeof dt[1]) {
+			var time = dt[1].split(':');
+			var hours = parseInt(time[0]);
+			var minutes = parseInt(time[1]);
+			var AMPM = time[1].match(/\d{1,}(.*)/)[1];
+
+			if (0 !== AMPM.length) {
+				AMPM = (1 === AMPM.length) ? AMPM.toLowerCase()+'m' : AMPM.toLowerCase();
+
+				if (12 == hours && 'am' == AMPM && (0 <= minutes && 59 >= minutes)) hours=hours-12;
+				if ((1 <= hours && 11 >= hours) && 'pm' == AMPM && (0 <= minutes && 59 >= minutes)) hours=hours+12;
+			}
+
+			hours = (hours < 10) ? '0'+hours.toString() : hours.toString();
+			minutes = (minutes < 10) ? '0'+minutes.toString() : minutes.toString();
+
+			return dt[0]+' '+hours+':'+minutes;
+		}
+
+		return dt[0];
+	}
+
+	/**
+	 * A Handlebarsjs helper function that sanitizes html content using the UpdraftCentral_Library.sanitize_html
+	 *
+	 * @param {string} content The content to santize
+	 *
+	 * @return {string}
+	 */
+	Handlebars.registerHelper('sanitize_html', function(content) {
+		return new Handlebars.SafeString(UpdraftCentral_Library.sanitize_html(content));
+	});
+
+	/**
 	 * A Handlebarsjs helper function that is used to format a date string to a specific time format
 	 *
 	 * @param {mixed} date_str    The string to format
@@ -747,10 +1644,13 @@ var UpdraftCentral = function() {
 		if ('undefined' === typeof date_str || 'undefined' === typeof date_format) return '';
 
 		if ('string' !== typeof date_format) {
-			date_format = 'YYYY-MM-DD h:mma';	// Defaults to WordPress.org's datetime field (e.g. last_updated). e.g. 2018-12-01 7:30p
+			date_format = 'YYYY-MM-DD HH:mm';
 		}
 
-		return new Handlebars.SafeString(moment(date_str, date_format).fromNow());
+		dayjs.extend(dayjs_plugin_relativeTime);
+		date_str = UpdraftCentral.convertTo24HourFormat(date_str);
+
+		return new Handlebars.SafeString(dayjs(date_str, date_format).fromNow());
 	});
 
 	/**
@@ -1599,6 +2499,17 @@ var UpdraftCentral = function() {
 	 */
 	function process_ajax_response(response, code, error_code, is_site_rpc, response_callback, allow_visual_responses, $site_row) {
 		
+		// Prevent error dialog to show when browser is reloaded/refreshed and there is
+		// still an active jquery process.
+		//
+		// It's pointless to show an error message if we can't actually prevent user from
+		// reloading the page inorder for him or her to decide whether to continue or not since
+		// it's already been too late. This just serves a graceful exit rather than bombarding
+		// users with error if they happened to cut short a certain ajax process.
+		if (UpdraftCentral.reloaded && parseInt($.active) > 0 && 'error' == code) {
+			return;
+		}
+
 		var website = ('undefined' !== typeof $site_row && $site_row && $site_row.length) ? $site_row.data('site_description')+' - ' : '';
 
 		allow_visual_responses = ('undefined' === typeof allow_visual_responses) ? true : allow_visual_responses;
@@ -1629,7 +2540,13 @@ var UpdraftCentral = function() {
 					// A default message for if we don't recognise the code
 					var dash_message = udclion.js_exception_occurred+' ('+error_code+')';
 					// Get the error's own message, if we know about it
-					if (udclion.rpcerrors.hasOwnProperty(error_code)) { dash_message = udclion.rpcerrors[error_code]; }
+					if (udclion.rpcerrors.hasOwnProperty(error_code)) {
+						if ('rpc_fatal_error' == error_code && response.hasOwnProperty('message')) {
+							dash_message = sprintf(udclion.rpcerrors[error_code], response.message);
+						} else {
+							dash_message = udclion.rpcerrors[error_code];
+						}
+					}
 					
 					if (allow_visual_responses) { UpdraftCentral_Library.dialog.alert('<h2>'+website+udclion.communications_error+'</h2>'+dash_message); }
 				}
@@ -1967,12 +2884,17 @@ var UpdraftCentral = function() {
 						// $(spinner_where).removeClass('updraftcentral_spinner');
 					}
 					
-					console.error("UpdraftCentral: Error in AJAX operation");
-					console.log(request);
-					console.log(status);
-					// https://api.jquery.com/jquery.ajax/ says: 'When an HTTP error occurs, (this parameter) receives the textual portion of the HTTP status, such as "Not Found" or "Internal Server Error."'
-					// "Unauthorized" is what you get when HTTP authentication is required. "Timeout" when there's a timeout.
-					console.error(error_thrown);
+					// We don't actually need these errors if the browser was reloaded because users can no longer
+					// take any action since it's already been too late. These error info will only be shown if the
+					// browser reload action is not the one causing the error due to an abrupt halting of a current AJAX process.
+					if (!UpdraftCentral.reloaded) {
+						console.error("UpdraftCentral: Error in AJAX operation");
+						console.log(request);
+						console.log(status);
+						// https://api.jquery.com/jquery.ajax/ says: 'When an HTTP error occurs, (this parameter) receives the textual portion of the HTTP status, such as "Not Found" or "Internal Server Error."'
+						// "Unauthorized" is what you get when HTTP authentication is required. "Timeout" when there's a timeout.
+						console.error(error_thrown);
+					}
 					
 					if ('' == error_thrown) { error_thrown = 'http_post_fail'; }
 					
@@ -2017,11 +2939,32 @@ var UpdraftCentral = function() {
 		$('#updraftcentral_licences_in_use').html(how_many_sites);
 	}
 
+	/**
+	 * Fixes layout issues on the backup settings/configure page where content (template) is being
+	 * pulled from the control site dynamically.
+	 *
+	 * @return {void}
+	 */
+	function adapt_screen_layout() {
+		var container = $('#updraftcentral_dashboard');
+
+		// Get the main container's width
+		var current_width = container.outerWidth();
+
+		// Add "media query"-like class
+		$('body').toggleClass('updraftcentral-small', current_width <= 800);
+		$('body').toggleClass('updraftcentral-medium', current_width > 800 && current_width <= 1200);
+		$('body').toggleClass('updraftcentral-large', current_width > 1200);
+	}
+	adapt_screen_layout();
+	$('#updraft-central-navigation-sidebar').on('collapse_expand_complete', adapt_screen_layout);
+
 	$(window).resize(function() {
 		var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 		if (width > mobile_width) {
 			$('#updraftcentral_dashboard #updraft-central-navigation-sidebar').show();
 		}
+		adapt_screen_layout();
 	});
 
 	// Toggle the mobile menu on/off, if at a relevant width
@@ -2292,11 +3235,17 @@ var UpdraftCentral = function() {
 			collapse = false;
 		var toggleWidth = $("#updraft-central-navigation-sidebar").width() > default_collapse_width ? default_collapse_width+"px" : defaultWidth + "px";
 
+		var updraft_sub_menu = $('.updraft-sub-menu:visible');
+		if (updraft_sub_menu.length) {
+			var container = updraft_sub_menu.closest('.updraft-menu-item-container');
+			container.find('.updraft-sub-menu-icon').trigger('click');
+		}
+
 		$("#updraft-central-navigation-sidebar").animate({
 			width: toggleWidth
 		}, {
 			step: function( now, fx ) {
-				var $label = $('#'+fx.elem.id).find('div.updraft-menu-item > span.menu-label');
+				var $label = $('#'+fx.elem.id).find('button.updraft-menu-item > span.menu-label');
 				var $visibility_icon = $('#'+fx.elem.id).find('.module-visibility');
 				var $hidden_modules_label = $('#hidden-modules-container').find('.uc-hidden-modules-label');
 				var $show_all = $('#updraft-menu-item-all');
@@ -2322,6 +3271,7 @@ var UpdraftCentral = function() {
 				} else {
 					$('[data-toggle="tooltip"]').tooltip('disable');
 				}
+				$('#updraft-central-navigation-sidebar').trigger('collapse_expand_complete');
 			}
 		});
 		$(".updraft-central-sidebar-button-icon").toggle();
@@ -2330,8 +3280,6 @@ var UpdraftCentral = function() {
 	$('#updraftcentral_dashboard .updraftcentral_action_box .updraftcentral_action_manage_sites').click(function() {
 		UpdraftCentral.set_dashboard_mode('sites');
 	});
-	
-	
 	
 	/**
 	 * Do any processing necessary with the passed information about current status
@@ -2991,6 +3939,9 @@ var UpdraftCentral = function() {
 
 		connection_method = ('undefined' === typeof connection_method) ? $site_row.data('connection_method') : connection_method;
 		
+		// Overwrite the connection_method if this is a updraftclone command
+		connection_method = (0 === rpc_command.lastIndexOf('updraftclone.', 0)) ? 'via_mothership' : connection_method;
+		
 		if ('undefined' === typeof spinner_where || null === spinner_where) { spinner_where = $site_row; }
 
 		try {
@@ -3023,13 +3974,54 @@ var UpdraftCentral = function() {
 		UpdraftCentral_Library.toggle_fullscreen();
 	});
 	
-	$('#updraft-central-navigation .updraft-full-screen').on('click', function() {
+	$('#updraft-central-navigation button.updraft-full-screen').on('click', function() {
 		UpdraftCentral_Library.toggle_fullscreen();
 	});
 
-	$('#updraft-central-navigation .updraftcentral-help').on('click', function() {
+	$('#updraft-central-navigation button.updraftcentral-help').on('click', function() {
 		UpdraftCentral_Library.dialog.alert(UpdraftCentral.template_replace('dashboard-help', { uc_version: udclion.updraftcentral_version+': '+udclion.udc_version, running_on: UpdraftCentral.version_info_as_text() }));
 	});
+
+	/**
+	 * Monitors a DOM node whether child nodes have been added or removed
+	 *
+	 * @param {object}   element  An object representing the DOM node to monitor
+	 * @param {function} callback A function that will be called when a child node has been added or removed
+	 * @param {string}   id       An identifier string for the given subscription
+	 *
+	 * @returns {void}
+	 */
+	this.subscribe_to_node_changes = function(element, callback, id) {
+		if ('undefined' !== typeof id && id && !observers.exists(id)) {
+			var mo_class = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+			if ('undefined' !== typeof mo_class && mo_class) {
+				var observer = new mo_class(callback);
+				observer.observe($(element).get(0), {
+					attributes: false,
+					childList: true,
+					characterData: false,
+					subtree: false
+				});
+
+				observers.add(id, observer);
+			}
+		}
+	}
+
+	/**
+	 * Unsubscribe to node changes monitoring
+	 *
+	 * @param {string} id An identifier string for the given subscription
+	 *
+	 * @returns {void}
+	 */
+	this.unsubscribe_to_node_changes = function(id) {
+		if ('undefined' !== typeof id && id && observers.exists(id)) {
+			var observer = observers.item(id);
+			observer.disconnect();
+			observers.remove(id);
+		}
+	}
 
 	/**
 	 * Return a string with information on the current installation
@@ -3040,7 +4032,7 @@ var UpdraftCentral = function() {
 		return 'WP/'+udclion.wp_version+' PHP/'+udclion.php_version+' MySQL/'+udclion.mysql_version+' Curl/'+udclion.curl_version;
 	}
 		
-	$('#updraft-central-navigation .updraftcentral-settings').on('click', function() {
+	$('#updraft-central-navigation button.updraftcentral-settings').on('click', function() {
 		// Check and verify that a process is currently not running before
 		// executing the below code to prevent from abruptly aborting the current process
 		// which may lead to JS errors or/and inconsistency of information displayed to the user
@@ -3050,15 +4042,22 @@ var UpdraftCentral = function() {
 			uc_version: udclion.updraftcentral_version+': '+udclion.udc_version,
 			running_on: UpdraftCentral.version_info_as_text(),
 			timeout: udclion.user_defined_timeout,
+			shortcut_status: udclion.shortcut_status,
 		}), function() {
 			var timeout = $('#updraftcentral_settings_timeout').val();
 			if (!timeout.length || !$.isNumeric(timeout) || timeout < 30) timeout = 30;	// Default is 30 seconds
 
 			$location = $('#updraftcentral_modal > .uc-settings-container');
-			UpdraftCentral.save_timeout(timeout, $location).then(function(response) {
-				// On success, reflect the recent user defined timeout without waiting
+			var settings = {
+				timeout: timeout,
+				shortcut_status: $('input[name="uc-shortcuts-activate"]').is(":checked") ? 'active' : 'inactive',
+			}
+
+			UpdraftCentral.save_settings(settings, $location).then(function(response) {
+				// On success, reflect the recent settings changes without waiting
 				// for the user to reload the page
-				udclion.user_defined_timeout = timeout;
+				udclion.user_defined_timeout = settings.timeout;
+				udclion.shortcut_status = settings.shortcut_status;
 
 				var new_debugging_level = $('#updraftcentral_debug_level').val();
 				if (new_debugging_level >= 0 && new_debugging_level <=3) {
@@ -3320,7 +4319,7 @@ var UpdraftCentral = function() {
 	 * or minimize redundant or repeatitive clicking.
 	 */
 	this.init_recorder = function() {
-		var recorder = new UpdraftCentral_Recorder();
+		self.recorder = new UpdraftCentral_Recorder();
 		recorder.load();
 	}
 
@@ -3344,7 +4343,7 @@ var UpdraftCentral = function() {
 	var visible_modules = [];
 	var hidden_modules = [];
 	var module_id = '';
-	var $show_all = $('<div class="updraft-menu-item-container"><div id="updraft-menu-item-all" class="updraft-menu-item">' + udclion.show_all + '</div></div>');
+	var $show_all = $('<div class="updraft-menu-item-container"><button id="updraft-menu-item-all" class="updraft-menu-item">' + udclion.show_all + '</button></div>');
 
 	var $menu = $('#hidden-modules-menu');
 	$menu.hide();
@@ -3388,8 +4387,9 @@ var UpdraftCentral = function() {
 	 * Upon clicking module visibility icon, the visibility is toggled and stored in DB
 	 */
 	$('#updraft-central-navigation-sidebar').on('click', $module_visibility, function(evt) {
-		if (!$(evt.target).parent().hasClass('module-visibility')) return;
-		var $clicked_module = $(evt.target).parent();
+		if (!$(evt.target).parent().hasClass('module-visibility') && !$(evt.target).hasClass('module-visibility')) return;
+
+		var $clicked_module = $(evt.target).closest('.module-visibility');
 		module_id = $clicked_module.prev().attr('id');
 		module_id = module_id.replace('updraft-menu-item-', '');
 		var visibility = false;

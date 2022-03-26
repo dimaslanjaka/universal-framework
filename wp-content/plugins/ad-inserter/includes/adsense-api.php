@@ -8,7 +8,7 @@
 //  define ('AI_ADSENSE_CLIENT_SECRET', '2muX2P9FHRNtm6BURa49t1z6');
 //  define ('AI_ADSENSE_DEVELOPER_KEY', 'AIzaSyCDZtqhLeAp1XM-xS52nzQ7NwnrOH0UE2U');
 
-if (defined ('AI_CI_STRING') && get_option (AI_ADSENSE_OWN_IDS) === false) {
+if (defined ('AI_CI_STRING') /*&& get_option (AI_ADSENSE_OWN_IDS) === false*/) {
   define ('AI_ADSENSE_CLIENT_ID',     base64_decode (AI_CI_STRING));
   define ('AI_ADSENSE_CLIENT_SECRET', base64_decode (AI_CS_STRING));
 }
@@ -21,13 +21,16 @@ if (($adsense_auth_code = get_option (AI_ADSENSE_AUTH_CODE)) !== false) {
   define ('AI_ADSENSE_AUTHORIZATION_CODE', $adsense_auth_code);
 }
 
-require_once AD_INSERTER_PLUGIN_DIR.'includes/google-api/autoload.php';
+$php_version = explode ('.', PHP_VERSION);
+if ($php_version [0] >= 8) {
+  // PHP 8
+  require_once AD_INSERTER_PLUGIN_DIR.'includes/google-api-8/vendor/autoload.php';
+  require_once AD_INSERTER_PLUGIN_DIR.'includes/google-api-8/vendor/google/apiclient-services/src/Adsense.php';
+} else {
+  require_once AD_INSERTER_PLUGIN_DIR.'includes/google-api/vendor/autoload.php';
+  require_once AD_INSERTER_PLUGIN_DIR.'includes/google-api/vendor/google/apiclient-services/src/Adsense.php';
+}
 
-
-/**
- * Handles authentication and Oauth token storing.
- *
- */
 
 class adsense_api {
   protected $apiClient;
@@ -35,35 +38,28 @@ class adsense_api {
   protected $publisherID;
   protected $error;
 
-  public function __construct() {
-    $this->apiClient = new Google_Client();
+  public function __construct () {
+    $this->apiClient = new Google_Client ();
 
     $this->apiClient->setClientId (AI_ADSENSE_CLIENT_ID);
     $this->apiClient->setClientSecret (AI_ADSENSE_CLIENT_SECRET);
     $this->apiClient->setRedirectUri ('urn:ietf:wg:oauth:2.0:oob');
+
+    $this->apiClient->setScopes (array ('https://www.googleapis.com/auth/adsense.readonly'));
+    $this->apiClient->setAccessType ('offline');
 
     $this->adSenseService = new Google_Service_AdSense ($this->apiClient);
   }
 
   public function getAuthUrl () {
-    $this->apiClient = new Google_Client();
-
-    $this->apiClient->setClientId (AI_ADSENSE_CLIENT_ID);
-    $this->apiClient->setClientSecret (AI_ADSENSE_CLIENT_SECRET);
-    $this->apiClient->setRedirectUri ('urn:ietf:wg:oauth:2.0:oob');
-    $this->apiClient->setScopes (array ('https://www.googleapis.com/auth/adsense'));
-    $this->apiClient->setAccessType ('offline');
+    $this->apiClient->setApprovalPrompt ('force');
 
     return ($this->apiClient->createAuthUrl ());
   }
 
 
-  /**
-   * Check if a token for the user is already in the db, otherwise perform
-   * authentication.
-   */
-  public function authenticate() {
-    $token = $this->getToken();
+  public function authenticate () {
+    $token = $this->getToken ();
     if (isset ($token)) {
       // We already have the token.
       $this->apiClient->setAccessToken ($token);
@@ -72,14 +68,10 @@ class adsense_api {
       $this->apiClient->setScopes (array("https://www.googleapis.com/auth/adsense.readonly"));
       // Go get the token
       $this->apiClient->authenticate (AI_ADSENSE_AUTHORIZATION_CODE);
-      $this->saveToken ($this->apiClient->getAccessToken());
+      $this->saveToken ($this->apiClient->getAccessToken ());
     }
   }
 
-  /**
-   * Return the AdsenseService instance (to be used to retrieve data).
-   * @return apiAdsenseService the authenticated apiAdsenseService instance
-   */
   public function getAdSenseService () {
     return $this->adSenseService;
   }
@@ -93,132 +85,153 @@ class adsense_api {
   }
 
   public function isTokenValid () {
-    $token = $this->getToken();
+    $token = $this->getToken ();
     return isset ($token);
   }
 
-  /**
-   * During the request, the access code might have been changed for another.
-   * This function updates the saved token.
-   */
-  public function refreshToken() {
+  public function refreshToken ($adunit_code_id = '') {
     if ($this->apiClient->getAccessToken () != null) {
       $this->saveToken ($this->apiClient->getAccessToken());
     }
   }
 
-  public function getAdUnits() {
-    $adsense_table_data = array ();
+  public function getAdUnits () {
+    $adsense_data = array ();
+
     $this->error = '';
 
     try {
-      $this->authenticate();
+      $this->authenticate ();
 
       if ($this->isTokenValid ()) {
-        $adsense_service = $this->getAdSenseService();
+        $adsense_service = $this->getAdSenseService ();
 
-        $adsense_adsense_accounts   = $adsense_service->accounts;
-        $adsense_adsense_adclients  = $adsense_service->adclients;
-        $adsense_adsense_adunits    = $adsense_service->adunits;
+        $optParams ['pageSize'] = 20;
+        $pageToken = null;
+        $optParams ['pageToken'] = $pageToken;
 
         try {
-          $adsense_list_accounts = $adsense_adsense_accounts->listAccounts()->getItems();
-          $this->publisherID = $adsense_list_accounts[0]['id'];
+          $accounts = $adsense_service->accounts->listAccounts ($optParams);
+
+          if (!isset ($accounts) || empty ($accounts)) {
+            throw (new Exception ('No valid AdSense account'));
+          }
+
+          $aiAccountId = $accounts->accounts [0]['name'];
+
+          if (isset ($aiAccountId)) {
+            $account_data = explode ('/', $aiAccountId);
+            if (isset ($account_data [1])) {
+              $this->publisherID = $account_data [1];
+            }
+          }
 
           try {
-            $adsense_list_adclients = $adsense_adsense_adclients->listAdclients()->getItems();
-            $adsense_ad_client = NULL;
-            foreach ($adsense_list_adclients as $adsense_list_adclient) {
-              if ($adsense_list_adclient ['productCode'] == 'AFC') {
-                $adsense_ad_client = $adsense_list_adclient ['id'];
+            $adClients = $adsense_service->accounts_adclients->listAccountsAdclients ($aiAccountId, $optParams);
+
+            if (!isset ($adClients) || empty ($adClients)) {
+              throw (new Exception ('No valid AdSense ad client'));
+            }
+
+            $aiAdClient = null;
+            foreach ($adClients as $adClient) {
+              if ($adClient->productCode == 'AFC') {
+                $aiAdClient = $adClient;
+                break;
               }
             }
 
-            if ($adsense_ad_client) {
-              try {
-                $adsense_adunits = $adsense_adsense_adunits->listAdunits ($adsense_ad_client)->getItems();
-                foreach ($adsense_adunits as $adsense_adunit) {
-                  $adsense_table_data [] = array (
-                    'id'      => $adsense_adunit->getId(),
-                    'name'    => $adsense_adunit->getName(),
-                    'code'    => $adsense_adunit->getCode(),
-                    'type'    => $adsense_adunit->getContentAdsSettings()->getType(),
-                    'size'    => preg_replace( '/SIZE_([\d]+)_([\d]+)/', '$1x$2', $adsense_adunit->getContentAdsSettings()->getSize()),
-                    'active'  => $adsense_adunit->getStatus() == 'ACTIVE',
-                  );
+            if (!$aiAdClient) throw (new Exception ('No valid AdSense ad client for AFC product'));
+
+            $aiAdClientId = $aiAdClient ['name'];
+
+            try {
+              $optParams ['pageSize'] = 50;
+
+              $adsense_adunits = array ();
+              $pageToken = null;
+              do {
+                $optParams['pageToken'] = $pageToken;
+
+                $adsense_adunits_page = $adsense_service->accounts_adclients_adunits->listAccountsAdclientsAdunits ($aiAdClientId, $optParams);
+
+                if (!empty ($adsense_adunits_page ['adUnits'])) {
+                  $adsense_adunits = array_merge ($adsense_adunits,  $adsense_adunits_page ['adUnits']);
+
+                  if (isset($adsense_adunits_page ['nextPageToken'])) {
+                    $pageToken = $adsense_adunits_page ['nextPageToken'];
+                  } else $pageToken = null;
                 }
-              } catch ( Google_Service_Exception $e ) {
-                $adsense_err = $e->getErrors();
-                $this->error = 'AdUnits Error: ' .  $adsense_err [0]['message'];
+
+              } while ($pageToken);
+
+              foreach ($adsense_adunits as $adsense_adunit) {
+                $name_elements = explode ('/', $adsense_adunit ['name']);
+                $adsense_data [] = array (
+                  'id'      => $adsense_adunit ['name'],
+                  'name'    => $adsense_adunit ['displayName'],
+                  'code'    => end ($name_elements),
+                  'type'    => $adsense_adunit->contentAdsSettings ['type'],
+                  'size'    => str_replace (array ('1x3'), array (''), $adsense_adunit->contentAdsSettings ['size']),
+                  'active'  => $adsense_adunit ['state'] == 'ACTIVE',
+                );
               }
+            } catch (Google_Service_Exception $e ) {
+              $adsense_err = $e->getErrors ();
+              $this->error = 'List Ad Units Error: ' . strip_tags ($e->getMessage ()) . ' ' . $adsense_err [0]['message'];
             }
-          } catch ( Google_Service_Exception $e ) {
-            $adsense_err = $e->getErrors();
-            $this->error = 'AdClient Error: ' .  $adsense_err [0]['message'];
+          } catch (Google_Service_Exception $e ) {
+            $adsense_err = $e->getErrors ();
+            $this->error = 'List Ad Clients Error: ' . strip_tags ($e->getMessage ()) . ' ' . $adsense_err [0]['message'];
           }
-        } catch ( Google_Service_Exception $e ) {
-          $adsense_err = $e->getErrors();
-          $this->error = 'Account Error: ' .  $adsense_err [0]['message'];
-        } catch ( Exception $e ) {
+        } catch (Google_Service_Exception $e ) {
+          $adsense_err = $e->getErrors ();
+          $this->error = 'List Accounts Error: ' .  strip_tags ($e->getMessage ()) . ' ' . $adsense_err [0]['message'];
+        } catch (Exception $e ) {
           $this->error = 'Error: ' . strip_tags ($e->getMessage());
         }
       } else {
         }
 
     } catch (Exception $e) {
-        $this->error = 'AdSense Authentication failed: ' . strip_tags ($e->getMessage());
+        $this->error = 'AdSense authentication failed: ' . strip_tags ($e->getMessage ());
     }
 
     if ($this->error != '') return array ();
 
-    return $adsense_table_data;
+    return $adsense_data;
   }
 
-  public function getAdCode ($adUnitId) {
-    $code = '';
+
+  public function getAdCode ($adunit_code_id = '') {
+    $adsense_data = '';
+
     $this->error = '';
 
     try {
-      $this->authenticate();
+      $this->authenticate ();
 
       if ($this->isTokenValid ()) {
-
-        $adsense_service = $this->getAdSenseService();
-
-        $adsense_adsense_accounts   = $adsense_service->accounts;
-
+        $adsense_service = $this->getAdSenseService ();
         try {
-          $adsense_list_accounts = $adsense_adsense_accounts->listAccounts()->getItems();
-          $this->publisherID = $adsense_list_accounts[0]['id'];
-
-          try {
-            $ad_code = $adsense_service->accounts_adunits->getAdCode ($this->publisherID, 'ca-'.$this->publisherID, $adUnitId);
-          } catch ( Google_Service_Exception $e ) {
-            $adsense_err = $e->getErrors();
-            $this->error = 'getAdCode Error: ' .  $adsense_err [0]['message'];
-          }
-
-        } catch ( Google_Service_Exception $e ) {
-          $adsense_err = $e->getErrors();
-          $this->error = 'Account Error: ' .  $adsense_err [0]['message'];
-        } catch ( Exception $e ) {
+          // Ad unit code
+          $adsense_adunits_code = $adsense_service->accounts_adclients_adunits->getAdcode ($adunit_code_id);
+          $adsense_data = $adsense_adunits_code ['adCode'];
+        } catch (Google_Service_Exception $e ) {
+          $adsense_err = $e->getErrors ();
+          $this->error = 'List Ad Units Error: ' .  $adsense_err [0]['message'];
+        } catch (Exception $e ) {
           $this->error = 'Error: ' . strip_tags ($e->getMessage());
         }
-
-        if (isset ($ad_code->adCode)) {
-          $code = $ad_code->adCode;
-        }
-
-      } else {
-        }
+      }
 
     } catch (Exception $e) {
-        $this->error = 'AdSense Authentication failed: ' . strip_tags ($e->getMessage());
+        $this->error = 'AdSense authentication failed: ' . strip_tags ($e->getMessage ());
     }
 
     if ($this->error != '') return '';
 
-    return $code;
+    return $adsense_data;
   }
 
   private function saveToken ($token) {
@@ -227,6 +240,7 @@ class adsense_api {
 
   private function getToken () {
     $token = get_transient (AI_TRANSIENT_ADSENSE_TOKEN);
+
     if ($token === false) return null; else return $token;
   }
 }

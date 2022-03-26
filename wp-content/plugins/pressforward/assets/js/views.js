@@ -15,8 +15,8 @@ function assure_closed_menus() {
 
 //via http://stackoverflow.com/questions/1662308/javascript-substr-limit-by-word-not-char
 function trim_words(theString, numWords) {
-	expString = theString.split(/\s+/, numWords);
-	theNewString = expString.join(" ");
+	var expString = theString.split(/\s+/, numWords);
+	var theNewString = expString.join(" ");
 	return theNewString;
 }
 
@@ -84,7 +84,7 @@ function modalNavigator(tabindex) {
 		prevHTML += '<p class="prev_date">' + prevDate + '</p>';
 		//alert(modalID);
 		jQuery(modalID + ' div.modal-body-row div.modal-sidebar div.goPrev').html(prevHTML);
-		jQuery(modalID + ' div.mobile-goPrev').html('<i class="icon-arrow-left"></i> <a href="' + prevItemID + '" role="button" data-dismiss="modal" class="mobile-modal-navlink modal-nav" data-toggle="modal" data-backdrop="false">' + prevTitle + '</a> ');
+		jQuery(modalID + ' div.mobile-goPrev').html('<i class="icon-arrow-left"></i> <a href="' + prevItemID + '" role="button" data-bs-dismiss="modal" class="mobile-modal-navlink modal-nav">' + prevTitle + '</a> ');
 
 
 	}
@@ -105,7 +105,7 @@ function modalNavigator(tabindex) {
 		nextHTML += '<p class="next_date">' + nextDate + '</p>';
 		//alert(modalID);
 		jQuery(modalID + ' div.modal-body-row div.modal-sidebar div.goNext').html(nextHTML);
-		jQuery(modalID + ' div.mobile-goNext').html('&nbsp;| <a href="' + nextItemID + '" role="button" class="mobile-modal-navlink modal-nav" data-dismiss="modal" data-toggle="modal" data-backdrop="false">' + nextTitle + '</a> <i class="icon-arrow-right"></i>');
+		jQuery(modalID + ' div.mobile-goNext').html('&nbsp;| <a href="' + nextItemID + '" role="button" class="mobile-modal-navlink modal-nav" data-bs-dismiss="modal">' + nextTitle + '</a> <i class="icon-arrow-right"></i>');
 
 	}
 
@@ -114,7 +114,7 @@ function modalNavigator(tabindex) {
 
 function commentPopModal() {
 
-	jQuery('.pf_container').on('shown', '.modal.comment-modal', function (evt) {
+	jQuery('.pfmodal').on('shown.bs.modal', function (evt) {
 		var elementC = jQuery(this);
 		var element = elementC.closest('article');
 		var modalID = elementC.closest('article').attr('id');
@@ -127,29 +127,21 @@ function commentPopModal() {
 		var item_post_ID = element.attr('pf-item-post-id');
 		jQuery('#ef-comments_wrapper').remove();
 		//alert(modalIDString);
-		jQuery.post(ajaxurl, {
-				action: 'pf_ajax_get_comments',
-				//We'll feed it the ID so it can cache in a transient with the ID and find to retrieve later.
-				id_for_comments: item_post_ID,
-			},
-			function (comment_response) {
-				jQuery('#comment_modal_' + item_post_ID + ' .modal-body').html(comment_response);
-			});
 	});
 
-	jQuery('.pf_container').on('hide', '.modal.comment-modal', function (evt) {
+	jQuery('.pfmodal').on('hide.bs.modal', function (evt) {
 		jQuery('#ef-comments_wrapper').remove();
 	});
 }
 
 function reshowModal() {
-	jQuery('.pf_container').on('show', '.modal.pfmodal', function (evt) {
+	jQuery('.pfmodal').on('show.bs.modal', function (evt) {
 		var element = jQuery(this);
 		var modalID = element.attr('id');
 		pf_make_url_hashed(modalID);
 	});
 
-	jQuery('.pf_container').on('shown', '.modal.pfmodal', function (evt) {
+	jQuery('.pfmodal').on('shown.bs.modal', function (evt) {
 		var element = jQuery(this);
 		var modalID = element.attr('id');
 		document.body.style.overflow = 'hidden';
@@ -181,7 +173,7 @@ function hide_non_modals() {
 function reviewModal() {
 	//Need to fix this to only trigger on the specific model, but not sure how yet.
 
-	jQuery('.pressforward_page_pf-review .pf_container').on('shown', ".modal.pfmodal", function (evt) {
+	jQuery('.pfmodal').on('shown.bs.modal', function (evt) {
 		//alert('Modal Triggered.');
 
 		var element = jQuery(this);
@@ -205,6 +197,13 @@ function reviewModal() {
 
 			});
 
+		setTimeout(
+			function() {
+				var mainContentHeight = element.find('.modal-body-row').height();
+				element.find('.modal-body-row .modal-body').height(mainContentHeight);
+			},
+			100
+		);
 
 		var tabindex = element.parent().attr('tabindex');
 
@@ -213,7 +212,7 @@ function reviewModal() {
 }
 
 function hideModal() {
-	jQuery('.pf_container').on('hide', ".modal.pfmodal", function (evt) {
+	jQuery('.pfmodal').on('hide.bs.modal', function (evt) {
 		jQuery(".pfmodal .modal-comments").html('');
 		if (typeof editorialCommentReply == 'function') {
 			editorialCommentReply.close();
@@ -228,7 +227,7 @@ function hideModal() {
 }
 
 function commentModal() {
-	jQuery('.pf_container').on('show', '.comment-modal', function (evt) {
+	jQuery('.pfmodal').on('show.bs.modal', function (evt) {
 		var element = jQuery(this);
 		var modalID = element.parent('article').attr('id');
 		var modalIDString = '#' + modalID;
@@ -251,6 +250,13 @@ function commentModal() {
 }
 
 function PFBootstrapInits() {
+	jQuery('.dropdown-toggle').on(
+		'click',
+		function() {
+			var $clickedParent = jQuery(this).closest('.dropdown');
+			$clickedParent.toggleClass( 'open' );
+		}
+	);
 
 	jQuery('.nom-to-archive').tooltip({
 		placement: 'top',
@@ -271,12 +277,6 @@ function PFBootstrapInits() {
 
 	});
 	jQuery('.star-item').tooltip({
-		placement: 'top',
-		trigger: 'hover',
-		title: 'Star'
-
-	});
-	jQuery('.itemInfobutton').tooltip({
 		placement: 'top',
 		trigger: 'hover',
 		title: 'Star'
@@ -345,7 +345,7 @@ function PFBootstrapInits() {
 }
 
 function attach_menu_on_scroll_past() {
-	jQuery(window).scroll(function () {
+	jQuery(window).on( 'scroll', function () {
 		var y_scroll_pos = window.pageYOffset;
 		var scroll_pos_test = 90;
 		// set to whatever you want it to be
@@ -361,8 +361,9 @@ function attach_menu_on_scroll_past() {
 			jQuery('#feeds-search > *').addClass('pull-left');
 			jQuery('#feeds-search > label').hide();
 
-			var width = jQuery('#entries').innerWidth();
-			jQuery('.nav-fix').width(width - 80);
+			var width = jQuery('.pf_container').innerWidth();
+			var containerOffset = jQuery('.pf_container').offset();
+			jQuery('.nav-fix').width(width - 20).offset( { left: containerOffset.left } );
 		} else {
 			jQuery('.pf_container .display').removeClass('nav-fix');
 			jQuery('.pf_container #feed-folders').removeClass('right-bar-fix');
@@ -377,7 +378,7 @@ function attach_menu_on_scroll_past() {
 		}
 	});
 
-	jQuery(window).resize(function () {
+	jQuery(window).on('resize', function () {
 		var width = jQuery('#entries').innerWidth();
 		jQuery('.nav-fix').width(width - 80);
 		if (40 > jQuery('#adminmenuback').width()) {
@@ -412,21 +413,25 @@ function detect_view_change() {
 		//console.log(element);
 		var parent_e = element.parents('article');
 		var parent_h = parent_e.height();
+		var parent_d = element.closest( '.dropdown' );
 		//console.log(parent_h);
 		if (element.hasClass('amplify-down')) {
 			element.removeClass('amplify-down');
 			jQuery(parent_e).removeClass('show-overflow');
 			jQuery(parent_e).css('height', '');
+			jQuery(parent_d).removeClass('open');
 		} else {
 			element.addClass('amplify-down');
 			jQuery(parent_e).addClass('show-overflow');
 			jQuery(parent_e).height(parent_h);
+			jQuery(parent_d).addClass('open');
 			is_pf_open = true;
 		}
 	});
 
 	jQuery('.pressforward #wpbody').on('click', '.list div:not(.amplify-group.open)', function (evt) {
 		var element_p = jQuery('.amplify-group.open');
+		return;
 		//console.log(element_p);
 		if (is_pf_open) {
 			//console.log(element_p.length);
@@ -446,16 +451,20 @@ function detect_view_change() {
 		var parent_e = element.parents('article');
 		var parent_h = parent_e.height();
 		var parent_head = parent_e.find('header');
+		var parent_d = element.closest( '.dropdown' );
 		//console.log(parent_h);
-		if (element.hasClass('amplify-down')) {
+		if (parent_e.hasClass('amplify-down')) {
 			parent_e.removeClass('amplify-down');
+			parent_d.removeClass( 'open' );
 		} else {
 			parent_e.addClass('amplify-down');
+			parent_d.addClass( 'open' );
 			is_pf_open = true;
 		}
 	});
 
 	jQuery('.pressforward #wpbody').on('click', '.grid div:not(.amplify-group.open)', function (evt) {
+		return;
 		var element_p = jQuery('.amplify-group.open');
 		//console.log(element_p);
 		if (is_pf_open) {
@@ -472,18 +481,24 @@ function detect_view_change() {
 
 
 console.log('Waiting for load.');
-jQuery(window).load(function () {
+jQuery(window).on('load', function () {
 	// executes when complete page is fully loaded, including all frames, objects and images
+
+	var $allModals = jQuery('.pfmodal');
 
 	jQuery('.pf-loader').delay(300).fadeOut("slow", function () {
 		console.log('Load complete.');
+		var theModal, $closeEl, $modalEl;
 		jQuery('.pf_container').fadeIn("slow");
 		if (window.location.hash.indexOf("#") < 0) {
 			window.location.hash = '#ready';
 		} else if ((window.location.hash.toLowerCase().indexOf("modal") >= 0)) {
 			var hash = window.location.hash;
 			if (!jQuery(hash).hasClass('in')) {
-				jQuery(hash).modal('show');
+				$modalEl = jQuery(hash);
+				$closeEl = $modalEl.find( '.close' );
+				theModal = new bootstrap.Modal( $modalEl );
+				theModal.show( $closeEl );
 			}
 		}
 
@@ -494,7 +509,17 @@ jQuery(window).load(function () {
 			if ((window.location.hash.toLowerCase().indexOf("modal") >= 0)) {
 				var hash = window.location.hash;
 				if (!jQuery(hash).hasClass('in')) {
-					jQuery(hash).modal('show');
+					$modalEl = jQuery(hash);
+					$closeEl = $modalEl.find( '.close' );
+					theModal = new bootstrap.Modal( $modalEl );
+					theModal.show( $closeEl );
+
+					$allModals.each(function(){
+						var $modalToClose = bootstrap.Modal.getInstance( this );
+						if ( $modalToClose ) {
+							$modalToClose.hide();
+						}
+					});
 				}
 			}
 		});
@@ -527,9 +552,9 @@ function removeURLParameter(url, parameter) {
 	}
 }
 
-jQuery(window).load(function () {
+jQuery(window).on('load', function () {
 
-	jQuery('#gogrid').click(function (evt) {
+	jQuery('#gogrid').on('click', function (evt) {
 		evt.preventDefault();
 		jQuery("div.pf_container").removeClass('list').addClass('grid');
 		jQuery('#gogrid').addClass('unset');
@@ -541,7 +566,7 @@ jQuery(window).load(function () {
 		});
 	});
 
-	jQuery('#golist').click(function (evt) {
+	jQuery('#golist').on( 'click', function (evt) {
 		evt.preventDefault();
 		jQuery("div.pf_container").removeClass('grid').addClass('list');
 		jQuery('#golist').addClass('unset');
@@ -553,7 +578,7 @@ jQuery(window).load(function () {
 		});
 	});
 
-	jQuery('#gomenu').click(function (evt) {
+	jQuery('#gomenu').on( 'click', function (evt) {
 		evt.preventDefault();
 		jQuery('#feed-folders').hide('slide', {
 			direction: 'right',
@@ -561,7 +586,7 @@ jQuery(window).load(function () {
 		}, 150);
 	});
 
-	jQuery('#gomenu').click(function (evt) {
+	jQuery('#gomenu').on( 'click', function (evt) {
 		pf.toggler(evt, this, function (evt) {
 			var toolswin = jQuery('#tools');
 			jQuery("div.pf_container").removeClass('full');
@@ -583,14 +608,14 @@ jQuery(window).load(function () {
 			jQuery("div.pf_container").addClass('full');
 		});
 	});
-	jQuery('#gofolders').click(function (evt) {
+	jQuery('#gofolders').on( 'click', function (evt) {
 		evt.preventDefault();
 		jQuery('#tools').hide('slide', {
 			direction: 'right',
 			easing: 'linear'
 		}, 150);
 	});
-	jQuery('#gofolders').click(function (evt) {
+	jQuery('#gofolders').on( 'click', function (evt) {
 		pf.toggler(evt, this, function (evt) {
 			var folderswin = jQuery('#feed-folders');
 			jQuery("div.pf_container").removeClass('full');
@@ -612,7 +637,7 @@ jQuery(window).load(function () {
 
 
 
-	jQuery('#feed-folders .folder').click(function (evt) {
+	jQuery('#feed-folders .folder').on( 'click', function (evt) {
 		evt.preventDefault();
 		var obj = jQuery(this);
 		var id = obj.attr('href');
@@ -629,7 +654,7 @@ jQuery(window).load(function () {
 		window.location.href = url;
 	});
 
-	jQuery('#feed-folders .feed').click(function (evt) {
+	jQuery('#feed-folders .feed').on('click', function (evt) {
 		evt.preventDefault();
 		var obj = jQuery(this);
 		var id = obj.children('a').attr('href');
@@ -646,7 +671,7 @@ jQuery(window).load(function () {
 		window.location.href = url;
 	});
 
-	jQuery('.scroll-toggler').click(function (evt) {
+	jQuery('.scroll-toggler').on('click', function (evt) {
 		evt.preventDefault();
 		var element = jQuery(this);
 		var go_scroll_id = element.attr('id');
@@ -673,7 +698,7 @@ jQuery(window).load(function () {
 
 	});
 
-	jQuery('#deletefeedarchive').click(function (evt) {
+	jQuery('#deletefeedarchive').on( 'click', function (evt) {
 		evt.preventDefault();
 		jQuery('.loading-top').show();
 		jQuery.post(ajaxurl, {

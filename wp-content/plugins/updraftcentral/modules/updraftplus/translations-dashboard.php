@@ -108,6 +108,7 @@ return array(
 	'instance_disabled' => __('Currently disabled', 'updraftcentral'),
 	'backup' => __('Backup', 'updraftcentral'),
 	'upload_backup' => __('Uploading backup', 'updraftcentral'),
-	'files_new_backup' => __('Include your files in the backup', 'updraftplus'),
-	'files_incremental_backup' => __('File backup options', 'updraftplus'),
+	'files_new_backup' => __('Include your files in the backup', 'updraftcentral'),
+	'files_incremental_backup' => __('File backup options', 'updraftcentral'),
+	'nocloudserviceschosen' => __('You have chosen to send this backup to remote storage, but no remote storage locations have been selected', 'updraftcentral'),
 );

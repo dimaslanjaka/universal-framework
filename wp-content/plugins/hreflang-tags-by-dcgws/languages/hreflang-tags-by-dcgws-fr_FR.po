@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: HREFLANG Tags\n"
-"POT-Creation-Date: 2020-01-16 00:43+0800\n"
-"PO-Revision-Date: 2020-01-16 00:44+0800\n"
+"POT-Creation-Date: 2020-01-23 08:51+0800\n"
+"PO-Revision-Date: 2020-01-23 08:51+0800\n"
 "Last-Translator: David Robert Davis, Jr <david.davis@dcgws.com>\n"
 "Language-Team: David Robert Davis, Jr <david.davis@dcgws.com>\n"
 "Language: fr_FR\n"
@@ -29,7 +29,7 @@ msgid ""
 "improved Bulk Editor. <a href=\"https://www.hreflangtags.com/lifetime-"
 "pricing/#utm_source=plugin-page&utm_medium=notice&utm_campaign=50-to-"
 "start-2020\">Click Here</a> to download right now. Use the discount code "
-"50TOSTART20!"
+"50TOSTART20"
 msgstr ""
 "Upgrade to one of our Lifetime Pro licenses and receive free upgrades and "
 "support forever. <strong><i>Save 50% on every lifetime plan we offer.</i> Do "
@@ -60,10 +60,26 @@ msgid "Validation Tool"
 msgstr "Outil de validation"
 
 #: hreflang-main.php:117
+msgid "PROFESSIONAL TRANSLATION SERVICES"
+msgstr "Servizi di traduzione professionale"
+
+#: hreflang-main.php:118
+msgid ""
+"A translation agency that offers quality translation services in 85 world "
+"languages."
+msgstr ""
+"Une agence de traduction qui propose des services de traduction de qualité "
+"dans 85 langues du monde."
+
+#: hreflang-main.php:120
+msgid "Check our Website for a free quote."
+msgstr "Consultez notre site Web pour un devis gratuit."
+
+#: hreflang-main.php:125
 msgid "Remove this ad?"
 msgstr "Enlevez cette annonce"
 
-#: hreflang-main.php:118
+#: hreflang-main.php:126
 msgid "Upgrade to HREFLANG Pro"
 msgstr "Passez à HREFLANG Pro"
 
@@ -86,7 +102,7 @@ msgid "Select one"
 msgstr "Choisissez une option"
 
 #: includes/notices.php:52
-msgid "HREFLANG Tags Excluse Offer - Only for Users of Free Version"
+msgid "HREFLANG Tags Exclusive Offer - Only for Users of Free Version"
 msgstr ""
 "Offre Excluse HREFLANG Tags - Uniquement pour les utilisateurs de la version "
 "gratuite"

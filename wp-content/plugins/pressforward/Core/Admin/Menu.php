@@ -133,7 +133,7 @@ class Menu implements HasActions, HasFilters {
 		$user_id = $userObj->ID;
 		// Calling the feedlist within the pf class.
 		if ( isset( $_GET['pc'] ) ) {
-			$page   = $_GET['pc'];
+			$page   = intval( $_GET['pc'] );
 			$page_c = $page - 1;
 		} else {
 			$page   = 0;
@@ -153,7 +153,7 @@ class Menu implements HasActions, HasFilters {
 
 		?>
 		<div class="pf-loader"></div>
-		<div class="pf_container pf-all-content full<?php echo $extra_class; ?>">
+		<div class="pf_container pf-all-content full<?php echo esc_attr( $extra_class ); ?>">
 			<header id="app-banner">
 				<div class="title-span title">
 					<?php
@@ -161,7 +161,7 @@ class Menu implements HasActions, HasFilters {
 						pressforward( 'controller.template_factory' )->the_page_headline();
 
 					?>
-					<button class="btn btn-small" id="fullscreenfeed"> <?php _e( 'Full Screen', 'pf' ); ?> </button>
+					<button class="btn btn-small" id="fullscreenfeed"> <?php esc_html_e( 'Full Screen', 'pf' ); ?> </button>
 				</div><!-- End title -->
 				<?php pressforward( 'admin.templates' )->search_template(); ?>
 
@@ -173,11 +173,11 @@ class Menu implements HasActions, HasFilters {
 				<?php pressforward( 'admin.templates' )->the_side_menu(); ?>
 				<?php pressforward( 'schema.folders' )->folderbox(); ?>
 				<div id="entries">
-					<?php echo '<img class="loading-top" src="' . PF_URL . 'assets/images/ajax-loader.gif" alt="Loading..." style="display: none" />'; ?>
+					<?php echo '<img class="loading-top" src="' . esc_attr( PF_URL ) . 'assets/images/ajax-loader.gif" alt="' . esc_attr__( 'Loading...', 'pf' ) . '" style="display: none" />'; ?>
 					<div id="errors">
 					<?php
 					if ( 0 >= self::count_the_posts( 'pf_feed' ) ) {
-						echo '<p>You need to add feeds, there are none in the system.</p>';
+						echo '<p>' . esc_html__( 'You need to add feeds, there are none in the system.', 'pf' ) . '</p>';
 					}
 					?>
 					</div>
@@ -194,7 +194,7 @@ class Menu implements HasActions, HasFilters {
 					$c  = $c + $count;
 						// print_r($count);
 				if ( isset( $_GET['by'] ) ) {
-					$limit = $_GET['by'];
+					$limit = sanitize_text_field( wp_unslash( $_GET['by'] ) );
 				} else {
 					$limit = false;
 				}
@@ -206,7 +206,7 @@ class Menu implements HasActions, HasFilters {
 				);
 
 				if ( isset( $_POST['search-terms'] ) ) {
-					$archive_feed_args['search_terms']     = stripslashes( $_POST['search-terms'] );
+					$archive_feed_args['search_terms']     = sanitize_text_field( wp_unslash( $_POST['search-terms'] ) );
 					$archive_feed_args['exclude_archived'] = true;
 				}
 
@@ -215,10 +215,13 @@ class Menu implements HasActions, HasFilters {
 				}
 
 				if ( isset( $_GET['reveal'] ) ) {
-					$archive_feed_args['reveal'] = stripslashes( $_GET['reveal'] );
+					$archive_feed_args['reveal'] = sanitize_text_field( wp_unslash( $_GET['reveal'] ) );
 				}
 
-				foreach ( pressforward( 'controller.loops' )->archive_feed_to_display( $archive_feed_args ) as $item ) {
+				$archive_feed_args['count_total'] = true;
+
+				$items_to_display = pressforward( 'controller.loops' )->archive_feed_to_display( $archive_feed_args );
+				foreach ( $items_to_display['items'] as $item ) {
 
 					pressforward( 'admin.templates' )->form_of_an_item( $item, $c );
 
@@ -244,26 +247,25 @@ class Menu implements HasActions, HasFilters {
 			echo '</div><!-- End main -->';
 
 			// Nasty hack because infinite scroll only works starting with page 2 for some reason.
-			if ( $page == 0 ) {
-				$page = 1; }
-			$pagePrev = $page - 1;
-			$pageNext = $page + 1;
+			$previous_page = $page - 1;
+			$next_page     = $page + 1;
+
 			if ( ! empty( $_GET['by'] ) ) {
 				$limit_q = '&by=' . $limit;
 			} else {
 				$limit_q = '';
 			}
-			$pagePrev = '?page=pf-menu' . $limit_q . '&pc=' . $pagePrev;
-			$pageNext = '?page=pf-menu' . $limit_q . '&pc=' . $pageNext;
+			$pagePrev = '?page=pf-menu' . $limit_q . '&pc=' . $previous_page;
+			$pageNext = '?page=pf-menu' . $limit_q . '&pc=' . $next_page;
 			if ( isset( $_GET['folder'] ) ) {
-				$pageQ     = $_GET['folder'];
+				$pageQ     = sanitize_text_field( wp_unslash( $_GET['folder'] ) );
 				$pageQed   = '&folder=' . $pageQ;
 				$pageNext .= $pageQed;
 				$pagePrev .= $pageQed;
 
 			}
 			if ( isset( $_GET['feed'] ) ) {
-				$pageQ     = $_GET['feed'];
+				$pageQ     = sanitize_text_field( wp_unslash( $_GET['feed'] ) );
 				$pageQed   = '&feed=' . $pageQ;
 				$pageNext .= $pageQed;
 				$pagePrev .= $pageQed;
@@ -272,14 +274,13 @@ class Menu implements HasActions, HasFilters {
 			if ( $c > 19 ) {
 
 				echo '<div class="pf-navigation">';
-				if ( -1 > $pagePrev ) {
-					echo '<!-- something has gone wrong -->';
-				} elseif ( 1 > $pagePrev ) {
-					echo '<span class="feedprev"><a class="prevnav" href="admin.php?page=pf-menu">Previous Page</a></span> | ';
-				} elseif ( $pagePrev > -1 ) {
-					echo '<span class="feedprev"><a class="prevnav" href="admin.php' . $pagePrev . '">Previous Page</a></span> | ';
+				if ( $previous_page > 0 ) {
+					echo '<span class="feedprev"><a class="prevnav" href="admin.php' . esc_attr( $pagePrev ) . '">' . esc_html__( 'Previous Page', 'pf' ) . '</a></span> | ';
 				}
-				echo '<span class="feednext"><a class="nextnav" href="admin.php' . $pageNext . '">Next Page</a></span>';
+
+				if ( $next_page <= $items_to_display['max_num_pages'] ) {
+					echo '<span class="feednext"><a class="nextnav" href="admin.php' . esc_attr( $pageNext ) . '">' . esc_html__( 'Next Page', 'pf' ) . '</a></span>';
+				}
 				echo '</div>';
 			}
 		?>
@@ -331,7 +332,7 @@ class Menu implements HasActions, HasFilters {
 			return;
 		}
 
-		if ( empty( $_POST['_wp_http_referer'] ) || false === strpos( $_POST['_wp_http_referer'], 'page=pf-options' ) ) {
+		if ( empty( $_POST['_wp_http_referer'] ) || false === strpos( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ), 'page=pf-options' ) ) {
 			return;
 		}
 
@@ -340,7 +341,7 @@ class Menu implements HasActions, HasFilters {
 		if ( current_user_can( get_option( 'pf_menu_all_content_access', pf_get_defining_capability_by_role( 'contributor' ) ) ) ) {
 			$user_ID = get_current_user_id();
 			if ( isset( $_POST['pf_user_scroll_switch'] ) ) {
-				$pf_user_scroll_switch = $_POST['pf_user_scroll_switch'];
+				$pf_user_scroll_switch = sanitize_text_field( wp_unslash( $_POST['pf_user_scroll_switch'] ) );
 				// var_dump($pf_user_scroll_switch); die();
 				update_user_option( $user_ID, 'pf_user_scroll_switch', $pf_user_scroll_switch );
 			} else {
@@ -348,7 +349,7 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_user_menu_set'] ) ) {
-				$pf_user_menu_set = $_POST['pf_user_menu_set'];
+				$pf_user_menu_set = sanitize_text_field( wp_unslash( $_POST['pf_user_menu_set'] ) );
 				// var_dump($pf_user_scroll_switch); die();
 				update_user_option( $user_ID, 'pf_user_menu_set', $pf_user_menu_set );
 			} else {
@@ -356,7 +357,7 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_pagefull'] ) ) {
-				$pf_pagefull = $_POST['pf_pagefull'];
+				$pf_pagefull = sanitize_text_field( wp_unslash( $_POST['pf_pagefull'] ) );
 				// var_dump($pf_user_scroll_switch); die();
 				update_user_option( $user_ID, 'pf_pagefull', $pf_pagefull );
 			} else {
@@ -368,7 +369,7 @@ class Menu implements HasActions, HasFilters {
 
 		$pf_admin_pages = apply_filters( 'pf_admin_pages', $verifyPages );
 
-		if ( ! in_array( $_GET['page'], $pf_admin_pages ) ) {
+		if ( ! isset( $_GET['page'] ) || ! in_array( $_GET['page'], $pf_admin_pages ) ) {
 			return;
 		}
 
@@ -409,7 +410,7 @@ class Menu implements HasActions, HasFilters {
 
 			foreach ( $arrayedAdminRights as $right => $parts ) {
 				if ( isset( $_POST[ $right ] ) ) {
-					$enabled = $_POST[ $right ];
+					$enabled = sanitize_text_field( wp_unslash( $_POST[ $right ] ) );
 					update_option( $right, $enabled );
 					$feed_caps      = pressforward( 'schema.feeds' )->map_feed_caps();
 					$feed_item_caps = pressforward( 'schema.feed_item' )->map_feed_item_caps();
@@ -435,7 +436,7 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_link_to_source'] ) ) {
-				$pf_links_opt_check = $_POST['pf_link_to_source'];
+				$pf_links_opt_check = sanitize_text_field( wp_unslash( $_POST['pf_link_to_source'] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( 'pf_link_to_source', $pf_links_opt_check );
 			} else {
@@ -443,7 +444,7 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_retain_time'] ) ) {
-				$pf_links_opt_check = $_POST['pf_retain_time'];
+				$pf_links_opt_check = sanitize_text_field( wp_unslash( $_POST['pf_retain_time'] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( 'pf_retain_time', $pf_links_opt_check );
 			} else {
@@ -451,28 +452,28 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_errors_until_alert'] ) ) {
-				$pf_errors_until_alert = $_POST['pf_errors_until_alert'];
+				$pf_errors_until_alert = sanitize_text_field( wp_unslash( $_POST['pf_errors_until_alert'] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( 'pf_errors_until_alert', $pf_errors_until_alert );
 			} else {
 				update_option( 'pf_errors_until_alert', 3 );
 			}
 			if ( isset( $_POST[ PF_SLUG . '_retrieval_frequency' ] ) ) {
-				$pf_retrieval_frequency = $_POST[ PF_SLUG . '_retrieval_frequency' ];
+				$pf_retrieval_frequency = sanitize_text_field( wp_unslash( $_POST[ PF_SLUG . '_retrieval_frequency' ] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( PF_SLUG . '_retrieval_frequency', $pf_retrieval_frequency );
 			} else {
 				update_option( PF_SLUG . '_retrieval_frequency', 30 );
 			}
 			if ( isset( $_POST['pf_nomination_send_email'] ) ) {
-				$pf_nomination_send_email_opt_check = $_POST['pf_nomination_send_email'];
+				$pf_nomination_send_email_opt_check = sanitize_text_field( wp_unslash( $_POST['pf_nomination_send_email'] ) );
 				// print_r($pf_nomination_send_email_opt_check); die();
 				update_option( 'pf_nomination_send_email', $pf_nomination_send_email_opt_check );
 			} else {
 				update_option( 'pf_nomination_send_email', '' );
 			}
 			if ( isset( $_POST['pf_present_author_as_primary'] ) ) {
-				$pf_author_opt_check = $_POST['pf_present_author_as_primary'];
+				$pf_author_opt_check = sanitize_text_field( wp_unslash( $_POST['pf_present_author_as_primary'] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( 'pf_present_author_as_primary', $pf_author_opt_check );
 			} else {
@@ -480,7 +481,7 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			if ( isset( $_POST['pf_source_statement_position'] ) ) {
-				$pf_author_opt_check = $_POST['pf_source_statement_position'];
+				$pf_author_opt_check = sanitize_text_field( wp_unslash( $_POST['pf_source_statement_position'] ) );
 				// print_r($pf_links_opt_check); die();
 				update_option( 'pf_source_statement_position', $pf_author_opt_check );
 			} else {
@@ -488,22 +489,14 @@ class Menu implements HasActions, HasFilters {
 			}
 
 			$pf_draft_post_type = ( ! empty( $_POST[ PF_SLUG . '_draft_post_type' ] ) )
-				? $_POST[ PF_SLUG . '_draft_post_type' ]
+				? sanitize_text_field( wp_unslash( $_POST[ PF_SLUG . '_draft_post_type' ] ) )
 				: 'post';
 			update_option( PF_SLUG . '_draft_post_type', $pf_draft_post_type );
 
 			$pf_draft_post_status = ( ! empty( $_POST[ PF_SLUG . '_draft_post_status' ] ) )
-				? $_POST[ PF_SLUG . '_draft_post_status' ]
+				? sanitize_text_field( wp_unslash( $_POST[ PF_SLUG . '_draft_post_status' ] ) )
 				: 'draft';
 			update_option( PF_SLUG . '_draft_post_status', $pf_draft_post_status );
-
-			if ( isset( $_POST[PF_SLUG.'_advanced_meta_handling'] ) ) {
-				$meta_handling_check = $_POST[PF_SLUG.'_advanced_meta_handling'];
-				// print_r($pf_links_opt_check); die();
-				update_option( PF_SLUG.'_advanced_meta_handling', $meta_handling_check );
-			} else {
-				update_option( PF_SLUG.'_advanced_meta_handling', 'no' );
-			}
 
 			if ( class_exists( 'The_Alert_Box' ) ) {
 				// var_dump($_POST);
@@ -511,26 +504,15 @@ class Menu implements HasActions, HasFilters {
 					// var_dump('<pre>'); var_dump($_POST); var_dump('</pre>');
 					update_option( pressforward( 'library.alertbox' )->option_name(), 'false' );
 				} else {
-					update_option( pressforward( 'library.alertbox' )->option_name(), $_POST[ pressforward( 'library.alertbox' )->option_name() ] );
+					update_option( pressforward( 'library.alertbox' )->option_name(), sanitize_text_field( wp_unslash( $_POST[ pressforward( 'library.alertbox' )->option_name() ] ) ) );
 				}
 			}
 
+			$pf_author_opt_check = 'no';
 			if ( isset( $_POST['pf_use_advanced_user_roles'] ) ) {
-				$pf_author_opt_check = $_POST['pf_use_advanced_user_roles'];
-				// print_r($pf_links_opt_check); die();
-				update_option( 'pf_use_advanced_user_roles', $pf_author_opt_check );
-			} else {
-				update_option( 'pf_use_advanced_user_roles', 'no' );
+				$pf_author_opt_check = 'yes' === sanitize_text_field( wp_unslash( $_POST['pf_use_advanced_user_roles'] ) ) ? 'yes' : 'no';
 			}
-
-			if ( isset( $_POST['pf_metrics_config'] ) ) {
-				$pf_metrics_opt_check             = $_POST['pf_metrics_config'];
-				$pf_metrics_opt_check['detailed'] = 'no';
-				$pf_metrics_opt_check['checked']  = 'yes';
-				update_option( 'pf_metrics_config', $pf_metrics_opt_check );
-			} else {
-				update_option( 'pf_metrics_config', array() );
-			}
+			update_option( 'pf_use_advanced_user_roles', $pf_author_opt_check );
 		}
 
 		do_action( 'pf_admin_op_page_save' );
@@ -566,7 +548,7 @@ class Menu implements HasActions, HasFilters {
 
 	function include_alerts_in_edit_feeds( $query ) {
 		global $pagenow;
-		if ( is_admin() && 'edit.php' === $pagenow && 'pf_feed' === $_GET['post_type'] ) {
+		if ( is_admin() && 'edit.php' === $pagenow && isset( $_GET['post_type'] ) && 'pf_feed' === sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) {
 			// $statuses = $query->query['post_status'];
 			// var_dump('<pre>'); var_dump( $query ); die();
 			// $query->query['post_status'] = '';

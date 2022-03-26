@@ -1,3 +1,4 @@
+;// Semicolon in the case it is missing in the code above
 // THIS FILE IS GENERATED - DO NOT EDIT!
 /*!mobile-detect v1.4.4 2019-09-21*/
 /*global module:false, define:false*/

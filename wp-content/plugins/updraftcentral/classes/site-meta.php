@@ -44,13 +44,6 @@ class UpdraftCentral_Site_Meta {
 			return $data;
 		}
 
-		$wpdb_api = 'get_col';
-		$wpdb_fields = 'meta_value';
-		if ($with_fields) {
-			$wpdb_api = 'get_results';
-			$wpdb_fields = '*';
-		}
-
 		if (!empty($meta_key)) {
 			$meta_key = wp_unslash($meta_key);
 
@@ -60,12 +53,24 @@ class UpdraftCentral_Site_Meta {
 					return $data;
 				}
 
-				$meta_values = $wpdb->{$wpdb_api}($wpdb->prepare("SELECT {$wpdb_fields} FROM $table WHERE meta_key = %s AND site_id = %d AND (UNIX_TIMESTAMP()-created) <= %s", $meta_key, $site_id, $maximum_age));
+				if ($with_fields) {
+					$meta_values = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE meta_key = %s AND site_id = %d AND (UNIX_TIMESTAMP()-created) <= %s", $meta_key, $site_id, $maximum_age), ARRAY_A);
+				} else {
+					$meta_values = $wpdb->get_col($wpdb->prepare("SELECT meta_value FROM $table WHERE meta_key = %s AND site_id = %d AND (UNIX_TIMESTAMP()-created) <= %s", $meta_key, $site_id, $maximum_age));
+				}
 			} else {
-				$meta_values = $wpdb->{$wpdb_api}($wpdb->prepare("SELECT {$wpdb_fields} FROM $table WHERE meta_key = %s AND site_id = %d", $meta_key, $site_id));
+				if ($with_fields) {
+					$meta_values = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE meta_key = %s AND site_id = %d", $meta_key, $site_id), ARRAY_A);
+				} else {
+					$meta_values = $wpdb->get_col($wpdb->prepare("SELECT meta_value FROM $table WHERE meta_key = %s AND site_id = %d", $meta_key, $site_id));
+				}
 			}
 		} else {
-			$meta_values = $wpdb->{$wpdb_api}($wpdb->prepare("SELECT {$wpdb_fields} FROM $table WHERE site_id = %d", $site_id));
+			if ($with_fields) {
+				$meta_values = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE site_id = %d", $site_id), ARRAY_A);
+			} else {
+				$meta_values = $wpdb->get_col($wpdb->prepare("SELECT meta_value FROM $table WHERE site_id = %d", $site_id));	
+			}
 		}
 
 		if (empty($meta_values)) {
@@ -77,7 +82,12 @@ class UpdraftCentral_Site_Meta {
 			// WordPress's own caching implementation and fill it if this call returns null.
 			return false;
 		} else {
-			return array_map(array(UpdraftCentral(), 'maybe_json_decode'), (array) $meta_values);
+			if ($single) {
+				$meta_values = $meta_values[0];
+				if (!is_array($meta_values)) return UpdraftCentral()->maybe_json_decode($meta_values);
+			}
+
+			return array_map(array(UpdraftCentral(), 'maybe_json_decode'), $meta_values);
 		}
 	}
 
@@ -412,7 +422,9 @@ class UpdraftCentral_Site_Meta {
 		// Compare existing value to new value if no prev value given and the key exists only once.
 		if (empty($prev_value)) {
 			$old_value = $this->get_metadata($meta_type, $object_id, $meta_key);
-			if (!is_array($old_value) || 1 == count($old_value)) {
+
+			$is_countable = function_exists('is_countable') ? is_countable($old_value) : is_array($old_value);
+			if ($is_countable && 1 === count($old_value)) { 
 				if ($old_value[0] === $meta_value) return false;
 			}
 		}
@@ -709,7 +721,7 @@ class UpdraftCentral_Site_Meta {
 		*/
 		$check = apply_filters("get_{$meta_type}_metadata", null, $object_id, $meta_key, $single, $maximum_age, $with_fields);
 		if (null !== $check) {
-			if ($single && is_array($check)) {
+			if ($single && is_array($check) && isset($check[0])) {
 				return $check[0];
 			} else {
 				return $check;

@@ -4,13 +4,13 @@
 Plugin Name: UpdraftCentral Dashboard
 Plugin URI: https://updraftcentral.com
 Description: Manage your WordPress sites from a central dashboard
-Version: 0.8.11
+Version: 0.8.19
 Text Domain: updraftcentral
 Domain Path: /languages
 Author: David Anderson + Team Updraft
 Author URI: https://www.simbahosting.co.uk/s3/shop/
-Requires at least: 4.4
-Tested up to: 5.3
+Requires at least: 4.6
+Tested up to: 5.4
 License: MIT
 
 Copyright: 2015- David Anderson
@@ -28,13 +28,13 @@ if (!defined('UPDRAFTCENTRAL_TABLE_PREFIX')) define('UPDRAFTCENTRAL_TABLE_PREFIX
 
 if (!class_exists('UpdraftCentral')) :
 class UpdraftCentral {
-	const VERSION = '0.8.11';
+	const VERSION = '0.8.19';
 
 	// Minimum PHP version required to run this plugin
 	const PHP_REQUIRED = '5.3';
 
 	// Minimum WP version required to run this plugin
-	const WP_REQUIRED = '4.4';
+	const WP_REQUIRED = '4.6';
 
 	protected static $_instance = null;
 
@@ -57,9 +57,11 @@ class UpdraftCentral {
 
 	private $template_directories;
 
-	private $semaphore;
+	private $semaphores = array();
 
 	public $export_settings_version = '1';
+
+	private $start_time;
 
 	/**
 	 * Creates an instance of this class. Singleton Pattern
@@ -94,7 +96,7 @@ class UpdraftCentral {
 		}
 
 		include ABSPATH.WPINC.'/version.php';
-		if (version_compare($wp_version, self::WP_REQUIRED, '<')) {
+		if (version_compare($wp_version, self::WP_REQUIRED, '<')) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- $wp_version is part of Wordpress and fine to be ignored
 			add_action('all_admin_notices', array($this, 'admin_notice_insufficient_wp'));
 			$abort = true;
 		}
@@ -196,20 +198,24 @@ class UpdraftCentral {
 	}
 
 	/**
-	 * Initializes the semaphore object that will be used to lock
-	 * the background data fetching process through cron
+	 * Initializes a semaphore object based on a lock name and store it in a semaphores collection/array
 	 *
 	 * @param string $lock_name The lock name to use for the current semaphore object
+	 *
+	 * @return void
 	 */
 	private function init_semaphore($lock_name) {
 		try {
-			if (empty($this->semaphore)) {
-				if (!class_exists('Updraft_Semaphore_1_0')) include_once UD_CENTRAL_DIR.'/classes/class-updraft-semaphore.php';
+			if (empty($lock_name)) {
+				UpdraftCentral()->log('UpdraftCentral: a lock name is needed to initialize the semaphore class', 'error');
+				return;
+			}
 
-				$this->semaphore = Updraft_Semaphore_1_0::factory();
-				$this->semaphore->lock_name = $lock_name;
-				$this->semaphore->ensure_semaphore_exists();
-				$this->semaphore->add_logger(self::get_logger());
+			if (!isset($this->semaphores[$lock_name])) {
+				if (!class_exists('Updraft_Semaphore_3_0')) include_once UD_CENTRAL_DIR.'/vendor/team-updraft/common-libs/src/updraft-semaphore/class-updraft-semaphore.php';
+
+				$this->semaphores[$lock_name] = new Updraft_Semaphore_3_0($lock_name);
+				$this->semaphores[$lock_name]->add_logger(self::get_logger());
 			}
 		} catch (Exception $e) {
 			UpdraftCentral()->log('UpdraftCentral: error initializing semaphore: '.$e->getMessage(), 'error');
@@ -245,7 +251,7 @@ class UpdraftCentral {
 
 			// No point in continuing if the user currently don't have any sites to
 			// execute the commands.
-			if (empty($sites)) return;
+			if (empty($sites) || !is_array($sites)) return;
 
 			/**
 			 * Commands when added using this filter should have the following structure:
@@ -259,10 +265,6 @@ class UpdraftCentral {
 			 */
 			$scheduled_commands = apply_filters('updraftcentral_scheduled_commands', array());
 			if (!empty($scheduled_commands)) {
-
-				// Add action to send_remote_command
-				add_action('updraftcentral_send_remote_command', array($user, 'send_remote_command'), 10, 3);
-
 				$command_pipeline = array();
 				$short_commands = array();
 
@@ -310,19 +312,48 @@ class UpdraftCentral {
 					);
 				}
 
-				
 				if (!empty($command_pipeline)) {
 
-					// Picked site and run all available commands on the currently selected site.
-					$done = array();
+					// Set the semaphore lock name for the background process.
+					$background_lock_name = 'updraftcentral_cron';
 
-					while (!empty($sites)) {
-						$key = array_rand($sites);
+					// Make sure we have a valid semaphore to work on by initializing it
+					// whenever needed or make use of one if it was already been set.
+					$this->init_semaphore($background_lock_name);
 
+					if (empty($this->semaphores[$background_lock_name])) {
+						UpdraftCentral()->log('Failed to initialize a semaphore object - exiting', 'error');
+						return;
+					}
+
+					$max_execution_time = ini_get('max_execution_time');
+					
+					// Since the semaphore lock is for 3 minutes, we want to try to run for at least in that region; otherwise the queue may get longer whilst a lock is stuck. We go for 170 to allow a bit of margin for really slow database updates.
+					$time_limit = (defined('UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT') && UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT > 5) ? UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT : 170;
+					if ((defined('UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT') || $max_execution_time > 5) && $max_execution_time < $time_limit) set_time_limit($time_limit);
+					
+					if (!$this->semaphores[$background_lock_name]->lock()) {
+						UpdraftCentral()->log('Failed to gain semaphore lock - An active background data fetching process appears to be running, if the other process crashed without removing the lock, then another can be started after 3 minutes)', 'error');
+						return;
+					}
+
+					// N.B. We temporarily store processed sites in the 'uc_cron_sites_processed' user meta
+					// in order not to re-processed them, especially when the "last_run" flag for the current user
+					// is not updated yet until all sites are processed.
+
+					$processed_sites = get_user_meta($user->user_id, 'uc_cron_sites_processed', true);
+					if (empty($processed_sites)) $processed_sites = array();
+
+					foreach ($sites as $site) {
 						// Additional check will ensure that we're not running the same process
 						// more than once with this current event run.
-						if (!in_array($key, $done)) {
-							$site = $sites[$key];
+						if (!in_array($site->site_id, $processed_sites)) {
+							// Compute for the elapsed time (in minutes) since we started.
+							$elapsed_time = (time() - $this->start_time) / 60;
+
+							// Maximum of 3 minutes (default) process time. If succeeding loop goes beyond the allowable
+							// time then the process will be terminated.
+							if ($elapsed_time > apply_filters('updraftcentral_max_process_time', 3)) break;
 
 							// Execute all available commands for the currently
 							// selected site
@@ -334,16 +365,73 @@ class UpdraftCentral {
 								// N.B. This overrides the use of the "updraftcentral_cache_commands" filter where UDC only
 								// saves and cache response when any module add certain command(s) that they wish the response
 								// to be cached to DB. In this case, we're forcing the save since we're running it in cron.
-								do_action('updraftcentral_send_remote_command', $data, true, array());
+								
+								// Need to check the result if we were able to connect to the site successfully, otherwise,
+								// we'll flag it as disconnected.
+								$result = $user->send_remote_command($data, true, array());
+
+								if (!empty($result)) {
+									$error_data = array();
+									if ('error' === $result['responsetype']) {
+										$data = array();
+										if (isset($result['data'])) {
+											$data = $result['data'];
+										} else {
+											if (isset($result['rpc_response'])) $data = $result['rpc_response'];
+											if (isset($result['wrapped_response'])) $data = $result['wrapped_response'];
+										}
+
+										$error_data = array(
+											'message' => $result['message'],
+											'timestamp' => date('Y-m-d H:i:s'),
+											'data' => $data
+										);
+									}
+									
+									if (is_a($this->site_meta, 'UpdraftCentral_Site_Meta')) {
+										$background_error_key = 'background_request_error';
+										$site_error = $this->site_meta->get_site_meta($site->site_id, $background_error_key, true);
+
+										if (!empty($site_error) && is_array($site_error)) {
+											if (empty($error_data)) {
+												// If we reached this area then that would mean that we were able to connect
+												// to the remote site wihout issues. Thus, we will remove the flag now.
+												$this->site_meta->delete_site_meta($site->site_id, $background_error_key);
+											}
+										} else {
+											if (!empty($error_data)) {
+												// No error flag record yet so, we create one. We only need to save once because
+												// we're going to compute the time between the last error and the new error from
+												// the latest request that we sent.
+												$this->site_meta->add_site_meta($site->site_id, $background_error_key, $error_data);
+											}
+										}
+									}
+								}
 							}
 
-							// Push consumed key to done array
-							array_push($done, $key);
+							// By the time we reach here all commands for this particular site have been executed.
+							// Thus, we're going to add the site to the $processed_sites array. We cannot put this on top
+							// as we need to be sure that all commands are executed before we add this to the "$processed_sites" array.
+							array_push($processed_sites, $site->site_id);
 
-							// Remove current site entry before next iteration
-							unset($sites[$key]);
+							// We need to set/update the 'uc_cron_sites_processed' user meta here since all process
+							// will be cut-off abruptly either after the max process time has expired (default 3 minutes)
+							// or the seamlock has been released therefore we need to set which sites have already been
+							// processed before the process is stopped so that other sites which are not yet processed
+							// will get a chance.
+							update_user_meta($user->user_id, 'uc_cron_sites_processed', $processed_sites);
 						}
 					}
+
+					// If the scheduled commands are executed to all user sites then we delete the user meta entry
+					// to give room for the next round of process (e.g. after 12 hours).
+					if (count($sites) == count($processed_sites)) {
+						delete_user_meta($user->user_id, 'uc_cron_sites_processed');
+					}
+
+					// Release lock
+					$this->semaphores[$background_lock_name]->release();
 				}
 			}
 		}
@@ -359,26 +447,6 @@ class UpdraftCentral {
 		// Bypass processing if we don't have any existing commands
 		if (!$this->has_scheduled_commands()) return;
 
-		// Make sure we have a valid semaphore to work on by initializing it
-		// whenever needed or return if it was already been set.
-		$this->init_semaphore('updraftcentral_cron');
-
-		if (empty($this->semaphore)) {
-			UpdraftCentral()->log('Failed to initilize a semaphore object - exiting', 'error');
-			return;
-		}
-
-		$max_execution_time = ini_get('max_execution_time');
-		
-		// Since the semaphore lock is for 3 minutes, we want to try to run for at least in that region; otherwise the queue may get longer whilst a lock is stuck. We go for 170 to allow a bit of margin for really slow database updates.
-		$time_limit = (defined('UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT') && UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT > 5) ? UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT : 170;
-		if ((defined('UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT') || $max_execution_time > 5) && $max_execution_time < $time_limit) set_time_limit($time_limit);
-		
-		if (!$this->semaphore->lock()) {
-			UpdraftCentral()->log('Failed to gain semaphore lock ('.$this->semaphore->lock_name.') - An active background data fetching process appears to be running, if the other process crashed without removing the lock, then another can be started after 3 minutes)', 'error');
-			return;
-		}
-
 		try {
 
 			if (!class_exists('UpdraftCentral_User_Cron')) include_once UD_CENTRAL_DIR.'/classes/user-cron.php';
@@ -386,21 +454,21 @@ class UpdraftCentral {
 
 			$queue = $user_cron->get_process_queue();
 			if (!empty($queue)) {
-				$start_time = time();
+				$this->start_time = time();
 
 				foreach ($queue as $user_id) {
 					// Compute for the elapsed time (in minutes) since we started.
-					$elapsed_time = (time() - $start_time) / 60;
+					$elapsed_time = (time() - $this->start_time) / 60;
 
 					// Maximum of 3 minutes (default) process time. If succeeding loop goes beyond the allowable
 					// time then the process will be terminated.
 					if ($elapsed_time > apply_filters('updraftcentral_max_process_time', 3)) break;
 
-					$updated = $user_cron->update_last_run($user_id);
-					if ($updated) {
 						// Process any scheduled commands (if there are any) for the given user.
-						$this->process_scheduled_commands($user_id);
-					}
+					$this->process_scheduled_commands($user_id);
+
+					// Update user's last (cron) run field
+					$user_cron->update_last_run($user_id);
 				}
 			}
 
@@ -408,8 +476,6 @@ class UpdraftCentral {
 			UpdraftCentral()->log('UpdraftCentral: error when running cron event: '.$e->getMessage(), 'error');
 		}
 
-		// Release lock
-		$this->semaphore->unlock();
 	}
 
 	/**
@@ -484,7 +550,7 @@ class UpdraftCentral {
 	 */
 	public function admin_notice_insufficient_wp() {
 		include ABSPATH.WPINC.'/version.php';
-		$this->show_admin_warning('<strong>'.__('Higher WordPress version required', 'updraftcentral').'</strong><br> '.sprintf(__('The %s plugin requires %s version %s or higher - your current version is only %s.', 'updraftcentral'), 'UpdraftCentral', 'WordPress', self::WP_REQUIRED, $wp_version), 'error');
+		$this->show_admin_warning('<strong>'.__('Higher WordPress version required', 'updraftcentral').'</strong><br> '.sprintf(__('The %s plugin requires %s version %s or higher - your current version is only %s.', 'updraftcentral'), 'UpdraftCentral', 'WordPress', self::WP_REQUIRED, $wp_version), 'error');// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Fine to ignore
 	}
 
 	/**
@@ -673,8 +739,8 @@ class UpdraftCentral {
 			return sprintf(__('The %s plugin requires %s version %s or higher - your current version is only %s.', 'updraftcentral'), 'UpdraftCentral', 'PHP', self::PHP_REQUIRED, PHP_VERSION);
 		}
 		include ABSPATH.WPINC.'/version.php';
-		if (version_compare($wp_version, self::WP_REQUIRED, '<')) {
-			return sprintf(__('The %s plugin requires %s version %s or higher - your current version is only %s.', 'updraftcentral'), 'UpdraftCentral', 'WordPress', self::WP_REQUIRED, $wp_version);
+		if (version_compare($wp_version, self::WP_REQUIRED, '<')) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Fine to ignore
+			return sprintf(__('The %s plugin requires %s version %s or higher - your current version is only %s.', 'updraftcentral'), 'UpdraftCentral', 'WordPress', self::WP_REQUIRED, $wp_version);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Fine to ignore
 		}
 
 		$atts = shortcode_atts(array(
@@ -716,6 +782,7 @@ class UpdraftCentral {
 					$this->include_template('dashboard/not-authorised.php');
 				} elseif ('dashboard' == $atts['page']) {
 					include_once UD_CENTRAL_DIR.'/pages/dashboard.php';
+					do_action('updraftcentral_dashboard_loaded');
 				}
 
 			}
@@ -792,11 +859,14 @@ class UpdraftCentral {
 
 		wp_register_script('tether', UD_CENTRAL_URL.'/js/tether/tether'.$min_or_not.'.js', array(), '1.4.0');
 
+		wp_register_script('popperjs', UD_CENTRAL_URL.'/js/popper.js/popper'.$min_or_not.'.js', array(), '1.16.1');
+
+		// starting from version 4.0.0, Bootstrap components (tooltips & dropdowns) require Popper JS
 		// https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/js/bootstrap(.min).js
-		wp_register_script('bootstrap4', UD_CENTRAL_URL.'/vendor/twbs/bootstrap/dist/js/bootstrap'.$min_or_not.'.js', array('jquery', 'tether'), '4.0.0-alpha6');
+		wp_register_script('bootstrap4', UD_CENTRAL_URL.'/js/bootstrap/bootstrap'.$min_or_not.'.js', array('jquery', 'tether'), '4.4.1');
 
 		// https://github.com/makeusabrew/bootbox/releases/download/v(version)/bootbox(.min).js / http://bootboxjs.com/#download
-		wp_register_script('bootbox', UD_CENTRAL_URL.'/js/bootbox/bootbox'.$min_or_not.'.js', array('bootstrap4'), '4.4.0');
+		wp_register_script('bootbox', UD_CENTRAL_URL.'/js/bootbox/bootbox'.$min_or_not.'.js', array('bootstrap4'), '5.4.0');
 
 		// https://github.com/iyogeshjoshi/google-caja-sanitizer/
 		wp_register_script('google-caja-sanitizer', UD_CENTRAL_URL.'/js/caja/sanitizer'.$min_or_not.'.js', array(), '20150315');
@@ -820,7 +890,7 @@ class UpdraftCentral {
 		$library_deps = array('jquery', 'jquery-fullscreen', 'sprintf', 'google-caja-sanitizer', 'bootbox', 'handlebars', 'forge');
 		wp_register_script('uc-library', UD_CENTRAL_URL.'/js/uc-library'.$min_or_not.'.js', $library_deps, $enqueue_version);
 
-		$dashboard_deps = array('jquery', 'jquery-fullscreen', 'sprintf', 'class-udrpc', 'google-caja-sanitizer', 'bootbox', 'handlebars', 'modernizr-custom', 'updraftcentral-queue', 'd3-queue', 'uc-library', 'jquery-ui-sortable');
+		$dashboard_deps = array('jquery', 'popperjs', 'bootbox', 'jquery-fullscreen', 'sprintf', 'class-udrpc', 'google-caja-sanitizer', 'handlebars', 'modernizr-custom', 'updraftcentral-queue', 'd3-queue', 'uc-library', 'jquery-ui-sortable');
 
 		include ABSPATH.WPINC.'/version.php';
 		global $wpdb;
@@ -833,16 +903,22 @@ class UpdraftCentral {
 			$curl_version = '-';
 		}
 
+		$shortcuts = get_user_meta($this->user->user_id, 'updraftcentral_dashboard_shortcuts', true);
+		if (!is_array($shortcuts)) $shortcuts = array();
+
 		$pass_to_js = array(
 			'udc_version' => self::VERSION,
 			'php_version' => PHP_VERSION,
-			'wp_version' => $wp_version,
+			'wp_version' => $wp_version,// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- Fine to ignore
 			'mysql_version' => $wpdb->db_version(),
 			'curl_version' => $curl_version,
 			'home_url' => home_url(),
 			'handlebars' => $this->get_handlebars_data(),
 			'show_licence_counts' => apply_filters('updraftcentral_show_licence_counts', false),
 			'user_defined_timeout' => $this->user->get_user_defined_timeout(),
+			'shortcut_status' => $this->user->get_keyboard_shortcut_status(),
+			'sites_info' => $this->user->load_sites_info(),
+			'user_defined_shortcuts' => $shortcuts,
 		);
 
 		if (!empty($pass_to_js['handlebars']['enqueue'])) {
@@ -1012,7 +1088,7 @@ class UpdraftCentral {
 		// @codingStandardsIgnoreLine
 		$bootstrap_file = @constant('SCRIPT_DEBUG') ? 'bootstrap' : 'bootstrap.min';
 		// https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/$bootstrap_file
-		wp_enqueue_style('bootstrap4', UD_CENTRAL_URL."/vendor/twbs/bootstrap/dist/css/${bootstrap_file}.css", array(), '4.0.0-alpha6');
+		wp_enqueue_style('bootstrap4', UD_CENTRAL_URL."/css/bootstrap/${bootstrap_file}.css", array(), '4.4.1');
 
 		// Old testing sandbox used PageLines; no longer; but perhaps someone else will be doing
 		wp_dequeue_script('pagelines-bootstrap-all');
@@ -1091,10 +1167,10 @@ class UpdraftCentral {
 
 		$crons = _get_cron_array();
 		if (!empty($crons)) {
-			foreach ($crons as $timestamp => $cron) {
+			foreach ($crons as $cron) {
 				foreach ($cron as $key => $value) {
 					if (preg_match('#^updraftcentral#', $key)) {
-						foreach ($value as $serialized_key => $schedule) {
+						foreach ($value as $schedule) {
 							wp_clear_scheduled_hook($key, $schedule['args']);
 						}
 					}
@@ -1218,6 +1294,10 @@ class UpdraftCentral {
 	 * @return UpdraftPlus_Remote_Communications
 	 */
 	public function get_udrpc($indicator_name = 'central.updraftplus.com') {
+	
+		if (class_exists('GuzzleHttp\Client') && class_exists('GuzzleHttp\Utils')) {
+			// No-op. Trying to reduce changes of one class getting loaded from a different version of Guzzle when more than one auto-loader has registered a version, via invoking any existing auto-loader first.
+		}
 		// Include composer autoload.php to get libraries
 		include_once UD_CENTRAL_DIR.'/vendor/autoload.php';
 
@@ -1290,7 +1370,7 @@ class UpdraftCentral {
 			echo __('Error:', 'updraftcentral').' '.__('template not found', 'updraftcentral')." ($path)";
 		} else {
 			extract($extract_these);
-			$updraft_central = $this;
+			$updraft_central = $this;// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Fine to ignore since usage is done within the included template file.
 			include $template_file;
 		}
 
@@ -1425,7 +1505,7 @@ class UpdraftCentral {
 		// For now, we set the $level to 'debug' as default when logging (mostly for debugging purposes).
 		// The level can be in the form of 'info', 'warning', etc. Please refer to the 'Updraft_Log_Levels'
 		// class for a complete list of level definitions.
-		self::get_logger()->log($level, $message, $context);
+		self::get_logger()->log($message, $level, $context);
 	}
 
 	/**
@@ -1464,8 +1544,16 @@ class UpdraftCentral {
 	public function maybe_json_decode($data) {
 		// Decode data to its original form only when the given $data
 		// is a valid json string.
-		if ($this->is_json($data)) {
-			$data = json_decode($data);
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				if ($this->is_json($value)) {
+					$data[$key] = json_decode($value, true);
+				}
+			}
+		} else {
+			if ($this->is_json($data)) {
+				$data = json_decode($data, true);
+			}
 		}
 
 		return $data;
@@ -1481,6 +1569,7 @@ class UpdraftCentral {
 	public function export_registered_sites($email_address) {
 		// Get user ID by emails
 		$user_id = get_user_by('email', $email_address);
+		$export_items = array();
 
 		// Check to make sure a user has returned
 		if ($user_id && $user_id->ID) {
@@ -1493,13 +1582,13 @@ class UpdraftCentral {
 			// Check if the user has added any sites
 			if (!empty($sites)) {
 				// Get each site information and add it to the export array
-				foreach ($sites as $site_id => $site) {
+				foreach ($sites as $site) {
 					// Add this group of items to the exporters data array.
 					$export_items[] = array(
 						'group_id'    => "registered-sites",
 						'group_label' => __('UpdraftCentral Registered sites', 'updraftcentral'),
 						'item_id'     => "registered-sites-{$user_id->ID}",
-						'data'        => $data = array(
+						'data'        => array(
 							array(
 								'name'  => __('Remote user login', 'updraftcentral'),
 								'value' => $site->remote_user_login
@@ -1532,7 +1621,7 @@ class UpdraftCentral {
 					if (!empty($sites_meta)) {
 						foreach ($sites_meta as $meta) {
 							$export_items[] = array(
-								'data'        => $data = array(
+								'data'        => array(
 									array(
 										'name'  => __('Meta ID', 'updraftcentral'),
 										'value' => $meta->meta_id
@@ -1559,7 +1648,7 @@ class UpdraftCentral {
 					'group_id'    => "registered-sites",
 					'group_label' => __('registered sites', 'updraftcentral'),
 					'item_id'     => "registered-sites-{$user_id->ID}",
-					'data'        => $data = array(
+					'data'        => array(
 						array(
 							'name'  => __('No sites found', 'updraftcentral'),
 							'value' => 'No Sites Found'
@@ -1572,7 +1661,7 @@ class UpdraftCentral {
 				'group_id'    => "registered-sites",
 				'group_label' => __('registered sites', 'updraftcentral'),
 				'item_id'     => "registered-sites-{$user_id->ID}",
-				'data'        => $data = array(
+				'data'        => array(
 					array(
 						'name'  => __('Not Found', 'updraftcentral'),
 						'value' => 'User Not Found'

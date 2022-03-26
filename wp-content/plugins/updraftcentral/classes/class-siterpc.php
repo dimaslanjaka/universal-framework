@@ -182,7 +182,8 @@ class UpdraftCentral_Remote_Communications {
 	 * @return mixed - Returns the stored data if successful, False otherwise
 	 */
 	private function get_cached_data($meta_key, $maximum_age) {
-		$maximum_age = (!empty($maximum_age)) ? (int) $maximum_age : false;
+
+		$maximum_age = empty($maximum_age) ? false : (int) $maximum_age;
 		if ($maximum_age) {
 			// Check in-memory data first (loaded under UpdraftCentral_User->load_user_sites()) before checking the DB
 			if (!empty($this->user->sites_meta[$this->site_id]) && isset($this->user->sites_meta[$this->site_id][$meta_key])) {
@@ -195,7 +196,7 @@ class UpdraftCentral_Remote_Communications {
 			// Anything can happen from the time the sites meta were loaded during UDC page load.
 			// Due to ajax requests it can be populated along the way, thus, if the above in-memory check
 			// fails we'll proceed in checking the DB.
-			$stored_data = $this->rc->site_meta->get_site_meta($this->site_id, $meta_key, true, $maximum_age);
+			$stored_data = $this->rc->site_meta->updraftcentral_get_site_metadata(null, $this->site_id, $meta_key, true, $maximum_age);
 			if (!empty($stored_data)) {
 				return $stored_data;
 			}
@@ -298,18 +299,34 @@ class UpdraftCentral_Remote_Communications {
 	 * @param array  $data    An array containing the command parameters
 	 * @return string - The generated key
 	 */
-	private function generate_meta_key($command, $data) {
-		return 'cached_data_'.md5('_site'.$this->site_id.'_command'.$command.serialize($data));
+	public function generate_meta_key($command, $data) {
+		// The "maximum_age" info was purposely injected to aide in checking
+		// the freshness of data. Since this is not part of the original data parameter
+		// that is submitted alongside the command therefore, we remove it when generating a meta key.
+
+		if (isset($data['commands'])) {
+			// For multiplexed command, we run through each registered commands and remove the field
+			foreach ($data['commands'] as $key => $value) {
+				if (isset($value['maximum_age'])) unset($data['commands'][$key]['maximum_age']);
+			}
+
+			$data = $data['commands'];
+		} else {
+			if (isset($data['maximum_age'])) unset($data['maximum_age']);
+		}
+
+		return $this->user->generate_cache_key($this->site_id, $command, $data);
 	}
 
 	/**
-	 * Pulls the meta key and cached data if available
+	 * Retrieves a previously stored (cached) response from the remote site for the given command if
+	 * available and that the maximum age of the data has not been reached or expired.
 	 *
 	 * @param string $command The current command to execute
 	 * @param array  $data    An array containing the command parameters
 	 * @return array
 	 */
-	private function pull_data($command, $data) {
+	private function retrieve_cached_data($command, $data) {
 		// Default: 10 minutes (600 seconds) if UPDRAFTCENTRAL_DATA_MAXIMUM_AGE is not defined
 		//
 		// N.B. The maximum_age should be found attached to the "data" parameter if the developer
@@ -317,20 +334,27 @@ class UpdraftCentral_Remote_Communications {
 		// the default_maximum_age will be used.
 		$default_maximum_age = (defined('UPDRAFTCENTRAL_DATA_MAXIMUM_AGE')) ? UPDRAFTCENTRAL_DATA_MAXIMUM_AGE : 600;
 
+		// Generate a key for this command and its underlying data (command parameters) to be use for
+		// saving and retrieving the response to/from the DB.
 		$key = $this->generate_meta_key($command, $data);
 		$maximum_age = isset($data['maximum_age']) ? $data['maximum_age'] : $default_maximum_age;
 
-		// Pull and return cached data whenever applicable.
+		// Retrieves and return the cached data using the "$key" as "meta_key" field in the "sites_meta" table if available
+		// and the maximum_age has not been reached.
 		$cached_data = $this->get_cached_data($key, $maximum_age);
 
-		$data = array();
+		$result = array();
 		if (!empty($cached_data)) {
-			$data = $this->response_post_check(maybe_unserialize($cached_data));
+			$result = $this->response_post_check($cached_data);
 		}
 
+		// The generated key will serve as a reference for saving and retrieving the stored/cached value
+		// from the "sites_meta" table in DB. The key is composed of the currently requested or executed command
+		// (e.g. 'updates.get_updates') along with its submitted data that serves as parameters to the
+		// command (e.g. array('force_refresh' => false)).
 		return array(
 			'key' => $key,
-			'data' => $data
+			'data' => $result
 		);
 	}
 
@@ -348,13 +372,12 @@ class UpdraftCentral_Remote_Communications {
 		$data = isset($this->data['data']['data']) ? $this->data['data']['data'] : null;
 		if ($this->is_preencrypted) $data = $this->data['wrapped_message'];
 
-		if (!empty($data)) {
+		$cached_data = array();
+		$computed_meta_key = '';
 
+		if (!empty($data)) {
 			// Possibly load required objects for this process if not available.
 			$this->maybe_load_objects();
-
-			$cached_data = $this->pull_data($this->command, $data);
-			$computed_meta_key = $cached_data['key'];
 
 			// We're pulling individual cache data for the same sub-command
 			// if we've already had a previously cached response.
@@ -368,26 +391,26 @@ class UpdraftCentral_Remote_Communications {
 				// N.B. Need to run through all available commands under the multiplexed
 				// command executed to get the latest (fresh) data that was previously cached
 				// if available.
-				foreach ($data as $sub_command => $sub_data) {
-					$cached = $this->pull_data($sub_command, $sub_data);
+				foreach ($data['commands'] as $sub_command => $sub_data) {
+					$cached = $this->retrieve_cached_data($sub_command, $sub_data);
 
 					$computed_keys[$sub_command] = $cached['key'];
 					if (!empty($cached['data'])) $result[$sub_command] = $cached['data'];
 				}
 
 				// Update the reply with the latest cached response whenever applicable.
-				if (!empty($result) && !empty($cached_data['data'])) {
-					$cached_data['data']['reply'] = $result;
+				if (!empty($result)) {
+					$cached_data['data'] = array(
+						'reply' => $result
+					);
 				}
+			} else {
+				$cached_data = $this->retrieve_cached_data($this->command, $data);
+				$computed_meta_key = $cached_data['key'];
 			}
 
 			// Return any cached data found if not empty.
 			if (!empty($cached_data['data'])) {
-
-				// With commands that were saved under a multiplexed command, the caught_output
-				// is not applicable (it is only applicable to the "core.execute_commands" - multiplexed command), thus,
-				// we're making sure that we're returning a consistent (expected) data result properties even if its empty.
-				//
 				// N.B. This is safe since we're only saving (caching) if we don't encounter any error in the caught_output
 				// as it won't make any sense if we're saving errors.
 				if (isset($cached_data['data']['reply']) && !isset($cached_data['data']['caught_output'])) {
@@ -418,7 +441,7 @@ class UpdraftCentral_Remote_Communications {
 				$reply = new WP_Error($error_code, $this->errors[$error_code], PHP_VERSION);
 			} else {
 				// Guzzle supports HTTP digest authentication - the WP HTTP API doesn't.
-				include_once UD_CENTRAL_DIR.'/vendor/autoload.php';
+				if (!class_exists('GuzzleHttp\Client')) include_once UD_CENTRAL_DIR.'/vendor/autoload.php';
 				$guzzle_client = new GuzzleHttp\Client();
 
 				if (!method_exists($this->ud_rpc, 'set_http_transport') || !method_exists($this->ud_rpc, 'set_http_credentials')) {
@@ -451,29 +474,48 @@ class UpdraftCentral_Remote_Communications {
 		@ob_end_clean();
 		// @codingStandardsIgnoreEnd
 
-		// Make sure that we have a meta_key generated for the new request.
-		if (empty($computed_meta_key)) {
-			$computed_meta_key = $this->generate_meta_key($this->command, $data);
-		}
-
-		// Cache response whenever applicable
-		$result = $this->response_post_check($this->maybe_cache_response($this->command, array(
-			'caught_output' => $caught_output,
-			'reply' => $reply
-		), $computed_meta_key, $force_save));
-
 		// Check if we're currently running a multiplexed command. If so,
 		// we're going to save each individual results separately, so that it can be retrieved later
 		// when a command is sent individually with the same signature (command name and data parameters).
 		if ($is_multiplexed) {
+			// N.B. We don't cache the generic multiplexed command ('core.execute_commands') but instead
+			// we save each individual commands separately so that we can pull individual request's result
+			// that were cached/saved previously.
+			$output = array(
+				'caught_output' => $caught_output,
+				'reply' => $reply
+			);
+
+			$result = $this->response_post_check($output);
 			if ('ok' === $result['responsetype'] && is_array($result['rpc_response'])) {
-				foreach ($result['rpc_response'] as $command => $data) {
-					$key = $computed_keys[$command];
-					if (isset($key)) {
-						$this->maybe_cache_response($command, $data, $key, $force_save);
+				// Save generic response signature here, we're going to use this later when
+				// caching individual responses for each executed commands by overriding its
+				// "data" field with the actual response data for that command before saving it to DB.
+				$store_data = $output;
+
+				foreach ($result['rpc_response']['data'] as $command => $data) {
+					if (isset($computed_keys[$command])) {
+						$key = $computed_keys[$command];
+
+						if ('rpcok' == $data['response']) {
+							$store_data['reply']['data'] = $data['data'];
+							$this->maybe_cache_response($command, $store_data, $key, $force_save);
+						}
 					}
 				}
 			}
+
+		} else {
+			// Make sure that we have a meta_key generated for the new request.
+			if (empty($computed_meta_key)) {
+				$computed_meta_key = $this->generate_meta_key($this->command, $data);
+			}
+
+			// Cache response whenever applicable
+			$result = $this->response_post_check($this->maybe_cache_response($this->command, array(
+				'caught_output' => $caught_output,
+				'reply' => $reply
+			), $computed_meta_key, $force_save));
 		}
 
 		return $result;
@@ -514,8 +556,6 @@ class UpdraftCentral_Remote_Communications {
 			}
 
 			if ($this->rc->url_looks_internal($this->site->url) && !$this->rc->url_looks_internal(site_url()) && !apply_filters('updraftcentral_allow_contacting_internal_url_from_server', true, $this->site->url)) {
-				$url_scheme = strtolower(parse_url($this->site->url, PHP_URL_SCHEME));
-
 				return $this->return_error('cannot_contact_localdev');
 			}
 

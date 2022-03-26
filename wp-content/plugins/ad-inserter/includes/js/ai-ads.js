@@ -5,11 +5,13 @@ function ai_process_adsense_ad (element) {
   var ai_debug = typeof ai_debugging !== 'undefined'; // 1
 //  var ai_debug = false;
 
-  var adsense_iframe = jQuery(element);
-  var adsense_width = adsense_iframe.attr ('width');
-  var adsense_height = adsense_iframe.attr ('height');
-  var adsense_iframe2 = adsense_iframe.contents().find ('iframe[allowtransparency]');
-  var url_parameters = getAllUrlParams (adsense_iframe2.attr ('src'))
+  var adsense_container = jQuery(element);
+  var adsense_width = adsense_container.attr ('width');
+  var adsense_height = adsense_container.attr ('height');
+
+//  var adsense_iframe2 = adsense_container.contents().find ('iframe[allowtransparency]');
+//  var url_parameters = getAllUrlParams (adsense_iframe2.attr ('src'))
+  var url_parameters = getAllUrlParams (adsense_container.attr ('src'))
 
   if (typeof url_parameters ['client'] !== 'undefined') {
     var adsense_ad_client = url_parameters ['client'];
@@ -31,7 +33,7 @@ function ai_process_adsense_ad (element) {
       }
       adsense_ad_info = '<div class="ai-info ai-info-1">' + adsense_ad_slot + '</div>' + adsense_ad_name;
     } else {
-        var adsense_auto_ads = adsense_iframe.closest ('div.google-auto-placed').length != 0;
+        var adsense_auto_ads = adsense_container.closest ('div.google-auto-placed').length != 0;
         if (adsense_auto_ads) {
           adsense_overlay.addClass ('ai-auto-ads');
           adsense_ad_info = '<div class="ai-info ai-info-1">Auto ads</div>';
@@ -40,18 +42,21 @@ function ai_process_adsense_ad (element) {
 
     var adsense_info = jQuery('<div class="ai-debug-ad-info"><div class="ai-info ai-info-1">AdSense #' + adsense_index + '</div><div class="ai-info ai-info-2">' + adsense_width + 'x' + adsense_height + '</div>' + adsense_ad_info + '</div>');
 
-    adsense_iframe.after (adsense_info);
+    adsense_container.after (adsense_info);
 
     if (!ai_preview_window) {
-      adsense_iframe.after (adsense_overlay);
+      adsense_container.after (adsense_overlay);
     }
   }
 }
 
 function ai_process_adsense_ads () {
-  jQuery('ins ins iframe').each (function () {
-    var dummy_container = jQuery (this).closest ('.ai-dummy-ad');
-    if (!dummy_container.length) ai_process_adsense_ad (this);
+//  jQuery('ins ins iframe').each (function () {
+  jQuery('ins > ins > iframe[src*="google"]:visible').each (function () {
+//    var dummy_container = jQuery (this).closest ('.ai-dummy-ad');
+//    if (!dummy_container.length) ai_process_adsense_ad (this);
+//    if (!dummy_container.length)
+    ai_process_adsense_ad (this);
   });
 }
 
@@ -82,11 +87,32 @@ jQuery(document).ready(function($) {
       if (ai_debug) console.log ('AI ADSENSE DATA', 'END');
   });
 
-  $(window).on ('load', function () {
-    if (!ai_preview_window) setTimeout (function() {ai_process_adsense_ads (jQuery);}, 50);
-  });
-
+//  $(window).on ('load', function () {
+//    if (!ai_preview_window) setTimeout (function() {ai_process_adsense_ads (jQuery);}, 500);
+//  });
 });
+
+if (!ai_preview_window) {
+  const targetNode = document.querySelector ('body');
+  const config = {attributes: false, childList: true, subtree: true};
+  const ai_process_adsense_callback = function (mutationsList, observer) {
+    // Use traditional 'for loops' for IE 11
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList' &&
+          mutation.addedNodes.length &&
+          mutation.addedNodes [0].tagName == 'IFRAME' &&
+          mutation.addedNodes [0].getAttribute ('width') != null &&
+          mutation.addedNodes [0].getAttribute ('height') != null &&
+          !!mutation.addedNodes [0].closest ('.adsbygoogle')) {
+        ai_process_adsense_ad (mutation.addedNodes [0]);
+      }
+    }
+  };
+
+  const observer = new MutationObserver (ai_process_adsense_callback);
+  observer.observe (targetNode, config);
+}
+
 
 function getAllUrlParams (url) {
 
