@@ -15,33 +15,39 @@ class Options extends OptionsAbstract {
 	 * Options constructor.
 	 *
 	 * @since 1.0.0
+	 * @since 2.3.0 Added supports parameter.
 	 */
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'logo_url'    => wp_mail_smtp()->assets_url . '/images/providers/sendgrid.svg',
 				'slug'        => 'sendgrid',
 				'title'       => esc_html__( 'SendGrid', 'wp-mail-smtp' ),
 				'description' => sprintf(
 					wp_kses(
-						/* translators: %1$s - opening link tag; %2$s - closing link tag; %3$s - opening link tag; %4$s - closing link tag. */
-						__( '%1$sSendGrid%2$s is one of the leading transactional email services, sending over 35 billion emails every month. They provide users 100 free emails per day.<br><br>Read our %3$sSendGrid documentation%4$s to learn how to set up SendGrid and improve your email deliverability.', 'wp-mail-smtp' ),
-						array(
-							'br' => array(),
-							'a'  => array(
-								'href'   => array(),
-								'rel'    => array(),
-								'target' => array(),
-							),
-						)
+						/* translators: %1$s - URL to sendgrid.com; %2$s - URL to Sendgrid documentation on wpmailsmtp.com */
+						__( '<a href="%1$s" target="_blank" rel="noopener noreferrer">SendGrid</a> is a popular transactional email provider that sends more than 35 billion emails every month. If you\'re just starting out, the free plan allows you to send up to 100 emails each day without entering your credit card details.<br><br>To get started, read our <a href="%2$s" target="_blank" rel="noopener noreferrer">SendGrid documentation</a>.', 'wp-mail-smtp' ),
+						[
+							'br' => [],
+							'a'  => [
+								'href'   => [],
+								'rel'    => [],
+								'target' => [],
+							],
+						]
 					),
-					'<a href="https://sendgrid.com" target="_blank" rel="noopener noreferrer">',
-					'</a>',
-					'<a href="https://wpmailsmtp.com/docs/how-to-set-up-the-sendgrid-mailer-in-wp-mail-smtp/" target="_blank" rel="noopener noreferrer">',
-					'</a>'
+					'https://sendgrid.com',
+					'https://wpmailsmtp.com/docs/how-to-set-up-the-sendgrid-mailer-in-wp-mail-smtp/'
 				),
-			)
+				'supports'    => [
+					'from_email'       => true,
+					'from_name'        => true,
+					'return_path'      => false,
+					'from_email_force' => true,
+					'from_name_force'  => true,
+				],
+			]
 		);
 	}
 
@@ -85,6 +91,39 @@ class Options extends OptionsAbstract {
 						/* translators: %s - SendGrid access level. */
 						esc_html__( 'To send emails you will need only a %s access level for this API key.', 'wp-mail-smtp' ),
 						'<code>Mail Send</code>'
+					);
+					?>
+				</p>
+			</div>
+		</div>
+
+		<!-- Sending Domain -->
+		<div id="wp-mail-smtp-setting-row-<?php echo esc_attr( $this->get_slug() ); ?>-domain" class="wp-mail-smtp-setting-row wp-mail-smtp-setting-row-text wp-mail-smtp-clear">
+			<div class="wp-mail-smtp-setting-label">
+				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-domain"><?php esc_html_e( 'Sending Domain', 'wp-mail-smtp' ); ?></label>
+			</div>
+			<div class="wp-mail-smtp-setting-field">
+				<input name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][domain]" type="text"
+					   value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'domain' ) ); ?>"
+					<?php echo $this->options->is_const_defined( $this->get_slug(), 'domain' ) ? 'disabled' : ''; ?>
+					   id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-domain" spellcheck="false"
+				/>
+				<p class="desc">
+					<?php
+					printf(
+						wp_kses(
+							/* translators: %s - URL to SendGrid documentation on wpmailsmtp.com */
+							__( 'Please input the sending domain/subdomain you configured in your SendGrid dashboard. More information can be found in our <a href="%s" target="_blank" rel="noopener noreferrer">SendGrid documentation</a>.', 'wp-mail-smtp' ),
+							[
+								'br' => [],
+								'a'  => [
+									'href'   => [],
+									'rel'    => [],
+									'target' => [],
+								],
+							]
+						),
+						'https://wpmailsmtp.com/docs/how-to-set-up-the-sendgrid-mailer-in-wp-mail-smtp/#setup'
 					);
 					?>
 				</p>

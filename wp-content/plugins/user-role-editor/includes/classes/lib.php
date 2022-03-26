@@ -25,6 +25,9 @@ class URE_Lib extends URE_Base_Lib {
     // when we raise single site admin permissions up to the superadmin for the 'Add new user' new-user.php page
     // User_Role_Editor::allow_add_user_as_superadmin()
     protected $raised_permissions = false; 
+    
+    // roles sorting order: false - do not sort, 'id' - by role ID, 'name' - by role name
+    protected $roles_sorting_order = false;
  
     protected $debug = false;
  
@@ -541,5 +544,20 @@ class URE_Lib extends URE_Base_Lib {
     }
     // end of get_all_roles()
             
+    /*
+     * Wrapper to get_taxonomies() to get the custom taxonomies list
+     */
+    public function get_custom_taxonomies( $output='names' ) {
+        $args = array(
+            'show_ui'=>true,
+            'public'=>true,
+            '_builtin'=>false
+        );
+        $taxonomies = get_taxonomies( $args, $output );
+        
+        return $taxonomies;
+    }
+    // end of get_custom_taxonomies()        
+    
 }
 // end of URE_Lib class

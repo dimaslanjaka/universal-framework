@@ -1,0 +1,19 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 1 Mar, 2018, 2:37:28 PM
+    Author     : faiyaz
+*/
+
+
+.date-inputss {
+  width: 40%;
+  background-image: url(images/cal.png) !important;
+  background-position: 98% center !important;
+  background-repeat: no-repeat !important;
+  background-size: 32px !important;
+  background-color: white !important;
+}

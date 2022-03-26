@@ -20,7 +20,7 @@ class Geo {
 	 */
 	public static function get_site_domain() {
 
-		return ! empty( $_SERVER['SERVER_NAME'] ) ? wp_unslash( $_SERVER['SERVER_NAME'] ) : wp_parse_url( get_home_url( get_current_blog_id() ), PHP_URL_HOST );
+		return ! empty( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : wp_parse_url( get_home_url( get_current_blog_id() ), PHP_URL_HOST );
 	}
 
 	/**
@@ -48,31 +48,32 @@ class Geo {
 	 *
 	 * @since 1.5.0
 	 * @since 1.6.0 Added new geo API endpoint, provided by WPForms.
+	 * @since 2.0.0 Updated the WPForms geo API endpoint to v3.
 	 *
-	 * @param string $ip
+	 * @param string $ip The IP address.
 	 *
 	 * @return array Empty array for localhost.
 	 */
 	public static function get_location_by_ip( $ip ) {
 
 		// Check for a non-local IP.
-		if ( empty( $ip ) || in_array( $ip, array( '127.0.0.1', '::1' ), true ) ) {
-			return array();
+		if ( empty( $ip ) || in_array( $ip, [ '127.0.0.1', '::1' ], true ) ) {
+			return [];
 		}
 
-		$request = wp_remote_get( 'https://geo.wpforms.com/v2/geolocate/json/' . $ip );
+		$request = wp_remote_get( 'https://geo.wpforms.com/v3/geolocate/json/' . $ip );
 
 		if ( ! is_wp_error( $request ) ) {
 			$request = json_decode( wp_remote_retrieve_body( $request ), true );
 			if ( ! empty( $request['latitude'] ) && ! empty( $request['longitude'] ) ) {
-				$data = array(
+				$data = [
 					'latitude'  => sanitize_text_field( $request['latitude'] ),
 					'longitude' => sanitize_text_field( $request['longitude'] ),
-					'city'      => sanitize_text_field( $request['city'] ),
-					'region'    => sanitize_text_field( $request['region_name'] ),
-					'country'   => sanitize_text_field( $request['country_code'] ),
-					'postal'    => sanitize_text_field( $request['zip_code'] ),
-				);
+					'city'      => isset( $request['city'] ) ? sanitize_text_field( $request['city'] ) : '',
+					'region'    => isset( $request['region_name'] ) ? sanitize_text_field( $request['region_name'] ) : '',
+					'country'   => isset( $request['country_iso'] ) ? sanitize_text_field( $request['country_iso'] ) : '',
+					'postal'    => isset( $request['zip_code'] ) ? sanitize_text_field( $request['zip_code'] ) : '',
+				];
 
 				return $data;
 			}
@@ -86,20 +87,25 @@ class Geo {
 
 			if ( ! empty( $request['latitude'] ) && ! empty( $request['longitude'] ) ) {
 
-				$data = array(
+				$data = [
 					'latitude'  => sanitize_text_field( $request['latitude'] ),
 					'longitude' => sanitize_text_field( $request['longitude'] ),
-					'city'      => sanitize_text_field( $request['city'] ),
-					'region'    => sanitize_text_field( $request['region'] ),
-					'country'   => sanitize_text_field( $request['country'] ),
-					'postal'    => sanitize_text_field( $request['postal'] ),
-				);
+					'city'      => isset( $request['city'] ) ? sanitize_text_field( $request['city'] ) : '',
+					'region'    => isset( $request['region'] ) ? sanitize_text_field( $request['region'] ) : '',
+					'country'   => isset( $request['country'] ) ? sanitize_text_field( $request['country'] ) : '',
+					'postal'    => isset( $request['postal'] ) ? sanitize_text_field( $request['postal'] ) : '',
+				];
 
 				return $data;
 			}
 		}
 
-		$request = wp_remote_get( 'https://tools.keycdn.com/geo.json?host=' . $ip );
+		$request = wp_remote_get(
+			'https://tools.keycdn.com/geo.json?host=' . $ip,
+			[
+				'user-agent' => 'keycdn-tools:' . get_home_url(),
+			]
+		);
 
 		if ( ! is_wp_error( $request ) ) {
 
@@ -107,20 +113,20 @@ class Geo {
 
 			if ( ! empty( $request['data']['geo']['latitude'] ) && ! empty( $request['data']['geo']['longitude'] ) ) {
 
-				$data = array(
+				$data = [
 					'latitude'  => sanitize_text_field( $request['data']['geo']['latitude'] ),
 					'longitude' => sanitize_text_field( $request['data']['geo']['longitude'] ),
-					'city'      => sanitize_text_field( $request['data']['geo']['city'] ),
-					'region'    => sanitize_text_field( $request['data']['geo']['region_name'] ),
-					'country'   => sanitize_text_field( $request['data']['geo']['country_code'] ),
-					'postal'    => sanitize_text_field( $request['data']['geo']['postal_code'] ),
-				);
+					'city'      => isset( $request['data']['geo']['city'] ) ? sanitize_text_field( $request['data']['geo']['city'] ) : '',
+					'region'    => isset( $request['data']['geo']['region_name'] ) ? sanitize_text_field( $request['data']['geo']['region_name'] ) : '',
+					'country'   => isset( $request['data']['geo']['country_code'] ) ? sanitize_text_field( $request['data']['geo']['country_code'] ) : '',
+					'postal'    => isset( $request['data']['geo']['postal_code'] ) ? sanitize_text_field( $request['data']['geo']['postal_code'] ) : '',
+				];
 
 				return $data;
 			}
 		}
 
-		return array();
+		return [];
 	}
 
 	/**

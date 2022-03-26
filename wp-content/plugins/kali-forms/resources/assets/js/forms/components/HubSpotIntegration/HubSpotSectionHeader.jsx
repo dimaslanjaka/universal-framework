@@ -1,10 +1,9 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
 import ArrowLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
-
+const { __ } = wp.i18n;
 const HubSpotSectionHeader = (props) => {
 	return (
 		<div>
@@ -13,7 +12,7 @@ const HubSpotSectionHeader = (props) => {
 					<Typography variant="h5">
 						<If condition={props.backButton}>
 							<IconButton
-								aria-label={KaliFormsObject.translations.hubspot.misc.goBack}
+								aria-label={__('Go back', 'kaliforms')}
 								onClick={props.backButtonAction}
 								variant="contained"
 								color="secondary"
@@ -23,11 +22,6 @@ const HubSpotSectionHeader = (props) => {
 						</If>
 						{props.header}
 					</Typography>
-				</Grid>
-			</Grid>
-			<Grid container direction="row" spacing={2}>
-				<Grid item xs={12}>
-					<Divider />
 				</Grid>
 			</Grid>
 		</div >

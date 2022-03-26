@@ -16,7 +16,7 @@ class URE_bbPress {
     
     public function __construct() {        
         
-        add_action('plugins_loaded', array($this, 'detect_bbpress'), 8);
+        add_action('plugins_loaded', array($this, 'detect_bbpress'), 8 );
     }
     // end of __construct()
            
@@ -24,7 +24,7 @@ class URE_bbPress {
     public function detect_bbpress() {
 
         $this->bbpress_detected = false;
-        if (function_exists('bbp_filter_blog_editable_roles')) {
+        if ( function_exists('bbp_filter_blog_editable_roles') ) {
             $this->bbpress_detected = true;  // bbPress plugin is installed and active
         }
         
@@ -49,7 +49,7 @@ class URE_bbPress {
         
         $wp_roles = wp_roles();                        
         if ($this->bbpress_detected) {
-            $roles = bbp_filter_blog_editable_roles($wp_roles->roles);  // exclude bbPress roles
+            $roles = bbp_filter_blog_editable_roles( $wp_roles->roles );  // exclude bbPress roles
         } else {
             $roles = $wp_roles->roles;
         }
@@ -66,8 +66,8 @@ class URE_bbPress {
      */   
     public function get_caps() {
         
-        if ($this->bbpress_detected) {
-            $caps = array_keys(bbp_get_caps_for_role(bbp_get_keymaster_role()));
+        if ( $this->bbpress_detected ) {
+            $caps = array_keys( bbp_get_caps_for_role( bbp_get_keymaster_role() ) );
         } else {
             $caps = array();
         }
@@ -99,10 +99,10 @@ class URE_bbPress {
     public function extract_bbp_roles($roles) {
 
         $user_bbp_roles = array();
-        if ($this->bbpress_detected) {
-            $all_bbp_roles = array_keys(bbp_get_dynamic_roles());
-            foreach($roles as $role) {
-                if (in_array($role, $all_bbp_roles)) {
+        if ( $this->bbpress_detected ) {
+            $all_bbp_roles = array_keys( bbp_get_dynamic_roles() );
+            foreach( $roles as $role ) {
+                if ( in_array( $role, $all_bbp_roles ) ) {
                     $user_bbp_roles[] = $role;                    
                 }            
             }

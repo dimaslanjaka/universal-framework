@@ -20,8 +20,13 @@ class Upsell_Field extends Form_Field
     /**
      * @var string
      */
-    public $type = 'upsellField';
-
+	public $type = 'upsellField';
+	/**
+	 * Icon
+	 *
+	 * @var string
+	 */
+	public $icon = '';
     /**
      * Dropdown constructor.
      *
@@ -31,7 +36,8 @@ class Upsell_Field extends Form_Field
     {
         parent::__construct($args);
         $this->label = $args['label'];
-        $this->pro = $args['pro'];
+		$this->pro = $args['pro'];
+		$this->icon = $args['icon'];
         $this->upsell_for = $args['upsell_for'];
         $this->remove_props(['caption', 'description', 'default']);
     }

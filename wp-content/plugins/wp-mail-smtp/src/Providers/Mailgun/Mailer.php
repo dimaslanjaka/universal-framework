@@ -4,6 +4,7 @@ namespace WPMailSMTP\Providers\Mailgun;
 
 use WPMailSMTP\Providers\MailerAbstract;
 use WPMailSMTP\WP;
+use WPMailSMTP\Options as PluginOptions;
 
 /**
  * Class Mailer.
@@ -56,7 +57,7 @@ class Mailer extends MailerAbstract {
 		// Default value should be defined before the parent class contructor fires.
 		$this->url = self::API_BASE_US;
 
-		// We want to prefill everything from \WPMailSMTP\MailCatcher class, which extends \PHPMailer.
+		// We want to prefill everything from MailCatcher class, which extends PHPMailer.
 		parent::__construct( $phpmailer );
 
 		// We have a special API URL to query in case of EU region.
@@ -226,52 +227,39 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $attachments
+	 * @param array $attachments The array of attachments data.
 	 */
-	public function set_attachments( $attachments ) {
+	public function set_attachments( $attachments ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh, Generic.Metrics.NestingLevel.MaxExceeded
 
 		if ( empty( $attachments ) ) {
 			return;
 		}
 
 		$payload = '';
-		$data    = array();
+		$data    = [];
 
 		foreach ( $attachments as $attachment ) {
-			$file = false;
-
-			/*
-			 * We are not using WP_Filesystem API as we can't reliably work with it.
-			 * It is not always available, same as credentials for FTP.
-			 */
-			try {
-				if ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
-					$file = file_get_contents( $attachment[0] );
-				}
-			}
-			catch ( \Exception $e ) {
-				$file = false;
-			}
+			$file = $this->get_attachment_file_content( $attachment );
 
 			if ( $file === false ) {
 				continue;
 			}
 
-			$data[] = array(
+			$data[] = [
 				'content' => $file,
 				'name'    => $attachment[2],
-			);
+			];
 		}
 
 		if ( ! empty( $data ) ) {
 
 			// First, generate a boundary for the multipart message.
-			$boundary = base_convert( uniqid( 'boundary', true ), 10, 36 );
+			$boundary = $this->phpmailer->generate_id();
 
 			// Iterate through pre-built params and build a payload.
 			foreach ( $this->body as $key => $value ) {
 				if ( is_array( $value ) ) {
-					foreach ( $value as $child_key => $child_value ) {
+					foreach ( $value as $child_value ) {
 						$payload .= '--' . $boundary;
 						$payload .= "\r\n";
 						$payload .= 'Content-Disposition: form-data; name="' . $key . "\"\r\n\r\n";
@@ -367,13 +355,64 @@ class Mailer extends MailerAbstract {
 	}
 
 	/**
+	 * We might need to do something after the email was sent to the API.
+	 * In this method we preprocess the response from the API.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param mixed $response Response data.
+	 */
+	protected function process_response( $response ) {
+
+		parent::process_response( $response );
+
+		if ( is_wp_error( $response ) ) {
+			return;
+		}
+
+		if ( ! empty( $this->response['body']->id ) ) {
+			$this->phpmailer->MessageID = $this->response['body']->id;
+			$this->verify_sent_status   = true;
+		} else {
+			$this->error_message = esc_html__( 'It looks like there\'s most likely a setup issue. Please check your WP Mail SMTP settings to see if any details might be missing or incorrect.', 'wp-mail-smtp' );
+		}
+	}
+
+	/**
+	 * Whether the email is sent or not.
+	 * We basically check the response code from a request to provider.
+	 * Might not be 100% correct, not guarantees that email is delivered.
+	 *
+	 * In Mailgun's case it looks like we have to check if the response body has the message ID.
+	 * All successful API responses should have `id` key in the response body.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return bool
+	 */
+	public function is_email_sent() {
+
+		$is_sent = false;
+
+		if (
+			wp_remote_retrieve_response_code( $this->response ) === $this->email_sent_code &&
+			! empty( $this->response['body']->id )
+		) {
+			$is_sent = true;
+		}
+
+		/** This filter is documented in src/Providers/MailerAbstract.php. */
+		return apply_filters( 'wp_mail_smtp_providers_mailer_is_email_sent', $is_sent, $this->mailer );
+	}
+
+	/**
 	 * Get a Mailgun-specific response with a helpful error.
 	 *
 	 * @since 1.2.0
 	 *
 	 * @return string
 	 */
-	protected function get_response_error() {
+	public function get_response_error() {
 
 		$body = (array) wp_remote_retrieve_body( $this->response );
 
@@ -385,6 +424,8 @@ class Mailer extends MailerAbstract {
 			} else {
 				$error_text[] = \json_encode( $body['message'] );
 			}
+		} elseif ( ! empty( $this->error_message ) ) {
+			$error_text[] = $this->error_message;
 		} elseif ( ! empty( $body[0] ) ) {
 			if ( is_string( $body[0] ) ) {
 				$error_text[] = $body[0];
@@ -403,7 +444,7 @@ class Mailer extends MailerAbstract {
 
 		$mg_text = array();
 
-		$options = new \WPMailSMTP\Options();
+		$options = PluginOptions::init();
 		$mailgun = $options->get_group( 'mailgun' );
 
 		$mg_text[] = '<strong>Api Key / Domain:</strong> ' . ( ! empty( $mailgun['api_key'] ) && ! empty( $mailgun['domain'] ) ? 'Yes' : 'No' );

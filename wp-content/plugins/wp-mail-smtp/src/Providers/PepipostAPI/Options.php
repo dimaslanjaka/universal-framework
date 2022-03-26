@@ -23,19 +23,19 @@ class Options extends OptionsAbstract {
 	 * Options constructor.
 	 *
 	 * @since 1.8.0
+	 * @since 2.3.0 Added 'supports' parameter.
 	 */
 	public function __construct() {
 
 		$description = sprintf(
 			wp_kses( /* translators: %1$s - URL to pepipost.com site. */
-				__( '<strong><a href="%1$s" target="_blank" rel="noopener noreferrer">Pepipost</a> is a recommended transactional email service.</strong> Every month Pepipost delivers over 8 billion emails from 20,000+ customers. Their mission is to reliably send emails in the most efficient way and at the most disruptive pricing ever.  Pepipost provides users 30,000 free emails the first 30 days, then 100 emails per day.', 'wp-mail-smtp' ) .
+				__( '<a href="%1$s" target="_blank" rel="noopener noreferrer">Pepipost</a> is a transactional email service. Every month Pepipost delivers over 8 billion emails from 20,000+ customers. Their mission is to reliably send emails in the most efficient way and at the most disruptive pricing ever. Pepipost provides users 30,000 free emails the first 30 days.', 'wp-mail-smtp' ) .
 				'<br><br>' .
 				/* translators: %1$s - URL to wpmailsmtp.com doc. */
 				__( 'Read our <a href="%2$s" target="_blank" rel="noopener noreferrer">Pepipost documentation</a> to learn how to configure Pepipost and improve your email deliverability.', 'wp-mail-smtp' ),
 				array(
-					'br'     => true,
-					'strong' => true,
-					'a'      => array(
+					'br' => true,
+					'a'  => array(
 						'href'   => true,
 						'rel'    => true,
 						'target' => true,
@@ -50,19 +50,25 @@ class Options extends OptionsAbstract {
 
 		if ( empty( $api_key ) ) {
 			$description .= '</p><p class="buttonned"><a href="https://wpmailsmtp.com/go/pepipost/" target="_blank" rel="noopener noreferrer" class="wp-mail-smtp-btn wp-mail-smtp-btn-md wp-mail-smtp-btn-blueish">' .
-								esc_html__( 'Get Pepipost Now (Free)', 'wp-mail-smtp' ) .
+								esc_html__( 'Get Started with Pepipost', 'wp-mail-smtp' ) .
 							'</a></p>';
 		}
 
 		parent::__construct(
-			array(
+			[
 				'logo_url'    => wp_mail_smtp()->assets_url . '/images/providers/pepipost.png',
 				'slug'        => self::SLUG,
 				'title'       => esc_html__( 'Pepipost', 'wp-mail-smtp' ),
 				'description' => $description,
-				'recommended' => true,
 				'php'         => '5.3',
-			)
+				'supports'    => [
+					'from_email'       => true,
+					'from_name'        => true,
+					'return_path'      => false,
+					'from_email_force' => true,
+					'from_name_force'  => true,
+				],
+			]
 		);
 	}
 
@@ -103,7 +109,7 @@ class Options extends OptionsAbstract {
 
 				<p class="desc">
 					<?php
-					printf( /* translators: %s - pepipost.com link to get an API Key. */
+					printf( /* translators: %s - link to get an API Key. */
 						esc_html__( 'Follow this link to get an API Key: %s.', 'wp-mail-smtp' ),
 						'<a href="https://app.pepipost.com/app/settings/integration" target="_blank" rel="noopener noreferrer">' .
 						esc_html__( 'Get the API Key', 'wp-mail-smtp' ) .

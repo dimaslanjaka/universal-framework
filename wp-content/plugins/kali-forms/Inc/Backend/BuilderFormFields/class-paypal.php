@@ -31,6 +31,6 @@ class PayPal extends Form_Field
         parent::__construct($args);
         $this->label = esc_html__('PayPal', 'kaliforms');
 
-        $this->remove_props(['default', 'caption', 'description']);
+        $this->remove_props(['name', 'default', 'caption', 'description']);
     }
 }

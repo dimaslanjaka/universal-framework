@@ -28,6 +28,7 @@ class Date extends Form_Field {
 	 */
 	public function __construct( $args ) {
 		parent::__construct( $args );
+		$this->icon = 'icon-data-picker';
 		$this->label = esc_html__( 'Date field', 'kaliforms' );
 	}
 }

@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { sortableElement } from 'react-sortable-hoc';
 import AddableListItemHandle from './AddableListItemHandle'
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton'
-import DeleteIcon from '@material-ui/icons/Delete'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import React, { useEffect, useState } from 'react';
+import { sortableElement } from 'react-sortable-hoc';
+import Box from '@material-ui/core/Box';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import addableListItemStyles from './AddableListItemStyles';
+import { store } from './../../store/store';
+import { observer } from "mobx-react"
+import BootstrapInput from './../BootstrapInput';
+import FormControl from '@material-ui/core/FormControl';
+import Checkbox from './../Misc/Checkbox';
+import Icon from '@material-ui/core/Icon';
 /**
  * Addable list item
  *
  * @class AddableListItem
  * @extends {React.Component}
  */
-const AddableListItem = (props) => {
+const AddableListItem = observer((props) => {
 	const [element, setElement] = useState(props.element);
 	const [idx, setIdx] = useState(props.idx);
-	const [panelCollapsed, setPanelCollapsed] = useState(false);
+	const classes = addableListItemStyles();
 
 	useEffect(() => {
 		setElement(props.element)
@@ -32,51 +30,55 @@ const AddableListItem = (props) => {
 		setIdx(props.idx)
 	}, [props.idx])
 
-	return (
-		<ExpansionPanel elevation={1}>
-			<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-				<If condition={!panelCollapsed}>
-					<AddableListItemHandle />
-				</If>
-				<Typography style={{
-					whiteSpace: 'nowrap',
-					overflow: 'hidden',
-					textOverflow: 'ellipsis',
-					alignSelf: 'center',
-					maxWidth: 230,
-					marginRight: 10,
-					marginLeft: panelCollapsed ? 0 : 15,
-				}}>
-					{element.label}
-				</Typography>
-			</ExpansionPanelSummary>
-			<ExpansionPanelDetails>
-				<div style={{ width: '100%' }}>
-					<TextField
-						label={KaliFormsObject.translations.general.value}
-						value={element.value}
-						onChange={e => props.handleChange(e.target.value, 'value', idx)}
-						fullWidth={true}
-						margin="normal"
-					/>
-					<TextField
-						label={KaliFormsObject.translations.general.label}
-						value={element.label}
-						onChange={e => props.handleChange(e.target.value, 'label', idx)}
-						fullWidth={true}
-						margin="normal"
+	let currentFieldVal = store._FIELD_COMPONENTS_.getPropertyValue(store._UI_.activeFormFieldInSidebar, 'default');
+	let currentVal = typeof currentFieldVal !== 'undefined'
+		? currentFieldVal.split(',') : []
+	currentVal = currentVal.filter(e => e !== '');
 
-					/>
-				</div>
-			</ExpansionPanelDetails>
-			<Divider />
-			<ExpansionPanelActions>
-				<IconButton onClick={() => props.removeChoice(idx)}>
-					<DeleteIcon />
-				</IconButton>
-			</ExpansionPanelActions>
-		</ExpansionPanel>
+	return (
+		<React.Fragment>
+			<Box className={classes.root}>
+				<Box className={classes.handleContainer}>
+					<AddableListItemHandle className={classes.handle} />
+				</Box>
+				<Box className={classes.inputFieldsContainer}>
+					<Box className={classes.checkboxInput}>
+						<FormControlLabel
+							className={classes.checkboxLabel}
+							control={
+								<Checkbox
+									checked={currentVal.includes(element.value)}
+									onChange={e => props.handleCheckboxChange(e.target.checked, idx)}
+								/>
+							}
+							labelPlacement="top"
+						/>
+					</Box>
+					<Box className={classes.firstInput}>
+						<FormControl>
+							<BootstrapInput
+								value={element.value}
+								onChange={e => props.handleChange(e.target.value, 'value', idx)}
+								fullWidth={true}
+							/>
+						</FormControl>
+					</Box>
+					<Box className={classes.secondInput}>
+						<FormControl>
+							<BootstrapInput
+								value={element.label}
+								onChange={e => props.handleChange(e.target.value, 'label', idx)}
+								fullWidth={true}
+							/>
+						</FormControl>
+					</Box>
+				</Box>
+				<Box className={classes.deleteButtonContainer}>
+					<Icon className={classes.delete + ' icon-remove'} onClick={() => props.removeChoice(idx)} />
+				</Box>
+			</Box>
+		</React.Fragment>
 	)
-}
+})
 
 export default sortableElement(AddableListItem)

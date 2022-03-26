@@ -2,15 +2,20 @@
 
 Theme Name: Shapely
 Theme URI: https://colorlib.com/wp/shapely/
-Version: 1.2.4
-Tested up to: WP 4.9
+Version: 1.2.14
+
+Requires PHP at least: 5.0
+Tested PHP up to: 8.0.7
+
+Requires WP at least: 4.0
+Tested WP up to: 5.7.2
 
 Author: Aigars Silkalns
 Author URI: https://colorlib.com/wp/
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl.html
 -------------------------------------------------------
-Shapely theme, Copyright 2018 colorlib.com
+Shapely theme, Copyright 2016-2021 colorlib.com
 Shapely WordPress theme is distributed under the terms of the GNU GPL
 Shapely is based on Underscores http://underscores.me/, (C) 2012-2018 Automattic, Inc.
 -------------------------------------------------------
@@ -30,6 +35,9 @@ This theme is the best suited for business, landing page, portfolio, ecommerce, 
 3. Click Activate to use your new theme right away.
 
 For more detailed Shapely theme setup please read documentation: https://colorlib.com/wp/support/shapely/
+
+== Translation ==
+Theme can be translated directly on https://translate.wordpress.org/projects/wp-themes/shapely without relying on the .po file. All the translatable strings are pulled automatically. For more info please check this link https://make.wordpress.org/polyglots/handbook/tools/glotpress-translate-wordpress-org/
 
 == Frequently Asked Questions ==
 

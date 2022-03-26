@@ -33,17 +33,18 @@ class URE_Assign_Role {
         $role_name = 'No rights';
                 
         $wp_roles = wp_roles();        
-        if (isset($wp_roles->roles[$role_id])) {
+        if ( isset( $wp_roles->roles[$role_id] ) ) {
             return;
         }
         
-        add_role($role_id, $role_name, array());
+        add_role( $role_id, $role_name, array() );
         
     }
     // end of create_no_rights_role()          
     
     
     private function count_quick_or_thoroughly() {
+        
         $quick_count = true;
         if ( defined('URE_COUNT_USERS_WITHOUT_ROLE_THOROUGHLY') && URE_COUNT_USERS_WITHOUT_ROLE_THOROUGHLY ) {
             $quick_count = false;
@@ -54,7 +55,7 @@ class URE_Assign_Role {
             }
         }
         
-        $quick_count = apply_filters('ure_count_users_without_role_quick', $quick_count);
+        $quick_count = apply_filters('ure_count_users_without_role_quick', $quick_count );
         
         return $quick_count;
     }
@@ -66,7 +67,7 @@ class URE_Assign_Role {
 
         $usermeta = $wpdb->usermeta;
         $id = get_current_blog_id();
-        $blog_prefix = $wpdb->get_blog_prefix($id);
+        $blog_prefix = $wpdb->get_blog_prefix( $id );
         $where = "WHERE NOT EXISTS (SELECT user_id from {$usermeta} ".
                                       "WHERE user_id=users.ID AND meta_key='{$blog_prefix}capabilities') OR ".
                         "EXISTS (SELECT user_id FROM {$usermeta} ".
@@ -117,8 +118,8 @@ class URE_Assign_Role {
         $users_quant = get_transient('ure_users_without_role');
         if (empty($users_quant)) {
             $query = $this->get_users_count_query();
-            $users_quant = $wpdb->get_var($query);
-            set_transient('ure_users_without_role', $users_quant, 15);
+            $users_quant = $wpdb->get_var( $query );
+            set_transient('ure_users_without_role', $users_quant, 15 );
         }
         
         return $users_quant;
@@ -141,7 +142,7 @@ class URE_Assign_Role {
                         {$where}
                         LIMIT 0, {$top_limit}";
         }        
-        $users0 = $wpdb->get_col($query);        
+        $users0 = $wpdb->get_col( $query );        
         
         return $users0;        
     }
@@ -160,7 +161,7 @@ class URE_Assign_Role {
         &nbsp;&nbsp;<input type="button" name="move_from_no_role<?php echo $button_number;?>" id="move_from_no_role<?php echo $button_number;?>" class="button"
                         value="Without role (<?php echo $users_quant;?>)" onclick="ure_move_users_from_no_role_dialog()">
 <?php
-    if (self::$counter==0) {
+    if ( self::$counter==0 ) {
 ?>
         <div id="move_from_no_role_dialog" class="ure-dialog">
             <div id="move_from_no_role_content" style="padding: 10px;"></div>                

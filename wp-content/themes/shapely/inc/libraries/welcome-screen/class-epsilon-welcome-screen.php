@@ -181,12 +181,23 @@ class Epsilon_Welcome_Screen {
 	 * AJAX Handler
 	 */
 	public function welcome_screen_ajax_callback() {
-		if ( isset( $_POST['args'], $_POST['args']['nonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['args']['nonce'] ), 'welcome_nonce' ) ) {
+		if ( !isset( $_POST['args'], $_POST['args']['nonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['args']['nonce'] ), 'welcome_nonce' ) ) {
 			wp_die(
 				wp_json_encode(
 					array(
 						'status' => false,
 						'error'  => esc_html__( 'Not allowed', 'epsilon-framework' ),
+					)
+				)
+			);
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+		    wp_die(
+				json_encode(
+					array(
+						'status' => false,
+						'error'  => 'Not allowed',
 					)
 				)
 			);
@@ -200,6 +211,17 @@ class Epsilon_Welcome_Screen {
 					array(
 						'status' => false,
 						'error'  => esc_html__( 'Not allowed', 'epsilon-framework' ),
+					)
+				)
+			);
+		}
+
+		if ( ! in_array( $args_action[0], array( 'Epsilon_Welcome_Screen' ) ) ) {
+			wp_die(
+				wp_json_encode(
+					array(
+						'status' => false,
+						'error'  => esc_html__( 'Class Not allowed', 'epsilon-framework' ),
 					)
 				)
 			);

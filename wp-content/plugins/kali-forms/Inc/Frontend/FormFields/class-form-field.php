@@ -1,10 +1,11 @@
 <?php
+
 namespace KaliForms\Inc\Frontend\FormFields;
 
-use KaliForms\Inc\Utils;
 use KaliForms\Inc\Utils\FieldsHelper;
+
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 /**
@@ -14,23 +15,36 @@ if (!defined('ABSPATH')) {
  */
 abstract class Form_Field
 {
-    /**
-     * Trait with utilities
-     */
-    use FieldsHelper;
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-    }
+	public $id = '';
 
-    /**
-     * Render function
-     *
-     * @return void
-     */
-    public function render($item, $form_info)
-    {
-    }
+	/**
+	 * Trait with utilities
+	 */
+	use FieldsHelper;
+
+	/**
+	 * Class constructor
+	 */
+	public function __construct()
+	{
+	}
+
+	/**
+	 * Render function
+	 *
+	 * @return void
+	 */
+	public function render($item, $form_info)
+	{
+	}
+
+	/**
+	 * Renders the required field mark
+	 *
+	 * @return string
+	 */
+	public function render_required_mark($mark)
+	{
+		return '<span class="kali-required-mark">' . esc_html($mark) . '</span>';
+	}
 }

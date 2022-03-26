@@ -1,36 +1,55 @@
 .kaliforms-wrapper {
-
-    input[type=color],
-    // input[type=date],
-    input[type=datetime-local],
-    input[type=datetime],
-    input[type=email],
-    input[type=month],
-    input[type=number],
-    input[type=password],
-    // input[type=radio],
-    input[type=search],
-    input[type=tel],
-    input[type=text],
-    input[type=time],
-    input[type=url],
-    // textarea,
-    // select,
-    input[type=week] {
-        all: unset;
-        width: 100%;
-        line-height: 32px;
-    }
-
-    .MuiInputBase-inputMultiline {
-        box-shadow: none
-    }
-
     .kaliforms-post-editor {
         .public-DraftEditor-content {
             min-height: 100px;
         }
     }
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#postcustom {
+    display: none;
+}
+
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+
+    &:focus {
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+        clip: auto !important;
+        clip-path: none;
+        color: #000;
+        display: block;
+        font-size: 0.875rem;
+        font-weight: bold;
+        height: auto;
+        left: 5px;
+        line-height: normal;
+        padding: 15px 23px 14px;
+        text-decoration: none;
+        top: 5px;
+        width: auto;
+        z-index: 100000;
+    }
+}
+
+#content[tabindex="-1"]:focus {
+    outline: 0;
 }
 
 .react-grid-layout {
@@ -63,11 +82,7 @@
     [type="number"],
     [type="date"],
     [type="search"] {
-        height: $base-input-height;
-        padding: 8px;
         background-color: $base-input-background-color;
-        border: $base-input-border-size solid $base-input-border-color;
-        border-radius: $base-input-border-radius;
         -webkit-appearance: none;
         -moz-appearance: textfield;
 
@@ -79,10 +94,7 @@
     }
 
     textarea {
-        padding: 8px;
         background-color: $base-input-background-color;
-        border: $base-input-border-size solid $base-input-border-color;
-        border-radius: $base-input-border-radius;
         overflow: auto;
 
         &:focus {
@@ -95,11 +107,7 @@
     // Select
     select {
         text-transform: none;
-        height: $base-input-height;
-        padding: 0 8px;
         background-color: $base-input-background-color;
-        border: $base-input-border-size solid $base-input-border-color;
-        border-radius: $base-input-border-radius;
 
         &:focus {
             background-color: $base-input-background-focus-color;
@@ -149,22 +157,61 @@ body {
 }
 
 .react-grid-item.react-grid-placeholder {
-    background: #f3f3f3;
-    opacity: .4;
+    background: #f3f3f3 !important;
+    opacity: .7 !important;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        bottom: 8px;
+        left: 8px;
+        right: 8px;
+        background: #fff;
+        display: inline-block;
+    }
 }
 
-.react-grid-item>.react-resizable-handle::after {
-    right: 4px;
-    bottom: 4px;
-    width: 10px;
-    height: 11px;
-    border-right: 3px solid rgba(0, 0, 0, 0.4);
-    border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+#kali-responsive-grid-layout {
+    &.removePointerEvents {
+        .react-grid-item {
+            pointer-events: none;
+        }
+    }
+}
+
+.react-grid-item {
+    &.active {
+        background: #fff !important;
+        border-style: solid;
+    }
+
+    >.react-resizable-handle {
+        bottom: 30px !important;
+        right: 4px !important;
+        cursor: e-resize !important;
+        height: 28px !important;
+
+        &::after {
+            top: 0 !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            right: 0 !important;
+            font-size: 22px !important;
+            border: none !important;
+            display: 'block' !important;
+            content: '\e981' !important;
+            font-family: 'icomoon' !important;
+        }
+    }
 }
 
 .postbox {
     padding: 0;
     margin-bottom: 0;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
 }
 
 #poststuff {
@@ -186,13 +233,12 @@ body {
     padding: 0
 }
 
-body {
-    background: initial;
-}
-
 #kaliforms_forms_builder {
     border: none;
     box-shadow: none;
+    height: initial;
+    visibility: initial;
+    opacity: initial;
 
     >h2 {
         display: none;
@@ -203,6 +249,7 @@ body {
     }
 }
 
+.postbox-header,
 #submitdiv,
 #titlediv,
 .page-title-action {
@@ -252,11 +299,6 @@ html.wp-toolbar {
     left: 15px;
 }
 
-#kaliforms-container {
-    min-height: 400px;
-    width: 100%;
-}
-
 #wpfooter {
     display: none;
 }
@@ -281,9 +323,33 @@ html.wp-toolbar {
     right: 0;
     bottom: 0;
     left: 0;
-    background: #fff;
+    background: '#f1f1f1';
     display: flex;
     z-index: 10000;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-family: 'Roboto';
+
+    .kaliforms-preloader-badge {
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-weight: bold;
+        position: relative;
+        margin: 0 auto;
+
+        &::after {
+            position: absolute;
+            bottom: -5px;
+            left: -5px;
+            right: -5px;
+            height: 3px;
+            content: '';
+            background-color: #000;
+        }
+    }
 
     .skeleton-button {
         width: 24px;
@@ -404,3 +470,20 @@ html.wp-toolbar {
         }
     }
 }
+
+.addableListHandler {
+    z-index: 9999;
+}
+
+.addableListHandlerImage,
+.addableListHandlerProduct {
+    z-index: 9999;
+    max-width: 227px !important;
+}
+
+.addableListHandlerImage {
+    max-width: 472px !important;
+}
+
+@import './../js/frontend/form-styles/buttons.scss';
+

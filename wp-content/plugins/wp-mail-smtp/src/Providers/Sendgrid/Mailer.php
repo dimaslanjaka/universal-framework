@@ -2,6 +2,7 @@
 
 namespace WPMailSMTP\Providers\Sendgrid;
 
+use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Providers\MailerAbstract;
 use WPMailSMTP\WP;
 
@@ -35,11 +36,11 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \WPMailSMTP\MailCatcher $phpmailer
+	 * @param MailCatcherInterface $phpmailer The MailCatcher object.
 	 */
 	public function __construct( $phpmailer ) {
 
-		// We want to prefill everything from \WPMailSMTP\MailCatcher class, which extends \PHPMailer.
+		// We want to prefill everything from MailCatcher class, which extends PHPMailer.
 		parent::__construct( $phpmailer );
 
 		$this->set_header( 'Authorization', 'Bearer ' . $this->options->get( $this->mailer, 'api_key' ) );
@@ -243,7 +244,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $attachments
+	 * @param array $attachments The array of attachments data.
 	 */
 	public function set_attachments( $attachments ) {
 
@@ -251,23 +252,10 @@ class Mailer extends MailerAbstract {
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ( $attachments as $attachment ) {
-			$file = false;
-
-			/*
-			 * We are not using WP_Filesystem API as we can't reliably work with it.
-			 * It is not always available, same as credentials for FTP.
-			 */
-			try {
-				if ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
-					$file = file_get_contents( $attachment[0] ); // phpcs:ignore
-				}
-			}
-			catch ( \Exception $e ) {
-				$file = false;
-			}
+			$file = $this->get_attachment_file_content( $attachment );
 
 			if ( $file === false ) {
 				continue;
@@ -275,20 +263,20 @@ class Mailer extends MailerAbstract {
 
 			$filetype = str_replace( ';', '', trim( $attachment[4] ) );
 
-			$data[] = array(
-				'content'     => base64_encode( $file ), // string, 1 character.
+			$data[] = [
+				'content'     => base64_encode( $file ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 				'type'        => $filetype, // string, no ;, no CRLF.
 				'filename'    => empty( $attachment[2] ) ? 'file-' . wp_hash( microtime() ) . '.' . $filetype : trim( $attachment[2] ), // required string, no CRLF.
-				'disposition' => in_array( $attachment[6], array( 'inline', 'attachment' ), true ) ? $attachment[6] : 'attachment', // either inline or attachment.
+				'disposition' => in_array( $attachment[6], [ 'inline', 'attachment' ], true ) ? $attachment[6] : 'attachment', // either inline or attachment.
 				'content_id'  => empty( $attachment[7] ) ? '' : trim( (string) $attachment[7] ), // string, no CRLF.
-			);
+			];
 		}
 
 		if ( ! empty( $data ) ) {
 			$this->set_body_param(
-				array(
+				[
 					'attachments' => $data,
-				)
+				]
 			);
 		}
 	}
@@ -351,7 +339,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @return string
 	 */
-	protected function get_response_error() {
+	public function get_response_error() { // phpcs:ignore Generic.Metrics.NestingLevel.MaxExceeded, Generic.Metrics.CyclomaticComplexity.TooHigh
 
 		$body = (array) wp_remote_retrieve_body( $this->response );
 
@@ -373,6 +361,8 @@ class Mailer extends MailerAbstract {
 					$error_text[] = $error->message . ( ! empty( $extra ) ? ' - ' . $extra : '' );
 				}
 			}
+		} elseif ( ! empty( $this->error_message ) ) {
+			$error_text[] = $this->error_message;
 		}
 
 		return implode( '<br>', array_map( 'esc_textarea', $error_text ) );

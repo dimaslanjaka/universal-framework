@@ -1,47 +1,67 @@
+const { __ } = wp.i18n;
 export default {
-    /**
-     * Gather and test products with server
-     */
-	gatherProducts() {
-		const data = { action: 'kaliforms_form_verify_products', data: { formId: this.formId } };
-
-		this.axios.post(KaliFormsObject.ajaxurl, this.Qs.stringify(data))
+	/**
+	 * Gather and test products with server
+	 */
+	async gatherProducts() {
+		const data = { action: 'kaliforms_form_verify_products', data: { formId: this.formId, nonce: KaliFormsObject.ajax_nonce } };
+		return this.axios.post(KaliFormsObject.ajaxurl, this.Qs.stringify(data))
 			.then(r => {
 				this._products = (r.data.response === 'ok') ? [] : r.data.response;
-				// console.log(r.data.response.success);
+				this.form.dispatchEvent(new CustomEvent('kaliFormProductsGathered', { detail: this }))
 			})
 			.catch(e => {
 				console.log(e);
 			});
 	},
 
-    /**
-     * Get cart contents
-     */
+	/**
+	 * Get cart contents
+	 */
 	getCart() {
 		let price = 0;
 		let currency = 'USD';
 		let description = [];
+		if (typeof this._products === 'undefined') {
+			return { price: price.toFixed(2), description: description.join("\n"), currency }
+		}
 		this._products.map(e => {
 			this._payee = typeof e.payee !== 'undefined' ? e.payee : null;
+			if (e.type === 'donation') {
+				let htmlEl = document.querySelector(`[data-internal-id="${e.internalId.toLowerCase()}"]`)
+				if (htmlEl === null) {
+					price += 0;
+					return;
+				}
+				if (htmlEl.value === '') {
+					price += 0;
+					return;
+				};
+				price += parseFloat(htmlEl.value) > 0 ? parseFloat(htmlEl.value) : 0;
+				description.push(e.caption);
+			}
+
 			if (e.type === 'product') {
-				price += parseInt(e.price);
+				price += parseFloat(e.price);
 				description.push(e.caption);
 			}
 
 			if (e.type === 'multipleProducts' && this.isSelectedPrice(e)) {
-				price += parseInt(e.price)
-				description.push(e.caption);
+				price += parseFloat(e.price)
+				description.push(e.variant);
 			}
 
 			currency = e.currency;
 		});
-
-		return { price: price.toFixed(2), description: description.join(','), currency };
+		return { price: price.toFixed(2), description: description.join("\n"), currency };
 	},
 
+	/**
+	 * Is selected price?
+	 * @param {} e
+	 */
 	isSelectedPrice(e) {
-		let items = [...document.querySelectorAll(`[data-internal-id="${e.id.toLowerCase()}"]`)]
+		let items = [...document.querySelectorAll(`[data-internal-id="${e.internalId.toLowerCase()}"]`)]
 		if (!items.length) {
 			return false;
 		}
@@ -50,40 +70,36 @@ export default {
 			return false;
 		}
 
-		if (parseInt(items.find(r => r.checked).value) === parseInt(e.price)) {
+		if ((items.find(r => r.checked).value) === e.id) {
 			return true;
 		}
 	},
 
-    /**
-     * PayPal Specific callbacks
-     */
-
-    /**
-     * When a payment is approved, we need to dispatch the form submit event
-     * @param {*} data
-     * @param {*} actions
-     */
-	onApprove(data, actions) {
+	/**
+	 * When a payment is approved, we need to dispatch the form submit event
+	 * @param {*} data
+	 * @param {*} actions
+	 */
+	async onApprove(data, actions) {
 		this.loading = true;
-		return actions.order.capture().then(details => {
-			// alert('Transaction completed by ' + details.payer.name.given_name);
-			// Call your server to save the transaction
+		return actions.order.capture().then(async details => {
+			if (this.hasOwnProperty('_logPayPalIntent')) {
+				await this._logPayPalIntent(details);
+			}
+
 			this.payments = {
 				payment_id: details.id,
-				payer: details.payer,
-				status: details.status
-			};
-			this.loading = false;
-			this.form.dispatchEvent(new Event('submit'));
+				provider: 'paypal',
+			}
+			this.form.dispatchEvent(new Event('submit', { cancelable: true }));
 		});
 	},
-    /**
-     * Create order callback
-     *
-     * @param {*} data
-     * @param {*} actions
-     */
+	/**
+	 * Create order callback
+	 *
+	 * @param {*} data
+	 * @param {*} actions
+	 */
 	createOrder(data, actions) {
 		const cart = this.getCart();
 		let orderObj = {
@@ -105,27 +121,30 @@ export default {
 
 		return actions.order.create(orderObj);
 	},
-    /**
-     * Callback when buttons are rendered
-     * @param {*} data
-     * @param {*} actions
-     */
+	/**
+	 * Callback when buttons are rendered
+	 * @param {*} data
+	 * @param {*} actions
+	 */
 	onInit(data, actions) {
-		this.validForm() ? actions.enable() : actions.disable();
-
+		this.valid && this.form.checkValidity() ? actions.enable() : actions.disable();
 		this.form.addEventListener('change', (e) => {
-			this.validForm() ? actions.enable() : actions.disable();
+			this.valid && this.form.checkValidity() ? actions.enable() : actions.disable();
 		})
 	},
-    /**
-     * Button click callback
-     * @param {*} data
-     * @param {*} actions
-     */
+	/**
+	 * Button click callback
+	 * @param {*} data
+	 * @param {*} actions
+	 */
 	onClick(data, actions) {
 		[...this.formElements].map(e => {
 			e.reportValidity();
 		});
+
+		if (!this.valid) {
+			this.throwError();
+		}
 	},
 
 	/**
@@ -134,18 +153,50 @@ export default {
 	 * @param {*} paypalObject
 	 * @memberof FormProcessor
 	 */
-	handlePayPalPayment(paypalObject) {
-		this.gatherProducts();
+	async handlePayPalPayment(paypalObject) {
+		if (typeof paypalObject.Buttons !== 'function') {
+			return
+		}
+
 		this.createOrder = this.createOrder.bind(this);
 		this.onApprove = this.onApprove.bind(this);
 		this.onInit = this.onInit.bind(this);
 		this.onClick = this.onClick.bind(this);
 
-		paypalObject.Buttons({
+		this.paypalObject = paypalObject.Buttons({
 			onInit: this.onInit,
 			onClick: this.onClick,
 			createOrder: this.createOrder,
 			onApprove: this.onApprove,
-		}).render('#kaliforms-paypal-button-container');
+		});
+
+		if (this.conditionalFields) {
+			return;
+		}
+
+		this.paypalObject.render('#kaliforms-paypal-button-container');
+	},
+
+	/**
+	 * Returns the payment method chooser
+	 */
+	_getPaymentMethodChooser(paymentMethods) {
+		if (!window.hasOwnProperty('KaliFormConditionalLogic' + this.formId)) {
+			return null
+		}
+		let logic = 'KaliFormConditionalLogic' + this.formId;
+		let identifier = window[logic].find(e => paymentMethods.includes(e.field.replace(/[0-9]/g, '')))
+
+		return typeof identifier === 'undefined' ? null : document.querySelector(`[data-internal-id="${identifier.conditioner}"]`);
+	},
+	/**
+	 * Returns the payment method translated, based on the field id
+	 * @param {} value
+	 */
+	_getPaymentMethodTranslated(value) {
+		let logic = 'KaliFormConditionalLogic' + this.formId;
+		let identifier = window[logic].find(e => value === e.value)
+
+		return typeof identifier !== 'undefined' ? identifier.field.replace(/[0-9]/g, '') : null;
 	}
 }

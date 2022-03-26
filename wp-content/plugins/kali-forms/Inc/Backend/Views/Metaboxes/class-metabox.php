@@ -2,11 +2,12 @@
 
 namespace KaliForms\Inc\Backend\Views\Metaboxes;
 
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
-class Metabox {
+class Metabox
+{
 	/**
 	 * @var string
 	 */
@@ -15,14 +16,15 @@ class Metabox {
 	/**
 	 * Invoke magic method
 	 */
-	public function __invoke() {
+	public function __invoke()
+	{
 		$this->render_box();
 	}
 
 	/**
 	 * Renders the metabox
 	 */
-	public function render_box() {
-
+	public function render_box()
+	{
 	}
 }

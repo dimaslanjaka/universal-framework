@@ -40,23 +40,22 @@ class User_Role_Editor {
     
     
     /**
-     * Private clone method to prevent cloning of the instance of the *Singleton* 
+     * Prevent cloning of a *Singleton* instance 
      *
      * @return void
      */
-    private function __clone() {
-        
+    public function __clone() {
+        throw new \Exception('Do not clone a singleton instance.');
     }
     // end of __clone()
     
     /**
-     * Private unserialize method to prevent unserializing of the *Singleton*
-     * instance.
+     * Prevent unserializing of a *Singleton* instance.
      *
      * @return void
      */
-    private function __wakeup() {
-        
+    public function __wakeup() {
+        throw new \Exception('Do not unserialize a singleton instance.');
     }
     // end of __wakeup()
 
@@ -81,12 +80,12 @@ class User_Role_Editor {
         }
         $this->ure_hook_suffixes = array($this->settings_hook_suffix, $this->main_page_hook_suffix);
         
-        // activation action
-        register_activation_hook(URE_PLUGIN_FULL_PATH, array($this, 'setup'));
+        // Activation action
+        register_activation_hook( URE_PLUGIN_FULL_PATH, array($this, 'setup') );
 
-        // deactivation action
-        register_deactivation_hook(URE_PLUGIN_FULL_PATH, array($this, 'cleanup'));
-        		
+        // Deactivation action
+        register_deactivation_hook( URE_PLUGIN_FULL_PATH, array($this, 'cleanup') );
+                        		
         // Who can use this plugin
         $this->key_capability = URE_Own_Capabilities::get_key_capability();
                 
@@ -181,9 +180,11 @@ class User_Role_Editor {
         if ($multisite) {
             $allow_edit_users_to_not_super_admin = $this->lib->get_option('allow_edit_users_to_not_super_admin', 0);
             if ($allow_edit_users_to_not_super_admin) {
-                add_filter('map_meta_cap', array($this, 'restore_users_edit_caps'), 1, 4);
+                // Make this as late as possible, to overwrite settings made by other plugins, like WooCommerce
+                add_filter('map_meta_cap', array($this, 'restore_users_edit_caps'), 99, 4);
                 remove_all_filters('enable_edit_any_user_configuration');
                 add_filter('enable_edit_any_user_configuration', '__return_true');
+                // make this as early as you can, to not provide superadmin privilege when it's not needed
                 add_action('admin_head', array($this, 'edit_user_permission_check'), 1);
                 if ($pagenow == 'user-new.php') {
                     add_filter('site_option_site_admins', array($this, 'allow_add_user_as_superadmin'));
@@ -209,8 +210,14 @@ class User_Role_Editor {
        
         add_action('wp_ajax_ure_ajax', array($this, 'ure_ajax'));
         
-        $sort_roles = apply_filters( 'ure_sort_wp_roles_list', false );
-        if ( $sort_roles ) {
+        // Input parameter $roles_sorting_order = false by default 
+        // Acceptable values: 
+        // true - sort by role ID (for backward compatibility),
+        // 'id' - sort roles by role ID, 
+        // 'name' -  sort roles by role name.
+        $roles_sorting_order = apply_filters( 'ure_sort_wp_roles_list', false);
+        if ( !empty( $roles_sorting_order ) ) {
+            $this->lib->set('roles_sorting_order', $roles_sorting_order );
             add_filter( 'editable_roles', array( $this, 'sort_wp_roles_list' ), 11, 1 );
         }
     }
@@ -279,7 +286,7 @@ class User_Role_Editor {
   public function add_js_to_users_page() {
               
       wp_enqueue_script('jquery-ui-dialog', '', array('jquery-ui-core','jquery-ui-button', 'jquery') );
-      wp_register_script( 'ure-users', plugins_url( '/js/users.js', URE_PLUGIN_FULL_PATH ) );
+      wp_register_script( 'ure-users', plugins_url( '/js/users.js', URE_PLUGIN_FULL_PATH ), array(), URE_VERSION );
       wp_enqueue_script ( 'ure-users' );      
       wp_localize_script( 'ure-users', 'ure_users_data', array(
         'wp_nonce' => wp_create_nonce('user-role-editor'),
@@ -696,7 +703,7 @@ class User_Role_Editor {
     
     protected function get_ure_page_url() {
 
-        $page_url = URE_WP_ADMIN_URL . URE_PARENT . '?page=users-' . URE_PLUGIN_FILE;
+        $page_url = admin_url() . URE_PARENT . '?page=users-' . URE_PLUGIN_FILE;
         $object = $this->lib->get_request_var('object', 'get');
         $user_id = (int) $this->lib->get_request_var('user_id', 'get', 'int');
         if ($object=='user' && $user_id>0) {
@@ -722,8 +729,11 @@ class User_Role_Editor {
         }
         
         wp_enqueue_script('jquery-ui-dialog', '', array('jquery-ui-core', 'jquery-ui-button', 'jquery'));
-        wp_enqueue_script('jquery-ui-selectable', '', array('jquery-ui-core', 'jquery'));
-        wp_register_script('ure', plugins_url('/js/ure.js', URE_PLUGIN_FULL_PATH));
+        wp_enqueue_script('jquery-ui-selectable', '', array('jquery-ui-core', 'jquery'));        
+        wp_enqueue_script('notifyjs', plugins_url('/js/notify.min.js', URE_PLUGIN_FULL_PATH ), array(), URE_VERSION );
+        //wp_enqueue_script('notifyjs', plugins_url('/js/notify.js', URE_PLUGIN_FULL_PATH ), array(), URE_VERSION );
+        
+        wp_register_script('ure', plugins_url('/js/ure.js', URE_PLUGIN_FULL_PATH ), array(), URE_VERSION );
         wp_enqueue_script('ure');
         wp_localize_script('ure', 'ure_data', array(
             'wp_nonce' => wp_create_nonce('user-role-editor'),
@@ -748,7 +758,6 @@ class User_Role_Editor {
             'cancel' => esc_html__('Cancel', 'user-role-editor'),
             'add_capability' => esc_html__('Add Capability', 'user-role-editor'),
             'delete_capability' => esc_html__('Delete Capability', 'user-role-editor'),
-            esc_html__('Continue?', 'user-role-editor'),
             'default_role' => esc_html__('Default Role', 'user-role-editor'),
             'set_new_default_role' => esc_html__('Set New Default Role', 'user-role-editor'),
             'delete_capability' => esc_html__('Delete Capability', 'user-role-editor'),
@@ -771,10 +780,10 @@ class User_Role_Editor {
         wp_enqueue_script('jquery-ui-tabs', '', array('jquery-ui-core', 'jquery'));
         wp_enqueue_script('jquery-ui-dialog', '', array('jquery-ui-core', 'jquery'));
         wp_enqueue_script('jquery-ui-button', '', array('jquery-ui-core', 'jquery'));
-        wp_register_script('ure-js', plugins_url('/js/settings.js', URE_PLUGIN_FULL_PATH));
-        wp_enqueue_script('ure-js');
+        wp_register_script('ure-settings', plugins_url('/js/settings.js', URE_PLUGIN_FULL_PATH ), array(), URE_VERSION );
+        wp_enqueue_script('ure-settings');
         
-        wp_localize_script('ure-js', 'ure_data', array(
+        wp_localize_script('ure-settings', 'ure_data', array(
             'wp_nonce' => wp_create_nonce('user-role-editor'),
             'network_admin' => is_network_admin() ? 1 : 0,
             'page_url' => $page_url,
@@ -788,7 +797,8 @@ class User_Role_Editor {
             esc_html__('If any plugins (such as WooCommerce, S2Member and many others) have changed user roles and capabilities during installation, all those changes will be LOST!', 'user-role-editor') .'<br>'.
             esc_html__('For more information on how to undo undesired changes and restore plugin capabilities go to', 'user-role-editor') .'<br>'.
             '<a href="http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/">http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/</a>' .'<br><br>'.
-            esc_html__('Continue?', 'user-role-editor')
+            esc_html__('Continue?', 'user-role-editor'),
+            'reset_roles_secure_text' => URE_Tools::RESET_ROLES_SECURE_TEXT
         ));
                 
         do_action('ure_load_js_settings');
@@ -841,7 +851,17 @@ class User_Role_Editor {
      */
     public function sort_wp_roles_list( $roles ) {
         
-        ksort( $roles );
+        $roles_sorting_order = $this->lib->get('roles_sorting_order');
+        if ( $roles_sorting_order==='id' || $roles_sorting_order===true ) {
+            // sort by role ID
+            ksort( $roles );
+        } else if ( $roles_sorting_order==='name') {
+            // sort by role name
+            asort( $roles );
+        } else {    
+            // change nothing
+            return $roles;
+        }
         // wp-admin/includes/template/wp_dropdown_roles() showed roles in reversed order, #906:
         // $editable_roles = array_reverse( get_editable_roles() );
         // so we have to reverse them 1st, in order they will be reversed back to the ascending order
@@ -886,11 +906,20 @@ class User_Role_Editor {
     
     
     // execute on plugin deactivation
-    function cleanup() {
+    public function cleanup() {
 		
     }
     // end of setup()
+   
+    
+    // excute on plugin uninstall via WordPress->Plugins->Delete
+    public static function uninstall() {
+
+        $uninstall = new URE_Uninstall;
+        $uninstall->act();
         
+    }
+    // end of uninstall()
  
 }
 // end of User_Role_Editor

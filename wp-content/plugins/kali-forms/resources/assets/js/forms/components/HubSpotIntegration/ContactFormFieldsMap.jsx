@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid'
 import FieldComponentSelect from './FieldComponentSelect'
-
+const { __ } = wp.i18n;
 const ContactFormFieldsMap = (props) => {
 	const [mappedFields, setMappedFields] = useState(
 		{
@@ -21,36 +21,27 @@ const ContactFormFieldsMap = (props) => {
 	return (
 		<div>
 			<Grid direction="row" container spacing={4}>
-				<Grid item xs={2}>
-					{KaliFormsObject.translations.hubspot.general.email} :
-				</Grid>
-				<Grid item xs={4}>
+				<Grid item xs={6}>
 					<FieldComponentSelect
-						label={KaliFormsObject.translations.hubspot.general.email}
+						label={__('Email', 'kaliforms')}
 						selectedValue={mappedFields.email}
 						field="email"
 						onChange={selectChange} />
 				</Grid>
 			</Grid>
 			<Grid direction="row" container spacing={4}>
-				<Grid item xs={2}>
-					{KaliFormsObject.translations.hubspot.general.firstName} :
-			</Grid>
-				<Grid item xs={4}>
+				<Grid item xs={6}>
 					<FieldComponentSelect
-						label={KaliFormsObject.translations.hubspot.general.firstName}
+						label={__('First name', 'kaliforms')}
 						selectedValue={mappedFields.firstName}
 						field="firstName"
 						onChange={selectChange} />
 				</Grid>
 			</Grid>
 			<Grid direction="row" container spacing={4}>
-				<Grid item xs={2}>
-					{KaliFormsObject.translations.hubspot.general.lastName} :
-			</Grid>
-				<Grid item xs={4}>
+				<Grid item xs={6}>
 					<FieldComponentSelect
-						label={KaliFormsObject.translations.hubspot.general.lastName}
+						label={__('Last name', 'kaliforms')}
 						selectedValue={mappedFields.lastName}
 						field="lastName"
 						onChange={selectChange} />

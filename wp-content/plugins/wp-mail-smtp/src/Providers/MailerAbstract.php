@@ -2,9 +2,9 @@
 
 namespace WPMailSMTP\Providers;
 
-use WPMailSMTP\Conflicts;
+use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\Debug;
-use WPMailSMTP\MailCatcher;
+use WPMailSMTP\MailCatcherInterface;
 use WPMailSMTP\Options;
 use WPMailSMTP\WP;
 
@@ -23,18 +23,21 @@ abstract class MailerAbstract implements MailerInterface {
 	 * @var int
 	 */
 	protected $email_sent_code = 200;
+
 	/**
 	 * @since 1.0.0
 	 *
 	 * @var Options
 	 */
 	protected $options;
+
 	/**
 	 * @since 1.0.0
 	 *
-	 * @var MailCatcher
+	 * @var MailCatcherInterface
 	 */
 	protected $phpmailer;
+
 	/**
 	 * @since 1.0.0
 	 *
@@ -50,18 +53,21 @@ abstract class MailerAbstract implements MailerInterface {
 	 * @var string
 	 */
 	protected $url = '';
+
 	/**
 	 * @since 1.0.0
 	 *
 	 * @var array
 	 */
 	protected $headers = array();
+
 	/**
 	 * @since 1.0.0
 	 *
 	 * @var array
 	 */
 	protected $body = array();
+
 	/**
 	 * @since 1.0.0
 	 *
@@ -70,15 +76,33 @@ abstract class MailerAbstract implements MailerInterface {
 	protected $response = array();
 
 	/**
+	 * The error message recorded when email sending failed and the error can't be processed from the API response.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @var string
+	 */
+	protected $error_message = '';
+
+	/**
+	 * Should the email sent by this mailer have its "sent status" verified via its API?
+	 *
+	 * @since 2.5.0
+	 *
+	 * @var bool
+	 */
+	protected $verify_sent_status = false;
+
+	/**
 	 * Mailer constructor.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param MailCatcher $phpmailer
+	 * @param MailCatcherInterface $phpmailer The MailCatcher object.
 	 */
-	public function __construct( MailCatcher $phpmailer ) {
+	public function __construct( MailCatcherInterface $phpmailer ) {
 
-		$this->options = new Options();
+		$this->options = Options::init();
 		$this->mailer  = $this->options->get( 'mail', 'mailer' );
 
 		// Only non-SMTP mailers need URL and extra processing for PHPMailer class.
@@ -94,15 +118,12 @@ abstract class MailerAbstract implements MailerInterface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param MailCatcher $phpmailer
+	 * @param MailCatcherInterface $phpmailer The MailCatcher object.
 	 */
 	public function process_phpmailer( $phpmailer ) {
 
-		// Make sure that we have access to MailCatcher class methods.
-		if (
-			! $phpmailer instanceof MailCatcher &&
-			! $phpmailer instanceof \PHPMailer
-		) {
+		// Make sure that we have access to PHPMailer class methods.
+		if ( ! wp_mail_smtp()->is_valid_phpmailer( $phpmailer ) ) {
 			return;
 		}
 
@@ -255,6 +276,10 @@ abstract class MailerAbstract implements MailerInterface {
 
 		$response = wp_safe_remote_post( $this->url, $params );
 
+		DebugEvents::add_debug(
+			esc_html__( 'An email request was sent.' )
+		);
+
 		$this->process_response( $response );
 	}
 
@@ -272,7 +297,7 @@ abstract class MailerAbstract implements MailerInterface {
 			// Save the error text.
 			$errors = $response->get_error_messages();
 			foreach ( $errors as $error ) {
-				Debug::set( $error );
+				$this->error_message .= $error . PHP_EOL;
 			}
 
 			return;
@@ -320,40 +345,31 @@ abstract class MailerAbstract implements MailerInterface {
 
 		if ( wp_remote_retrieve_response_code( $this->response ) === $this->email_sent_code ) {
 			$is_sent = true;
-		} else {
-			$error = $this->get_response_error();
-
-			if ( ! empty( $error ) ) {
-				// Add mailer to the beginning and save to display later.
-				$message = 'Mailer: ' . esc_html( wp_mail_smtp()->get_providers()->get_options( $this->mailer )->get_title() ) . "\r\n";
-
-				$conflicts = new Conflicts();
-				if ( $conflicts->is_detected() ) {
-					$message .= 'Conflicts: ' . esc_html( $conflicts->get_conflict_name() ) . "\r\n";
-				}
-
-				Debug::set( $message . $error );
-			}
 		}
 
-		// Clear debug messages if email is successfully sent.
-		if ( $is_sent ) {
-			Debug::clear();
-		}
-
+		/**
+		 * Filters whether the email is sent or not.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param bool           $is_sent Whether the email is sent or not.
+		 * @param MailerAbstract $mailer  Mailer object.
+		 */
 		return apply_filters( 'wp_mail_smtp_providers_mailer_is_email_sent', $is_sent, $this->mailer );
 	}
 
 	/**
+	 * The error message when email sending failed.
 	 * Should be overwritten when appropriate.
 	 *
 	 * @since 1.2.0
+	 * @since 2.5.0 Return a non-empty error_message attribute.
 	 *
 	 * @return string
 	 */
-	protected function get_response_error() {
+	public function get_response_error() {
 
-		return '';
+		return ! empty( $this->error_message ) ? $this->error_message : '';
 	}
 
 	/**
@@ -413,5 +429,126 @@ abstract class MailerAbstract implements MailerInterface {
 		}
 
 		return implode( '<br>', $smtp_text );
+	}
+
+	/**
+	 * Get the email addresses for the reply to email parameter.
+	 *
+	 * @deprecated 2.1.1
+	 *
+	 * @since 2.1.0
+	 * @since 2.1.1 Not used anymore.
+	 *
+	 * @return array
+	 */
+	public function get_reply_to_addresses() {
+
+		_deprecated_function( __CLASS__ . '::' . __METHOD__, '2.1.1 of WP Mail SMTP plugin' );
+
+		$reply_to = $this->phpmailer->getReplyToAddresses();
+
+		// Return the passed reply to addresses, if defined.
+		if ( ! empty( $reply_to ) ) {
+			return $reply_to;
+		}
+
+		// Return the default reply to addresses.
+		return apply_filters(
+			'wp_mail_smtp_providers_mailer_default_reply_to_addresses',
+			$this->default_reply_to_addresses()
+		);
+	}
+
+	/**
+	 * Get the default email addresses for the reply to email parameter.
+	 *
+	 * @deprecated 2.1.1
+	 *
+	 * @since 2.1.0
+	 * @since 2.1.1 Not used anymore.
+	 *
+	 * @return array
+	 */
+	public function default_reply_to_addresses() {
+
+		_deprecated_function( __CLASS__ . '::' . __METHOD__, '2.1.1 of WP Mail SMTP plugin' );
+
+		return [
+			$this->phpmailer->From => [
+				$this->phpmailer->From,
+				$this->phpmailer->FromName,
+			],
+		];
+	}
+
+	/**
+	 * Should the email sent by this mailer have its "sent status" verified via its API?
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return bool
+	 */
+	public function should_verify_sent_status() {
+
+		return $this->verify_sent_status;
+	}
+
+	/**
+	 * Verify the "sent status" of the provided email log ID.
+	 * The actual verification background task is triggered in the below action hook.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param int $email_log_id The ID of the email log.
+	 */
+	public function verify_sent_status( $email_log_id ) {
+
+		if ( ! $this->should_verify_sent_status() ) {
+			return;
+		}
+
+		do_action( 'wp_mail_smtp_providers_mailer_verify_sent_status', $email_log_id, $this );
+	}
+
+	/**
+	 * Get the name/slug of the current mailer.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @return string
+	 */
+	public function get_mailer_name() {
+
+		return $this->mailer;
+	}
+
+	/**
+	 * Get the PHPMailer attachment file content.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $attachment PHPMailer attachment.
+	 *
+	 * @return string
+	 */
+	protected function get_attachment_file_content( $attachment ) {
+
+		$file = false;
+
+		/*
+		 * We are not using WP_Filesystem API as we can't reliably work with it.
+		 * It is not always available, same as credentials for FTP.
+		 */
+		try {
+			if ( $attachment[5] === true ) {  // Whether there is string attachment.
+				$file = $attachment[0];
+			} elseif ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
+				$file = file_get_contents( $attachment[0] );
+			}
+		} catch ( \Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+			// We don't handle this exception as we define a default value above.
+		}
+
+		return $file;
 	}
 }

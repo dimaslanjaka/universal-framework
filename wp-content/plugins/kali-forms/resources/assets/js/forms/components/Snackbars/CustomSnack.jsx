@@ -1,105 +1,82 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
-import { useSnackbar } from 'notistack';
-import Collapse from '@material-ui/core/Collapse';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import classnames from 'classnames';
+import { useSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import customSnackStyles from './CustomSnackStyles';
 
-const useStyles = makeStyles(theme => ({
-    card: {
-        maxWidth: 400,
-        minWidth: 344,
-    },
-    typography: {
-        fontWeight: 'bold',
-    },
-    actionRoot: {
-        padding: '8px 8px 8px 16px',
-		color: theme.palette.getContrastText(theme.palette.primary.main),
-		background: theme.palette.primary.main,
-    },
-    icons: {
-		marginLeft: 'auto',
-    },
-    expand: {
-		padding: '8px 8px',
-		color: theme.palette.getContrastText(theme.palette.primary.main),
-        transform: 'rotate(0deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-    collapse: {
-        padding: 16,
-    },
-    checkIcon: {
-        fontSize: 20,
-        color: '#b3b3b3',
-        paddingRight: 4,
-    },
-    button: {
-        padding: 0,
-        textTransform: 'none',
-    },
-}));
-
-const SnackMessage = React.forwardRef((props, ref) => {
-    const classes = useStyles();
-    const { closeSnackbar } = useSnackbar();
-    const [expanded, setExpanded] = useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-    const handleDismiss = () => {
-        closeSnackbar(props.id);
+const CustomSnack = React.forwardRef((props, ref) => {
+	const classes = customSnackStyles();
+	const { closeSnackbar } = useSnackbar();
+	const [expanded, setExpanded] = useState(false);
+	
+	const handleExpandClick = () => {
+		setExpanded(!expanded);
 	};
 
-    return (
-        <Card className={classes.card} ref={ref}>
-            <CardActions classes={{ root: classes.actionRoot }}>
-                <Typography variant="subtitle2" className={classes.typography}>{props.title}</Typography>
-                <div className={classes.icons}>
-                    <IconButton
-                        aria-label="Show more"
-                        className={classnames(classes.expand, { [classes.expandOpen]: expanded })}
-                        onClick={handleExpandClick}
-                    >
-                        <ExpandMoreIcon />
-                    </IconButton>
-                    <IconButton className={classes.expand} onClick={handleDismiss}>
-                        <CloseIcon />
-                    </IconButton>
-                </div>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <Paper className={classes.collapse}>
-                    <Typography gutterBottom>{props.message}</Typography>
-                    <Button size="small" className={classes.button}>
-                        <CheckCircleIcon className={classes.checkIcon} />
-                        Learn more
-                    </Button>
-                </Paper>
-            </Collapse>
-        </Card>
-    );
+	const handleDismiss = () => {
+		closeSnackbar(props.id);
+	};
+
+	const clickedAction = (e, action) => {
+		if (action.href === '#') {
+			e.preventDefault();
+			closeSnackbar(props.id);
+		}
+		closeSnackbar(props.id);
+	}
+	return (
+		<Card className={classes.card} ref={ref}>
+			<CardActions classes={{ root: classes.actionRoot }}>
+				<Typography variant="subtitle2" className={classes.typography}>{props.title}</Typography>
+				<div className={classes.icons}>
+					<IconButton
+						aria-label="Show more"
+						className={classnames(classes.expand, { [classes.expandOpen]: expanded })}
+						onClick={handleExpandClick}
+					>
+						<ExpandMoreIcon />
+					</IconButton>
+					<IconButton className={classes.expand} onClick={handleDismiss}>
+						<CloseIcon />
+					</IconButton>
+				</div>
+			</CardActions>
+			<Collapse in={expanded} timeout="auto" unmountOnExit>
+				<Paper className={classes.collapse}>
+					<Typography gutterBottom>{props.message}</Typography>
+					{
+						props.actions.map((action, idx) => (
+							<Button variant="contained"
+								key={action.id + idx}
+								color={action.class.search('primary') > 0 ? 'primary' : 'default'}
+								size="small"
+								href={action.href}
+								target="_blank"
+								className={classes.button + ' ' + action.class}
+								onClick={(e) => clickedAction(e, action)}
+								id={action.id}>
+								{/* <CheckCircleIcon className={classes.checkIcon} /> */}
+								{action.label}
+							</Button>
+						))
+					}
+				</Paper>
+			</Collapse>
+		</Card>
+	);
 });
 
-SnackMessage.propTypes = {
-    id: PropTypes.number.isRequired,
+CustomSnack.propTypes = {
+	id: PropTypes.number.isRequired,
 };
 
-export default SnackMessage;
+export default CustomSnack;

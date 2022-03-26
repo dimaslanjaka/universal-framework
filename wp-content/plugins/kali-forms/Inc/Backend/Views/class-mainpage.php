@@ -2,7 +2,7 @@
 
 namespace KaliForms\Inc\Backend\Views;
 
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -11,7 +11,8 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @package App\Views
  */
-class MainPage {
+class MainPage
+{
 	/**
 	 * Plugin slug
 	 *
@@ -22,24 +23,27 @@ class MainPage {
 	/**
 	 * MainPage constructor.
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 	}
 
 	/**
 	 * Renders app
 	 */
-	public function render_app() {
+	public function render_app()
+	{
 		echo '<div id="kaliforms-app"></div>';
 	}
 
 	/**
 	 * Invoking the class will render the app
 	 */
-	public function __invoke() {
+	public function __invoke()
+	{
 		/**
 		 * Initiate an action before rendering the app div
 		 */
-		do_action( $this->slug . '_before_app_rendering' );
+		do_action($this->slug . '_before_app_rendering');
 
 		/**
 		 * Echo the container
@@ -49,6 +53,6 @@ class MainPage {
 		/**
 		 * Initiate an action after rendering the app div
 		 */
-		do_action( $this->slug . '_after_app_rendering' );
+		do_action($this->slug . '_after_app_rendering');
 	}
 }

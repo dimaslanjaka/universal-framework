@@ -1,103 +1,83 @@
 import './main.scss';
-import { min } from 'moment';
+const { __ } = wp.i18n;
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import App from './containers/App';
 
-const predefinedSettings = {
-	mailgun: {
-		host: 'smtp.mailgun.org',
-		port: 587,
-		ssl: 'STARTTLS',
-		authentication: true,
+const theme = createMuiTheme({
+	palette: {
+		primary: { main: '#3B88F7' },
+		secondary: { main: '#8B8BF9' },
+		text: {
+			primary: '#46494C'
+		},
+		overrides: {
+			MuiFormControl: {
+				root: {
+					width: '100%',
+					'& #mui-rte-root': {
+						marginTop: 25,
+					}
+				},
+			},
+			MuiButton: {
+				containedSecondary: {
+					color: '#fff',
+				}
+			},
+			MuiInputLabel: {
+				shrink: {
+					fontSize: 14,
+					transform: 'scale(1)'
+				}
+			},
+			MuiInputAdornment: {
+				positionStart: {
+					marginTop: '0 !important'
+				},
+				positionEnd: {
+					position: 'absolute',
+					right: 13,
+					top: 20,
+				},
+			},
+			MuiInputBase: {
+				root: {
+					// background: '#fff'
+				},
+				inputMultiline: {
+					height: '3.7em'
+				}
+			},
+			MuiSelect: {
+				select: {
+					'&:focus': {
+						borderRadius: 4,
+						backgroundColor: '#fff',
+					}
+				}
+			},
+		}
+		// type: 'dark',
 	},
-	mandrill: {
-		host: 'smtp.mandrillapp.com',
-		port: 587,
-		ssl: 'TLS',
-		authentication: true,
+	typography: {
+		useNextVariants: true,
 	},
-	sendgrid: {
-		host: 'smtp.sendgrid.net',
-		port: 587,
-		ssl: 'TLS',
-		authentication: true,
-	},
-	gmail: {
-		host: 'smtp.gmail.com',
-		port: 587,
-		ssl: 'TLS',
-		authentication: true,
-	},
-}
-const selectors = [
-	'#kaliforms_smtp_host',
-	'#kaliforms_smtp_auth',
-	'#kaliforms_smtp_port',
-	'#kaliforms_smtp_secure',
-];
-
-document.getElementById('kaliforms_smtp_advanced').addEventListener('click', e => {
-	toggleFields(e.target.checked);
 });
 
-document.getElementById('kaliforms_email_fail_log').addEventListener('click', e => {
-	let exists = document.getElementById('kaliforms_fail_log');
-	if (!e.target.checked && exists !== null) {
-		exists.style.display = 'none';
-	}
-	if (e.target.checked && exists !== null) {
-		exists.style.display = '';
-	}
-	if (exists === null && document.getElementById('kaliforms-log-notice') === null) {
-		let textNode = document.createElement('span');
-		textNode.setAttribute('id', 'kaliforms-log-notice');
-		textNode.setAttribute('style', 'color: red')
-		let text = document.createTextNode(KaliFormsEmailSettingsObject.translations.logInfo);
-		textNode.appendChild(text);
-		e.target.parentElement.appendChild(textNode);
-	}
-});
+const AppProps = KaliFormsEmailSettingsObject;
 
-const toggleFields = (checked) => {
-	[...document.querySelectorAll('#kaliforms-email-settings-page .advanced')].map(el => {
-		checked ? el.classList.remove('hidden') : el.classList.add('hidden')
-	})
+if (document.getElementById('kaliforms-email-settings-page') !== null) {
+	ReactDOM.render(
+		<MuiThemeProvider theme={theme}>
+			<App
+				settings={AppProps.settings}
+				providers={AppProps.providers}
+				nonce={AppProps.ajax_nonce}
+				ajaxurl={AppProps.ajaxurl}
+			/>
+		</MuiThemeProvider>,
+		document.getElementById('kaliforms-email-settings-page')
+	);
 }
-
-const removeActive = (elLinks) => {
-	elLinks.map(el => el.classList.remove('active'));
-}
-const links = document.querySelectorAll('.email-settings-import');
-[...links].map(el => el.addEventListener('click', event => {
-	event.preventDefault();
-	removeActive([...links]);
-	el.classList.add('active');
-	let predefined = event.target.getAttribute('data-predefined-option');
-	if (predefined === 'phpmailer') {
-		document.getElementById('kaliforms_smtp_advanced').checked = true;
-		document.getElementById('kaliforms_smtp_provider').value = predefined;
-		toggleFields(true);
-		return;
-	}
-
-	if (predefinedSettings.hasOwnProperty(predefined)) {
-		document.getElementById('kaliforms_smtp_advanced').checked = false;
-		toggleFields(false);
-		selectors.map(el => {
-			switch (el) {
-				case '#kaliforms_smtp_host':
-					document.querySelector(el).value = predefinedSettings[predefined].host;
-					break;
-				case '#kaliforms_smtp_auth':
-					document.querySelector(el).checked = predefinedSettings[predefined].authentication;
-					break;
-				case '#kaliforms_smtp_port':
-					document.querySelector(el).value = predefinedSettings[predefined].port;
-					break;
-				case '#kaliforms_smtp_secure':
-					document.querySelector(el).value = predefinedSettings[predefined].ssl;
-					break;
-			}
-		});
-	}
-
-	document.getElementById('kaliforms_smtp_provider').value = predefined;
-}))

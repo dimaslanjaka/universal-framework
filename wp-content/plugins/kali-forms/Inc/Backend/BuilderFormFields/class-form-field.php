@@ -47,15 +47,26 @@ abstract class Form_Field
     public function __construct($args)
     {
         $this->set_common_props();
+        $this->set_icon();
         $this->set_properties($args);
     }
 
-	/**
-	 * Remove props from the array
-	 *
-	 * @param [type] $args
-	 * @return void
-	 */
+    /**
+     * Sets the icon
+     *
+     * @return void
+     */
+    public function set_icon()
+    {
+        $this->icon = 'icon-' . $this->id;
+    }
+
+    /**
+     * Remove props from the array
+     *
+     * @param [type] $args
+     * @return void
+     */
     public function remove_props($args)
     {
         foreach ($args as $k) {
@@ -63,12 +74,12 @@ abstract class Form_Field
         }
     }
 
-	/**
-	 * Remove a single prop
-	 *
-	 * @param [type] $key
-	 * @return void
-	 */
+    /**
+     * Remove a single prop
+     *
+     * @param [type] $key
+     * @return void
+     */
     public function remove_prop($key)
     {
         unset($this->properties[$key]);
@@ -84,26 +95,31 @@ abstract class Form_Field
                 'label' => esc_html__('Field id', 'kaliforms'),
                 'type' => 'textbox',
                 'value' => $this->id,
+                'group' => 'advanced',
             ],
             'name' => [
                 'label' => esc_html__('Field name', 'kaliforms'),
                 'type' => 'textbox',
                 'value' => $this->id,
+                'group' => 'general',
             ],
             'caption' => [
                 'label' => esc_html__('Field caption/label', 'kaliforms'),
                 'type' => 'textbox',
                 'value' => '',
+                'group' => 'general',
             ],
             'description' => [
                 'label' => esc_html__('Field description', 'kaliforms'),
                 'type' => 'textbox',
                 'value' => '',
+                'group' => 'general',
             ],
             'default' => [
                 'label' => esc_html__('Default value', 'kaliforms'),
                 'type' => 'textbox',
                 'value' => '',
+                'group' => 'advanced',
             ],
         ];
     }

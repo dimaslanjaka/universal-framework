@@ -2,10 +2,9 @@ import React from 'react';
 import FieldComponentSelect from './FieldComponentSelect'
 import Grid from '@material-ui/core/Grid'
 import HubSpotProperties from './HubSpotProperties'
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+const { __ } = wp.i18n;
 const AdditionalFormFields = (props) => {
 	const selectChange = (data) => {
 		let currentState = props.additionalFormFields;
@@ -45,44 +44,33 @@ const AdditionalFormFields = (props) => {
 		<Grid container direction="row" spacing={4}>
 			<Grid item xs={4}>
 				<HubSpotProperties
-					label={KaliFormsObject.translations.hubspot.misc.hubspotProperty}
+					label={__('HubSpot Property', 'kaliforms')}
 					field={props.additionalFieldIndex}
 					selectedValue={props.hubSpotProperty}
 					onChange={hubSpotPropertyChange} />
 			</Grid>
 			<Grid item xs={4}>
 				<FieldComponentSelect
-					label={KaliFormsObject.translations.hubspot.misc.formField}
+					label={__('Form field', 'kaliforms')}
 					field={props.additionalFieldIndex}
 					selectedValue={props.assignedFormField}
 					onChange={selectChange} />
 			</Grid>
-			<Grid item xs={2}>
-				<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.addFormField}
+			<Grid item xs={4} style={{ paddingTop: 42 }}>
+				<Button
+					aria-label={__('Add form field', 'kaliforms')}
+					variant="text"
 					onClick={() => addAdditionalFormField()}
-					variant="contained"
-					color="primary"
-					size="medium">
-					<AddIcon fontSize="inherit" />
-				</IconButton>
-				<If condition={props.additionalFormFields.length === 1}>
-					<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.removeFormField}
-						onClick={() => setDefaultFormField()}
-						variant="contained"
-						color="primary"
-						size="medium">
-						<DeleteIcon fontSize="inherit" />
-					</IconButton>
-				</If>
-				<If condition={props.additionalFormFields.length > 1}>
-					<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.removeFormField}
-						onClick={() => removeAdditionalFormField(props.additionalFieldIndex)}
-						variant="contained"
-						color="primary"
-						size="medium">
-						<DeleteIcon fontSize="inherit" />
-					</IconButton>
-				</If>
+				>
+					<Icon className="icon-add" />
+				</Button>
+				<Button
+					aria-label={__('Remove form field', 'kaliforms')}
+					variant="text"
+					onClick={() => props.additionalFormFields.length === 1 ? setDefaultFormField() : removeAdditionalFormField(props.additionalFieldIndex)}
+				>
+					<Icon className="icon-remove" />
+				</Button>
 			</Grid>
 		</Grid>
 	);

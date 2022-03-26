@@ -1,12 +1,12 @@
 import React from 'react';
 import { sortableHandle } from 'react-sortable-hoc';
-import IconButton from '@material-ui/core/IconButton'
-import MoveVertIcon from '@material-ui/icons/MoreVert'
+import Icon from '@material-ui/core/Icon'
+import Box from '@material-ui/core/Box'
 /**
  * Addable list item handle
  */
 const AddableListItemHandle = (props) => {
-	return (<IconButton><MoveVertIcon /></IconButton>)
+	return (<Box {...props}><Icon className={'icon-moves'} /></Box>)
 }
 
 export default sortableHandle(AddableListItemHandle);

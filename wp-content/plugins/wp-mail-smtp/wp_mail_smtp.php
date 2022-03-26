@@ -1,7 +1,9 @@
 <?php
 /**
  * Plugin Name: WP Mail SMTP
- * Version: 1.8.1
+ * Version: 3.3.0
+ * Requires at least: 5.2
+ * Requires PHP: 5.6.20
  * Plugin URI: https://wpmailsmtp.com/
  * Description: Reconfigures the <code>wp_mail()</code> function to use Gmail/Mailgun/SendGrid/SMTP instead of the default <code>mail()</code> and creates an options page to manage the settings.
  * Author: WPForms
@@ -13,7 +15,7 @@
 
 /**
  * @author    WPForms
- * @copyright WPForms, 2007-19, All Rights Reserved
+ * @copyright WPForms, 2007-21, All Rights Reserved
  * This code is released under the GPL licence version 3 or later, available here
  * https://www.gnu.org/licenses/gpl.txt
  */
@@ -38,11 +40,21 @@ define( 'WPMS_MAIL_FROM', 'mail@example.com' );
 define( 'WPMS_MAIL_FROM_FORCE', true ); // True turns it on, false turns it off.
 define( 'WPMS_MAIL_FROM_NAME', 'From Name' );
 define( 'WPMS_MAIL_FROM_NAME_FORCE', true ); // True turns it on, false turns it off.
-define( 'WPMS_MAILER', 'sendinblue' ); // Possible values: 'mail', 'sendinblue', 'mailgun', 'sendgrid', 'gmail', 'smtp'.
+define( 'WPMS_MAILER', 'sendinblue' ); // Possible values: 'mail', 'smtpcom', 'sendinblue', 'mailgun', 'sendgrid', 'gmail', 'smtp'.
 define( 'WPMS_SET_RETURN_PATH', true ); // Sets $phpmailer->Sender if true, relevant only for Other SMTP mailer.
 
 // Recommended mailers.
+define( 'WPMS_SMTPCOM_API_KEY', '' );
+define( 'WPMS_SMTPCOM_CHANNEL', '' );
+define( 'WPMS_SENDINBLUE_API_KEY', '' );
+define( 'WPMS_SENDINBLUE_DOMAIN', '' );
+
+define( 'WPMS_ZOHO_DOMAIN', '' );
+define( 'WPMS_ZOHO_CLIENT_ID', '' );
+define( 'WPMS_ZOHO_CLIENT_SECRET', '' );
+
 define( 'WPMS_PEPIPOST_API_KEY', '' );
+
 define( 'WPMS_SENDINBLUE_API_KEY', '' );
 
 define( 'WPMS_MAILGUN_API_KEY', '' );
@@ -78,6 +90,11 @@ if ( function_exists( 'wp_mail_smtp' ) ) {
 		 * @since 1.5.0
 		 */
 		function wp_mail_smtp_deactivate() {
+			/*
+			 * Prevent issues of WP functions not being available for other plugins that hook into
+			 * this early deactivation. GH issue #861.
+			 */
+			require_once ABSPATH . WPINC . '/pluggable.php';
 
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 		}
@@ -109,6 +126,12 @@ if ( ! function_exists( 'wp_mail_smtp_check_pro_loading_allowed' ) ) {
 
 		// Search for old plugin name.
 		if ( is_plugin_active( 'wp-mail-smtp/wp_mail_smtp.php' ) ) {
+			/*
+			 * Prevent issues of WP functions not being available for other plugins that hook into
+			 * this early deactivation. GH issue #861.
+			 */
+			require_once ABSPATH . WPINC . '/pluggable.php';
+
 			// As Pro is loaded and Lite too - deactivate *silently* itself not to break older SMTP plugin.
 			deactivate_plugins( plugin_basename( __FILE__ ) );
 
@@ -130,8 +153,8 @@ if ( ! function_exists( 'wp_mail_smtp_check_pro_loading_allowed' ) ) {
 
 			echo '<div class="notice notice-warning"><p>' . esc_html__( 'Please deactivate the free version of the WP Mail SMTP plugin before activating WP Mail SMTP Pro.', 'wp-mail-smtp' ) . '</p></div>';
 
-			if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
-				unset( $_GET['activate'] ); // phpcs:ignore
+			if ( isset( $_GET['activate'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				unset( $_GET['activate'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			}
 		}
 	}
@@ -142,26 +165,139 @@ if ( ! function_exists( 'wp_mail_smtp_check_pro_loading_allowed' ) ) {
 	}
 }
 
+if ( ! function_exists( 'wp_mail_smtp_insecure_php_version_notice' ) ) {
+	/**
+	 * Display admin notice, if the server is using old/insecure PHP version.
+	 *
+	 * @since 2.0.0
+	 */
+	function wp_mail_smtp_insecure_php_version_notice() {
+
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					wp_kses( /* translators: %1$s - WPBeginner URL for recommended WordPress hosting. */
+						__( 'Your site is running an <strong>insecure version</strong> of PHP that is no longer supported. Please contact your web hosting provider to update your PHP version or switch to a <a href="%1$s" target="_blank" rel="noopener noreferrer">recommended WordPress hosting company</a>.', 'wp-mail-smtp' ),
+						array(
+							'a'      => array(
+								'href'   => array(),
+								'target' => array(),
+								'rel'    => array(),
+							),
+							'strong' => array(),
+						)
+					),
+					'https://www.wpbeginner.com/wordpress-hosting/'
+				);
+				?>
+				<br><br>
+				<?php
+				printf(
+					wp_kses( /* translators: %s - WPMailSMTP.com docs URL with more details. */
+						__( '<strong>WP Mail SMTP plugin is disabled</strong> on your site until you fix the issue. <a href="%s" target="_blank" rel="noopener noreferrer">Read more for additional information.</a>', 'wp-mail-smtp' ),
+						array(
+							'a'      => array(
+								'href'   => array(),
+								'target' => array(),
+								'rel'    => array(),
+							),
+							'strong' => array(),
+						)
+					),
+					'https://wpmailsmtp.com/docs/supported-php-versions-for-wp-mail-smtp/'
+				);
+				?>
+			</p>
+		</div>
+
+		<?php
+
+		// In case this is on plugin activation.
+		if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
+			unset( $_GET['activate'] ); //phpcs:ignore
+		}
+	}
+}
+
 if ( ! defined( 'WPMS_PLUGIN_VER' ) ) {
-	define( 'WPMS_PLUGIN_VER', '1.8.1' );
+	define( 'WPMS_PLUGIN_VER', '3.3.0' );
 }
 if ( ! defined( 'WPMS_PHP_VER' ) ) {
-	define( 'WPMS_PHP_VER', '5.3.6' );
+	define( 'WPMS_PHP_VER', '5.6.20' );
+}
+if ( ! defined( 'WPMS_WP_VER' ) ) {
+	define( 'WPMS_WP_VER', '5.2' );
+}
+if ( ! defined( 'WPMS_PLUGIN_FILE' ) ) {
+	define( 'WPMS_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! function_exists( 'wp_mail_smtp_unsupported_wp_version_notice' ) ) {
+	/**
+	 * Display admin notice, if the site is using unsupported WP version.
+	 *
+	 * @since 3.3.0
+	 */
+	function wp_mail_smtp_unsupported_wp_version_notice() {
+
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				printf(
+					wp_kses( /* translators: %s The minimal WP version supported by WP Mail SMTP. */
+						__( 'Your site is running an <strong>old version</strong> of WordPress that is no longer supported by WP Mail SMTP. Please update your WordPress site to at least version <strong>%s</strong>.', 'wp-mail-smtp' ),
+						[
+							'strong' => [],
+						]
+					),
+					esc_html( WPMS_WP_VER )
+				);
+				?>
+				<br><br>
+				<?php
+				echo wp_kses(
+					__( '<strong>WP Mail SMTP plugin is disabled</strong> on your site until WordPress is updated to the required version.', 'wp-mail-smtp' ),
+					[
+						'strong' => [],
+					]
+				);
+				?>
+			</p>
+		</div>
+
+		<?php
+
+		// In case this is on plugin activation.
+		if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
+			unset( $_GET['activate'] ); //phpcs:ignore
+		}
+	}
 }
 
 /**
- * Newer PHP version 5.3+ will be handled a lot differently,
- * with better code and newer logic.
+ * Display admin notice and prevent plugin code execution, if the server is
+ * using old/insecure PHP version.
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
-if ( version_compare( phpversion(), WPMS_PHP_VER, '>=' ) ) {
-	require_once dirname( __FILE__ ) . '/wp-mail-smtp.php';
+if ( version_compare( phpversion(), WPMS_PHP_VER, '<' ) ) {
+	add_action( 'admin_notices', 'wp_mail_smtp_insecure_php_version_notice' );
 
 	return;
 }
 
 /**
- * PHP 5.2 only.
+ * Display admin notice and prevent plugin code execution, if the WP version is lower than WPMS_WP_VER.
+ *
+ * @since 3.3.0
  */
-require_once dirname( __FILE__ ) . '/wp-mail-smtp-0.11.2.php';
+if ( version_compare( get_bloginfo( 'version' ), WPMS_WP_VER, '<' ) ) {
+	add_action( 'admin_notices', 'wp_mail_smtp_unsupported_wp_version_notice' );
+
+	return;
+}
+
+require_once dirname( __FILE__ ) . '/wp-mail-smtp.php';

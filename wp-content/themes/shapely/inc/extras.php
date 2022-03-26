@@ -115,7 +115,7 @@ endif;
  * function to show the footer info, copyright information
  */
 function shapely_footer_info() {
-	printf( esc_html__( 'Theme by %1$s Powered by %2$s', 'shapely' ), '<a href="https://colorlib.com/" target="_blank" title="Colorlib">Colorlib</a>', '<a href="http://wordpress.org/" target="_blank" title="WordPress.org">WordPress</a>' );
+	printf( esc_html__( 'Theme by %1$s Powered by %2$s', 'shapely' ), '<a href="https://colorlib.com/" target="_blank" rel="nofollow noopener" title="Colorlib">Colorlib</a>', '<a href="http://wordpress.org/" target="_blank" title="WordPress.org">WordPress</a>' );
 }
 
 
@@ -439,7 +439,7 @@ if ( ! function_exists( 'shapely_author_bio' ) ) {
 		$author_fullname          = ( '' != get_the_author_meta( 'first_name' ) && '' != get_the_author_meta( 'last_name' ) ) ? get_the_author_meta( 'first_name' ) . ' ' . get_the_author_meta( 'last_name' ) : '';
 		$author_email             = get_the_author_meta( 'email' );
 		$author_description       = get_the_author_meta( 'description' );
-		$author_name              = ( '' != trim( $author_nickname ) ) ? $author_nickname : ( trim( $author_displayname ) != '' ) ? $author_displayname : $author_fullname;
+		$author_name		  =  '' != trim($author_nickname) ? $author_nickname : ('' != trim($author_displayname) ?  $author_displayname : $author_fullname);
 		$show_athor_email         = get_theme_mod( 'post_author_email', false );
 		$show_project_athor_email = get_theme_mod( 'project_author_email', false );
 		?>
@@ -760,6 +760,12 @@ function shapely_top_callout() {
 						$breadcrumbs_enabled = ( true === $options['breadcrumbs-enable'] );
 						$title_in_post       = get_theme_mod( 'hide_post_title', true );
 					}
+
+					if ( function_exists( 'rank_math_the_breadcrumbs' ) ) {
+						$breadcrumbs_enabled = true;
+						$breadcrumbs_enabled = ( true === is_array($options)? $options['breadcrumbs-enable'] : false);
+						$title_in_post       = get_theme_mod( 'hide_post_title', true );
+					}
 					$header_color = get_theme_mod( 'header_textcolor', false );
 					?>
 					<?php if ( $title_in_post ) : ?>
@@ -796,12 +802,16 @@ function shapely_top_callout() {
 							?>
 						</div>
 					<?php endif; ?>
-					<?php if ( function_exists( 'yoast_breadcrumb' ) ) { ?>
-						<?php
-						if ( $breadcrumbs_enabled ) {
-							?>
+					<?php if ( $breadcrumbs_enabled ) { ?>
+						<?php if ( function_exists( 'yoast_breadcrumb' ) ) { ?>
 							<div class="<?php echo $title_in_post ? 'col-md-6 col-sm-6' : ''; ?> col-xs-12 text-right">
 								<?php yoast_breadcrumb( '<p id="breadcrumbs">', '</p>' ); ?>
+							</div>
+						<?php } ?>
+						<!-- Rank Math SEO's Breadcrumb Function -->
+						<?php if ( function_exists( 'rank_math_the_breadcrumbs' ) ) { ?>
+							<div class="<?php echo $title_in_post ? 'col-md-6 col-sm-6' : ''; ?> col-xs-12 text-right">
+								<?php rank_math_the_breadcrumbs(); ?>
 							</div>
 						<?php } ?>
 					<?php } ?>
@@ -818,8 +828,15 @@ function shapely_top_callout() {
 			<div class="container mt20">
 				<?php yoast_breadcrumb( '<p id="breadcrumbs">', '</p>' ); ?>
 			</div>
-			<?php
-}
+		<?php } ?>
+
+		<!-- Rank Math SEO's Breadcrumb Function -->
+		<?php if ( function_exists( 'rank_math_the_breadcrumbs' ) ) { ?>
+			<div class="container mt20">
+				<?php rank_math_the_breadcrumbs(); ?>
+			</div>
+		<?php } ?>
+		<?php
 	} // End if().
 }
 
@@ -861,3 +878,12 @@ if ( ! function_exists( 'shapely_is_woocommerce_activated' ) ) {
 		}
 	}
 }
+
+/**
+ * Add container to Rank Math breadcrumbs.
+ */
+add_action( 'rank_math/frontend/breadcrumb/args', function( $args ) {
+	$args['wrap_before'] = '<p id="breadcrumbs">';
+	$args['wrap_after']  = '</p>';
+	return $args;
+});

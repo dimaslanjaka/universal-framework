@@ -12,8 +12,8 @@ function ure_roles_reset_form_submit() {
     jQuery('#ure_reset_roles_form').submit();
 }
 
-jQuery(document).ready(function() {   
-        
+jQuery(function() {   
+                
     jQuery('#ure_reset_roles_button').button({
         label: ure_data.reset
     }).click(function (event) {
@@ -53,5 +53,13 @@ jQuery(document).ready(function() {
     }
     // end of ure_confirm()
 
-        
+
+    jQuery('#ure_reset_roles_secure').on('input', function() {
+        if ( this.value===ure_data.reset_roles_secure_text ) {
+            jQuery('#ure_reset_roles_button').button('enable');
+        } else {
+            jQuery('#ure_reset_roles_button').button('disable');
+        }
+    }); 
+    
 });

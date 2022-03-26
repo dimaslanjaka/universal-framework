@@ -3,6 +3,7 @@
 namespace WPMailSMTP\Providers\Gmail;
 
 use WPMailSMTP\Providers\OptionsAbstract;
+use WPMailSMTP\Options as PluginOptions;
 
 /**
  * Class Option.
@@ -22,33 +23,47 @@ class Options extends OptionsAbstract {
 	 * Gmail Options constructor.
 	 *
 	 * @since 1.0.0
+	 * @since 2.3.0 Added supports parameter.
 	 */
 	public function __construct() {
 
 		parent::__construct(
-			array(
+			[
 				'logo_url'    => wp_mail_smtp()->assets_url . '/images/providers/google.svg',
 				'slug'        => self::SLUG,
-				'title'       => esc_html__( 'Gmail', 'wp-mail-smtp' ),
+				'title'       => esc_html__( 'Google / Gmail', 'wp-mail-smtp' ),
 				'description' => sprintf(
 					wp_kses( /* translators: %s - URL to our Gmail doc. */
-						__( 'Send emails using your Gmail or G Suite (formerly Google Apps) account, all while keeping your login credentials safe. Other Google SMTP methods require enabling less secure apps in your account and entering your password. However, this integration uses the Google API to improve email delivery issues while keeping your site secure.<br><br>Read our <a href="%s" target="_blank" rel="noopener noreferrer">Gmail documentation</a> to learn how to configure Gmail or G Suite.', 'wp-mail-smtp' ),
-						array(
-							'br' => array(),
-							'a'  => array(
-								'href'   => array(),
-								'rel'    => array(),
-								'target' => array(),
-							),
-						)
+						__( 'Our Gmail mailer works with any Gmail or Google Workspace account via the Google API. You can send WordPress emails from your main email address or a Gmail alias, and it\'s more secure than connecting to Gmail using SMTP credentials. The set-up steps are more technical than other options, so we created a detailed guide to walk you through the process.<br><br>To get started, read our <a href="%s" target="_blank" rel="noopener noreferrer">Gmail documentation</a>.', 'wp-mail-smtp' ),
+						[
+							'br' => [],
+							'b'  => [],
+							'a'  => [
+								'href'   => [],
+								'rel'    => [],
+								'target' => [],
+							],
+						]
 					),
 					'https://wpmailsmtp.com/docs/how-to-set-up-the-gmail-mailer-in-wp-mail-smtp/'
 				),
-				'notices'     => array(
-					'educational' => esc_html__( 'The Gmail mailer works well for sites that send low numbers of emails. However, Gmail\'s API has rate limitations and a number of additional restrictions that can lead to challenges during setup. If you expect to send a high volume of emails, or if you find that your web host is not compatible with the Gmail API restrictions, then we recommend considering a different mailer option.', 'wp-mail-smtp' ),
-				),
-				'php'         => '5.5',
-			)
+				'notices'     => [
+					'educational' => wp_kses(
+						__( 'The Gmail mailer works well for sites that send low numbers of emails. However, Gmail\'s API has rate limitations and a number of additional restrictions that can lead to challenges during setup.<br><br>If you expect to send a high volume of emails, or if you find that your web host is not compatible with the Gmail API restrictions, then we recommend considering a different mailer option.', 'wp-mail-smtp' ),
+						[
+							'br' => [],
+						]
+					),
+				],
+				'php'         => '5.6',
+				'supports'    => [
+					'from_email'       => true,
+					'from_name'        => true,
+					'return_path'      => false,
+					'from_email_force' => true,
+					'from_name_force'  => true,
+				],
+			]
 		);
 	}
 
@@ -109,8 +124,8 @@ class Options extends OptionsAbstract {
 				<label for="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-client_redirect"><?php esc_html_e( 'Authorized redirect URI', 'wp-mail-smtp' ); ?></label>
 			</div>
 			<div class="wp-mail-smtp-setting-field">
-				<input type="text" readonly="readonly"
-					value="<?php echo esc_attr( Auth::get_plugin_auth_url() ); ?>"
+				<input type="text" readonly="readonly" onfocus="this.select();"
+					value="<?php echo esc_attr( Auth::get_oauth_redirect_url() ); ?>"
 					id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-client_redirect"
 				/>
 				<button type="button" class="wp-mail-smtp-btn wp-mail-smtp-btn-md wp-mail-smtp-btn-light-grey wp-mail-smtp-setting-copy"
@@ -181,6 +196,26 @@ class Options extends OptionsAbstract {
 					?>
 				</span>
 				<p class="desc">
+					<?php
+					printf(
+						wp_kses( /* translators: %s - URL to Google Gmail alias documentation page. */
+							__( 'If you want to use a different From Email address you can set-up a Google email alias. <a href="%s" target="_blank" rel="noopener noreferrer">Follow these instructions</a> and then select the From Email at the top of this page.', 'wp-mail-smtp' ),
+							[
+								'a' => [
+									'href'   => [],
+									'rel'    => [],
+									'target' => [],
+								],
+							]
+						),
+						'https://wpmailsmtp.com/gmail-send-from-alias-wp-mail-smtp/'
+					);
+					?>
+				</p>
+				<p class="desc">
+					<?php esc_html_e( 'You can also send emails with different From Email addresses, by disabling the Force From Email setting and using registered aliases throughout your WordPress site as the From Email addresses.', 'wp-mail-smtp' ); ?>
+				</p>
+				<p class="desc">
 					<?php esc_html_e( 'Removing the connection will give you an ability to redo the connection or link to another Google account.', 'wp-mail-smtp' ); ?>
 				</p>
 
@@ -203,24 +238,24 @@ class Options extends OptionsAbstract {
 	 */
 	public function process_provider_remove() {
 
-		if ( ! is_super_admin() ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
 		if (
 			! isset( $_GET['gmail_remove_nonce'] ) ||
-			! wp_verify_nonce( $_GET['gmail_remove_nonce'], 'gmail_remove' ) // phpcs:ignore
+			! wp_verify_nonce( sanitize_key( $_GET['gmail_remove_nonce'] ), 'gmail_remove' )
 		) {
 			return;
 		}
 
-		$options = new \WPMailSMTP\Options();
+		$options = PluginOptions::init();
 
 		if ( $options->get( 'mail', 'mailer' ) !== $this->get_slug() ) {
 			return;
 		}
 
-		$old_opt = $options->get_all();
+		$old_opt = $options->get_all_raw();
 
 		foreach ( $old_opt[ $this->get_slug() ] as $key => $value ) {
 			// Unset everything except Client ID and Secret.

@@ -1,14 +1,14 @@
-=== WordPress Forms Made Easy - Kali Forms ===
-Contributors: kaliforms, silkalns, cristianraiber-1, machothemes, andreic86
-Tags: contact form, contact form plugin, forms, form builder, custom form, contact button, custom contact form, form manager, form, forms builder, forms creator
-Requires at least: 4.6
-Tested up to: 5.3
+=== Contact Form builder with drag & drop for WordPress - Kali Forms  ===
+Contributors: kaliforms, andreic86
+Tags: contact form, contact form plugin, forms, form builder, custom form, contact button, custom contact form, form manager, forms builder, forms creator, signup form, payment form, stripe, stripe form, paypal, paypal form, email form
+Requires at least: 5.2
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.5.0
+Stable tag: 2.3.17
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Kali Forms is the most powerful & user-friendly WordPress form plugin. Easily add contact forms, payment forms, feedback forms and more to your website without the hassle...
+Build the ideal contact form for your WordPress website in minutes through the Drag & Drop builder and Guided Emails for entries notifications.
 
 == Description ==
 
@@ -30,7 +30,7 @@ Instantly create a contact form that allows your website visitors and potential 
 
 Easily use and modify the Kali Forms employee information form template which you can use to collect vital information during the employee onboarding process.
 
-> **These 5 additional templates are only available in [Kali Forms Pro](https://kaliforms.com/pricing?utm_source=wordpress.org&utm_medium=web&utm_campaign=form%20templates):**
+> **These 13 additional templates are only available in [Kali Forms Pro](https://kaliforms.com/pricing?utm_source=wordpress.org&utm_medium=web&utm_campaign=form%20templates):**
 >
 > - **Job application form**
 >
@@ -56,6 +56,34 @@ Easily use and modify the Kali Forms employee information form template which yo
 >
 > Kali Forms makes it extremely easy to create GDPR-friendly contact forms with a confirmation checkbox that allows you to ensure that people submitting your contact form agree with the terms and conditions or privacy policy of your website.
 >
+> - **Running calculator form**
+>
+> Help users that like to go on outdoor runs calculate their pace, time and distance. The calculations are easily handled through our built-in Calculator.
+>
+> - **Donation form**
+>
+> A simple form that will allow you to accept donations through PayPal.
+>
+> - **Request quote form**
+>
+> An example form for requesting a quote for gardening services.
+>
+> - **Reservation form**
+>
+> Use this form if you want to provide users with an example of a hotel reservation form.
+>
+> - **Gym Membership Application form**
+>
+> Staying in shape is very important, allow users to apply to a gym memberhsip at your establishment using this example form.
+>
+> - **Simple booking form**
+>
+> Allow users to book a venue through this form. Previously selected dates will be automatically disabled in the calendar selection in order to avoid overlapping bookings.
+>
+> - **Simple booking form with payment**
+>
+> Provide users with a basic form that will allow them to book a room at your hotel and also accept payments online through PayPal.
+>
 >
 > **[Learn more about Kali Forms Pro…](https://kaliforms.com/pricing?utm_source=wordpress.org&utm_medium=web&utm_campaign=form%20templates)**
 
@@ -63,7 +91,7 @@ Easily use and modify the Kali Forms employee information form template which yo
 
 = The Fastest WordPress Form Plugin Available =
 
-We built the Kali Forms WordPress form plugin from the ground up overcome the performance issues caused by most (if not all) other form plugins. Say goodbye to legacy, outdated code. KaliForm is built on [React](https://reactjs.org/).
+We built the Kali Forms WordPress form plugin from the ground up overcome the performance issues caused by most (if not all) other form plugins. Say goodbye to legacy, outdated code. Kali Forms is built on [React](https://reactjs.org/).
 
 = All forms are 100% mobile-responsive. =
 
@@ -145,8 +173,223 @@ The easiest and recommended way to install is to click on 'Plugins' then 'Add Ne
 - If you're a Kali Forms Pro user, [please reach out to us](https://kaliforms.com/contact-us/) - if you're using the free version of Kali Forms, feel free to use the [WordPress.org Support Forums here.](https://wordpress.org/support/plugin/kali-forms/)
 
 == Screenshots ==
+1. Form builder
+2. One Click Forms
+3. Spam Protection
+4. Conditional Logic (PRO)
+5. Form field edit
+6. General settings
+7. Options presets
 
 == Changelog ==
+2.3.17
+- There was a bug with datetimepicker from PRO version
+
+2.3.16
+- Added the ip_address smart tag in the shorcode definition
+
+2.3.15
+- Small bugfix for certain PHP Versions
+
+2.3.14
+- Added an option to disable the bootstrap grid
+
+2.3.13
+- Fixed a problem with the {allFields} placeholder
+
+2.3.12
+- Bug fix
+
+2.3.11
+- Bug fix
+
+2.3.10
+- Added min - max options to the number input ( Textbox -> Type = Number )
+
+2.3.9
+- Fixed a bug where it tried to instantiate an array from object
+- Fixed a bug regarding email logging
+
+2.3.8
+- Fixed an issue with not loading the right dependencies when having multiple forms
+- Added HEIC extension to file upload
+
+2.3.7
+- Fixed a bug when sending an email that had textarea filled with multiple lines ( it collapsed them )
+
+2.3.6
+- Removed extra slash from asset load URL
+
+2.3.5
+- Added a configurable timeout for redirect
+- Removed file upload directly from server in an email attachment
+
+2.3.4
+- Hide Extension submenu item on network
+
+2.3.2 & 2.3.3
+- Recaptcha triggered an error if you had 2 of them on the same page
+- Compact overlap style would not be applied on date time picker
+- Added a checkbox to trigger "scroll" to thank you page, instead of being a default
+- Various bug fixes and QOL improvements
+
+2.3.1
+- Added ip address in form entry list
+- Small fixes and qol improvements
+
+2.3.0
+- Added a new way to view and handle submissions
+- Various bug fixes
+
+2.2.30
+- Fixed issue with reply to field with sendinblue provider
+- Fixed issue with notice dismissal
+
+2.2.29
+- Forms now scroll to the thank you message after submission
+- Fixed a typo
+- Added a new method to init our forms inside elementor
+
+2.2.28
+- Fixed a bug in the akismet check
+- Fixed a bug with entrycounter
+
+2.2.27
+- Updated language files
+
+2.2.25
+- Elementor patching
+
+2.2.24
+- Forms loaded in Elementor did not start the file upload process
+
+2.2.22
+- Kaliform shortcode inside Elementor shortcode widget would not "start"
+
+2.2.21
+- PHP 7.4 removed function each() - caused a fatal error
+- Added support for pagebreak complete label
+- There was an issue with conditional logic image radio items
+- QOL improvements
+- Added a Elementor widget (BETA) - still work in progress
+
+2.2.20
+- Various bug fixes and QOL improvements
+
+2.2.19
+- Elementor causing issues with javascript, removed JS files but forced the opacity to 1
+
+2.2.18
+- Small bug fixing
+
+2.2.17
+- Added support for getresponse (needs plugin)
+- Fixed an issue with the date picker component (from the pro version)
+- Image radio improvements (now accepts label and captions)
+
+2.2.16
+- Added support for moosend & campaign monitor (needs plugin)
+- Added support for webhooks placeholders (needs plugin)
+- Submission views will show the date and time of submission
+
+2.2.0 -> 2.2.15
+- Generated a pot file in the /languages directory
+- Fixed an issue with file upload fields
+- Required field mark is wrapped in a span now
+- Added more options to the file upload field ( you can now add a minimum file size and a total maximum files size when using multiple uploads)
+- Submission view (for the user) now renders digital signatures and fileUpload fields as images ( paving the way for the new and improved version )
+- Added support for mailpoet & sendfox (needs the newsletter plugin)
+- Fixed a bug when handling emails
+- Fixed an issue with having multiple file upload fields at the same time with different settings
+- Trigger frontend scripts in Elementor builder
+- Added support for webhooks
+- Fixed an issue with special characters in sent emails
+- Default wp mailer did not set headers correctly
+- Re-done email settings page ( along with email sending logic - hoping to increase deliverability)
+- Added an option to "reset" the form after you finish it
+- QOL improvements
+- Bug fixes
+
+2.1.7
+- Fixed an issue with paypal and recaptcha
+
+2.1.6
+- Bugfix
+
+2.1.5
+- Small fix
+
+2.1.3
+- QOL improvements
+- Bug fixes
+- Added a new global placeholder {thisPermalink} that returns the page where the form was submitted
+
+2.1.2
+- Security issue fixed
+
+2.1.1
+- Security issues fixed and resolved
+- Visual bug fixed ( for WP 5.5 )
+
+2.1.0
+- Added support for newsletter
+- Added support for slack
+- Added support for digital signature
+- Added support for user registration
+- Various bug fixes and qol issues
+
+2.0.4 / 2.0.5 / 2.0.6
+- Bugfix
+
+2.0.3
+- Bugfix on calculator page
+
+2.0.2
+- Added a little bit of backward compat with older PHP versions for akismet checks
+
+2.0.1
+- Bug fixes
+
+2.0.0
+- Revamped User Interface
+- Added Image Radio field
+- Added Donation field
+- Added Button field
+- Added Akismet integration
+- Added honeypot spam protection
+- Added more placeholders that you can you use in the Thank You Message and in the Emails
+- Added support for more premium features
+- Various QOL improvements
+
+1.6.5
+- Reply To header was not being set property (form notifications)
+
+1.6.4
+- Fixed a bug when clicking the update button would show the deactivation feedback form
+
+1.6.3
+- Checkbox values were not replaced in the placeholder
+
+1.6.2
+- Fixed an issue that didnt trigger the email wizzard
+
+1.6.1
+- {formName} placeholder wasn't returning a value
+
+1.6.0
+- Improved form builder ( design & functionality )
+- Added form themes
+- Form submissions renamed to Form Entries
+- Form entries can be saved without additional plugins ( note that you will need Form Submission plugin to access them through WP)
+- Textareas can be converted to editors ( standard wp editor )
+- Added several form fields ( URL, Phone, Email )
+- Added email duplicate functionality
+- Added field duplicate functionality
+- Added functionality to add placeholders in inputs to prefill user data on page view (e.g. to prefill a field with the user email, you need to use the {user_email} placeholder : [kaliform id="5" email="{user_email}"])
+- Added 2 new placeholders that can be used in fields, thank you message or email notifications: {entryCounter} and {formName}
+- Using PHP Before Form Process scripting areas, you can edit/add/delete values from the submitted data before they are saved
+- QOL adjustments
+
 1.5.0
 - Added a new filter that happens before file uploads
 - Added a review notice for wordpress.org

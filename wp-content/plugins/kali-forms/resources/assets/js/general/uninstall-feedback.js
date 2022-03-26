@@ -80,7 +80,6 @@ const UninstallFeedback = {
 	 */
 	_attachEvents() {
 		const self = this;
-
 		this.trigger.on('click', (e) => { e.preventDefault(); this._showForm() });
 
 		this.form.on('change', 'input[type=radio]', () => {
@@ -96,6 +95,7 @@ const UninstallFeedback = {
 
 		this.form.on('click', '#' + self.slug + '-deactivate-submit-form', e => {
 			e.preventDefault();
+
 			let data = {
 				reason: this.form.find('input[name="' + self.slug + '-deactivate-reason"]:checked').val(),
 				details: this.form.find('#' + self.slug + '-deactivate-details').val(),

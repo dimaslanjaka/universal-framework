@@ -1,7 +1,8 @@
 <?php
 
 class URE_Tools {
-            
+    
+    const RESET_ROLES_SECURE_TEXT = 'Permanently delete all custom user roles and capabilities';
 
     private static function show_reset_roles( $tab_idx ) {
         
@@ -18,22 +19,25 @@ class URE_Tools {
             <h3>Reset User Roles</h3>
             <span style="color: red;"><?php esc_html_e('WARNING!', 'user-role-editor');?></span>&nbsp;
 <?php        
-        esc_html_e('Resetting will setup default user roles and capabilities from WordPress core.', 'user-role-editor'); echo '<br>';
-        esc_html_e('If any plugins (such as WooCommerce, S2Member and many others) have changed user roles and capabilities during installation, those changes will be LOST!', 'user-role-editor'); echo '<br>';
-        esc_html_e('For more information on how to undo undesired changes and restore plugins capabilities in case you lost them by mistake go to: ', 'user-role-editor'); 
-        echo '<a href="http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/">http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/</a>';
+            esc_html_e('Resetting will setup default user roles and capabilities from WordPress core.', 'user-role-editor'); echo '<br>';
+            esc_html_e('If any plugins (such as WooCommerce, S2Member and many others) have changed user roles and capabilities during installation, those changes will be LOST!', 'user-role-editor'); echo '<br>';
+            esc_html_e('For more information on how to undo undesired changes and restore plugins capabilities in case you lost them by mistake go to: ', 'user-role-editor'); 
+            echo '<a href="http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/">http://role-editor.com/how-to-restore-deleted-wordpress-user-roles/</a>';
         
-            if ( $multisite ) {             
+        if ( $multisite ) {
 ?>
             <br><br>
             <input type="checkbox" name="ure_apply_to_all" id="ure_apply_to_all" value="1" />
             <label for="ure_apply_to_all"><?php esc_html_e('Apply to All Sites', 'user-role-editor'); ?></label> 
         (<?php esc_html_e('If checked, then apply action to ALL sites. Main site only is affected in other case.', 'user-role-editor'); ?>)
 <?php
-            }
+        }
 ?>
+            <br><br>
+            <input type="text" id="ure_reset_roles_secure" name="ure_reset_roles_secure" value="" placeholder="<?php echo URE_Tools::RESET_ROLES_SECURE_TEXT;?>" style="width:400px;"/>
+            &lt;- <span style="color: red;"><?php echo URE_Tools::RESET_ROLES_SECURE_TEXT; ?></span>
             <br><br>            
-            <button id="ure_reset_roles_button" style="width: 100px; color: red;" title="<?php esc_html_e('Reset Roles to its original state', 'user-role-editor'); ?>"><?php esc_html_e('Reset', 'user-role-editor');?></button> 
+            <button id="ure_reset_roles_button" style="width: 100px; color: red;" title="<?php esc_html_e('Reset Roles to its original state', 'user-role-editor'); ?>" disabled><?php esc_html_e('Reset', 'user-role-editor');?></button> 
             <?php wp_nonce_field('user-role-editor'); ?>
             <input type="hidden" name="ure_settings_tools_exec" value="1" />
             <input type="hidden" name="ure_reset_roles_exec" value="1" />

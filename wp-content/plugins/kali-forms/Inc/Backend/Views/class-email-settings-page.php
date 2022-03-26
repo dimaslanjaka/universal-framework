@@ -19,8 +19,9 @@ class Email_Settings_Page
      * @var string
      */
     protected $slug = 'kaliforms';
+
     /**
-     * Extensions_Page constructor.
+     * Email_Settings_Page constructor.
      */
     public function __construct()
     {
@@ -44,7 +45,7 @@ class Email_Settings_Page
             wp_enqueue_script(
                 'kaliforms-email-settings-scripts',
                 KALIFORMS_URL . 'assets/email-settings/js/emailSettings.js',
-                [],
+                ['wp-i18n', 'wp-components', 'wp-data', 'wp-element', 'wp-polyfill'],
                 KALIFORMS_VERSION,
                 true
             );
@@ -52,8 +53,72 @@ class Email_Settings_Page
                 'kaliforms-email-settings-scripts',
                 'KaliFormsEmailSettingsObject',
                 [
-                    'ajaxurl' => esc_url(admin_url('admin-ajax.php')),
-                    'ajax_nonce' => wp_create_nonce($this->slug . '_nonce'),
+                    'ajaxurl'      => esc_url(admin_url('admin-ajax.php')),
+                    'ajax_nonce'   => wp_create_nonce($this->slug . '_nonce'),
+                    'settings'     => [
+                        'smtp_provider'        => get_option($this->slug . '_smtp_provider', 'php'),
+                        'smtp_host'            => get_option($this->slug . '_smtp_host', ''),
+                        'smtp_auth'            => get_option($this->slug . '_smtp_auth', '0'),
+                        'smtp_disable_autotls' => get_option($this->slug . '_smtp_disable_autotls', '0'),
+                        'smtp_port'            => get_option($this->slug . '_smtp_port', ''),
+                        'smtp_secure'          => get_option($this->slug . '_smtp_secure', 'None'),
+                        'smtp_username'        => get_option($this->slug . '_smtp_username', ''),
+                        'smtp_password'        => get_option($this->slug . '_smtp_password', ''),
+                        'email_log'            => get_option($this->slug . '_email_log', '1'),
+                        'smtp_com_api_key'     => get_option($this->slug . '_smtp_com_api_key', ''),
+                        'smtp_com_sender_name' => get_option($this->slug . '_smtp_com_sender_name', ''),
+                        'sendin_blue_api'      => get_option($this->slug . '_sendin_blue_api', ''),
+                        'admin_email'          => get_bloginfo('admin_email'),
+                        'from_email'           => get_bloginfo('admin_email'),
+                        'return_path'          => get_option($this->slug . '_return_path', ''),
+                        'mailgun_domain_name'  => get_option($this->slug . '_mailgun_domain_name', ''),
+                        'mailgun_private_key'  => get_option($this->slug . '_mailgun_private_key', ''),
+                        'mailgun_region'       => get_option($this->slug . '_mailgun_region', ''),
+                        'postmark_server_api'  => get_option($this->slug . '_postmark_server_api', ''),
+                        'selected_tab'         => $this->_get_selected_tab(),
+                    ],
+                    'providers'    => [
+                        'wp'         => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/wp_logo.svg',
+                            'label' => __('Default WP Mailer', 'kaliforms'),
+                        ],
+                        'php'        => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/php-logo.svg',
+                            'label' => __('PHP Mailer', 'kaliforms'),
+                        ],
+                        'smtp'       => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/smtp.svg',
+                            'label' => __('Custom SMTP', 'kaliforms'),
+                        ],
+                        'smtpcom'    => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/smtp-com.svg',
+                            'label' => __('SMTP.com', 'kaliforms'),
+                        ],
+                        'sendinblue' => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/sendinblue.svg',
+                            'label' => __('Send in blue', 'kaliforms'),
+                        ],
+                        'mailgun'    => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/mailgun.svg',
+                            'label' => __('Mailgun', 'kaliforms'),
+                        ],
+                        'postmark'   => [
+                            'logo'  => KALIFORMS_URL . 'assets/img/postmark.svg',
+                            'label' => __('Postmark', 'kaliforms'),
+                        ],
+                        // 'gmail'    => [
+                        //     'logo'  => KALIFORMS_URL . 'assets/img/gmail.png',
+                        //     'label' => __('GMail', 'kaliforms'),
+                        // ],
+                        // 'mandrill' => [
+                        //     'logo'  => KALIFORMS_URL . 'assets/img/mandrill.png',
+                        //     'label' => __('Mandrill', 'kaliforms'),
+                        // ],
+                        // 'sendgrid' => [
+                        //     'logo'  => KALIFORMS_URL . 'assets/img/sendgrid.png',
+                        //     'label' => __('Sendgrid', 'kaliforms'),
+                        // ],
+                    ],
                     'translations' => [
                         'logInfo' => esc_html__('Log will appear after page refresh if this is checked', 'kaliforms'),
                     ],
@@ -68,6 +133,33 @@ class Email_Settings_Page
         }
 
     }
+    /**
+     * Gets the selected tab
+     *
+     * @return void
+     */
+    public function _get_selected_tab()
+    {
+        return $this->get_request_parameter('tab', 'settings');
+    }
+    /**
+     * Gets the request parameter.
+     *
+     * @param      string  $key      The query parameter
+     * @param      string  $default  The default value to return if not found
+     *
+     * @return     string  The request parameter.
+     */
+    public function get_request_parameter($key, $default = '')
+    {
+        // If not request set
+        if (!isset($_REQUEST[$key]) || empty($_REQUEST[$key])) {
+            return $default;
+        }
+
+        // Set so process it
+        return strip_tags((string) wp_unslash($_REQUEST[$key]));
+    }
 
     /**
      * Registers smtp settings
@@ -76,15 +168,30 @@ class Email_Settings_Page
      */
     public function register_settings()
     {
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_provider', 'sanitize_text_field');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_host', 'sanitize_text_field');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_auth', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_advanced', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_port', 'absint');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_secure', 'KaliForms\Inc\Backend\Sanitizers::sanitize_secure_options');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_username', 'sanitize_text_field');
-        register_setting($this->slug . '_email_settings', $this->slug . '_smtp_password', 'sanitize_text_field');
-        register_setting($this->slug . '_email_settings', $this->slug . '_email_fail_log', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox');
+        $settings = [
+            ['smtp_provider', 'sanitize_text_field'],
+            ['smtp_host', 'sanitize_text_field'],
+            ['smtp_port', 'absint'],
+            ['smtp_username', 'sanitize_text_field'],
+            ['smtp_password', 'sanitize_text_field'],
+            ['smtp_com_api_key', 'sanitize_text_field'],
+            ['smtp_com_sender_name', 'sanitize_text_field'],
+            ['sendin_blue_api', 'sanitize_text_field'],
+            ['smtp_auth', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox'],
+            ['smtp_secure', 'KaliForms\Inc\Backend\Sanitizers::sanitize_secure_options'],
+            ['email_log', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox'],
+            ['smtp_disable_autotls', 'KaliForms\Inc\Backend\Sanitizers::sanitize_regular_checkbox'],
+            ['return_path', 'sanitize_text_field'],
+            ['mailgun_private_key', 'sanitize_text_field'],
+            ['mailgun_domain_name', 'sanitize_text_field'],
+            ['mailgun_region', 'sanitize_text_field'],
+            ['postmark_server_api', 'sanitize_text_field'],
+        ];
+
+        $settings = apply_filters($this->slug . '_email_settings_page', $settings);
+        foreach ($settings as $setting) {
+            register_setting($this->slug . '_email_settings', $this->slug . '_' . $setting[0], $setting[1]);
+        }
     }
 
     /**
@@ -94,7 +201,9 @@ class Email_Settings_Page
     {
         echo '<div class="wrap">';
         echo '<div id="kaliforms-email-settings-page">';
-        $this->generate_html();
+        echo '</div>';
+        echo '<div id="kali-settings-fields">';
+        settings_fields($this->slug . '_email_settings');
         echo '</div>';
         echo '</div>';
     }
@@ -120,206 +229,4 @@ class Email_Settings_Page
         do_action($this->slug . '_after_email_settings_page_rendering');
     }
 
-    /**
-     * Generates the page html
-     *
-     * @return void
-     */
-    public function generate_html()
-    {
-        echo '<h2>' . esc_html__('Email Settings', 'kaliforms') . '</h2>';
-        settings_errors();
-        echo '<form method="post" action="options.php">';
-        settings_fields($this->slug . '_email_settings');
-        $this->predefined_options();
-        echo '<table class="form-table">';
-        echo '<tbody>';
-        $this->advanced_options();
-        $this->host_field();
-        $this->port_field();
-        $this->secure_field();
-        $this->auth_field();
-        $this->username_field();
-        $this->password_field();
-        $this->fail_log();
-        $this->submit_button();
-        echo '</tbody>';
-        echo '</table>';
-        wp_nonce_field($this->slug . '_email_settings_nonce', $this->slug . '_email_settings_nonce');
-        echo '</form>';
-    }
-
-    /**
-     * Returns predefined options
-     *
-     * @return string
-     */
-    public function predefined_options()
-    {
-        $predefined = get_option($this->slug . '_smtp_provider', 'phpmailer');
-
-        $options = [
-            'phpmailer' => KALIFORMS_URL . 'assets/img/phpmailer.png',
-            'gmail' => KALIFORMS_URL . 'assets/img/gmail.png',
-            'mandrill' => KALIFORMS_URL . 'assets/img/mandrill.png',
-            'mailgun' => KALIFORMS_URL . 'assets/img/mailgun.png',
-            'sendgrid' => KALIFORMS_URL . 'assets/img/sendgrid.png',
-        ];
-        $str = '<div class="email-settings-importer">';
-        foreach ($options as $option => $logo) {
-            $selected = $option === $predefined ? 'active' : '';
-            $str .= '<a href="#" id="' . $option . '-email-settings" class="email-settings-import ' . $selected . '" data-predefined-option="' . $option . '"><img src="' . $logo . '" /></a> ';
-        }
-        $str .= '<input type="hidden" id="' . $this->slug . '_smtp_provider" name="' . $this->slug . '_smtp_provider" value="' . esc_attr($predefined) . '" />';
-        $str .= '</div>';
-        echo $str;
-    }
-    /**
-     * Host field
-     */
-    public function advanced_options()
-    {
-        $advanced = get_option($this->slug . '_smtp_advanced', 1);
-        $this->advanced = $advanced;
-        echo '<tr valign="top">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Custom settings', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="checkbox" ' . checked($advanced, '1', false) . ' id="' . $this->slug . '_smtp_advanced" name="' . $this->slug . '_smtp_advanced" />';
-        echo '</td>';
-        echo '</tr>';
-    }
-    /**
-     * Host field
-     */
-    public function host_field()
-    {
-        $host = get_option($this->slug . '_smtp_host', '');
-        $style = $this->advanced ? '' : 'hidden';
-        echo '<tr valign="top" class="advanced ' . $style . '">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Host', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="text" id="' . $this->slug . '_smtp_host" name="' . $this->slug . '_smtp_host" class="regular-text" value="' . esc_attr($host) . '"/>';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_host">' . esc_html__('Add your smtp host here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-    }
-
-    public function auth_field()
-    {
-        $auth = get_option($this->slug . '_smtp_auth', 0);
-        echo '<tr valign="top">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Authentication', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="checkbox" ' . checked($auth, '1', false) . ' id="' . $this->slug . '_smtp_auth" name="' . $this->slug . '_smtp_auth" />';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_auth">' . esc_html__('Add your smtp auth here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-    }
-    public function fail_log()
-    {
-        $fail_log = get_option($this->slug . '_email_fail_log', 0);
-        $style = $this->advanced ? '' : 'hidden';
-        echo '<tr valign="top" class="advanced ' . $style . '">';
-
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Enable debug log', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="checkbox" ' . checked($fail_log, '1', false) . ' id="' . $this->slug . '_email_fail_log" name="' . $this->slug . '_email_fail_log" />';
-        echo '</td>';
-        echo '</tr>';
-
-        $file = get_temp_dir() . $this->slug . '-mail.log';
-        if (checked($fail_log, '1', false) && file_exists($file)) {
-            $log_content = file_get_contents($file);
-            echo '<tr valign="top" id="' . $this->slug . '_fail_log" class="advanced ' . $style . '">';
-            echo '<th scope="row" valign="top">';
-            echo esc_html__('Log ', 'kaliforms') . '<em>' . get_temp_dir() . $this->slug . '-mail.log' . '</em>';
-            echo '</th>';
-            echo '<td>';
-            echo '<textarea rows="8" readonly class="regular-text">' . $log_content . '</textarea>';
-            echo '</td>';
-            echo '</tr>';
-        }
-    }
-    public function port_field()
-    {
-        $port = get_option($this->slug . '_smtp_port', '');
-        $style = $this->advanced ? '' : 'hidden';
-        echo '<tr valign="top" class="advanced ' . $style . '">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Port', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="number" id="' . $this->slug . '_smtp_port" name="' . $this->slug . '_smtp_port" class="regular-text" value="' . absint($port) . '"/>';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_port">' . esc_html__('Add your smtp port here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-
-    }
-    public function secure_field()
-    {
-        $ssl = get_option($this->slug . '_smtp_secure', 'None');
-        $options = ['None', 'SSL', 'TLS', 'STARTTLS'];
-        $style = $this->advanced ? '' : 'hidden';
-        echo '<tr valign="top" class="advanced ' . $style . '">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Secure connection', 'kaliforms');
-
-        echo '</th>';
-        echo '<td>';
-        echo '<select class="regular-text" id="' . $this->slug . '_smtp_secure" name="' . $this->slug . '_smtp_secure" value="' . esc_attr($ssl) . '">';
-        foreach ($options as $option) {
-            echo '<option value="' . esc_attr($option) . '" ' . selected($ssl, $option, false) . '>' . esc_html($option) . '</option>';
-        }
-        echo '</select>';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_secure">' . esc_html__('Add your smtp port here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-
-    }
-    public function username_field()
-    {
-        $username = get_option($this->slug . '_smtp_username', '');
-        echo '<tr valign="top">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Username', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="text" value="' . esc_attr($username) . '" id="' . $this->slug . '_smtp_username" name="' . $this->slug . '_smtp_username" class="regular-text"/>';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_username">' . esc_html__('Add your smtp username here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-
-    }
-    public function password_field()
-    {
-        $password = get_option($this->slug . '_smtp_password', '');
-        echo '<tr valign="top" >';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Password', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="password" value="' . esc_attr($password) . '" id="' . $this->slug . '_smtp_password" name="' . $this->slug . '_smtp_password" class="regular-text"/>';
-        // echo '<label class="description" for="'.$this->slug.'_smtp_password">' . esc_html__('Add your smtp password here', 'kaliforms') . '</label>';
-        echo '</td>';
-        echo '</tr>';
-    }
-    public function submit_button()
-    {
-        echo '<tr valign="top">';
-        echo '<th scope="row" valign="top">';
-        echo esc_html__('Save options', 'kaliforms');
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="submit" class="button-secondary" id="' . $this->slug . '_smtp_submit" name="' . $this->slug . '_smtp_submit" value="' . esc_html__('Save', 'kaliforms') . '"/>';
-        echo '</td>';
-        echo '</tr>';
-    }
 }

@@ -1,7 +1,9 @@
 import './main.scss';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
-
+import 'node-snackbar/dist/snackbar.min.css';
+import Snackbar from 'node-snackbar';
+const { __ } = wp.i18n;
 jQuery(document).ready(() => {
 	tippy('.kaliforms-tooltip');
 
@@ -15,6 +17,7 @@ jQuery(document).ready(() => {
 		document.execCommand('copy');
 		document.getSelection().removeAllRanges();
 		input.blur();
+		Snackbar.show({ text: __('Shortcode copied to clipboard', 'kaliforms') });
 	});
 
 	jQuery('.kaliforms-notice').on('click', '.notice-dismiss', e => {
@@ -30,6 +33,24 @@ jQuery(document).ready(() => {
 			dataType: 'json',
 			url: ajaxurl,
 		});
+	});
+
+	jQuery('.kaliforms-themes-formgroup').on('change', 'select', e => {
+		let args = {
+			formId: e.target.getAttribute('data-form-id'),
+			newTheme: e.target.value,
+			nonce: KaliFormsGeneralObject.ajax_nonce,
+		}
+
+		jQuery.ajax({
+			type: 'POST',
+			data: { action: 'kaliforms_set_form_theme', args },
+			dataType: 'json',
+			url: ajaxurl,
+			success: (data) => {
+				Snackbar.show({ text: __('Theme applied', 'kaliforms') });
+			}
+		})
 	});
 
 	jQuery('#kaliforms-system-check-email-send').on('click', e => {
@@ -113,3 +134,69 @@ const reloadExtensionsAction = () => {
 	}
 }
 
+var kfnl_log_clear = document.getElementById('kf-newsletter-log-clear');
+if (kfnl_log_clear !== null) {
+	kfnl_log_clear.addEventListener('click', evt => {
+		evt.preventDefault();
+
+		let args = {
+			nonce: KaliFormsGeneralObject.ajax_nonce,
+		}
+
+		jQuery.ajax({
+			type: 'POST',
+			data: { action: 'kaliforms_clear_nl_log', args: args },
+			dataType: 'json',
+			url: ajaxurl,
+			success: (data) => {
+				if (data.success) {
+					location.reload();
+				}
+			},
+		});
+	})
+}
+var kfsms_log_clear = document.getElementById('kf-sms-log-clear');
+if (kfsms_log_clear !== null) {
+	kfsms_log_clear.addEventListener('click', evt => {
+		evt.preventDefault();
+
+		let args = {
+			nonce: KaliFormsGeneralObject.ajax_nonce,
+		}
+
+		jQuery.ajax({
+			type: 'POST',
+			data: { action: 'kaliforms_clear_sms_log', args: args },
+			dataType: 'json',
+			url: ajaxurl,
+			success: (data) => {
+				if (data.success) {
+					location.reload();
+				}
+			},
+		});
+	})
+}
+var kfgoogle_log_clear = document.getElementById('kf-google-log-clear');
+if (kfgoogle_log_clear !== null) {
+	kfgoogle_log_clear.addEventListener('click', evt => {
+		evt.preventDefault();
+
+		let args = {
+			nonce: KaliFormsGeneralObject.ajax_nonce,
+		}
+
+		jQuery.ajax({
+			type: 'POST',
+			data: { action: 'kaliforms_clear_google_log', args: args },
+			dataType: 'json',
+			url: ajaxurl,
+			success: (data) => {
+				if (data.success) {
+					location.reload();
+				}
+			},
+		});
+	})
+}

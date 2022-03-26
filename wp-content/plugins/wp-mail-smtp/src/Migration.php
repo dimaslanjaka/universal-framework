@@ -2,12 +2,41 @@
 
 namespace WPMailSMTP;
 
+use WPMailSMTP\Tasks\Meta;
+use WPMailSMTP\Reports\Emails\Summary as SummaryReportEmail;
+use WPMailSMTP\Tasks\Reports\SummaryEmailTask as SummaryReportEmailTask;
+
 /**
- * Class Migration helps migrate all plugin options saved into DB to a new storage location.
+ * Class Migration helps migrate plugin options, DB tables and more.
  *
- * @since 1.0.0
+ * @since 1.0.0 Migrate all plugin options saved from separate WP options into one.
+ * @since 2.1.0 Major overhaul of this class to use DB migrations (or any other migrations per version).
+ * @since 3.0.0 Extends MigrationAbstract.
  */
-class Migration {
+class Migration extends MigrationAbstract {
+
+	/**
+	 * Version of the latest migration.
+	 *
+	 * @since 2.1.0
+	 */
+	const VERSION = 4;
+
+	/**
+	 * Option key where we save the current migration version.
+	 *
+	 * @since 2.1.0
+	 */
+	const OPTION_NAME = 'wp_mail_smtp_migration_version';
+
+	/**
+	 * Current migration version, received from static::OPTION_NAME WP option.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @var int
+	 */
+	protected $cur_ver;
 
 	/**
 	 * All old values for pre 1.0 version of a plugin.
@@ -53,11 +82,105 @@ class Migration {
 	protected $new_values = array();
 
 	/**
-	 * Migration constructor.
+	 * Initialize migration.
 	 *
-	 * @since 1.0.0
+	 * @since 3.0.0
 	 */
-	public function __construct() {
+	public function init() {
+
+		$this->maybe_migrate();
+	}
+
+	/**
+	 * Static on purpose, to get current migration version without __construct() and validation.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return int
+	 */
+	public static function get_cur_version() {
+
+		return (int) get_option( static::OPTION_NAME, 0 );
+	}
+
+	/**
+	 * Run the migration if needed.
+	 *
+	 * @since 2.1.0
+	 */
+	protected function maybe_migrate() {
+
+		if ( version_compare( $this->cur_ver, static::VERSION, '<' ) ) {
+			$this->run( static::VERSION );
+		}
+	}
+
+	/**
+	 * Actual migration launcher.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param int $version The version of migration to run.
+	 */
+	protected function run( $version ) {
+
+		$function_version = (int) $version;
+
+		if ( method_exists( $this, 'migrate_to_' . $function_version ) ) {
+			$this->{'migrate_to_' . $function_version}();
+		} else {
+			if ( WP::in_wp_admin() ) {
+				$message = sprintf( /* translators: %1$s - WP Mail SMTP, %2$s - error message. */
+					esc_html__( 'There was an error while upgrading the database. Please contact %1$s support with this information: %2$s.', 'wp-mail-smtp' ),
+					'<strong>WP Mail SMTP</strong>',
+					'<code>migration from v' . static::get_cur_version() . ' to v' . static::VERSION . ' failed. Plugin version: v' . WPMS_PLUGIN_VER . '</code>'
+				);
+
+				WP::add_admin_notice( $message, WP::ADMIN_NOTICE_ERROR );
+			}
+		}
+	}
+
+	/**
+	 * Update migration version in options table.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param int $version Migration version.
+	 */
+	protected function update_db_ver( $version = 0 ) {
+
+		if ( empty( $version ) ) {
+			$version = static::VERSION;
+		}
+
+		// Autoload it, because this value is checked all the time
+		// and no need to request it separately from all autoloaded options.
+		update_option( static::OPTION_NAME, $version, true );
+	}
+
+	/**
+	 * Prevent running the same migration twice.
+	 * Run migration only when required.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param string $version The version of migration to check for potential execution.
+	 */
+	protected function maybe_required_older_migrations( $version ) {
+
+		if ( version_compare( $this->cur_ver, $version, '<' ) ) {
+			$this->run( $version );
+		}
+	}
+
+	/**
+	 * Migration from 0.x to 1.0.0.
+	 * Move separate plugin WP options to one main plugin WP option setting.
+	 *
+	 * @since 2.1.0
+	 */
+	private function migrate_to_1() {
 
 		if ( $this->is_migrated() ) {
 			return;
@@ -68,8 +191,89 @@ class Migration {
 
 		Options::init()->set( $this->new_values, true );
 
-		// Removing all old options will be enabled some time in the future.
-		// $this->clean_deprecated_data();
+		$this->update_db_ver( 1 );
+	}
+
+	/**
+	 * Migration from 1.x to 2.1.0.
+	 * Create Tasks\Meta table, if it does not exist.
+	 *
+	 * @since 2.1.0
+	 */
+	private function migrate_to_2() {
+
+		$this->maybe_required_older_migrations( 1 );
+
+		$meta = new Meta();
+
+		// Create the table if it doesn't exist.
+		if ( $meta && ! $meta->table_exists() ) {
+			$meta->create_table();
+		}
+
+		$this->update_db_ver( 2 );
+	}
+
+	/**
+	 * Migration to 2.6.0.
+	 * Cancel all recurring ActionScheduler tasks, so they will be newly created and no longer
+	 * cause PHP fatal error on PHP 8 (because of the named parameter 'tasks_meta_id').
+	 *
+	 * @since 2.6.0
+	 */
+	private function migrate_to_3() {
+
+		$this->maybe_required_older_migrations( 2 );
+
+		$tasks = [];
+		$ut    = new UsageTracking\UsageTracking();
+
+		if ( $ut->is_enabled() ) {
+			$tasks[] = '\WPMailSMTP\UsageTracking\SendUsageTask';
+		}
+
+		$recurring_tasks = apply_filters( 'wp_mail_smtp_migration_cancel_recurring_tasks', $tasks );
+
+		foreach ( $recurring_tasks as $task ) {
+			( new $task() )->cancel();
+		}
+
+		$this->update_db_ver( 3 );
+	}
+
+	/**
+	 * Migration to 3.0.0.
+	 * Disable summary report email for Lite users and Multisite installations after update.
+	 * For new installations we have default values in Options::get_defaults.
+	 *
+	 * @since 3.0.0
+	 */
+	protected function migrate_to_4() {
+
+		$this->maybe_required_older_migrations( 3 );
+
+		$options = Options::init();
+
+		$value = $options->get( 'general', SummaryReportEmail::SETTINGS_SLUG );
+
+		// If option was not already set, then plugin was updated from lower version.
+		if (
+			( $value === '' || $value === null ) &&
+			( is_multisite() || ! wp_mail_smtp()->is_pro() )
+		) {
+			$data = [
+				'general' => [
+					SummaryReportEmail::SETTINGS_SLUG => true,
+				],
+			];
+
+			$options->set( $data, false, false );
+
+			// Just to be safe cancel summary report email task.
+			( new SummaryReportEmailTask() )->cancel();
+		}
+
+		$this->update_db_ver( 4 );
 	}
 
 	/**
@@ -171,7 +375,7 @@ class Migration {
 					$converted['mail']['return_path'] = ( $old_value === 'true' );
 					break;
 				case 'mailer':
-					$converted['mail']['mailer'] = $old_value;
+					$converted['mail']['mailer'] = ! empty( $old_value ) ? $old_value : 'mail';
 					break;
 				case 'wp_mail_smtp_am_notifications_hidden':
 					$converted['general']['am_notifications_hidden'] = ( isset( $old_value ) && $old_value === 'true' );

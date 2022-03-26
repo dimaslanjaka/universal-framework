@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import connect from 'react-redux/es/connect/connect';
-import { bindActionCreators } from 'redux';
-import * as StoreActions from '../../store/actions';
 import OwnerConditional from './OwnerConditional';
-
-const mapStateToProps = state => {
-	return {
-		loading: state.PageLoading,
-		fieldComponents: state.FieldComponents,
-		fieldComponentsHash: state.FieldComponentsHash,
-		formFieldEditor: state.FormFieldEditor,
-	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return bindActionCreators(StoreActions, dispatch);
-};
-
+import BootstrapInput from './../BootstrapInput';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Select from '@material-ui/core/Select';
+const { __ } = wp.i18n;
 const OwnerSelection = (props) => {
 	const [conditional, setConditional] = useState(props.conditionalOwner);
 	const addCondition = () => {
@@ -72,38 +60,45 @@ const OwnerSelection = (props) => {
 	return (
 		<Grid container direction="row" spacing={4}>
 			<Grid item xs={6}>
-				<TextField
-					label={KaliFormsObject.translations.hubspot.actions.contactOwner}
-					value={props.contactOwnerOption}
-					variant="filled"
-					onChange={e => props.setContactOwnerOption(e.target.value)}
-					select
-					fullWidth={true}
-					helperText={KaliFormsObject.translations.hubspot.actions.contactOwnerHelperText}
-				>
-					<MenuItem key="none" value="none">
-						{KaliFormsObject.translations.hubspot.misc.none}
-					</MenuItem>
-					<MenuItem key="select" value="select">
-						{KaliFormsObject.translations.hubspot.misc.selectOwner}
-					</MenuItem>
-					<MenuItem key="conditional" value="conditional">
-						{KaliFormsObject.translations.hubspot.misc.conditional}
-					</MenuItem>
-				</TextField>
+				<FormControl>
+					<InputLabel shrink>
+						{__('Contact owner', 'kaliforms')}
+					</InputLabel>
+					<Select
+						multiple={false}
+						input={<BootstrapInput />}
+						value={props.contactOwnerOption}
+						onChange={e => props.setContactOwnerOption(e.target.value)}
+					>
+						<MenuItem key="none" value="none">
+							{__('None', 'kaliforms')}
+						</MenuItem>
+						<MenuItem key="select" value="select">
+							{__('Select Owner', 'kaliforms')}
+						</MenuItem>
+						<MenuItem key="conditional" value="conditional">
+							{__('Conditional', 'kaliforms')}
+						</MenuItem>
+					</Select>
+					<FormHelperText>{__('Sets the owner of the contact in your HubSpot contact list', 'kaliforms')}</FormHelperText>
+				</FormControl>
 			</Grid>
 			<If condition={props.contactOwnerOption === 'select'}>
 				<Grid item xs={6}>
-					<TextField
-						label={KaliFormsObject.translations.hubspot.actions.assignOwner}
-						value={props.contactOwner}
-						variant="filled"
-						onChange={e => props.setContactOwner(e.target.value)}
-						select
-						fullWidth={true}>
-						<MenuItem value="">{KaliFormsObject.translations.hubspot.actions.assignOwner}</MenuItem>
-						{KaliFormsHubSpot.contactOwners.map(owner => <MenuItem key={owner.ownerId} value={owner.ownerId}>{owner.firstName} {owner.lastName}</MenuItem>)}
-					</TextField>
+					<FormControl>
+						<InputLabel shrink>
+							{__('Contact owner', 'kaliforms')}
+						</InputLabel>
+						<Select
+							multiple={false}
+							input={<BootstrapInput />}
+							value={props.contactOwner}
+							onChange={e => props.setContactOwner(e.target.value)}
+						>
+							<MenuItem value="">{__('Assign owner', 'kaliforms')}</MenuItem>
+							{KaliFormsHubSpot.contactOwners.map(owner => <MenuItem key={owner.ownerId} value={owner.ownerId}>{owner.firstName} {owner.lastName}</MenuItem>)}
+						</Select>
+					</FormControl>
 				</Grid>
 			</If>
 			<If condition={props.contactOwnerOption === 'conditional'}>
@@ -118,7 +113,6 @@ const OwnerSelection = (props) => {
 							addCondition={addCondition}
 							setDefaultCondition={setDefaultCondition}
 							conditionalLength={conditional.length}
-							fieldComponents={props.fieldComponents}
 						/>
 					))
 				}
@@ -127,4 +121,4 @@ const OwnerSelection = (props) => {
 	);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OwnerSelection);
+export default OwnerSelection;

@@ -27,6 +27,8 @@ define('WP_HOST', $host);
 define('WP_ORIGIN', WP_PROTOCOL . '://' . WP_HOST);
 define('REQUEST', $_SERVER['REQUEST_URI']);
 define('FULL_URL', WP_PROTOCOL . "://" . WP_HOST . REQUEST);
+define('WP_SITEURL', WP_PROTOCOL . '://' . $_SERVER['HTTP_HOST']);
+define('WP_HOME', WP_PROTOCOL . '://' . $_SERVER['HTTP_HOST']);
 
 // ** MySQL settings ** //
 require __DIR__ . '/wp-key.php';
@@ -101,7 +103,7 @@ define('NONCE_SALT',       '/v~ 1i/<l9R[io*YOuNW$Q-F;A=mAinCh:NOZ>(TRj*vIq=z#KrX
  */
 $table_prefix = 'wp_';
 
-define('WP_ALLOW_MULTISITE', true);
+//define('WP_ALLOW_MULTISITE', true);
 /*
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', false);
@@ -113,8 +115,6 @@ define('BLOG_ID_CURRENT_SITE', 1);
 //define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
 define('WPMS_ON', true);
 define('WPMS_SMTP_PASS', 'tvyjcdoawjrkvwxx');
-define('WP_SITEURL', WP_PROTOCOL . '://' . $_SERVER['HTTP_HOST']);
-define('WP_HOME', WP_PROTOCOL . '://' . $_SERVER['HTTP_HOST']);
 //define('DISALLOW_FILE_EDIT', true);
 
 /** Google API */

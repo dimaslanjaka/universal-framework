@@ -4,9 +4,13 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
+import BootstrapInput from './../BootstrapInput';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+const { __ } = wp.i18n;
 const ActionConditionalLogic = (props) => {
 	const selectChange = (data) => {
 		let currentState = props.conditionalLogicConditions;
@@ -50,20 +54,20 @@ const ActionConditionalLogic = (props) => {
 		props.setConditionalLogicConditions([...currentState]);
 	}
 	return (
-		<div>
+		<div style={{ marginBottom: 30 }}>
 			<Grid container direction="row" spacing={4}>
 				<Grid item>
 					<Typography style={{ lineHeight: 2.1 }}>
-						{KaliFormsObject.translations.hubspot.misc.processIf}
+						{__('Process if', 'kaliforms')}
 					</Typography>
 				</Grid>
 				<Grid item>
 					<TextField value={props.conditionalLogic} select onChange={e => changedCondition(e.target.value)}>
 						<MenuItem value="any">
-							{KaliFormsObject.translations.hubspot.misc.any}
+							{__('Any', 'kaliforms')}
 						</MenuItem>
 						<MenuItem value="all">
-							{KaliFormsObject.translations.hubspot.misc.all}
+							{__('All', 'kaliforms')}
 						</MenuItem>
 					</TextField>
 				</Grid>
@@ -73,62 +77,62 @@ const ActionConditionalLogic = (props) => {
 					<Grid container direction="row" key={idx} spacing={4}>
 						<Grid item xs={3}>
 							<FieldComponentSelect
-								label={KaliFormsObject.translations.hubspot.misc.formField}
+								label={__('Form field', 'kaliforms')}
 								field={idx}
 								selectedValue={condition.formField}
 								onChange={selectChange} />
 						</Grid>
 						<Grid item xs={2}>
-							<TextField
-								label={KaliFormsObject.translations.hubspot.misc.field}
-								variant="filled"
-								value={condition.condition}
-								onChange={e => changeFieldCondition(idx, e.target.value)}
-								select
-								fullWidth={true}>
-								<MenuItem value='is'>{KaliFormsObject.translations.hubspot.misc.is}</MenuItem>
-								<MenuItem value='not'>{KaliFormsObject.translations.hubspot.misc.isNot}</MenuItem>
-								<MenuItem value='greater'>{KaliFormsObject.translations.hubspot.misc.greaterThan}</MenuItem>
-								<MenuItem value='less'>{KaliFormsObject.translations.hubspot.misc.lessThan}</MenuItem>
-								<MenuItem value='contains'>{KaliFormsObject.translations.hubspot.misc.contains}</MenuItem>
-								<MenuItem value='starts'>{KaliFormsObject.translations.hubspot.misc.starts}</MenuItem>
-								<MenuItem value='ends'>{KaliFormsObject.translations.hubspot.misc.ends}</MenuItem>
-							</TextField>
+							<FormControl>
+								<InputLabel shrink>
+									{__('Field', 'kaliforms')}
+								</InputLabel>
+								<Select
+									multiple={false}
+									input={<BootstrapInput />}
+									value={condition.condition}
+									onChange={e => changeFieldCondition(idx, e.target.value)}
+									fullWidth={true}
+								>
+									<MenuItem value='is'>{__('Is', 'kaliforms')}</MenuItem>
+									<MenuItem value='not'>{__('Is not', 'kaliforms')}</MenuItem>
+									<MenuItem value='greater'>{__('Greater than', 'kaliforms')}</MenuItem>
+									<MenuItem value='less'>{__('Less than', 'kaliforms')}</MenuItem>
+									<MenuItem value='contains'>{__('Contains', 'kaliforms')}</MenuItem>
+									<MenuItem value='starts'>{__('Starts', 'kaliforms')}</MenuItem>
+									<MenuItem value='ends'>{__('Ends', 'kaliforms')}</MenuItem>
+								</Select>
+							</FormControl>
 						</Grid>
 						<Grid item xs={3}>
-							<TextField
-								label={KaliFormsObject.translations.hubspot.misc.value}
-								variant="filled"
-								onChange={e => changedValue(idx, e.target.value)}
-								value={condition.value}
-								fullWidth={true} />
+							<FormControl>
+								<InputLabel shrink>
+									{__('Value', 'kaliforms')}
+								</InputLabel>
+								<BootstrapInput
+									value={condition.value}
+									onChange={e => changedValue(idx, e.target.value)}
+									fullWidth={true}
+									variant="filled"
+									placeholder={__('HubSpot Action', 'kaliforms')}
+								/>
+							</FormControl>
 						</Grid>
-						<Grid item xs={2}>
-							<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.addCondition}
+						<Grid item xs={4} style={{ paddingTop: 42 }}>
+							<Button
+								aria-label={__('Add condition', 'kaliforms')}
+								variant="text"
 								onClick={() => addCondition()}
-								variant="contained"
-								color="primary"
-								size="medium">
-								<AddIcon fontSize="inherit" />
-							</IconButton>
-							<If condition={props.conditionalLogicConditions.length === 1}>
-								<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.removeCondition}
-									onClick={() => setDefaultCondition()}
-									variant="contained"
-									color="primary"
-									size="medium">
-									<DeleteIcon fontSize="inherit" />
-								</IconButton>
-							</If>
-							<If condition={props.conditionalLogicConditions.length > 1}>
-								<IconButton aria-label={KaliFormsObject.translations.hubspot.misc.removeCondition}
-									onClick={() => removeCondition(idx)}
-									variant="contained"
-									color="primary"
-									size="medium">
-									<DeleteIcon fontSize="inherit" />
-								</IconButton>
-							</If>
+							>
+								<Icon className="icon-add" />
+							</Button>
+							<Button aria-label={__('Remove condition', 'kaliforms')}
+								variant="text"
+								onClick={() => props.conditionalLogicConditions.length === 1 ? setDefaultCondition() : removeCondition(idx)}
+							>
+								<Icon className="icon-remove" />
+
+							</Button>
 						</Grid>
 					</Grid>
 				))

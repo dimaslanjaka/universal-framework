@@ -1,8 +1,9 @@
 <?php
+
 namespace KaliForms\Inc\Frontend\FormFields;
 
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 /**
@@ -12,32 +13,38 @@ if (!defined('ABSPATH')) {
  */
 class File_Upload extends Form_Field
 {
-    /**
-     * Class constructor
-     */
-    public function __construct()
-    {
-        $this->id = 'fileUpload';
-    }
+	/**
+	 * Class constructor
+	 */
+	public function __construct()
+	{
+		$this->id = 'fileUpload';
+	}
 
-    /**
-     * Render function
-     *
-     * @return void
-     */
-    public function render($item, $form_info)
-    {
+	/**
+	 * Render function
+	 *
+	 * @return void
+	 */
+	public function render($item, $form_info)
+	{
 		$item['type'] = 'file';
-        $attributes = $this->generate_attribute_string($item);
+		if (isset($item['multiple']) && $item['multiple']) {
+			$item['data-max-files'] = isset($item['maxFiles']) && !empty($item['maxFiles']) ? absint($item['maxFiles']) : 2;
+		}
 
-        $offset = isset($item['offset']) && $item['offset'] > 0 ? 'offset-md-' . absint($item['offset']) : '';
-        $div = '<div class="col-12 col-md-' . absint($item['col']) . ' ' . $offset . '">';
-        $div .= $this->generate_label($item, $form_info);
-		$div .= '<input ' . $attributes . '>';
-		$div .= !empty($item['description']) ? '<br/><small>' . esc_html($item['description']) . '</small>' : '';
+		$attributes = $this->generate_attribute_string($item);
 
-        $div .= '</div>';
+		$offset = isset($item['offset']) && $item['offset'] > 0 ? 'offset-md-' . absint($item['offset']) : '';
+		$div    = '<div class="col-12 col-md-' . absint($item['col']) . ' ' . $offset . '">';
+		$div    .= $this->generate_label($item, $form_info);
+		$div    .= '<div data-internal-id="' . $item['grid_id'] . '">';
+		$div    .= '<input ' . $attributes . ' style="display:none">';
+		$div    .= '</div>';
+		$div    .= !empty($item['description']) ? '<br/><small>' . esc_html($item['description']) . '</small>' : '';
 
-        return $div;
-    }
+		$div .= '</div>';
+
+		return $div;
+	}
 }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import AddableListContainer from './AddableListContainer'
 import AddableListItem from './AddableListItem'
+import { store } from './../../store/store';
+import { observer } from "mobx-react"
 
-const AddableList = (props) => {
+const AddableList = observer((props) => {
 	const [choices, setChoices] = useState(Array.isArray(props.choices) ? props.choices : [])
 	const [orderChanged, setOrderChanged] = useState(Math.random().toString(36).substring(2))
 
@@ -36,6 +38,7 @@ const AddableList = (props) => {
 	 */
 	const addChoice = () => {
 		setChoices([...choices, { value: 'choice', label: 'This is the label' }])
+		props.onChange([...choices, { value: 'choice', label: 'This is the label' }]);
 	}
 
 	/**
@@ -67,26 +70,55 @@ const AddableList = (props) => {
 		}
 	}
 
+	const handleCheckboxChange = (e, idx) => {
+		// GET CURRENT DEFAULT VALUES - LETS SEE IF ITS EMPTY
+		let currentDefaultVal = store._FIELD_COMPONENTS_.getPropertyValue(store._UI_.activeFormFieldInSidebar, 'default').split(',')
+		currentDefaultVal = currentDefaultVal.filter(e => e !== '');
+		let existsValue = currentDefaultVal.length ? true : false;
+
+		if (props.selectableType === 'single') {
+			currentDefaultVal = [];
+		}
+
+		// Lets see if the value is relevant ( it might have changed )
+		let currentChoices = [];
+		choices.map(e => currentChoices.push({ value: e.value, checked: currentDefaultVal.includes(e.value) }))
+
+		// Update the current choice checked status
+		currentChoices[idx].checked = e;
+
+		// Create array that holds values
+		let newVal = [];
+		currentChoices.map(e => e.checked ? newVal.push(e.value) : false);
+		store._FIELD_COMPONENTS_.updatePropertyValue(store._UI_.activeFormFieldInSidebar, 'default', newVal.join(','))
+	}
+
 	return (
 		<AddableListContainer onSortEnd={(e) => onSortEnd(e)}
-			addChoice={addChoice.bind(this)}
+			addChoice={addChoice}
+			setChoices={setChoices}
+			choices={choices}
+			onChange={props.onChange}
 			lockAxis="y"
 			lockToContainerEdges={true}
 			useDragHandle
+			helperClass="addableListHandler"
 		>
 			{
 				choices.map((element, idx) => (
 					<AddableListItem
-						removeChoice={removeChoice.bind(this)}
-						handleChange={handleChange.bind(this)}
+						removeChoice={removeChoice}
+						handleChange={handleChange}
+						handleCheckboxChange={handleCheckboxChange}
 						element={element}
 						index={idx}
 						idx={idx}
-						key={'item-' + idx} />
+						key={'item-' + idx}
+					/>
 				))
 			}
 		</AddableListContainer>
 	);
-}
+})
 
 export default AddableList;
