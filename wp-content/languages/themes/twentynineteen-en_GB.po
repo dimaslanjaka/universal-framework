@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Themes - Twenty Nineteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-05-08 21:21:07+0000\n"
+"PO-Revision-Date: 2021-03-09 21:17:32+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: en_GB\n"
 "Project-Id-Version: Themes - Twenty Nineteen\n"
 
@@ -16,10 +16,146 @@ msgid "Our 2019 default theme is designed to show off the power of the block edi
 msgstr "Our 2019 default theme is designed to show off the power of the block Editor. It features custom styles for all the default blocks, and is built so that what you see in the editor looks like what you'll see on your website. Twenty Nineteen is designed to be adaptable to a wide range of websites, whether you’re running a photo blog, launching a new business, or supporting a non-profit. Featuring ample whitespace and modern sans-serif headlines paired with classic serif body text, it's built to be beautiful on all screen sizes."
 
 #. Theme Name of the theme
+#: inc/block-patterns.php:20
 msgid "Twenty Nineteen"
 msgstr "Twenty Nineteen"
 
-#. translators: %s: parent post link
+#: inc/block-patterns.php:195
+msgid "We help companies communicate with their customers."
+msgstr "We help companies communicate with their customers."
+
+#: inc/block-patterns.php:195
+msgid "Spark interest on social media"
+msgstr "Spark interest on social media"
+
+#: inc/block-patterns.php:192
+msgid "We help businesses grow."
+msgstr "We help businesses grow."
+
+#: inc/block-patterns.php:192
+msgid "Activate new customers"
+msgstr "Activate new customers"
+
+#: inc/block-patterns.php:189
+msgid "We help startups define (or refine) a clear brand identity."
+msgstr "We help startups define (or refine) a clear brand identity."
+
+#: inc/block-patterns.php:189
+msgid "Redefine brands"
+msgstr "Redefine brands"
+
+#: inc/block-patterns.php:179 inc/block-patterns.php:186
+msgid "What We Do"
+msgstr "What We Do"
+
+#: inc/block-patterns.php:167
+msgid "Oddly enough, Doug Watson also grew up working alongside his parents at a family-owned restaurant in Queens, NY. He &nbsp;worked on digital campaigns for Fortune 500 Companies before joining Eva Green Consulting."
+msgstr "Oddly enough, Doug Watson also grew up working alongside his parents at a family-owned restaurant in Queens, NY. He &nbsp;worked on digital campaigns for Fortune 500 Companies before joining Eva Green Consulting."
+
+#: inc/block-patterns.php:164
+msgid "Doug Watson"
+msgstr "Doug Watson"
+
+#: inc/block-patterns.php:159
+msgid "Eva Young grew up working alongside her parents at their restaurant in Queens, NY. She opened Eva Young Consulting in 2014 to help small businesses like her parents’ restaurant adapt to the digital age."
+msgstr "Eva Young grew up working alongside her parents at their restaurant in Queens, NY. She opened Eva Young Consulting in 2014 to help small businesses, like her parents’ restaurant, adapt to the digital age."
+
+#: inc/block-patterns.php:156
+msgid "Eva Young"
+msgstr "Eva Young"
+
+#: inc/block-patterns.php:145 inc/block-patterns.php:152
+msgid "Team"
+msgstr "Team"
+
+#: inc/block-patterns.php:131
+msgid "Content Strategy"
+msgstr "Content Strategy"
+
+#: inc/block-patterns.php:126
+msgid "Copywriting"
+msgstr "Copywriting"
+
+#: inc/block-patterns.php:121
+msgid "Marketing"
+msgstr "Marketing"
+
+#: inc/block-patterns.php:114
+msgid "Social Media"
+msgstr "Social Media"
+
+#: inc/block-patterns.php:109
+msgid "Mobile"
+msgstr "Mobile"
+
+#: inc/block-patterns.php:104
+msgid "Website Design"
+msgstr "Website Design"
+
+#: inc/block-patterns.php:103 inc/block-patterns.php:108
+#: inc/block-patterns.php:113 inc/block-patterns.php:120
+#: inc/block-patterns.php:125 inc/block-patterns.php:130
+#: inc/block-patterns.php:155 inc/block-patterns.php:163
+msgid "Gradient"
+msgstr "Gradient"
+
+#: inc/block-patterns.php:92 inc/block-patterns.php:98
+msgid "Services"
+msgstr "Services"
+
+#: inc/block-patterns.php:80
+msgid "Contact Us"
+msgstr "Contact Us"
+
+#: inc/block-patterns.php:74
+msgid "example@example.com"
+msgstr "example@example.com"
+
+#: inc/block-patterns.php:74
+msgid "(555) 555-5555"
+msgstr "(555) 555-5555"
+
+#: inc/block-patterns.php:69
+msgid "New York, New York 10023"
+msgstr "New York, New York 10023"
+
+#: inc/block-patterns.php:69
+msgid "20 Cooper Avenue"
+msgstr "20 Cooper Avenue"
+
+#: inc/block-patterns.php:58 inc/block-patterns.php:64
+msgid "Get In Touch"
+msgstr "Get in Touch"
+
+#: inc/block-patterns.php:46
+msgid "Learn More"
+msgstr "Learn More"
+
+#: inc/block-patterns.php:42
+msgid "Eva Young Consulting was founded in 2014 to meet the needs of small businesses in the San Francisco Bay Area. We help startups define a clear brand identity and digital strategy that will carry them through their financing rounds and scale as their business grows. Discover how we can boost your brand with a unique and powerful digital marketing strategy."
+msgstr "Eva Young Consulting was founded in 2014 to meet the needs of small businesses in the San Francisco Bay Area. We help startups define a clear brand identity and digital strategy that will carry them through their financing rounds and scale as their business grows. Discover how we can boost your brand with a unique and powerful digital marketing strategy."
+
+#: inc/block-patterns.php:39
+msgid "Advocating for Businesses and Entrepreneurs since 2014"
+msgstr "Advocating for Businesses and Entrepreneurs since 2014"
+
+#: inc/block-patterns.php:33
+msgid "About"
+msgstr "About"
+
+#: classes/class-twentynineteen-walker-comment.php:98
+msgid "Your comment is awaiting moderation. This is a preview; your comment will be visible after it has been approved."
+msgstr "Your comment is awaiting moderation. This is a preview; your comment will be visible after it has been approved."
+
+#: functions.php:154
+msgid "Dark Blue"
+msgstr "Dark Blue"
+
+#: functions.php:149
+msgid "Blue"
+msgstr "Blue"
+
+#. translators: %s: Parent post link.
 #: single.php:31
 msgid "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%s</span>"
 msgstr "<span class=\"meta-nav\">Published in</span><span class=\"post-title\">%s</span>"
@@ -29,21 +165,22 @@ msgctxt "Parent post link"
 msgid "<span class=\"meta-nav\">Published in</span><br><span class=\"post-title\">%title</span>"
 msgstr "<span class=\"meta-nav\">Published in</span><br><span class=\"post-title\">%title</span>"
 
-#: template-parts/content/content.php:18
 #: template-parts/content/content-excerpt.php:18
+#: template-parts/content/content.php:18
 msgctxt "post"
 msgid "Featured"
 msgstr "Featured"
 
-#: inc/back-compat.php:39 inc/back-compat.php:53 inc/back-compat.php:73
+#. translators: %s: WordPress version.
+#: inc/back-compat.php:43 inc/back-compat.php:60 inc/back-compat.php:83
 msgid "Twenty Nineteen requires at least WordPress version 4.7. You are running version %s. Please upgrade and try again."
 msgstr "Twenty Nineteen requires WordPress version 4.7+ or higher. You are running version %s. Upgrade it and try again."
 
-#: inc/template-functions.php:216
+#: inc/template-functions.php:144
 msgid "Back"
 msgstr "Back"
 
-#: inc/template-functions.php:209
+#: inc/template-functions.php:137
 msgid "More"
 msgstr "More"
 
@@ -65,55 +202,51 @@ msgctxt "primary color"
 msgid "Default"
 msgstr "Default"
 
-#: functions.php:166
+#: functions.php:169
 msgid "White"
 msgstr "White"
 
-#: functions.php:161
+#: functions.php:164
 msgid "Light Gray"
 msgstr "Light grey"
 
-#: functions.php:156
+#: functions.php:159
 msgid "Dark Gray"
 msgstr "Dark grey"
 
-#: functions.php:151
-msgid "Secondary"
-msgstr "Secondary"
-
-#: functions.php:134
+#: functions.php:137
 msgid "XL"
 msgstr "XL"
 
-#: functions.php:133
+#: functions.php:136
 msgid "Huge"
 msgstr "Huge"
 
-#: functions.php:128
+#: functions.php:131
 msgid "L"
 msgstr "L"
 
-#: functions.php:127
+#: functions.php:130
 msgid "Large"
 msgstr "Large"
 
-#: functions.php:122
+#: functions.php:125
 msgid "M"
 msgstr "M"
 
-#: functions.php:121
+#: functions.php:124
 msgid "Normal"
 msgstr "Normal"
 
-#: functions.php:115
-msgid "Small"
-msgstr "Small"
-
-#: functions.php:116
+#: functions.php:119
 msgid "S"
 msgstr "S"
 
-#: functions.php:60 footer.php:37
+#: functions.php:118
+msgid "Small"
+msgstr "Small"
+
+#: footer.php:37 functions.php:60
 msgid "Footer Menu"
 msgstr "Footer menu"
 
@@ -126,11 +259,11 @@ msgstr "Full size"
 msgid "Page"
 msgstr "Page"
 
-#: functions.php:190
+#: functions.php:196
 msgid "Add widgets here to appear in your footer."
 msgstr "Add widgets here to appear in your footer."
 
-#: functions.php:188 template-parts/footer/footer-widgets.php:12
+#: functions.php:194 template-parts/footer/footer-widgets.php:12
 msgid "Footer"
 msgstr "Footer"
 
@@ -142,7 +275,7 @@ msgstr "Primary colour"
 msgid "No comments"
 msgstr "No comments"
 
-#. translators: %1(X comments)$s
+#. translators: %d: Number of comments.
 #: template-parts/post/discussion-meta.php:16
 msgid "%d Comment"
 msgid_plural "%d Comments"
@@ -153,7 +286,7 @@ msgstr[1] "%d Comments"
 msgid "View more posts"
 msgstr "View more posts"
 
-#. translators: %s: post author
+#. translators: %s: Post author.
 #: template-parts/post/author-bio.php:17
 msgid "Published by %s"
 msgstr "Published by %s"
@@ -162,15 +295,16 @@ msgstr "Published by %s"
 msgid "Top Menu"
 msgstr "Top menu"
 
-#. translators: %s: Name of current post. Only visible to screen readers
+#. translators: %s: Post title.
+#. translators: %s: Post title. Only visible to screen readers.
+#: functions.php:225 template-parts/content/content-single.php:27
 #: template-parts/content/content.php:36
-#: template-parts/content/content-single.php:27
 msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 msgstr "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
 
 #: image.php:52 template-parts/content/content-page.php:27
-#: template-parts/content/content.php:49
 #: template-parts/content/content-single.php:40
+#: template-parts/content/content.php:49
 msgid "Pages:"
 msgstr "Pages:"
 
@@ -182,10 +316,10 @@ msgstr "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps sear
 msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
 msgstr "Sorry, but nothing matched your search terms. Please try again with some different keywords."
 
-#. translators: 1: link to WP admin new post page.
+#. translators: %s: Link to WP admin new post page.
 #: template-parts/content/content-none.php:26
-msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
-msgstr "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgid "Ready to publish your first post? <a href=\"%s\">Get started here</a>."
+msgstr "Ready to publish your first post? <a href=\"%s\">Get started here</a>."
 
 #: template-parts/content/content-none.php:16
 msgid "Nothing Found"
@@ -208,14 +342,14 @@ msgid "Next Post"
 msgstr "Next post"
 
 #: search.php:22
-msgid "Search results for:"
+msgid "Search results for: "
 msgstr "Search results for:"
 
-#: inc/template-tags.php:234
+#: inc/template-tags.php:233
 msgid "Older posts"
 msgstr "Older posts"
 
-#: inc/template-tags.php:230
+#: inc/template-tags.php:229
 msgid "Newer posts"
 msgstr "Newer posts"
 
@@ -227,12 +361,12 @@ msgstr "Tags:"
 msgid "Posted in"
 msgstr "Posted in"
 
-#. translators: used between list items, there is a space after the comma.
+#. translators: Used between list items, there is a space after the comma.
 #: inc/template-tags.php:86 inc/template-tags.php:98
 msgid ", "
 msgstr ", "
 
-#. translators: %s: Name of current post. Only visible to screen readers.
+#. translators: %s: Post title. Only visible to screen readers.
 #: inc/template-tags.php:63
 msgid "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
 msgstr "Leave a comment<span class=\"screen-reader-text\"> on %s</span>"
@@ -255,7 +389,7 @@ msgstr "Y"
 msgid "Archives:"
 msgstr "Archives:"
 
-#. translators: %s: Taxonomy singular name
+#. translators: %s: Taxonomy singular name.
 #: inc/template-functions.php:90
 msgid "%s Archives:"
 msgstr "%s archives:"
@@ -288,10 +422,9 @@ msgstr "Tag archives: "
 msgid "Category Archives: "
 msgstr "Category archives: "
 
-#. translators: %s: Name of current post. Only visible to screen readers
-#. translators: %s: Name of current post. Only visible to screen readers.
-#: template-parts/content/content-page.php:41
-#: template-parts/header/entry-header.php:32 inc/template-tags.php:120
+#. translators: %s: Post title. Only visible to screen readers.
+#: inc/template-tags.php:120 template-parts/content/content-page.php:41
+#: template-parts/header/entry-header.php:32
 msgid "Edit <span class=\"screen-reader-text\">%s</span>"
 msgstr "Edit <span class=\"screen-reader-text\">%s</span>"
 
@@ -303,7 +436,7 @@ msgstr "Skip to content"
 msgid "Social Links Menu"
 msgstr "Social links menu"
 
-#: functions.php:59 functions.php:146
+#: functions.php:59
 msgid "Primary"
 msgstr "Primary"
 
@@ -328,7 +461,7 @@ msgstr "Previous"
 msgid "Comments"
 msgstr "Comments"
 
-#. translators: 1: number of comments, 2: post title
+#. translators: 1: Number of comments, 2: Post title.
 #: comments.php:44
 msgctxt "comments title"
 msgid "%1$s reply on &ldquo;%2$s&rdquo;"
@@ -336,7 +469,7 @@ msgid_plural "%1$s replies on &ldquo;%2$s&rdquo;"
 msgstr[0] "%1$s reply on &ldquo;%2$s&rdquo;"
 msgstr[1] "%1$s replies on &ldquo;%2$s&rdquo;"
 
-#. translators: %s: post title
+#. translators: %s: Post title.
 #: comments.php:40
 msgctxt "comments title"
 msgid "One reply on &ldquo;%s&rdquo;"
@@ -350,20 +483,21 @@ msgstr "Leave a comment"
 msgid "Join the Conversation"
 msgstr "Join the conversation"
 
-#: classes/class-twentynineteen-walker-comment.php:99
+#: classes/class-twentynineteen-walker-comment.php:96
 msgid "Your comment is awaiting moderation."
 msgstr "Your comment is awaiting moderation."
 
-#: classes/class-twentynineteen-walker-comment.php:94
+#: classes/class-twentynineteen-walker-comment.php:89
 msgid "Edit"
 msgstr "Edit"
 
-#. translators: 1: comment date, 2: comment time
-#: classes/class-twentynineteen-walker-comment.php:86
+#. translators: 1: Comment date, 2: Comment time.
+#: classes/class-twentynineteen-walker-comment.php:78
 msgid "%1$s at %2$s"
 msgstr "%1$s at %2$s"
 
-#: classes/class-twentynineteen-walker-comment.php:66
+#. translators: %s: Comment author link.
+#: classes/class-twentynineteen-walker-comment.php:59
 msgid "%s <span class=\"screen-reader-text says\">says:</span>"
 msgstr "%s <span class=\"screen-reader-text says\">says:</span>"
 

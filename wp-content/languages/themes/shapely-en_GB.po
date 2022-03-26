@@ -2,22 +2,39 @@
 # This file is distributed under the same license as the Themes - Shapely package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2019-02-17 16:55:52+0000\n"
+"PO-Revision-Date: 2020-09-24 16:23:28+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: en_GB\n"
 "Project-Id-Version: Themes - Shapely\n"
 
 #. Description of the theme
-msgid "Shapely is a powerful and versatile one page WordPress theme with pixel perfect design and outstanding functionality. It is by far the most advanced free WordPress theme available today with loads of unmatched customization options. This theme comes with several homepage widgets that can be used to add portfolio, testimonials, parallax sections, your product or service information, call for action and much more. Shapely supports most free and premium WordPress plugins such as WooCommerce, Jetpack, Gravity Forms, Contact Form 7, Yoast SEO, Google Analytics by Yoast and much more. This theme is the best suited for business, landing page, portfolio, ecommerce, store, local business,  personal websites but can be tweaked to be used as blog, magazine or any other awesome website while highlighting its unique one page setup. This is going to be the last WordPress theme you will ever want to use because it is so much better than anything you have seen. Needless to say that this theme is SEO friendly thanks to its well optimized strucutre. Shapely theme is mobile friendly and fully responsive making it your best multipurpose partnert for any project and website."
-msgstr "Shapely is a powerful and versatile one page WordPress theme with pixel perfect design and outstanding functionality. It is by far the most advanced free WordPress theme available today with loads of unmatched customisation options. This theme comes with several home page widgets that can be used to add portfolio, testimonials, parallax sections, your product or service information, call for action and much more. Shapely supports most free and premium WordPress plugins such as WooCommerce, Jetpack, Gravity Forms, Contact Form 7, Yoast SEO, Google Analytics by Yoast and much more. This theme is best suited for business, landing page, portfolio, eCommerce, store, local business and personal websites, but can be tweaked to be used as a blog, magazine or any other awesome website, while highlighting its unique one page setup. This is going to be the last WordPress theme you will ever want to use because it is so much better than anything you have seen. Needless to say, this theme is SEO friendly thanks to its well optimised structure. Shapely theme is mobile friendly and fully responsive making it your best multipurpose partner for any project and website."
+msgid "Shapely is a powerful and versatile one page WordPress theme with pixel perfect design and outstanding functionality. It is by far the most advanced free WordPress theme available today with loads of unmatched customization options. This theme comes with several homepage widgets that can be used to add portfolio, testimonials, parallax sections, your product or service information, call for action and much more. Shapely supports most free and premium WordPress plugins such as WooCommerce, Jetpack, Kali Forms, Gravity Forms, Contact Form 7, Yoast SEO, Google Analytics by Yoast and much more. This theme is the best suited for business, landing page, portfolio, ecommerce, store, local business,  personal websites but can be tweaked to be used as blog, magazine or any other awesome website while highlighting its unique one page setup. This is going to be the last WordPress theme you will ever want to use because it is so much better than anything you have seen. Needless to say that this theme is SEO friendly thanks to its well optimized strucutre. Shapely theme is mobile friendly and fully responsive making it your best multipurpose partnert for any project and website."
+msgstr "Shapely is a powerful and versatile one page WordPress theme with pixel perfect design and outstanding functionality. It is by far the most advanced free WordPress theme available today with loads of unmatched customisation options. This theme comes with several homepage widgets that can be used to add portfolio, testimonials, parallax sections, your product or service information, call for action and much more. Shapely supports most free and premium WordPress plugins such as WooCommerce, Jetpack, Kali Forms, Gravity Forms, Contact Form 7, Yoast SEO, Google Analytics by Yoast and much more. This theme is the best suited for business, landing page, portfolio, eCommerce, store, local business, personal websites, but can be tweaked to be used as a blog, magazine or any other awesome website, while highlighting its unique one page setup. This is going to be the last WordPress theme you will ever want to use because it is so much better than anything you have seen. Needless to say that this theme is SEO friendly thanks to its well optimised structure. Shapely theme is mobile friendly and fully responsive making it your best multipurpose partner for any project and website."
 
 #. Theme Name of the theme
 msgid "Shapely"
 msgstr "Shapely"
+
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:224
+msgid "Class Not allowed"
+msgstr "Class not allowed"
+
+#: inc/class-shapely.php:157
+msgid "Kali Forms"
+msgstr "Kali Forms"
+
+#: inc/class-shapely-notify-system.php:172
+msgid "Activate: Kali Forms"
+msgstr "Activate: Kali Forms"
+
+#: inc/class-shapely-notify-system.php:167
+#: inc/class-shapely-notify-system.php:175
+msgid "Install: Kali Forms"
+msgstr "Install: Kali Forms"
 
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:614
 msgid "Integrations"
@@ -91,21 +108,51 @@ msgstr "This is the %s sidebar, add some widgets to it to change it."
 msgid "Recommended"
 msgstr "Recommended"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:598
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:611
 msgid "Deactivate now"
 msgstr "Deactivate now"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:592
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:605
 msgid "Activate now"
 msgstr "Activate now"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:571
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:584
 msgid "Install and Activate"
 msgstr "Install and Activate"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:526
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:539
 msgid "Registration"
 msgstr "Registration"
+
+#. Translators: Welcome Screen Title.
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:440
+msgid "Welcome to %1$s - v"
+msgstr "Welcome to %1$s - v"
+
+#. Translators: Menu Title
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:406
+msgid "About %1$s"
+msgstr "About %1$s"
+
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:320
+msgid "Activating"
+msgstr "Activating"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:64
+msgid "Help"
+msgstr "Help"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:51
+msgid "Press return or enter to open this section"
+msgstr "Press return or enter to open this section"
+
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:507
+msgid "Column Group"
+msgstr "Column Group"
+
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:484
+msgid "Column Spacing"
+msgstr "Column Spacing"
 
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:457
 msgid "Column Stretch"
@@ -167,52 +214,6 @@ msgstr "Top"
 msgid "Center"
 msgstr "Centre"
 
-#: inc/class-shapely.php:43
-msgid "Clicking the button below will install and activate plugins, add widgets and set static front page to your WordPress installation. Click advanced to customize the import process."
-msgstr "Clicking the button below will install and activate plugins, add widgets and set a static front page to your WordPress installation. Click advanced to customise the import process."
-
-#: inc/class-shapely.php:42 inc/class-shapely.php:155 inc/class-shapely.php:157
-msgid "Import Demo Content"
-msgstr "Import Demo Content"
-
-#: inc/class-shapely-builder.php:69
-msgid "This widgets will appear in %s page"
-msgstr "This widget will appear in %s page"
-
-#: inc/class-shapely-builder.php:67
-msgid "Page: %s"
-msgstr "Page: %s"
-
-#. Translators: Welcome Screen Title.
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:427
-msgid "Welcome to %1$s - v"
-msgstr "Welcome to %1$s - v"
-
-#. Translators: Menu Title
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:393
-msgid "About %1$s"
-msgstr "About %1$s"
-
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:304
-msgid "Activating"
-msgstr "Activating"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:64
-msgid "Help"
-msgstr "Help"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:51
-msgid "Press return or enter to open this section"
-msgstr "Press return or enter to open this section"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:507
-msgid "Column Group"
-msgstr "Column Group"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:484
-msgid "Column Spacing"
-msgstr "Column Spacing"
-
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:344
 msgid "Background Position"
 msgstr "Background Position"
@@ -237,44 +238,56 @@ msgstr "Styles"
 msgid "Fields"
 msgstr "Fields"
 
-#: inc/class-shapely.php:177
+#: inc/class-shapely.php:186
 msgid "Demo Content"
 msgstr "Demo Content"
 
-#: inc/class-shapely.php:169
+#: inc/class-shapely.php:178
 msgid "Plugins"
 msgstr "Plugins"
 
-#: inc/class-shapely.php:158
+#: inc/class-shapely.php:167
 msgid "Advanced"
 msgstr "Advanced"
 
-#: inc/class-shapely.php:148
-msgid "Contact Form 7"
-msgstr "Contact Form 7"
-
-#: inc/class-shapely.php:147
+#: inc/class-shapely.php:156
 msgid "Jetpack"
 msgstr "Jetpack"
 
-#: inc/class-shapely.php:146
+#: inc/class-shapely.php:155
 msgid "Shapely Companion"
 msgstr "Shapely Companion"
 
-#: inc/class-shapely.php:142
+#: inc/class-shapely.php:151
 msgid "Import HomePage Widgets"
 msgstr "Import Home Page Widgets"
 
-#: inc/class-shapely.php:141
+#: inc/class-shapely.php:150
 msgid "Set Static FrontPage"
 msgstr "Set Static Front Page"
 
-#: inc/class-shapely.php:122
+#: inc/class-shapely.php:131
 msgid " is social :"
 msgstr "is social :"
 
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-upsell.php:70
+#: inc/class-shapely.php:52
+msgid "Clicking the button below will install and activate plugins, add widgets and set static front page to your WordPress installation. Click advanced to customize the import process."
+msgstr "Clicking the button below will install and activate plugins, add widgets and set a static front page to your WordPress installation. Click advanced to customise the import process."
+
+#: inc/class-shapely.php:51 inc/class-shapely.php:164 inc/class-shapely.php:166
+msgid "Import Demo Content"
+msgstr "Import Demo Content"
+
+#: inc/class-shapely-builder.php:69
+msgid "This widgets will appear in %s page"
+msgstr "This widget will appear in %s page"
+
+#: inc/class-shapely-builder.php:67
+msgid "Page: %s"
+msgstr "Page: %s"
+
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:250
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-upsell.php:70
 msgid "See what's in the PRO version"
 msgstr "See what's in the PRO version"
 
@@ -303,14 +316,15 @@ msgid "Add a Section"
 msgstr "Add a Section"
 
 #. Translators: Section limit
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:591
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:290
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:591
 msgid "sections"
 msgstr "sections"
 
 #. Translators: Section limit
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:590
+#. Translators: Section limit
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:290
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-section-repeater.php:590
 msgid "Limit: "
 msgstr "Limit: "
 
@@ -321,6 +335,83 @@ msgstr "Edit column size"
 #: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:122
 msgid "Default"
 msgstr "Default"
+
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:57
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:129
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:56
+msgid "Close"
+msgstr "Close"
+
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:288
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:126
+msgid "Select File"
+msgstr "Select File"
+
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:278
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:112
+msgid "Recommended resolution:"
+msgstr "Recommended resolution:"
+
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:377
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-color-picker.php:82
+msgid "(clear)"
+msgstr "(clear)"
+
+#: inc/libraries/epsilon-framework/classes/backend/class-epsilon-content-backup.php:221
+msgid "This page contains the content created by the customizer."
+msgstr "This page contains the content created by the customiser."
+
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-color-coded-categories.php:112
+msgid "This color will affect category related elements such as links, titles, etc. (defined by your theme)"
+msgstr "This colour will affect category related elements such as links, titles, etc. (defined by your theme)"
+
+#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:71
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:235
+msgid "Class does not exist"
+msgstr "Class does not exist"
+
+#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:34
+#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:58
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:189
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:213
+msgid "Not allowed"
+msgstr "Not allowed"
+
+#: inc/libraries/epsilon-framework/class-epsilon-framework.php:259
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:242
+msgid "Row"
+msgstr "Row"
+
+#: inc/libraries/epsilon-framework/class-epsilon-framework.php:258
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:276
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:110
+msgid "Upload image"
+msgstr "Upload image"
+
+#: inc/libraries/epsilon-framework/class-epsilon-framework.php:257
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:101
+msgid "Add"
+msgstr "Add"
+
+#: inc/libraries/epsilon-framework/class-epsilon-framework.php:256
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:56
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:128
+#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:284
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:118
+msgid "Remove"
+msgstr "Remove"
+
+#: inc/customizer.php:1193
+msgid "Set the default template for single project"
+msgstr "Set the default template for single project"
+
+#: inc/customizer.php:1192
+msgid "Single Project Template"
+msgstr "Single Project Template"
+
+#: inc/customizer.php:1119 inc/customizer.php:1169
+msgid "This will move the author box from the bottom of the project on top on the left side"
+msgstr "This will move the author box from the bottom of the project on top on the left side"
 
 #: inc/customizer.php:1118 inc/customizer.php:1168
 msgid "Project Author Left Side"
@@ -382,87 +473,6 @@ msgstr "This will show/hide the project title from the callout"
 msgid "Choose the template for your projects archive page"
 msgstr "Choose the template for your projects archive page"
 
-#: inc/class-shapely-related-posts.php:199
-msgid "Related projects"
-msgstr "Related projects"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:57
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:129
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-doubled.php:56
-msgid "Close"
-msgstr "Close"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:288
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:126
-msgid "Select File"
-msgstr "Select File"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:278
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:112
-msgid "Recommended resolution:"
-msgstr "Recommended resolution:"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:377
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-color-picker.php:82
-msgid "(clear)"
-msgstr "(clear)"
-
-#: inc/libraries/epsilon-framework/classes/backend/class-epsilon-content-backup.php:221
-msgid "This page contains the content created by the customizer."
-msgstr "This page contains the content created by the customiser."
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-color-coded-categories.php:112
-msgid "This color will affect category related elements such as links, titles, etc. (defined by your theme)"
-msgstr "This colour will affect category related elements such as links, titles, etc. (defined by your theme)"
-
-#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:61
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:219
-msgid "Class does not exist"
-msgstr "Class does not exist"
-
-#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:37
-#: inc/libraries/epsilon-framework/classes/class-epsilon-ajax-controller.php:50
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:195
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:208
-msgid "Not allowed"
-msgstr "Not allowed"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:242
-#: inc/libraries/epsilon-framework/class-epsilon-framework.php:259
-msgid "Row"
-msgstr "Row"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:276
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:110
-#: inc/libraries/epsilon-framework/class-epsilon-framework.php:258
-msgid "Upload image"
-msgstr "Upload image"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-repeater.php:101
-#: inc/libraries/epsilon-framework/class-epsilon-framework.php:257
-msgid "Add"
-msgstr "Add"
-
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:56
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:128
-#: inc/libraries/epsilon-framework/classes/output/class-epsilon-repeater-templates.php:284
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-image.php:118
-#: inc/libraries/epsilon-framework/class-epsilon-framework.php:256
-msgid "Remove"
-msgstr "Remove"
-
-#: inc/customizer.php:1193
-msgid "Set the default template for single project"
-msgstr "Set the default template for single project"
-
-#: inc/customizer.php:1192
-msgid "Single Project Template"
-msgstr "Single Project Template"
-
-#: inc/customizer.php:1119 inc/customizer.php:1169
-msgid "This will move the author box from the bottom of the project on top on the left side"
-msgstr "This will move the author box from the bottom of the project on top on the left side"
-
 #: inc/customizer.php:943
 msgid "Projects Template"
 msgstr "Projects Template"
@@ -523,8 +533,12 @@ msgstr "Logo Height:"
 msgid "Logo Width:"
 msgstr "Logo Width:"
 
+#: inc/class-shapely-related-posts.php:199
+msgid "Related projects"
+msgstr "Related projects"
+
 #. Translators: Notice
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:367
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:380
 msgid "Welcome! Thank you for choosing %3$s! To fully take advantage of the best our theme can offer please make sure you visit our %1$swelcome page%2$s."
 msgstr "Welcome! Thank you for choosing %3$s! To fully take advantage of the best our theme can offer please make sure you visit our %1$swelcome page%2$s."
 
@@ -589,32 +603,52 @@ msgid "Panel to update Blog related options"
 msgstr "Panel to update Blog related options"
 
 #. Translators: Notice URL
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:374
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:387
 msgid "Get started with %1$s"
 msgstr "Get started with %1$s"
 
 #. Translators: Notice Title
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:363
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:376
 msgid "Welcome to %1$s"
 msgstr "Welcome to %1$s"
 
 #: inc/class-shapely-notify-system.php:223
-msgid "Please activate Contact Form 7. Note that you won't be able to use Contact widget without it."
-msgstr "Please activate Contact Form 7. Note that you won't be able to use the Contact widget without it."
+msgid "Please activate Kali Forms. Note that you won't be able to use Contact widget without it."
+msgstr "Please activate Kali Forms. Note that you won't be able to use the Contact widget without it."
 
 #: inc/class-shapely-notify-system.php:218
 #: inc/class-shapely-notify-system.php:226
-msgid "Please install Contact Form 7. Note that you won't be able to use Contact widget without it."
-msgstr "Please install Contact Form 7. Note that you won't be able to use the Contact widget without it."
+msgid "Please install Kali Forms. Note that you won't be able to use Contact widget without it."
+msgstr "Please install Kali Forms. Note that you won't be able to use the Contact widget without it."
 
-#: inc/class-shapely-notify-system.php:172
-msgid "Activate: Contact Form 7"
-msgstr "Activate: Contact Form 7"
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:287
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:353
+msgid "Update"
+msgstr "Update"
 
-#: inc/class-shapely-notify-system.php:167
-#: inc/class-shapely-notify-system.php:175
-msgid "Install: Contact Form 7"
-msgstr "Install: Contact Form 7"
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:118
+msgid "Review this theme on w.org"
+msgstr "Review this theme on w.org"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:116
+msgid "Twitter"
+msgstr "Twitter"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:114
+msgid "Facebook"
+msgstr "Facebook"
+
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:314
+msgid "Line Height"
+msgstr "Line Height"
+
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:305
+msgid "Font Size"
+msgstr "Font Size"
+
+#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:272
+msgid "Theme default"
+msgstr "Theme default"
 
 #: inc/customizer.php:814 inc/customizer.php:823
 msgid "Show/hide posts' categories from the Category Page"
@@ -679,35 +713,6 @@ msgstr "The URL of the call to action section's button from the footer"
 msgid "The label of the call to action section's button from the footer"
 msgstr "The label of the call to action section's button from the footer"
 
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:287
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:353
-msgid "Update"
-msgstr "Update"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:118
-msgid "Review this theme on w.org"
-msgstr "Review this theme on w.org"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:116
-msgid "Twitter"
-msgstr "Twitter"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:114
-msgid "Facebook"
-msgstr "Facebook"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:314
-msgid "Line Height"
-msgstr "Line Height"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:305
-msgid "Font Size"
-msgstr "Font Size"
-
-#: inc/libraries/epsilon-framework/customizer/controls/class-epsilon-control-typography.php:272
-msgid "Theme default"
-msgstr "Theme default"
-
 #: inc/customizer.php:341
 msgid "The title of the call to action section from footer"
 msgstr "The title of the call to action section from the footer"
@@ -740,11 +745,11 @@ msgstr "Learn more"
 msgid "Theme documentation"
 msgstr "Theme documentation"
 
-#: inc/class-shapely.php:123
+#: inc/class-shapely.php:132
 msgid "Recomended Plugins :"
 msgstr "Recommended Plugins :"
 
-#: inc/class-shapely.php:121
+#: inc/class-shapely.php:130
 msgid "Recomended Actions"
 msgstr "Recommended Actions"
 
@@ -760,6 +765,18 @@ msgid_plural "%1$s COMMENTS"
 msgstr[0] "%1$s COMMENT"
 msgstr[1] "%1$s COMMENTS"
 
+#. Template Name of the theme
+msgid "Home Page"
+msgstr "Home Page"
+
+#: template-parts/content-none.php:43
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+
+#: template-parts/content-none.php:36
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+
 #: template-parts/content-none.php:30
 msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
 msgstr "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
@@ -768,17 +785,17 @@ msgstr "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>.
 msgid "Nothing Found"
 msgstr "Nothing Found"
 
-#: template-parts/content-grid-wide.php:74
 #: template-parts/content-grid-small.php:67
+#: template-parts/content-grid-wide.php:74
 msgid "Read more %s <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Read more %s <span class=\"meta-nav\">&rarr;</span>"
 
-#: template-parts/content-attachment.php:37 template-parts/content.php:88
-#: template-parts/content.php:102 template-parts/content-page.php:23
-#: template-parts/content-grid-wide.php:86
-#: template-parts/content-portfolio.php:88
-#: template-parts/content-portfolio.php:102
+#: template-parts/content-attachment.php:37
 #: template-parts/content-grid-small.php:79
+#: template-parts/content-grid-wide.php:86 template-parts/content-page.php:23
+#: template-parts/content-portfolio.php:88
+#: template-parts/content-portfolio.php:102 template-parts/content.php:88
+#: template-parts/content.php:102
 msgid "Pages:"
 msgstr "Pages:"
 
@@ -795,7 +812,8 @@ msgid "View all posts in %s"
 msgstr "View all posts in %s"
 
 #. translators: %s: Name of current post
-#: template-parts/content-page.php:53 inc/template-tags.php:114
+#. translators: %s: Name of current post
+#: inc/template-tags.php:114 template-parts/content-page.php:53
 msgid "Edit %s"
 msgstr "Edit %s"
 
@@ -820,6 +838,7 @@ msgid "Posted in %1$s"
 msgstr "Posted in %1$s"
 
 #. translators: used between list items, there is a space after the comma
+#. translators: used between list items, there is a space after the comma
 #: inc/template-tags.php:92 inc/template-tags.php:98
 msgid ", "
 msgstr ", "
@@ -827,6 +846,70 @@ msgstr ", "
 #: inc/template-tags.php:76
 msgid "by"
 msgstr "by"
+
+#: inc/class-wp-bootstrap-navwalker.php:207
+msgid "Add a menu"
+msgstr "Add a menu"
+
+#: inc/extras.php:781
+msgid "Portfolio"
+msgstr "Portfolio"
+
+#: inc/extras.php:776
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:801
+msgid "Blog"
+msgstr "Blog"
+
+#: inc/extras.php:622
+msgctxt "noun"
+msgid "Comment"
+msgstr "Comment"
+
+#: inc/extras.php:621
+msgid "Leave Comment"
+msgstr "Leave Comment"
+
+#: inc/extras.php:617
+msgid "Your Website (optional)"
+msgstr "Your Website (optional)"
+
+#: inc/extras.php:616
+msgid "Email Address"
+msgstr "E-mail Address"
+
+#: inc/extras.php:615
+msgid "Your Name"
+msgstr "Your Name"
+
+#: inc/extras.php:582
+msgid "Your comment is awaiting moderation."
+msgstr "Your comment is awaiting moderation."
+
+#: inc/extras.php:567
+msgid "Edit"
+msgstr "Edit"
+
+#. translators: 1: date, 2: time
+#: inc/extras.php:563
+msgid "%1$s at %2$s"
+msgstr "%1$s at %2$s"
+
+#: inc/extras.php:417 inc/extras.php:778 woocommerce/product-searchform.php:27
+msgid "Search"
+msgstr "Search"
+
+#: inc/extras.php:416
+msgid "Type Here"
+msgstr "Type Here"
+
+#: inc/extras.php:415 woocommerce/product-searchform.php:25
+msgid "Search for:"
+msgstr "Search for:"
+
+#: inc/extras.php:381
+msgctxt "Read More"
+msgid "Read More"
+msgstr "Read More"
 
 #: inc/extras.php:118
 msgid "Theme by %1$s Powered by %2$s"
@@ -896,6 +979,67 @@ msgstr "Large Image and Grid"
 msgid "Grid only"
 msgstr "Grid only"
 
+#: inc/customizer.php:768
+msgid "Blog Layout"
+msgstr "Blog Layout"
+
+#: inc/customizer.php:672 inc/customizer.php:722
+msgid "Post Author Left Side"
+msgstr "Post Author Left Side"
+
+#: inc/customizer.php:663 inc/customizer.php:714
+msgid "Post Author Area"
+msgstr "Post Author Area"
+
+#: inc/customizer.php:654 inc/customizer.php:706
+msgid "Related Posts Area"
+msgstr "Related Posts Area"
+
+#: inc/customizer.php:645 inc/customizer.php:698
+msgid "Tags Post Meta"
+msgstr "Tags Post Meta"
+
+#: inc/customizer.php:636 inc/customizer.php:690 inc/customizer.php:1082
+#: inc/customizer.php:1136
+msgid "First Letter Caps"
+msgstr "First Letter Caps"
+
+#: inc/customizer.php:507
+msgid "Copyright Text"
+msgstr "Copyright Text"
+
+#: inc/customizer.php:491
+msgid "Footer"
+msgstr "Footer"
+
+#: inc/customizer.php:369
+msgid "CFA Button Link"
+msgstr "CFA Button Link"
+
+#: inc/customizer.php:355
+msgid "Text for Footer Callout Button"
+msgstr "Text for Footer Callout Button"
+
+#: inc/customizer.php:340
+msgid "Text for Footer Callout"
+msgstr "Text for Footer Callout"
+
+#: inc/customizer.php:908
+msgid "Portfolio Archive Description"
+msgstr "Portfolio Archive Description"
+
+#: inc/customizer.php:893
+msgid "Portfolio Archive Title"
+msgstr "Portfolio Archive Title"
+
+#: inc/customizer.php:298
+msgid "Heading for the Blog page"
+msgstr "Heading for the Blog page"
+
+#: inc/customizer.php:297
+msgid "Blog Name in Top Callout"
+msgstr "Blog Name in Top Callout"
+
 #: inc/customizer.php:273 inc/customizer.php:281
 msgid "Title in Blog Post"
 msgstr "Title in Blog Post"
@@ -937,168 +1081,26 @@ msgstr "Panel to update Shapely theme options"
 msgid "Related articles "
 msgstr "Related articles "
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:520
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:533
 msgid "Support"
 msgstr "Support"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:514
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:527
 msgid "Recommended Plugins"
 msgstr "Recommended Plugins"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:508
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:521
 msgid "Recommended Actions"
 msgstr "Recommended Actions"
 
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:502
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:515
 msgid "Getting Started"
 msgstr "Getting Started"
 
-#: inc/libraries/welcome-screen/sections/getting-started.php:11
-msgid "Step 1 - Implement recommended actions"
-msgstr "Step 1 - Implement recommended actions"
-
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:302
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:306
-#: inc/libraries/welcome-screen/sections/recommended-actions.php:88
-msgid "Hooray! There are no required actions for you right now."
-msgstr "Hooray! There are no required actions for you right now."
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:291
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:357
-msgid "Deactivate"
-msgstr "Deactivate"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:283
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:349
-msgid "Activate"
-msgstr "Activate"
-
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:279
-#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:345
-msgid "Install"
-msgstr "Install"
-
-#: inc/class-shapely-notify-system.php:237
-msgid "Please activate Yoast SEO plugin."
-msgstr "Please activate the Yoast SEO plugin."
-
-#: inc/class-shapely-notify-system.php:232
-#: inc/class-shapely-notify-system.php:240
-msgid "Please install Yoast SEO plugin."
-msgstr "Please install the Yoast SEO plugin."
-
 #. Translators: Welcome Screen Description.
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:433
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:446
 msgid "%1$s is now installed and ready to use! Get ready to build something beautiful. We hope you enjoy it! We want to make sure you have the best experience using %1$s and that is why we gathered here all the necessary information for you. We hope you will enjoy using %1$s, as much as we enjoy creating great products."
 msgstr "%1$s is now installed and ready to use! Get ready to build something beautiful. We hope you enjoy it! We want to make sure you have the best experience using %1$s and that is why we gathered here all the necessary information for you. We hope you will enjoy using %1$s, as much as we enjoy creating great products."
-
-#: inc/class-shapely-notify-system.php:208
-msgid "Please activate Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
-msgstr "Please activate Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
-
-#: inc/class-shapely-notify-system.php:203
-#: inc/class-shapely-notify-system.php:211
-msgid "Please install Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
-msgstr "Please install Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
-
-#: inc/class-shapely-notify-system.php:190
-msgid "Please activate Shapely Companion plugin."
-msgstr "Please activate Shapely Companion plugin."
-
-#: inc/class-shapely-notify-system.php:185
-#: inc/class-shapely-notify-system.php:193
-msgid "Please install Shapely Companion plugin."
-msgstr "Please install Shapely Companion plugin."
-
-#: inc/class-shapely-notify-system.php:158
-msgid "Activate: Jetpack by WordPress"
-msgstr "Activate: Jetpack by WordPress"
-
-#: inc/class-shapely-notify-system.php:153
-#: inc/class-shapely-notify-system.php:161
-msgid "Install: Jetpack by WordPress"
-msgstr "Install: Jetpack by WordPress"
-
-#: inc/class-shapely-notify-system.php:144
-msgid "Activate: Yoast SEO Plugin"
-msgstr "Activate: Yoast SEO Plugin"
-
-#: inc/class-shapely-notify-system.php:139
-#: inc/class-shapely-notify-system.php:147
-msgid "Install: Yoast SEO Plugin"
-msgstr "Install: Yoast SEO Plugin"
-
-#: 404.php:21
-msgid "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
-msgstr "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
-
-#: 404.php:17
-msgid "Oops! That page can&rsquo;t be found."
-msgstr "Oops! That page can&rsquo;t be found."
-
-#: inc/class-wp-bootstrap-navwalker.php:207
-msgid "Add a menu"
-msgstr "Add a menu"
-
-#: inc/extras.php:649
-msgid "Portfolio"
-msgstr "Portfolio"
-
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:788
-#: inc/extras.php:644
-msgid "Blog"
-msgstr "Blog"
-
-#: inc/extras.php:496
-msgctxt "noun"
-msgid "Comment"
-msgstr "Comment"
-
-#: inc/extras.php:495
-msgid "Leave Comment"
-msgstr "Leave Comment"
-
-#: inc/extras.php:491
-msgid "Your Website (optional)"
-msgstr "Your Website (optional)"
-
-#: inc/extras.php:490
-msgid "Email Address"
-msgstr "E-mail Address"
-
-#: inc/extras.php:489
-msgid "Your Name"
-msgstr "Your Name"
-
-#: inc/extras.php:456
-msgid "Your comment is awaiting moderation."
-msgstr "Your comment is awaiting moderation."
-
-#: inc/extras.php:441
-msgid "Edit"
-msgstr "Edit"
-
-#. translators: 1: date, 2: time
-#: inc/extras.php:437
-msgid "%1$s at %2$s"
-msgstr "%1$s at %2$s"
-
-#: woocommerce/product-searchform.php:27 inc/extras.php:291 inc/extras.php:646
-msgid "Search"
-msgstr "Search"
-
-#: inc/extras.php:290
-msgid "Type Here"
-msgstr "Type Here"
-
-#: woocommerce/product-searchform.php:25 inc/extras.php:289
-msgid "Search for:"
-msgstr "Search for:"
-
-#: inc/extras.php:255
-msgctxt "Read More"
-msgid "Read More"
-msgstr "Read More"
 
 #: inc/libraries/welcome-screen/sections/support.php:17
 msgid "See our full documentation"
@@ -1161,17 +1163,75 @@ msgstr "No recommended actions left to perform"
 msgid "We've compiled a list of steps for you, to take make sure the experience you'll have using one of our products is very easy to follow."
 msgstr "We've compiled a list of steps for you to take, to make sure the experience you'll have using one of our products is very easy to follow."
 
-#. Template Name of the theme
-msgid "Home Page"
-msgstr "Home Page"
+#: inc/libraries/welcome-screen/sections/getting-started.php:11
+msgid "Step 1 - Implement recommended actions"
+msgstr "Step 1 - Implement recommended actions"
 
-#: template-parts/content-none.php:43
-msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
-msgstr "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:318
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:322
+#: inc/libraries/welcome-screen/sections/recommended-actions.php:88
+msgid "Hooray! There are no required actions for you right now."
+msgstr "Hooray! There are no required actions for you right now."
 
-#: template-parts/content-none.php:36
-msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
-msgstr "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:291
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:357
+msgid "Deactivate"
+msgstr "Deactivate"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:283
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:349
+msgid "Activate"
+msgstr "Activate"
+
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:279
+#: inc/libraries/epsilon-framework/customizer/sections/class-epsilon-section-recommended-actions.php:345
+msgid "Install"
+msgstr "Install"
+
+#: inc/class-shapely-notify-system.php:237
+msgid "Please activate Yoast SEO plugin."
+msgstr "Please activate the Yoast SEO plugin."
+
+#: inc/class-shapely-notify-system.php:232
+#: inc/class-shapely-notify-system.php:240
+msgid "Please install Yoast SEO plugin."
+msgstr "Please install the Yoast SEO plugin."
+
+#: inc/class-shapely-notify-system.php:208
+msgid "Please activate Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
+msgstr "Please activate Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
+
+#: inc/class-shapely-notify-system.php:203
+#: inc/class-shapely-notify-system.php:211
+msgid "Please install Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
+msgstr "Please install Jetpack by WordPress. Note that you won't be able to use the Testimonials and Portfolio widgets without it."
+
+#: inc/class-shapely-notify-system.php:190
+msgid "Please activate Shapely Companion plugin."
+msgstr "Please activate Shapely Companion plugin."
+
+#: inc/class-shapely-notify-system.php:185
+#: inc/class-shapely-notify-system.php:193
+msgid "Please install Shapely Companion plugin."
+msgstr "Please install Shapely Companion plugin."
+
+#: inc/class-shapely-notify-system.php:158
+msgid "Activate: Jetpack by WordPress"
+msgstr "Activate: Jetpack by WordPress"
+
+#: inc/class-shapely-notify-system.php:153
+#: inc/class-shapely-notify-system.php:161
+msgid "Install: Jetpack by WordPress"
+msgstr "Install: Jetpack by WordPress"
+
+#: inc/class-shapely-notify-system.php:144
+msgid "Activate: Yoast SEO Plugin"
+msgstr "Activate: Yoast SEO Plugin"
+
+#: inc/class-shapely-notify-system.php:139
+#: inc/class-shapely-notify-system.php:147
+msgid "Install: Yoast SEO Plugin"
+msgstr "Install: Yoast SEO Plugin"
 
 #: inc/class-shapely-notify-system.php:130
 msgid "Activate: Shapely Companion Plugin"
@@ -1182,11 +1242,11 @@ msgstr "Activate: Shapely Companion Plugin"
 msgid "Install: Shapely Companion Plugin"
 msgstr "Install: Shapely Companion Plugin"
 
-#: header.php:63
+#: header.php:64
 msgid "Site Search"
 msgstr "Site Search"
 
-#: header.php:42
+#: header.php:43
 msgid "Skip to content"
 msgstr "Skip to content"
 
@@ -1199,7 +1259,7 @@ msgid "Footer Widget %s"
 msgstr "Footer Widget %s"
 
 #: functions.php:158
-#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:775
+#: inc/libraries/welcome-screen/class-epsilon-welcome-screen.php:788
 msgid "Homepage"
 msgstr "Home Page"
 
@@ -1237,66 +1297,13 @@ msgctxt "comments title"
 msgid "1 COMMENT"
 msgstr "1 COMMENT"
 
-#: inc/customizer.php:768
-msgid "Blog Layout"
-msgstr "Blog Layout"
+#: 404.php:21
+msgid "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
+msgstr "It looks like nothing was found at this location. Maybe try one of the links below or a search?"
 
-#: inc/customizer.php:672 inc/customizer.php:722
-msgid "Post Author Left Side"
-msgstr "Post Author Left Side"
-
-#: inc/customizer.php:663 inc/customizer.php:714
-msgid "Post Author Area"
-msgstr "Post Author Area"
-
-#: inc/customizer.php:654 inc/customizer.php:706
-msgid "Related Posts Area"
-msgstr "Related Posts Area"
-
-#: inc/customizer.php:645 inc/customizer.php:698
-msgid "Tags Post Meta"
-msgstr "Tags Post Meta"
-
-#: inc/customizer.php:636 inc/customizer.php:690 inc/customizer.php:1082
-#: inc/customizer.php:1136
-msgid "First Letter Caps"
-msgstr "First Letter Caps"
-
-#: inc/customizer.php:507
-msgid "Copyright Text"
-msgstr "Copyright Text"
-
-#: inc/customizer.php:491
-msgid "Footer"
-msgstr "Footer"
-
-#: inc/customizer.php:369
-msgid "CFA Button Link"
-msgstr "CFA Button Link"
-
-#: inc/customizer.php:355
-msgid "Text for Footer Callout Button"
-msgstr "Text for Footer Callout Button"
-
-#: inc/customizer.php:340
-msgid "Text for Footer Callout"
-msgstr "Text for Footer Callout"
-
-#: inc/customizer.php:908
-msgid "Portfolio Archive Description"
-msgstr "Portfolio Archive Description"
-
-#: inc/customizer.php:893
-msgid "Portfolio Archive Title"
-msgstr "Portfolio Archive Title"
-
-#: inc/customizer.php:298
-msgid "Heading for the Blog page"
-msgstr "Heading for the Blog page"
-
-#: inc/customizer.php:297
-msgid "Blog Name in Top Callout"
-msgstr "Blog Name in Top Callout"
+#: 404.php:17
+msgid "Oops! That page can&rsquo;t be found."
+msgstr "Oops! That page can&rsquo;t be found."
 
 #. Author URI of the theme
 msgid "https://colorlib.com/"

@@ -2,591 +2,1371 @@
 # This file is distributed under the same license as the Plugins - Really Simple SSL - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-08-19 00:28:04+0000\n"
+"PO-Revision-Date: 2021-12-23 22:45:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/2.4.0-alpha\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
 "Language: id\n"
 "Project-Id-Version: Plugins - Really Simple SSL - Stable (latest release)\n"
 
-#: class-admin.php:2848
-msgid "Deactivate Plugin and keep SSL"
-msgstr "Nonaktifkan Plugin dan pertahankan SSL"
+#: class-admin.php:605
+msgid "No SSL certificate has been detected."
+msgstr "Tidak ada sertifikat SSL yang terdeteksi."
 
-#. Author of the plugin/theme
-msgid "Rogier Lankhorst, Mark Wolters"
-msgstr "Rogier Lankhorst, Mark Wolters"
+#: class-admin.php:606
+msgid "Please %srefresh detection%s if a certificate has been installed recently."
+msgstr "Mohon %srefresh deteksi%s apabila sertifikat telah dipasang saat ini."
 
-#: class-admin.php:2313
-msgid "Do you have visitors from the European Union? Get GDPR ready in 30 minutes with Complianz GDPR. Always up-to-date legal documents by one of the most prominent EU IT Law firms."
-msgstr "Apakah Anda memiliki pengunjung dari Uni Eropa? Siapkan GDPR dalam 30 menit dengan Complianz GDPR. Selalu mutakhirkan dokumen hukum dengan salah satu firma Hukum IT Uni Eropa terkemuka."
+#: lets-encrypt/wizard/notices.php:96
+msgid "Your server provides shell functionality, which offers additional methods to install SSL. If installing SSL using the default methods is not possible, you can install the shell add on."
+msgstr "Server Anda menyediakan fungsionalitas shell, yang menawarkan metode tambahan untuk menginstal SSL. Jika instalasi SSL menggunakan metode default tidak memungkinkan, Anda dapat menginstal shell add on."
 
-#: class-multisite.php:676
+#: lets-encrypt/class-letsencrypt-handler.php:447
+msgid "Order ID mismatch, regenerate order."
+msgstr "ID pesanan tidak sesuai, buat ulang pesanan."
+
+#: class-admin.php:4667 class-multisite.php:238
+msgid "Improve security - Upgrade to Pro"
+msgstr "Tingkatkan keamanan - Lakukan upgrade ke Pro"
+
+#: class-admin.php:3543
+msgid "%sMore info%s"
+msgstr "%sInformasi lebih lanjut%s"
+
+#: lets-encrypt/wizard/notices.php:99
+msgid "Read more about this add on."
+msgstr "Baca lebih lanjut mengenai fitur ini."
+
+#: lets-encrypt/class-letsencrypt-handler.php:450
+msgid "If you entered your DNS records before, they need to be changed."
+msgstr "Jika Anda memasukkan DNS record sebelumnya, maka perlu diubah."
+
+#: class-admin.php:3091
+msgid "Really Simple SSL pro is not up to date. Update Really Simple SSL pro to ensure compatibility."
+msgstr "Really Simple SSL PRO belum diperbarui. Lakukan pembaruan Really Simple SSL Pro untuk memastikan kompatibilitas."
+
+#: lets-encrypt/wizard/templates/installation.php:25
+msgid "Certificate (CRT)"
+msgstr "Sertifikat (CRT)"
+
+#: lets-encrypt/wizard/templates/installation.php:41
+msgid "Certificate Authority Bundle (CABUNDLE)"
+msgstr "Certificate Authority Bundle (CABUNDLE)"
+
+#: lets-encrypt/wizard/templates/installation.php:31
+#: lets-encrypt/wizard/templates/installation.php:39
+#: lets-encrypt/wizard/templates/installation.php:46
+msgid "Copy content"
+msgstr "Salin konten"
+
+#: lets-encrypt/wizard/templates/installation.php:30
+#: lets-encrypt/wizard/templates/installation.php:38
+#: lets-encrypt/wizard/templates/installation.php:45
+msgid "Download"
+msgstr "Unduh"
+
+#: lets-encrypt/wizard/templates/installation.php:22
+msgid "Install your certificate."
+msgstr "Pasang sertifikat Anda."
+
+#: lets-encrypt/wizard/templates/other-plugins.php:38
+msgid "Our Plugins"
+msgstr "Plugin-plugin Kami"
+
+#: lets-encrypt/wizard/templates/installation.php:34
+msgid "Private Key (KEY)"
+msgstr "Private Key (KEY)"
+
+#: lets-encrypt/wizard/templates/installation.php:14
+msgid "copied!"
+msgstr "disalin!"
+
+#: lets-encrypt/wizard/templates/directories.php:76
+msgid "Inside the folder called “ssl” create a new folder called “certs”, with 644 writing permissions."
+msgstr "Di dalam folder bernama \"ssl\" buat folder baru bernama \"certs\", dengan kode izin menulis 644."
+
+#: lets-encrypt/wizard/templates/installation.php:26
+msgid "This is the certificate, which you need to install in your hosting dashboard."
+msgstr "Ini adalah sertifikat yang Anda butuhkan untuk diinstall di dalam dasbor hosting Anda."
+
+#: lets-encrypt/wizard/templates/generation.php:16
+msgid "Skip DNS check"
+msgstr "Lewati pemeriksaan DNS"
+
+#: lets-encrypt/wizard/templates/generation.php:12
+msgid "You can manually check the DNS records in an %sonline tool%s."
+msgstr "Anda dapat memeriksa secara manual DNS record di %sonline tool%s."
+
+#: lets-encrypt/wizard/templates/other-plugins.php:12
+msgid "Easily migrate your website to SSL."
+msgstr "Migrasi situs web Anda ke SSL dengan mudah."
+
+#: lets-encrypt/wizard/templates/generation.php:11
+msgid "We could not check the DNS records. If you just added the record, please check in a few minutes."
+msgstr "Kami tidak dapat melakukan pengecheckan DNS record. Jika Anda baru saja menambahkan, silahkan lakukan pengecheckan beberapa menit kemudian."
+
+#: lets-encrypt/wizard/templates/other-plugins.php:29
+msgid "Beautiful recipes optimized for Google."
+msgstr "Resep menarik yang dioptimalkan untuk Google."
+
+#: lets-encrypt/wizard/templates/other-plugins.php:21
+msgid "The Privacy Suite for WordPress"
+msgstr "Suite Privasi untuk WordPress"
+
+#: lets-encrypt/wizard/templates/installation.php:42
+msgid "The CA Bundle will sometimes be automatically detected. If not, you can use this file."
+msgstr "Bundel CA terkadang akan terdeteksi secara otomatis. Jika tidak, Anda dapat menggunakan file ini."
+
+#: lets-encrypt/wizard/templates/installation.php:35
+msgid "The private key can be uploaded or pasted in the appropriate field on your hosting dashboard."
+msgstr "Kunci pribadi dapat diunggah atau ditempel di kolom yang sesuai di dasbor hosting Anda"
+
+#: lets-encrypt/wizard/templates/generation.php:13
+msgid "If you're sure it's set correctly, you can click the button to skip the DNS check."
+msgstr "Jika Anda yakin sudah disetel dengan benar, Anda dapat klik tombol untuk melewati pemeriksaan DNS."
+
+#: lets-encrypt/wizard/templates/dns-verification.php:8
+msgid "Add the following token as text record to your DNS records. We recommend to use a short TTL during installation, in case you need to change it."
+msgstr "Tambahkan token berikut sebagai catatan teks ke DNS record Anda. Kami merekomendasikan untuk menggunakan TTL pendek selama proses instalasi, jika sewaktu-waktu Anda perlu mengubahnya."
+
+#: lets-encrypt/wizard/templates/directories.php:54
+#: lets-encrypt/wizard/templates/directories.php:73
+msgid "Create a folder called “ssl”"
+msgstr "Membuat folder \"ssl\""
+
+#: lets-encrypt/wizard/templates/directories.php:46
+msgid "Create a key directory"
+msgstr "Membuat direktori kunci"
+
+#: lets-encrypt/wizard/templates/directories.php:35
+#: lets-encrypt/wizard/templates/directories.php:60
+#: lets-encrypt/wizard/templates/directories.php:79
+msgid "Click the refresh button."
+msgstr "Tekan tombol refresh."
+
+#: lets-encrypt/wizard/templates/activate.php:42
+msgid "Almost ready to activate SSL!"
+msgstr "Hampir siap untuk mengaktifkan SSL!"
+
+#: lets-encrypt/wizard/notices.php:41
+msgid "Your certificate is valid to: %s"
+msgstr "Sertifikat Anda berlaku sampai: %s"
+
+#: lets-encrypt/wizard/config/steps.php:64
+msgid "Directories"
+msgstr "Direktori"
+
+#: lets-encrypt/wizard/templates/content.php:22
+msgid "Notifications"
+msgstr "Pemberitahuan"
+
+#: lets-encrypt/wizard/templates/directories.php:47
+msgid "The key directory is needed to store the generated keys."
+msgstr "Direktori kunci diperlukan untuk menyimpan kunci yang dihasilkan."
+
+#: lets-encrypt/wizard/templates/directories.php:47
+#: lets-encrypt/wizard/templates/directories.php:66
+msgid "By placing it outside the root folder, it is not accessible over the internet."
+msgstr "Dengan menempatkannya di luar folder root, maka tidak dapat diakses melalui internet."
+
+#: lets-encrypt/wizard/templates/directories.php:65
+msgid "Create a certs directory"
+msgstr "Buat direktori certs"
+
+#: lets-encrypt/wizard/templates/directories.php:57
+msgid "Inside the folder called “ssl” create a new folder called “keys”, with 644 writing permissions."
+msgstr "Di dalam folder bernama \"ssl\" buat folder baru bernama \"keys\", dengan kode izin menulis 644."
+
+#: lets-encrypt/wizard/config/steps.php:150
+#: lets-encrypt/wizard/templates/menu.php:2
+msgid "Installation"
+msgstr "Instalasi"
+
+#: lets-encrypt/wizard/config/steps.php:125
+msgid "Generation"
+msgstr "Generasi"
+
+#: lets-encrypt/wizard/templates/directories.php:50
+#: lets-encrypt/wizard/templates/directories.php:69
+msgid "Navigate in FTP or File Manager to one level above the root of your WordPress installation:"
+msgstr "Arahkan ke FTP atau File Manager dimana satu tingkat di atas root dari instalasi WordPress Anda:"
+
+#: lets-encrypt/wizard/templates/activate.php:21
+msgid "SSL was already activated on your website!"
+msgstr "SSL sudah diaktifkan pada situs web Anda!"
+
+#: lets-encrypt/wizard/templates/activate.php:13
+msgid "Your site is secured with a valid SSL certificate!"
+msgstr "Situs Anda diamankan dengan sertifikat SSL yang valid!"
+
+#: lets-encrypt/wizard/notices.php:155
+#: lets-encrypt/wizard/templates/directories.php:17
+#: lets-encrypt/wizard/templates/directories.php:42
+msgid "Switch to DNS verification"
+msgstr "Beralih ke verifikasi DNS"
+
+#: lets-encrypt/wizard/templates/activate.php:13
+#: lets-encrypt/wizard/templates/activate.php:42
+msgid "In some cases it takes a few minutes for the certificate to get detected. In that case, check back in a few minutes."
+msgstr "Dalam beberapa kasus, diperlukan beberapa menit agar sertifikat terdeteksi. Dalam hal ini, periksa kembali setelah beberapa menit."
+
+#: lets-encrypt/wizard/templates/activate.php:16
+msgid "If you just activated SSL, please check for: "
+msgstr "Jika Anda baru saja mengaktifkan SSL, silakan periksa:"
+
+#: lets-encrypt/wizard/config/steps.php:110
+#: lets-encrypt/wizard/config/steps.php:135
+msgid "Creating account..."
+msgstr "Membuat akun..."
+
+#: lets-encrypt/wizard/templates/directories.php:66
+msgid "The certificate will get stored in this directory."
+msgstr "Sertifikat akan disimpan pada direktori ini."
+
+#: lets-encrypt/wizard/templates/directories.php:29
+msgid "Create a folder called “.well-known”"
+msgstr "membuat folder \".well-known\""
+
+#: lets-encrypt/wizard/templates/directories.php:9
+#: lets-encrypt/wizard/templates/dns-verification.php:7
+#: lets-encrypt/wizard/templates/installation.php:18
+msgid "Next step"
+msgstr "Langkah selanjutnya"
+
+#: lets-encrypt/wizard/templates/directories.php:39
+msgid "Or you can switch to DNS verification"
+msgstr "Atau Anda dapat beralih ke verifikasi DNS"
+
+#: lets-encrypt/wizard/templates/directories.php:21
+msgid "Create a challenge directory"
+msgstr "Membuat direktori \"challenge\""
+
+#: lets-encrypt/wizard/templates/directories.php:22
+msgid "The challenge directory is used to verify the domain ownership."
+msgstr "Direktori challenge dipergunakan untuk memverifikasi kepemilikan domain"
+
+#: lets-encrypt/wizard/templates/directories.php:25
+msgid "Navigate in FTP or File Manager to the root of your WordPress installation:"
+msgstr "Arahkan di FTP atau File Manager hingga ke folder roor dari instalasi WordPress Anda."
+
+#: lets-encrypt/wizard/templates/activate.php:60
+msgid "No SSL certificate has been detected yet. In some cases this takes a few minutes."
+msgstr "Tidak ditemukan sertifikat SSL. Dalam beberapa kasus, ini membutuhkan waktu beberapa menit."
+
+#: lets-encrypt/wizard/templates/directories.php:41
+msgid "If the challenge directory cannot be created, you can either remove the server limitation, or change to DNS verification."
+msgstr "Jika direktori challenge tidak dapat dibuat, Anda dapat menghapus batasan server, atau mengubah ke verifikasi DNS."
+
+#: lets-encrypt/wizard/templates/directories.php:32
+msgid "Inside the folder called “.well-known” create a new folder called “acme-challenge”, with 644 writing permissions."
+msgstr "Di dalam folder “.well-known” buat folder baru bernama “acme-challenge”, dengan kode izin menulis 644 ."
+
+#: lets-encrypt/wizard/templates/directories.php:15
+msgid "If the challenge directory cannot be created, or is not reachable, you can either remove the server limitation, or change to DNS verification."
+msgstr "Jika direktori challenge tidak dapat dibuat, atau tidak dapat dijangkau, Anda dapat menghapus batasan server, atau mengubah ke verifikasi DNS."
+
+#: lets-encrypt/wizard/notices.php:154
+msgid "Please note that auto-renewal with a DNS challenge might not be possible."
+msgstr "Mohon dicatat bahwa perpanjangan otomatis dengan tantangan DNS mungkin tidak dapat dilakukan."
+
+#: lets-encrypt/wizard/notices.php:153
+msgid "If you also want to secure subdomains like mail.domain.com, cpanel.domain.com, you have to use the %sDNS%s challenge."
+msgstr "Jika Anda ingin mengamankan subdomain seperti mail.domain.com, cpanel.domain.com, Anda harus menggunakan %sDNS%s challenge."
+
+#: lets-encrypt/wizard/notices.php:150
+msgid "Switch to directory verification"
+msgstr "Beralih ke verifikasi direktori"
+
+#: lets-encrypt/wizard/notices.php:149
+msgid "You can switch back to directory verification here."
+msgstr "Anda dapat beralih kembali ke verifikasi direktori di sini."
+
+#: lets-encrypt/wizard/notices.php:148
+msgid "You have switched to DNS verification."
+msgstr "Anda telah beralih ke verifikasi DNS."
+
+#: lets-encrypt/wizard/notices.php:116
+msgid "Your Key and Certificate directories are not properly protected."
+msgstr "Direktori Kunci dan Sertifikat Anda tidak dilindungi dengan tepat."
+
+#: lets-encrypt/wizard/notices.php:81
+msgid "Your certificate will be renewed and installed automatically."
+msgstr "Sertifikat Anda akan diperbarui dan diinstal secara otomatis."
+
+#: lets-encrypt/wizard/notices.php:74
+msgid "Automatic renewal of your certificate was not possible. The SSL certificate should be %srenewed%s manually."
+msgstr "Perpanjangan otomatis sertifikat Anda tidak dapat dilakukan. Sertifikat SSL harus %sdiperbarui%s secara manual."
+
+#: lets-encrypt/wizard/notices.php:67
+msgid "The SSL certificate has been renewed, and requires manual %sinstallation%s in your hosting dashboard."
+msgstr "Sertifikat SSL telah diperbarui, dan membutuhkan %sinstalasi%s secara manual di dasbor hosting Anda."
+
+#: lets-encrypt/wizard/notices.php:45
+msgid "Your certificate will expire on %s. You can renew it %shere%s."
+msgstr "Sertifikat Anda akan kedaluwarsa pada %s. Anda dapat memperbaruinya %sdi sini%s."
+
+#: lets-encrypt/wizard/config/steps.php:107
+msgid "DNS Verification"
+msgstr "Verifikasi DNS"
+
+#: lets-encrypt/wizard/config/steps.php:98
+msgid "Checking challenge directory reachable over http..."
+msgstr "Memeriksa direktori tantangan yang dapat dijangkau melalui http..."
+
+#: lets-encrypt/wizard/config/steps.php:91
+msgid "Checking permissions..."
+msgstr "Memeriksa izin..."
+
+#: lets-encrypt/wizard/config/steps.php:85
+msgid "Checking certs directory..."
+msgstr "Memeriksa direktori sertifikat..."
+
+#: lets-encrypt/wizard/config/steps.php:79
+msgid "Checking key directory..."
+msgstr "Memeriksa direktori kunci..."
+
+#: lets-encrypt/wizard/config/steps.php:73
+msgid "Checking challenge directory..."
+msgstr "Memeriksa direktori tantangan..."
+
+#: lets-encrypt/wizard/notices.php:60
+msgid "The automatic installation of your certificate has failed. Please check your credentials, and retry the %sinstallation%s."
+msgstr "Instalasi otomatis sertifikat Anda telah gagal. Harap periksa kredensial Anda, dan coba lagi %sinstallation%s."
+
+#: lets-encrypt/wizard/notices.php:8
+msgid "The www version of your site does not point to this website. This is recommended, as it will allow you to add it to the certificate as well."
+msgstr "Versi www situs Anda tidak mengarah ke situs web ini. Ini direkomendasikan, karena ini akan memungkinkan Anda untuk menambahkannya ke sertifikat juga."
+
+#: lets-encrypt/wizard/notices.php:6
+msgid "The non-www version of your site does not point to this website. This is recommended, as it will allow you to add it to the certificate as well."
+msgstr "Versi non-www situs Anda tidak mengarah ke situs web ini. Ini direkomendasikan, karena ini akan memungkinkan Anda untuk menambahkannya ke sertifikat juga."
+
+#: lets-encrypt/wizard/config/steps.php:153
+msgid "Searching for link to SSL installation page on your server..."
+msgstr "Mencari tautan ke halaman instalasi SSL di server Anda..."
+
+#: lets-encrypt/wizard/config/steps.php:126
+msgid "We will now generate your SSL Certificate"
+msgstr "Kami sekarang akan membuat Sertifikat SSL Anda"
+
+#: lets-encrypt/wizard/config/steps.php:116
+msgid "Retrieving DNS verification token..."
+msgstr "Mengambil token verifikasi DNS..."
+
+#: lets-encrypt/wizard/config/steps.php:56
+msgid "Below you will find the instructions for different hosting environments and configurations. If you start the process with the necessary instructions and credentials the next view steps will be done in no time."
+msgstr "Di bawah ini Anda akan menemukan petunjuk untuk lingkungan dan konfigurasi hosting yang berbeda. Jika Anda memulai proses dengan instruksi dan kredensial yang diperlukan, langkah tampilan berikutnya akan dilakukan dalam waktu singkat."
+
+#: lets-encrypt/wizard/config/steps.php:55
+msgid "Hosting"
+msgstr "Hosting"
+
+#: lets-encrypt/wizard/config/steps.php:52
+msgid "Letʼs Encrypt is a free, automated and open certificate authority brought to you by the nonprofit Internet Security Research Group (ISRG)."
+msgstr "Letʼs Encrypt adalah otoritas sertifikat gratis, otomatis, dan terbuka yang dipersembahkan oleh Internet Security Research Group (ISRG) nirlaba."
+
+#: lets-encrypt/wizard/config/steps.php:48
+msgid " Please note that you can always save and finish the wizard later, use our %sdocumentation%s for additional information or log a %ssupport ticket%s if you need our assistance."
+msgstr "Harap perhatikan bahwa Anda selalu dapat menyimpan dan menyelesaikan wizard nanti, gunakan %sdokumentasi%s kami untuk informasi tambahan atau log %stiket dukungan%s jika Anda memerlukan bantuan kami."
+
+#: lets-encrypt/wizard/config/steps.php:47
+msgid "We have tried to make our Wizard as simple and fast as possible. Although these questions are all necessary, if there’s any way you think we can improve the plugin, please let us %sknow%s!"
+msgstr "Kami telah mencoba membuat Wizard kami sesederhana dan secepat mungkin. Meskipun semua pertanyaan ini diperlukan, jika menurut Anda kami dapat meningkatkan plugin, %sberi tahu kami%s!"
+
+#: lets-encrypt/wizard/config/steps.php:45
+msgid "General settings"
+msgstr "Pengaturan umum"
+
+#: lets-encrypt/wizard/config/questions.php:150
+msgid "CPanel password"
+msgstr "kata sandi CPanel"
+
+#: lets-encrypt/wizard/config/class-config.php:539
+msgid "No"
+msgstr "Tidak"
+
+#: lets-encrypt/wizard/config/class-config.php:538
+msgid "Yes"
+msgstr "Iya"
+
+#: lets-encrypt/wizard/class-wizard.php:814
+msgid "Previous"
+msgstr "Sebelumnya"
+
+#: lets-encrypt/wizard/config/steps.php:8
+msgid "System Status"
+msgstr "Status sistem"
+
+#: lets-encrypt/wizard/config/questions.php:73
+#: lets-encrypt/wizard/config/steps.php:51
+msgid "Domain"
+msgstr "Domain"
+
+#: lets-encrypt/wizard/config/steps.php:12
+msgid "Checking PHP version..."
+msgstr "Memeriksa versi PHP..."
+
+#: lets-encrypt/wizard/config/questions.php:299
+msgid "Credentials storage"
+msgstr "Penyimpanan kredensial"
+
+#: lets-encrypt/wizard/config/questions.php:282
+msgid "Plesk password"
+msgstr "Kata sandi Plesk"
+
+#: lets-encrypt/wizard/config/questions.php:264
+msgid "Plesk username"
+msgstr "Nama pengguna Plesk"
+
+#: lets-encrypt/wizard/config/questions.php:247
+msgid "Plesk host"
+msgstr "host Plesk"
+
+#: lets-encrypt/wizard/config/questions.php:232
+msgid "CloudWays api key"
+msgstr "Kunci API CloudWays"
+
+#: lets-encrypt/wizard/config/questions.php:219
+msgid "CloudWays user email"
+msgstr "Email Pengguna CloudWays"
+
+#: lets-encrypt/wizard/config/questions.php:201
+msgid "DirectAdmin password"
+msgstr "Kata sandi DirectAdmin"
+
+#: lets-encrypt/wizard/config/questions.php:184
+msgid "DirectAdmin username"
+msgstr "Nama pengguna DirectAdmin"
+
+#: lets-encrypt/wizard/config/questions.php:104
+msgid "Hosting provider"
+msgstr "Penyedia jasa hosting"
+
+#: lets-encrypt/wizard/config/questions.php:41
+msgid "Email address"
+msgstr "Alamat Email"
+
+#: lets-encrypt/wizard/class-wizard.php:884
+msgid "Go to dashboard"
+msgstr "Menuju ke dasbor"
+
+#: lets-encrypt/wizard/config/questions.php:166
+msgid "DirectAdmin host"
+msgstr "host DirectAdmin"
+
+#: lets-encrypt/wizard/config/questions.php:133
+msgid "CPanel username"
+msgstr "Nama pengguna CPanel"
+
+#: lets-encrypt/wizard/config/questions.php:265
+msgid "You can find your Plesk username and password in %s"
+msgstr "Anda dapat menemukan nama pengguna dan kata sandi Plesk Anda di %s"
+
+#: lets-encrypt/wizard/config/questions.php:115
+msgid "CPanel host"
+msgstr "host CPanel"
+
+#: lets-encrypt/wizard/config/steps.php:9
+msgid "Detected status of your setup."
+msgstr "Status terdeteksi dari pengaturan Anda."
+
+#: lets-encrypt/wizard/config/questions.php:53
+msgid "Terms & Conditions"
+msgstr "Syarat & Ketentuan"
+
+#: lets-encrypt/wizard/config/steps.php:37
+msgid "Checking for website configuration..."
+msgstr "Memeriksa konfigurasi situs web..."
+
+#: lets-encrypt/wizard/config/steps.php:32
+msgid "Checking alias domain..."
+msgstr "Memeriksa domain alias..."
+
+#: lets-encrypt/wizard/config/steps.php:27
+msgid "Checking server software..."
+msgstr "Memeriksa perangkat lunak server..."
+
+#: lets-encrypt/wizard/config/steps.php:22
+msgid "Checking if CURL is available..."
+msgstr "Memeriksa apakah CURL tersedia..."
+
+#: lets-encrypt/wizard/config/steps.php:17
+msgid "Checking SSL certificate..."
+msgstr "Memeriksa sertifikat SSL..."
+
+#: lets-encrypt/wizard/config/questions.php:300
+msgid "Store for renewal purposes. If not stored, renewal may need to be done manually."
+msgstr "Simpan untuk tujuan pembaruan. Jika tidak disimpan, pembaruan mungkin perlu dilakukan secara manual."
+
+#: lets-encrypt/wizard/config/questions.php:248
+msgid "The URL you use to access your Plesk dashboard. Ends on :8443."
+msgstr "URL yang Anda gunakan untuk mengakses dasbor Plesk Anda. Berakhir pada :8443."
+
+#: lets-encrypt/wizard/config/questions.php:235
+msgid "You can find your api key %shere%s (make sure you're logged in with your main account)."
+msgstr "Anda dapat menemukan kunci api %sdi sini%s (pastikan Anda masuk dengan akun utama Anda)."
+
+#: lets-encrypt/wizard/config/questions.php:167
+msgid "The URL you use to access your DirectAdmin dashboard. Ends on :2222."
+msgstr "URL yang Anda gunakan untuk mengakses dasbor DirectAdmin Anda. Berakhir pada :2222."
+
+#: lets-encrypt/wizard/config/questions.php:116
+msgid "The URL you use to access your cPanel dashboard. Ends on :2083."
+msgstr "URL yang Anda gunakan untuk mengakses dasbor cPanel Anda. Berakhir pada :2083."
+
+#: lets-encrypt/wizard/config/questions.php:102
+msgid "If your hosting provider is not listed, and there's an SSL activation/installation link, please let us %sknow%s."
+msgstr "Jika penyedia hosting Anda tidak terdaftar, dan ada tautan aktivasi/pemasangan SSL,mohon %sberi tahu kami %s."
+
+#: lets-encrypt/wizard/config/questions.php:101
+msgid "By selecting your hosting provider we can tell you if your hosting provider already supports free SSL, and/or where you can activate it."
+msgstr "Dengan memilih penyedia hosting Anda, kami dapat memberi tahu Anda apakah penyedia hosting Anda sudah mendukung SSL gratis, dan/atau di mana Anda dapat mengaktifkannya."
+
+#: lets-encrypt/wizard/config/questions.php:87
+msgid "Include alias domain too?"
+msgstr "Sertakan domain alias juga?"
+
+#: lets-encrypt/wizard/config/questions.php:99
+msgid "By selecting your hosting provider we can tell you if your hosting provider already supports free SSL, and how you can activate it."
+msgstr "Dengan memilih penyedia hosting Anda, kami dapat memberi tahu Anda apakah penyedia hosting Anda sudah mendukung SSL gratis, dan bagaimana Anda dapat mengaktifkannya."
+
+#: lets-encrypt/wizard/config/questions.php:85
+msgid "You should have the www domain pointed to the same website as the non-www domain."
+msgstr "Anda harus mengarahkan domain www ke situs web yang sama dengan domain non-www."
+
+#: lets-encrypt/wizard/config/questions.php:85
+msgid "This will include both the www. and non-www. version of your domain."
+msgstr "Ini akan mencakup www. dan non www. versi domain Anda."
+
+#: lets-encrypt/wizard/config/questions.php:54
+msgid "I agree to the Let's Encrypt %sTerms & Conditions%s"
+msgstr "Saya menyetujui %sSyarat & Ketentuan%s Let's Encrypt"
+
+#: lets-encrypt/wizard/config/questions.php:42
+#: lets-encrypt/wizard/config/questions.php:74
+msgid "This field is prefilled based on your configuration"
+msgstr "Bidang ini diisi sebelumnya berdasarkan konfigurasi Anda"
+
+#: lets-encrypt/wizard/config/questions.php:39
+msgid "This email address will used to create a Let's Encrypt account. This is also where you will receive renewal notifications."
+msgstr "Alamat email ini akan digunakan untuk membuat akun Let's Encrypt. Ini juga tempat Anda akan menerima pemberitahuan pembaruan."
+
+#: lets-encrypt/wizard/class-wizard.php:953
+#: lets-encrypt/wizard/config/class-config.php:545
+msgid "I don't know, or not listed, proceed with installation"
+msgstr "Saya tidak tahu, atau tidak terdaftar, lanjutkan dengan instalasi"
+
+#: grid/templates/grid-container.php:6
+#: lets-encrypt/wizard/templates/content.php:8
+msgid "Changes saved successfully"
+msgstr "Perubahan berhasil disimpan!"
+
+#: lets-encrypt/wizard/class-wizard.php:633
+msgid "If this user stops editing, the lock will expire after %s minutes."
+msgstr "Jika pengguna ini berhenti mengedit, kunci akan kedaluwarsa setelah %s menit."
+
+#: lets-encrypt/wizard/class-wizard.php:631
+msgid "The wizard is currently being edited by %s"
+msgstr "Panduan saat ini sedang diedit oleh %s"
+
+#: lets-encrypt/wizard/class-field.php:1314
+msgid "Refresh"
+msgstr "Segarkan"
+
+#: lets-encrypt/wizard/class-field.php:1297
+msgid "Start"
+msgstr "Mulai"
+
+#: lets-encrypt/class-letsencrypt-handler.php:1674
+msgid "Installation failed."
+msgstr "Instalasi gagal."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1668
+msgid "Not recognized server."
+msgstr "Server tidak dikenali."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1222
+#: lets-encrypt/class-letsencrypt-handler.php:1499
+msgid "no response"
+msgstr "tidak ada respon"
+
+#: lets-encrypt/class-letsencrypt-handler.php:644
+msgid "Authorization not completed yet."
+msgstr "Otorisasi belum selesai."
+
+#: lets-encrypt/class-letsencrypt-handler.php:515
+msgid "Successfully verified DNS records"
+msgstr "Berhasil memverifikasi DNS records"
+
+#: lets-encrypt/wizard/class-wizard.php:180
+msgid "Attempt %s."
+msgstr "Percobaan %s"
+
+#: lets-encrypt/wizard/class-wizard.php:86
+msgid "Checking for subdomain setup..."
+msgstr "Memeriksa pengaturan subdomain..."
+
+#: lets-encrypt/wizard/class-wizard.php:63
+#: lets-encrypt/wizard/config/steps.php:141
+msgid "Generating SSL certificate..."
+msgstr "Membuat sertifikat SSL..."
+
+#: lets-encrypt/wizard/class-wizard.php:57
+msgid "Verifying DNS records..."
+msgstr "Memverifikasi DNS record..."
+
+#: lets-encrypt/integrations/plesk/plesk.php:88
+msgid "Successfully installed SSL"
+msgstr "Berhasil menginstal SSL"
+
+#: lets-encrypt/integrations/plesk/functions.php:34
+msgid "Installing SSL certificate using PLESK API..."
+msgstr "Menginstal sertifikat SSL menggunakan API PLESK..."
+
+#: lets-encrypt/integrations/cpanel/functions.php:102
+#: lets-encrypt/integrations/directadmin/functions.php:30
+msgid "Attempting to install certificate..."
+msgstr "Mencoba menginstal sertifikat..."
+
+#: lets-encrypt/integrations/cpanel/functions.php:95
+msgid "Attempting to set DNS txt record..."
+msgstr "Mencoba atur DNS txt record..."
+
+#: lets-encrypt/integrations/cpanel/functions.php:86
+msgid "Attempting to install certificate using AutoSSL..."
+msgstr "Mencoba menginstall sertifikat menggunakan AutoSSL..."
+
+#: lets-encrypt/integrations/cpanel/functions.php:61
+msgid "The system is not ready for the DNS verification yet. Please run the wizard again."
+msgstr "Sistem belum siap untuk verifikasi DNS. Mohon jalankan panduan kembali."
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:258
+#: lets-encrypt/integrations/cpanel/cpanel.php:278
+msgid "Could not automatically add TXT record. Please proceed manually, following the steps below."
+msgstr "Tidak dapat menambahkan TXT record secara otomatis. Mohon lanjutkan secara manual, ikuti langkah-langkah di bawah."
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:254
+#: lets-encrypt/integrations/cpanel/cpanel.php:273
+msgid "Successfully added TXT record."
+msgstr "Berhasil menambahkan TXT record."
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:246
+msgid "Login credentials incorrect"
+msgstr "Kredensial login salah"
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:242
+msgid "Unable to connect to cPanel"
+msgstr "Tidak dapat menyambungkan ke cPanel"
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:157
+msgid "Errors were reported during installation."
+msgstr "Kesalahan dilaporkan selama instalasi."
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:117
+msgid "Errors were reported during installation"
+msgstr "Kesalahan dilaporkan selama instalasi"
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:111
+#: lets-encrypt/integrations/directadmin/directadmin.php:124
+msgid "SSL successfully installed on %s"
+msgstr "SSL berhasil diinstal di %s"
+
+#: lets-encrypt/integrations/cpanel/cpanel.php:64
+#: lets-encrypt/integrations/directadmin/directadmin.php:64
+msgid "No valid list of domains."
+msgstr "Tidak ada daftar domain yang valid."
+
+#: lets-encrypt/integrations/cloudways/functions.php:51
+msgid "Enabling auto renew..."
+msgstr "Mengaktifkan perpanjangan otomatis..."
+
+#: lets-encrypt/integrations/cloudways/functions.php:45
+msgid "Installing SSL certificate..."
+msgstr "Menginstal sertifikat SSL..."
+
+#: lets-encrypt/integrations/cloudways/functions.php:39
+msgid "Retrieving Cloudways server data..."
+msgstr "Mengambil data server Cloudways..."
+
+#: lets-encrypt/integrations/cloudways/cloudways.php:259
+msgid "Could not retrieve server list"
+msgstr "Tidak dapat mendapatkan daftar server"
+
+#: lets-encrypt/integrations/cloudways/cloudways.php:217
+#: lets-encrypt/integrations/cloudways/cloudways.php:252
+msgid "Successfully retrieved server id and app id"
+msgstr "Berhasil mengambil id server dan id aplikasi"
+
+#: lets-encrypt/integrations/cloudways/cloudways.php:201
+msgid "Error enabling auto renew for Let's Encrypt"
+msgstr "Eror saat mengaktifkan perpanjangan otomatis untuk Let's Encrypt"
+
+#: lets-encrypt/integrations/cloudways/cloudways.php:186
+#: lets-encrypt/integrations/cloudways/cloudways.php:192
+msgid "Successfully installed Let's Encrypt"
+msgstr "Berhasil menginstal Let's Encrypt"
+
+#: lets-encrypt/integrations/cloudways/cloudways.php:166
+msgid "Failed retrieving access token"
+msgstr "Gagal mengambil token akses"
+
+#: lets-encrypt/functions.php:405
+msgid "You can follow these %sinstructions%s."
+msgstr "Anda dapat mengikuti instruksi %ssini%s."
+
+#: lets-encrypt/functions.php:403
+msgid "Your hosting environment does not allow automatic SSL installation."
+msgstr "Lingkungan hosting Anda tidak mengizinkan pemasangan SSL otomatis."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1091
+#: lets-encrypt/functions.php:401
+msgid "According to our information, your hosting provider does not allow any kind of SSL installation, other then their own paid certificate. For an alternative hosting provider with SSL, see this %sarticle%s."
+msgstr "Menurut informasi kami, penyedia hosting Anda tidak memungkinkan segala jenis instalasi SSL, selain sertifikat berbayar mereka sendiri. Untuk penyedia hosting alternatif dengan SSL, lihat artikel %sberikut%s."
+
+#: lets-encrypt/functions.php:396
+msgid "You already have free SSL on your hosting environment."
+msgstr "Anda sudah memiliki SSL gratis di lingkungan hosting Anda."
+
+#: lets-encrypt/functions.php:394 lets-encrypt/functions.php:398
+#: lets-encrypt/functions.php:406
+msgid "After completing the installation, you can continue to the next step to complete your configuration."
+msgstr "Setelah menyelesaikan instalasi, Anda dapat melanjutkan ke langkah berikutnya untuk menyelesaikan konfigurasi Anda."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1098
+#: lets-encrypt/functions.php:393
+msgid "According to our information, your hosting provider supplies your account with an SSL certificate by default. Please contact your %shosting support%s if this is not the case."
+msgstr "Menurut informasi kami, penyedia hosting Anda memberikan akun Anda dengan sertifikat SSL secara standar. Mohon hubungi %sdukungan hosting%s Anda jika tidak demikian."
+
+#: lets-encrypt/functions.php:389
+msgid "Go to installation"
+msgstr "Pergi ke instalasi"
+
+#: lets-encrypt/functions.php:388
+msgid "Go to activation"
+msgstr "Pergi ke aktivasi"
+
+#: lets-encrypt/functions.php:387
+msgid "Please activate it on your dashboard %smanually%s"
+msgstr "Mohon aktifkan di dasbor Anda secara %smanual%s"
+
+#: lets-encrypt/functions.php:386
+msgid "Please complete %smanually%s"
+msgstr "Mohon dilengkapi %smanual%s"
+
+#: lets-encrypt/functions.php:384
+msgid "Please activate it manually on your hosting dashboard."
+msgstr "Mohon aktifkan ini secara manual di dasbor hosting Anda."
+
+#: lets-encrypt/functions.php:383
+msgid "Please complete manually in your hosting dashboard."
+msgstr "Mohon lengkapi secara manual di dasbor hosting Anda."
+
+#: lets-encrypt/functions.php:321
+msgid "You have the required PHP version to continue."
+msgstr "Anda memiliki versi PHP yang wajib untuk melanjutkan."
+
+#: lets-encrypt/functions.php:317
+msgid "The minimum requirements for the PHP version have not been met. Please upgrade to %s"
+msgstr "Persyaratan minimum untuk versi PHP belum terpenuhi. Mohon upgrade ke %s"
+
+#: lets-encrypt/download.php:49
+msgid "File missing. Please retry the previous steps."
+msgstr "Berkas hilang. Mohon coba lagi langkah-langkah sebelumnya."
+
+#: lets-encrypt/cron.php:84
+msgid "Once every 5 minutes"
+msgstr "Sekali setiap 5 menit"
+
+#: lets-encrypt/cron.php:80
+msgid "Once every day"
+msgstr "Sekali dalam sehari"
+
+#: lets-encrypt/cron.php:76
+msgid "Once every week"
+msgstr "Sekali setiap minggu"
+
+#: lets-encrypt/class-letsencrypt-handler.php:1679
+#: lets-encrypt/integrations/cloudways/functions.php:22
+#: lets-encrypt/integrations/cpanel/functions.php:16
+#: lets-encrypt/integrations/cpanel/functions.php:33
+#: lets-encrypt/integrations/directadmin/functions.php:16
+#: lets-encrypt/integrations/plesk/functions.php:16
+msgid "The system is not ready for the installation yet. Please run the wizard again."
+msgstr "Sistem belum siap untuk instalasi. Mohon jalankan panduan lagi."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1562
+msgid "Error code %s"
+msgstr "Kode eror %s"
+
+#: lets-encrypt/class-letsencrypt-handler.php:1545
+msgid "Please create a folder 'rsssl' in the uploads directory, with 644 permissions."
+msgstr "Mohon buat folder 'rsssl' di direktori unggahan, dengan kode izin 644."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1544
+msgid "Could not create test folder and file."
+msgstr "Tidak dapat membuat folder dan berkas pengujian."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1515
+msgid "If this is not the case, don't add this alias to your certificate."
+msgstr "Jika tidak demikian, jangan tambahkan alias ini ke sertifikat Anda."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1515
+msgid "Could not verify alias domain."
+msgstr "Tidak dapat melakukan verifikasi domain alias."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1513
+msgid "Please check if the www version of your site also points to this website."
+msgstr "Mohon periksa jika versi www situs Anda juga mengarah ke situs web ini."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1511
+msgid "Please check if the non www version of your site also points to this website."
+msgstr "Mohon periksa jika versi non www dari situs Anda juga mengarah ke situs web ini."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1492
+msgid "Alias domain check is not relevant for a subdomain"
+msgstr "Pemeriksaan domain alias tidak relevan untuk subdomain"
+
+#: lets-encrypt/class-letsencrypt-handler.php:1462
+msgid "No subdomain setup detected."
+msgstr "Tidak ada pengaturan subdomain yang terdeteksi."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1457
+msgid "This is a multisite configuration with subdomains, which requires a wildcard certificate. Wildcard certificates are part of the %spremium%s plan."
+msgstr "Ini adalah konfigurasi multi situs dengan subdomain, yang memerlukan sertifikat wildcard. Sertifikat wildcard adalah bagian dari paket %spremium%s."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1259
+#: lets-encrypt/class-letsencrypt-handler.php:1522
+#: lets-encrypt/class-letsencrypt-handler.php:1573
+msgid "Successfully verified alias domain."
+msgstr "Domain alias berhasil diverifikasi."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1246
+#: lets-encrypt/class-letsencrypt-handler.php:1250
+msgid "Error code %s."
+msgstr "Kode eror %s."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1232
+msgid "Challenge directory not writable."
+msgstr "Direktori tantangan tidak dapat ditulis."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1226
+msgid "Could not reach challenge directory over %s."
+msgstr "Tidak dapat menjangkau direktori tantangan melalui %s."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1163
+msgid "The certs directory was successfully created."
+msgstr "Direktori certs berhasil dibuat."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1159
+msgid "The certs directory is not created yet."
+msgstr "Direktori certs belum dibuat."
+
+#: lets-encrypt/class-letsencrypt-handler.php:1144
+msgid "The key directory was successfully created."
+msgstr "Direktori kunci berhasil dibuat."
+
+#: lets-encrypt/class-letsencrypt-handler.php:266
+msgid "(unknown)"
+msgstr "(tidak diketahui)"
+
+#: class-admin.php:3183
+msgid "Re-check"
+msgstr "Periksa kembali"
+
+#: class-admin.php:3036
+msgid "(Unknown)"
+msgstr "(Tidak diketahui)"
+
+#: class-admin.php:3159 lets-encrypt/wizard/class-wizard.php:891
+msgid "Retry"
+msgstr "Coba lagi"
+
+#: class-site-health.php:32
+msgid "SSL Status Test"
+msgstr "Tes Status SSL"
+
+#: class-admin.php:3156
+msgid "No SSL detected"
+msgstr "Tidak ada SSL yang terdeteksi"
+
+#: class-site-health.php:116
+msgid "SSL is not enabled."
+msgstr "SSL tidak diaktifkan."
+
+#: class-admin.php:4587
+msgid "Deactivate, but stay on SSL."
+msgstr "Nonaktifkan, tetapi tetap di SSL."
+
+#: class-admin.php:4606
+msgid "Deactivate, keep https"
+msgstr "Nonaktifkan, simpan https"
+
+#: class-admin.php:4141
+msgid "Copied!"
+msgstr "Disalin!"
+
+#: class-admin.php:4036
+msgid "Premium"
+msgstr "Premium"
+
+#: class-admin.php:4034
+msgid "Open"
+msgstr "Buka"
+
+#: class-admin.php:4032
+msgid "Warning"
+msgstr "Peringatan"
+
+#: class-admin.php:4030
+msgid "Completed"
+msgstr "Lengkap"
+
+#: class-admin.php:3909 upgrade/upgrade-to-pro.php:180
+msgid "Installed"
+msgstr "Terpasang"
+
+#: class-admin.php:3904 upgrade/upgrade-to-pro.php:137
+#: upgrade/upgrade-to-pro.php:150 upgrade/upgrade-to-pro.php:167
+msgid "Install"
+msgstr "Instal"
+
+#: class-admin.php:3907
+msgid "Upgrade to pro"
+msgstr "Lakukan ppgrade ke Pro"
+
+#: grid/templates/header.php:5
+msgid "Save settings"
+msgstr "Simpan Pengaturan"
+
+#: grid/templates/support-footer.php:3
+msgid "Download system status"
+msgstr "Unduh status sistem"
+
+#: grid/templates/tips-tricks.php:10 grid/templates/tips-tricks.php:18
+#: grid/templates/tips-tricks.php:26 grid/templates/tips-tricks.php:34
+#: grid/templates/tips-tricks.php:42 grid/templates/tips-tricks.php:50
+#: grid/templates/tips-tricks.php:58
+msgid "Read more"
+msgstr "Baca lebih lanjut"
+
+#: grid/templates/progress-header.php:15
+msgid "Remaining tasks"
+msgstr "Tugas tersisa"
+
+#: grid/templates/progress-header.php:7
+msgid "All tasks"
+msgstr "Seluruh tugas"
+
+#: grid/templates/support.php:7
+msgid "General Issues"
+msgstr "Kendala Umum"
+
+#: grid/templates/support-footer.php:7
+msgid "SSL type:"
+msgstr "Jenis SSL:"
+
+#: grid/templates/support-footer.php:6
+msgid "Server type:"
+msgstr "Jenis server:"
+
+#: grid/templates/support.php:21
+msgid "Multisite"
+msgstr "Multi situs"
+
+#: grid/templates/progress-footer.php:39
+msgid "301 Redirect"
+msgstr "301 Redirect"
+
+#: class-admin.php:897 class-site-health.php:125
+#: grid/templates/progress-footer.php:25
+#: lets-encrypt/wizard/config/steps.php:162
+msgid "Activate SSL"
+msgstr "Aktifkan SSL"
+
+#: grid/templates/progress-footer.php:19
+msgid "Go PRO!"
+msgstr "Jadi Pro!"
+
+#: grid/templates/progress-footer.php:9
+msgid "SSL Not activated"
+msgstr "SSL Tidak diaktifkan"
+
+#: grid/templates/progress.php:32
+msgid "SSL configuration finished!"
+msgstr "Konfigurasi SSL selesai!"
+
+#: grid/templates/support.php:42
+msgid "Elementor"
+msgstr "Elementor"
+
+#: class-admin.php:4129 grid/templates/progress.php:29
+msgid "SSL is activated on your site."
+msgstr "SSL diaktifkan di situs Anda."
+
+#: class-multisite.php:571
+msgid "Setup"
+msgstr "Pengaturan"
+
+#: class-admin.php:3799 class-multisite.php:426
+msgid "Our plugins"
+msgstr "Plugin kami"
+
+#: class-admin.php:3806 class-multisite.php:418
+msgid "Support forum"
+msgstr "Forum Bantuan"
+
+#: class-admin.php:2965 class-admin.php:4659 class-multisite.php:230
+#: class-multisite.php:475
+msgid "Support"
+msgstr "Bantuan"
+
+#: class-multisite.php:360
+msgid "Choose option"
+msgstr "Pilih opsi"
+
+#: class-admin.php:3138
+msgid "SSL is not enabled yet."
+msgstr "SSL belum diaktifkan."
+
+#: class-admin.php:2941
+msgid "General"
+msgstr "Umum"
+
+#: class-admin.php:591 lets-encrypt/wizard/templates/activate.php:45
+msgid "Before you migrate, please check for: "
+msgstr "Sebelum Anda melakukan migrasi, harap periksa:"
+
+#: class-admin.php:4131 grid/templates/progress.php:43
+msgid "SSL is not yet enabled on this site."
+msgstr "SSL belum diaktifkan pada situs ini."
+
+#. Author of the plugin
+msgid "Really Simple Plugins"
+msgstr "Plugin Really Simple"
+
+#: grid/templates/support.php:28
+msgid "Really Simple SSL Pro"
+msgstr "Really Simple SSL Pro"
+
+#: class-admin.php:900 lets-encrypt/wizard/class-wizard.php:896
+msgid "Get ready with PRO!"
+msgstr "Bersiap dengan versi PRO!"
+
+#: class-admin.php:613 lets-encrypt/wizard/templates/activate.php:30
+#: lets-encrypt/wizard/templates/activate.php:70
+msgid "Check out Really Simple SSL Pro"
+msgstr "Lihat Really Simple SSL Pro"
+
+#: class-admin.php:2699
+msgid "Don't show again"
+msgstr "Jangan ditampilkan lagi."
+
+#: class-admin.php:3213
+msgid "Error occurred when retrieving the webpage."
+msgstr "Terjadi kesalahan saat mengambil halaman web."
+
+#: class-site-health.php:150
+msgid "301 .htaccess redirect is not enabled."
+msgstr "301 .htaccess redirect tidak diaktifkan."
+
+#: class-admin.php:4192 class-multisite.php:343
+msgid "Dismiss all Really Simple SSL notices"
+msgstr "Singkirkan semua pemberitahuan Really Simple SSL"
+
+#: class-site-health.php:99
+msgid "301 SSL redirect enabled"
+msgstr "301 SSL redirect diaktifkan."
+
+#: class-admin.php:3046
+msgid "The 'force-deactivate.php' file has to be renamed to .txt. Otherwise your ssl can be deactivated by anyone on the internet."
+msgstr "File 'force-deactivate.php' harus diubah menjadi .txt. Jika tidak, ssl Anda dapat dinonaktifkan oleh siapa saja di internet."
+
+#: multisite-cron.php:11
+msgid "Once every minute"
+msgstr "Sekali setiap menit"
+
+#: class-admin.php:2697
+msgid "Leave a review"
+msgstr "Tinggalkan ulasan"
+
+#: class-admin.php:2698
+msgid "Maybe later"
+msgstr "Mungkin nanti"
+
+#: class-multisite.php:1034
+msgid "Conversion of websites %s percent complete."
+msgstr "Konversi situs %s persen selesai."
+
+#: class-admin.php:2691
+msgid "Hi, Really Simple SSL has kept your site secure for a month now, awesome! If you have a moment, please consider leaving a review on WordPress.org to spread the word. We greatly appreciate it! If you have any questions or feedback, leave us a %smessage%s."
+msgstr "Hai, Really Simple SSL telah mengamankan situs Anda selama sebulan, luar biasa! Jika Anda punya waktu, silakan pertimbangkan untuk meninggalkan ulasan di WordPress.org untuk menyebarkan berita. Kami sangat menghargainya! Jika Anda memiliki pertanyaan atau ulasan, tinggalkan kami %spesan%s."
+
+#: class-multisite.php:160
 msgid "Activate SSL per site or install a wildcard certificate to fix this."
 msgstr "Aktifkan SSL per situs atau pasang sertifikat wildcard untuk memperbaiki ini."
 
-#: class-multisite.php:675
+#: class-multisite.php:159
 msgid "This leads to issues when activating SSL networkwide since subdomains will be forced over SSL as well while they don't have a valid certificate."
 msgstr "Hal ini menyebabkan masalah ketika mengaktifkan SSL networkwide karena subdomain akan dipaksa melalui SSL juga sementara mereka tidak memiliki sertifikat yang valid."
 
-#: class-multisite.php:674
+#: class-multisite.php:158
 msgid "You run a Multisite installation with subdomains, but your site doesn't have a wildcard certificate."
 msgstr "Anda menjalankan pemasangan Multisite dengan subdomain, tetapi situs Anda tidak memiliki sertifikat wildcard."
 
-#: class-admin.php:2917
-msgid "(revert to http)"
-msgstr "(kembali ke http)"
-
-#: class-admin.php:2880
-msgid "Clicking this button will deactivate the plugin while keeping your site on SSL. The WordPress 301 redirect, Javascript redirect and mixed content fixer will stop working. The site address will remain https:// and the .htaccess redirect will remain active. Deactivating the plugin via the plugins overview will revert the site back to http://."
-msgstr "Mengeklik tombol ini akan menonaktifkan plugin dan mempertahankan SSL pada situs Anda. Pengalihan 301 WordPress, pengalihan Javascript dan mixed content fixer akan berhenti bekerja. Alamat situs ini akan tetap https:// dan pengalihan .htaccess akan tetap aktif. Menonaktifkan plugin ini via ikhtisar plugin akan mengembalikan situs ini ke http://."
-
-#: class-admin.php:78
+#: class-admin.php:120
 msgid "Really Simple SSL and Really Simple SSL add-ons do not process any personal identifiable information, so the GDPR does not apply to these plugins or usage of these plugins on your website. You can find our privacy policy <a href=\"%s\" target=\"_blank\">here</a>."
 msgstr "Really Simple SSL dan plugin Really Simple SSL tidak memproses informasi identitas pribadi, sehingga GDPR tidak berlaku untuk plugin ini atau penggunaan plugin ini pada situs web Anda. Anda dapat menemukan kebijakan privasi kami <a href=\"%s\" target=\"_blank\">disini</a>."
 
-#: class-admin.php:2875
+#: class-admin.php:4605 upgrade/upgrade-to-pro.php:360
 msgid "Cancel"
 msgstr "Batal"
 
-#: class-admin.php:2872
-msgid "I'm sure I want to deactivate"
-msgstr "Saya yakin ingin menonaktifkan"
-
-#: class-admin.php:2858
-msgid "Deactivating the plugin via the plugins overview will revert the site back to http://."
-msgstr "Menonaktifkan plugin via ikhtisar plugin akan mengembalikan situs ini ke http://."
-
-#: class-admin.php:2857
-msgid "* The .htaccess redirect will remain active"
-msgstr "* Pengalihan .htaccess akan tetap aktif"
-
-#: class-admin.php:2856
-msgid "* Your site address will remain https://"
-msgstr "* Alamat situs Anda akan tetap https://"
-
-#: class-admin.php:2855
-msgid "* The WordPress 301 and Javascript redirect will stop working"
-msgstr "* Pengalihan 301 WordPress dan Javascript akan berhenti bekerja"
-
-#: class-admin.php:2854
-msgid "* The mixed content fixer will stop working"
-msgstr "* Mixed content fixer akan berhenti bekerja"
-
-#: class-admin.php:2852
+#: class-admin.php:4590
 msgid "Deactivating the plugin while keeping SSL will do the following:"
 msgstr "Menonaktifkan plugin ini saat mempertahankan SSL akan:"
 
-#: class-admin.php:2851
+#: class-admin.php:4572
 msgid "Are you sure?"
 msgstr "Apakah Anda yakin?"
 
-#: class-admin.php:2565
-msgid "Deactivate plugin and keep SSL"
-msgstr "Nonaktifkan plugin dan pertahankan SSL"
-
-#: class-admin.php:2430
+#: class-admin.php:4093
 msgid "More info"
 msgstr "Info lebih lanjut"
 
-#: class-admin.php:2369
-msgid "Export your WooCommerce sales directly to Moneybird."
-msgstr "Ekspor langsung penjualan WooCommerce Anda ke Moneybird."
+#: class-admin.php:4595
+msgid "The .htaccess redirect will remain active"
+msgstr "Pengalihan .htaccess akan tetap aktif"
 
-#: class-admin.php:2358
-msgid "Export your Easy Digital Downloads sales directly to Moneybird."
-msgstr "Ekspor langsung penjualan Easy Digital Downloads Anda ke Moneybird."
+#: class-admin.php:4594
+msgid "Your site address will remain https://"
+msgstr "Alamat situs Anda akan tetap https://"
 
-#: class-admin.php:2347
-msgid "Automatically send a notification when a user's post on the activity feed is liked or commented on."
-msgstr "Secara otomatis mengirimkan notifikasi saat postingan pengguna pada umpan aktivitas disukai atau dikomentari."
+#: class-admin.php:4592
+msgid "The mixed content fixer will stop working"
+msgstr "Pembetulan mixed content akan berhenti bekerja"
 
-#: class-admin.php:2337
-msgid "Show the most visited users and add a 'last visited users' tab to each user profile."
-msgstr "Tampilkan pengguna yang paling sering dikunjungi dan tambahkan tab 'kunjungan terakhir pengguna' ke setiap profil pengguna."
-
-#: class-admin.php:2326
-msgid "UM Tagging allows you to @tag or @mention all users on your platform."
-msgstr "UM Tagging memungkinkan Anda untuk @tag atau @mention semua pengguna pada platform Anda."
-
-#: class-admin.php:2305
-msgid "Really Simple SSL pro optimizes your SSL configuration: extensive scan for mixed content issues, access to premium support, HSTS and more!"
-msgstr "Really Simple SSL pro mengoptimalkan konfigurasi SSL Anda: pemindaian menyeluruh untuk masalah mixed content, akses ke dukungan premium, HSTS dan lainnya!"
-
-#: class-admin.php:2288
-msgid "We have some suggestions for your setup. Let us know if you have a suggestion for %sus%s!"
-msgstr "Kami memiliki beberapa saran untuk pengaturan Anda. Beri tahu kami jika Anda memiliki saran untuk %skami%s!"
-
-#: class-admin.php:397
-msgid "Really Simple SSL requires a valid SSL certificate. You can check your certificate on %sQualys SSL Labs%s."
-msgstr "Really Simple SSL memerlukan sertifikat SSL yang valid. Anda dapat memeriksa sertifikat Anda pada %sQualys SSL Labs%s."
-
-#: class-admin.php:391
-msgid "Really Simple SSL failed to detect a valid SSL certificate. If you do have an SSL certificate, try to reload this page over https by clicking this button: %sReload over https%s "
-msgstr "Really Simple SSL gagal mendeteksi sertifikat SSL yang valid. Jika Anda memiliki sertifikat SSL, cobalah untuk memuat ulang halaman ini melalui https dengan mengeklik tombol ini: %sMuat ulang melalui https%s "
-
-#: class-admin.php:384
-msgid "Detected possible certificate issues"
-msgstr "Kemungkinan masalah sertifikat yang terdeteksi"
-
-#: class-admin.php:423
-msgid "It is recommended to take a %sbackup%s of your site before activating SSL"
-msgstr "Direkomendasikan untuk membuat %sbackup%s situs Anda sebelum mengaktifkan SSL"
-
-#. Author URI of the plugin/theme
+#. Author URI of the plugin
 msgid "https://really-simple-plugins.com"
 msgstr "https://really-simple-plugins.com"
 
-#: class-admin.php:2520 class-admin.php:2524
-msgid "Learn more"
-msgstr "Pelajari lebih lanjut"
-
-#: class-admin.php:2501
-msgid "Secure cookie settings not enabled."
-msgstr "Pengaturan kuki aman tidak diaktifkan."
-
-#: class-admin.php:2495
-msgid "Secure cookies set"
-msgstr "Set kuki aman"
-
-#: class-admin.php:1879 class-multisite.php:646
-msgid "Don't forget to change your settings in Google Analytics and Webmaster tools."
-msgstr "Jangan lupa untuk mengubah pengaturan di alat Google Analytics dan Webmaster."
-
-#: class-admin.php:2831
-msgid "If this option is set to true, the mixed content fixer will fire on the init hook instead of the template_redirect hook. Only use this option when you experience problems with the mixed content fixer."
-msgstr "Jika opsi ini diatur true, mixed content fixer akan diaktifkan pada init hook daripada di template_redirect hook. Hanya gunakan opsi ini saat Anda mengalami masalah dengan mixed content fixer."
-
-#: class-admin.php:2563
-msgid "Switch mixed content fixer hook"
-msgstr "Ganti hook mixed content fixer"
-
-#: class-admin.php:2171
-msgid "and"
-msgstr "dan"
-
-#: class-admin.php:2779
-msgid "The plugin could not detect any possible redirect rule."
-msgstr "Plugin ini tidak dapat mendeteksi aturan pengalihan yang mungkin."
-
-#: class-admin.php:2763
-msgid "The .htaccess redirect rules that were selected by this plugin failed in the test. The following redirect rules were tested:"
-msgstr "Aturan pengalihan .htaccess yang dipilih oleh plugin ini gagal dalam pengujian. Berikut aturan pengalihan telah diuji:"
-
-#: class-admin.php:462
+#: class-admin.php:612 lets-encrypt/wizard/templates/activate.php:26
+#: lets-encrypt/wizard/templates/activate.php:66
 msgid "You can also let the automatic scan of the pro version handle this for you, and get premium support, increased security with HSTS and more!"
 msgstr "Anda juga dapat membiarkan pemindaian otomatis pada versi pro menangani ini untuk Anda, dan mendapatkan dukungan premium, peningkatan keamanan dengan HSTS, dan banyak lagi!"
 
-#: class-multisite.php:167
+#: class-multisite.php:363
 msgid "per site"
 msgstr "per situs"
 
-#: class-multisite.php:164
-msgid "No selection was made"
-msgstr "Tidak ada pilihan yang dibuat"
-
-#: class-multisite.php:145
+#: class-multisite.php:340
 msgid "Enable SSL"
 msgstr "Aktifkan SSL"
 
-#: class-multisite.php:788
-msgid "If you want more options to have full control over your multisite network, you can %supgrade%s your license to a multisite license, or dismiss this message"
-msgstr "Jika Anda ingin lebih banyak opsi untuk memiliki kendali penuh atas jaringan multisite Anda, Anda dapat %supgrade%s lisensi Anda ke lisensi multisite, atau abaikan pesan ini"
-
-#: class-multisite.php:779
-msgid "You are running Really Simple SSL pro. A dedicated add-on for multisite has been released. If you want more options to have full control over your multisite network, you can ask for a discount code to %supgrade%s your license to a multisite license."
-msgstr "Anda menjalankan Really Simple SSL pro. Sebuah pengaya khusus untuk multisite telah dirilis. Jika Anda ingin lebih banyak opsi untuk memiliki kontrol penuh atas jaringan multisite Anda, Anda dapat meminta kode diskon untuk %supgrade%s lisensi Anda ke lisensi multisite."
-
-#: class-multisite.php:644
-msgid "SSL was activated per site."
-msgstr "SSL telah diaktifkan per situs."
-
-#: class-multisite.php:642
-msgid "SSL was activated on your entire network."
-msgstr "SSL telah diaktifkan pada seluruh jaringan Anda."
-
-#: class-multisite.php:199
-msgid "Really Simple SSL multisite options"
-msgstr "Opsi multisite Really Simple SSL"
-
-#: class-multisite.php:196
+#: class-multisite.php:457
 msgid "Options saved."
 msgstr "Opsi disimpan."
 
-#: class-multisite.php:172
+#: class-multisite.php:339
 msgid "Select to enable SSL networkwide or per site."
 msgstr "Pilih untuk mengaktifkan SSL networkwide atau per situs."
 
-#: class-multisite.php:166
+#: class-multisite.php:362
 msgid "networkwide"
 msgstr "networkwide"
 
-#: class-multisite.php:156
-msgid "Below you can set the multisite options for Really Simple SSL"
-msgstr "Dibawah ini Anda dapat mengatur opsi multisite untuk Really Simple SSL"
-
-#: class-admin.php:2786
-msgid "If the setting 'do not edit htaccess' is enabled, you can't change this setting."
-msgstr "Jika pengaturan 'jangan edit htaccess' diaktifkan, Anda tidak dapat mengubah pengaturan ini."
-
-#: class-admin.php:2692 class-admin.php:2718 class-admin.php:2751
-#: class-admin.php:2894
+#: class-admin.php:4308 class-admin.php:4338 class-admin.php:4415
+#: class-admin.php:4628
 msgid "This option is enabled on the network menu."
 msgstr "Opsi ini diaktifkan pada menu jaringan."
 
-#: class-admin.php:2484 class-admin.php:2503
-msgid "To enable, %sget Premium%s "
-msgstr "Untuk mengaktifkan, %sdapatkan Premium%s "
-
-#: class-admin.php:2482
-msgid "%sHTTP Strict Transport Security%s is not enabled."
-msgstr "%sHTTP Strict Transport Security%s tidak diaktifkan."
-
-#: class-admin.php:445
+#: class-admin.php:595 lets-encrypt/wizard/templates/activate.php:56
 msgid "You may need to login in again."
 msgstr "Anda mungkin harus masuk lagi."
 
-#: class-admin.php:2791
-msgid "Before you enable this, make sure you know how to %1$sregain access%2$s to your site in case of a redirect loop."
-msgstr "Sebelum Anda mengaktifkan ini, pastikan Anda mengetahui cara untuk %1$smendapatkan akses kembali%2$s ke situs Anda jika terjadi redirect loop."
-
-#: class-admin.php:2762
-msgid "The .htaccess file is not writable. Add these lines to your .htaccess manually, or set 644 writing permissions"
-msgstr "Berkas .htaccess tidak dapat ditulis. Tambahkan baris berikut pada .htaccess secara manual, atau atur izin tulis 664"
-
-#: class-admin.php:2757
-msgid "A .htaccess redirect is faster. Really Simple SSL detects the redirect code that is most likely to work (99% of websites), but this is not 100%. Make sure you know how to regain access to your site if anything goes wrong!"
-msgstr "Pengalihan .httaccess lebih cepat. Really Simple SSL mendeteksi kode pengalihan yang paling mungkin berfungsi (99% situs web), tapi ini tidak 100%. Pastikan Anda mengetahui cara mendapatkan akses kembali ke situs Anda jika ada yang salah!"
-
-#: class-admin.php:2551
+#: class-admin.php:4175 class-site-health.php:158
 msgid "Enable 301 .htaccess redirect"
 msgstr "Aktifkan pengalihan .htaccess 301"
 
-#: class-admin.php:2185
+#: class-admin.php:3242
 msgid "No 301 redirect is set. Enable the WordPress 301 redirect in the settings to get a 301 permanent redirect."
 msgstr "Pengalihan 301 belum diatur. Aktifkan pengalihan 301 WordPress di pengaturan untuk mendapatkan pengalihan permanen 301."
 
-#: class-admin.php:2182
-msgid "Https redirect cannot be set in the .htaccess. Set the .htaccess redirect manually or enable WordPress redirect in the settings."
-msgstr "Pengalihan https tidak dapat diatur di .htaccess. Atur pengalihan .htaccess secara manual atau aktifkan pengalihan WordPress di pengaturan."
-
-#: class-admin.php:2178
+#: class-admin.php:3265
 msgid "Enable a .htaccess redirect or WordPress redirect in the settings to create a 301 redirect."
 msgstr "Aktifkan pengalihan .htaccess atau pengalihan WordPress di pengaturan untuk membuat pengalihan 301."
 
-#: class-admin.php:1845
-msgid "You do not have a 301 redirect to https active in the settings. For SEO purposes it is advised to use 301 redirects. You can enable a 301 redirect in the settings."
-msgstr "Anda tidak memiliki pengalihan 301 ke https yang aktif di pengaturan. Untuk tujuan SEO, disarankan untuk menggunakan pengalihan 301. Anda dapat mengaktifkan pengalihan 301 di pengaturan."
-
-#: class-admin.php:2897
+#: class-admin.php:4164
 msgid "In most cases you need to leave this enabled, to prevent mixed content issues on your site."
 msgstr "Pada umumnya, Anda harus membiarkan ini diaktifkan, untuk mencegah masalah mixed content di situs Anda."
 
-#: class-admin.php:2814
+#: class-admin.php:4181
 msgid "If you want to customize the Really Simple SSL .htaccess, you need to prevent Really Simple SSL from rewriting it. Enabling this option will do that."
 msgstr "Jika Anda ingin mengubahsuaikan .htaccess Really Simple SSL , Anda harus mencegah Really Simple SSL dapat menulis ulang .httacess. Aktifkan opsi ini untuk melakukannya."
 
-#: class-admin.php:2722
-msgid "Enable this if you want to use the internal WordPress 301 redirect. Needed on NGINX servers, or if the .htaccess redirect cannot be used."
-msgstr "Aktifkan ini jika Anda ingin menggunakan pengalihan WordPress internal. Dibutuhkan pada server NGINX, atau jika pengalihan .htaccess tidak dapat digunakan."
-
-#: class-admin.php:2696
-msgid "This is a fallback you should only use if other redirection methods do not work."
-msgstr "Ini adalah sebuah fallback, yang seharusnya hanya digunakan jika metode pengalihan lainnya tidak bekerja."
-
-#: class-admin.php:2671
-msgid "Enable this option to get debug info in the debug tab."
-msgstr "Aktifkan opsi ini untuk mendapatkan info debug di tab debug."
-
-#: class-admin.php:2547
-msgid "Enable WordPress 301 redirection to SSL"
-msgstr "Aktifkan pengalihan 301 WordPress untuk SSL"
-
-#: class-admin.php:2475
-msgid "HTTP Strict Transport Security was enabled"
-msgstr "HTTP Strict Transport Security telah diaktifkan"
-
-#: class-admin.php:2180
-msgid ".htaccess is not writable. Set 301 WordPress redirect, or set the .htaccess manually if you want to redirect in .htaccess."
-msgstr ".htaccess tidak dapat ditulis. Atur pengalihan WordPress 301, atau atur .htaccess secaa manual jika Anda menginginkan pengalihan di .htaccess."
-
-#: class-admin.php:2174
-msgid "WordPress redirect"
-msgstr "Pengalihan WordPress"
-
-#: class-admin.php:2168
-msgid ".htaccess redirect"
-msgstr "Pengalihan .htaccess"
-
-#: class-admin.php:2166
-msgid "301 redirect to https set: "
-msgstr "Pengalihan 301 ke set https: "
-
-#: class-admin.php:1882 class-multisite.php:649
-msgid "More info."
-msgstr "Info lebih lanjut."
-
-#: class-multisite.php:294
-msgid "reload over https."
-msgstr "muat ulang melalui https."
-
-#: class-multisite.php:292
-msgid "No SSL was detected. If you do have an SSL certificate, try to reload this page over https by clicking this link:"
-msgstr "SSL tidak terdeteksi. Jika Anda memiliki sertifikat SSL, cobalah untuk memuat ulang halaman ini melalui https dengan mengeklik tautan berikut:"
-
-#: class-admin.php:2582
-msgid "Settings to optimize your SSL configuration"
-msgstr "Pengaturan untuk mengoptimalkan konfigurasi SSL Anda"
-
-#: class-multisite.php:295
-msgid "You can check your certificate on"
-msgstr "Anda dapat memeriksa sertifikat Anda pada"
-
-#: class-admin.php:1846
-msgid "View settings page"
-msgstr "Lihat halaman pengaturan"
-
-#: class-multisite.php:343
+#: class-multisite.php:577 class-multisite.php:605
 msgid "You can also let the automatic scan of the pro version handle this for you, and get premium support and increased security with HSTS included."
 msgstr "Anda juga dapat membiarkan pemindaian otomatis pada versi pro menangani ini untuk Anda, dan mendapatkan dukungan premium dan peningkatan keamanan dengan menyertakan HSTS."
 
-#: class-admin.php:2933
+#: class-admin.php:4661 class-multisite.php:232
 msgid "Premium Support"
 msgstr "Dukungan Khusus (Premium)"
 
-#: class-admin.php:2923
-msgid "Docs"
-msgstr "Dokumentasi"
-
-#: class-admin.php:2522
-msgid "Still having issues with mixed content? Check out Premium, which includes an extensive scan and premium support. "
-msgstr "Masih mengalami masalah dengan mixed content? Lihat versi Premium, yang menyertakan fitur pemindaian menyeluruh dan dukungan premium. "
-
-#: class-admin.php:2518
-msgid "If you want to be sure you're ready to migrate to SSL, get Premium, which includes an extensive scan and premium support."
-msgstr "Jika Anda ingin memastikan Anda siap bermigrasi ke SSL, dapatkan versi Premium, yang mencakup pemindaian menyeluruh dan dukungan premium."
-
-#: class-admin.php:464 class-multisite.php:345
+#: class-multisite.php:579 class-multisite.php:607
 msgid "Check out Really Simple SSL Premium"
 msgstr "Lihat Really Simple SSL Premium"
 
-#: class-admin.php:443
+#: lets-encrypt/wizard/class-wizard.php:887
 msgid "Go ahead, activate SSL!"
 msgstr "Yuk aktifkan SSL!"
 
-#: class-admin.php:2135
+#: lets-encrypt/functions.php:379 lets-encrypt/functions.php:380
 msgid "Instructions"
 msgstr "Instruksi"
 
-#: class-admin.php:2133
-msgid "The mixed content fixer is active, but was not detected on the frontpage. Please follow these steps to check if the mixed content fixer is working."
-msgstr "Mixed content fixer aktif, tetapi tidak terdeteksi di halaman depan. Harap ikuti langkah-langkah ini untuk memeriksa apakah mixed content fixer berfungsi."
-
-#: class-admin.php:1878 class-multisite.php:639
-msgid "SSL activated!"
-msgstr "SSL diaktifkan!"
-
-#: class-admin.php:2114
+#: class-multisite.php:134
 msgid "SSL is not enabled yet"
 msgstr "SSL belum diaktifkan"
 
-#: class-admin.php:2112
+#: class-admin.php:3134
 msgid "SSL is enabled on your site."
 msgstr "SSL telah diaktifkan pada situs Anda."
 
-#: class-admin.php:416 class-multisite.php:311
+#: grid/templates/progress-footer.php:6
+msgid "SSL Activated"
+msgstr "SSL Telah Aktif."
+
+#: class-multisite.php:575 lets-encrypt/wizard/templates/activate.php:20
+#: lets-encrypt/wizard/templates/activate.php:49
 msgid "Images, stylesheets or scripts from a domain without an SSL certificate: remove them or move to your own server."
 msgstr "Gambar, stylesheets atau script dari domain tanpa sertifikat SSL: hapus atau pindahkan mereka ke server Anda sendiri."
 
-#: class-multisite.php:327
+#: class-multisite.php:590
 msgid "Networkwide activation does not check if a site has an SSL certificate. It just migrates all sites to SSL."
 msgstr "Aktivasi networkwide tidak memeriksa apakah situs memiliki sertifikat SSL. Itu hanya memigrasikan semua situs ke SSL."
 
-#: class-multisite.php:322
+#: class-multisite.php:587
 msgid "Activate SSL per site"
 msgstr "Aktifkan SSL per situs"
 
-#: class-multisite.php:319
+#: class-multisite.php:584
 msgid "Activate SSL networkwide"
 msgstr "Aktifkan SSL networkwide"
 
-#: class-multisite.php:306
-msgid "Choose your preferred setup"
-msgstr "Pilih pengaturan yang Anda inginkan"
-
-#: class-admin.php:1814
+#: class-admin.php:2568
 msgid "Because your server does not pass a variable with which WordPress can detect SSL, WordPress may create redirect loops on SSL."
 msgstr "Karena server Anda tidak memenuhi variabel agar WordPress dapat mendeteksi SSL, WordPress mungkin akan membuat redirect loops pada SSL."
 
-#: class-admin.php:1808
-msgid "Or set your wp-config.php to writable and reload this page."
-msgstr "Atau atur wp-config.php Anda agar da[at ditulis dan muat ulang halaman ini."
-
-#: class-admin.php:1791
+#: class-admin.php:2546
 msgid "Because your site is behind a loadbalancer and is_ssl() returns false, you should add the following line of code to your wp-config.php."
 msgstr "Karena situs Anda dibelakang sebuah loadbalancer dan is_ssl() returns false, Anda harus menambahkan baris kode berikut pada wp-config.php."
 
-#: class-admin.php:1790
+#: class-admin.php:2545
 msgid "Your wp-config.php has to be edited, but is not writable."
 msgstr "wp-config.php perlu disunting, tetapi ia tidak dapat ditulis."
 
-#: class-admin.php:1787 class-admin.php:1815
-msgid "Set your wp-config.php to writable and reload this page."
-msgstr "Atur wp-config.php Anda agar dapat ditulis dan muat ulang halaman ini."
-
-#: class-admin.php:1785
+#: class-admin.php:2540
 msgid "A definition of a siteurl or homeurl was detected in your wp-config.php, but the file is not writable."
 msgstr "Definisi siteurl atau homeurl terdeteksi di wp-config.php Anda, tetapi berkas tersebut tidak dapat ditulis."
 
-#: class-admin.php:1781
+#: class-admin.php:2575
 msgid "System detection encountered issues"
 msgstr "Sistem pendeteksian mengalami masalah"
 
-#: class-admin.php:415 class-multisite.php:310
-msgid "Http references in your .css and .js files: change any http:// into //"
-msgstr "Referensi http pada berkas .css dan .js: ganti http:// menjadi //"
-
-#: class-admin.php:412 class-multisite.php:307
+#: class-multisite.php:572
 msgid "Some things can't be done automatically. Before you migrate, please check for: "
 msgstr "Beberapa hal tidak dapat dilakukan secara otomatis. Sebelum bermigrasi, silakan periksa: "
 
-#: class-admin.php:407
+#: class-admin.php:582 lets-encrypt/wizard/templates/last-step.php:13
 msgid "Almost ready to migrate to SSL!"
 msgstr "Hampir siap untuk bermigrasi ke SSL!"
 
-#: class-admin.php:51 class-cache.php:10 class-certificate.php:14
-#: class-front-end.php:19 class-help.php:9 class-mixed-content-fixer.php:13
-#: class-multisite.php:32 class-server.php:10
+#: class-admin.php:51 class-cache.php:11 class-certificate.php:14
+#: class-front-end.php:18 class-help.php:9 class-mixed-content-fixer.php:13
+#: class-multisite.php:28 class-site-health.php:12
+#: lets-encrypt/class-letsencrypt-handler.php:30
 msgid "%s is a singleton class and you cannot create a second instance."
 msgstr "%s adalah singleton class dan Anda tidak dapat membuat instance kedua."
 
-#: class-admin.php:2815
-msgid ".htaccess is currently not writable."
-msgstr ".htaccess saat ini tidak dapat ditulis."
+#: class-admin.php:593 class-multisite.php:574
+#: lets-encrypt/wizard/templates/activate.php:19
+#: lets-encrypt/wizard/templates/activate.php:48
+msgid "Http references in your .css and .js files: change any http:// into https://"
+msgstr "Referensi http di dalam berkas-berkas .css dan .js Anda: ubah setiap http:// menjadi https://"
 
-#: class-admin.php:2131
-msgid "Mixed content fixer was successfully detected on the front-end"
-msgstr "Mixed content fixer berhasil dideteksi pada front-end"
+#: class-admin.php:2542 class-admin.php:2569
+msgid "Set your wp-config.php to %swritable%s and reload this page."
+msgstr "Atur wp-config.php Anda menjadi %swritable%s dan muat ulang halaman ini."
 
-#: class-admin.php:2046
-msgid "On <a href='https://really-simple-ssl.com'>really-simple-ssl.com</a> you can find a lot of articles and documentation about installing this plugin, and installing SSL in general."
-msgstr "Di <a href='https://really-simple-ssl.com'>really-simple-ssl.com</a>, Anda dapat menemukan banyak artikel dan dokumentasi tentang pemasangan plugin ini, dan pemasangan SSL secara umum."
+#: class-admin.php:4373
+msgid ".htaccess is currently not %swritable%s."
+msgstr ".htaccess saat ini tidak %swritable%s."
 
-#: class-admin.php:2045
+#: class-admin.php:2959 class-multisite.php:469
+#: grid/templates/tips-tricks-footer.php:3
 msgid "Documentation"
 msgstr "Dokumentasi"
 
-#: class-admin.php:2554
-msgid "Enable Javascript redirection to SSL"
-msgstr "Aktifkan pengalihan Javascript ke SSL"
-
-#: class-admin.php:2147
-msgid "Failed activating SSL"
-msgstr "Gagal mengaktifkan SSL"
-
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "Lightweight plugin without any setup to make your site SSL proof"
 msgstr "Plugin ringan tanpa konfigurasi yang membuat situs Anda dimuat dengan SSL"
 
-#. Plugin URI of the plugin/theme
-msgid "https://www.really-simple-ssl.com"
-msgstr "https://www.really-simple-ssl.com"
-
-#. Plugin Name of the plugin/theme
+#. Plugin Name of the plugin
 msgid "Really Simple SSL"
 msgstr "Really Simple SSL"
 
-#: class-admin.php:2543
-msgid "Auto replace mixed content"
-msgstr "Otomatis ganti mixed content"
+#. Plugin URI of the plugin
+msgid "https://really-simple-ssl.com"
+msgstr "https://really-simple-ssl.com"
 
-#: class-admin.php:2560
+#: class-admin.php:4182
 msgid "Stop editing the .htaccess file"
 msgstr "Berhenti menyunting berkas .htaccess"
 
-#: class-admin.php:2249
-msgid "To view results here, enable the debug option in the settings tab."
-msgstr "Untuk melihat hasil disini, aktifkan opsi debug di tab pengaturan."
-
-#: class-admin.php:2227
-msgid "Send me a copy of these lines if you have any issues. The log will be erased when debug is set to false"
-msgstr "Kirimkan saya salinan dari baris ini jika Anda mengalami masalah. Log akan dihapus ketika debug diatur ke false"
-
-#: class-admin.php:2226
-msgid "Log for debugging purposes"
-msgstr "Log untuk keperluan debugging"
-
-#: class-admin.php:2064 class-admin.php:2557
-msgid "Debug"
-msgstr "Debug"
-
-#: class-admin.php:2213
+#: grid/templates/settings-footer.php:3
+#: lets-encrypt/wizard/class-field.php:1305
 msgid "Save"
 msgstr "Simpan"
 
-#: class-admin.php:2151
-msgid "An SSL certificate was detected on your site. "
+#: class-admin.php:3174
+msgid "An SSL certificate was detected on your site."
 msgstr "Sertifikat SSL telah terdeteksi pada situs Anda. "
 
-#: class-admin.php:2149
+#: class-site-health.php:129
 msgid "No SSL detected."
-msgstr "SSL tidak terdeteksi."
+msgstr "Tidak ada SSL yang terdeteksi."
 
-#: class-admin.php:2062
-msgid "Configuration"
-msgstr "Konfigurasi"
-
-#: class-admin.php:2063 class-admin.php:2542 class-admin.php:2920
-#: class-multisite.php:143 class-multisite.php:814
+#: class-admin.php:2904 class-admin.php:3784 class-admin.php:4162
+#: class-admin.php:4655 class-multisite.php:226 class-multisite.php:338
+#: class-multisite.php:410
 msgid "Settings"
 msgstr "Pengaturan"
 
-#: class-admin.php:2104
-msgid "Detected setup"
-msgstr "Pengaturan terdeteksi"
-
-#: class-admin.php:2020
+#: class-admin.php:2882
 msgid "SSL"
 msgstr "SSL"
 
-#: class-admin.php:2019
+#: class-admin.php:2881
 msgid "SSL settings"
 msgstr "Pengaturan SSL"
 
-#: class-admin.php:1897
-msgid "The force http after leaving checkout in WooCommerce will create a redirect loop."
-msgstr "Paksa http setelah meninggalkan checkout di WooCommerce akan membuat redirect loop."
-
-#: class-admin.php:1899
-msgid "Show me this setting"
-msgstr "Tunjukkan pengaturan ini"
-
-#: class-admin.php:1895
-msgid "Really Simple SSL has a conflict with another plugin."
-msgstr "Really Simple SSL konflik dengan plugin lainnya."
-
-#: class-multisite.php:663
+#: class-multisite.php:147
 msgid "Activate networkwide to fix this."
 msgstr "Aktifkan networkwide untuk memperbaiki ini."
 
-#: class-multisite.php:662
+#: class-multisite.php:146
 msgid "Because the $_SERVER[\"HTTPS\"] variable is not set, your website may experience redirect loops."
 msgstr "Karena variabel $_SERVER[\"HTTPS\"] tidak ditetapkan, situs web Anda mungkin akan mengalami redirect loops."
 
-#: class-multisite.php:661
+#: class-multisite.php:145
 msgid "You run a Multisite installation with subfolders, which prevents this plugin from fixing your missing server variable in the wp-config.php."
 msgstr "Anda menjalankan pemasangan Multisite dengan subfolder, yang mencegah plugin ini memperbaiki variabel server yang belum ada di wp-config.php."
 
-#: class-admin.php:1861 class-multisite.php:625
+#: class-admin.php:3047
 msgid "Check again"
 msgstr "Periksa lagi"
 
-#: class-admin.php:1859 class-multisite.php:623
-msgid "The 'force-deactivate.php' file has to be renamed to .txt. Otherwise your ssl can be deactived by anyone on the internet."
-msgstr "Berkas 'force-deactivate.php' harus diganti namanya menjadi .txt. Jika tidak, ssl Anda akan dapat dinonaktifkan oleh orang lain di internet."
-
-#: class-admin.php:1856 class-multisite.php:620
+#: class-admin.php:3045
 msgid "Major security issue!"
 msgstr "Masalah keamanan utama!"

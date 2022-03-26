@@ -1,0 +1,278 @@
+# Translation of Plugins - Google Apps Login - Stable (latest release) in English (UK)
+# This file is distributed under the same license as the Plugins - Google Apps Login - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2020-06-10 08:33:09+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha.2\n"
+"Language: en_GB\n"
+"Project-Id-Version: Plugins - Google Apps Login - Stable (latest release)\n"
+
+#: core/core_google_apps_login.php:455
+msgid "The admin needs to configure Google Apps Login plugin - please follow <a href=\"https://wp-glogin.com/installing-google-apps-login/#main-settings\" target=\"_blank\">instructions here</a>"
+msgstr "The admin needs to configure the Google Apps Login plugin – please follow the <a href=\"http://wp-glogin.com/installing-google-apps-login/#main-settings\" target=\"_blank\">instructions here</a>"
+
+#. Author of the plugin
+msgid "Lever Technology LLC"
+msgstr "Lever Technology LLC"
+
+#: core/core_google_apps_login.php:1084
+msgid "Remember Me - do not log users out at end of browser session"
+msgstr "Remember Me – do not log users out at end of browser session"
+
+#: core/core_google_apps_login.php:464
+msgid "Unrecognized error message"
+msgstr "Unrecognised error message"
+
+#: core/core_google_apps_login.php:460
+msgid "The user must use <i>%s</i> to access the site"
+msgstr "The user must use <i>%s</i> to access the site"
+
+#. Description of the plugin
+msgid "Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)"
+msgstr "Simple and secure login for WordPress through users' Google Apps accounts (uses secure OAuth2, and MFA, if enabled)"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://wp-glogin.com/"
+msgstr "https://wp-glogin.com/"
+
+#: google_apps_login.php:215
+msgid "No Thanks"
+msgstr "No Thanks"
+
+#: google_apps_login.php:214
+msgid "Find out more"
+msgstr "Find out more"
+
+#: google_apps_login.php:212
+msgid "Completely forget about WordPress user management - upgrade to <a href=\"%s\">Google Apps Login Premium or Enterprise</a> to automatically sync users from your Google Apps domain"
+msgstr "Completely forget about WordPress user management – upgrade to <a href=\"%s\">Google Apps Login Premium or Enterprise</a> to automatically sync users from your Google Apps domain"
+
+#: google_apps_login.php:162
+msgid "In this basic version of the plugin, any <i>existing</i> WordPress account corresponding to a Google email address can authenticate via Google."
+msgstr "In this basic version of the plugin, any <i>existing</i> WordPress account corresponding to a Google email address can authenticate via Google."
+
+#: google_apps_login.php:160
+msgid "The Domain Control section is only applicable to the premium and enterprise versions of this plugin."
+msgstr "The Domain Control section is only applicable to the premium and enterprise versions of this plugin."
+
+#: google_apps_login.php:58
+msgid "For full support, and premium features that greatly simplify WordPress user management for admins, please visit:"
+msgstr "For full support, and premium features that greatly simplify WordPress user management for admins, please visit:"
+
+#: core/core_google_apps_login.php:1486
+msgid "Settings"
+msgstr "Settings"
+
+#: core/core_google_apps_login.php:1291
+msgid "Unspecified error"
+msgstr "Unspecified error"
+
+#: core/core_google_apps_login.php:1286
+msgid "Key cannot be coerced into a PEM key - invalid format in private_key of JSON key file"
+msgstr "Key cannot be coerced into a PEM key – invalid format in private_key of JSON key file"
+
+#: core/core_google_apps_login.php:1285
+msgid "JSON key file does not represent a Service Account"
+msgstr "JSON key file does not represent a Service Account"
+
+#: core/core_google_apps_login.php:1284
+msgid "JSON key file does not contain all of client_email, client_id, private_key, and type"
+msgstr "JSON key file does not contain all of client_email, client_id, private_key, and type"
+
+#: core/core_google_apps_login.php:1283
+msgid "JSON key file could not be decoded correctly"
+msgstr "JSON key file could not be decoded correctly"
+
+#: core/core_google_apps_login.php:1282
+msgid "JSON key file was empty"
+msgstr "JSON key file was empty"
+
+#: core/core_google_apps_login.php:1281
+msgid "Error with file upload on the server - failed to write to disk"
+msgstr "Error with file upload on the server – failed to write to disk"
+
+#: core/core_google_apps_login.php:1280
+msgid "Error with file upload on the server - no temp directory exists"
+msgstr "Error with file upload on the server – no temporary directory exists"
+
+#: core/core_google_apps_login.php:1279
+msgid "Error with file upload on the server - file was too large"
+msgstr "Error with file upload on the server – file was too large"
+
+#: core/core_google_apps_login.php:1278
+msgid "Error with file upload on the server"
+msgstr "Error with file upload on the server"
+
+#: core/core_google_apps_login.php:1277
+msgid "Google Apps domain admin must be a valid email address of one of your Google Apps admins"
+msgstr "Google Apps domain admin must be a valid email address of one of your Google Apps admins"
+
+#: core/core_google_apps_login.php:1276
+msgid "Service Account email must be a valid email addresses"
+msgstr "Service Account email must be a valid email address"
+
+#: core/core_google_apps_login.php:1275
+msgid "The Client Secret should be longer than that"
+msgstr "The Client Secret should be longer than that"
+
+#: core/core_google_apps_login.php:1274
+msgid "The Client ID should be longer than that"
+msgstr "The Client ID should be longer than that"
+
+#: core/core_google_apps_login.php:1186
+msgid "Leave unchecked if in doubt"
+msgstr "Leave unchecked if in doubt"
+
+#: core/core_google_apps_login.php:1182
+msgid "Use sub-site specific callback from Google"
+msgstr "Use sub-site specific callback from Google"
+
+#: core/core_google_apps_login.php:1177
+msgid "This setting is for multisite admins only. See <a href=\"%s\" target=\"gainstr\">instructions here</a>."
+msgstr "This setting is for multisite admins only. See <a href=\"%s\" target=\"gainstr\">instructions here</a>."
+
+#: core/core_google_apps_login.php:1176
+msgid "Multisite Options"
+msgstr "Multisite Options"
+
+#: core/core_google_apps_login.php:1092
+msgid "Display 'Powered By wp-glogin.com' on Login form"
+msgstr "Display 'Powered By wp-glogin.com' on Login form"
+
+#: core/core_google_apps_login.php:1076
+msgid "Automatically redirect to Google from login page"
+msgstr "Automatically redirect to Google from login page"
+
+#: core/core_google_apps_login.php:1068
+msgid "Force user to confirm Google permissions every time"
+msgstr "Force user to confirm Google permissions every time"
+
+#: core/core_google_apps_login.php:1061
+msgid "See <a href=\"%s\" target=\"gainstr\">instructions here</a>."
+msgstr "See <a href=\"%s\" target=\"gainstr\">instructions here</a>."
+
+#: core/core_google_apps_login.php:1060
+msgid "Once you have the plugin working, you can try these settings to customize the login flow for your users."
+msgstr "Once you have the plugin working, you can try these settings to customise the login flow for your users."
+
+#: core/core_google_apps_login.php:993
+msgid "A Google Apps Domain admin's email"
+msgstr "A Google Apps Domain admin's email"
+
+#: core/core_google_apps_login.php:982
+msgid "Paste contents of JSON file"
+msgstr "Paste contents of JSON file"
+
+#: core/core_google_apps_login.php:981
+msgid "Upload a new Service Account JSON file"
+msgstr "Upload a new Service Account JSON file"
+
+#: core/core_google_apps_login.php:973
+msgid "Private key fingerprint"
+msgstr "Private key fingerprint"
+
+#: core/core_google_apps_login.php:966
+msgid "Service Account email address"
+msgstr "Service Account email address"
+
+#: core/core_google_apps_login.php:958
+msgid "Service Account Client ID / Name"
+msgstr "Service Account Client ID/Name"
+
+#: core/core_google_apps_login.php:923
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: core/core_google_apps_login.php:920 core/core_google_apps_login.php:926
+msgid "Normally something like %s"
+msgstr "Normally something like %s"
+
+#: core/core_google_apps_login.php:917
+msgid "Client ID"
+msgstr "Client ID"
+
+#: core/core_google_apps_login.php:910
+msgid "The <a href='%s'>instructions</a> above will guide you to Google's Cloud Console where you will enter two URLs, and also obtain two codes (Client ID and Client Secret) which you will need to enter in the boxes below."
+msgstr "The <a href='%s'>instructions</a> above will guide you to Google's Cloud Console where you will enter two URLs and also obtain two codes (Client ID and Client Secret), which you will need to enter in the boxes below."
+
+#: core/core_google_apps_login.php:883
+msgid "Settings saved."
+msgstr "Settings saved."
+
+#: core/core_google_apps_login.php:852
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: core/core_google_apps_login.php:826
+msgid "Click here to open your personalized instructions in a new window"
+msgstr "Click here to open your personalised instructions in a new window"
+
+#: core/core_google_apps_login.php:823
+msgid "To set up your website to enable Google logins, you will need to follow instructions specific to your website."
+msgstr "To set up your website to enable Google logins, you will need to follow instructions specific to your website."
+
+#: core/core_google_apps_login.php:817
+msgid "Google Apps Login setup"
+msgstr "Google Apps Login setup"
+
+#. Plugin Name of the plugin
+#: core/core_google_apps_login.php:788 core/core_google_apps_login.php:793
+msgid "Google Apps Login"
+msgstr "Google Apps Login"
+
+#: core/core_google_apps_login.php:788 core/core_google_apps_login.php:793
+msgid "Google Apps Login settings"
+msgstr "Google Apps Login settings"
+
+#: core/core_google_apps_login.php:740
+msgid "You will need to complete Google Apps Login <a href=\"%s\">Settings</a> in order for the plugin to work"
+msgstr "You will need to complete the Google Apps Login <a href=\"%s\">Settings</a> in order for the plugin to work"
+
+#: core/core_google_apps_login.php:564
+msgid "User %s not registered in Wordpress"
+msgstr "User %s is not registered in WordPress"
+
+#: core/core_google_apps_login.php:546
+msgid "User authenticated OK, but error fetching user details from Google"
+msgstr "User authenticated OK, but error fetching user details from Google"
+
+#: core/core_google_apps_login.php:522
+msgid "Email needs to be verified on your Google Account"
+msgstr "Email needs to be verified on your Google Account"
+
+#: core/core_google_apps_login.php:488
+msgid "Session mismatch - try again, but there could be a problem setting cookies"
+msgstr "Session mismatch – try again, but there could be a problem setting cookies"
+
+#: core/core_google_apps_login.php:481
+msgid "Session mismatch - try again, but there could be a problem passing state"
+msgstr "Session mismatch – try again, but there could be a problem passing state"
+
+#: core/core_google_apps_login.php:475
+msgid "Session mismatch - try again, but there could be a problem setting state"
+msgstr "Session mismatch – try again, but there could be a problem setting state"
+
+#: core/core_google_apps_login.php:452
+msgid "You did not grant access"
+msgstr "You did not grant access"
+
+#: core/core_google_apps_login.php:428 core/core_google_apps_login.php:1168
+msgid "Login with Google"
+msgstr "Log in with Google"
+
+#: core/core_google_apps_login.php:410
+msgid "or"
+msgstr "or"
+
+#: core/core_google_apps_login.php:394
+msgid "Powered by "
+msgstr "Powered by "
+
+#: core/core_google_apps_login.php:356
+msgid "Redirecting to <a href=\"%s\">Login via Google</a>..."
+msgstr "Redirecting to <a href=\"%s\">Log in via Google</a>..."
