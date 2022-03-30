@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ac8a03d0-852a-4fa1-912d-49ac1636f3a5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.vscode/tasks.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../.vscode/tasks.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../../build.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dist/src/compiler/consoler.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../dist/src/compiler/consoler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dist/src/compiler/core.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../dist/src/compiler/core.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dist/src/compiler/framework.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../dist/src/compiler/framework.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dist/src/compiler/gulpfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../dist/src/compiler/gulpfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../dist/src/node-localstorage/LocalStorage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../dist/src/node-localstorage/LocalStorage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/.htaccess" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/breadcrumb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/edit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.obfuscated.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/coupon/list.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/database.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../etc/superuser/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/installed.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/npm/registry.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index.obfuscated.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index.obfuscated.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/php/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/pw-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/pw.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/pw.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/pw.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/rajaongkir.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/server.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/session.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/clean.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/meta-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/meta.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/meta.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/theme/meta.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/access-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/access.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/access.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/access.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/breadcrumb.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/create-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/create.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/create.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/create.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/list-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/list.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/users/roles.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../etc/superuser/vscode/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Array.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Cookies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/Cookies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Date.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Device.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/EventHandler.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Number.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Object.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/Object.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/Object.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/ObjectConstructor.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/ObjectConstructorAjax.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/aacaller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/aacaller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/ajaxJQuery.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/ajaxJQuery.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/base64.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/base64.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/console.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/function.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/function.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/globals.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/globals.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/inputRupiah.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/ip.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/md5.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/md5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/saver.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/storage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/string.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/textarea.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/url.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/js/utility.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/js/utility.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/compiler/consoler.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/compiler/consoler.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/compiler/core.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/compiler/core.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/compiler/framework.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/compiler/framework.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/compiler/framework.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/compiler/framework.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/compiler/gulpfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/compiler/gulpfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/node-localstorage/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/node-localstorage/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/node-localstorage/LocalStorage.coffee" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/node-localstorage/LocalStorage.coffee" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../libs/src/node-localstorage/LocalStorage.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../libs/src/node-localstorage/LocalStorage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../phpdoc" beforeDir="false" afterPath="$PROJECT_DIR$/../../phpdoc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../phpdoc-build.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../../phpdoc-build.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../phpdoc.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/../../phpdoc.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../phpdoc.phar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/Cookie/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/Cookie/helper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/Crypto/Encryption.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/Crypto/Encryption.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/Crypto/crypt.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/Crypto/crypt.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/Crypto/openssl.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/Crypto/openssl.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/DB/pdo.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/DB/pdo.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/config/views/categories/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/config/views/categories/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/config/views/product/in/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/config/views/product/in/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/helper.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/helper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/admin.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/admin.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/js/app.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/partial/fab.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/partial/fab.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/assets/partial/fab.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/assets/partial/fab.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/bootstrap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/bootstrap-4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/bootstrap-5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/content-bootstrap-3.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/content-bootstrap-4.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/content.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/custom/ajax.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/custom/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/custom/custom.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/custom/custom.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/fontawesome-5" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/gulpfile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/gulpfile.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/meta.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/MVC/themes/bootstrap/script.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/User/coupon.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/User/coupon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/User/user.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/User/user.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/shim/func.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/shim/func.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../test/browserify.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../brand/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../brand/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../brand/index.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../brand/index.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../categories/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../categories/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../categories/index.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../categories/index.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../consumer/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/../consumer/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../producer/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../producer/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../producer/index.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../producer/index.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/add.css" beforeDir="false" afterPath="$PROJECT_DIR$/../product/add.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/add.less" beforeDir="false" afterPath="$PROJECT_DIR$/../product/add.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/add.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/../product/add.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/fetch.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index-f.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../product/in/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../product/in/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.less" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/../product/in/index.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../product/in/index.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/in/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/../product/in/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../product/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../product/index.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/../product/index.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ajax/success-f.php" beforeDir="false" afterPath="$PROJECT_DIR$/ajax/success-f.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/richsnippets.php" beforeDir="false" afterPath="$PROJECT_DIR$/richsnippets.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server-f.php" beforeDir="false" afterPath="$PROJECT_DIR$/server-f.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/create.php" beforeDir="false" afterPath="$PROJECT_DIR$/../user/create.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/roles/fetch-f.php" beforeDir="false" afterPath="$PROJECT_DIR$/../user/roles/fetch-f.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/roles/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/../user/roles/index.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1k7JUPGkXYSvzIhgXo9EFsDRhpq" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ac8a03d0-852a-4fa1-912d-49ac1636f3a5" name="Default Changelist" comment="" />
+      <created>1605045744883</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605045744883</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="110" y="4" key="SettingsEditor" timestamp="1605046255959">
+      <screen x="0" y="0" width="1218" height="720" />
+    </state>
+    <state x="110" y="4" key="SettingsEditor/0.0.1218.720@0.0.1218.720" timestamp="1605046255959" />
+    <state x="265" y="160" key="run.anything.popup" timestamp="1605046272186">
+      <screen x="0" y="0" width="1218" height="720" />
+    </state>
+    <state x="265" y="160" key="run.anything.popup/0.0.1218.720@0.0.1218.720" timestamp="1605046272186" />
+  </component>
+</project>
