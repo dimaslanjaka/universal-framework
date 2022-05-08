@@ -147,15 +147,15 @@ class MonsterInsights_Tracking_Gtag extends MonsterInsights_Tracking_Abstract
                 $options['page_path'] = "{$placeholder}'/404.html?page=' + document.location.pathname + document.location.search + '&from=' + document.referrer{$placeholder}";
             }
         } elseif ($wp_query->is_search) {
-            $pushstr = "'/?s=";
+            $pushstr = "/?s=";
             if (0 === (int) $wp_query->found_posts) {
-                $options['page_path'] = $pushstr.'no-results:'.rawurlencode($wp_query->query_vars['s'])."&cat=no-results'";
+                $options['page_path'] = $pushstr . 'no-results:' . rawurlencode($wp_query->query_vars['s']) . "&cat=no-results";
             } elseif (1 === (int) $wp_query->found_posts) {
-                $options['page_path'] = $pushstr.rawurlencode($wp_query->query_vars['s'])."&cat=1-result'";
+                $options['page_path'] = $pushstr . rawurlencode($wp_query->query_vars['s']) . "&cat=1-result";
             } elseif ($wp_query->found_posts > 1 && $wp_query->found_posts < 6) {
-                $options['page_path'] = $pushstr.rawurlencode($wp_query->query_vars['s'])."&cat=2-5-results'";
+                $options['page_path'] = $pushstr . rawurlencode($wp_query->query_vars['s']) . "&cat=2-5-results";
             } else {
-                $options['page_path'] = $pushstr.rawurlencode($wp_query->query_vars['s'])."&cat=plus-5-results'";
+                $options['page_path'] = $pushstr . rawurlencode($wp_query->query_vars['s']) . "&cat=plus-5-results";
             }
         } elseif (monsterinsights_get_option('hash_tracking', false)) {
             $options['page_path'] = "{$placeholder}location.pathname + location.search + location.hash{$placeholder}";

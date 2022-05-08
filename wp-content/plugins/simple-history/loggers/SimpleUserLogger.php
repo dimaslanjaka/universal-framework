@@ -15,10 +15,10 @@ class SimpleUserLogger extends SimpleLogger {
 	public function getInfo() {
 
 		$arr_info = array(
-			'name' => __( 'User Logger', 'simple-history' ),
+			'name'        => __( 'User Logger', 'simple-history' ),
 			'description' => __( 'Logs user logins, logouts, and failed logins', 'simple-history' ),
-			'capability' => 'edit_users',
-			'messages' => array(
+			'capability'  => 'edit_users',
+			'messages'    => array(
 				'user_login_failed' => __(
 					'Failed to login with username "{login}" (incorrect password entered)',
 					'simple-history'
@@ -75,12 +75,11 @@ class SimpleUserLogger extends SimpleLogger {
 					'simple-history'
 				),
 			),
-
-			'labels' => array(
+			'labels'      => array(
 				'search' => array(
-					'label' => _x( 'Users', 'User logger: search', 'simple-history' ),
+					'label'     => _x( 'Users', 'User logger: search', 'simple-history' ),
 					'label_all' => _x( 'All user activity', 'User logger: search', 'simple-history' ),
-					'options' => array(
+					'options'   => array(
 						_x( 'Successful user logins', 'User logger: search', 'simple-history' ) => array(
 							'user_logged_in',
 							'user_unknown_logged_in',
@@ -133,7 +132,7 @@ class SimpleUserLogger extends SimpleLogger {
 		add_action( 'wp_authenticate_user', array( $this, 'onWpAuthenticateUser' ), 10, 2 );
 
 		// Failed to login to user that did not exist (perhaps brute force)
-		// run this later than 10 because wordpress own email login check is done with prio 20
+		// run this later than 10 because wordpress own email login check is done with priority 20
 		// so if we run at 10 we just get null
 		add_filter( 'authenticate', array( $this, 'onAuthenticate' ), 30, 3 );
 
@@ -459,9 +458,9 @@ class SimpleUserLogger extends SimpleLogger {
 	}
 
 	/**
-	 * Called when user dessions are destroyed from admin
+	 * Called when user sessions are destroyed from admin
 	 * Can be called for current logged in user = destroy all other sessions
-	 * or for another user = destroy alla sessions for that user
+	 * or for another user = destroy all sessions for that user
 	 * Fires from AJAX call
 	 *
 	 * @since 2.0.6
@@ -528,7 +527,7 @@ class SimpleUserLogger extends SimpleLogger {
 
 	/**
 	 * Modify plain text row output
-	 * - adds link to user profil
+	 * - adds link to user profile
 	 * - change to "your profile" if you're looking at your own edit
 	 */
 	public function getLogRowPlainTextOutput( $row ) {
@@ -760,7 +759,7 @@ class SimpleUserLogger extends SimpleLogger {
 			return $user;
 		}
 
-		// If null then no auth done yet. Wierd. But what can we do.
+		// If null then no auth done yet. Weird. But what can we do.
 		if ( is_null( $user ) ) {
 			return $user;
 		}

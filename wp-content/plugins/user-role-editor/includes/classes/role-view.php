@@ -27,14 +27,8 @@ class URE_Role_View extends URE_View {
     
     
     public function role_default_prepare_html($select_width=200) {
-                        
-        $roles = $this->editor->get('roles');
-        if (!isset($roles) || !$roles) {
-            // get roles data from database
-            $roles = $this->lib->get_user_roles();
-        }        
-        ksort( $roles );
-        
+                                
+        $roles = $this->lib->get_editable_user_roles();        
         $caps_access_restrict_for_simple_admin = $this->lib->get_option('caps_access_restrict_for_simple_admin', 0);
         $show_admin_role = $this->lib->show_admin_role_allowed();
         if ($select_width>0) {
@@ -48,12 +42,7 @@ class URE_Role_View extends URE_View {
             $selected = selected($key, $wp_default_role, false);
             $disabled = ($key==='administrator' && $caps_access_restrict_for_simple_admin && !$this->lib->is_super_admin()) ? 'disabled' : '';
             if ($show_admin_role || $key != 'administrator') {
-                $translated_name = esc_html__($value['name'], 'user-role-editor');  // get translation from URE language file, if exists
-                if ($translated_name === $value['name']) { // get WordPress internal translation
-                    $translated_name = translate_user_role($translated_name);
-                }
-                $translated_name .= ' (' . $key . ')';                
-                $this->role_default_html .= '<option value="' . $key . '" ' . $selected .' '. $disabled .'>' . $translated_name . '</option>';
+                $this->role_default_html .= '<option value="' . $key . '" ' . $selected .' '. $disabled .'>'. $value['name'] .' (' . $key . ')</option>';
             }
         }
         $this->role_default_html .= '</select>';
@@ -75,9 +64,8 @@ class URE_Role_View extends URE_View {
             <option value="none" selected="selected">' . esc_html__('None', 'user-role-editor') . '</option>';
         $this->role_select_html = '<select id="user_role" name="user_role" onchange="ure_main.role_change( this.value );">';        
         $current_role = $this->editor->get( 'current_role' );
-        $all_roles = $this->editor->get( 'roles' );
+        $all_roles = $this->editor->get( 'roles' );        
         $roles = $this->lib->get_editable_user_roles( $all_roles );
-        ksort( $roles );
         foreach ($roles as $key => $value) {
             if ( $key===$role_to_skip ) { //  skip role of current user if he does not have full access to URE
                 continue;
@@ -85,13 +73,9 @@ class URE_Role_View extends URE_View {
             $selected1 = selected( $key, $current_role, false );
             $disabled = ( $key==='administrator' && $caps_access_restrict_for_simple_admin && !$this->lib->is_super_admin()) ? 'disabled' : '';
             if ( $show_admin_role || $key != 'administrator' ) {
-                $translated_name = esc_html__( $value['name'], 'user-role-editor' );  // get translation from URE language file, if exists
-                if ( $translated_name === $value['name'] ) { // get WordPress internal translation
-                    $translated_name = translate_user_role( $translated_name );
-                }
-                $translated_name .= ' (' . $key . ')';                
-                $this->role_select_html .= '<option value="' . $key . '" ' . $selected1 .' '. $disabled .'>' . $translated_name . '</option>';
-                $this->role_to_copy_html .= '<option value="' . $key .'" '. $disabled .'>' . $translated_name . '</option>';
+                $role_name = $value['name'] .' (' . $key . ')';
+                $this->role_select_html .= '<option value="' . $key . '" ' . $selected1 .' '. $disabled .'>' . $role_name . '</option>';
+                $this->role_to_copy_html .= '<option value="' . $key .'" '. $disabled .'>' . $role_name . '</option>';
             }
         }
         $this->role_select_html .= '</select>';

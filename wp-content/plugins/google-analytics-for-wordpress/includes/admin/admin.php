@@ -226,7 +226,7 @@ function monsterinsights_add_action_links( $links ) {
 
 	// If lite, show a link where they can get pro from
 	if ( ! monsterinsights_is_pro_version() ) {
-		$get_pro = '<a title="' . esc_html__( 'Get MonsterInsights Pro', 'google-analytics-for-wordpress' ) .'" href="'. monsterinsights_get_upgrade_link( 'all-plugins', 'upgrade-link', "https://www.monsterinsights.com/lite/" ) .'" style="font-weight:700; color: #1da867;">' . esc_html__( 'Get MonsterInsights Pro', 'google-analytics-for-wordpress' ) . '</a>';
+		$get_pro = '<a title="' . esc_html__( 'Get MonsterInsights Pro', 'google-analytics-for-wordpress' ) .'" target="_blank" rel="noopener" href="'. monsterinsights_get_upgrade_link( 'all-plugins', 'upgrade-link', "https://www.monsterinsights.com/lite/" ) .'" style="font-weight:700; color: #1da867;">' . esc_html__( 'Get MonsterInsights Pro', 'google-analytics-for-wordpress' ) . '</a>';
 		array_unshift( $links, $get_pro );
 	}
 
@@ -510,7 +510,7 @@ function monsterinsights_admin_setup_notices() {
                     echo esc_html( 'Start making data-driven decisions to grow your business.', 'google-analytics-for-wordpress' );
                     echo '</p>';
                     // Translators: Placeholders add a link to the MonsterInsights website.
-                    echo sprintf( esc_html__( '%1$sGet MonsterInsights Pro%2$s', 'google-analytics-for-wordpress' ), '<a class="button button-primary button-hero" href="'. monsterinsights_get_upgrade_link( 'admin-notices', 'woocommerce-upgrade' ) .'">', ' &raquo;</a>' );
+                    echo sprintf( esc_html__( '%1$sGet MonsterInsights Pro%2$s', 'google-analytics-for-wordpress' ), '<a class="button button-primary button-hero" target="_blank" href="'. monsterinsights_get_upgrade_link( 'admin-notices', 'woocommerce-upgrade' ) .'">', ' &raquo;</a>' );
                     echo '</p>';
                 echo '</div><div class="monsterinsights-wooedd-upsell-right">';
                     echo '<img class="monsterinsights-wooedd-upsell-image monsterinsights-wooedd-upsell-image-large" src="' . trailingslashit( MONSTERINSIGHTS_PLUGIN_URL ) . 'assets/images/upsell/woo-edd-upsell.png">';
@@ -542,7 +542,7 @@ function monsterinsights_admin_setup_notices() {
                     echo '<p>';
                     echo esc_html( 'Start making data-driven decisions to grow your business.', 'google-analytics-for-wordpress' );
                     echo '</p>';
-                    echo sprintf( esc_html__( '%1$sGet MonsterInsights Pro%2$s', 'google-analytics-for-wordpress' ), '<a class="button button-primary button-hero" href="'. monsterinsights_get_upgrade_link( 'admin-notices', 'edd-upgrade' ) .'">', ' &raquo;</a>' );
+                    echo sprintf( esc_html__( '%1$sGet MonsterInsights Pro%2$s', 'google-analytics-for-wordpress' ), '<a class="button button-primary button-hero" target="_blank" href="'. monsterinsights_get_upgrade_link( 'admin-notices', 'edd-upgrade' ) .'">', ' &raquo;</a>' );
                     echo '</p>';
                 echo '</div><div class="monsterinsights-wooedd-upsell-right">';
                     echo '<img class="monsterinsights-wooedd-upsell-image monsterinsights-wooedd-upsell-image-large" src="' . trailingslashit( MONSTERINSIGHTS_PLUGIN_URL ) . 'assets/images/upsell/woo-edd-upsell.png">';

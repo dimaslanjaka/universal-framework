@@ -1,0 +1,9 @@
+
+
+
+
+- italian language has no alternative when failed via the api . solve this
+
+
+
+- verify special case passwords are working i.e urlencode them

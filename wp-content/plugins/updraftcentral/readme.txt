@@ -2,8 +2,8 @@
 Contributors: DavidAnderson, DNutbourne, aporter, snightingale
 Tags: remote control, management dashboard, multiple site management, remote management, remote dashboard, updates
 Requires at least: 4.4
-Tested up to: 5.9
-Stable tag: 0.8.19
+Tested up to: 6.0
+Stable tag: 0.8.20
 Requires PHP: 5.6
 Author: DavidAnderson
 Donate link: https://david.dw-perspective.org.uk/donate
@@ -122,6 +122,27 @@ The web browser that you visit the UpdraftCentral dashboard must not have not be
 We recognise and thank all those whose code and/or libraries are used and/or modified under the terms of their open source licences in UpdraftCentral, at: https://updraftplus.com/acknowledgements/
 
 == Changelog ==
+
+= 0.8.20 - 23/Feb/2022 =
+
+* FEATURE: Ability to display logged events
+* FIX: Fix deprecation error when sending request using GuzzleHttp
+* FIX: Fix an issue where blank logs are entered into the log file when UpdraftCentral is loaded
+* FIX: Add proper check and instantiation for UpdraftCentral_Site_Meta class before usage
+* FIX: Fix button where 'Return to updates' label is retained after switching to updates area
+* FIX: Fix rearrange_priority reference
+* TWEAK: Hide option to delete backup from remote storage if backup doesn't have remote storage setup
+* TWEAK: Fix jQuery deprecations
+* TWEAK: Prioritize reachable sites during background process
+* TWEAK: Make "Site Management" consistent across modules
+* TWEAK: Allow adding of tags in the 'Add Site' dialog
+* TWEAK: Remove deprecated polyfill for IE9
+* TWEAK: Improve cached data retrieval and usage 
+* TWEAK: Change background process log level to "info" and "debug"
+* TWEAK: Allows user to configure UpdraftCentral to load without filling the entire content area
+* TWEAK: Replace deprecated jQuery.trim()
+* TWEAK: Update udrpc library to reduce unnecessarily noisy logging for unreached sites
+* TWEAK: Reduce log level when updraftcentral_cron lock cannot be gained
 
 = 0.8.19 - 19/Oct/2021 =
 
@@ -582,4 +603,4 @@ For all our FAQs, and all other support documentation, please go here: https://u
 15. Manage themes on a controlled site (premium only)
 
 == Upgrade Notice ==
-* 0.8.19 : * FIX: Fix empty page being displayed after the currently recorded site has been suspended. FIX: Fix NaN (not a number) issue when displaying dates on the plugin module's install area.
+* 0.8.20 : FEATURE: Ability to display logged events. FIX: Fix an issue where blank logs are entered into the log file when UpdraftCentral is loaded.

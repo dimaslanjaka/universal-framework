@@ -58,10 +58,11 @@ class UpdraftCentral_User {
 		add_filter('updraftcentral_dashboard_ajaxaction_save_timeout', array($this, 'dashboard_ajaxaction_save_timeout'), 10, 2);
 
 		add_filter('updraftcentral_dashboard_ajaxaction_cache_response', array($this, 'dashboard_ajaxaction_cache_response'), 10, 2);
-		add_filter('updraftcentral_dashboard_ajaxaction_get_sites_information', array($this, 'dashboard_ajaxaction_get_sites_information'), 10, 1);
 		add_filter('updraftcentral_dashboard_ajaxaction_save_settings', array($this, 'dashboard_ajaxaction_save_settings'), 10, 2);
-		add_filter('updraftcentral_site_alert_icon', array($this, 'dashboard_site_alert_icon'), 10, 1);
+		add_filter('updraftcentral_site_alert_icon', array($this, 'dashboard_site_alert_icon'), 10, 2);
 		add_filter('updraftcentral_dashboard_ajaxaction_log_event', array($this, 'dashboard_ajaxaction_log_event'), 10, 2);
+		add_filter('updraftcentral_dashboard_ajaxaction_events', array($this, 'dashboard_ajaxaction_events'), 10, 2);
+		add_filter('updraftcentral_site_data_attributes', array($this, 'dashboard_attach_cached_data'), 10, 2);
 
 		// Load licence manager - this needs loading before the sites themselves are
 		if (!class_exists('UpdraftCentral_Licence_Manager')) include_once UD_CENTRAL_DIR.'/classes/licence-manager.php';
@@ -76,13 +77,191 @@ class UpdraftCentral_User {
 	}
 
 	/**
-	 * Returns an icon string if a site is not reacheable in the last 96 hours
+	 * Attach cache data of a particular site to its site row attributes
 	 *
-	 * @param integer $site_id The ID of the site to check
+	 * @param string $site_attributes Attribute string of the site
+	 * @param object $site            The site where the cached data attribute is to be added
+	 *
 	 * @return string
 	 */
-	public function dashboard_site_alert_icon($site_id) {
-		$meta = $this->rc->site_meta->get_site_meta($site_id, 'background_request_error', true, false, true);
+	public function dashboard_attach_cached_data($site_attributes, $site) {		
+		$data = $this->load_cached_data($site->site_id);
+		if (!empty($data)) {
+			$site_attributes .= ' data-cached_data="'.base64_encode(json_encode($data)).'"';
+		}
+		
+		return $site_attributes;
+	}
+
+	/**
+	 * Loads all events recorded/logged and their corresponding response data
+	 *
+	 * @param array $response  A response array where we insert our request response
+	 * @param array $post_data Parameters passed as an additional argument(s) to the request
+	 *
+	 * @calls die()
+	 */
+	public function dashboard_ajaxaction_events($response, $post_data) {
+		global $wpdb;
+		$our_prefix = $wpdb->base_prefix.$this->rc->table_prefix;
+
+		$response = array(
+			"draw" => 0,
+			"recordsTotal" => 0,
+			"recordsFiltered" => 0,
+			"data" => array()
+		);
+
+		$data = $post_data['data'];
+		if (!empty($data)) {
+			$draw = $data['draw'];
+			$row = $data['start'];
+			$row_per_page = $data['length'];
+			$column_index = $data['order'][0]['column'];
+			$column_name = $data['columns'][$column_index]['data'];
+			$column_sort_order = $data['order'][0]['dir'];
+			$search_value = $data['search']['value'];
+
+			$sql = 'SELECT e.*, s.description';
+			$from = 'FROM '.$our_prefix.'events e, '.$our_prefix.'sites s';
+			$where = 'WHERE e.site_id = s.site_id';
+			$order = 'ORDER BY e.time DESC';
+			$limit = 'LIMIT %d,%d';
+
+			// If event_name is passed as sorting field we will use the event_data since
+			// it holds the actual plugin and theme name.
+			if ('event_name' === $column_name) {
+				$column_name = 'event_data';
+			}
+
+			// We can't add the order clause fields into wpdb->prepare since it will convert the
+			// values into 'field_name' 'ASC' or 'field_name' 'DESC', thus breaking the sorting
+			// capability of the datatables.net plugin. Therefore, we'll just have to sanitize
+			// it manually through WordPress' sanitize_sql_orderby method.
+			$order_by = sanitize_sql_orderby($column_name.' '.$column_sort_order);
+			if (false !== $order_by) {
+				$order = 'ORDER BY '.$order_by;
+			}
+			
+			if (!empty($search_value)) {
+			   $where .= ' AND (e.event_type LIKE %s OR e.event_name LIKE %s OR e.event_status LIKE %s OR s.description LIKE %s OR DATE(FROM_UNIXTIME(e.time)) LIKE %s OR SUBSTRING_INDEX(e.event_data, "\",", 1) LIKE %s)';
+			}
+
+			$sql = $sql.' '.$from.' '.$where.' '.$order.' '.$limit;
+
+			$total_records = 0;
+			if (!empty($search_value)) {
+				$search_value = '%'.$search_value.'%';
+				$search_event_data = '%"name":"%'.$search_value.'%';
+
+				$total_records = $wpdb->get_var($wpdb->prepare('SELECT COUNT(e.event_id) '.$from.' '.$where, $search_value, $search_value, $search_value, $search_value, $search_value, $search_event_data));
+				$result = $wpdb->get_results($wpdb->prepare($sql, $search_value, $search_value, $search_value, $search_value, $search_value, $search_event_data, $row, $row_per_page), ARRAY_A);
+			} else {
+				// We don't need the wpdb->prepare in getting the $total_records here since there's no token or
+				// user inputted data to replace in this COUNT query.
+				$total_records = $wpdb->get_var('SELECT COUNT(e.event_id) '.$from.' '.$where);
+				$result = $wpdb->get_results($wpdb->prepare($sql, $row, $row_per_page), ARRAY_A);
+			}
+
+			$result_data = array();
+
+			$total_records_with_limit = 0;
+			if (!empty($result)) {
+				$total_records_with_limit = count($result);
+				foreach ($result as $item) {
+					$event_name = $this->get_readable_text($item['event_data'], $item['event_name'], $item['event_type']);
+					$result_data []= array(
+						'event_name' => $event_name,
+						'description' => $item['description'],
+						'event_status' => $item['event_status'],
+						'time' => date('Y-m-d H:i:s', $item['time']),
+						'event_result_data' => '<a href="#" class="updraftcentral_events_result_view" data-event_result_data="'.base64_encode($item['event_result_data']).'">view</a>'
+					);
+				}
+			}
+
+			$response = array(
+				"draw" => intval($draw),
+				"recordsTotal" => $total_records ?: 0,
+				"recordsFiltered" => $total_records_with_limit ?: 0,
+				"data" => $result_data
+			);
+		}
+
+		echo json_encode($response);
+		die();
+	}
+
+	/**
+	 * Builds a readable report/line to be presented to the user on the events table
+	 *
+	 * @param string $event_data The stored/logged event information
+	 * @param string $event_name The name of the event
+	 * @return string
+	 */
+	private function get_readable_text($event_data, $event_name) {
+		$event_data = json_decode($event_data, true);
+		$text = '';
+		if (!empty($event_data) && isset($event_data['name'])) {
+			list($event_type, $item_type) = explode('.', $event_name);
+			$item = $event_data['name'];
+
+			if ('plugin' === $item_type) {
+				$item_type = __('plugin', 'updraftcentral');
+			} elseif ('theme' === $item_type) {
+				$item_type = __('theme', 'updraftcentral');
+			} elseif ('core' === $item_type) {
+				$item_type = __('core', 'updraftcentral');
+			} elseif ('translation' === $item_type) {
+				$item_type = __('translation', 'updraftcentral');
+			}
+
+			switch ($event_type) {
+				case 'install':
+					$text = sprintf(__('Installation of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+				case 'update':
+					$text = sprintf(__('Update of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+				case 'delete':
+					$text = sprintf(__('Deletion of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+				case 'activate':
+					$text = sprintf(__('Activation of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+				case 'deactivate':
+					$text = sprintf(__('Deactivation of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+				case 'install_activate':
+					$text = sprintf(__('Installation and activation of the %s %s', 'updraftcentral'), $item, $item_type);
+					break;
+			}
+		}
+
+		return $text;
+	}
+
+	/**
+	 * Returns an icon string if a site is not reacheable in the last 96 hours
+	 * 
+	 * Used by the WP filter updraftcentral_site_alert_icon
+	 *
+	 * @param string  $html	   HTML to use for an icon
+	 * @param integer $site_id The ID of the site to check
+	 *
+	 * @return string - filtered value
+	 */
+	public function dashboard_site_alert_icon($html, $site_id) {
+
+		// We're going to make sure that site_meta is not null before using it as it is being
+		// called early in the process within cron (see UpdraftCentral::rearrange_priority)
+		$site_meta = $this->rc->site_meta;
+		if (!is_a($site_meta, 'UpdraftCentral_Site_Meta')) {
+			if (!class_exists('UpdraftCentral_Site_Meta')) include_once UD_CENTRAL_DIR.'/classes/site-meta.php';
+			$site_meta = new UpdraftCentral_Site_Meta($this->rc->table_prefix);
+		}
+
+		$meta = $site_meta->get_site_meta($site_id, 'background_request_error', true, false, true);
 
 		if (!empty($meta) && is_array($meta) && !empty($meta['created'])) {
 			$result = $meta['meta_value'];
@@ -100,7 +279,7 @@ class UpdraftCentral_User {
 			}
 		}
 
-		return '';
+		return $html;
 	}
 
 	/**
@@ -170,9 +349,9 @@ class UpdraftCentral_User {
 			}
 
 			if (false !== $result) {
-				$result = $this->get_sites_cached_responses(array($cache_key));
+				$result = $this->get_sites_cached_responses($cache_key, $data['site_id']);
 				if (!empty($result)) {
-					$response['data'] = $result[0];
+					$response['data'] = $result;
 				}
 			}
 		}
@@ -181,34 +360,13 @@ class UpdraftCentral_User {
 	}
 
 	/**
-	 * Retrieves the previously stored site responses when running each designated
-	 * (scheduled) commands through cron
+	 * Loads cached data for the given site as a result from a previously run cron process
 	 *
-	 * @param array $response A response array where we insert our request response
-	 * @return array
-	 */
-	public function dashboard_ajaxaction_get_sites_information($response) {
-
-		$response['responsetype'] = 'ok';
-		$response['message'] = 'success';
-
-		// Load sites information in the "sites_info" key. We separate the "load_sites_info" as to
-		// allow the developer to either call the same function from ajax (as this function's case) or
-		// from PHP (e.g. calling the "load_sites_info" function directly from the UpdraftCentral_User class).
-		//
-		// Calling it from PHP we can either attach it to the "udclion" localized variable for quick and easy access
-		// or create a separate (dedicated) localize variable for it.
-		$response['sites_info'] = $this->load_sites_info();
-
-		return $response;
-	}
-
-	/**
-	 * Loads sites information as a result from a previously run cron process
+	 * @param integer $site_id The ID of the site where the cached data is to be pulled from
 	 *
 	 * @return array
 	 */
-	public function load_sites_info() {
+	public function load_cached_data($site_id) {
 		$cached_data = array();
 
 		// Retrieves all (scheduled) commands that were registered using the
@@ -221,20 +379,8 @@ class UpdraftCentral_User {
 				$command = $item['command'];
 				$data = $item['data'];
 
-				$meta_keys = array();
-				if (is_array($this->sites)) {
-					foreach ($this->sites as $site) {
-						// We're going to pull the data based on the contructed keys (in the "meta_keys" array) otherwise it
-						// would take a very long time to complete the whole get_sites_information process if we run individual
-						// queries for each sites because the user could probably have 200 sites or more.
-						$cache_key = $this->generate_cache_key($site->site_id, $command, $data);
-						$meta_keys[] = $cache_key;
-					}
-				}
-
-				if (!empty($meta_keys)) {
-					$cached_data[$command] = $this->get_sites_cached_responses($meta_keys);
-				}
+				$cache_key = $this->generate_cache_key($site_id, $command, $data);
+				$cached_data[$command] = $this->get_sites_cached_responses($cache_key, $site_id);
 			}
 		}
 
@@ -242,18 +388,19 @@ class UpdraftCentral_User {
 	}
 
 	/**
-	 * Retrieves all stored (cached) responses based from a list f unique keys for each site when
-	 * running the scheduled commands from cron
+	 * Retrieves all stored (cached) responses for the given site
 	 *
-	 * @param array $meta_keys A list of unique keys to retrieve
+	 * @param string  $key     The meta key
+	 * @param integer $site_id The ID of the site
 	 *
 	 * @return array|object|null
 	 */
-	private function get_sites_cached_responses($meta_keys) {
+	private function get_sites_cached_responses($key, $site_id) {
 		global $wpdb;
 		$our_prefix = $wpdb->base_prefix.$this->rc->table_prefix;
 
-		$responses = $wpdb->get_results("SELECT `site_id`, `created`, `meta_value` as `response` FROM ".$our_prefix."sitemeta WHERE `meta_key` IN ('".implode("','", $meta_keys)."')");
+		$responses = $wpdb->get_row($wpdb->prepare("SELECT `site_id`, `created`, `meta_value` as `response` FROM ".$our_prefix."sitemeta WHERE `site_id` = %d AND `meta_key` = %s", $site_id, $key));
+
 		return $responses;
 	}
 
@@ -322,6 +469,11 @@ class UpdraftCentral_User {
 
 		$data = $post_data['data'];
 
+		// Save load setting
+		if (!empty($data['load_setting'])) {
+			update_user_meta($this->user_id, 'updraftcentral_dashboard_load_setting', $data['load_setting']);
+		}
+
 		// Save timeout settings
 		if (!empty($data['timeout'])) {
 			update_user_meta($this->user_id, 'updraftcentral_dashboard_user_defined_timeout', $data['timeout']);
@@ -333,6 +485,21 @@ class UpdraftCentral_User {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Gets the UpdraftCentral load setting
+	 *
+	 * @return string
+	 */
+	public function get_load_setting() {
+		$load_setting = 'active';	// Default: "active"
+		if (!empty($this->user_id)) {
+			$value = get_user_meta($this->user_id, 'updraftcentral_dashboard_load_setting', true);
+			if (!empty($value)) $load_setting = $value;
+		}
+
+		return $load_setting;
 	}
 
 	/**
@@ -1439,6 +1606,13 @@ class UpdraftCentral_User {
 							}
 						}
 
+						if (!empty($new_site_id)) {
+							if (isset($post_data['data']['tags'])) {
+								do_action('updraftcentral_new_site_added', array('tags' => $post_data['data']['tags'], 'site_id' => $new_site_id));
+							}
+							$response['tags'] = apply_filters('updraftcentral_get_user_tags', []);
+						}
+
 						// Return the new HTML widget to the front end
 						$response['sites_html'] = $render_sites ? $this->get_sites_html() : '';
 						$response['status_info'] = array(
@@ -1634,7 +1808,7 @@ class UpdraftCentral_User {
 					$suspended = !empty($tagged);
 
 					$site_data_attributes = apply_filters('updraftcentral_site_data_attributes', $site_data_attributes, $this->sites[$site_id_meta]);
-					$site_alert_icon = apply_filters('updraftcentral_site_alert_icon', $site_id_meta);
+					$site_alert_icon = apply_filters('updraftcentral_site_alert_icon', '', $site_id_meta);
 					$available_updates = $this->get_updates_count_from_cache($site_id_meta);
 					
 					$ret .= $this->rc->include_template('sites/site-row.php', true, array('site' => $this->sites[$site_id_meta], 'site_meta' => $site_meta, 'site_data_attributes' => $site_data_attributes, 'suspended' => $suspended, 'site_alert_icon' => $site_alert_icon, 'available_updates' => $available_updates));

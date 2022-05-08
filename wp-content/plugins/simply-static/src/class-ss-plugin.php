@@ -14,7 +14,7 @@ class Plugin {
 	 * Plugin version
 	 * @var string
 	 */
-	const VERSION = '2.1.5.6';
+	const VERSION = '2.1.5.7';
 
 	/**
 	 * The slug of the plugin; used in actions, filters, i18n, table names, etc.
@@ -104,7 +104,13 @@ class Plugin {
 			add_filter( 'update_footer', array( self::$instance, 'filter_update_footer' ), 15 );
 			add_filter( 'simplystatic.archive_creation_job.task_list', array( self::$instance, 'filter_task_list' ), 10, 2 );
 
-			add_action( 'ss_before_static_export', array( self::$instance, 'add_http_filters' ) );
+			$direct_http_args = apply_filters( 'ss_direct_http_request_args', true );
+
+			if ( $direct_http_args ) {
+				add_filter( 'http_request_args', array( self::$instance, 'wpbp_http_request_args' ), 10, 2 );
+			} else {
+				add_action( 'ss_before_static_export', array( self::$instance, 'add_http_filters' ) );
+			}
 
 			self::$instance->options = Options::instance();
 			self::$instance->view = new View();
@@ -261,7 +267,7 @@ class Plugin {
 			Util::delete_debug_log();
 			Util::debug_log( "Received request to start generating a static archive" );
 
-			if ( 'on' === $this->options->get( 'use_cron' ) && ! defined( 'DISABLE_WP_CRON' ) || 'DISABLE_WP_CRON' !== true ) {
+			if ( 'on' === $this->options->get( 'use_cron' ) && ! defined( 'DISABLE_WP_CRON' ) ) {
 				if ( ! wp_next_scheduled( 'simply_static_site_export_cron' ) ) {
 					wp_schedule_single_event( time(), 'simply_static_site_export_cron' );
 				}

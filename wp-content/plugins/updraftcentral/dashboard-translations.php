@@ -207,4 +207,7 @@ return array(
 	'preview_changes' => __('Preview changes', 'updraftcentral'),
 	'permalink' => __('Permalink', 'updraftcentral'),
 	'editor_nojs_message' => __('JavaScript is required for the block editor to work.', 'updraftcentral'),
+	'load_header' => __('Load Setting', 'updraftcentral'),
+	'load_subheading' => __('By default UpdraftCentral fills the entire content area when it loads. If you don\'t wish to load UpdraftCentral that way, then un-tick the checkbox below. You may need to reload the browser after saving for the new settings to take effect.', 'updraftcentral'),
+	'tick_to_fill' => __('Tick to fill the entire content area on load', 'updraftcentral'),
 );

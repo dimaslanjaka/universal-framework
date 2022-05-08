@@ -4,7 +4,7 @@ Tags: coming soon page, under construction mode, under construction, under const
 Requires at least: 4.0
 Requires PHP: 5.2
 Tested up to: 5.9
-Stable tag: 3.92
+Stable tag: 3.93
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,10 @@ Or if needed, upload manually;
 
 
 == Changelog ==
+
+= 3.93 =
+* 2022/04/13
+* Fix for escaping HTML that shouldn't be escaped
 
 = 3.92 =
 * 2022/01/13

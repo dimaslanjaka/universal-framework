@@ -91,12 +91,12 @@ class SimpleLogger {
 
 			// Shown on the info-tab in settings, use these fields to tell
 			// an admin what your logger is used for.
-			'name' => 'SimpleLogger',
-			'description' => 'The built in logger for Simple History',
+			'name'        => 'SimpleLogger',
+			'description' => __( 'The built in logger for Simple History', 'simple-history' ),
 
 			// Capability required to view log entries from this logger
 			'capability' => 'edit_pages',
-			'messages' => array(
+			'messages'   => array(
 				// No pre-defined variants
 				// when adding messages __() or _x() must be used
 			),
@@ -148,9 +148,38 @@ class SimpleLogger {
 		}
 
 		/**
-		 * Filter the context used to create the message from the message template
+		 * Filters the context used to create the message from the message template.
+		 * Can be used to modify the variables sent to the message template.
+		 *
+		 * @example Example that modifies the parameters sent to the message template.
+		 *
+		 * This example will change the post type from "post" or "page" or similar to "my own page type".
+		 *
+		 *  ```php
+		 *  add_filter(
+		 *      'simple_history/logger/interpolate/context',
+		 *      function ( $context, $message, $row ) {
+		 *
+		 *          if ( empty( $row ) ) {
+		 *              return $context;
+		 *          }
+		 *
+		 *          if ( $row->logger == 'SimplePostLogger' && $row->context_message_key == 'post_updated' ) {
+		 *              $context['post_type'] = 'my own page type';
+		 *          }
+		 *
+		 *          return $context;
+		 *      },
+		 *      10,
+		 *      3
+		 *  );
+		 * ```
 		 *
 		 * @since 2.2.4
+		 *
+		 * @param array $context
+		 * @param string $message
+		 * @param array $row The row. Not supported by all loggers.
 		 */
 		$context = apply_filters(
 			'simple_history/logger/interpolate/context',
@@ -375,7 +404,7 @@ class SimpleLogger {
 
 		/**
 		 * Filter how many seconds as most that can pass since an
-		 * event occured to show "nn minutes ago" (human diff time-format) instead of exact date
+		 * event occurred to show "nn minutes ago" (human diff time-format) instead of exact date
 		 *
 		 * @since 2.0
 		 *
@@ -389,7 +418,7 @@ class SimpleLogger {
 
 		/**
 		 * Filter how many seconds as most that can pass since an
-		 * event occured to show "just now" instead of exact date
+		 * event occurred to show "just now" instead of exact date
 		 *
 		 * @since 2.0
 		 *
@@ -768,7 +797,7 @@ class SimpleLogger {
 
 	/**
 	 * Get output for image
-	 * Image can be for example gravar if sender is user,
+	 * Image can be for example gravatar if sender is user,
 	 * or other images if sender i system, wordpress, and so on
 	 */
 	public function getLogRowSenderImageOutput( $row ) {
@@ -827,7 +856,7 @@ class SimpleLogger {
 	/**
 	 * Use this method to output detailed output for a log row
 	 * Example usage is if a user has uploaded an image then a
-	 * thumbnail of that image can bo outputed here
+	 * thumbnail of that image can bo outputted here
 	 *
 	 * @param object $row
 	 * @return string HTML-formatted output
@@ -893,7 +922,7 @@ class SimpleLogger {
 		}
 
 		/**
-		 * Filter so plugins etc. can shortut logging
+		 * Filter so plugins etc. can shortcut logging
 		 *
 		 * @since 2.0.20
 		 *
@@ -1146,10 +1175,46 @@ class SimpleLogger {
 		}
 
 		/**
-		 * Filter that makes it possible to shortcut this log.
-		 * Return bool false to cancel.
+		 * Filter that makes it possible to shortcut the logging of a message.
+		 * Return bool false to cancel logging .
+		 *
+		 * @example Do not log some post types, for example pages and attachments in this case
+		 *
+		 * ```php
+		 *  add_filter(
+		 *      'simple_history/log/do_log',
+		 *      function ( $do_log = null, $level = null, $message = null, $context = null, $logger = null ) {
+		 *
+		 *          $post_types_to_not_log = array(
+		 *              'page',
+		 *              'attachment',
+		 *          );
+		 *
+		 *          if ( ( isset( $logger->slug ) && ( $logger->slug === 'SimplePostLogger' || $logger->slug === 'SimpleMediaLogger' ) ) && ( isset( $context['post_type'] ) && in_array( $context['post_type'], $post_types_to_not_log ) ) ) {
+		 *              $do_log = false;
+		 *          }
+		 *
+		 *          return $do_log;
+		 *      },
+		 *      10,
+		 *      5
+		 *  );
+		 * ```
+		 *
+		 * @example Disable all logging
+		 *
+		 * ```php
+		 *  // Disable all logging
+		 *  add_filter( 'simple_history/log/do_log', '__return_false' );
+		 * ```
 		 *
 		 * @since 2.3.1
+		 *
+		 * @param bool $doLog Wheter to log or not.
+		 * @param string $level The loglevel.
+		 * @param string $message The log message.
+		 * @param array $context The message context.
+		 * @param SimpleLogger $this Logger instance.
 		 */
 		$do_log = apply_filters(
 			'simple_history/log/do_log',
@@ -1159,6 +1224,7 @@ class SimpleLogger {
 			$context,
 			$this
 		);
+
 		if ( false === $do_log ) {
 			return $this;
 		}
@@ -1224,7 +1290,7 @@ class SimpleLogger {
 		}
 
 		/**
-		 * Filter arguments passed to log funtion
+		 * Filter arguments passed to log function
 		 *
 		 * @since 2.0
 		 *
@@ -1287,7 +1353,7 @@ class SimpleLogger {
 			'message' => $message,
 		);
 
-		// Allow date to be overriden.
+		// Allow date to be overridden.
 		// Date must be in format 'Y-m-d H:i:s'.
 		if ( isset( $context['_date'] ) ) {
 			$data['date'] = $context['_date'];
@@ -1373,8 +1439,8 @@ class SimpleLogger {
 
 		// Detect REST calls and append to context, if not already there.
 		$isRestApiRequest =
-		( defined( 'REST_API_REQUEST' ) && REST_API_REQUEST ) ||
-		( defined( 'REST_REQUEST' ) && REST_REQUEST );
+		( defined( 'REST_API_REQUEST' ) && constant( 'REST_API_REQUEST' ) ) ||
+		( defined( 'REST_REQUEST' ) && constant( 'REST_REQUEST' ) );
 		if ( $isRestApiRequest ) {
 			$context['_rest_api_request'] = true;
 		}
@@ -1445,11 +1511,17 @@ class SimpleLogger {
 
 				/**
 				 * Filter to control if ip addresses should be anonymized or not.
+				 * Defaults to true, meaning that any IP address is anonymized.
+				 *
+				 * @example Disable IP anonymization.
+				 *
+				 * ```php
+				 * add_filter( 'simple_history/privacy/anonymize_ip_address', '__return_false' );
+				 * ```
 				 *
 				 * @since 2.22
 				 *
 				 * @param bool true to anonymize ip address, false to keep original ip address.
-				 * @return bool
 				 */
 				$anonymize_ip_address = apply_filters(
 					'simple_history/privacy/anonymize_ip_address',
@@ -1514,7 +1586,27 @@ class SimpleLogger {
 			}
 
 			/**
-			 * Filter the context to store for this event/row
+			 * Filters the context to store for this event/row
+			 *
+			 * @example Skip adding things to the context table during logging.
+			 * Useful if you don't want to add cool and possible super useful info to your logged events.
+			 * Also nice to have if you want to make sure your database does not grow.
+			 *
+			 * ```php
+			 *  add_filter(
+			 *      'simple_history/log_insert_context',
+			 *      function ( $context, $data ) {
+			 *          unset( $context['_user_id'] );
+			 *          unset( $context['_user_login'] );
+			 *          unset( $context['_user_email'] );
+			 *          unset( $context['server_http_user_agent'] );
+			 *
+			 *          return $context;
+			 *      },
+			 *      10,
+			 *      2
+			 *  );
+			 * ```
 			 *
 			 * @since 2.0.29
 			 *
@@ -1540,13 +1632,13 @@ class SimpleLogger {
 		$this->simpleHistory->get_cache_incrementor( true );
 
 		/**
-		 * Action that is called after an event has been logged
+		 * Fired after an event has been logged.
 		 *
 		 * @since 2.5.1
 		 *
 		 * @param array $context Array with all context data that was used to log event.
-		 * @param array $data Array with data used for parent row.
-		 * @param array $this Reference to this logger instance
+		 * @param array $data_parent_row Array with data used for parent row.
+		 * @param SimpleLogger $this Reference to this logger instance.
 		 */
 		do_action(
 			'simple_history/log/inserted',
@@ -1564,7 +1656,7 @@ class SimpleLogger {
 	 *
 	 * @param int   $history_id The id of the history row to add context to.
 	 * @param array $context Context to append to existing context for the row.
-	 * @return bool True if context was added, false if not (beacuse row_id or context is empty).
+	 * @return bool True if context was added, false if not (because row_id or context is empty).
 	 */
 	public function append_context( $history_id, $context ) {
 		if ( empty( $history_id ) || empty( $context ) ) {

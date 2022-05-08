@@ -114,7 +114,7 @@ class Emailer
 	{
 		$components = $this->get('form', true, 'field_components', '[]');
 		if ($components === null || $components === '' && $components !== null) {
-			return $columns;
+			return;
 		}
 
 		$components = json_decode($components);
@@ -398,7 +398,6 @@ class Emailer
 	/**
 	 * Get selected provider
 	 *
-	 * @return void
 	 */
 	public function get_selected_provider()
 	{
@@ -603,7 +602,6 @@ class Emailer
 	 * @param string $start
 	 * @param string $end
 	 * @param boolean $with_from_to
-	 * @return void
 	 */
 	public function get_strings_between($str, $start = '[', $end = ']', $with_from_to = true)
 	{

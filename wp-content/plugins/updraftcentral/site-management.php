@@ -4,13 +4,12 @@
 Plugin Name: UpdraftCentral Dashboard
 Plugin URI: https://updraftcentral.com
 Description: Manage your WordPress sites from a central dashboard
-Version: 0.8.19
+Version: 0.8.20
 Text Domain: updraftcentral
 Domain Path: /languages
 Author: David Anderson + Team Updraft
 Author URI: https://www.simbahosting.co.uk/s3/shop/
 Requires at least: 4.6
-Tested up to: 5.4
 License: MIT
 
 Copyright: 2015- David Anderson
@@ -28,7 +27,7 @@ if (!defined('UPDRAFTCENTRAL_TABLE_PREFIX')) define('UPDRAFTCENTRAL_TABLE_PREFIX
 
 if (!class_exists('UpdraftCentral')) :
 class UpdraftCentral {
-	const VERSION = '0.8.19';
+	const VERSION = '0.8.20';
 
 	// Minimum PHP version required to run this plugin
 	const PHP_REQUIRED = '5.3';
@@ -236,6 +235,36 @@ class UpdraftCentral {
 	}
 
 	/**
+	 * Rearrange sites sequence based on availability (reachable status)
+	 *
+	 * @param array $sites An array containing the current user sites
+	 *
+	 * @return array
+	 */
+	private function rearrange_priority($sites) {
+		if (empty($sites) || !is_array($sites)) return $sites;
+
+		// Sites are processed in sequence in the same order when they were pulled from the database.
+		// Thus, we need to sort them according to their availability. We prioritized those sites that don't
+		// have issues when we last run our background process and is reachable in the last 96 hours.
+
+		$reachable = array();
+		$unreachable = array();
+
+		foreach ($sites as $site) {
+			$alert_icon = apply_filters('updraftcentral_site_alert_icon', '', $site->site_id);
+			if ('' == $alert_icon) {
+				// No alert icon: signifies that the site was reachable in the last 96 hours.
+				$reachable[] = $site;
+			} else {
+				$unreachable[] = $site;
+			}
+		}
+
+		return array_merge($reachable, $unreachable);
+	}
+
+	/**
 	 * Processes scheduled commands for the given user
 	 *
 	 * @param integer $user_id The current user ID that the command is associated with
@@ -252,6 +281,8 @@ class UpdraftCentral {
 			// No point in continuing if the user currently don't have any sites to
 			// execute the commands.
 			if (empty($sites) || !is_array($sites)) return;
+
+			$sites = $this->rearrange_priority($sites);
 
 			/**
 			 * Commands when added using this filter should have the following structure:
@@ -281,7 +312,7 @@ class UpdraftCentral {
 					
 					// If we don't have a valid command format then we continue with the next.
 					if (!preg_match('/^([a-z0-9]+)\.(.*)$/', $task['command'], $matches)) {
-						UpdraftCentral()->log('UpdraftCentral: "'.$task['command'].'" is not a valid command. Valid command format comes in the form of {command_class_identifier}.{command_action} (e.g. updates.get_updates, etc.)', 'error');
+						UpdraftCentral()->log('UpdraftCentral: "'.$task['command'].'" is not a valid command. Valid command format comes in the form of {command_class_identifier}.{command_action} (e.g. updates.get_updates, etc.)', 'debug');
 						continue;
 					}
 
@@ -322,7 +353,7 @@ class UpdraftCentral {
 					$this->init_semaphore($background_lock_name);
 
 					if (empty($this->semaphores[$background_lock_name])) {
-						UpdraftCentral()->log('Failed to initialize a semaphore object - exiting', 'error');
+						UpdraftCentral()->log('Failed to initialize a semaphore object - exiting', 'info');
 						return;
 					}
 
@@ -333,7 +364,7 @@ class UpdraftCentral {
 					if ((defined('UPDRAFTCENTRAL_PROCESS_CRON_TIME_LIMIT') || $max_execution_time > 5) && $max_execution_time < $time_limit) set_time_limit($time_limit);
 					
 					if (!$this->semaphores[$background_lock_name]->lock()) {
-						UpdraftCentral()->log('Failed to gain semaphore lock - An active background data fetching process appears to be running, if the other process crashed without removing the lock, then another can be started after 3 minutes)', 'error');
+						UpdraftCentral()->log('Failed to gain semaphore lock - An active background data fetching process appears to be running, if the other process crashed without removing the lock, then another can be started after 3 minutes)', 'info');
 						return;
 					}
 
@@ -880,8 +911,11 @@ class UpdraftCentral {
 		// We used to put the handlebars version here - but then it needed manual updating, which didn't happen, and would result in problems where the old version was cached.
 		wp_register_script('handlebars', UD_CENTRAL_URL.'/js/handlebars/handlebars'.$min_or_not.'.js', array(), $enqueue_version);
 
+		wp_register_script('jquery-uc-override', UD_CENTRAL_URL.'/js/deprecated.js', array('jquery'), $enqueue_version);
+
 		// https://github.com/private-face/jquery.fullscreen
-		wp_register_script('jquery-fullscreen', UD_CENTRAL_URL.'/js/jquery-fullscreen/jquery.fullscreen'.$min_or_not.'.js', array('jquery'), '0.5.1');
+		wp_register_script('jquery-fullscreen', UD_CENTRAL_URL.'/js/jquery-fullscreen/jquery.fullscreen'.$min_or_not.'.js', array('jquery', 'jquery-uc-override'), '0.5.1');
+
 		wp_register_script('modernizr-custom', UD_CENTRAL_URL.'/js/modernizr/modernizr-custom'.$min_or_not.'.js', array(), '3.3.1');
 
 		wp_register_script('updraftcentral-queue', UD_CENTRAL_URL.'/js/queue.js', array(), $enqueue_version);
@@ -890,7 +924,10 @@ class UpdraftCentral {
 		$library_deps = array('jquery', 'jquery-fullscreen', 'sprintf', 'google-caja-sanitizer', 'bootbox', 'handlebars', 'forge');
 		wp_register_script('uc-library', UD_CENTRAL_URL.'/js/uc-library'.$min_or_not.'.js', $library_deps, $enqueue_version);
 
-		$dashboard_deps = array('jquery', 'popperjs', 'bootbox', 'jquery-fullscreen', 'sprintf', 'class-udrpc', 'google-caja-sanitizer', 'handlebars', 'modernizr-custom', 'updraftcentral-queue', 'd3-queue', 'uc-library', 'jquery-ui-sortable');
+		wp_register_script('datatables', UD_CENTRAL_URL.'/js/datatables.net/jquery.dataTables'.$min_or_not.'.js', array('jquery'), $enqueue_version);
+		wp_register_script('datatables-responsive', UD_CENTRAL_URL.'/js/datatables.net/dataTables.responsive'.$min_or_not.'.js', array('datatables'), $enqueue_version);
+
+		$dashboard_deps = array('jquery', 'popperjs', 'bootbox', 'jquery-fullscreen', 'sprintf', 'class-udrpc', 'google-caja-sanitizer', 'handlebars', 'modernizr-custom', 'updraftcentral-queue', 'd3-queue', 'uc-library', 'jquery-ui-sortable', 'datatables-responsive');
 
 		include ABSPATH.WPINC.'/version.php';
 		global $wpdb;
@@ -917,7 +954,7 @@ class UpdraftCentral {
 			'show_licence_counts' => apply_filters('updraftcentral_show_licence_counts', false),
 			'user_defined_timeout' => $this->user->get_user_defined_timeout(),
 			'shortcut_status' => $this->user->get_keyboard_shortcut_status(),
-			'sites_info' => $this->user->load_sites_info(),
+			'load_setting' => $this->user->get_load_setting(),
 			'user_defined_shortcuts' => $shortcuts,
 		);
 
@@ -1075,8 +1112,10 @@ class UpdraftCentral {
 		// Temp new design
 		wp_enqueue_style('updraftcentral-new-design', UD_CENTRAL_URL.'/css/dashboard-design-temp.css', array('updraftcentral-dashboard-css'), $enqueue_version);
 
-		do_action('updraftcentral_load_dashboard_css', $enqueue_version);
+		wp_enqueue_style('datatables', UD_CENTRAL_URL.'/css/datatables.net/css/jquery.dataTables.min.css', array('updraftcentral-dashboard-temp-css'), $enqueue_version);
+		wp_enqueue_style('datatables-responsive', UD_CENTRAL_URL.'/css/datatables.net/css/responsive.dataTables.min.css', array('datatables'), $enqueue_version);
 
+		do_action('updraftcentral_load_dashboard_css', $enqueue_version);
 	}
 
 	/**
@@ -1467,8 +1506,8 @@ class UpdraftCentral {
 	 */
 	public static function get_logger() {
 		if (empty(self::$_logger_instance)) {
-			if (!class_exists('Updraft_Logger')) include_once UD_CENTRAL_DIR.'/classes/class-updraft-logger.php';
-			$updraft_logger = new Updraft_Logger();
+			if (!class_exists('UpdraftCentral_Logger')) include_once UD_CENTRAL_DIR.'/classes/class-updraftcentral-logger.php';
+			$updraft_logger = new UpdraftCentral_Logger();
 
 			// Loggers must implement the "Updraft_Logger_Interface"
 			// interface to be added as valid loggers
@@ -1483,8 +1522,8 @@ class UpdraftCentral {
 			$updraft_loggers = $updraft_logger->get_loggers();
 			if (empty($updraft_loggers)) {
 				// Add PHP Logger as the default logger if no logger is available
-				if (!class_exists('Updraft_PHP_Logger')) include_once UD_CENTRAL_DIR.'/classes/class-updraft-php-logger.php';
-				$logger = new Updraft_PHP_Logger();
+				if (!class_exists('UpdraftCentral_PHP_Logger')) include_once UD_CENTRAL_DIR.'/classes/class-updraftcentral-php-logger.php';
+				$logger = new UpdraftCentral_PHP_Logger();
 				$updraft_logger->add_logger($logger);
 			}
 

@@ -2,12 +2,12 @@ jQuery(function($) {
 	UpdraftCentral_Module_UpdraftPlus = new UpdraftCentral_UpdraftPlus_Module();
 	
 	// To allow labelauty remote storage buttons to be used with keyboard
-	jQuery(document).keyup(function(event) {
+	jQuery(document).on('keyup', function(event) {
 		if (event.keyCode === 32 || event.keyCode === 13) {
 			if (jQuery(document.activeElement).is("input.labelauty + label")) {
 				var for_box = jQuery(document.activeElement).attr("for");
 				if (for_box) {
-					jQuery("#"+for_box).change();
+					jQuery("#"+for_box).trigger('change');
 				}
 			}
 		}
@@ -1322,7 +1322,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 					nonce = delete_link.data('nonce');
 
 					if (!hasremote) {
-						hasremote = ('undefined' === typeof delete_link.data('hasremote') || delete_link.data('hasremote') === '0') ? false : true;
+						hasremote = ('undefined' === typeof delete_link.data('hasremote') || delete_link.data('hasremote') == '0') ? false : true;
 					}
 
 					if (restored_items.exists(key)) hasrestored = true;
@@ -1555,7 +1555,7 @@ function UpdraftCentral_UpdraftPlus_Module() {
 		// Prevent default event when pressing return in the form
 		UpdraftCentral.register_row_clicker(settings_css_sub_prefix+'#updraftvault_settings_connect input', function($site_row, site_id, event) {
 			if (event.which == 13) {
-				$(settings_css_prefix+'#updraftvault_connect_go').click();
+				$(settings_css_prefix+'#updraftvault_connect_go').trigger('click');
 				event.preventDefault();
 			}
 		}, false, 'keypress');
@@ -2166,7 +2166,8 @@ function UpdraftCentral_UpdraftPlus_Module() {
 				if (!showremote) {
 					$('#updraft-delete-remote-section').remove();
 				} else {
-					$('#updraft-delete-remote-section, #updraft_delete_remote').removeAttr('disabled').show();
+					$('#updraft-delete-remote-section, #updraft_delete_remote').prop('disabled', false);
+					$('#updraft-delete-remote-section, #updraft_delete_remote').show();
 				}
 				
 			}

@@ -1,10 +1,9 @@
 === User Role Editor ===
 Contributors: shinephp
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vladimir%40shinephp%2ecom&lc=RU&item_name=ShinePHP%2ecom&item_number=User%20Role%20Editor%20WordPress%20plugin&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Tags: user, role, editor, security, access, permission, capability
 Requires at least: 4.4
-Tested up to: 5.9.1
-Stable tag: 4.61.2
+Tested up to: 6.0
+Stable tag: 4.62
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -81,15 +80,17 @@ https://translate.wordpress.org/projects/wp-plugins/user-role-editor/
 
 == Changelog =
 
+= [4.62] 05.05.2022 =
+* Update: Marked as compatible with WordPress 6.0
+* New: It's possible to translate custom role names using [PolyLang](https://wordpress.org/plugins/polylang/) plugin.
+* Update: URE does not sort roles in WordPress dropdown lists. In order to sort roles by name return 'name' from 'ure_sort_wp_roles_list' filter.
+* Update: User capabilities view page minor CSS enhancements.
+* Update: Settings->About: "Donate" link was removed.
+
 = [4.61.2] 01.03.2022 =
 * Update: Marked as compatible with WordPress 5.9.1
 * Fix: "Users->Add New" page - other selected roles were not saved.
 * Update: URE uses WordPress notification styles for own operation result output.
-
-= [4.61.1] 25.01.2022 =
-* Update: Marked as compatible with WordPress 5.9.
-* Update: PHP 7.3 is marked as required.
-* Update: If installed PHP/WordPress version is lower than required one, script termination ( wp_die() ) was replaced with notice-warning admin notice output.
  
 File changelog.txt contains the full list of changes.
 
@@ -101,8 +102,11 @@ I am ready to answer on your questions about plugin usage. Use [plugin page comm
 
 == Upgrade Notice ==
 
-= [4.61.2] 01.03.2022 =
-* Update: Marked as compatible with WordPress 5.9.1
-* Fix: "Users->Add New" page - other selected roles were not saved.
-* Update: URE uses WordPress notification styles for own operation result output.
+= [4.62] 01.05.2022 =
+* Update: Marked as compatible with WordPress 6.0
+* New: It's possible to translate custom role names using [PolyLang](https://wordpress.org/plugins/polylang/) plugin.
+* Update: URE does not sort roles in WordPress dropdown lists. In order to sort roles by name return 'name' from 'ure_sort_wp_roles_list' filter.
+* Update: User capabilities view page minor CSS enhancements.
+* Update: Settings->About: "Donate" link was removed.
+
 

@@ -257,6 +257,7 @@ class UpdraftCentral_Editor {
 			'autosaveInterval'       => defined('AUTOSAVE_INTERVAL') ? AUTOSAVE_INTERVAL : 10,
 			'maxUploadFileSize'      => $max_upload_size,
 			'allowedMimeTypes'       => get_allowed_mime_types(),
+			'defaultEditorStyles'    => array(),
 			'styles'                 => array(),
 			'imageSizes'             => $available_image_sizes,
 			'imageDimensions'        => $image_dimensions,

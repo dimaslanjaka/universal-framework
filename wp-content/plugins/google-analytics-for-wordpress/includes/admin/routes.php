@@ -931,8 +931,12 @@ class MonsterInsights_Rest_Routes {
 			$data = apply_filters( 'monsterinsights_vue_reports_data', $report->get_data( $args ), $report_name, $report );
 		}
 
-		if ( ! empty( $data['success'] ) && ! empty( $data['data'] ) ) {
-			wp_send_json_success( $data['data'] );
+		if ( ! empty( $data['success'] ) ) {
+			if ( empty( $data['data'] ) ) {
+				wp_send_json_success( new stdclass() );
+			} else {
+				wp_send_json_success( $data['data'] );
+			}
 		} else if ( isset( $data['success'] ) && false === $data['success'] && ! empty( $data['error'] ) ) {
 			// Use a custom handler for invalid_grant errors.
 			if ( strpos( $data['error'], 'invalid_grant' ) > 0 ) {

@@ -1,5 +1,5 @@
 #ai-data {
-  font-family: "2.7.12"; /* Used for version number of the file */
+  font-family: "2.7.14"; /* Used for version number of the file */
 }
 
 #blocked-warning {
@@ -65,7 +65,7 @@ hr {
 
 /*.ui-button.ui-corner-all.ui-widget {*/
 .ui-button.ui-corner-all.ui-widget:not(.ai-button-small), button.ai-button, button.ai-button2, input[type=submit] {
-  padding: .4em 1em;
+  padding: .4em 1em !important;
   border: 1px solid #d3d3d3;
   border-radius: 4px;
   background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
@@ -76,7 +76,7 @@ hr {
 /*.ai-button.ui-button.ui-corner-all.ui-widget {*/
 /*.ai-button.ai-button-small.ui-button.ui-corner-all.ui-widget {*/
 .ai-button.ai-button-small {
-  padding: 0;
+  padding: 0 !important;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -302,6 +302,20 @@ div.ai-chart-label {
   z-index: 202;
   opacity: 0.5;
   display: none;
+}
+
+div.ai-chart-version-label {
+  position: absolute;
+  top: 13px;
+  right: 44px;
+  z-index: 202;
+  opacity: 0.5;
+  cursor: pointer;
+  display: none;
+}
+
+.ai-label-index {
+  cursor: pointer;
 }
 
 div.ai-chart-container.versions div.ai-chart-label {
@@ -716,6 +730,11 @@ tr.ai-website-list.read-only .ai-website-key {
    text-align: center;
    vertical-align: middle;
 }
+
+.ai-colorpicker-alpha {
+  background-image: url("images/transparency-24.png");
+}
+
 
 /* To overeride [class*=" icon-"], [class^=icon-] */
 span.checkbox-icon {
@@ -1796,8 +1815,7 @@ table.check-pages a span.dashicons {
 
 /* Fix for some themes */
 #ai-settings select {
-/*  padding: 2px;*/
-  padding: 2px 24px 2px 5px;
+  padding: 2px 24px 2px 5px !important;
   min-height: 26px;
 }
 

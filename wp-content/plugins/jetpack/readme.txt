@@ -1,7 +1,7 @@
 === Jetpack - WP Security, Backup, Speed, & Growth ===
 Contributors: automattic, adamkheckler, adrianmoldovanwp, aduth, akirk, allendav, alternatekev, andy, annamcphee, annezazu, apeatling, arcangelini, azaozz, batmoo, barry, beaulebens, biskobe, blobaugh, bjorsch, brbrr, cainm, cena, cfinke, chaselivingston, chellycat, clickysteve, csonnek, danielbachhuber, davoraltman, daniloercoli, delawski, designsimply, dllh, drawmyface, dsmart, dzver, ebinnion, egregor, eliorivero, enej, eoigal, erania-pinnera, ethitter, fgiannar, gcorne, georgestephanis, gibrown, goldsounds, hew, hugobaeta, hypertextranch, iammattthomas, iandunn, jblz, jasmussen, jeffgolenski, jeherve, jenhooks, jenia, jessefriedman, jgs, jkudish, jmdodd, joanrho, johnjamesjacoby, jshreve, kbrownkd, keoshi, koke, kraftbj, lancewillett, leogermani, lschuyler, macmanx, martinremy, matt, matveb, mattwiebe, maverick3x6, mcsf, mdawaffe, mdbitz, MichaelArestad, migueluy, mikeyarce, mkaz, nancythanki, nickmomrik, obenland, oskosk, pento, professor44, rachelsquirrel, rdcoll, ryancowles, richardmuscat, richardmtl, robertbpugh, roccotripaldi, samhotchkiss, samiff, scarstocea, scottsweb, sdixon194, sdquirk, sermitr, simison, stephdau, tmoorewp, tyxla, Viper007Bond, westi, yoavf, zinigor
 Tags: Security, backup, Woo, malware, scan, spam, CDN, search, social
-Stable tag: 10.7
+Stable tag: 10.9
 Requires at least: 5.8
 Requires PHP: 5.6
 Tested up to: 5.9
@@ -242,51 +242,47 @@ Jetpack Backup can do a full website migration to a new host, migrate theme file
 4. Promote your newest posts, pages, and products across your social media channels.
 
 == Changelog ==
-### 10.7 - 2022-02-28
+### 10.9 - 2022-05-03
+#### Major Enhancements
+- VideoPress: add settings for controlling VideoPress video privacy.
+
 #### Enhancements
-- Add an AMP-compatible version of the email share button.
-- Add transformation from core/buttons to jetpack/recurring-payments block (requires gutenberg >= 11.5.0).
-- Blocks: add alignment block option for Form, Mailchimp, Podcast Player, Related Posts, and Repeat Visitor blocks.
-- Blocks: add support for color and spacing block options for Form, Mailchimp, Podcast Player, and Related Posts blocks.
-- Business Hours: Add support for color & spacing design tool.
-- Changed the plan description for invalid plans and added a Warning message for Premium content blocks with invalid plans.
-- Dashboard: improve performance of plugins page.
-- Dashboard: the Backup banner CTA on the At-a-Glance page will now be replaced with a "Redeem Coupon" CTA when a partner coupon is detected.
-- Dashboard: updated the logic for "Activate a Product" button in "My Plan" to be always visible.
-- Dashboard: update the Free plan description to consider the currently active products.
-- Dashboard: update the links used to purchase plans when in Jetpack settings.
-- Payment Block: updated the Payment block Upgrade nudge description to include the plan name that's required to use the block.
-- Premium Content Block: remove option to transform a premium content block to a premium content block.
-- Premium Content Block: use 'Guest' rather than visitor/Logged-out.
-- Subscribe block: various changes, including a name change, how the display for current subscribers is shown, and new styling options and enhancements.
+- Connection: preventing other Jetpack-connected plugins from disconnecting when deactivating Jetpack from the plugins screen.
+- Dashboard: update the recommendation flow to include recommendations for VideoPress as well as discounts.
+- Google Fonts: update the Google Fonts module to be compatible with the most recent version of the WP_Webfonts API.
+- Payments Block: add additional features to the payment management control block (ability to mark as donation, and enabling customers to pick own amount).
+- Payments Block: add new property that establishes if the membership is editable by the site editor.
+- Payments Block: improves block selection behavior.
+- Payments Block: re-loading the page will not cause payment form to open again.
+- Protect: renamed to 'Brute Force Protection' in the UI.
+- Recommendations: add recommendation for anti-spam.
+- VideoPress: enable the resumable uploader.
+- VideoPress: improve upload speed, by increasing chunk size to 10MB for resumable uploads.
 
 #### Improved compatibility
-- Image CDN: ensure that SVG images added to posts thanks to the SVG Support plugin can be displayed even when Jetpack's Image CDN is active.
-- Internet Defense League widget: Widget deprecation.
-- My Community widget: Hide widget from the block inserter and Legacy widget block drop-down menu
-- Performance: improve performance of Jetpack dashboard for sites without VideoPress enabled.
-- Search: Add deprecated class to prevent third-party integrations from failing after 10.6 updates.
-- VideoPress: Added title and aria-label to VideoPress iframe embeds for better screen reader support.
-- WordAds: deprecate the legacy Ad Widget in favor of the Ad Block when adding new Ad Widgets via the block-based widget editor.
+- Custom CSS: improve saving for legacy Custom CSS.
+- Dashboard: display block settings even when the Classic Editor plugin is active.
+- Improvements to backwards compatibility with other Jetpack plugins.
+- Mailchimp Popup widget: widget deprecation.
+- WordAds: change Jetpack Ads wording to be WordAds.
+- WordAds: remove the suggestion to use the ad widget from the dashboard.
 
 #### Bug fixes
-- Block Editor: cast selectedPlanId to boolean to remove a "0" character after block upgrade nudge.
-- Blocks: cron requests are now considered frontend requests, so blocks will no longer be rendered as fallbacks on those.
-- Contact Form: ensure form validation uses the correct variable types.
-- Dashboard: fix broken image in plan loading placeholder in "My Plan"
-- Dashboard: show Jetpack stats Screen Options label properly.
-- Fixed several React warnings shown on the console when SCRIPT_DEBUG is active
-- Form Block: custom CSS classes added to the block are now applied on the frontend.
-- Media Buttons: Fix issue where external medial modal cannot be closed.
-- Publicize: fixed bugs when using Publicize with the Classic Editor.
-- Search: avoid PHP warning when using Search widget.
-- Search: Make debug bar more reliable.
-- SSO: fix a bug with SSO not cleaning up wpcom_user_id.
-- Subscribe block: address front-end rendering issues.
-- Tiled Gallery Block: Fix performance issue affecting page views that use the Tiled Gallery.
-- Unroll Twitter Threads: ensure that only contributors can access the endpoint to unroll threads.
-- Widget Visibility: ensure role and logged in features are available.
-- Widget Visibility: update to match new user query parameter introduced in WordPress 5.9.
+- Assistant: style and CTA changes plus introductory offer fixes.
+- Button Block: remove default CSS that would overwrite core and theme styles.
+- Comments: check that Jetpack comments are supported before requiring nonce verification.
+- Contact Form: ensure the form's input fields inherit a default font size.
+- Payments Block: change the sidebar display when clicking 'add new subscription', as well as using an external link in the Customizer.
+- Payments Block: fix bug regarding creation of new Payment blocks.
+- Payments Block: make the 'one time' subscription recurrence always available.
+- Payments Block: remove the dropdown icon from the product management control subscription selector.
+- Pay with PayPal: fix issue with saving widget in Customizer.
+- Publicize: ensure bulk publishing posts won’t publicize those posts.
+- Random Redirect: fix 'set author name' functionality on author archives.
+- Slideshow Block: fix grid blowout when Slideshow block is inserted inside a Layout Grid block (in editor).
+- Subscribe Block: fix default styles block setting selection to 'Split'.
+- Top Posts Widget: ensure hooks retain existing behavior when adding extra data before or after each post.
+- VideoPress: fix issue adding video descriptions and metadata via the WordPress.com dashboard.
 
 --------
 

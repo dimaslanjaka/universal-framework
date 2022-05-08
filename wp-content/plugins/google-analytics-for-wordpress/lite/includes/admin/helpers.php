@@ -80,6 +80,8 @@ function monsterinsights_get_admin_menu_tooltip() {
 			</p>
 			<p>
 				<a href="<?php echo esc_url( $url ); ?>"
+                   target="_blank"
+                   rel="noopener"
 				   class="button button-primary"><?php esc_html_e( 'Upgrade to MonsterInsights Pro', 'google-analytics-for-wordpress' ); ?></a>
 			</p>
 		</div>

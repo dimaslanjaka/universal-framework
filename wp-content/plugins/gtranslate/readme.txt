@@ -4,7 +4,7 @@ Author: Translate AI Multilingual Solutions
 Tags: translate, translate wordpress, multilingual, translation, translate language, bilingual, localization, translation proxy, localisation, multilanguage, google translate
 Requires at least: 2.8.1
 Tested up to: 5.9
-Stable tag: 2.9.9
+Stable tag: 2.9.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://gtranslate.io/?xyz=998#pricing
@@ -251,6 +251,12 @@ If you want us to translate your website professionally or provide you a proofre
 8. User Dashboard
 
 == Changelog ==
+= 2.9.11 =
+* Fix for Divi when both "Defer jQuery" and "Enqueue jQuery Compatibility Script" are enabled in Divi Theme Performance options.
+
+= 2.9.10 =
+* Added support for deffered jQuery library loading, this should fix issues with Divi theme jQuery library defer option
+
 = 2.9.9 =
 * Fixed information disclosure security issue through url_addon/debug.txt
 * Added admin notification when translation debug mode is on

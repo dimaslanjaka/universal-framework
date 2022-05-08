@@ -23,7 +23,7 @@ function UpdraftCentral_EUM_Management() {
 	var $uc_dashboard_existing_sites = $('#updraftcentral_dashboard_existingsites');
 	var general_email_addresses = {};
 
-	$('#updraft-central-content').scroll(function() {
+	$('#updraft-central-content').on('scroll', function() {
 		$('#eum-save-settings-warning').css('top', $(this).scrollTop() + 100);
 	});
 
@@ -360,7 +360,7 @@ function UpdraftCentral_EUM_Management() {
 		}, true);
 
 		UpdraftCentral.register_row_clicker('#eum-save-emails', function($site_row) {
-			var form_data = $.trim($('#notification-emails').val());
+			var form_data = $('#notification-emails').val().trim();
 			var params = {
 				name: 'save_notification_emails',
 				arguments: form_data

@@ -2317,7 +2317,7 @@ select {
 .ai-info-1 {background: #000; color: #fff;}
 .ai-info-2 {background: #fff; color: #000;}
 
-.highlighted #wrapper ins.adsbygoogle[data-ad-status="unfilled"] {background: url(http://via.placeholder.com/800x800/ffffff/000000.png?text=NO%20AD%20SERVED); background-size: cover; background-repeat: no-repeat; background-position: center;}
+.highlighted #wrapper ins.adsbygoogle[data-ad-status="unfilled"] {background: url(https://via.placeholder.com/800x800/ffffff/000000.png?text=NO%20AD%20SERVED); background-size: cover; background-repeat: no-repeat; background-position: center;}
 
 input {
 /*  cursor: pointer;*/

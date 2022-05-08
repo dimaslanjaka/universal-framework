@@ -937,7 +937,7 @@ jQuery (function ($) {
           }  else {
                $(this).hide (); // .ai-list-data
 
-               if (!block_wrapping_div.find ('.ai-debug-block').length && block_wrapping_div.attr ('style').indexOf ('height:') == - 1) {
+               if (!block_wrapping_div.find ('.ai-debug-block').length && block_wrapping_div [0].hasAttribute ('style') && block_wrapping_div.attr ('style').indexOf ('height:') == - 1) {
                  block_wrapping_div.hide ();
                }
              }
@@ -962,7 +962,7 @@ jQuery (function ($) {
                   block_wrapping_div.css ({"position": ""});
                 }
               } else
-              if (block_wrapping_div.attr ('style').indexOf ('height:') == - 1) {
+              if (block_wrapping_div [0].hasAttribute ('style') && block_wrapping_div.attr ('style').indexOf ('height:') == - 1) {
                 block_wrapping_div.hide ();
               }
             }

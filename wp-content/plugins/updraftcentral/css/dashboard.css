@@ -2117,3 +2117,62 @@ span.uc_updates_perpage > select {
 .updates_count_container_hidden,
 .updates_count_item_hidden {
   display: none !important; }
+
+.dashicons-events::before {
+  width: 24px;
+  background: url(../images/icons/events-icon.svg) no-repeat center center; }
+
+#updraftcentral_panel_events {
+  padding: 25px;
+  border: 1px solid #EAEDF0;
+  border-radius: 0;
+  background: #FFF;
+  padding: 40px; }
+
+#updraftcentral_events_table_wrapper input[type="search"] {
+  display: inherit;
+  width: auto; }
+
+#updraftcentral_events_table_wrapper select[name="updraftcentral_events_table_length"] {
+  width: auto; }
+
+#updraftcentral_events_table_wrapper td {
+  padding: 10px 18px !important; }
+
+#updraftcentral_events_table_wrapper .paginate_button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  min-width: 1.5em;
+  padding: .5em 1em;
+  margin-left: 2px;
+  text-align: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  cursor: hand;
+  color: #333 !important;
+  border-radius: 2px;
+  padding: 5px 10px !important; }
+
+#updraftcentral_events_table_wrapper .paginate_button:hover {
+  color: white !important;
+  border: 1px solid #111 !important;
+  background-color: #585858 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#585858), to(#111));
+  background: linear-gradient(to bottom, #585858 0%, #111 100%); }
+
+table#updraftcentral_events_table {
+  border: 1px solid #CCC !important; }
+
+table#updraftcentral_events_table thead > tr > td {
+  text-align: left !important; }
+
+.updraftcentral_events_result_data {
+  word-break: break-all;
+  word-wrap: break-word; }
+
+#updraftcentral_events_table_paginate .paginate_button:hover {
+  background: #B5521C !important; }
+
+.uc-activate-load-checkbox {
+  margin-bottom: 10px; }

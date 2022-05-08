@@ -921,7 +921,7 @@ function UpdraftCentral_Post(module) {
 										}
 
 										for (var i=0; i<editor_styles.length; i++) {
-											if ($.trim(editor_styles[i].css).length) {
+											if (editor_styles[i].css.trim().length) {
 												$('<style/>', {
 													id: 'uc_remote_styles-'+i
 												}).html(editor_styles[i].css).appendTo(document.body);
@@ -977,7 +977,7 @@ function UpdraftCentral_Post(module) {
 										});
 
 										for (var i=0; i<editor_styles.length; i++) {
-											if ($.trim(editor_styles[i].css).length) {
+											if (editor_styles[i].css.trim().length) {
 												if (tinymce.activeEditor.dom.hasOwnProperty('addStyle')) {
 													tinymce.activeEditor.dom.addStyle(editor_styles[i].css);
 												}
@@ -1048,7 +1048,7 @@ function UpdraftCentral_Post(module) {
 		var passed = true;
 		for (var prop in input_date) {
 			var item = input_date[prop];
-			if ('undefined' == typeof item || 0 == item.length || !$.isNumeric(item)) {
+			if ('undefined' == typeof item || 0 == item.length || !UpdraftCentral_Library.is_numeric(item)) {
 				passed = false;
 				break;
 			}
@@ -1316,7 +1316,7 @@ function UpdraftCentral_Post(module) {
 						var terms_list = $('.editor-post-taxonomies__hierarchical-terms-list');
 						if ('undefined' !== typeof terms_list && terms_list.length) {
 							var block_wait = terms_list.parent().find('.uc_block_load_wait');
-							if (0 == $.trim(terms_list.html()).length) {
+							if (0 == terms_list.html().trim().length) {
 								if (!block_wait.length) terms_list.parent().append('<div class="uc_block_load_wait"><img src="'+udclion.wpo.images+'spinner-2x.gif" class="uc-block-spinner" /></div>');
 							} else {
 								clearInterval(categories_interval);
@@ -1636,28 +1636,29 @@ function UpdraftCentral_Post(module) {
 						text: udclion[module.type+'s'].ok,
 						id: 'uc-btn-ok',
 						class: 'uc-slug-buttons',
-						click: function() {
-							var slug = editable_post.find('input#uc-input-slug');
-							if ('undefined' !== typeof slug && slug) {
-								var slug_value = slug.val();
-								if (0 == slug_value.trim().length) {
-									UpdraftCentral_Library.dialog.alert('<h2>'+udclion.error+'</h2><p>'+udclion[module.type+'s'].slug_missing+'</p>');
-									return;
-								} else {
-									$('span#editable-post-name-full').html(slug_value);
-									slug.remove();
+					});
+					
+					btn_ok.on('click', function() {
+						var slug = editable_post.find('input#uc-input-slug');
+						if ('undefined' !== typeof slug && slug) {
+							var slug_value = slug.val();
+							if (0 == slug_value.trim().length) {
+								UpdraftCentral_Library.dialog.alert('<h2>'+udclion.error+'</h2><p>'+udclion[module.type+'s'].slug_missing+'</p>');
+								return;
+							} else {
+								$('span#editable-post-name-full').html(slug_value);
+								slug.remove();
 
-									editable_post.html(slug_value);
-									anchor.attr('href', anchor.text());
-									anchor.removeAttr('onclick');
+								editable_post.html(slug_value);
+								anchor.attr('href', anchor.text());
+								anchor.removeAttr('onclick');
 
-									self.uc_editor.edits.update('slug', slug_value);
-									self.uc_editor.state.remove('editing');
+								self.uc_editor.edits.update('slug', slug_value);
+								self.uc_editor.state.remove('editing');
 
-									$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-ok').remove();
-									$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-cancel').remove();
-									$('#edit-slug-box span#edit-slug-buttons > button.edit-slug').show();
-								}
+								$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-ok').remove();
+								$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-cancel').remove();
+								$('#edit-slug-box span#edit-slug-buttons > button.edit-slug').show();
 							}
 						}
 					});
@@ -1667,18 +1668,19 @@ function UpdraftCentral_Post(module) {
 						text: udclion[module.type+'s'].cancel,
 						id: 'uc-btn-cancel',
 						class: 'uc-slug-buttons',
-						click: function() {
-							var slug = editable_post.find('input#uc-input-slug');
-							if ('undefined' !== typeof slug && slug) {
-								slug.remove();
-								editable_post.html($('span#editable-post-name-full').html());
-								anchor.removeAttr('onclick');
-								self.uc_editor.state.remove('editing');
+					});
+					
+					btn_cancel.on('click', function() {
+						var slug = editable_post.find('input#uc-input-slug');
+						if ('undefined' !== typeof slug && slug) {
+							slug.remove();
+							editable_post.html($('span#editable-post-name-full').html());
+							anchor.removeAttr('onclick');
+							self.uc_editor.state.remove('editing');
 
-								$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-ok').remove();
-								$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-cancel').remove();
-								$('#edit-slug-box span#edit-slug-buttons > button.edit-slug').show();
-							}
+							$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-ok').remove();
+							$('#edit-slug-box span#edit-slug-buttons > button#uc-btn-cancel').remove();
+							$('#edit-slug-box span#edit-slug-buttons > button.edit-slug').show();
 						}
 					});
 					$('#edit-slug-box span#edit-slug-buttons').append(btn_cancel);
@@ -1931,7 +1933,7 @@ function UpdraftCentral_Post(module) {
 				});
 	
 				$('a#link-post_tag').on('click', function(e) {
-					var mostused = $.trim($('div#mostused-post_tag').html());
+					var mostused = $('div#mostused-post_tag').html().trim();
 					if (0 == mostused.length && mostused !== udclion.posts.no_tags_found) $('div#mostused-post_tag').html(udclion.posts.no_tags_found);
 					if (!$('div#mostused-post_tag').is(':visible')) {
 						$('div#mostused-post_tag').show();
@@ -1969,7 +1971,7 @@ function UpdraftCentral_Post(module) {
 					var parent = $('select#newcategory_parent');
 	
 					if ('undefined' !== typeof category.val() && category.val().length) {
-						var value = $.trim(category.val());
+						var value = category.val().trim();
 						var new_category = parent.val().length ? parent.val()+':'+value : value;
 	
 						$('#categorychecklist').prepend('<li id="category-0" class="popular-category"><label class="selectit"><input value="'+new_category+'" type="checkbox" name="post_category[]" id="in-category-0" checked="checked"> '+category.val()+'</label></li>');
@@ -2001,13 +2003,13 @@ function UpdraftCentral_Post(module) {
 	
 						var post_tags = [];
 						$('#tagsdiv-post_tag .tagchecklist > span').each(function() {
-							post_tags.push($.trim($(this).text()));
+							post_tags.push($(this).text().trim());
 						});
 	
 						var tags_container = $('#tagsdiv-post_tag .tagchecklist');
 						var last_index = tags_container.find('> span').length;
 						for (var i=0; i<tags.length; i++) {
-							var tag = $.trim(tags[i]);
+							var tag = tags[i].trim();
 	
 							if (!self.is_ivalue_exists(tag, post_tags)) {
 								tags_container.append('<span><button type="button" id="post_tag-check-num-'+last_index+'" class="ntdelbutton"><span class="remove-tag-icon" aria-hidden="true"></span></button>&nbsp;'+tag+'</span>');
@@ -2015,7 +2017,7 @@ function UpdraftCentral_Post(module) {
 									$(this).parent().remove();
 									var current_tags = [];
 									$('#tagsdiv-post_tag .tagchecklist > span').each(function() {
-										current_tags.push($.trim($(this).text()));
+										current_tags.push($(this).text().trim());
 									});
 									self.uc_editor.edits.update('tags', current_tags);
 								});
@@ -2036,7 +2038,7 @@ function UpdraftCentral_Post(module) {
 					$(this).parent().remove();
 					var tags = [];
 					$('#tagsdiv-post_tag .tagchecklist > span').each(function() {
-						tags.push($.trim($(this).text()));
+						tags.push($(this).text().trim());
 					});
 					self.uc_editor.edits.update('tags', tags);
 				});
@@ -2053,13 +2055,13 @@ function UpdraftCentral_Post(module) {
 						tags = self.uc_editor.edits.item('tags');
 					} else {
 						$('#tagsdiv-post_tag .tagchecklist > span').each(function() {
-							tags.push($.trim($(this).text()));
+							tags.push($(this).text().trim());
 						});
 					}
 	
 					var tags_container = $('#tagsdiv-post_tag .tagchecklist');
 					var last_index = tags_container.find('> span').length;
-					var value = $.trim($(this).text().replace(/\(\d\)/gi, ''));
+					var value = $(this).text().replace(/\(\d\)/gi, '').trim();
 	
 					if (!self.is_ivalue_exists(value, tags)) {
 						tags_container.append('<span><button type="button" id="post_tag-check-num-'+last_index+'" class="ntdelbutton"><span class="remove-tag-icon" aria-hidden="true"></span></button>&nbsp;'+value+'</span>');
@@ -2067,7 +2069,7 @@ function UpdraftCentral_Post(module) {
 							$(this).parent().remove();
 							var current_tags = [];
 							$('#tagsdiv-post_tag .tagchecklist > span').each(function() {
-								current_tags.push($.trim($(this).text()));
+								current_tags.push($(this).text().trim());
 							});
 							self.uc_editor.edits.update('tags', current_tags);
 						});
@@ -2235,20 +2237,21 @@ function UpdraftCentral_Post(module) {
 					type: 'button',
 					class: 'components-button editor-post-close is-button is-default is-large',
 					style: 'padding: 0 12px 2px; margin: 2px; height: 33px; line-height: 32px;',
-					click: function() {
-						var editor_container = $(document.body);
-						var container = editor_container.find('div#gutenberg_editor_container');
-						if (container.length) {
-							container.hide();
-						}
-
-						// Make sure that any visible spinner(s) are remove on close.
-						if ($('.updraftcentral_spinner').is(':visible')) {
-							$('.updraftcentral_spinner').remove();
-						}
-
-						$(document.body).trigger('updraftcentral_'+module.type+'_editor_closed', [container]);
+				});
+				
+				btn_close.on('click', function() {
+					var editor_container = $(document.body);
+					var container = editor_container.find('div#gutenberg_editor_container');
+					if (container.length) {
+						container.hide();
 					}
+
+					// Make sure that any visible spinner(s) are remove on close.
+					if ($('.updraftcentral_spinner').is(':visible')) {
+						$('.updraftcentral_spinner').remove();
+					}
+
+					$(document.body).trigger('updraftcentral_'+module.type+'_editor_closed', [container]);
 				});
 				container.prepend(btn_close);
 			}
@@ -2326,7 +2329,7 @@ function UpdraftCentral_Post(module) {
 
 		container.find('div.postbox').each(function() {
 			id = $(this).attr('id');
-			if ($.isArray(allowed) && allowed.length && -1 == $.inArray(id, allowed)) container.find('#'+id).remove();
+			if (Array.isArray(allowed) && allowed.length && -1 == $.inArray(id, allowed)) container.find('#'+id).remove();
 		});
 
 		return container.html();
@@ -2370,7 +2373,7 @@ function UpdraftCentral_Post(module) {
 				if (misc.hasOwnProperty('sample_permalink') && misc.sample_permalink.length) {
 					if (-1 !== misc.sample_permalink[0].indexOf('%postname%')) {
 						misc.site_url = misc.sample_permalink[0].replace('%postname%/', '');
-						if ('undefined' !== typeof misc.sample_permalink[1] && misc.hasOwnProperty('slug') && 0 == $.trim(misc.slug).length) {
+						if ('undefined' !== typeof misc.sample_permalink[1] && misc.hasOwnProperty('slug') && 0 == misc.slug.trim().length) {
 							misc.slug = misc.sample_permalink[1];
 						}
 					} else {
@@ -2734,14 +2737,14 @@ function UpdraftCentral_Post(module) {
 		var value = item.val();
 
 		if ('undefined' !== typeof numeric_check && numeric_check) {
-			if (!$.isNumeric(value)) proceed = false;
+			if (!UpdraftCentral_Library.is_numeric(value)) proceed = false;
 		}
 
 		if (0 == value.trim().length || !proceed) {
 			self.dirty_edits.update(field, 1);
 			UpdraftCentral_Library.dialog.alert('<h2>'+udclion.error+'</h2><p>'+sprintf(udclion[module.type+'s'].invalid_missing_value, field)+'</p>', function() {
 				setTimeout(function() {
-					item.focus();
+					item.trigger('focus');
 				}, 500);
 			});
 			return false;
@@ -2971,14 +2974,14 @@ function UpdraftCentral_Post(module) {
 					var message = '';
 					if ('undefined' !== typeof udclion.plugin[response.data.message]) {
 						message = udclion.plugin[response.data.message];
-						if ('undefined' !== typeof response.data.values && $.isArray(response.data.values)) {
+						if ('undefined' !== typeof response.data.values && Array.isArray(response.data.values)) {
 							message = vsprintf(message, response.data.values);
 						}
 					} else {
 						// Check from the global translation
 						if ('undefined' !== typeof udclion[response.data.message]) {
 							message = udclion[response.data.message];
-							if ('undefined' !== typeof response.data.values && $.isArray(response.data.values)) {
+							if ('undefined' !== typeof response.data.values && Array.isArray(response.data.values)) {
 								message = vsprintf(message, response.data.values);
 							}
 						} else {
@@ -3015,7 +3018,7 @@ function UpdraftCentral_Post(module) {
 			for (var i=0, info; i<data.length; i++) {
 				info = data[i];
 				if ('undefined' !== typeof fields && fields) {
-					if ('undefined' !== typeof exclude && $.isArray(exclude) && exclude.length && -1 !== $.inArray(info[fields.value], exclude)) {
+					if ('undefined' !== typeof exclude && Array.isArray(exclude) && exclude.length && -1 !== $.inArray(info[fields.value], exclude)) {
 						continue;
 					}
 					if ('undefined' !== typeof type && type) {
@@ -3108,7 +3111,7 @@ function UpdraftCentral_Post(module) {
 				$('.uc-post-item '+fields[i]).each(function() {
 					var list = '', content, items = [];
 	
-					content = $.trim($(this).html());
+					content = $(this).html().trim();
 					if (content.length && -1 !== content.indexOf(',')) {
 						items = content.split(',');
 						if (items.length > 5) {
@@ -3552,7 +3555,7 @@ function UpdraftCentral_Site_Filter(config) {
 
 		// Generates widget buttons if set in the initial configuration and apply
 		// any callback handlers whenever applicable
-		if (config.hasOwnProperty('buttons') && $.isArray(config.buttons)) {
+		if (config.hasOwnProperty('buttons') && Array.isArray(config.buttons)) {
 			for (var i=0; i<config.buttons.length; i++) {
 				var item = config.buttons[i];
 				var text = item.hasOwnProperty('text') ? item.text : udclion.submit;
@@ -5870,7 +5873,7 @@ function UpdraftCentral_Credentials() {
 							UpdraftCentral.close_modal();
 						});
 					}, udclion.updates.update, function() {
-						jQuery('#updraftcentral_modal .request-filesystem-credentials-dialog-content input[value=""]:first').focus();
+						jQuery('#updraftcentral_modal .request-filesystem-credentials-dialog-content input[value=""]:first').trigger('focus');
 
 						if (possible_credentials) {
 							saved_credentials = UpdraftCentral_Library.unserialize(possible_credentials);
@@ -6310,6 +6313,20 @@ function Fn_UpdraftCentral_Library() {
 	var collection = new UpdraftCentral_Collection();
 
 	/**
+	 * Determines whether its argument represents a JavaScript number
+	 *
+	 * @param mixed value The value to evaluate
+	 *
+	 * @returns boolean
+	 */
+	this.is_numeric = function(value) {
+		if ('number' === typeof value) return true;
+		if ('string' !== typeof value) return false;
+
+		return !isNaN(value) && !isNaN(parseFloat(value));
+	}
+
+	/**
 	 * Parses the input value to its actual boolean representation if applicable
 	 *
 	 * @param mixed value The value to evaluate
@@ -6342,7 +6359,7 @@ function Fn_UpdraftCentral_Library() {
 	 * @return {array|void}
 	 */
 	this.sort = function(items, field, order) {
-		if (!$.isArray(items) || 'string' !== typeof field) return;
+		if (!Array.isArray(items) || 'string' !== typeof field) return;
 		if ('undefined' === typeof order) order = 'asc';
 
 		items.sort(function(a, b) {
@@ -6374,7 +6391,7 @@ function Fn_UpdraftCentral_Library() {
 	 * @param {array|void}
 	 */
 	this.filter = function(items, fields, keyword, validate_field_only) {
-		if (!$.isArray(items) || !$.isArray(fields) || 'string' !== typeof keyword) return;
+		if (!Array.isArray(items) || !Array.isArray(fields) || 'string' !== typeof keyword) return;
 
 		var data = $.grep(items, function(obj) {
 			var field_data = [];
@@ -6443,7 +6460,7 @@ function Fn_UpdraftCentral_Library() {
 	this.disable_actions = function(selector, exceptions) {
 		selector = ('undefined' !== typeof selector && selector) ? selector : '.updraftcentral_row_extracontents';
 		var not_including = '';
-		if ('undefined' !== typeof exceptions && $.isArray(exceptions)) {
+		if ('undefined' !== typeof exceptions && Array.isArray(exceptions)) {
 			if (exceptions.length) {
 				not_including = exceptions.join(',');
 			}
@@ -6603,12 +6620,14 @@ function Fn_UpdraftCentral_Library() {
 				redirect_updraft_website_links(href, e);
 			}
 		});
-		$('.bootbox.modal .updraftcentral_site_editdescription').click(function(e) {
+
+		$('.bootbox.modal .updraftcentral_site_editdescription').on('click', function(e) {
 			e.preventDefault();
 			$(this).closest('.modal').modal('hide');
 			open_site_configuration(UpdraftCentral.$site_row);
 		});
-		$('.bootbox.modal .updraftcentral_test_other_connection_methods').click(function(e) {
+
+		$('.bootbox.modal .updraftcentral_test_other_connection_methods').on('click', function(e) {
 			e.preventDefault();
 			$(this).closest('.modal').modal('hide');
 			open_connection_test(UpdraftCentral.$site_row);
@@ -6886,17 +6905,6 @@ function Fn_UpdraftCentral_Library() {
 	}
 	
 	/**
-	 * Encode to base64 encoding
-	 * This (or its callers) can be swapped for atob() once IE 10 support is not desired - http://caniuse.com/#feat=atob-btoa
-	 *
-	 * @param {string} data - the data to base64-encode
-	 * @returns {string} - the encoded data
-	 */
-	this.base64_encode = function(data) {
-		return forge.util.encode64(data);
-	}
-	
-	/**
 	 * Calculate an MD5 hash
 	 *
 	 * @param {string} data - the data to hash
@@ -6987,7 +6995,11 @@ function Fn_UpdraftCentral_Library() {
 	 */
 	this.focus_window_or_error = function(win) {
 		if ('undefined' != typeof win && null !== win) {
-			win.focus();
+			if (win instanceof jQuery) {
+				win.trigger('focus');
+			} else {
+				win.focus();
+			}
 		} else {
 			this.dialog.alert('<h2>'+udclion.open_new_window+'</h2>'+udclion.window_may_be_blocked);
 		}

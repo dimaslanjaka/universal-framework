@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Ad Inserter
-Version: 2.7.12
+Version: 2.7.14
 Description: Ad management with many advanced advertising features to insert ads at optimal positions
 Author: Igor Funa
 Author URI: http://igorfuna.com/
@@ -16,6 +16,17 @@ Requires PHP: 5.6
 /*
 
 Change Log
+
+Ad Inserter 2.7.14 - 2022-04-28
+- Added support for demo settings
+- Added support for background transparency
+- Added support for background for sticky ads (Pro only)
+- Added support for statistics for check options (Pro only)
+- Added support for individual rotation option statistics (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+Ad Inserter 2.7.13 - 2022-04-02
+- Few minor bug fixes, cosmetic changes and code improvements
 
 Ad Inserter 2.7.12 - 2022-03-09
 - Security fix for settings page save url
@@ -812,6 +823,7 @@ function ai_process_head_codes ($head) {
   return ($head);
 }
 
+// Not used
 function ai_buffering_start_hook () {
   global $ai_wp_data;
 
@@ -4718,10 +4730,14 @@ function ai_write_debug_info ($write_processing_log = false) {
 
     echo "\n";
 
-    echo 'PHP PROCESSING DISABLED: ', defined ('AI_NO_PHP_PROCESSING')       ? 'SET'  : "NO", "\n";
+    echo 'AI_NO_PHP_PROCESSING:    ', defined ('AI_NO_PHP_PROCESSING')       ? 'SET'  : "NO", "\n";
     echo 'DISALLOW_FILE_EDIT:      ', defined ('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT ? 'SET'  : "NO", "\n";
     echo 'DISALLOW_FILE_MODS:      ', defined ('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS ? 'SET'  : "NO", "\n";
     echo 'DISALLOW_UNFILTERED_HTML:', defined ('DISALLOW_UNFILTERED_HTML') && DISALLOW_UNFILTERED_HTML ? 'SET'  : "NO", "\n";
+
+    echo "\n";
+
+    echo 'W3TC_DYNAMIC_SECURITY:   ', defined ('W3TC_DYNAMIC_SECURITY') ? 'SET'  : "NO", "\n";
 
     echo "\n";
 
@@ -7031,7 +7047,7 @@ a.ai-debug-center {text-align: center; cursor: default; font-size: 10px; text-de
 .ai-debug-ad-overlay {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #8f8; opacity: 0.6; z-index: 999999990}
 
 .ai-debug-block ins.adsbygoogle[data-ad-status="unfilled"] .ai-debug-ad-overlay {display: none;}
-.ai-debug-block ins.adsbygoogle[data-ad-status="unfilled"] {background: url(http://via.placeholder.com/800x800/aaffaa/000000.png?text=NO%20AD%20SERVED); background-size: cover; background-repeat: no-repeat; background-position: center;}
+.ai-debug-block ins.adsbygoogle[data-ad-status="unfilled"] {background: url(https://via.placeholder.com/800x800/aaffaa/000000.png?text=NO%20AD%20SERVED); background-size: cover; background-repeat: no-repeat; background-position: center;}
 
 .ai-auto-ads {background-color: #84f;}
 .ai-no-slot {background-color: #48f;}
@@ -8642,6 +8658,7 @@ function ai_process_shortcode (&$block, $atts) {
     "group" => "",
     "ignore" => "",
     "disable" => "",
+    "index" => "",
     "check" => "",
     "viewport" => "",
     "fallback" => "",
@@ -11292,6 +11309,10 @@ function replace_ai_tags ($content, $general_tag = '') {
   return $ad_data;
 }
 
+function ai_php_enabled () {
+  $php_enabled = !(defined ('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT) && !(defined ('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS);
+  return apply_filters ('ai_php_enabled', $php_enabled);
+}
 
 // ===========================================================================================
 
@@ -11410,7 +11431,7 @@ $ai_wp_data [AI_FOOTER_INLINE_SCRIPTS]  = false;
 $ai_wp_data [AI_W3TC_DEBUGGING]         = false;
 $ai_wp_data [AI_CLIENT_SIDE_FILTER_CHECKS] = false;
 $ai_wp_data [AI_PARALLAX]               = false;
-$ai_wp_data [AI_PHP_PROCESSING]         = !(defined ('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT) && !(defined ('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS);
+$ai_wp_data [AI_PHP_PROCESSING]         = ai_php_enabled ();
 $ai_wp_data [AI_UNFILTERED_HTML]        = !(defined ('DISALLOW_UNFILTERED_HTML') && DISALLOW_UNFILTERED_HTML);
 
 

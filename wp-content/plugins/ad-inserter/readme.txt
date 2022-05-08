@@ -5,8 +5,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: ads, adsense, ad rotation, ad manager, amp, amazon, ad blocking detection, header code, banners, in-feed ads, sticky fixed widgets, hooks
 Requires at least: 4.9
 Tested up to: 5.9
-Requires PHP: 5.6
-Stable tag: 2.7.12
+Requires PHP: 6.0
+Stable tag: 2.7.14
 License: GPLv3
 
 Manage Google AdSense, Media.net, Amazon banners, ads.txt, ad rotation, sticky widgets, AMP ads, DFP, tracking, AdSense header and footer code
@@ -97,6 +97,10 @@ It's all about the [settings](https://adinserter.pro/documentation).
 *   Function to visualize available insertion positions
 *   Function to visualize HTML tags
 *   You name it :)
+
+
+👉  TEST the plugin on a [demo website](https://tastewp.com/template/AdInserterDemo?redirect=options-general.php%3Fpage%3Dad-inserter.php%26ai-demo%3D1&ni=true)
+
 
 [Review on WP Mayor](https://wpmayor.com/ad-inserter-review-the-best-wordpress-ad-management-plugin/)
 
@@ -354,6 +358,17 @@ If you are not happy to reveal this information and you have opted in, simply di
 
 
 == Changelog ==
+
+= 2.7.14 =
+- Added support for demo settings
+- Added support for background transparency
+- Added support for background for sticky ads (Pro only)
+- Added support for statistics for check options (Pro only)
+- Added support for individual rotation option statistics (Pro only)
+- Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.13 =
+- Few minor bug fixes, cosmetic changes and code improvements
 
 = 2.7.12 =
 - Security fix for settings page save url
@@ -630,6 +645,17 @@ If you are not happy to reveal this information and you have opted in, simply di
 For the changelog of earlier versions, please refer to the separate changelog.txt file.
 
 == Upgrade Notice ==
+
+= 2.7.14 =
+Added support for demo settings;
+Added support for background transparency;
+Added support for background for sticky ads (Pro only);
+Added support for statistics for check options (Pro only);
+Added support for individual rotation option statistics (Pro only);
+Few minor bug fixes, cosmetic changes and code improvements
+
+= 2.7.13 =
+Few minor bug fixes, cosmetic changes and code improvements
 
 = 2.7.12 =
 Security fix for settings page save url;

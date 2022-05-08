@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { red, green } from '@material-ui/core/colors';
-const theme = createMuiTheme({
+const theme = createTheme({
 	props: {
 		MuiButtonBase: {
 			disableRipple: true,

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helper functions.
  *
@@ -10,35 +11,37 @@
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
-function monsterinsights_is_page_reload() {
+function monsterinsights_is_page_reload()
+{
 	// Can't be a refresh without having a referrer
-	if ( ! isset( $_SERVER['HTTP_REFERER'] ) ) {
+	if (!isset($_SERVER['HTTP_REFERER'])) {
 		return false;
 	}
 
 	// IF the referrer is identical to the current page request, then it's a refresh
-	return ( parse_url( $_SERVER['HTTP_REFERER'], PHP_URL_PATH ) === parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) );
+	return (parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH) === parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 }
 
 
-function monsterinsights_track_user( $user_id = -1 ) {
-	if ( $user_id === -1 ) {
+function monsterinsights_track_user($user_id = -1)
+{
+	if ($user_id === -1) {
 		$user = wp_get_current_user();
 	} else {
-		$user = new WP_User( $user_id );
+		$user = new WP_User($user_id);
 	}
 
 	$track_user  = true;
-	$roles     = monsterinsights_get_option( 'ignore_users', array() );
+	$roles     = monsterinsights_get_option('ignore_users', array());
 
-	if ( ! empty( $roles ) && is_array( $roles ) ) {
-		foreach ( $roles as $role ) {
-			if ( is_string( $role ) ) {
-				if ( user_can( $user, $role ) ) {
+	if (!empty($roles) && is_array($roles)) {
+		foreach ($roles as $role) {
+			if (is_string($role)) {
+				if (user_can($user, $role)) {
 					$track_user = false;
 					break;
 				}
@@ -46,18 +49,18 @@ function monsterinsights_track_user( $user_id = -1 ) {
 		}
 	}
 
-	$track_super_admin = apply_filters( 'monsterinsights_track_super_admins', false );
-	if ( $user_id === -1 && $track_super_admin === false && is_multisite() && is_super_admin() ) {
+	$track_super_admin = apply_filters('monsterinsights_track_super_admins', false);
+	if ($user_id === -1 && $track_super_admin === false && is_multisite() && is_super_admin()) {
 		$track_user = false;
 	}
 
 	// or if tracking code is not entered
 	$tracking_ids = monsterinsights_get_tracking_ids();
-	if ( empty( $tracking_ids ) ) {
+	if (empty($tracking_ids)) {
 		$track_user = false;
 	}
 
-	return apply_filters( 'monsterinsights_track_user', $track_user, $user );
+	return apply_filters('monsterinsights_track_user', $track_user, $user);
 }
 
 /**
@@ -65,20 +68,22 @@ function monsterinsights_track_user( $user_id = -1 ) {
  *
  * @return bool
  */
-function monsterinsights_skip_tracking() {
-    return (bool) apply_filters( 'monsterinsights_skip_tracking', false );
+function monsterinsights_skip_tracking()
+{
+	return (bool) apply_filters('monsterinsights_skip_tracking', false);
 }
 
-function monsterinsights_get_client_id( $payment_id = false ) {
-	if ( is_object( $payment_id ) ) {
+function monsterinsights_get_client_id($payment_id = false)
+{
+	if (is_object($payment_id)) {
 		$payment_id = $payment_id->ID;
 	}
 	$user_cid    = monsterinsights_get_uuid();
-	$saved_cid   = ! empty( $payment_id ) ? get_post_meta( $payment_id, '_yoast_gau_uuid', true ) : false;
+	$saved_cid   = !empty($payment_id) ? get_post_meta($payment_id, '_yoast_gau_uuid', true) : false;
 
-	if ( ! empty( $payment_id ) && ! empty( $saved_cid ) ) {
+	if (!empty($payment_id) && !empty($saved_cid)) {
 		return $saved_cid;
-	} else if ( ! empty( $user_cid ) ) {
+	} else if (!empty($user_cid)) {
 		return $user_cid;
 	} else {
 		return monsterinsights_generate_uuid();
@@ -94,8 +99,9 @@ function monsterinsights_get_client_id( $payment_id = false ) {
  *
  * @return bool|string False if cookie isn't set, GA UUID otherwise
  */
-function monsterinsights_get_uuid() {
-	if ( empty( $_COOKIE['_ga'] ) ) {
+function monsterinsights_get_uuid()
+{
+	if (empty($_COOKIE['_ga'])) {
 		return false;
 	}
 
@@ -111,16 +117,16 @@ function monsterinsights_get_uuid() {
 	 */
 
 	$ga_cookie    = $_COOKIE['_ga'];
-	$cookie_parts = explode( '.', $ga_cookie );
-	if ( is_array( $cookie_parts ) && ! empty( $cookie_parts[2] ) ) {
-		$cookie_parts = array_slice( $cookie_parts, 2 );
-		$uuid         = implode( '.', $cookie_parts );
-		if ( is_string( $uuid ) ) {
+	$cookie_parts = explode('.', $ga_cookie);
+	if (is_array($cookie_parts) && !empty($cookie_parts[2])) {
+		$cookie_parts = array_slice($cookie_parts, 2);
+		$uuid         = implode('.', $cookie_parts);
+		if (is_string($uuid)) {
 			return $uuid;
 		} else {
 			return false;
 		}
-	} elseif ( 0 === strpos( $ga_cookie, 'amp-' ) ) {
+	} elseif (0 === strpos($ga_cookie, 'amp-')) {
 		return $ga_cookie;
 	} else {
 		return false;
@@ -136,27 +142,32 @@ function monsterinsights_get_uuid() {
  * @since 6.1.8
  * @return string
  */
-function monsterinsights_generate_uuid() {
+function monsterinsights_generate_uuid()
+{
 
-	return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+	return sprintf(
+		'%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 
 		// 32 bits for "time_low"
-		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+		mt_rand(0, 0xffff),
+		mt_rand(0, 0xffff),
 
 		// 16 bits for "time_mid"
-		mt_rand( 0, 0xffff ),
+		mt_rand(0, 0xffff),
 
 		// 16 bits for "time_hi_and_version",
 		// four most significant bits holds version number 4
-		mt_rand( 0, 0x0fff ) | 0x4000,
+		mt_rand(0, 0x0fff) | 0x4000,
 
 		// 16 bits, 8 bits for "clk_seq_hi_res",
 		// 8 bits for "clk_seq_low",
 		// two most significant bits holds zero and one for variant DCE1.1
-		mt_rand( 0, 0x3fff ) | 0x8000,
+		mt_rand(0, 0x3fff) | 0x8000,
 
 		// 48 bits for "node"
-		mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+		mt_rand(0, 0xffff),
+		mt_rand(0, 0xffff),
+		mt_rand(0, 0xffff)
 	);
 }
 
@@ -167,31 +178,33 @@ function monsterinsights_generate_uuid() {
  *
  * @return GA UUID or error code.
  */
-function monsterinsights_get_cookie( $debug = false ) {
-	if ( empty( $_COOKIE['_ga'] ) ) {
-		return ( $debug ) ? 'FCE' : false;
+function monsterinsights_get_cookie($debug = false)
+{
+	if (empty($_COOKIE['_ga'])) {
+		return ($debug) ? 'FCE' : false;
 	}
 
 	$ga_cookie    = $_COOKIE['_ga'];
-	$cookie_parts = explode( '.', $ga_cookie );
-	if ( is_array( $cookie_parts ) && ! empty( $cookie_parts[2] ) ) {
-		$cookie_parts = array_slice( $cookie_parts, 2 );
-		$uuid         = implode( '.', $cookie_parts );
-		if ( is_string( $uuid ) ) {
+	$cookie_parts = explode('.', $ga_cookie);
+	if (is_array($cookie_parts) && !empty($cookie_parts[2])) {
+		$cookie_parts = array_slice($cookie_parts, 2);
+		$uuid         = implode('.', $cookie_parts);
+		if (is_string($uuid)) {
 			return $ga_cookie;
 		} else {
-			return ( $debug ) ? 'FA' : false;
+			return ($debug) ? 'FA' : false;
 		}
-	} elseif ( 0 === strpos( $ga_cookie, 'amp-' ) ) {
+	} elseif (0 === strpos($ga_cookie, 'amp-')) {
 		return $ga_cookie;
 	} else {
-		return ( $debug ) ? 'FAE' : false;
+		return ($debug) ? 'FAE' : false;
 	}
 }
 
 
-function monsterinsights_generate_ga_client_id() {
-	return rand(100000000,999999999) . '.' . time();
+function monsterinsights_generate_ga_client_id()
+{
+	return rand(100000000, 999999999) . '.' . time();
 }
 
 
@@ -206,13 +219,14 @@ function monsterinsights_generate_ga_client_id() {
  *
  * @return int Hours between the two timestamps, rounded.
  */
-function monsterinsights_hours_between( $start, $stop = false ) {
-	if ( $stop === false ) {
+function monsterinsights_hours_between($start, $stop = false)
+{
+	if ($stop === false) {
 		$stop = time();
 	}
 
-	$diff = (int) abs( $stop -  $start );
-	$hours = round( $diff / HOUR_IN_SECONDS );
+	$diff = (int) abs($stop -  $start);
+	$hours = round($diff / HOUR_IN_SECONDS);
 	return $hours;
 }
 
@@ -241,8 +255,9 @@ function monsterinsights_hours_between( $start, $stop = false ) {
  *
  * @return bool True if pro version.
  */
-function monsterinsights_is_pro_version() {
-	if ( class_exists( 'MonsterInsights' ) ) {
+function monsterinsights_is_pro_version()
+{
+	if (class_exists('MonsterInsights')) {
 		return true;
 	} else {
 		return false;
@@ -255,7 +270,8 @@ function monsterinsights_is_pro_version() {
  *
  * @return array
  */
-function monsterinsights_get_roles() {
+function monsterinsights_get_roles()
+{
 	global $wp_roles;
 
 	$all_roles = $wp_roles->roles;
@@ -266,10 +282,10 @@ function monsterinsights_get_roles() {
 	 *
 	 * @api array $all_roles
 	 */
-	$editable_roles = apply_filters( 'editable_roles', $all_roles );
+	$editable_roles = apply_filters('editable_roles', $all_roles);
 
-	foreach ( $editable_roles as $id => $name ) {
-		$roles[ $id ] = translate_user_role( $name['name'] );
+	foreach ($editable_roles as $id => $name) {
+		$roles[$id] = translate_user_role($name['name']);
 	}
 
 	return $roles;
@@ -280,7 +296,8 @@ function monsterinsights_get_roles() {
  *
  * @return array
  */
-function monsterinsights_get_manage_options_roles() {
+function monsterinsights_get_manage_options_roles()
+{
 	global $wp_roles;
 
 	$all_roles = $wp_roles->roles;
@@ -291,11 +308,11 @@ function monsterinsights_get_manage_options_roles() {
 	 *
 	 * @api array $all_roles
 	 */
-	$editable_roles = apply_filters( 'editable_roles', $all_roles );
+	$editable_roles = apply_filters('editable_roles', $all_roles);
 
-	foreach ( $editable_roles as $id => $role ) {
-		if ( isset( $role['capabilities']['manage_options'] ) && $role['capabilities']['manage_options'] ) {
-			$roles[ $id ] = translate_user_role( $role['name'] );
+	foreach ($editable_roles as $id => $role) {
+		if (isset($role['capabilities']['manage_options']) && $role['capabilities']['manage_options']) {
+			$roles[$id] = translate_user_role($role['name']);
 		}
 	}
 
@@ -303,49 +320,50 @@ function monsterinsights_get_manage_options_roles() {
 }
 
 /** Need to escape in advance of passing in $text. */
-function monsterinsights_get_message( $type = 'error', $text = '' ) {
+function monsterinsights_get_message($type = 'error', $text = '')
+{
 	$div = '';
-	if ( $type === 'error' || $type === 'alert' || $type === 'success' || $type === 'info' ) {
+	if ($type === 'error' || $type === 'alert' || $type === 'success' || $type === 'info') {
 		$base = MonsterInsights();
-		return $base->notices->display_inline_notice( 'monsterinsights_standard_notice', '', $text, $type, false, array( 'skip_message_escape' => true ) );
+		return $base->notices->display_inline_notice('monsterinsights_standard_notice', '', $text, $type, false, array('skip_message_escape' => true));
 	} else {
 		return '';
 	}
 }
 
-function monsterinsights_is_dev_url( $url = '' ) {
+function monsterinsights_is_dev_url($url = '')
+{
 	$is_local_url = false;
 	// Trim it up
-	$url = strtolower( trim( $url ) );
+	$url = strtolower(trim($url));
 	// Need to get the host...so let's add the scheme so we can use parse_url
-	if ( false === strpos( $url, 'http://' ) && false === strpos( $url, 'https://' ) ) {
+	if (false === strpos($url, 'http://') && false === strpos($url, 'https://')) {
 		$url = 'http://' . $url;
 	}
-	$url_parts = parse_url( $url );
-	$host      = ! empty( $url_parts['host'] ) ? $url_parts['host'] : false;
-	if ( ! empty( $url ) && ! empty( $host ) ) {
-		if ( false !== ip2long( $host ) ) {
-			if ( ! filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+	$url_parts = parse_url($url);
+	$host      = !empty($url_parts['host']) ? $url_parts['host'] : false;
+	if (!empty($url) && !empty($host)) {
+		if (false !== ip2long($host)) {
+			if (!filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
 				$is_local_url = true;
 			}
-		} else if ( 'localhost' === $host ) {
+		} else if ('localhost' === $host) {
 			$is_local_url = true;
 		}
 
-		$tlds_to_check = array( '.local', ':8888', ':8080', ':8081', '.invalid', '.example', '.test' );
-		foreach ( $tlds_to_check as $tld ) {
-			if ( false !== strpos( $host, $tld ) ) {
+		$tlds_to_check = array('.local', ':8888', ':8080', ':8081', '.invalid', '.example', '.test');
+		foreach ($tlds_to_check as $tld) {
+			if (false !== strpos($host, $tld)) {
 				$is_local_url = true;
 				break;
 			}
-
 		}
-		if ( substr_count( $host, '.' ) > 1 ) {
-			$subdomains_to_check =  array( 'dev.', '*.staging.', 'beta.', 'test.' );
-			foreach ( $subdomains_to_check as $subdomain ) {
-				$subdomain = str_replace( '.', '(.)', $subdomain );
-				$subdomain = str_replace( array( '*', '(.)' ), '(.*)', $subdomain );
-				if ( preg_match( '/^(' . $subdomain . ')/', $host ) ) {
+		if (substr_count($host, '.') > 1) {
+			$subdomains_to_check =  array('dev.', '*.staging.', 'beta.', 'test.');
+			foreach ($subdomains_to_check as $subdomain) {
+				$subdomain = str_replace('.', '(.)', $subdomain);
+				$subdomain = str_replace(array('*', '(.)'), '(.*)', $subdomain);
+				if (preg_match('/^(' . $subdomain . ')/', $host)) {
 					$is_local_url = true;
 					break;
 				}
@@ -356,284 +374,288 @@ function monsterinsights_is_dev_url( $url = '' ) {
 }
 
 // Set cookie to expire in 2 years
-function monsterinsights_get_cookie_expiration_date( $time ) {
-	return date('D, j F Y H:i:s', time() + $time );
+function monsterinsights_get_cookie_expiration_date($time)
+{
+	return date('D, j F Y H:i:s', time() + $time);
 }
 
-function monsterinsights_string_ends_with( $string, $ending ) {
+function monsterinsights_string_ends_with($string, $ending)
+{
 	$strlen = strlen($string);
 	$endinglen = strlen($ending);
-	if ( $endinglen > $strlen ) {
+	if ($endinglen > $strlen) {
 		return false;
 	}
-	return substr_compare( $string, $ending, $strlen - $endinglen, $endinglen) === 0;
+	return substr_compare($string, $ending, $strlen - $endinglen, $endinglen) === 0;
 }
 
-function monsterinsights_string_starts_with( $string, $start ) {
-	if ( ! is_string( $string ) || ! is_string( $start ) ) {
+function monsterinsights_string_starts_with($string, $start)
+{
+	if (!is_string($string) || !is_string($start)) {
 		return false;
 	}
 
-	return substr( $string, 0, strlen( $start ) ) === $start;
+	return substr($string, 0, strlen($start)) === $start;
 }
 
-function monsterinsights_get_country_list( $translated = false ) {
-	if ( $translated ) {
+function monsterinsights_get_country_list($translated = false)
+{
+	if ($translated) {
 		$countries = array(
 			''   => '',
-			'US' => __( 'United States', 'google-analytics-for-wordpress' ),
-			'CA' => __( 'Canada', 'google-analytics-for-wordpress' ),
-			'GB' => __( 'United Kingdom', 'google-analytics-for-wordpress' ),
-			'AF' => __( 'Afghanistan', 'google-analytics-for-wordpress' ),
-			'AX' => __( '&#197;land Islands', 'google-analytics-for-wordpress' ),
-			'AL' => __( 'Albania', 'google-analytics-for-wordpress' ),
-			'DZ' => __( 'Algeria', 'google-analytics-for-wordpress' ),
-			'AS' => __( 'American Samoa', 'google-analytics-for-wordpress' ),
-			'AD' => __( 'Andorra', 'google-analytics-for-wordpress' ),
-			'AO' => __( 'Angola', 'google-analytics-for-wordpress' ),
-			'AI' => __( 'Anguilla', 'google-analytics-for-wordpress' ),
-			'AQ' => __( 'Antarctica', 'google-analytics-for-wordpress' ),
-			'AG' => __( 'Antigua and Barbuda', 'google-analytics-for-wordpress' ),
-			'AR' => __( 'Argentina', 'google-analytics-for-wordpress' ),
-			'AM' => __( 'Armenia', 'google-analytics-for-wordpress' ),
-			'AW' => __( 'Aruba', 'google-analytics-for-wordpress' ),
-			'AU' => __( 'Australia', 'google-analytics-for-wordpress' ),
-			'AT' => __( 'Austria', 'google-analytics-for-wordpress' ),
-			'AZ' => __( 'Azerbaijan', 'google-analytics-for-wordpress' ),
-			'BS' => __( 'Bahamas', 'google-analytics-for-wordpress' ),
-			'BH' => __( 'Bahrain', 'google-analytics-for-wordpress' ),
-			'BD' => __( 'Bangladesh', 'google-analytics-for-wordpress' ),
-			'BB' => __( 'Barbados', 'google-analytics-for-wordpress' ),
-			'BY' => __( 'Belarus', 'google-analytics-for-wordpress' ),
-			'BE' => __( 'Belgium', 'google-analytics-for-wordpress' ),
-			'BZ' => __( 'Belize', 'google-analytics-for-wordpress' ),
-			'BJ' => __( 'Benin', 'google-analytics-for-wordpress' ),
-			'BM' => __( 'Bermuda', 'google-analytics-for-wordpress' ),
-			'BT' => __( 'Bhutan', 'google-analytics-for-wordpress' ),
-			'BO' => __( 'Bolivia', 'google-analytics-for-wordpress' ),
-			'BQ' => __( 'Bonaire, Saint Eustatius and Saba', 'google-analytics-for-wordpress' ),
-			'BA' => __( 'Bosnia and Herzegovina', 'google-analytics-for-wordpress' ),
-			'BW' => __( 'Botswana', 'google-analytics-for-wordpress' ),
-			'BV' => __( 'Bouvet Island', 'google-analytics-for-wordpress' ),
-			'BR' => __( 'Brazil', 'google-analytics-for-wordpress' ),
-			'IO' => __( 'British Indian Ocean Territory', 'google-analytics-for-wordpress' ),
-			'BN' => __( 'Brunei Darrussalam', 'google-analytics-for-wordpress' ),
-			'BG' => __( 'Bulgaria', 'google-analytics-for-wordpress' ),
-			'BF' => __( 'Burkina Faso', 'google-analytics-for-wordpress' ),
-			'BI' => __( 'Burundi', 'google-analytics-for-wordpress' ),
-			'KH' => __( 'Cambodia', 'google-analytics-for-wordpress' ),
-			'CM' => __( 'Cameroon', 'google-analytics-for-wordpress' ),
-			'CV' => __( 'Cape Verde', 'google-analytics-for-wordpress' ),
-			'KY' => __( 'Cayman Islands', 'google-analytics-for-wordpress' ),
-			'CF' => __( 'Central African Republic', 'google-analytics-for-wordpress' ),
-			'TD' => __( 'Chad', 'google-analytics-for-wordpress' ),
-			'CL' => __( 'Chile', 'google-analytics-for-wordpress' ),
-			'CN' => __( 'China', 'google-analytics-for-wordpress' ),
-			'CX' => __( 'Christmas Island', 'google-analytics-for-wordpress' ),
-			'CC' => __( 'Cocos Islands', 'google-analytics-for-wordpress' ),
-			'CO' => __( 'Colombia', 'google-analytics-for-wordpress' ),
-			'KM' => __( 'Comoros', 'google-analytics-for-wordpress' ),
-			'CD' => __( 'Congo, Democratic People\'s Republic', 'google-analytics-for-wordpress' ),
-			'CG' => __( 'Congo, Republic of', 'google-analytics-for-wordpress' ),
-			'CK' => __( 'Cook Islands', 'google-analytics-for-wordpress' ),
-			'CR' => __( 'Costa Rica', 'google-analytics-for-wordpress' ),
-			'CI' => __( 'Cote d\'Ivoire', 'google-analytics-for-wordpress' ),
-			'HR' => __( 'Croatia/Hrvatska', 'google-analytics-for-wordpress' ),
-			'CU' => __( 'Cuba', 'google-analytics-for-wordpress' ),
-			'CW' => __( 'Cura&Ccedil;ao', 'google-analytics-for-wordpress' ),
-			'CY' => __( 'Cyprus', 'google-analytics-for-wordpress' ),
-			'CZ' => __( 'Czechia', 'google-analytics-for-wordpress' ),
-			'DK' => __( 'Denmark', 'google-analytics-for-wordpress' ),
-			'DJ' => __( 'Djibouti', 'google-analytics-for-wordpress' ),
-			'DM' => __( 'Dominica', 'google-analytics-for-wordpress' ),
-			'DO' => __( 'Dominican Republic', 'google-analytics-for-wordpress' ),
-			'TP' => __( 'East Timor', 'google-analytics-for-wordpress' ),
-			'EC' => __( 'Ecuador', 'google-analytics-for-wordpress' ),
-			'EG' => __( 'Egypt', 'google-analytics-for-wordpress' ),
-			'GQ' => __( 'Equatorial Guinea', 'google-analytics-for-wordpress' ),
-			'SV' => __( 'El Salvador', 'google-analytics-for-wordpress' ),
-			'ER' => __( 'Eritrea', 'google-analytics-for-wordpress' ),
-			'EE' => __( 'Estonia', 'google-analytics-for-wordpress' ),
-			'ET' => __( 'Ethiopia', 'google-analytics-for-wordpress' ),
-			'FK' => __( 'Falkland Islands', 'google-analytics-for-wordpress' ),
-			'FO' => __( 'Faroe Islands', 'google-analytics-for-wordpress' ),
-			'FJ' => __( 'Fiji', 'google-analytics-for-wordpress' ),
-			'FI' => __( 'Finland', 'google-analytics-for-wordpress' ),
-			'FR' => __( 'France', 'google-analytics-for-wordpress' ),
-			'GF' => __( 'French Guiana', 'google-analytics-for-wordpress' ),
-			'PF' => __( 'French Polynesia', 'google-analytics-for-wordpress' ),
-			'TF' => __( 'French Southern Territories', 'google-analytics-for-wordpress' ),
-			'GA' => __( 'Gabon', 'google-analytics-for-wordpress' ),
-			'GM' => __( 'Gambia', 'google-analytics-for-wordpress' ),
-			'GE' => __( 'Georgia', 'google-analytics-for-wordpress' ),
-			'DE' => __( 'Germany', 'google-analytics-for-wordpress' ),
-			'GR' => __( 'Greece', 'google-analytics-for-wordpress' ),
-			'GH' => __( 'Ghana', 'google-analytics-for-wordpress' ),
-			'GI' => __( 'Gibraltar', 'google-analytics-for-wordpress' ),
-			'GL' => __( 'Greenland', 'google-analytics-for-wordpress' ),
-			'GD' => __( 'Grenada', 'google-analytics-for-wordpress' ),
-			'GP' => __( 'Guadeloupe', 'google-analytics-for-wordpress' ),
-			'GU' => __( 'Guam', 'google-analytics-for-wordpress' ),
-			'GT' => __( 'Guatemala', 'google-analytics-for-wordpress' ),
-			'GG' => __( 'Guernsey', 'google-analytics-for-wordpress' ),
-			'GN' => __( 'Guinea', 'google-analytics-for-wordpress' ),
-			'GW' => __( 'Guinea-Bissau', 'google-analytics-for-wordpress' ),
-			'GY' => __( 'Guyana', 'google-analytics-for-wordpress' ),
-			'HT' => __( 'Haiti', 'google-analytics-for-wordpress' ),
-			'HM' => __( 'Heard and McDonald Islands', 'google-analytics-for-wordpress' ),
-			'VA' => __( 'Holy See (City Vatican State)', 'google-analytics-for-wordpress' ),
-			'HN' => __( 'Honduras', 'google-analytics-for-wordpress' ),
-			'HK' => __( 'Hong Kong', 'google-analytics-for-wordpress' ),
-			'HU' => __( 'Hungary', 'google-analytics-for-wordpress' ),
-			'IS' => __( 'Iceland', 'google-analytics-for-wordpress' ),
-			'IN' => __( 'India', 'google-analytics-for-wordpress' ),
-			'ID' => __( 'Indonesia', 'google-analytics-for-wordpress' ),
-			'IR' => __( 'Iran', 'google-analytics-for-wordpress' ),
-			'IQ' => __( 'Iraq', 'google-analytics-for-wordpress' ),
-			'IE' => __( 'Ireland', 'google-analytics-for-wordpress' ),
-			'IM' => __( 'Isle of Man', 'google-analytics-for-wordpress' ),
-			'IL' => __( 'Israel', 'google-analytics-for-wordpress' ),
-			'IT' => __( 'Italy', 'google-analytics-for-wordpress' ),
-			'JM' => __( 'Jamaica', 'google-analytics-for-wordpress' ),
-			'JP' => __( 'Japan', 'google-analytics-for-wordpress' ),
-			'JE' => __( 'Jersey', 'google-analytics-for-wordpress' ),
-			'JO' => __( 'Jordan', 'google-analytics-for-wordpress' ),
-			'KZ' => __( 'Kazakhstan', 'google-analytics-for-wordpress' ),
-			'KE' => __( 'Kenya', 'google-analytics-for-wordpress' ),
-			'KI' => __( 'Kiribati', 'google-analytics-for-wordpress' ),
-			'KW' => __( 'Kuwait', 'google-analytics-for-wordpress' ),
-			'KG' => __( 'Kyrgyzstan', 'google-analytics-for-wordpress' ),
-			'LA' => __( 'Lao People\'s Democratic Republic', 'google-analytics-for-wordpress' ),
-			'LV' => __( 'Latvia', 'google-analytics-for-wordpress' ),
-			'LB' => __( 'Lebanon', 'google-analytics-for-wordpress' ),
-			'LS' => __( 'Lesotho', 'google-analytics-for-wordpress' ),
-			'LR' => __( 'Liberia', 'google-analytics-for-wordpress' ),
-			'LY' => __( 'Libyan Arab Jamahiriya', 'google-analytics-for-wordpress' ),
-			'LI' => __( 'Liechtenstein', 'google-analytics-for-wordpress' ),
-			'LT' => __( 'Lithuania', 'google-analytics-for-wordpress' ),
-			'LU' => __( 'Luxembourg', 'google-analytics-for-wordpress' ),
-			'MO' => __( 'Macau', 'google-analytics-for-wordpress' ),
-			'MK' => __( 'Macedonia (FYROM)', 'google-analytics-for-wordpress' ),
-			'MG' => __( 'Madagascar', 'google-analytics-for-wordpress' ),
-			'MW' => __( 'Malawi', 'google-analytics-for-wordpress' ),
-			'MY' => __( 'Malaysia', 'google-analytics-for-wordpress' ),
-			'MV' => __( 'Maldives', 'google-analytics-for-wordpress' ),
-			'ML' => __( 'Mali', 'google-analytics-for-wordpress' ),
-			'MT' => __( 'Malta', 'google-analytics-for-wordpress' ),
-			'MH' => __( 'Marshall Islands', 'google-analytics-for-wordpress' ),
-			'MQ' => __( 'Martinique', 'google-analytics-for-wordpress' ),
-			'MR' => __( 'Mauritania', 'google-analytics-for-wordpress' ),
-			'MU' => __( 'Mauritius', 'google-analytics-for-wordpress' ),
-			'YT' => __( 'Mayotte', 'google-analytics-for-wordpress' ),
-			'MX' => __( 'Mexico', 'google-analytics-for-wordpress' ),
-			'FM' => __( 'Micronesia', 'google-analytics-for-wordpress' ),
-			'MD' => __( 'Moldova, Republic of', 'google-analytics-for-wordpress' ),
-			'MC' => __( 'Monaco', 'google-analytics-for-wordpress' ),
-			'MN' => __( 'Mongolia', 'google-analytics-for-wordpress' ),
-			'ME' => __( 'Montenegro', 'google-analytics-for-wordpress' ),
-			'MS' => __( 'Montserrat', 'google-analytics-for-wordpress' ),
-			'MA' => __( 'Morocco', 'google-analytics-for-wordpress' ),
-			'MZ' => __( 'Mozambique', 'google-analytics-for-wordpress' ),
-			'MM' => __( 'Myanmar', 'google-analytics-for-wordpress' ),
-			'NA' => __( 'Namibia', 'google-analytics-for-wordpress' ),
-			'NR' => __( 'Nauru', 'google-analytics-for-wordpress' ),
-			'NP' => __( 'Nepal', 'google-analytics-for-wordpress' ),
-			'NL' => __( 'Netherlands', 'google-analytics-for-wordpress' ),
-			'AN' => __( 'Netherlands Antilles', 'google-analytics-for-wordpress' ),
-			'NC' => __( 'New Caledonia', 'google-analytics-for-wordpress' ),
-			'NZ' => __( 'New Zealand', 'google-analytics-for-wordpress' ),
-			'NI' => __( 'Nicaragua', 'google-analytics-for-wordpress' ),
-			'NE' => __( 'Niger', 'google-analytics-for-wordpress' ),
-			'NG' => __( 'Nigeria', 'google-analytics-for-wordpress' ),
-			'NU' => __( 'Niue', 'google-analytics-for-wordpress' ),
-			'NF' => __( 'Norfolk Island', 'google-analytics-for-wordpress' ),
-			'KP' => __( 'North Korea', 'google-analytics-for-wordpress' ),
-			'MP' => __( 'Northern Mariana Islands', 'google-analytics-for-wordpress' ),
-			'NO' => __( 'Norway', 'google-analytics-for-wordpress' ),
-			'OM' => __( 'Oman', 'google-analytics-for-wordpress' ),
-			'PK' => __( 'Pakistan', 'google-analytics-for-wordpress' ),
-			'PW' => __( 'Palau', 'google-analytics-for-wordpress' ),
-			'PS' => __( 'Palestinian Territories', 'google-analytics-for-wordpress' ),
-			'PA' => __( 'Panama', 'google-analytics-for-wordpress' ),
-			'PG' => __( 'Papua New Guinea', 'google-analytics-for-wordpress' ),
-			'PY' => __( 'Paraguay', 'google-analytics-for-wordpress' ),
-			'PE' => __( 'Peru', 'google-analytics-for-wordpress' ),
-			'PH' => __( 'Philippines', 'google-analytics-for-wordpress' ),
-			'PN' => __( 'Pitcairn Island', 'google-analytics-for-wordpress' ),
-			'PL' => __( 'Poland', 'google-analytics-for-wordpress' ),
-			'PT' => __( 'Portugal', 'google-analytics-for-wordpress' ),
-			'PR' => __( 'Puerto Rico', 'google-analytics-for-wordpress' ),
-			'QA' => __( 'Qatar', 'google-analytics-for-wordpress' ),
-			'XK' => __( 'Republic of Kosovo', 'google-analytics-for-wordpress' ),
-			'RE' => __( 'Reunion Island', 'google-analytics-for-wordpress' ),
-			'RO' => __( 'Romania', 'google-analytics-for-wordpress' ),
-			'RU' => __( 'Russian Federation', 'google-analytics-for-wordpress' ),
-			'RW' => __( 'Rwanda', 'google-analytics-for-wordpress' ),
-			'BL' => __( 'Saint Barth&eacute;lemy', 'google-analytics-for-wordpress' ),
-			'SH' => __( 'Saint Helena', 'google-analytics-for-wordpress' ),
-			'KN' => __( 'Saint Kitts and Nevis', 'google-analytics-for-wordpress' ),
-			'LC' => __( 'Saint Lucia', 'google-analytics-for-wordpress' ),
-			'MF' => __( 'Saint Martin (French)', 'google-analytics-for-wordpress' ),
-			'SX' => __( 'Saint Martin (Dutch)', 'google-analytics-for-wordpress' ),
-			'PM' => __( 'Saint Pierre and Miquelon', 'google-analytics-for-wordpress' ),
-			'VC' => __( 'Saint Vincent and the Grenadines', 'google-analytics-for-wordpress' ),
-			'SM' => __( 'San Marino', 'google-analytics-for-wordpress' ),
-			'ST' => __( 'S&atilde;o Tom&eacute; and Pr&iacute;ncipe', 'google-analytics-for-wordpress' ),
-			'SA' => __( 'Saudi Arabia', 'google-analytics-for-wordpress' ),
-			'SN' => __( 'Senegal', 'google-analytics-for-wordpress' ),
-			'RS' => __( 'Serbia', 'google-analytics-for-wordpress' ),
-			'SC' => __( 'Seychelles', 'google-analytics-for-wordpress' ),
-			'SL' => __( 'Sierra Leone', 'google-analytics-for-wordpress' ),
-			'SG' => __( 'Singapore', 'google-analytics-for-wordpress' ),
-			'SK' => __( 'Slovak Republic', 'google-analytics-for-wordpress' ),
-			'SI' => __( 'Slovenia', 'google-analytics-for-wordpress' ),
-			'SB' => __( 'Solomon Islands', 'google-analytics-for-wordpress' ),
-			'SO' => __( 'Somalia', 'google-analytics-for-wordpress' ),
-			'ZA' => __( 'South Africa', 'google-analytics-for-wordpress' ),
-			'GS' => __( 'South Georgia', 'google-analytics-for-wordpress' ),
-			'KR' => __( 'South Korea', 'google-analytics-for-wordpress' ),
-			'SS' => __( 'South Sudan', 'google-analytics-for-wordpress' ),
-			'ES' => __( 'Spain', 'google-analytics-for-wordpress' ),
-			'LK' => __( 'Sri Lanka', 'google-analytics-for-wordpress' ),
-			'SD' => __( 'Sudan', 'google-analytics-for-wordpress' ),
-			'SR' => __( 'Suriname', 'google-analytics-for-wordpress' ),
-			'SJ' => __( 'Svalbard and Jan Mayen Islands', 'google-analytics-for-wordpress' ),
-			'SZ' => __( 'Swaziland', 'google-analytics-for-wordpress' ),
-			'SE' => __( 'Sweden', 'google-analytics-for-wordpress' ),
-			'CH' => __( 'Switzerland', 'google-analytics-for-wordpress' ),
-			'SY' => __( 'Syrian Arab Republic', 'google-analytics-for-wordpress' ),
-			'TW' => __( 'Taiwan', 'google-analytics-for-wordpress' ),
-			'TJ' => __( 'Tajikistan', 'google-analytics-for-wordpress' ),
-			'TZ' => __( 'Tanzania', 'google-analytics-for-wordpress' ),
-			'TH' => __( 'Thailand', 'google-analytics-for-wordpress' ),
-			'TL' => __( 'Timor-Leste', 'google-analytics-for-wordpress' ),
-			'TG' => __( 'Togo', 'google-analytics-for-wordpress' ),
-			'TK' => __( 'Tokelau', 'google-analytics-for-wordpress' ),
-			'TO' => __( 'Tonga', 'google-analytics-for-wordpress' ),
-			'TT' => __( 'Trinidad and Tobago', 'google-analytics-for-wordpress' ),
-			'TN' => __( 'Tunisia', 'google-analytics-for-wordpress' ),
-			'TR' => __( 'Turkey', 'google-analytics-for-wordpress' ),
-			'TM' => __( 'Turkmenistan', 'google-analytics-for-wordpress' ),
-			'TC' => __( 'Turks and Caicos Islands', 'google-analytics-for-wordpress' ),
-			'TV' => __( 'Tuvalu', 'google-analytics-for-wordpress' ),
-			'UG' => __( 'Uganda', 'google-analytics-for-wordpress' ),
-			'UA' => __( 'Ukraine', 'google-analytics-for-wordpress' ),
-			'AE' => __( 'United Arab Emirates', 'google-analytics-for-wordpress' ),
-			'UY' => __( 'Uruguay', 'google-analytics-for-wordpress' ),
-			'UM' => __( 'US Minor Outlying Islands', 'google-analytics-for-wordpress' ),
-			'UZ' => __( 'Uzbekistan', 'google-analytics-for-wordpress' ),
-			'VU' => __( 'Vanuatu', 'google-analytics-for-wordpress' ),
-			'VE' => __( 'Venezuela', 'google-analytics-for-wordpress' ),
-			'VN' => __( 'Vietnam', 'google-analytics-for-wordpress' ),
-			'VG' => __( 'Virgin Islands (British)', 'google-analytics-for-wordpress' ),
-			'VI' => __( 'Virgin Islands (USA)', 'google-analytics-for-wordpress' ),
-			'WF' => __( 'Wallis and Futuna Islands', 'google-analytics-for-wordpress' ),
-			'EH' => __( 'Western Sahara', 'google-analytics-for-wordpress' ),
-			'WS' => __( 'Western Samoa', 'google-analytics-for-wordpress' ),
-			'YE' => __( 'Yemen', 'google-analytics-for-wordpress' ),
-			'ZM' => __( 'Zambia', 'google-analytics-for-wordpress' ),
-			'ZW' => __( 'Zimbabwe', 'google-analytics-for-wordpress' ),
-			'ZZ' => __( 'Unknown Country', 'google-analytics-for-wordpress' ),
+			'US' => __('United States', 'google-analytics-for-wordpress'),
+			'CA' => __('Canada', 'google-analytics-for-wordpress'),
+			'GB' => __('United Kingdom', 'google-analytics-for-wordpress'),
+			'AF' => __('Afghanistan', 'google-analytics-for-wordpress'),
+			'AX' => __('&#197;land Islands', 'google-analytics-for-wordpress'),
+			'AL' => __('Albania', 'google-analytics-for-wordpress'),
+			'DZ' => __('Algeria', 'google-analytics-for-wordpress'),
+			'AS' => __('American Samoa', 'google-analytics-for-wordpress'),
+			'AD' => __('Andorra', 'google-analytics-for-wordpress'),
+			'AO' => __('Angola', 'google-analytics-for-wordpress'),
+			'AI' => __('Anguilla', 'google-analytics-for-wordpress'),
+			'AQ' => __('Antarctica', 'google-analytics-for-wordpress'),
+			'AG' => __('Antigua and Barbuda', 'google-analytics-for-wordpress'),
+			'AR' => __('Argentina', 'google-analytics-for-wordpress'),
+			'AM' => __('Armenia', 'google-analytics-for-wordpress'),
+			'AW' => __('Aruba', 'google-analytics-for-wordpress'),
+			'AU' => __('Australia', 'google-analytics-for-wordpress'),
+			'AT' => __('Austria', 'google-analytics-for-wordpress'),
+			'AZ' => __('Azerbaijan', 'google-analytics-for-wordpress'),
+			'BS' => __('Bahamas', 'google-analytics-for-wordpress'),
+			'BH' => __('Bahrain', 'google-analytics-for-wordpress'),
+			'BD' => __('Bangladesh', 'google-analytics-for-wordpress'),
+			'BB' => __('Barbados', 'google-analytics-for-wordpress'),
+			'BY' => __('Belarus', 'google-analytics-for-wordpress'),
+			'BE' => __('Belgium', 'google-analytics-for-wordpress'),
+			'BZ' => __('Belize', 'google-analytics-for-wordpress'),
+			'BJ' => __('Benin', 'google-analytics-for-wordpress'),
+			'BM' => __('Bermuda', 'google-analytics-for-wordpress'),
+			'BT' => __('Bhutan', 'google-analytics-for-wordpress'),
+			'BO' => __('Bolivia', 'google-analytics-for-wordpress'),
+			'BQ' => __('Bonaire, Saint Eustatius and Saba', 'google-analytics-for-wordpress'),
+			'BA' => __('Bosnia and Herzegovina', 'google-analytics-for-wordpress'),
+			'BW' => __('Botswana', 'google-analytics-for-wordpress'),
+			'BV' => __('Bouvet Island', 'google-analytics-for-wordpress'),
+			'BR' => __('Brazil', 'google-analytics-for-wordpress'),
+			'IO' => __('British Indian Ocean Territory', 'google-analytics-for-wordpress'),
+			'BN' => __('Brunei Darrussalam', 'google-analytics-for-wordpress'),
+			'BG' => __('Bulgaria', 'google-analytics-for-wordpress'),
+			'BF' => __('Burkina Faso', 'google-analytics-for-wordpress'),
+			'BI' => __('Burundi', 'google-analytics-for-wordpress'),
+			'KH' => __('Cambodia', 'google-analytics-for-wordpress'),
+			'CM' => __('Cameroon', 'google-analytics-for-wordpress'),
+			'CV' => __('Cape Verde', 'google-analytics-for-wordpress'),
+			'KY' => __('Cayman Islands', 'google-analytics-for-wordpress'),
+			'CF' => __('Central African Republic', 'google-analytics-for-wordpress'),
+			'TD' => __('Chad', 'google-analytics-for-wordpress'),
+			'CL' => __('Chile', 'google-analytics-for-wordpress'),
+			'CN' => __('China', 'google-analytics-for-wordpress'),
+			'CX' => __('Christmas Island', 'google-analytics-for-wordpress'),
+			'CC' => __('Cocos Islands', 'google-analytics-for-wordpress'),
+			'CO' => __('Colombia', 'google-analytics-for-wordpress'),
+			'KM' => __('Comoros', 'google-analytics-for-wordpress'),
+			'CD' => __('Congo, Democratic People\'s Republic', 'google-analytics-for-wordpress'),
+			'CG' => __('Congo, Republic of', 'google-analytics-for-wordpress'),
+			'CK' => __('Cook Islands', 'google-analytics-for-wordpress'),
+			'CR' => __('Costa Rica', 'google-analytics-for-wordpress'),
+			'CI' => __('Cote d\'Ivoire', 'google-analytics-for-wordpress'),
+			'HR' => __('Croatia/Hrvatska', 'google-analytics-for-wordpress'),
+			'CU' => __('Cuba', 'google-analytics-for-wordpress'),
+			'CW' => __('Cura&Ccedil;ao', 'google-analytics-for-wordpress'),
+			'CY' => __('Cyprus', 'google-analytics-for-wordpress'),
+			'CZ' => __('Czechia', 'google-analytics-for-wordpress'),
+			'DK' => __('Denmark', 'google-analytics-for-wordpress'),
+			'DJ' => __('Djibouti', 'google-analytics-for-wordpress'),
+			'DM' => __('Dominica', 'google-analytics-for-wordpress'),
+			'DO' => __('Dominican Republic', 'google-analytics-for-wordpress'),
+			'TP' => __('East Timor', 'google-analytics-for-wordpress'),
+			'EC' => __('Ecuador', 'google-analytics-for-wordpress'),
+			'EG' => __('Egypt', 'google-analytics-for-wordpress'),
+			'GQ' => __('Equatorial Guinea', 'google-analytics-for-wordpress'),
+			'SV' => __('El Salvador', 'google-analytics-for-wordpress'),
+			'ER' => __('Eritrea', 'google-analytics-for-wordpress'),
+			'EE' => __('Estonia', 'google-analytics-for-wordpress'),
+			'ET' => __('Ethiopia', 'google-analytics-for-wordpress'),
+			'FK' => __('Falkland Islands', 'google-analytics-for-wordpress'),
+			'FO' => __('Faroe Islands', 'google-analytics-for-wordpress'),
+			'FJ' => __('Fiji', 'google-analytics-for-wordpress'),
+			'FI' => __('Finland', 'google-analytics-for-wordpress'),
+			'FR' => __('France', 'google-analytics-for-wordpress'),
+			'GF' => __('French Guiana', 'google-analytics-for-wordpress'),
+			'PF' => __('French Polynesia', 'google-analytics-for-wordpress'),
+			'TF' => __('French Southern Territories', 'google-analytics-for-wordpress'),
+			'GA' => __('Gabon', 'google-analytics-for-wordpress'),
+			'GM' => __('Gambia', 'google-analytics-for-wordpress'),
+			'GE' => __('Georgia', 'google-analytics-for-wordpress'),
+			'DE' => __('Germany', 'google-analytics-for-wordpress'),
+			'GR' => __('Greece', 'google-analytics-for-wordpress'),
+			'GH' => __('Ghana', 'google-analytics-for-wordpress'),
+			'GI' => __('Gibraltar', 'google-analytics-for-wordpress'),
+			'GL' => __('Greenland', 'google-analytics-for-wordpress'),
+			'GD' => __('Grenada', 'google-analytics-for-wordpress'),
+			'GP' => __('Guadeloupe', 'google-analytics-for-wordpress'),
+			'GU' => __('Guam', 'google-analytics-for-wordpress'),
+			'GT' => __('Guatemala', 'google-analytics-for-wordpress'),
+			'GG' => __('Guernsey', 'google-analytics-for-wordpress'),
+			'GN' => __('Guinea', 'google-analytics-for-wordpress'),
+			'GW' => __('Guinea-Bissau', 'google-analytics-for-wordpress'),
+			'GY' => __('Guyana', 'google-analytics-for-wordpress'),
+			'HT' => __('Haiti', 'google-analytics-for-wordpress'),
+			'HM' => __('Heard and McDonald Islands', 'google-analytics-for-wordpress'),
+			'VA' => __('Holy See (City Vatican State)', 'google-analytics-for-wordpress'),
+			'HN' => __('Honduras', 'google-analytics-for-wordpress'),
+			'HK' => __('Hong Kong', 'google-analytics-for-wordpress'),
+			'HU' => __('Hungary', 'google-analytics-for-wordpress'),
+			'IS' => __('Iceland', 'google-analytics-for-wordpress'),
+			'IN' => __('India', 'google-analytics-for-wordpress'),
+			'ID' => __('Indonesia', 'google-analytics-for-wordpress'),
+			'IR' => __('Iran', 'google-analytics-for-wordpress'),
+			'IQ' => __('Iraq', 'google-analytics-for-wordpress'),
+			'IE' => __('Ireland', 'google-analytics-for-wordpress'),
+			'IM' => __('Isle of Man', 'google-analytics-for-wordpress'),
+			'IL' => __('Israel', 'google-analytics-for-wordpress'),
+			'IT' => __('Italy', 'google-analytics-for-wordpress'),
+			'JM' => __('Jamaica', 'google-analytics-for-wordpress'),
+			'JP' => __('Japan', 'google-analytics-for-wordpress'),
+			'JE' => __('Jersey', 'google-analytics-for-wordpress'),
+			'JO' => __('Jordan', 'google-analytics-for-wordpress'),
+			'KZ' => __('Kazakhstan', 'google-analytics-for-wordpress'),
+			'KE' => __('Kenya', 'google-analytics-for-wordpress'),
+			'KI' => __('Kiribati', 'google-analytics-for-wordpress'),
+			'KW' => __('Kuwait', 'google-analytics-for-wordpress'),
+			'KG' => __('Kyrgyzstan', 'google-analytics-for-wordpress'),
+			'LA' => __('Lao People\'s Democratic Republic', 'google-analytics-for-wordpress'),
+			'LV' => __('Latvia', 'google-analytics-for-wordpress'),
+			'LB' => __('Lebanon', 'google-analytics-for-wordpress'),
+			'LS' => __('Lesotho', 'google-analytics-for-wordpress'),
+			'LR' => __('Liberia', 'google-analytics-for-wordpress'),
+			'LY' => __('Libyan Arab Jamahiriya', 'google-analytics-for-wordpress'),
+			'LI' => __('Liechtenstein', 'google-analytics-for-wordpress'),
+			'LT' => __('Lithuania', 'google-analytics-for-wordpress'),
+			'LU' => __('Luxembourg', 'google-analytics-for-wordpress'),
+			'MO' => __('Macau', 'google-analytics-for-wordpress'),
+			'MK' => __('Macedonia (FYROM)', 'google-analytics-for-wordpress'),
+			'MG' => __('Madagascar', 'google-analytics-for-wordpress'),
+			'MW' => __('Malawi', 'google-analytics-for-wordpress'),
+			'MY' => __('Malaysia', 'google-analytics-for-wordpress'),
+			'MV' => __('Maldives', 'google-analytics-for-wordpress'),
+			'ML' => __('Mali', 'google-analytics-for-wordpress'),
+			'MT' => __('Malta', 'google-analytics-for-wordpress'),
+			'MH' => __('Marshall Islands', 'google-analytics-for-wordpress'),
+			'MQ' => __('Martinique', 'google-analytics-for-wordpress'),
+			'MR' => __('Mauritania', 'google-analytics-for-wordpress'),
+			'MU' => __('Mauritius', 'google-analytics-for-wordpress'),
+			'YT' => __('Mayotte', 'google-analytics-for-wordpress'),
+			'MX' => __('Mexico', 'google-analytics-for-wordpress'),
+			'FM' => __('Micronesia', 'google-analytics-for-wordpress'),
+			'MD' => __('Moldova, Republic of', 'google-analytics-for-wordpress'),
+			'MC' => __('Monaco', 'google-analytics-for-wordpress'),
+			'MN' => __('Mongolia', 'google-analytics-for-wordpress'),
+			'ME' => __('Montenegro', 'google-analytics-for-wordpress'),
+			'MS' => __('Montserrat', 'google-analytics-for-wordpress'),
+			'MA' => __('Morocco', 'google-analytics-for-wordpress'),
+			'MZ' => __('Mozambique', 'google-analytics-for-wordpress'),
+			'MM' => __('Myanmar', 'google-analytics-for-wordpress'),
+			'NA' => __('Namibia', 'google-analytics-for-wordpress'),
+			'NR' => __('Nauru', 'google-analytics-for-wordpress'),
+			'NP' => __('Nepal', 'google-analytics-for-wordpress'),
+			'NL' => __('Netherlands', 'google-analytics-for-wordpress'),
+			'AN' => __('Netherlands Antilles', 'google-analytics-for-wordpress'),
+			'NC' => __('New Caledonia', 'google-analytics-for-wordpress'),
+			'NZ' => __('New Zealand', 'google-analytics-for-wordpress'),
+			'NI' => __('Nicaragua', 'google-analytics-for-wordpress'),
+			'NE' => __('Niger', 'google-analytics-for-wordpress'),
+			'NG' => __('Nigeria', 'google-analytics-for-wordpress'),
+			'NU' => __('Niue', 'google-analytics-for-wordpress'),
+			'NF' => __('Norfolk Island', 'google-analytics-for-wordpress'),
+			'KP' => __('North Korea', 'google-analytics-for-wordpress'),
+			'MP' => __('Northern Mariana Islands', 'google-analytics-for-wordpress'),
+			'NO' => __('Norway', 'google-analytics-for-wordpress'),
+			'OM' => __('Oman', 'google-analytics-for-wordpress'),
+			'PK' => __('Pakistan', 'google-analytics-for-wordpress'),
+			'PW' => __('Palau', 'google-analytics-for-wordpress'),
+			'PS' => __('Palestinian Territories', 'google-analytics-for-wordpress'),
+			'PA' => __('Panama', 'google-analytics-for-wordpress'),
+			'PG' => __('Papua New Guinea', 'google-analytics-for-wordpress'),
+			'PY' => __('Paraguay', 'google-analytics-for-wordpress'),
+			'PE' => __('Peru', 'google-analytics-for-wordpress'),
+			'PH' => __('Philippines', 'google-analytics-for-wordpress'),
+			'PN' => __('Pitcairn Island', 'google-analytics-for-wordpress'),
+			'PL' => __('Poland', 'google-analytics-for-wordpress'),
+			'PT' => __('Portugal', 'google-analytics-for-wordpress'),
+			'PR' => __('Puerto Rico', 'google-analytics-for-wordpress'),
+			'QA' => __('Qatar', 'google-analytics-for-wordpress'),
+			'XK' => __('Republic of Kosovo', 'google-analytics-for-wordpress'),
+			'RE' => __('Reunion Island', 'google-analytics-for-wordpress'),
+			'RO' => __('Romania', 'google-analytics-for-wordpress'),
+			'RU' => __('Russian Federation', 'google-analytics-for-wordpress'),
+			'RW' => __('Rwanda', 'google-analytics-for-wordpress'),
+			'BL' => __('Saint Barth&eacute;lemy', 'google-analytics-for-wordpress'),
+			'SH' => __('Saint Helena', 'google-analytics-for-wordpress'),
+			'KN' => __('Saint Kitts and Nevis', 'google-analytics-for-wordpress'),
+			'LC' => __('Saint Lucia', 'google-analytics-for-wordpress'),
+			'MF' => __('Saint Martin (French)', 'google-analytics-for-wordpress'),
+			'SX' => __('Saint Martin (Dutch)', 'google-analytics-for-wordpress'),
+			'PM' => __('Saint Pierre and Miquelon', 'google-analytics-for-wordpress'),
+			'VC' => __('Saint Vincent and the Grenadines', 'google-analytics-for-wordpress'),
+			'SM' => __('San Marino', 'google-analytics-for-wordpress'),
+			'ST' => __('S&atilde;o Tom&eacute; and Pr&iacute;ncipe', 'google-analytics-for-wordpress'),
+			'SA' => __('Saudi Arabia', 'google-analytics-for-wordpress'),
+			'SN' => __('Senegal', 'google-analytics-for-wordpress'),
+			'RS' => __('Serbia', 'google-analytics-for-wordpress'),
+			'SC' => __('Seychelles', 'google-analytics-for-wordpress'),
+			'SL' => __('Sierra Leone', 'google-analytics-for-wordpress'),
+			'SG' => __('Singapore', 'google-analytics-for-wordpress'),
+			'SK' => __('Slovak Republic', 'google-analytics-for-wordpress'),
+			'SI' => __('Slovenia', 'google-analytics-for-wordpress'),
+			'SB' => __('Solomon Islands', 'google-analytics-for-wordpress'),
+			'SO' => __('Somalia', 'google-analytics-for-wordpress'),
+			'ZA' => __('South Africa', 'google-analytics-for-wordpress'),
+			'GS' => __('South Georgia', 'google-analytics-for-wordpress'),
+			'KR' => __('South Korea', 'google-analytics-for-wordpress'),
+			'SS' => __('South Sudan', 'google-analytics-for-wordpress'),
+			'ES' => __('Spain', 'google-analytics-for-wordpress'),
+			'LK' => __('Sri Lanka', 'google-analytics-for-wordpress'),
+			'SD' => __('Sudan', 'google-analytics-for-wordpress'),
+			'SR' => __('Suriname', 'google-analytics-for-wordpress'),
+			'SJ' => __('Svalbard and Jan Mayen Islands', 'google-analytics-for-wordpress'),
+			'SZ' => __('Swaziland', 'google-analytics-for-wordpress'),
+			'SE' => __('Sweden', 'google-analytics-for-wordpress'),
+			'CH' => __('Switzerland', 'google-analytics-for-wordpress'),
+			'SY' => __('Syrian Arab Republic', 'google-analytics-for-wordpress'),
+			'TW' => __('Taiwan', 'google-analytics-for-wordpress'),
+			'TJ' => __('Tajikistan', 'google-analytics-for-wordpress'),
+			'TZ' => __('Tanzania', 'google-analytics-for-wordpress'),
+			'TH' => __('Thailand', 'google-analytics-for-wordpress'),
+			'TL' => __('Timor-Leste', 'google-analytics-for-wordpress'),
+			'TG' => __('Togo', 'google-analytics-for-wordpress'),
+			'TK' => __('Tokelau', 'google-analytics-for-wordpress'),
+			'TO' => __('Tonga', 'google-analytics-for-wordpress'),
+			'TT' => __('Trinidad and Tobago', 'google-analytics-for-wordpress'),
+			'TN' => __('Tunisia', 'google-analytics-for-wordpress'),
+			'TR' => __('Turkey', 'google-analytics-for-wordpress'),
+			'TM' => __('Turkmenistan', 'google-analytics-for-wordpress'),
+			'TC' => __('Turks and Caicos Islands', 'google-analytics-for-wordpress'),
+			'TV' => __('Tuvalu', 'google-analytics-for-wordpress'),
+			'UG' => __('Uganda', 'google-analytics-for-wordpress'),
+			'UA' => __('Ukraine', 'google-analytics-for-wordpress'),
+			'AE' => __('United Arab Emirates', 'google-analytics-for-wordpress'),
+			'UY' => __('Uruguay', 'google-analytics-for-wordpress'),
+			'UM' => __('US Minor Outlying Islands', 'google-analytics-for-wordpress'),
+			'UZ' => __('Uzbekistan', 'google-analytics-for-wordpress'),
+			'VU' => __('Vanuatu', 'google-analytics-for-wordpress'),
+			'VE' => __('Venezuela', 'google-analytics-for-wordpress'),
+			'VN' => __('Vietnam', 'google-analytics-for-wordpress'),
+			'VG' => __('Virgin Islands (British)', 'google-analytics-for-wordpress'),
+			'VI' => __('Virgin Islands (USA)', 'google-analytics-for-wordpress'),
+			'WF' => __('Wallis and Futuna Islands', 'google-analytics-for-wordpress'),
+			'EH' => __('Western Sahara', 'google-analytics-for-wordpress'),
+			'WS' => __('Western Samoa', 'google-analytics-for-wordpress'),
+			'YE' => __('Yemen', 'google-analytics-for-wordpress'),
+			'ZM' => __('Zambia', 'google-analytics-for-wordpress'),
+			'ZW' => __('Zimbabwe', 'google-analytics-for-wordpress'),
+			'ZZ' => __('Unknown Country', 'google-analytics-for-wordpress'),
 		);
 	} else {
 		$countries = array(
@@ -896,55 +918,61 @@ function monsterinsights_get_country_list( $translated = false ) {
 	return $countries;
 }
 
-function monsterinsights_get_api_url(){
-	return apply_filters( 'monsterinsights_get_api_url', 'api.monsterinsights.com/v2/' );
+function monsterinsights_get_api_url()
+{
+	return apply_filters('monsterinsights_get_api_url', 'api.monsterinsights.com/v2/');
 }
 
-function monsterinsights_get_licensing_url(){
-	return apply_filters( 'monsterinsights_get_licensing_url', 'https://www.monsterinsights.com' );
+function monsterinsights_get_licensing_url()
+{
+	return apply_filters('monsterinsights_get_licensing_url', 'https://www.monsterinsights.com');
 }
 
-function monsterinsights_is_wp_seo_active( ) {
+function monsterinsights_is_wp_seo_active()
+{
 	$wp_seo_active = false; // @todo: improve this check. This is from old Yoast code.
 
 	// Makes sure is_plugin_active is available when called from front end
-	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-	if ( is_plugin_active( 'wordpress-seo/wp-seo.php' ) || is_plugin_active( 'wordpress-seo-premium/wp-seo-premium.php' ) ) {
+	include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+	if (is_plugin_active('wordpress-seo/wp-seo.php') || is_plugin_active('wordpress-seo-premium/wp-seo-premium.php')) {
 		$wp_seo_active = true;
 	}
 	return $wp_seo_active;
 }
 
-function monsterinsights_get_asset_version() {
-	if ( monsterinsights_is_debug_mode() || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
+function monsterinsights_get_asset_version()
+{
+	if (monsterinsights_is_debug_mode() || (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)) {
 		return time();
 	} else {
 		return MONSTERINSIGHTS_VERSION;
 	}
 }
 
-function monsterinsights_is_debug_mode() {
+function monsterinsights_is_debug_mode()
+{
 	$debug_mode = false;
-	if ( defined( 'MONSTERINSIGHTS_DEBUG_MODE' ) && MONSTERINSIGHTS_DEBUG_MODE ) {
+	if (defined('MONSTERINSIGHTS_DEBUG_MODE') && MONSTERINSIGHTS_DEBUG_MODE) {
 		$debug_mode = true;
 	}
 
-	return apply_filters( 'monsterinsights_is_debug_mode', $debug_mode );
+	return apply_filters('monsterinsights_is_debug_mode', $debug_mode);
 }
 
-function monsterinsights_is_network_active() {
-	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-		require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+function monsterinsights_is_network_active()
+{
+	if (!function_exists('is_plugin_active_for_network')) {
+		require_once(ABSPATH . '/wp-admin/includes/plugin.php');
 	}
 
-	if ( is_multisite() && is_plugin_active_for_network( plugin_basename( MONSTERINSIGHTS_PLUGIN_FILE ) ) ) {
+	if (is_multisite() && is_plugin_active_for_network(plugin_basename(MONSTERINSIGHTS_PLUGIN_FILE))) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-if ( ! function_exists ( 'remove_class_filter' ) ) {
+if (!function_exists('remove_class_filter')) {
 	/**
 	 * Remove Class Filter Without Access to Class Object
 	 *
@@ -962,10 +990,11 @@ if ( ! function_exists ( 'remove_class_filter' ) ) {
 	 *
 	 * @return bool Whether the function is removed.
 	 */
-	function remove_class_filter( $tag, $class_name = '', $method_name = '', $priority = 10 ) {
+	function remove_class_filter($tag, $class_name = '', $method_name = '', $priority = 10)
+	{
 		global $wp_filter;
 		// Check that filter actually exists first
-		if ( ! isset( $wp_filter[ $tag ] ) ) return FALSE;
+		if (!isset($wp_filter[$tag])) return FALSE;
 		/**
 		 * If filter config is an object, means we're using WordPress 4.7+ and the config is no longer
 		 * a simple array, rather it is an object that implements the ArrayAccess interface.
@@ -974,33 +1003,33 @@ if ( ! function_exists ( 'remove_class_filter' ) ) {
 		 *
 		 * @see https://make.wordpress.org/core/2016/09/08/wp_hook-next-generation-actions-and-filters/
 		 */
-		if ( is_object( $wp_filter[ $tag ] ) && isset( $wp_filter[ $tag ]->callbacks ) ) {
-			$callbacks = &$wp_filter[ $tag ]->callbacks;
+		if (is_object($wp_filter[$tag]) && isset($wp_filter[$tag]->callbacks)) {
+			$callbacks = &$wp_filter[$tag]->callbacks;
 		} else {
-			$callbacks = &$wp_filter[ $tag ];
+			$callbacks = &$wp_filter[$tag];
 		}
 		// Exit if there aren't any callbacks for specified priority
-		if ( ! isset( $callbacks[ $priority ] ) || empty( $callbacks[ $priority ] ) ) return FALSE;
+		if (!isset($callbacks[$priority]) || empty($callbacks[$priority])) return FALSE;
 		// Loop through each filter for the specified priority, looking for our class & method
-		foreach( (array) $callbacks[ $priority ] as $filter_id => $filter ) {
+		foreach ((array) $callbacks[$priority] as $filter_id => $filter) {
 			// Filter should always be an array - array( $this, 'method' ), if not goto next
-			if ( ! isset( $filter[ 'function' ] ) || ! is_array( $filter[ 'function' ] ) ) continue;
+			if (!isset($filter['function']) || !is_array($filter['function'])) continue;
 			// If first value in array is not an object, it can't be a class
-			if ( ! is_object( $filter[ 'function' ][ 0 ] ) ) continue;
+			if (!is_object($filter['function'][0])) continue;
 			// Method doesn't match the one we're looking for, goto next
-			if ( $filter[ 'function' ][ 1 ] !== $method_name ) continue;
+			if ($filter['function'][1] !== $method_name) continue;
 			// Method matched, now let's check the Class
-			if ( get_class( $filter[ 'function' ][ 0 ] ) === $class_name ) {
+			if (get_class($filter['function'][0]) === $class_name) {
 				// Now let's remove it from the array
-				unset( $callbacks[ $priority ][ $filter_id ] );
+				unset($callbacks[$priority][$filter_id]);
 				// and if it was the only filter in that priority, unset that priority
-				if ( empty( $callbacks[ $priority ] ) ) unset( $callbacks[ $priority ] );
+				if (empty($callbacks[$priority])) unset($callbacks[$priority]);
 				// and if the only filter for that tag, set the tag to an empty array
-				if ( empty( $callbacks ) ) $callbacks = array();
+				if (empty($callbacks)) $callbacks = array();
 				// If using WordPress older than 4.7
-				if ( ! is_object( $wp_filter[ $tag ] ) ) {
+				if (!is_object($wp_filter[$tag])) {
 					// Remove this filter from merged_filters, which specifies if filters have been sorted
-					unset( $GLOBALS[ 'merged_filters' ][ $tag ] );
+					unset($GLOBALS['merged_filters'][$tag]);
 				}
 				return TRUE;
 			}
@@ -1009,7 +1038,7 @@ if ( ! function_exists ( 'remove_class_filter' ) ) {
 	}
 } // End function exists
 
-if ( ! function_exists ( 'remove_class_action' ) ) {
+if (!function_exists('remove_class_action')) {
 	/**
 	 * Remove Class Action Without Access to Class Object
 	 *
@@ -1027,8 +1056,9 @@ if ( ! function_exists ( 'remove_class_action' ) ) {
 	 *
 	 * @return bool               Whether the function is removed.
 	 */
-	function remove_class_action( $tag, $class_name = '', $method_name = '', $priority = 10 ) {
-		remove_class_filter( $tag, $class_name, $method_name, $priority );
+	function remove_class_action($tag, $class_name = '', $method_name = '', $priority = 10)
+	{
+		remove_class_filter($tag, $class_name, $method_name, $priority);
 	}
 } // End function exists
 
@@ -1040,23 +1070,24 @@ if ( ! function_exists ( 'remove_class_action' ) ) {
  *
  * @return string
  */
-function monsterinsights_round_number( $number, $precision = 2 ) {
+function monsterinsights_round_number($number, $precision = 2)
+{
 
-	if ( $number < 1000000 ) {
+	if ($number < 1000000) {
 		// Anything less than a million
-		$number = number_format_i18n( $number );
-	} else if ( $number < 1000000000 ) {
+		$number = number_format_i18n($number);
+	} else if ($number < 1000000000) {
 		// Anything less than a billion
-		$number = number_format_i18n( $number / 1000000, $precision ) . 'M';
+		$number = number_format_i18n($number / 1000000, $precision) . 'M';
 	} else {
 		// At least a billion
-		$number = number_format_i18n( $number / 1000000000, $precision ) . 'B';
+		$number = number_format_i18n($number / 1000000000, $precision) . 'B';
 	}
 
 	return $number;
 }
 
-if ( ! function_exists( 'wp_get_jed_locale_data' ) ) {
+if (!function_exists('wp_get_jed_locale_data')) {
 	/**
 	 * Returns Jed-formatted localization data. Added for backwards-compatibility.
 	 *
@@ -1064,138 +1095,144 @@ if ( ! function_exists( 'wp_get_jed_locale_data' ) ) {
 	 *
 	 * @return array
 	 */
-	function wp_get_jed_locale_data( $domain ) {
-		$translations = get_translations_for_domain( $domain );
+	function wp_get_jed_locale_data($domain)
+	{
+		$translations = get_translations_for_domain($domain);
 
 		$locale = array(
 			'' => array(
 				'domain' => $domain,
-				'lang'   => is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale(),
+				'lang'   => is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale(),
 			),
 		);
 
-		if ( ! empty( $translations->headers['Plural-Forms'] ) ) {
+		if (!empty($translations->headers['Plural-Forms'])) {
 			$locale['']['plural_forms'] = $translations->headers['Plural-Forms'];
 		}
 
-		foreach ( $translations->entries as $msgid => $entry ) {
-			$locale[ $msgid ] = $entry->translations;
+		foreach ($translations->entries as $msgid => $entry) {
+			$locale[$msgid] = $entry->translations;
 		}
 
 		return $locale;
 	}
 }
 
-function monsterinsights_get_inline_menu_icon() {
-	$scheme          = get_user_option( 'admin_color', get_current_user_id() );
+function monsterinsights_get_inline_menu_icon()
+{
+	$scheme          = get_user_option('admin_color', get_current_user_id());
 	$use_dark_scheme = $scheme === 'light';
-	if ( $use_dark_scheme ) {
-		return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAFQUlEQVRYha2Yb2hXZRTHP+c3nc6pm07NF0KWWUtSo0wqzBdiZRItTKMaEZXSi0zRNAsqTBKKSFOa0B8Jigqz2lSwLMtqRURgRuCCLLNmselyZups2+/04pzbnt3de3eTDlzufc5znvN8n+ec55zzXFFV8pKITANOqmpTP3JTgIKq7sutPCJVzfUABeAb4DSwMENuKdABNObV3Wv8fwB0C6DAUX8/67sQ9Q8ANsVk5v5vgIDKWHsvcAgYCWzzCbc6kFJgh/PqgVHAb8DnWTpzA3LzHARmeXuqT/Zo0L/eeZuAV/x7fbRrwJPOu9Dbc4EDgJwNoMmurAt4Bljt7cmBjACvOl+BzTEdVzj/EWAj0O3tC84G0AIf3BRMeDz0GZcbBvzqKy+L9Q30A6AxXTdmARqQcPAAyv29CBjjO1RU1SKAiIwGFgLX+MrbgBnAh5ECVe0UkUMO6nHgFLA70J1McacD5gHbfTXzg77qwBeOBysPn830PnnVwXety7wL1AAV/ZoM+MIHdQCfAdfF+s8H/koBEz0rU9xgLtAInHG5j/KYrNWf8ap6OmFD7w+2/Cugwd/NmOkqgbIUS+wEdorIEOAwFqv6UBKgihQwANNc0b2quh1ARIZi/nUqZUycOrDDcCSps5AAaJBPkkStwNVAs4i8JiLHgBPASRFpFZEGEZktIpIBqBIoIWWH4nZegtl3fIofjAKeoyemfAe8hZnu64D/NjAsRcdEl1mcx6lvc+HLU6L3O97/JXBlgszF9KSVvXhswkxUC6wLdKzIA2iWC1+fMNlK72sASlMjrQHf4LIvAw8B7fScwmNAZ7DDs7MARSmjNsYf7oqak0wBjAXuBlb5Lo9wE0Yg6rHAOdjlR2KB9Qc384o0QOe4giUx/u3OX5oA5gEsCoexqBnYAxTTfMXHlvuOF4F5SYBKHPGaGH+jTzQxxefSnnVpYAIdg9x0PwEDkwSOAHUx3hafoDzGP5AB5gQ56h/XU+NjauJxCCxRjo7xOvw9ImKISBUwIWF8RLtVtT2jP6SdWBKe1QuQiCwDLsKcNKSoqJ8e8BJTREAHc4JBVTuBn4Gx/wISkflYndyNOXdI2/29OOAd7mfSIXkBOZUDxTACt2A78SLQnmDnBszOiwLeraT70Ld5/Mf1jPMxqyLGWqxcnYoFMqVvBTgOK9y7gOVAifMfdF4SqJk5Aa3FLFMNduxagQbvvJOUfIb51/f0lKSrsROyHCtlIyDtrrMJqOoHzAysRvrA28wmSBfAtd7uk6u8vwwr/JOqxm4sl01wvZ3AfhJyo+taAPyJhYi/gekCPIXdNitV9YyIXIIFqptVdVsf13MSkVJgJlZF4rvSqKq/BzJzgNexcPEp8LFPXAHcAFzqoKcAddjR5z2Cay/m4Arcl9cp+zFJFfA0dslMOwB1wD1AewGrTw4Ei2/zVcSP/lmRqrap6irs8gAwid7xDOAuzNwlgmXxF1T14ahXRPZjtU1k3+g5Tk8pkUUFzCwVWC003N/DgGVYIXheIF/EfmQcFczDW4DnsVtBCxbUtmIOPAAzY6MPLgMG+/dlDrIADHWlYL4QpZuZWLjYgp3SOb7QMbFFFLF6LDNB7sGcri7FP7qwWmcX9t8oSWaDA6zCqomXUuZ6U1UpYDXxH5jfgKWET/y7zXfolIgkJeJMEpES/xwMXKWq3aq6CLu9PAH8Eog/Fn2UYnlkDWa2c719E3Y/f8NX0AL8GHuianAXtuXx/lZ6brR9/npgcWgHcEfEkyg6ZqyyBrt1ptE+X9SkDJl6VX0/cyKnfwBb6gwNaZ8ExgAAAABJRU5ErkJggg';
+	if ($use_dark_scheme) {
+		return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzAwMCIgZmlsbC1ydWxlPSJub256ZXJvIj48cGF0aCBkPSJNOC4zNyA3LjE5OWMuMDI4LS4wMS4wNTQtLjAyLjA4My0uMDI5YTEuNDcgMS40NyAwIDAgMSAuMTExLS4wMzJjLjAzLS4wMDYuMDU1LS4wMTMuMDg0LS4wMTYuMDg2LS4wMTYuMTcyLS4wMjUuMjU5LS4wMzIuMDI4IDAgLjA1Ny0uMDAzLjA5LS4wMDNsLjAwMi4wMDNoLjAwNGMuMDMyIDAgLjA2NCAwIC4wOTYuMDAzLjAxNiAwIC4wMzUuMDA0LjA1LjAwNGwuMDQyLjAwMy4wNjcuMDEuMDIzLjAwM2MuMDI1LjAwMy4wNTEuMDEuMDc3LjAxMmwuMDEyLjAwNGMuMDMuMDA2LjA1NS4wMTIuMDguMDE5aC4wMWMuMDI2LjAwNi4wNTQuMDE2LjA4LjAyMmguMDA2YS43NzIuNzcyIDAgMCAxIC4wOC4wMjZsLjAwNy4wMDMuMDc2LjAzMi4wMDcuMDAzLjAyOS4wMTMuMDA2LjAwM2MuMjUuMTEyLjQ3LjI3OC42NS40OS4xNjUtLjI2LjM2Ny0uNDkuNi0uNjkxYTMuMjg0IDMuMjg0IDAgMCAwLTIuMDQzLTEuODM2Yy0uMDM1LS4wMS0uMDc0LS4wMjMtLjExMi0uMDMybC0uMDMyLS4wMWEzLjk0MyAzLjk0MyAwIDAgMC0uMzg3LS4wNzcgMS43NjIgMS43NjIgMCAwIDAtLjE4Mi0uMDE5IDEuNjI4IDEuNjI4IDAgMCAwLS4xMjUtLjAwNmMtLjA0MiAwLS4wODMtLjAwMy0uMTI4LS4wMDMtLjExNSAwLS4yMy4wMDYtLjM0Mi4wMTlsLS4wODcuMDEtLjA2NC4wMWMtLjA2My4wMDktLjEyNC4wMTgtLjE4OC4wMzRoLS4wMDNjLS4wMjMuMDA0LS4wNDIuMDEtLjA2NC4wMTNhLjUyNS41MjUgMCAwIDAtLjAzNi4wMWMtLjAwNiAwLS4wMTIuMDAzLS4wMTYuMDAzbC0uMDEuMDAzLS4wNTcuMDE2aC0uMDAzbC0uMDE2LjAwMy0uMDI5LjAxLS4wNi4wMTZoLS4wMDRhMy4yODYgMy4yODYgMCAwIDAtMi4xOTcgMi4zMDljMCAuMDAzIDAgLjAwMy0uMDAzLjAwNi0uMDA2LjAyNi0uMDEzLjA1MS0uMDE2LjA3N2EzLjI4IDMuMjggMCAwIDAgMi43MTggMy45ODJjLjAzMi4wMDMuMDYxLjAxLjA5My4wMTJsLjA5My4wMWMuMDk2LjAwNi4xOTIuMDEzLjI4OC4wMTNoLjAwM2MuMDUxIDAgLjEwNiAwIC4xNTctLjAwMy4wNS0uMDA0LjEwMi0uMDA3LjE1My0uMDEzYTQuNjMgNC42MyAwIDAgMCAuMzA0LS4wNDJjLjExMi0uMDIyLjIyNC0uMDQ4LjMzMy0uMDhsLjA4Ni0uMDI4YTMuMzM1IDMuMzM1IDAgMCAwIDEuMTYtLjY3NSAyLjkyNiAyLjkyNiAwIDAgMS0uMTI3LS4zM2gtLjAwM2ExLjgyIDEuODIgMCAwIDEtLjk4NS4zMzNoLS4wNzdjLS4wNDUgMC0uMDg2IDAtLjEyOC0uMDAzLS4wMjItLjAwMy0uMDQyLS4wMDMtLjA2LS4wMDdhMS44NTMgMS44NTMgMCAwIDEtMS40MjctLjk0NmgtLjAwM2ExLjg0NCAxLjg0NCAwIDAgMS0uMjMtLjg5M2MwLS4wMzIgMC0uMDY0LjAwMy0uMDk2YS43NDQuNzQ0IDAgMCAwIC42NTYuMjE3Ljc1Mi43NTIgMCAwIDAgLjYyLS44NjkuNzUzLjc1MyAwIDAgMC0uNjU2LS42MjdoLS4wMDNjLjE3LS4xNS4zNjUtLjI2OC41NzYtLjM0OGwuMDI4LS4wMTNaTTIuODk0IDE0LjEyYy0uNDYtLjAzOS0uNTc5LS4yMTgtLjU5MS0uMzIzLS4wNDItLjQxLS4wODctLjgyMi0uMTI1LTEuMjM1bC0uMDQ4LS41MDItLjIwMi0yLjE1MmMtLjAxMi0uMTI1LS4wMjItLjI1LS4wMzUtLjM3NWE0LjMgNC4zIDAgMCAwLS41MzQuNTE5Yy0uNjMuNzI2LS45OTQgMS42MDgtMS4xODMgMi41NzQtLjEwNi41NS0uMTYzIDEuMTA3LS4xNzYgMS42NjZsLjAwMy4wMDNIMGMuMDIuNDQ4LjExOC44LjMxNyAxLjAxNy4yMDEtLjAxNi4zOC0uMTY2LjUxNS0uMzUxYTEuNyAxLjcgMCAwIDAgLjI4LjY5Yy40NC0uMDkyLjc4NC0uMzMyLjk0MS0uNzEuMDc3LjAwNC4xNTcuMDA0LjIzNC4wMDQuMTEyLjQwMy41MDUuNTk4LjcxLjU4OC4wOTktLjE2Ni4xOTUtLjM4NC4xOTgtLjY0NnYtLjc1MWwtLjEzOC0uMDFjLS4wNiAwLS4xMTItLjAwMy0uMTYzLS4wMDZaTS4zNzcgMTUuMTVhMS4zMzQgMS4zMzQgMCAwIDEtLjIyLS43M2guMDE5Yy4wOTYuMDYuMTk1LjExNS4yOTQuMTYzbC0uMDkzLjU2NlptLjguMzMyYTEuNzY0IDEuNzY0IDAgMCAxLS4yMy0uNzEzYy4xNDQuMDQxLjI5LjA3Ni40MzguMTAybC0uMjA4LjYxWm0xLjc0LS4xLS4xMjgtLjQ1M2MuMDkyLS4wMDcuMTg1LS4wMTYuMjc4LS4wMjZhMS4wNjEgMS4wNjEgMCAwIDEtLjE1LjQ4Wk00LjYyNCAxNC4xOTNsLS4zMjktLjAxNmMtLjIzLjM0NS0uMzkuNzItLjQ0OCAxLjAzMy4xNjcuMjA4LjM2NS4zODcuNTg5LjUzMWEuODcuODcgMCAwIDAtLjE0MS4yNTZoMy4zNjh2LTEuNzI0Yy0uMTEgMC0uMjE4IDAtLjMyMy0uMDAzYTYzLjUxOCA2My41MTggMCAwIDEtMi43MTYtLjA3N1pNMTEuMjY0IDE0LjE5M2E2OS4yMyA2OS4yMyAwIDAgMS0yLjcxMi4wOGMtLjExIDAtLjIxOCAwLS4zMjcuMDAzVjE2aDMuMzY4YS44MjYuODI2IDAgMCAwLS4xNDQtLjI1OWMuMjItLjE0Ny40Mi0uMzI2LjU4NS0uNTMtLjA1Ny0uMzE0LS4yMTctLjY4OS0uNDQ3LTEuMDM0bC0uMzIzLjAxNloiLz48cGF0aCBkPSJNMTUuODE4IDExLjM4OGMtLjA0Mi0uMDQ0LS4wOS0uMDgzLS4xMzUtLjEyNC0uMDU0LjA3Ni0uMTEyLjE1LS4xNy4yMjRhMy4xNTMgMy4xNTMgMCAwIDEtMi4yNTUgMS4xMzVoLS4wMjhhMy41MjcgMy41MjcgMCAwIDEtLjM2Ny0uMDAzbC0uMDc3LS4wMDdhMy4xODYgMy4xODYgMCAwIDEtMi40MTEtMS40OTQgMy42NjEgMy42NjEgMCAwIDEtNS45NTItMy42bC4wMDYtLjAyM2MuMDA0LS4wMjIuMDEtLjA0MS4wMTYtLjA2NHYtLjAwNmEzLjY2OCAzLjY2OCAwIDAgMSAyLjc5LTIuNjY3IDMuNjYyIDMuNjYyIDAgMCAxIDQuMDggMi4wNDcgMy4xNzcgMy4xNzcgMCAwIDEgMi40ODgtLjQ0OGMuMDctLjgyOS4xMzctMS42Ny4yMDUtMi41NTJsLTEuMTIzLS4zMWMuMTIyLS44MDMtLjAxMy0xLjIxOS0uMTc2LTEuOTQ4LS41MDguNDIyLS44MzUuNzI5LTEuNDUyIDEuMDRBNi4yNzQgNi4yNzQgMCAwIDAgMTAuNDYxLjRsLS4yNC0uNGMtLjkwOC42ODQtMS42NzkgMS4yMzQtMi4yOCAyLjE0QzcuMzQ2IDEuMjM0IDYuNTY5LjY4NCA1LjY2NCAwbC0uMjM3LjQwM2E2LjMxMyA2LjMxMyAwIDAgMC0uNzk2IDIuMTljLS42Mi0uMzEzLS45NDQtLjYxNy0xLjQ1Mi0xLjAzOS0uMTY2LjczLS4zIDEuMTQ1LS4xNzYgMS45NDhoLS4wMDZsLTEuMTIzLjMxYTM2OS40MTEgMzY5LjQxMSAwIDAgMCAuNDg2IDUuNjdjLjA2Ny43Mi4xMzEgMS40MzYuMjAyIDIuMTUzbC4wNDguNTAyLjEyNCAxLjIzMWMuMDEzLjEwNi4xMjguMjg1LjU5Mi4zMjMuMDUxLjAwMy4xMDYuMDA2LjE2My4wMDZsLjEzOC4wMWMuMjIzLjAxNi40NDcuMDI5LjY3NC4wMzhhNjkuMjMgNjkuMjMgMCAwIDAgMy4wNDEuMDk2aDEuMjEzYTYzLjM1IDYzLjM1IDAgMCAwIDIuNzEyLS4wOGMuMTA5LS4wMDYuMjE3LS4wMTIuMzI2LS4wMTZsLjgwNi0uMDQ4Yy4xMTUgMCAuMjMtLjAxLjM0Mi0uMDMyLjM0Ni42MTEuOTkyLjk5MiAxLjY5NS45OTJoLjA1MWwuMTQ3LjQzOGMuMDguMjM3Ljk2My0uMDU4Ljg4My0uMjk0bC0uMDctLjIxOGExLjExIDEuMTEgMCAwIDEtLjMwNC0uMDU3IDEuMjE0IDEuMjE0IDAgMCAxLS4zNTItLjE5MiAxLjcxNiAxLjcxNiAwIDAgMS0uMjY5LS4yNmMuMTEyLS4yMTQuMjctLjQwMi40NTgtLjU1YTEuMTUgMS4xNSAwIDAgMS0uNDQ4LS4xODVjLjAzNS4zMTQtLjAzMi42MDUtLjIwOC44MjJhMS4wNjYgMS4wNjYgMCAwIDEtLjEzNC4xMzRjLS40NjctLjA0MS0uNjU5LS40NDQtLjYzLS45MjdsLS4wMDMtLjAwM2MuMTUzLS4wNDIuMzEzLS4wNy40NzMtLjA4My4xNjYtLjAxMy4zMzYuMDA2LjQ5Ni4wNTRhMS42NyAxLjY3IDAgMCAxLS4zMzMtLjMwN2MuMTI4LS4yNDMuMzEtLjQ1LjUzNC0uNjEuMDk2LS4wNzEuMTk1LS4xMzUuMy0uMjAyLjI1LjIxNy40MTcuNDcuNDUyLjcyOWEuNzI1LjcyNSAwIDAgMS0uMDUxLjM3N2MuMTMuMTE5LjIzNi4yNjIuMzEzLjQyMmEuODM2LjgzNiAwIDAgMSAuMDc3LjM0MyAxLjkxMiAxLjkxMiAwIDAgMCAwLTIuN1pNNi40MTIgMy42NWExLjkzOSAxLjkzOSAwIDAgMSAxLjUzMi0uMzhjLjQ1Ny4wODYuODg2LjM2IDEuMTguODY2di4wMDNDNy42NjYgMy45MTQgNi4zOCA0LjI3IDUuNzEgNS4zNzZhMS44MTUgMS44MTUgMCAwIDEgLjcwNC0xLjcyN1oiLz48cGF0aCBkPSJNMTMuMzY4IDYuNjg3YTIuNzg0IDIuNzg0IDAgMCAwLTIuNjc0IDQuMjA5bC41MDItLjY5NGEuNTcyLjU3MiAwIDEgMSAxLjAwMS0uMjgybC44NDUuMzUyYy4wMTMtLjAxNi4wMjUtLjAzNS4wNDEtLjA1LjEtLjExLjI0LS4xNzQuMzg0LS4xODNoLjAwN2EuNDQuNDQgMCAwIDEgLjE0My4wMTNsLjYwMi0xLjI0NGEuNTcuNTcgMCAwIDEtLjA3LS44MDYuNTcuNTcgMCAwIDEgLjgwNS0uMDdjLjEyMi4xMDIuMTk1LjI0OS4yMDUuNDA1di4wMDRsLjUwMi4wOTZoLjAwM2EyLjc4NiAyLjc4NiAwIDAgMC0xLjg5Ni0xLjY3MyAyLjQ1IDIuNDUgMCAwIDAtLjQtLjA3N1oiLz48cGF0aCBkPSJtMTQuNDY4IDguOTI5LS42MDEgMS4yNGEuNTc3LjU3NyAwIDAgMSAuMTUuNjg1LjU3NC41NzQgMCAwIDEtLjY0OS4zMS41NzQuNTc0IDAgMCAxLS40MzItLjY0M2wtLjg0NC0uMzUxYS41NzQuNTc0IDAgMCAxLS42NzIuMTg1bC0uNTYuNzc4YTIuNzcgMi43NyAwIDAgMCAyIDEuMDljLjAxMiAwIC4wMjUuMDAzLjAzOC4wMDMuMTEyLjAwNy4yMjQuMDEuMzM2LjAwMy4wMSAwIC4wMTktLjAwMy4wMzItLjAwMy4wNTctLjAwMy4xMTUtLjAxLjE3Mi0uMDE2YTIuNzkgMi43OSAwIDAgMCAxLjc0Ni0uOTQzYy4wNjEtLjA3NC4xMjItLjE0Ny4xNzYtLjIyN2EyLjc4NyAyLjc4NyAwIDAgMCAuNDEtMi4zMDZoLS4wMDNsLS42NTYtLjEyOGEuNTguNTggMCAwIDEtLjY0My4zMjNaIi8+PC9nPjwvc3ZnPg==';
+		// return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAFQUlEQVRYha2Yb2hXZRTHP+c3nc6pm07NF0KWWUtSo0wqzBdiZRItTKMaEZXSi0zRNAsqTBKKSFOa0B8Jigqz2lSwLMtqRURgRuCCLLNmselyZups2+/04pzbnt3de3eTDlzufc5znvN8n+ec55zzXFFV8pKITANOqmpTP3JTgIKq7sutPCJVzfUABeAb4DSwMENuKdABNObV3Wv8fwB0C6DAUX8/67sQ9Q8ANsVk5v5vgIDKWHsvcAgYCWzzCbc6kFJgh/PqgVHAb8DnWTpzA3LzHARmeXuqT/Zo0L/eeZuAV/x7fbRrwJPOu9Dbc4EDgJwNoMmurAt4Bljt7cmBjACvOl+BzTEdVzj/EWAj0O3tC84G0AIf3BRMeDz0GZcbBvzqKy+L9Q30A6AxXTdmARqQcPAAyv29CBjjO1RU1SKAiIwGFgLX+MrbgBnAh5ECVe0UkUMO6nHgFLA70J1McacD5gHbfTXzg77qwBeOBysPn830PnnVwXety7wL1AAV/ZoM+MIHdQCfAdfF+s8H/koBEz0rU9xgLtAInHG5j/KYrNWf8ap6OmFD7w+2/Cugwd/NmOkqgbIUS+wEdorIEOAwFqv6UBKgihQwANNc0b2quh1ARIZi/nUqZUycOrDDcCSps5AAaJBPkkStwNVAs4i8JiLHgBPASRFpFZEGEZktIpIBqBIoIWWH4nZegtl3fIofjAKeoyemfAe8hZnu64D/NjAsRcdEl1mcx6lvc+HLU6L3O97/JXBlgszF9KSVvXhswkxUC6wLdKzIA2iWC1+fMNlK72sASlMjrQHf4LIvAw8B7fScwmNAZ7DDs7MARSmjNsYf7oqak0wBjAXuBlb5Lo9wE0Yg6rHAOdjlR2KB9Qc384o0QOe4giUx/u3OX5oA5gEsCoexqBnYAxTTfMXHlvuOF4F5SYBKHPGaGH+jTzQxxefSnnVpYAIdg9x0PwEDkwSOAHUx3hafoDzGP5AB5gQ56h/XU+NjauJxCCxRjo7xOvw9ImKISBUwIWF8RLtVtT2jP6SdWBKe1QuQiCwDLsKcNKSoqJ8e8BJTREAHc4JBVTuBn4Gx/wISkflYndyNOXdI2/29OOAd7mfSIXkBOZUDxTACt2A78SLQnmDnBszOiwLeraT70Ld5/Mf1jPMxqyLGWqxcnYoFMqVvBTgOK9y7gOVAifMfdF4SqJk5Aa3FLFMNduxagQbvvJOUfIb51/f0lKSrsROyHCtlIyDtrrMJqOoHzAysRvrA28wmSBfAtd7uk6u8vwwr/JOqxm4sl01wvZ3AfhJyo+taAPyJhYi/gekCPIXdNitV9YyIXIIFqptVdVsf13MSkVJgJlZF4rvSqKq/BzJzgNexcPEp8LFPXAHcAFzqoKcAddjR5z2Cay/m4Arcl9cp+zFJFfA0dslMOwB1wD1AewGrTw4Ei2/zVcSP/lmRqrap6irs8gAwid7xDOAuzNwlgmXxF1T14ahXRPZjtU1k3+g5Tk8pkUUFzCwVWC003N/DgGVYIXheIF/EfmQcFczDW4DnsVtBCxbUtmIOPAAzY6MPLgMG+/dlDrIADHWlYL4QpZuZWLjYgp3SOb7QMbFFFLF6LDNB7sGcri7FP7qwWmcX9t8oSWaDA6zCqomXUuZ6U1UpYDXxH5jfgKWET/y7zXfolIgkJeJMEpES/xwMXKWq3aq6CLu9PAH8Eog/Fn2UYnlkDWa2c719E3Y/f8NX0AL8GHuianAXtuXx/lZ6brR9/npgcWgHcEfEkyg6ZqyyBrt1ptE+X9SkDJl6VX0/cyKnfwBb6gwNaZ8ExgAAAABJRU5ErkJggg';
 	} else {
-		return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4AoEBjcfBsDvpwAABQBJREFUWMO1mGmollUQgJ9z79Vc01LLH0GLWRqlUhYV5o+LbRIVbVQSUSn9qJTKsqDCoqCINKUbtBEUFbbeDGyz1SIiaCHIINu18KZ1bbkuV+/Tj+arw8v7fvdVcuDjvGdmzsycM3Nm5nywE6BOVSfW4JukTmF3gtqifqJuVmc34ZunblFX7W6DzvYf2BDjPWpLRm9T7y/wzPw/DRhZmH+sfq/urb4YCp8JQwaqLwXuBXW0+pP6XjOZO+ueb9X2mE8OZTdl9MWBu199NL4XN05NvT1wh8R8prpGTbti0BEhbLt6t7ow5kdkPEl9zP/gkYKMowN/o7pU3RHzg3fFoHNj8epM4aY8ZoJvuPpj7HxwgTYgLoAFWac1091WgR8a4xxgH2Ah0JdS6gtlY4DZwAnADmAjMA14vSEgpdSrfg9sBm4BeoCVmex6gayepS6P3ZyT0SZksbDJcnikcPMmZN+zgud59Qx1RB2D3o9FW9R31ZMK9IPUP20O11XInqmuUrcG3xt1XNYVvwNSSptL+K/IjvxDoDPGteG6kcDgMkUppRXACnUIsA7YUNegERXGAEwNQZellJbHzodFfPXUjIwtwHDglzJiS4lBe4SSMugCjgfWqo+rvwF/AH+pXWqnOqOfXDMSaK06oaKf54Z/D6igj1bvzXLK5+rTYchHGf5ZdXiFjPHBc2Udg84P5qMqsvdzQf9APbaEZ2JWVj5u5KbIV7PURZmM+XUMag/mk0to1wWtUx3YT9lZErwPq9er3dkt/E3tzU54Rp2SMauA3zMErS1zhTpWvURdEKe8V7jQrOBOUwcF/97qbPWrcPP8KoP2DQFzC/gLAj+vZM1Vak8hF61V31L7msWKOjROvE89q4yhNSy+rYBfGorGV8RcFSyqESZ7hOu+UQeUMfyidhRwy0LB0AJ+TRNj/qjb/0QpUT2jpYS+ERhTkswA9sqEjALGNdGzMqXUXTNZrogi3F5sJ64GDgXGFhasjvGYDDe4HyXf1i3qKaVe4DtgbF6ZzwHuiZq0b2HN8hjzAF3Xj9IhO9mGDQX68gy8PpqoB9XuEj93hp/nZLjzmsTQZzvR9uwXaxY0EHdEuzo5EpklHeB+0bhvV69RWwN/beDKYHpNg+6I2z2hce261M4gXlRVz9RD1S+zlnRh3JBropVtQHfIXB3B38yYadEjvdZAzMjLhXpizI+tEDA4Gv+yrnFH1LJxIbdX/aKsNma9+++RIrapxyT1TmAeMDKltFU9HPgcODOl9GKTnQ0EpgMHBaobWJVS+jnjOQV4ItLFO8CbwDZgBHAqMAXoBSYBHcBm1JfzZ28EuOrl/9ODc5R6Vzwyq6BDvVTtbgHGA2sKiXFbydXfJUgpbUwpLQAateqwQj4DuDjSTWuKru+BlNIN2a6+ACYCv0dH2PhtCtfYjx0t4ZYR0a7uGeNw4GpgLnBgxt8HfAJsSOpWYD1wH7AqvocAz0Q2bgNGB62RoQfF95FhZAswLIQSZaBRbqYDPwHLogqcEhvdp7CJPqC9vwL5VtyUjor42B69zqvqXxU8S+IFOyq6iYcqdD3VONqngV8jbhol4e0sntqAnuIzumZAt8bnIOC4lNKOlNKceL3cCvyQsd/87/WNRuk29T51/5ifHu/zJ2MH69WvCz+zE+oroXdlL9pUkYdeUi/89xLU6VWAZn88fQoMjNtTBS+klF6pc6p/A2ye4OCYzm1lAAAAAElFTkSuQmCC';
+		return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iI0ZGRiIgZmlsbC1ydWxlPSJub256ZXJvIj48cGF0aCBkPSJNOC4zNyA3LjE5OWMuMDI4LS4wMS4wNTQtLjAyLjA4My0uMDI5YTEuNDcgMS40NyAwIDAgMSAuMTExLS4wMzJjLjAzLS4wMDYuMDU1LS4wMTMuMDg0LS4wMTYuMDg2LS4wMTYuMTcyLS4wMjUuMjU5LS4wMzIuMDI4IDAgLjA1Ny0uMDAzLjA5LS4wMDNsLjAwMi4wMDNoLjAwNGMuMDMyIDAgLjA2NCAwIC4wOTYuMDAzLjAxNiAwIC4wMzUuMDA0LjA1LjAwNGwuMDQyLjAwMy4wNjcuMDEuMDIzLjAwM2MuMDI1LjAwMy4wNTEuMDEuMDc3LjAxMmwuMDEyLjAwNGMuMDMuMDA2LjA1NS4wMTIuMDguMDE5aC4wMWMuMDI2LjAwNi4wNTQuMDE2LjA4LjAyMmguMDA2YS43NzIuNzcyIDAgMCAxIC4wOC4wMjZsLjAwNy4wMDMuMDc2LjAzMi4wMDcuMDAzLjAyOS4wMTMuMDA2LjAwM2MuMjUuMTEyLjQ3LjI3OC42NS40OS4xNjUtLjI2LjM2Ny0uNDkuNi0uNjkxYTMuMjg0IDMuMjg0IDAgMCAwLTIuMDQzLTEuODM2Yy0uMDM1LS4wMS0uMDc0LS4wMjMtLjExMi0uMDMybC0uMDMyLS4wMWEzLjk0MyAzLjk0MyAwIDAgMC0uMzg3LS4wNzcgMS43NjIgMS43NjIgMCAwIDAtLjE4Mi0uMDE5IDEuNjI4IDEuNjI4IDAgMCAwLS4xMjUtLjAwNmMtLjA0MiAwLS4wODMtLjAwMy0uMTI4LS4wMDMtLjExNSAwLS4yMy4wMDYtLjM0Mi4wMTlsLS4wODcuMDEtLjA2NC4wMWMtLjA2My4wMDktLjEyNC4wMTgtLjE4OC4wMzRoLS4wMDNjLS4wMjMuMDA0LS4wNDIuMDEtLjA2NC4wMTNhLjUyNS41MjUgMCAwIDAtLjAzNi4wMWMtLjAwNiAwLS4wMTIuMDAzLS4wMTYuMDAzbC0uMDEuMDAzLS4wNTcuMDE2aC0uMDAzbC0uMDE2LjAwMy0uMDI5LjAxLS4wNi4wMTZoLS4wMDRhMy4yODYgMy4yODYgMCAwIDAtMi4xOTcgMi4zMDljMCAuMDAzIDAgLjAwMy0uMDAzLjAwNi0uMDA2LjAyNi0uMDEzLjA1MS0uMDE2LjA3N2EzLjI4IDMuMjggMCAwIDAgMi43MTggMy45ODJjLjAzMi4wMDMuMDYxLjAxLjA5My4wMTJsLjA5My4wMWMuMDk2LjAwNi4xOTIuMDEzLjI4OC4wMTNoLjAwM2MuMDUxIDAgLjEwNiAwIC4xNTctLjAwMy4wNS0uMDA0LjEwMi0uMDA3LjE1My0uMDEzYTQuNjMgNC42MyAwIDAgMCAuMzA0LS4wNDJjLjExMi0uMDIyLjIyNC0uMDQ4LjMzMy0uMDhsLjA4Ni0uMDI4YTMuMzM1IDMuMzM1IDAgMCAwIDEuMTYtLjY3NSAyLjkyNiAyLjkyNiAwIDAgMS0uMTI3LS4zM2gtLjAwM2ExLjgyIDEuODIgMCAwIDEtLjk4NS4zMzNoLS4wNzdjLS4wNDUgMC0uMDg2IDAtLjEyOC0uMDAzLS4wMjItLjAwMy0uMDQxLS4wMDMtLjA2LS4wMDdhMS44NTMgMS44NTMgMCAwIDEtMS40MjctLjk0NmgtLjAwM2ExLjg0NCAxLjg0NCAwIDAgMS0uMjMtLjg5M2MwLS4wMzIgMC0uMDY0LjAwMy0uMDk2YS43NDQuNzQ0IDAgMCAwIC42NTYuMjE3Ljc1Mi43NTIgMCAwIDAgLjYyLS44NjkuNzUzLjc1MyAwIDAgMC0uNjU2LS42MjdoLS4wMDNjLjE3LS4xNS4zNjUtLjI2OC41NzYtLjM0OGwuMDI4LS4wMTNaTTIuODk0IDE0LjEyYy0uNDYtLjAzOS0uNTc5LS4yMTgtLjU5MS0uMzIzLS4wNDItLjQxLS4wODctLjgyMi0uMTI1LTEuMjM1bC0uMDQ4LS41MDItLjIwMi0yLjE1MmMtLjAxMi0uMTI1LS4wMjItLjI1LS4wMzUtLjM3NWE0LjMgNC4zIDAgMCAwLS41MzQuNTE5Yy0uNjMuNzI2LS45OTQgMS42MDgtMS4xODMgMi41NzQtLjEwNi41NS0uMTYzIDEuMTA3LS4xNzYgMS42NjZsLjAwMy4wMDNIMGMuMDIuNDQ4LjExOC44LjMxNyAxLjAxNy4yMDEtLjAxNi4zOC0uMTY2LjUxNS0uMzUxYTEuNyAxLjcgMCAwIDAgLjI4LjY5Yy40NC0uMDkyLjc4NC0uMzMyLjk0MS0uNzEuMDc3LjAwNC4xNTcuMDA0LjIzNC4wMDQuMTEyLjQwMy41MDUuNTk4LjcxLjU4OC4wOTktLjE2Ni4xOTUtLjM4NC4xOTgtLjY0NnYtLjc1MWwtLjEzOC0uMDFjLS4wNiAwLS4xMTItLjAwMy0uMTYzLS4wMDZaTS4zNzcgMTUuMTVhMS4zMzQgMS4zMzQgMCAwIDEtLjIyLS43M2guMDE5Yy4wOTYuMDYuMTk1LjExNS4yOTQuMTYzbC0uMDkzLjU2NlptLjguMzMyYTEuNzY0IDEuNzY0IDAgMCAxLS4yMy0uNzEzYy4xNDQuMDQxLjI5LjA3Ni40MzguMTAybC0uMjA4LjYxWm0xLjc0LS4xLS4xMjgtLjQ1M2MuMDkyLS4wMDcuMTg1LS4wMTYuMjc4LS4wMjZhMS4wNjEgMS4wNjEgMCAwIDEtLjE1LjQ4Wk00LjYyNCAxNC4xOTNsLS4zMjktLjAxNmMtLjIzLjM0NS0uMzkuNzItLjQ0OCAxLjAzMy4xNjcuMjA4LjM2NS4zODcuNTg5LjUzMWEuODcuODcgMCAwIDAtLjE0MS4yNTZoMy4zNjh2LTEuNzI0Yy0uMTEgMC0uMjE4IDAtLjMyMy0uMDAzYTYzLjUxOCA2My41MTggMCAwIDEtMi43MTYtLjA3N1pNMTEuMjY0IDE0LjE5M2E2OS4yMyA2OS4yMyAwIDAgMS0yLjcxMi4wOGMtLjExIDAtLjIxOCAwLS4zMjcuMDAzVjE2aDMuMzY4YS44MjYuODI2IDAgMCAwLS4xNDQtLjI1OWMuMjItLjE0Ny40Mi0uMzI2LjU4NS0uNTMtLjA1Ny0uMzE0LS4yMTctLjY4OS0uNDQ3LTEuMDM0bC0uMzIzLjAxNloiLz48cGF0aCBkPSJNMTUuODE4IDExLjM4OGMtLjA0Mi0uMDQ0LS4wOS0uMDgzLS4xMzUtLjEyNC0uMDU0LjA3Ni0uMTEyLjE1LS4xNy4yMjRhMy4xNTMgMy4xNTMgMCAwIDEtMi4yNTUgMS4xMzVoLS4wMjhhMy41MjcgMy41MjcgMCAwIDEtLjM2Ny0uMDAzbC0uMDc3LS4wMDdhMy4xODYgMy4xODYgMCAwIDEtMi40MTEtMS40OTQgMy42NjEgMy42NjEgMCAwIDEtNS45NTItMy42bC4wMDYtLjAyM2MuMDA0LS4wMjIuMDEtLjA0MS4wMTYtLjA2NHYtLjAwNmEzLjY2OCAzLjY2OCAwIDAgMSAyLjc5LTIuNjY3IDMuNjYyIDMuNjYyIDAgMCAxIDQuMDggMi4wNDcgMy4xNzcgMy4xNzcgMCAwIDEgMi40ODgtLjQ0OGMuMDctLjgyOS4xMzctMS42Ny4yMDUtMi41NTJsLTEuMTIzLS4zMWMuMTIyLS44MDMtLjAxMy0xLjIxOS0uMTc2LTEuOTQ4LS41MDguNDIyLS44MzUuNzI5LTEuNDUyIDEuMDRBNi4yNzQgNi4yNzQgMCAwIDAgMTAuNDYxLjRsLS4yNC0uNGMtLjkwOC42ODQtMS42NzkgMS4yMzQtMi4yOCAyLjE0QzcuMzQ2IDEuMjM0IDYuNTY5LjY4NCA1LjY2NCAwbC0uMjM3LjQwM2E2LjMxMyA2LjMxMyAwIDAgMC0uNzk2IDIuMTljLS42Mi0uMzEzLS45NDQtLjYxNy0xLjQ1Mi0xLjAzOS0uMTY2LjczLS4zIDEuMTQ1LS4xNzYgMS45NDhoLS4wMDZsLTEuMTIzLjMxYTM2OS40MTEgMzY5LjQxMSAwIDAgMCAuNDg2IDUuNjdjLjA2Ny43Mi4xMzEgMS40MzYuMjAyIDIuMTUzbC4wNDguNTAyLjEyNCAxLjIzMWMuMDEzLjEwNi4xMjguMjg1LjU5Mi4zMjMuMDUxLjAwMy4xMDYuMDA2LjE2My4wMDZsLjEzOC4wMWMuMjIzLjAxNi40NDcuMDI5LjY3NC4wMzhhNjkuMjMgNjkuMjMgMCAwIDAgMy4wNDEuMDk2aDEuMjEzYTYzLjM1IDYzLjM1IDAgMCAwIDIuNzEyLS4wOGMuMTA5LS4wMDYuMjE3LS4wMTIuMzI2LS4wMTZsLjgwNi0uMDQ4Yy4xMTUgMCAuMjMtLjAxLjM0Mi0uMDMyLjM0Ni42MTEuOTkyLjk5MiAxLjY5NS45OTJoLjA1MWwuMTQ3LjQzOGMuMDguMjM3Ljk2My0uMDU4Ljg4My0uMjk0bC0uMDctLjIxOGExLjExIDEuMTEgMCAwIDEtLjMwNC0uMDU3IDEuMjE0IDEuMjE0IDAgMCAxLS4zNTItLjE5MiAxLjcxNiAxLjcxNiAwIDAgMS0uMjY5LS4yNmMuMTEyLS4yMTQuMjctLjQwMi40NTgtLjU1YTEuMTUgMS4xNSAwIDAgMS0uNDQ4LS4xODVjLjAzNS4zMTQtLjAzMi42MDUtLjIwOC44MjJhMS4wNjYgMS4wNjYgMCAwIDEtLjEzNC4xMzRjLS40NjctLjA0MS0uNjU5LS40NDQtLjYzLS45MjdsLS4wMDMtLjAwM2MuMTUzLS4wNDIuMzEzLS4wNy40NzMtLjA4My4xNjYtLjAxMy4zMzYuMDA2LjQ5Ni4wNTRhMS42NyAxLjY3IDAgMCAxLS4zMzMtLjMwN2MuMTI4LS4yNDMuMzEtLjQ1LjUzNC0uNjEuMDk2LS4wNzEuMTk1LS4xMzUuMy0uMjAyLjI1LjIxNy40MTcuNDcuNDUyLjcyOWEuNzI1LjcyNSAwIDAgMS0uMDUxLjM3N2MuMTMuMTE5LjIzNi4yNjIuMzEzLjQyMmEuODM2LjgzNiAwIDAgMSAuMDc3LjM0MyAxLjkxMiAxLjkxMiAwIDAgMCAwLTIuN1pNNi40MTIgMy42NWExLjkzOSAxLjkzOSAwIDAgMSAxLjUzMi0uMzhjLjQ1Ny4wODYuODg2LjM2IDEuMTguODY2di4wMDNDNy42NjYgMy45MTQgNi4zOCA0LjI3IDUuNzEgNS4zNzZhMS44MTUgMS44MTUgMCAwIDEgLjcwNC0xLjcyN1oiLz48cGF0aCBkPSJNMTMuMzY4IDYuNjg3YTIuNzg0IDIuNzg0IDAgMCAwLTIuNjc0IDQuMjA5bC41MDItLjY5NGEuNTcyLjU3MiAwIDEgMSAxLjAwMS0uMjgybC44NDUuMzUyYy4wMTMtLjAxNi4wMjUtLjAzNS4wNDEtLjA1LjEtLjExLjI0LS4xNzQuMzg0LS4xODNoLjAwN2EuNDQuNDQgMCAwIDEgLjE0My4wMTNsLjYwMi0xLjI0NGEuNTcuNTcgMCAwIDEtLjA3LS44MDYuNTcuNTcgMCAwIDEgLjgwNS0uMDdjLjEyMi4xMDIuMTk1LjI0OS4yMDUuNDA1di4wMDRsLjUwMi4wOTZoLjAwM2EyLjc4NiAyLjc4NiAwIDAgMC0xLjg5Ni0xLjY3MyAyLjQ1IDIuNDUgMCAwIDAtLjQtLjA3N1oiLz48cGF0aCBkPSJtMTQuNDY4IDguOTI5LS42MDEgMS4yNGEuNTc3LjU3NyAwIDAgMSAuMTUuNjg1LjU3NC41NzQgMCAwIDEtLjY0OS4zMS41NzQuNTc0IDAgMCAxLS40MzItLjY0M2wtLjg0NC0uMzUxYS41NzQuNTc0IDAgMCAxLS42NzIuMTg1bC0uNTYuNzc4YTIuNzcgMi43NyAwIDAgMCAyIDEuMDljLjAxMiAwIC4wMjUuMDAzLjAzOC4wMDMuMTEyLjAwNy4yMjQuMDEuMzM2LjAwMy4wMSAwIC4wMTktLjAwMy4wMzItLjAwMy4wNTctLjAwMy4xMTUtLjAxLjE3Mi0uMDE2YTIuNzkgMi43OSAwIDAgMCAyLjMzMi0zLjQ3NmgtLjAwM2wtLjY1Ni0uMTI4YS41OC41OCAwIDAgMS0uNjQzLjMyM1oiLz48L2c+PC9zdmc+';
+		//return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4AoEBjcfBsDvpwAABQBJREFUWMO1mGmollUQgJ9z79Vc01LLH0GLWRqlUhYV5o+LbRIVbVQSUSn9qJTKsqDCoqCINKUbtBEUFbbeDGyz1SIiaCHIINu18KZ1bbkuV+/Tj+arw8v7fvdVcuDjvGdmzsycM3Nm5nywE6BOVSfW4JukTmF3gtqifqJuVmc34ZunblFX7W6DzvYf2BDjPWpLRm9T7y/wzPw/DRhZmH+sfq/urb4YCp8JQwaqLwXuBXW0+pP6XjOZO+ueb9X2mE8OZTdl9MWBu199NL4XN05NvT1wh8R8prpGTbti0BEhbLt6t7ow5kdkPEl9zP/gkYKMowN/o7pU3RHzg3fFoHNj8epM4aY8ZoJvuPpj7HxwgTYgLoAFWac1091WgR8a4xxgH2Ah0JdS6gtlY4DZwAnADmAjMA14vSEgpdSrfg9sBm4BeoCVmex6gayepS6P3ZyT0SZksbDJcnikcPMmZN+zgud59Qx1RB2D3o9FW9R31ZMK9IPUP20O11XInqmuUrcG3xt1XNYVvwNSSptL+K/IjvxDoDPGteG6kcDgMkUppRXACnUIsA7YUNegERXGAEwNQZellJbHzodFfPXUjIwtwHDglzJiS4lBe4SSMugCjgfWqo+rvwF/AH+pXWqnOqOfXDMSaK06oaKf54Z/D6igj1bvzXLK5+rTYchHGf5ZdXiFjPHBc2Udg84P5qMqsvdzQf9APbaEZ2JWVj5u5KbIV7PURZmM+XUMag/mk0to1wWtUx3YT9lZErwPq9er3dkt/E3tzU54Rp2SMauA3zMErS1zhTpWvURdEKe8V7jQrOBOUwcF/97qbPWrcPP8KoP2DQFzC/gLAj+vZM1Vak8hF61V31L7msWKOjROvE89q4yhNSy+rYBfGorGV8RcFSyqESZ7hOu+UQeUMfyidhRwy0LB0AJ+TRNj/qjb/0QpUT2jpYS+ERhTkswA9sqEjALGNdGzMqXUXTNZrogi3F5sJ64GDgXGFhasjvGYDDe4HyXf1i3qKaVe4DtgbF6ZzwHuiZq0b2HN8hjzAF3Xj9IhO9mGDQX68gy8PpqoB9XuEj93hp/nZLjzmsTQZzvR9uwXaxY0EHdEuzo5EpklHeB+0bhvV69RWwN/beDKYHpNg+6I2z2hce261M4gXlRVz9RD1S+zlnRh3JBropVtQHfIXB3B38yYadEjvdZAzMjLhXpizI+tEDA4Gv+yrnFH1LJxIbdX/aKsNma9+++RIrapxyT1TmAeMDKltFU9HPgcODOl9GKTnQ0EpgMHBaobWJVS+jnjOQV4ItLFO8CbwDZgBHAqMAXoBSYBHcBm1JfzZ28EuOrl/9ODc5R6Vzwyq6BDvVTtbgHGA2sKiXFbydXfJUgpbUwpLQAateqwQj4DuDjSTWuKru+BlNIN2a6+ACYCv0dH2PhtCtfYjx0t4ZYR0a7uGeNw4GpgLnBgxt8HfAJsSOpWYD1wH7AqvocAz0Q2bgNGB62RoQfF95FhZAswLIQSZaBRbqYDPwHLogqcEhvdp7CJPqC9vwL5VtyUjor42B69zqvqXxU8S+IFOyq6iYcqdD3VONqngV8jbhol4e0sntqAnuIzumZAt8bnIOC4lNKOlNKceL3cCvyQsd/87/WNRuk29T51/5ifHu/zJ2MH69WvCz+zE+oroXdlL9pUkYdeUi/89xLU6VWAZn88fQoMjNtTBS+klF6pc6p/A2ye4OCYzm1lAAAAAElFTkSuQmCC';
 	}
 }
 
 
-function monsterinsights_get_shareasale_id() {
+function monsterinsights_get_shareasale_id()
+{
 	// Check if there's a constant.
 	$shareasale_id = '';
-	if ( defined( 'MONSTERINSIGHTS_SHAREASALE_ID' ) ) {
+	if (defined('MONSTERINSIGHTS_SHAREASALE_ID')) {
 		$shareasale_id = MONSTERINSIGHTS_SHAREASALE_ID;
 	}
 
 	// If there's no constant, check if there's an option.
-	if ( empty( $shareasale_id ) ) {
-		$shareasale_id = get_option( 'monsterinsights_shareasale_id', '' );
+	if (empty($shareasale_id)) {
+		$shareasale_id = get_option('monsterinsights_shareasale_id', '');
 	}
 
 	// Whether we have an ID or not, filter the ID.
-	$shareasale_id = apply_filters( 'monsterinsights_shareasale_id', $shareasale_id );
+	$shareasale_id = apply_filters('monsterinsights_shareasale_id', $shareasale_id);
 
 	// Ensure it's a number
-	$shareasale_id = absint( $shareasale_id );
+	$shareasale_id = absint($shareasale_id);
 
 	return $shareasale_id;
 }
 
 // Passed in with mandatory default redirect and shareasaleid from monsterinsights_get_upgrade_link
-function monsterinsights_get_shareasale_url( $shareasale_id, $shareasale_redirect ) {
+function monsterinsights_get_shareasale_url($shareasale_id, $shareasale_redirect)
+{
 	// Check if there's a constant.
 	$custom = false;
-	if ( defined( 'MONSTERINSIGHTS_SHAREASALE_REDIRECT_URL' ) ) {
+	if (defined('MONSTERINSIGHTS_SHAREASALE_REDIRECT_URL')) {
 		$shareasale_redirect = MONSTERINSIGHTS_SHAREASALE_REDIRECT_URL;
 		$custom              = true;
 	}
 
 	// If there's no constant, check if there's an option.
-	if ( empty( $custom ) ) {
-		$shareasale_redirect = get_option( 'monsterinsights_shareasale_redirect_url', '' );
+	if (empty($custom)) {
+		$shareasale_redirect = get_option('monsterinsights_shareasale_redirect_url', '');
 		$custom              = true;
 	}
 
 	// Whether we have an ID or not, filter the ID.
-	$shareasale_redirect = apply_filters( 'monsterinsights_shareasale_redirect_url', $shareasale_redirect, $custom );
-	$shareasale_url      = sprintf( 'https://www.shareasale.com/r.cfm?B=971799&U=%s&M=69975&urllink=%s', $shareasale_id, $shareasale_redirect );
-	$shareasale_url      = apply_filters( 'monsterinsights_shareasale_redirect_entire_url', $shareasale_url, $shareasale_id, $shareasale_redirect );
+	$shareasale_redirect = apply_filters('monsterinsights_shareasale_redirect_url', $shareasale_redirect, $custom);
+	$shareasale_url      = sprintf('https://www.shareasale.com/r.cfm?B=971799&U=%s&M=69975&urllink=%s', $shareasale_id, $shareasale_redirect);
+	$shareasale_url      = apply_filters('monsterinsights_shareasale_redirect_entire_url', $shareasale_url, $shareasale_id, $shareasale_redirect);
 	return $shareasale_url;
 }
 
 /**
  * Get a clean page title for archives.
  */
-function monsterinsights_get_page_title() {
+function monsterinsights_get_page_title()
+{
 
-	$title = __( 'Archives' );
+	$title = __('Archives');
 
-	if ( is_category() ) {
+	if (is_category()) {
 		/* translators: Category archive title. %s: Category name */
-		$title = sprintf( __( 'Category: %s' ), single_cat_title( '', false ) );
-	} elseif ( is_tag() ) {
+		$title = sprintf(__('Category: %s'), single_cat_title('', false));
+	} elseif (is_tag()) {
 		/* translators: Tag archive title. %s: Tag name */
-		$title = sprintf( __( 'Tag: %s' ), single_tag_title( '', false ) );
-	} elseif ( is_author() ) {
+		$title = sprintf(__('Tag: %s'), single_tag_title('', false));
+	} elseif (is_author()) {
 		/* translators: Author archive title. %s: Author name */
-		$title = sprintf( __( 'Author: %s' ), '<span class="vcard">' . get_the_author() . '</span>' );
-	} elseif ( is_year() ) {
+		$title = sprintf(__('Author: %s'), '<span class="vcard">' . get_the_author() . '</span>');
+	} elseif (is_year()) {
 		/* translators: Yearly archive title. %s: Year */
-		$title = sprintf( __( 'Year: %s' ), get_the_date( _x( 'Y', 'yearly archives date format' ) ) );
-	} elseif ( is_month() ) {
+		$title = sprintf(__('Year: %s'), get_the_date(_x('Y', 'yearly archives date format')));
+	} elseif (is_month()) {
 		/* translators: Monthly archive title. %s: Month name and year */
-		$title = sprintf( __( 'Month: %s' ), get_the_date( _x( 'F Y', 'monthly archives date format' ) ) );
-	} elseif ( is_day() ) {
+		$title = sprintf(__('Month: %s'), get_the_date(_x('F Y', 'monthly archives date format')));
+	} elseif (is_day()) {
 		/* translators: Daily archive title. %s: Date */
-		$title = sprintf( __( 'Day: %s' ), get_the_date( _x( 'F j, Y', 'daily archives date format' ) ) );
-	} elseif ( is_tax( 'post_format' ) ) {
-		if ( is_tax( 'post_format', 'post-format-aside' ) ) {
-			$title = _x( 'Asides', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
-			$title = _x( 'Galleries', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
-			$title = _x( 'Images', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
-			$title = _x( 'Videos', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
-			$title = _x( 'Quotes', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
-			$title = _x( 'Links', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
-			$title = _x( 'Statuses', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
-			$title = _x( 'Audio', 'post format archive title' );
-		} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
-			$title = _x( 'Chats', 'post format archive title' );
+		$title = sprintf(__('Day: %s'), get_the_date(_x('F j, Y', 'daily archives date format')));
+	} elseif (is_tax('post_format')) {
+		if (is_tax('post_format', 'post-format-aside')) {
+			$title = _x('Asides', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-gallery')) {
+			$title = _x('Galleries', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-image')) {
+			$title = _x('Images', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-video')) {
+			$title = _x('Videos', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-quote')) {
+			$title = _x('Quotes', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-link')) {
+			$title = _x('Links', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-status')) {
+			$title = _x('Statuses', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-audio')) {
+			$title = _x('Audio', 'post format archive title');
+		} elseif (is_tax('post_format', 'post-format-chat')) {
+			$title = _x('Chats', 'post format archive title');
 		}
-	} elseif ( is_post_type_archive() ) {
+	} elseif (is_post_type_archive()) {
 		/* translators: Post type archive title. %s: Post type name */
-		$title = sprintf( __( 'Archives: %s' ), post_type_archive_title( '', false ) );
-	} elseif ( is_tax() ) {
-		$tax = get_taxonomy( get_queried_object()->taxonomy );
+		$title = sprintf(__('Archives: %s'), post_type_archive_title('', false));
+	} elseif (is_tax()) {
+		$tax = get_taxonomy(get_queried_object()->taxonomy);
 		/* translators: Taxonomy term archive title. 1: Taxonomy singular name, 2: Current taxonomy term */
-		$title = sprintf( __( '%1$s: %2$s' ), $tax->labels->singular_name, single_term_title( '', false ) );
+		$title = sprintf(__('%1$s: %2$s'), $tax->labels->singular_name, single_term_title('', false));
 	}
 
 	return $title;
-
 }
 
 /**
@@ -1208,11 +1245,6 @@ function monsterinsights_get_page_title() {
  */
 function monsterinsights_count_third_party_ua_codes( $body, $type = 'ua' ) {
 	$count = 0;
-
-	// If the ads addon is installed another UA is added to the page.
-	if ( class_exists( 'MonsterInsights_Ads' ) ) {
-		$count++;
-	}
 
 	// Count all potential google site verification tags
 	if ( $type === 'ua' ) {
@@ -1249,6 +1281,38 @@ function monsterinsights_count_third_party_ua_codes( $body, $type = 'ua' ) {
 }
 
 /**
+ * Count the number of times the same tracking ID is used for Ads and Performance
+ *
+ * @param $current_code
+ *
+ * @return int
+ */
+function monsterinsights_count_addon_codes( $current_code ) {
+	$count = 0;
+
+
+	// If the ads addon is installed and its conversion ID is the same as the current code, then increase the count
+	if ( class_exists( 'MonsterInsights_Ads' ) ) {
+		$ads_id = esc_attr( monsterinsights_get_option( 'gtag_ads_conversion_id' ) );
+
+		if ( $ads_id === $current_code ) {
+			$count ++;
+		}
+	}
+
+	// If the performance addon is installed and its Google Optimize ID is the same as the current code, then increase the count
+	if ( class_exists( 'MonsterInsights_Performance' ) ) {
+		$container_id = monsterinsights_get_option( 'goptimize_container', '' );
+
+		if ( $container_id === $current_code ) {
+			$count ++;
+		}
+	}
+
+	return $count;
+}
+
+/**
  * Detect tracking code error depending on the type of tracking code
  *
  * @param string $body
@@ -1270,6 +1334,7 @@ function monsterinsights_detect_tracking_code_error( $body, $type = 'ua' ) {
 	if ( $current_code && false === strpos( $body, $current_code ) ) {
 		// We have the tracking code but using another UA, so it's cached.
 		$errors[] = $cache_error;
+
 		return $errors;
 	}
 
@@ -1279,10 +1344,13 @@ function monsterinsights_detect_tracking_code_error( $body, $type = 'ua' ) {
 
 	if ( $type === 'v4' && false === strpos( $body, '__gtagTracker' ) ) {
 		$errors[] = $cache_error;
+
 		return $errors;
 	}
 
 	$limit = 3;
+
+	$limit += monsterinsights_count_addon_codes( $current_code );
 
 	// TODO: Need to re-evaluate this regularly when third party plugins start supporting v4
 	$limit += monsterinsights_count_third_party_ua_codes( $body, $type );
@@ -1296,7 +1364,7 @@ function monsterinsights_detect_tracking_code_error( $body, $type = 'ua' ) {
 		$total_count -= count( $matches[0] );
 	}
 
-	// Main property always has a ?id=(UA|G)-XXXXXXXX script
+	// Main property always has a ?id=(UA|G|GT)-XXXXXXXX script
 	$connected_type = MonsterInsights()->auth->get_connected_type();
 	if ( $type === $connected_type && strpos( $body, 'googletagmanager.com/gtag/js?id=' . $current_code ) !== false ) {
 		// In that case, we can safely deduct one from the total count
@@ -1327,11 +1395,12 @@ function monsterinsights_detect_tracking_code_error( $body, $type = 'ua' ) {
  *
  * @return array
  */
-function monsterinsights_is_code_installed_frontend() {
+function monsterinsights_is_code_installed_frontend()
+{
 	// Grab the front page html.
-	$request = wp_remote_request( home_url(), array(
+	$request = wp_remote_request(home_url(), array(
 		'sslverify' => false,
-	) );
+	));
 	$errors  = array();
 
 	$accepted_http_codes = array(
@@ -1339,14 +1408,14 @@ function monsterinsights_is_code_installed_frontend() {
 		503
 	);
 
-	$response_code = wp_remote_retrieve_response_code( $request );
+	$response_code = wp_remote_retrieve_response_code($request);
 
-	if ( in_array( $response_code, $accepted_http_codes, true ) ) {
-		$body            = wp_remote_retrieve_body( $request );
+	if (in_array($response_code, $accepted_http_codes, true)) {
+		$body            = wp_remote_retrieve_body($request);
 
 		$errors = array_merge(
-			monsterinsights_detect_tracking_code_error( $body ),
-			monsterinsights_detect_tracking_code_error( $body, 'v4' )
+			monsterinsights_detect_tracking_code_error($body),
+			monsterinsights_detect_tracking_code_error($body, 'v4')
 		);
 	}
 
@@ -1356,11 +1425,12 @@ function monsterinsights_is_code_installed_frontend() {
 /**
  * Returns a HEX color to highlight menu items based on the admin color scheme.
  */
-function monsterinsights_menu_highlight_color() {
+function monsterinsights_menu_highlight_color()
+{
 
-	$color_scheme = get_user_option( 'admin_color' );
+	$color_scheme = get_user_option('admin_color');
 	$color        = '#1da867';
-	if ( 'light' === $color_scheme || 'blue' === $color_scheme ) {
+	if ('light' === $color_scheme || 'blue' === $color_scheme) {
 		$color = '#5f3ea7';
 	}
 
@@ -1372,39 +1442,40 @@ function monsterinsights_menu_highlight_color() {
  *
  * @param string $url The url to which users get redirected.
  */
-function monsterinsights_custom_track_pretty_links_redirect( $url ) {
-	if ( ! function_exists( 'monsterinsights_mp_track_event_call' ) && ! function_exists( 'monsterinsights_mp_collect_v4') ) {
+function monsterinsights_custom_track_pretty_links_redirect($url)
+{
+	if (!function_exists('monsterinsights_mp_track_event_call') && !function_exists('monsterinsights_mp_collect_v4')) {
 		return;
 	}
 	// Try to determine if click originated on the same site.
-	$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
-	if ( ! empty( $referer ) ) {
-		$current_site_url    = get_bloginfo( 'url' );
-		$current_site_parsed = wp_parse_url( $current_site_url );
-		$parsed_referer      = wp_parse_url( $referer );
-		if ( ! empty( $parsed_referer['host'] ) && ! empty( $current_site_parsed['host'] ) && $current_site_parsed['host'] === $parsed_referer['host'] ) {
+	$referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+	if (!empty($referer)) {
+		$current_site_url    = get_bloginfo('url');
+		$current_site_parsed = wp_parse_url($current_site_url);
+		$parsed_referer      = wp_parse_url($referer);
+		if (!empty($parsed_referer['host']) && !empty($current_site_parsed['host']) && $current_site_parsed['host'] === $parsed_referer['host']) {
 			// Don't track clicks originating from same site as those are tracked with JS.
 			return;
 		}
 	}
 	// Check if this is an affiliate link and use the appropriate category.
 	$ec            = 'outbound-link';
-	$inbound_paths = monsterinsights_get_option( 'affiliate_links', array() );
-	$path          = empty( $_SERVER['REQUEST_URI'] ) ? '' : $_SERVER['REQUEST_URI'];
-	if ( ! empty( $inbound_paths ) && is_array( $inbound_paths ) && ! empty( $path ) ) {
+	$inbound_paths = monsterinsights_get_option('affiliate_links', array());
+	$path          = empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'];
+	if (!empty($inbound_paths) && is_array($inbound_paths) && !empty($path)) {
 		$found = false;
-		foreach ( $inbound_paths as $inbound_path ) {
-			if ( empty( $inbound_path['path'] ) ) {
+		foreach ($inbound_paths as $inbound_path) {
+			if (empty($inbound_path['path'])) {
 				continue;
 			}
-			if ( 0 === strpos( $path, trim( $inbound_path['path'] ) ) ) {
-				$label = ! empty( $inbound_path['label'] ) ? trim( $inbound_path['label'] ) : 'aff';
+			if (0 === strpos($path, trim($inbound_path['path']))) {
+				$label = !empty($inbound_path['label']) ? trim($inbound_path['label']) : 'aff';
 				$ec   .= '-' . $label;
 				$found = true;
 				break;
 			}
 		}
-		if ( ! $found ) {
+		if (!$found) {
 			return;
 		}
 	} else {
@@ -1412,18 +1483,18 @@ function monsterinsights_custom_track_pretty_links_redirect( $url ) {
 		return;
 	}
 
-	if ( monsterinsights_get_ua_to_output() ) {
+	if (monsterinsights_get_ua_to_output()) {
 		$track_args = array(
 			't'  => 'event',
 			'ec' => $ec,
 			'ea' => $url,
 			'el' => 'external-redirect',
 		);
-		monsterinsights_mp_track_event_call( $track_args );
+		monsterinsights_mp_track_event_call($track_args);
 	}
 
-	if ( monsterinsights_get_v4_id_to_output() ) {
-		$url_components = parse_url( $url );
+	if (monsterinsights_get_v4_id_to_output()) {
+		$url_components = parse_url($url);
 		$args = array(
 			'events' => array(
 				array(
@@ -1435,31 +1506,32 @@ function monsterinsights_custom_track_pretty_links_redirect( $url ) {
 			)
 		);
 
-		if ( ! empty( $label ) ) {
+		if (!empty($label)) {
 			$args['events'][0]['affiliate_label'] = $label;
 			$args['events'][0]['is_affiliate_link'] = true;
 		}
 
-		monsterinsights_mp_collect_v4( $args );
+		monsterinsights_mp_collect_v4($args);
 	}
 }
-add_action( 'prli_before_redirect', 'monsterinsights_custom_track_pretty_links_redirect' );
+add_action('prli_before_redirect', 'monsterinsights_custom_track_pretty_links_redirect');
 
 /**
  * Get post type in admin side
  *
  */
-function monsterinsights_get_current_post_type() {
+function monsterinsights_get_current_post_type()
+{
 	global $post, $typenow, $current_screen;
 
-	if ( $post && $post->post_type ) {
+	if ($post && $post->post_type) {
 		return $post->post_type;
-	} elseif ( $typenow ) {
+	} elseif ($typenow) {
 		return $typenow;
-	} elseif ( $current_screen && $current_screen->post_type ) {
+	} elseif ($current_screen && $current_screen->post_type) {
 		return $current_screen->post_type;
-	} elseif ( isset( $_REQUEST['post_type'] ) ) {
-		return sanitize_key( $_REQUEST['post_type'] );
+	} elseif (isset($_REQUEST['post_type'])) {
+		return sanitize_key($_REQUEST['post_type']);
 	}
 
 	return null;
@@ -1473,16 +1545,17 @@ function monsterinsights_get_current_post_type() {
  *
  * @return string
  */
-function monsterinsights_decode_string( $string ) {
+function monsterinsights_decode_string($string)
+{
 
-	if ( ! is_string( $string ) ) {
+	if (!is_string($string)) {
 		return $string;
 	}
 
-	return wp_kses_decode_entities( html_entity_decode( $string, ENT_QUOTES ) );
+	return wp_kses_decode_entities(html_entity_decode($string, ENT_QUOTES));
 }
 
-add_filter( 'monsterinsights_email_message', 'monsterinsights_decode_string' );
+add_filter('monsterinsights_email_message', 'monsterinsights_decode_string');
 
 /**
  * Sanitize a string, that can be a multiline.
@@ -1495,16 +1568,17 @@ add_filter( 'monsterinsights_email_message', 'monsterinsights_decode_string' );
  *
  * @return string If empty var is passed, or not a string - return unmodified. Otherwise - sanitize.
  */
-function monsterinsights_sanitize_textarea_field( $string ) {
+function monsterinsights_sanitize_textarea_field($string)
+{
 
-	if ( empty( $string ) || ! is_string( $string ) ) {
+	if (empty($string) || !is_string($string)) {
 		return $string;
 	}
 
-	if ( function_exists( 'sanitize_textarea_field' ) ) {
-		$string = sanitize_textarea_field( $string );
+	if (function_exists('sanitize_textarea_field')) {
+		$string = sanitize_textarea_field($string);
 	} else {
-		$string = implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $string ) ) );
+		$string = implode("\n", array_map('sanitize_text_field', explode("\n", $string)));
 	}
 
 	return $string;
@@ -1520,15 +1594,16 @@ function monsterinsights_sanitize_textarea_field( $string ) {
  *
  * @return trimed sentence
  */
-function monsterinsights_trim_text( $text, $count ){
+function monsterinsights_trim_text($text, $count)
+{
 	$text 	= str_replace("  ", " ", $text);
 	$string = explode(" ", $text);
 	$trimed = "";
 
-	for ( $wordCounter = 0; $wordCounter <= $count; $wordCounter++ ) {
-		$trimed .= isset( $string[$wordCounter] ) ? $string[$wordCounter] : '';
+	for ($wordCounter = 0; $wordCounter <= $count; $wordCounter++) {
+		$trimed .= isset($string[$wordCounter]) ? $string[$wordCounter] : '';
 
-		if ( $wordCounter < $count ){
+		if ($wordCounter < $count) {
 			$trimed .= " ";
 		} else {
 			$trimed .= "...";
@@ -1544,131 +1619,134 @@ function monsterinsights_trim_text( $text, $count ){
  * Add newly generated builder URL to PrettyLinks &
  * Clear localStorage key(MonsterInsightsURL) after saving PrettyLink
  */
-function monsterinsights_tools_copy_url_to_prettylinks() {
+function monsterinsights_tools_copy_url_to_prettylinks()
+{
 	global $pagenow;
 
-	$post_type                 = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
-	$monsterinsights_reference = isset( $_GET['monsterinsights_reference'] ) ? $_GET['monsterinsights_reference'] : '';
+	$post_type                 = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+	$monsterinsights_reference = isset($_GET['monsterinsights_reference']) ? $_GET['monsterinsights_reference'] : '';
 
-	if ( 'post-new.php' === $pagenow && 'pretty-link' === $post_type && 'url_builder' === $monsterinsights_reference ) { ?>
-        <script>
-            let targetTitleField = document.querySelector("input[name='post_title']");
-            let targetUrlField = document.querySelector("textarea[name='prli_url']");
-            let MonsterInsightsUrl = JSON.parse(localStorage.getItem('MonsterInsightsURL'));
-            if ( 'undefined' !== typeof targetUrlField && 'undefined' !== typeof MonsterInsightsUrl ) {
-                let url = MonsterInsightsUrl.value;
-                let postTitle = '';
-                let pathArray = url.split('?');
-                if ( pathArray.length <= 1 ) {
-                    pathArray = url.split('#');
-                }
-                let urlParams = new URLSearchParams(pathArray[1]);
-                if (urlParams.has('utm_campaign')) {
-                    let campaign_name = urlParams.get('utm_campaign');
-                    postTitle += campaign_name;
-                }
-                if (urlParams.has('utm_medium')) {
-                    let campaign_medium = urlParams.get('utm_medium');
-                    postTitle += ` ${campaign_medium}`;
-                }
-                if (urlParams.has('utm_source')) {
-                    let campaign_source = urlParams.get('utm_source');
-                    postTitle += ` on ${campaign_source}`;
-                }
-                if (urlParams.has('utm_term')) {
-                    let campaign_term = urlParams.get('utm_term');
-                    postTitle += ` for ${campaign_term}`;
-                }
-                if (urlParams.has('utm_content')) {
-                    let campaign_content = urlParams.get('utm_content');
-                    postTitle += ` - ${campaign_content}`;
-                }
-                if ( 'undefined' !== typeof targetTitleField && postTitle ) {
-                    targetTitleField.value = postTitle;
-                }
-                if( url ) {
-                    targetUrlField.value = url;
-                }
-            }
-            let form = document.getElementById('post');
-            form.addEventListener('submit', function(){
-                localStorage.removeItem('MonsterInsightsURL');
-            });
-        </script>
-	<?php }
+	if ('post-new.php' === $pagenow && 'pretty-link' === $post_type && 'url_builder' === $monsterinsights_reference) { ?>
+		<script>
+			let targetTitleField = document.querySelector("input[name='post_title']");
+			let targetUrlField = document.querySelector("textarea[name='prli_url']");
+			let MonsterInsightsUrl = JSON.parse(localStorage.getItem('MonsterInsightsURL'));
+			if ('undefined' !== typeof targetUrlField && 'undefined' !== typeof MonsterInsightsUrl) {
+				let url = MonsterInsightsUrl.value;
+				let postTitle = '';
+				let pathArray = url.split('?');
+				if (pathArray.length <= 1) {
+					pathArray = url.split('#');
+				}
+				let urlParams = new URLSearchParams(pathArray[1]);
+				if (urlParams.has('utm_campaign')) {
+					let campaign_name = urlParams.get('utm_campaign');
+					postTitle += campaign_name;
+				}
+				if (urlParams.has('utm_medium')) {
+					let campaign_medium = urlParams.get('utm_medium');
+					postTitle += ` ${campaign_medium}`;
+				}
+				if (urlParams.has('utm_source')) {
+					let campaign_source = urlParams.get('utm_source');
+					postTitle += ` on ${campaign_source}`;
+				}
+				if (urlParams.has('utm_term')) {
+					let campaign_term = urlParams.get('utm_term');
+					postTitle += ` for ${campaign_term}`;
+				}
+				if (urlParams.has('utm_content')) {
+					let campaign_content = urlParams.get('utm_content');
+					postTitle += ` - ${campaign_content}`;
+				}
+				if ('undefined' !== typeof targetTitleField && postTitle) {
+					targetTitleField.value = postTitle;
+				}
+				if (url) {
+					targetUrlField.value = url;
+				}
+			}
+			let form = document.getElementById('post');
+			form.addEventListener('submit', function() {
+				localStorage.removeItem('MonsterInsightsURL');
+			});
+		</script>
+<?php }
 }
-add_action( 'admin_footer', 'monsterinsights_tools_copy_url_to_prettylinks' );
+add_action('admin_footer', 'monsterinsights_tools_copy_url_to_prettylinks');
 
 /**
  * When click on 'Create New Pretty Link" button(on tools/prettylinks-flow page) after installing & activating prettylinks plugin
  * it redirects to PrettyLinks welcome scree page instead of prettylinks add new page.
  * This function will skip that welcome screen
  */
-function monsterinsights_skip_prettylinks_welcome_screen() {
+function monsterinsights_skip_prettylinks_welcome_screen()
+{
 	global $pagenow;
 
-	$post_type                 = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
-	$monsterinsights_reference = isset( $_GET['monsterinsights_reference'] ) ? $_GET['monsterinsights_reference'] : '';
+	$post_type                 = isset($_GET['post_type']) ? $_GET['post_type'] : '';
+	$monsterinsights_reference = isset($_GET['monsterinsights_reference']) ? $_GET['monsterinsights_reference'] : '';
 
-	if ( 'post-new.php' === $pagenow && 'pretty-link' === $post_type && 'url_builder' === $monsterinsights_reference ) {
-		$onboard  = get_option( 'prli_onboard' );
+	if ('post-new.php' === $pagenow && 'pretty-link' === $post_type && 'url_builder' === $monsterinsights_reference) {
+		$onboard  = get_option('prli_onboard');
 
-		if ( $onboard == 'welcome' || $onboard == 'update' ) {
-			update_option( 'monsterinsights_backup_prli_onboard_value', $onboard );
-			delete_option( 'prli_onboard' );
+		if ($onboard == 'welcome' || $onboard == 'update') {
+			update_option('monsterinsights_backup_prli_onboard_value', $onboard);
+			delete_option('prli_onboard');
 		}
 	}
 }
-add_action( 'wp_loaded', 'monsterinsights_skip_prettylinks_welcome_screen', 9 );
+add_action('wp_loaded', 'monsterinsights_skip_prettylinks_welcome_screen', 9);
 
 /**
  * Restore the `prli_onboard` value after creating a prettylinks with monsterinsights prettylinks flow
  * users will see the prettylinks welcome screen after fresh installation & creating prettylinks with monsterinsights prettylinks flow
  */
-function monsterinsights_restore_prettylinks_onboard_value() {
+function monsterinsights_restore_prettylinks_onboard_value()
+{
 	global $pagenow;
 
-	$post_type = isset( $_GET['post_type'] ) ? $_GET['post_type'] : '';
+	$post_type = isset($_GET['post_type']) ? $_GET['post_type'] : '';
 
-	if ( 'edit.php' === $pagenow && 'pretty-link' === $post_type ) {
-		$onboard   = get_option( 'monsterinsights_backup_prli_onboard_value' );
+	if ('edit.php' === $pagenow && 'pretty-link' === $post_type) {
+		$onboard   = get_option('monsterinsights_backup_prli_onboard_value');
 
-		if ( class_exists( 'PrliBaseController' ) && ( $onboard == 'welcome' || $onboard == 'update' ) ) {
-			update_option( 'prli_onboard', $onboard );
-			delete_option( 'monsterinsights_backup_prli_onboard_value' );
+		if (class_exists('PrliBaseController') && ($onboard == 'welcome' || $onboard == 'update')) {
+			update_option('prli_onboard', $onboard);
+			delete_option('monsterinsights_backup_prli_onboard_value');
 		}
 	}
 }
-add_action( 'wp_loaded', 'monsterinsights_restore_prettylinks_onboard_value', 15 );
+add_action('wp_loaded', 'monsterinsights_restore_prettylinks_onboard_value', 15);
 
 /**
  * Check WP version and include the compatible upgrader skin.
  *
  * @param bool $custom_upgrader If true it will include our custom upgrader, otherwise it will use the default WP one.
  */
-function monsterinsights_require_upgrader( $custom_upgrader = true ) {
+function monsterinsights_require_upgrader($custom_upgrader = true)
+{
 
 	global $wp_version;
 
 	$base = MonsterInsights();
 
-	if ( ! $custom_upgrader ) {
+	if (!$custom_upgrader) {
 		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 	}
 
 	// WP 5.3 changes the upgrader skin.
-	if ( version_compare( $wp_version, '5.3', '<' ) ) {
-		if ( $custom_upgrader ) {
-			require_once plugin_dir_path( $base->file ) . 'includes/admin/licensing/plugin-upgrader.php';
+	if (version_compare($wp_version, '5.3', '<')) {
+		if ($custom_upgrader) {
+			require_once plugin_dir_path($base->file) . 'includes/admin/licensing/plugin-upgrader.php';
 		}
-		require_once plugin_dir_path( $base->file ) . '/includes/admin/licensing/skin-legacy.php';
+		require_once plugin_dir_path($base->file) . '/includes/admin/licensing/skin-legacy.php';
 	} else {
-		if ( $custom_upgrader ) {
-			require_once plugin_dir_path( $base->file ) . 'includes/admin/licensing/plugin-upgrader.php';
+		if ($custom_upgrader) {
+			require_once plugin_dir_path($base->file) . 'includes/admin/licensing/plugin-upgrader.php';
 		}
-		require_once plugin_dir_path( $base->file ) . '/includes/admin/licensing/skin.php';
+		require_once plugin_dir_path($base->file) . '/includes/admin/licensing/skin.php';
 	}
-
 }
 
 /**
@@ -1678,10 +1756,11 @@ function monsterinsights_require_upgrader( $custom_upgrader = true ) {
  * @since 7.12.3
  *
  */
-function monsterinsights_load_gutenberg_app() {
+function monsterinsights_load_gutenberg_app()
+{
 	global $wp_version;
 
-	if ( version_compare( $wp_version, '5.4', '<' ) ) {
+	if (version_compare($wp_version, '5.4', '<')) {
 		return false;
 	}
 
@@ -1696,30 +1775,61 @@ function monsterinsights_load_gutenberg_app() {
  *
  *
  */
-function monsterinsights_get_frontend_analytics_script_atts() {
+function monsterinsights_get_frontend_analytics_script_atts()
+{
 	$attr_string = '';
 
-    $default_attributes = [
+	$default_attributes = [
 		'data-cfasync'     => 'false',
 		'data-wpfc-render' => 'false',
-    ];
-    if ( ! current_theme_supports( 'html5', 'script' ) ) {
+	];
+	if (!current_theme_supports('html5', 'script')) {
 		$default_attributes['type'] = 'text/javascript';
-    }
+	}
 
-	$attributes = apply_filters( 'monsterinsights_tracking_analytics_script_attributes', $default_attributes);
+	$attributes = apply_filters('monsterinsights_tracking_analytics_script_attributes', $default_attributes);
 
-	if ( ! empty( $attributes ) ) {
-		foreach ( $attributes as $attr_name => $attr_value ) {
-			if ( ! empty( $attr_name ) ) {
-				$attr_string .= ' ' . sanitize_key( $attr_name ) . '="' . esc_attr( $attr_value ) . '"';
+	if (!empty($attributes)) {
+		foreach ($attributes as $attr_name => $attr_value) {
+			if (!empty($attr_name)) {
+				$attr_string .= ' ' . sanitize_key($attr_name) . '="' . esc_attr($attr_value) . '"';
 			} else {
-				$attr_string .= ' ' . esc_attr( $attr_value );
+				$attr_string .= ' ' . esc_attr($attr_value);
 			}
 		}
 	}
 
 	return $attr_string;
+}
+
+/**
+ * Helper function instead of wp_localize_script with our script tag attributes.
+ *
+ * @return string
+ * @since 8.5.0
+ *
+ */
+function monsterinsights_localize_script($handle, $object_name, $data, $priority = 100)
+{
+	$theme_supports_html5 = current_theme_supports('html5', 'script');
+	$script_js = !$theme_supports_html5 ? "/* <![CDATA[ */\n" : '';
+	$script_js .= "var $object_name = " . wp_json_encode($data) . ';';
+	$script_js .= !$theme_supports_html5 ? "/* ]]> */\n" : '';
+
+	$script = sprintf(
+		"<script%s id='%s-js-extra'>%s</script>\n",
+		monsterinsights_get_frontend_analytics_script_atts(),
+		esc_attr($handle),
+		$script_js
+	);
+
+	add_filter('script_loader_tag', function ($tag, $current_handle) use ($handle, $script) {
+		if ($current_handle !== $handle) {
+			return $tag;
+		}
+
+		return $tag . $script;
+	}, $priority, 2);
 }
 
 /**
@@ -1729,66 +1839,67 @@ function monsterinsights_get_frontend_analytics_script_atts() {
  *
  * @since 7.12.3
  */
-function monsterinsights_get_english_speaking_countries() {
+function monsterinsights_get_english_speaking_countries()
+{
 	return array(
-		'AG' => __( 'Antigua and Barbuda', 'google-analytics-for-wordpress' ),
-		'AU' => __( 'Australia', 'google-analytics-for-wordpress' ),
-		'BB' => __( 'Barbados', 'google-analytics-for-wordpress' ),
-		'BZ' => __( 'Belize', 'google-analytics-for-wordpress' ),
-		'BW' => __( 'Botswana', 'google-analytics-for-wordpress' ),
-		'BI' => __( 'Burundi', 'google-analytics-for-wordpress' ),
-		'CM' => __( 'Cameroon', 'google-analytics-for-wordpress' ),
-		'CA' => __( 'Canada', 'google-analytics-for-wordpress' ),
-		'DM' => __( 'Dominica', 'google-analytics-for-wordpress' ),
-		'FJ' => __( 'Fiji', 'google-analytics-for-wordpress' ),
-		'GD' => __( 'Grenada', 'google-analytics-for-wordpress' ),
-		'GY' => __( 'Guyana', 'google-analytics-for-wordpress' ),
-		'GM' => __( 'Gambia', 'google-analytics-for-wordpress' ),
-		'GH' => __( 'Ghana', 'google-analytics-for-wordpress' ),
-		'IE' => __( 'Ireland', 'google-analytics-for-wordpress' ),
-		'IN' => __( 'India', 'google-analytics-for-wordpress' ),
-		'JM' => __( 'Jamaica', 'google-analytics-for-wordpress' ),
-		'KE' => __( 'Kenya', 'google-analytics-for-wordpress' ),
-		'KI' => __( 'Kiribati', 'google-analytics-for-wordpress' ),
-		'LS' => __( 'Lesotho', 'google-analytics-for-wordpress' ),
-		'LR' => __( 'Liberia', 'google-analytics-for-wordpress' ),
-		'MW' => __( 'Malawi', 'google-analytics-for-wordpress' ),
-		'MT' => __( 'Malta', 'google-analytics-for-wordpress' ),
-		'MH' => __( 'Marshall Islands', 'google-analytics-for-wordpress' ),
-		'MU' => __( 'Mauritius', 'google-analytics-for-wordpress' ),
-		'FM' => __( 'Micronesia', 'google-analytics-for-wordpress' ),
-		'NZ' => __( 'New Zealand', 'google-analytics-for-wordpress' ),
-		'NA' => __( 'Namibia', 'google-analytics-for-wordpress' ),
-		'NR' => __( 'Nauru', 'google-analytics-for-wordpress' ),
-		'NG' => __( 'Nigeria', 'google-analytics-for-wordpress' ),
-		'PK' => __( 'Pakistan', 'google-analytics-for-wordpress' ),
-		'PW' => __( 'Palau', 'google-analytics-for-wordpress' ),
-		'PG' => __( 'Papua New Guinea', 'google-analytics-for-wordpress' ),
-		'PH' => __( 'Philippines', 'google-analytics-for-wordpress' ),
-		'RW' => __( 'Rwanda', 'google-analytics-for-wordpress' ),
-		'SG' => __( 'Singapore', 'google-analytics-for-wordpress' ),
-		'KN' => __( 'St Kitts and Nevis', 'google-analytics-for-wordpress' ),
-		'LC' => __( 'St Lucia', 'google-analytics-for-wordpress' ),
-		'VC' => __( 'St Vincent and the Grenadines', 'google-analytics-for-wordpress' ),
-		'SZ' => __( 'Swaziland', 'google-analytics-for-wordpress' ),
-		'WS' => __( 'Samoa', 'google-analytics-for-wordpress' ),
-		'SC' => __( 'Seychelles', 'google-analytics-for-wordpress' ),
-		'SL' => __( 'Sierra Leone', 'google-analytics-for-wordpress' ),
-		'SB' => __( 'Solomon Islands', 'google-analytics-for-wordpress' ),
-		'ZA' => __( 'South Africa', 'google-analytics-for-wordpress' ),
-		'SS' => __( 'South Sudan', 'google-analytics-for-wordpress' ),
-		'SD' => __( 'Sudan', 'google-analytics-for-wordpress' ),
-		'TT' => __( 'Trinidad and Tobago', 'google-analytics-for-wordpress' ),
-		'BS' => __( 'The Bahamas', 'google-analytics-for-wordpress' ),
-		'TZ' => __( 'Tanzania', 'google-analytics-for-wordpress' ),
-		'TO' => __( 'Tonga', 'google-analytics-for-wordpress' ),
-		'TV' => __( 'Tuvalu', 'google-analytics-for-wordpress' ),
-		'GB' => __( 'United Kingdom', 'google-analytics-for-wordpress' ),
-		'US' => __( 'United States of America', 'google-analytics-for-wordpress' ),
-		'UG' => __( 'Uganda', 'google-analytics-for-wordpress' ),
-		'VU' => __( 'Vanuatu', 'google-analytics-for-wordpress' ),
-		'ZM' => __( 'Zambia', 'google-analytics-for-wordpress' ),
-		'ZW' => __( 'Zimbabwe', 'google-analytics-for-wordpress' ),
+		'AG' => __('Antigua and Barbuda', 'google-analytics-for-wordpress'),
+		'AU' => __('Australia', 'google-analytics-for-wordpress'),
+		'BB' => __('Barbados', 'google-analytics-for-wordpress'),
+		'BZ' => __('Belize', 'google-analytics-for-wordpress'),
+		'BW' => __('Botswana', 'google-analytics-for-wordpress'),
+		'BI' => __('Burundi', 'google-analytics-for-wordpress'),
+		'CM' => __('Cameroon', 'google-analytics-for-wordpress'),
+		'CA' => __('Canada', 'google-analytics-for-wordpress'),
+		'DM' => __('Dominica', 'google-analytics-for-wordpress'),
+		'FJ' => __('Fiji', 'google-analytics-for-wordpress'),
+		'GD' => __('Grenada', 'google-analytics-for-wordpress'),
+		'GY' => __('Guyana', 'google-analytics-for-wordpress'),
+		'GM' => __('Gambia', 'google-analytics-for-wordpress'),
+		'GH' => __('Ghana', 'google-analytics-for-wordpress'),
+		'IE' => __('Ireland', 'google-analytics-for-wordpress'),
+		'IN' => __('India', 'google-analytics-for-wordpress'),
+		'JM' => __('Jamaica', 'google-analytics-for-wordpress'),
+		'KE' => __('Kenya', 'google-analytics-for-wordpress'),
+		'KI' => __('Kiribati', 'google-analytics-for-wordpress'),
+		'LS' => __('Lesotho', 'google-analytics-for-wordpress'),
+		'LR' => __('Liberia', 'google-analytics-for-wordpress'),
+		'MW' => __('Malawi', 'google-analytics-for-wordpress'),
+		'MT' => __('Malta', 'google-analytics-for-wordpress'),
+		'MH' => __('Marshall Islands', 'google-analytics-for-wordpress'),
+		'MU' => __('Mauritius', 'google-analytics-for-wordpress'),
+		'FM' => __('Micronesia', 'google-analytics-for-wordpress'),
+		'NZ' => __('New Zealand', 'google-analytics-for-wordpress'),
+		'NA' => __('Namibia', 'google-analytics-for-wordpress'),
+		'NR' => __('Nauru', 'google-analytics-for-wordpress'),
+		'NG' => __('Nigeria', 'google-analytics-for-wordpress'),
+		'PK' => __('Pakistan', 'google-analytics-for-wordpress'),
+		'PW' => __('Palau', 'google-analytics-for-wordpress'),
+		'PG' => __('Papua New Guinea', 'google-analytics-for-wordpress'),
+		'PH' => __('Philippines', 'google-analytics-for-wordpress'),
+		'RW' => __('Rwanda', 'google-analytics-for-wordpress'),
+		'SG' => __('Singapore', 'google-analytics-for-wordpress'),
+		'KN' => __('St Kitts and Nevis', 'google-analytics-for-wordpress'),
+		'LC' => __('St Lucia', 'google-analytics-for-wordpress'),
+		'VC' => __('St Vincent and the Grenadines', 'google-analytics-for-wordpress'),
+		'SZ' => __('Swaziland', 'google-analytics-for-wordpress'),
+		'WS' => __('Samoa', 'google-analytics-for-wordpress'),
+		'SC' => __('Seychelles', 'google-analytics-for-wordpress'),
+		'SL' => __('Sierra Leone', 'google-analytics-for-wordpress'),
+		'SB' => __('Solomon Islands', 'google-analytics-for-wordpress'),
+		'ZA' => __('South Africa', 'google-analytics-for-wordpress'),
+		'SS' => __('South Sudan', 'google-analytics-for-wordpress'),
+		'SD' => __('Sudan', 'google-analytics-for-wordpress'),
+		'TT' => __('Trinidad and Tobago', 'google-analytics-for-wordpress'),
+		'BS' => __('The Bahamas', 'google-analytics-for-wordpress'),
+		'TZ' => __('Tanzania', 'google-analytics-for-wordpress'),
+		'TO' => __('Tonga', 'google-analytics-for-wordpress'),
+		'TV' => __('Tuvalu', 'google-analytics-for-wordpress'),
+		'GB' => __('United Kingdom', 'google-analytics-for-wordpress'),
+		'US' => __('United States of America', 'google-analytics-for-wordpress'),
+		'UG' => __('Uganda', 'google-analytics-for-wordpress'),
+		'VU' => __('Vanuatu', 'google-analytics-for-wordpress'),
+		'ZM' => __('Zambia', 'google-analytics-for-wordpress'),
+		'ZW' => __('Zimbabwe', 'google-analytics-for-wordpress'),
 	);
 }
 
@@ -1797,14 +1908,15 @@ function monsterinsights_get_english_speaking_countries() {
  *
  * @return bool
  */
-function monsterinsights_can_install_plugins() {
+function monsterinsights_can_install_plugins()
+{
 
-	if ( ! current_user_can( 'install_plugins' ) ) {
+	if (!current_user_can('install_plugins')) {
 		return false;
 	}
 
 	// Determine whether file modifications are allowed.
-	if ( function_exists( 'wp_is_file_mod_allowed' ) && ! wp_is_file_mod_allowed( 'monsterinsights_can_install' ) ) {
+	if (function_exists('wp_is_file_mod_allowed') && !wp_is_file_mod_allowed('monsterinsights_can_install')) {
 		return false;
 	}
 
@@ -1821,14 +1933,15 @@ function monsterinsights_can_install_plugins() {
  *
  * @return bool
  */
-function monsterinsights_date_is_between( $start_date, $end_date ) {
+function monsterinsights_date_is_between($start_date, $end_date)
+{
 
-	$current_date = current_time( 'Y-m-d' );
+	$current_date = current_time('Y-m-d');
 
-	$start_date = date( 'Y-m-d', strtotime( $start_date ) );
-	$end_date   = date( 'Y-m-d', strtotime( $end_date ) );
+	$start_date = date('Y-m-d', strtotime($start_date));
+	$end_date   = date('Y-m-d', strtotime($end_date));
 
-	if ( ( $current_date >= $start_date ) && ( $current_date <= $end_date ) ) {
+	if (($current_date >= $start_date) && ($current_date <= $end_date)) {
 		return true;
 	}
 
@@ -1842,9 +1955,10 @@ function monsterinsights_date_is_between( $start_date, $end_date ) {
  *
  * @return bool
  */
-function monsterinsights_is_aioseo_active() {
+function monsterinsights_is_aioseo_active()
+{
 
-	if ( function_exists( 'aioseo' ) ) {
+	if (function_exists('aioseo')) {
 		return true;
 	}
 
@@ -1858,11 +1972,12 @@ function monsterinsights_is_aioseo_active() {
  *
  * @return string
  */
-function monsterinsights_aioseo_dashboard_url() {
+function monsterinsights_aioseo_dashboard_url()
+{
 	$url = '';
 
-	if ( function_exists( 'aioseo' ) ) {
-		$url = is_multisite() ? network_admin_url( 'admin.php?page=aioseo' ) : admin_url( 'admin.php?page=aioseo' );
+	if (function_exists('aioseo')) {
+		$url = is_multisite() ? network_admin_url('admin.php?page=aioseo') : admin_url('admin.php?page=aioseo');
 	}
 
 	return $url;
@@ -1875,10 +1990,11 @@ function monsterinsights_aioseo_dashboard_url() {
  *
  * @return bool
  */
-function monsterinsights_is_installed_aioseo_pro() {
+function monsterinsights_is_installed_aioseo_pro()
+{
 	$installed_plugins = get_plugins();
 
-	if ( array_key_exists( 'all-in-one-seo-pack-pro/all_in_one_seo_pack.php', $installed_plugins ) ) {
+	if (array_key_exists('all-in-one-seo-pack-pro/all_in_one_seo_pack.php', $installed_plugins)) {
 		return true;
 	}
 

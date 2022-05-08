@@ -224,20 +224,20 @@ class URE_Lib extends URE_Base_Lib {
      * Respect 'editable_roles' filter, when needed
      * @return array
      */
-    public function get_editable_user_roles( $roles ) {
+    public function get_editable_user_roles( $roles = array() ) {
                 
-        if (empty($roles)) {
+        if ( empty( $roles ) ) {
             $roles = $this->get_user_roles();
         }
         $bbpress = $this->get_bbpress();
         if ($bbpress->is_active()) {
             remove_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
-        $roles = apply_filters('editable_roles', $roles);
-        if ($bbpress->is_active()) {
+        $roles = apply_filters('editable_roles', $roles );
+        if ( $bbpress->is_active() ) {
             add_filter('editable_roles', 'bbp_filter_blog_editable_roles');
         }
-                
+        
         return $roles;
     }
     // end of get_editable_user_roles()                 
@@ -386,6 +386,8 @@ class URE_Lib extends URE_Base_Lib {
             <a class="ure_rsb_link" style="background-image:url(<?php echo URE_PLUGIN_URL . 'images/user-role-editor-icon.png'; ?>);" target="_blank" href="https://www.role-editor.com/download-plugin"><?php _e('Plugin download', 'user-role-editor'); ?></a><br/>
             <a class="ure_rsb_link" style="background-image:url(<?php echo URE_PLUGIN_URL . 'images/changelog-icon.png'; ?>);" target="_blank" href="https://www.role-editor.com/changelog"><?php _e('Changelog', 'user-role-editor'); ?></a><br/>
             <a class="ure_rsb_link" style="background-image:url(<?php echo URE_PLUGIN_URL . 'images/faq-icon.png'; ?>);" target="_blank" href="http://www.shinephp.com/user-role-editor-wordpress-plugin/#faq"><?php _e('FAQ', 'user-role-editor'); ?></a><br/>
+<?php
+/*
             <hr />
                 <div style="text-align: center;">
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -396,6 +398,9 @@ class URE_Lib extends URE_Base_Lib {
                         <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">                        
                     </form>                        
                 </div>
+*/
+?>
+            
 <?php         
     }
     // end of about()
@@ -529,6 +534,23 @@ class URE_Lib extends URE_Base_Lib {
     }
     // end of is_right_admin_path()
 
+    
+    public function is_wp_built_in_role( $role ) {
+    
+        $wp_built_in_roles = array(
+            'administrator', 
+            'editor',
+            'author',
+            'contributor',
+            'subscriber');
+        
+        $result = in_array( $role, $wp_built_in_roles );
+        
+        return $result;
+    }
+    // end of is_wp_built_in_role()
+    
+    
     /*
      * It's overriden in Pro version to add bbPress roles
      */    

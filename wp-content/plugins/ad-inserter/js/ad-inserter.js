@@ -1,4 +1,4 @@
-var javascript_version = "2.7.12"
+var javascript_version = "2.7.14"
 var ignore_key = true;
 var start = 1;
 var end = 16;
@@ -2043,10 +2043,23 @@ jQuery(document).ready (function($) {
         adb = '&adb=1';
       }
 
+      var version = '';
+      var version_index = 0;
+      if ($('input#load-custom-range-' + block).hasClass ('ai-version')) {
+        version_index = $('input#load-custom-range-' + block).attr ('data-version');
+        version = '&version=' + version_index;
+      }
+
       if ($("span#export-csv-button-"+block).hasClass ('on')) {
         $("span#export-csv-button-"+block).removeClass ('on');
 
-        var params = {'action': 'ai_ajax_backend', 'statistics': block, 'start-date': start_date, 'end-date': end_date, 'delete_range': delete_range == '' ? '' : 1, 'adb': adb == '' ? '' : 1, 'csv' : 1, 'ai_check': ai_nonce};
+        var params = {'action': 'ai_ajax_backend', 'statistics': block,
+          'start-date': start_date,
+          'end-date': end_date,
+          'delete_range': delete_range == '' ? '' : 1,
+          'adb': adb == '' ? '' : 1,
+          'version': version == '' ? '' : version_index,
+          'csv' : 1, 'ai_check': ai_nonce};
 
         var form = document.createElement("form");
         form.setAttribute("method", "get");
@@ -2068,7 +2081,7 @@ jQuery(document).ready (function($) {
         return;
       }
 
-      container.load (ajaxurl+"?action=ai_ajax_backend&statistics=" + block + "&start-date=" + start_date + "&end-date=" + end_date + delete_range + adb + "&ai_check=" + ai_nonce, function (response, status, xhr) {
+      container.load (ajaxurl+"?action=ai_ajax_backend&statistics=" + block + "&start-date=" + start_date + "&end-date=" + end_date + delete_range + adb + version + "&ai_check=" + ai_nonce, function (response, status, xhr) {
         label.removeClass ('on');
         if ( status == "error" ) {
           var message = "Error downloading data: " + xhr.status + " " + xhr.statusText ;
@@ -2658,10 +2671,11 @@ jQuery(document).ready (function($) {
 
 
     if ($("input#block-bkg-color-"+tab).length != 0) {
-      $("input#block-bkg-color-"+tab).colorpicker ({useAlpha: false, useHashPrefix: true, format: 'hex', fallbackColor: '#fffffe'}).on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
-        $("#block-color-" + tab).css ('background', $(this).val ());
+//      $("input#block-bkg-color-"+tab).colorpicker ({useAlpha: false, useHashPrefix: true, format: 'hex', fallbackColor: '#fffffe'}).on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
+      $("input#block-bkg-color-"+tab).colorpicker ({useAlpha: true, useHashPrefix: true, fallbackColor: '#fffffe'}).on('colorpickerChange colorpickerCreate colorpickerUpdate', function (e) {
+        $("#block-color-" + tab).css ('background-color', $(this).val ());
       }).on ('input', function() {
-        $("#block-color-" + tab).css ('background', $(this).val ());
+        $("#block-color-" + tab).css ('background-color', $(this).val ());
       });
       $("input#block-bkg-color-"+tab).colorpicker ('setValue', $("input#block-bkg-color-" + tab).attr ('value'));
     }
@@ -4440,7 +4454,6 @@ jQuery(document).ready (function($) {
           }
       });
 
-
       $('#'+list_prefix+'-list-'+index).focusout (function () {
         var selection_container = $('#ms-'+element_name_prefix+'-select-'+index);
         if (selection_container.length && selection_container.is (':visible')) {
@@ -4490,7 +4503,8 @@ jQuery(document).ready (function($) {
     var selection_container = $('#ms-'+element_name_prefix+'-select-'+index);
 
     if (selection_container.is(':visible')) {
-      var list_items = list_element.attr ('value').split (',').map (Function.prototype.call, String.prototype.trim);
+//      var list_items = list_element.attr ('value').split (',').map (Function.prototype.call, String.prototype.trim);
+      var list_items = list_element.val ().split (',').map (Function.prototype.call, String.prototype.trim);
 
       if (list_items [0] == '') {
         list_items = list_items.splice (1)
@@ -4833,6 +4847,31 @@ jQuery(document).ready (function($) {
 
       $(container).removeClass ('not-configured');
       $(container).parent().find ('div.ai-chart-label').show ();
+      $(container).parent().find ('div.ai-chart-version-label').show ();
+
+      $(container).parent().find ('div.ai-chart-version-label').click (function () {
+        // Clear single version display
+        var block = $(this).closest ('.ai-charts').attr ("id").replace ("statistics-elements-","");
+        if ($('input#load-custom-range-' + block).hasClass ('ai-version')) {
+          $('input#load-custom-range-' + block).removeClass ('ai-version');
+          $('input#load-custom-range-' + block).removeAttr ('data-version');
+          $("input#load-custom-range-" + block).click ();
+          return;
+        }
+      });
+
+      var legend = $(container).parent ().find ('.ai-chart-legend');
+      if (legend.length != 0) {
+        legend.find ('div').css ('visibility', 'hidden');
+        var version_indexes = legend.data ('versions');
+        var text_index = 0;
+        legend.find ('text').each (function () {
+          $(this).addClass ('ai-label-index');
+          $(this).attr ('data-label-index', version_indexes [text_index]);
+          text_index ++;
+        });
+        legend.removeClass ('ai-chart-legend');
+      }
     }
   }
 
@@ -4857,6 +4896,12 @@ jQuery(document).ready (function($) {
       if (!$(this).hasClass ('hidden')) {
         $(this).attr ('style', '');
         configure_chart (this);
+        $(container).find ('.ai-label-index').click (function () {
+          var block = $(this).closest ('.ai-chart').data ('block');
+          var version_index = $(this).data ('label-index');
+          $('input#load-custom-range-' + block).addClass ('ai-version').attr ('data-version', version_index);
+          $("input#load-custom-range-" + block).click ();
+        });
       }
     });
   }
@@ -6620,8 +6665,10 @@ jQuery(document).ready (function($) {
     var report_controls = $(this).parent ().parent ().parent ().parent ().find ('.ai-public-controls').hasClass ('on') ? '1' : '0';
     var report_range_name = $(this).parent ().parent ().parent ().parent ().find ('.custom-range-controls').attr ('range-name');
     var report_adb = report_data_elements [2];
-    var report_range = report_data_elements [2];
-    var report = report_dates_block + report_controls + report_adb + report_range_name;
+    var report_version = report_data_elements [3];
+    if (report_version == '') report_version = '---';
+//    var report_range = report_data_elements [2];
+    var report = report_dates_block + report_controls + report_adb + report_range_name + report_version;
     var report_id = b64e (report).replaceAll ('+', '.').replaceAll ('/', '_').replaceAll ('=', '-');
     var url = report_url_prefix + md5 (report).substring (0, 2) + report_id;
 

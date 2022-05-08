@@ -119,7 +119,7 @@ class Url_Fetcher {
 				$file_path = $this->archive_dir . $relative_filename;
 
 				// Windows support.
-				if ( strpos( $file_path, '\/' ) !== false && strpos( $temp_filename, '\/' ) !== false ) {
+				if ( strpos( $file_path, '\/' ) !== false || strpos( $temp_filename, '\/' ) !== false ) {
 					$file_path     = str_replace( '\/', '/', $file_path );
 					$temp_filename = str_replace( '\/', '/', $temp_filename );
 				}

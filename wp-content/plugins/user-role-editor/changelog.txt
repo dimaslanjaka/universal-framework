@@ -1,6 +1,13 @@
 CHANGES LOG (full version).
 ===========================
 
+= [4.62] 05.05.2022 =
+* Update: Marked as compatible with WordPress 6.0
+* New: It's possible to translate custom role names using [PolyLang](https://wordpress.org/plugins/polylang/) plugin.
+* Update: URE does not sort roles in WordPress dropdown lists. In order to sort roles by name return 'name' from 'ure_sort_wp_roles_list' filter.
+* Update: User capabilities view page minor CSS enhancements.
+* Update: Settings->About: "Donate" link was removed.
+
 = [4.61.2] 01.03.2022 =
 * Fix: "Users->Add New" page - other selected roles were not saved.
 * Update: URE uses WordPress notification styles for own operation result output.

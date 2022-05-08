@@ -189,7 +189,7 @@ class MonsterInsights_Popular_Posts {
 
 		wp_enqueue_script( 'monsterinsights-popular-posts-js' );
 
-		wp_localize_script( 'monsterinsights-popular-posts-js', 'monsterinsights_pp', array(
+		monsterinsights_localize_script( 'monsterinsights-popular-posts-js', 'monsterinsights_pp', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'post_id' => get_the_ID(),
 		) );

@@ -14,6 +14,14 @@ function monsterinsights_gutenberg_editor_assets() {
 		return;
 	}
 
+	if ( function_exists( 'get_current_screen' ) ) {
+		$current_screen = get_current_screen();
+
+		if ( is_object( $current_screen ) && 'widgets' === $current_screen->id ) {
+			return;
+		}
+	}
+
 	$plugins_js_path    = '/assets/gutenberg/js/editor.min.js';
 	$plugins_style_path = '/assets/gutenberg/css/editor.css';
 	$version_path       = monsterinsights_is_pro_version() ? 'pro' : 'lite';
@@ -85,9 +93,13 @@ function monsterinsights_gutenberg_editor_assets() {
 			'vue_assets_path'              => plugins_url( $version_path . '/assets/vue/', MONSTERINSIGHTS_PLUGIN_FILE ),
 			'is_woocommerce_installed'     => class_exists( 'WooCommerce' ),
 			'license_type'                 => MonsterInsights()->license->get_license_type(),
-			'upgrade_url'                  => monsterinsights_get_upgrade_link( 'gutenberg', 'products' ),
+			'upgrade_url'                  => monsterinsights_get_upgrade_link( 'pageinsights-meta', 'products' ),
 			'install_woocommerce_url'      => $install_woocommerce_url,
 			'supports_custom_fields'       => post_type_supports( $posttype, 'custom-fields' ),
+			'public_post_type'             => $posttype ? is_post_type_viewable( $posttype ) : 0,
+			'page_insights_addon_active'   => class_exists( 'MonsterInsights_Page_Insights' ),
+			'page_insights_nonce'          => wp_create_nonce( 'mi-admin-nonce' ),
+            'isnetwork'                    => is_network_admin(),
 		)
 	);
 }

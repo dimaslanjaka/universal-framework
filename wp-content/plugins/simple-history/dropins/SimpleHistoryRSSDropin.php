@@ -31,7 +31,7 @@ class SimpleHistoryRSSDropin {
 
 		add_action( 'init', array( $this, 'checkForRssFeedRequest' ) );
 
-		// Add settings with prio 11 so it' added after the main Simple History settings
+		// Add settings with priority 11 so it' added after the main Simple History settings
 		add_action( 'admin_menu', array( $this, 'addSettings' ), 11 );
 	}
 
@@ -82,7 +82,7 @@ class SimpleHistoryRSSDropin {
 				$settings_section_rss_id
 			);
 
-			// Regnerate address
+			// Regenerate address
 			add_settings_field(
 				'simple_history_rss_feed_regenerate_secret',
 				__( 'Regenerate', 'simple-history' ),
@@ -224,6 +224,38 @@ class SimpleHistoryRSSDropin {
 						'posts_per_page' => 10,
 					);
 
+					/**
+					 * Filters the arguments passed to `SimpleHistoryLogQuery()` when fetching the RSS feed
+					 *
+					 * @example Change number of posts to retreieve in RSS feed.
+					 *
+					 * // This example changes the number of posts in the RSS feed to 50 from the default 10.
+					 *
+					 * ```php
+					 *  add_filter(
+					 *    'simple_history/rss_feed_args',
+					 *      function( $args ) {
+					 *        $args['posts_per_page'] = 50;
+					 *        return $args;
+					 *     }
+					 * );
+					 *
+					 * @example Change number of posts to retreieve in RSS feed.
+					 *
+					 * // This example changes the number of posts in the RSS feed to 20 from the default 10.
+					 *
+					 * ```php
+					 *  add_filter(
+					 *    'simple_history/rss_feed_args',
+					 *      function( $args ) {
+					 *        $args['posts_per_page'] = 20;
+					 *        return $args;
+					 *     }
+					 * );
+					 *
+					 * @param array $args SimpleHistoryLogQuery arguments.
+					 * @return array.
+					 */
 					$args = apply_filters( 'simple_history/rss_feed_args', $args );
 
 					$logQuery = new SimpleHistoryLogQuery();
@@ -385,7 +417,7 @@ class SimpleHistoryRSSDropin {
 	}
 
 	/**
-	 * Output for settings field that regenerates the RSS adress/secret
+	 * Output for settings field that regenerates the RSS address/secret
 	 */
 	public function settingsFieldRssRegenerate() {
 

@@ -1,0 +1,18 @@
+.synonym{
+	background:yellow;
+}
+
+#spinner_dev   li{
+	background:#333;
+	color:#fff;
+}
+
+
+#spinner_dev   li:hover{
+	background:blue;
+	color:#fff;
+}
+
+#spinner-editor_ifr{
+	height:400px !important;
+}

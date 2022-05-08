@@ -54,19 +54,19 @@ var UpdraftCentral_Site_Search = function () {
 	 * @return {void}
 	 */
 	this.find_keyword_match = function(filter_text, sites_row, source, exist) {
-		filter_text = $.trim(filter_text);
+		filter_text = filter_text.trim();
 		if ('' !== filter_text && 'undefined' !== typeof sites_row && '' !== source) {
 			var filter_text_upper_case = (-1 !== filter_text.indexOf(',')) ? filter_text.toUpperCase().split(',') : filter_text.toUpperCase();
 	
 			if ('undefined' === typeof exist) exist = false;
 			sites_row.find(source).filter(function() {
-				var content = $.trim($(this).text()).toUpperCase();
-				if ($.isArray(filter_text_upper_case)) {
+				var content = $(this).text().trim().toUpperCase();
+				if (Array.isArray(filter_text_upper_case)) {
 					var found = [];
 					$.map(filter_text_upper_case, function(value) {
-					  value = $.trim(value);
-					  if (value && -1 !== content.indexOf(value)) found.push(value);
-					  return value;
+						value = value.trim();
+					  	if (value && -1 !== content.indexOf(value)) found.push(value);
+					  	return value;
 					});
 					return found.length ? true : false;
 				}

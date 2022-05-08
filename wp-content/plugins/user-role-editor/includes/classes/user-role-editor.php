@@ -193,7 +193,7 @@ class User_Role_Editor {
             
             if ( $pagenow=='site-users.php' ) {
                 // Try to execute before any other function linked to this filter
-                add_filter( 'editable_roles', array($this, 'fix_network_admin_roles_dropdown'), 9 );
+                add_filter('editable_roles', array($this, 'fix_network_admin_roles_dropdown'), 9 );
             }
             
         } else {
@@ -210,6 +210,8 @@ class User_Role_Editor {
        
         add_action('wp_ajax_ure_ajax', array($this, 'ure_ajax'));
         
+        add_action('editable_roles', array( $this, 'translate_custom_roles' ), 10, 1 );
+        
         // Input parameter $roles_sorting_order = false by default 
         // Acceptable values: 
         // true - sort by role ID (for backward compatibility),
@@ -218,7 +220,7 @@ class User_Role_Editor {
         $roles_sorting_order = apply_filters( 'ure_sort_wp_roles_list', false);
         if ( !empty( $roles_sorting_order ) ) {
             $this->lib->set('roles_sorting_order', $roles_sorting_order );
-            add_filter( 'editable_roles', array( $this, 'sort_wp_roles_list' ), 11, 1 );
+            add_filter('editable_roles', array( $this, 'sort_wp_roles_list' ), 11, 1 );
         }
     }
     // end of plugin_init()
@@ -480,6 +482,16 @@ class User_Role_Editor {
 
         load_plugin_textdomain('user-role-editor', '', dirname( plugin_basename( URE_PLUGIN_FULL_PATH ) ) .'/lang');
         
+        if ( function_exists('pll_register_string') ) {   
+            // Integration with PolyLang plugin (https://wordpress.org/plugins/polylang/)
+            $all_roles = wp_roles()->roles;
+            foreach( $all_roles as $role_id=>$role ) {
+                if ( !$this->lib->is_wp_built_in_role( $role_id ) ) {                    
+                    pll_register_string( $role_id, $role['name'], 'user-role-editor' );
+                }
+            }
+        }
+        
     }
     // end of ure_load_translation()
 
@@ -568,12 +580,11 @@ class User_Role_Editor {
     
     public function plugin_menu() {
 
-        $translated_title = esc_html__('User Role Editor', 'user-role-editor');
         if (function_exists('add_submenu_page')) {
             $ure_page = add_submenu_page(
                     'users.php', 
-                    $translated_title,
-                    $translated_title,
+                    esc_html__('User Role Editor', 'user-role-editor'),
+                    esc_html__('User Role Editor', 'user-role-editor'),
                     'ure_edit_roles', 
                     'users-' . URE_PLUGIN_FILE, 
                     array($this, 'edit_roles'));
@@ -585,8 +596,8 @@ class User_Role_Editor {
         if ( !$multisite || ($multisite && !$active_for_network) ) {
             $settings_capability = URE_Own_Capabilities::get_settings_capability();
             $this->settings_page_hook = add_options_page(
-                    $translated_title,
-                    $translated_title,
+                    esc_html__('User Role Editor', 'user-role-editor'),
+                    esc_html__('User Role Editor', 'user-role-editor'),
                     $settings_capability, 
                     'settings-' . URE_PLUGIN_FILE, 
                     array($this, 'settings'));
@@ -599,11 +610,10 @@ class User_Role_Editor {
 
     public function network_plugin_menu() {        
         if (is_multisite()) {
-            $translated_title = esc_html__('User Role Editor', 'user-role-editor');
             $this->settings_page_hook = add_submenu_page(
                     'settings.php', 
-                    $translated_title,
-                    $translated_title, 
+                    esc_html__('User Role Editor', 'user-role-editor'),
+                    esc_html__('User Role Editor', 'user-role-editor'), 
                     $this->key_capability, 
                     'settings-' . URE_PLUGIN_FILE, 
                     array(&$this, 'settings'));
@@ -843,6 +853,24 @@ class User_Role_Editor {
     }
     // end of set_role_additional_options_hooks()
 
+    
+    private function sort_roles_by_name( $roles ) {
+        
+        $role_names = array();
+        foreach( $roles  as $role_id=>$role ) {
+            $role_names[$role_id] = $role['name'];
+        }
+        asort( $role_names );
+        
+        $roles1 = array();
+        foreach( $role_names as $role_id=>$role_name ) {
+            $roles1[$role_id] = $roles[$role_id];
+        }
+        
+        return $roles1;
+    }
+    // end of sort_roles_by_name()
+    
 
     /**
      * Sort roles array alphabetically
@@ -855,24 +883,26 @@ class User_Role_Editor {
         if ( $roles_sorting_order==='id' || $roles_sorting_order===true ) {
             // sort by role ID
             ksort( $roles );
+            return $roles;
         } else if ( $roles_sorting_order==='name') {
             // sort by role name
-            asort( $roles );
+            $roles1 = $this->sort_roles_by_name( $roles );
+            return $roles1;
         } else {    
             // change nothing
             return $roles;
         }
-        // wp-admin/includes/template/wp_dropdown_roles() showed roles in reversed order, #906:
+        // wp-admin/includes/template.php: wp_dropdown_roles() showed roles returned by get_editable_roles() in reversed order, #932:
         // $editable_roles = array_reverse( get_editable_roles() );
-        // so we have to reverse them 1st, in order they will be reversed back to the ascending order
-        $roles = array_reverse( $roles  );
+        // so we may need to reverse them 1st, in order they will be reversed back to the ascending order
+        //$roles = array_reverse( $roles  );
         
         return $roles;
     }
     // end of sort_wp_roles_list()
 
 
-    /** Currently WordPress (tested up to version 5.2.3) shows "Change role to..." drop-down list at Network admin->Sites->selected site->Users with roles filled from the main site,
+    /** Currently WordPress (tested up to version 5.9.3) shows "Change role to..." drop-down list at Network admin->Sites->selected site->Users with roles filled from the main site,
     /*  but should use roles list from the selected site. This function replaces roles list with roles from the selected site and 
      *  excludes error messsage "Sorry, you are not allowed to give users that role.", when you try to grant to a user a role which does not exist at the selected site.
      * 
@@ -903,13 +933,40 @@ class User_Role_Editor {
         return $roles1;
     }
     // end of fix_network_admin_roles_dropdown()
+
+
+    /*
+     *  Translate user role names, inluding custom roles added by user
+     * 
+     */
+    function translate_custom_roles( $roles ) {                
+        
+        foreach ($roles as $key => $value) {
+            $translated_name = esc_html__( $value['name'], 'user-role-editor' );  // get translation from URE language file, if exists
+            if ( $translated_name === $value['name'] ) { 
+                if ( $this->lib->is_wp_built_in_role( $key ) ) {
+                    // get WordPress internal translation
+                    $translated_name = translate_user_role( $translated_name );
+                } elseif ( function_exists('pll_register_string') ) {   
+                    // Integration with PolyLang plugin (https://wordpress.org/plugins/polylang/)                        
+                    $translated_name = pll__( $translated_name );
+                }
+            }
+            $roles[$key]['name'] = $translated_name;
+        }
+        
+        $roles = apply_filters('ure_editable_roles', $roles );
+        
+        return $roles;
+    } 
+    // end of translate_custom_roles()
     
     
     // execute on plugin deactivation
     public function cleanup() {
 		
     }
-    // end of setup()
+    // end of cleanup()
    
     
     // excute on plugin uninstall via WordPress->Plugins->Delete

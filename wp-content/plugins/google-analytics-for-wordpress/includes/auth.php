@@ -202,11 +202,11 @@ final class MonsterInsights_Auth {
 				unset( $data[ $key ] );
 			}
 		} else {
-			$is_dual_tracking_id_v4 = monsterinsights_is_valid_v4_id( $id );
-			$is_dual_tracking_id_ua = monsterinsights_is_valid_ua( $id );
+			$is_dual_tracking_id_v4 = ( $is_authed_ua || $is_manual_ua ) && monsterinsights_is_valid_v4_id( $id );
+			$is_dual_tracking_id_ua = ( $is_authed_v4 || $is_manual_v4 ) && monsterinsights_is_valid_ua( $id );
 
-			$is_valid_dual_tracking_id = ( $is_dual_tracking_id_ua && ( $is_manual_v4 || $is_authed_v4 ) ) ||
-			                             ( $is_dual_tracking_id_v4 && ( $is_manual_ua || $is_authed_ua ) );
+			$is_valid_dual_tracking_id = $is_dual_tracking_id_ua ||
+			                             $is_dual_tracking_id_v4;
 
 			if ( ! $is_valid_dual_tracking_id ) {
 				return false;

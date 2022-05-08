@@ -1,5 +1,14 @@
 <div class="uc-settings-container">
 	<span class="dashicons dashicons-admin-tools updraft-dashicon-big"></span>
+		<h3 class="uc-load-header">{{udclion.load_header}}</h3>
+		<div class="uc-load-subheading">{{udclion.load_subheading}}</div>
+		<p class="uc-load-settings">
+			<div class="uc-activate-load-checkbox">
+				<input type="checkbox" id="uc-load-activate" name="uc-load-activate" value="active" {{#ifeq "active" load_setting}}checked{{/ifeq}}> {{udclion.tick_to_fill}}
+			</div>
+			<div class="clear"></div>
+		</p>
+
 		<h3 class="uc-timeouts-header">{{udclion.timeout_header}}</h3>
 		<div class="uc-timeouts-subheading">{{udclion.timeout_subheading}}</div>
 		<p class="uc-timeouts-settings">

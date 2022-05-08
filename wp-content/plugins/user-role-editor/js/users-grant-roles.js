@@ -93,7 +93,7 @@ function ure_show_grant_roles_dialog() {
         modal: true,
         autoOpen: true,
         closeOnEscape: true,
-        width: 400,
+        width: 600,
         height: 400,
         resizable: false,
         title: ure_users_grant_roles_data.dialog_title,

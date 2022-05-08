@@ -223,7 +223,7 @@ function UpdraftCentral_Updates() {
 		var deferred = jQuery.Deferred();
 		
 		var interval = setInterval(function() {
-			if (jQuery.trim($container.html()).length < 1) {
+			if ($container.html().trim().length < 1) {
 				clearInterval(interval);
 				deferred.resolve(true);
 			}
@@ -728,7 +728,7 @@ function UpdraftCentral_Updates() {
 			// Make sure that the submitted message contains information we can use,
 			// meaning, it is not empty.
 			if (message.length) {
-				if ($.isArray(message)) {
+				if (Array.isArray(message)) {
 					var msgArr = message.filter(function (value, index, arr) {
 						if ('string' !== typeof value) value += '';
 						value = value.toLowerCase();
@@ -2072,7 +2072,7 @@ function UpdraftCentral_Updates() {
 				options.site_runner.progress.reset();
 			} else {
 				// Re-enable the form elements.
-				options.form_container.find('input, select').removeAttr('disabled');
+				options.form_container.find('input, select').prop('disabled', false);
 				options.container.find('div.updraftcentral_table > .tbody input[name="uc_updates_check_item"]').each(function() {
 					var item = jQuery(this);
 					var unavailable = item.data('unavailable');
@@ -2902,8 +2902,8 @@ function UpdraftCentral_Updates() {
 		 */
 		UpdraftCentral.register_event_handler('click', '#updraftcentral_updraftplus_actions > button.updraftcentral_action_choose_another_site', function() {
 			// Restore original button label for choosing another site to manage.
-			$(this).html($(this).html().replace(/\s\s+/, '').replace(udclion.return_to_updates, updates_button_text));
-
+			$(this).html(updates_button_text);
+			
 			// Show all updates button when not in mass update area.
 			$(this).siblings('.updraftcentral_action_show_all_updates').show();
 		});
@@ -2922,8 +2922,10 @@ function UpdraftCentral_Updates() {
 			// Here, we're trying to replace the "Choose another site..." label dyanmically and temporarily, only
 			// when we're in the mass updates area.
 			var choose = $(this).siblings('.updraftcentral_action_choose_another_site');
-			updates_button_text = choose.text().replace(/\s\s+/, '');
-			choose.html(choose.html().replace(/\s\s+/, '').replace(updates_button_text, udclion.return_to_updates));
+			if ('undefined' === typeof updates_button_text) {
+				updates_button_text = choose.text().replace(/\s\s+/, '');
+			}
+			choose.html(udclion.return_to_updates);
 
 			// Mass update is non site specific. Thus, we hide all sites and only reference
 			// it in the background to execute the needed actions.
@@ -3414,7 +3416,7 @@ function UpdraftCentral_Updates() {
 			var $container = jQuery(this).closest('#updraftcentral_notice_container');
 			var $error_notices = $container.find('.update-errors');
 			
-			if (jQuery.trim($error_notices.html()).length > 1) {
+			if ($error_notices.html().trim().length > 1) {
 				var site_id = $site_row.data('site_id');
 				var site = sites.item(site_id);
 				

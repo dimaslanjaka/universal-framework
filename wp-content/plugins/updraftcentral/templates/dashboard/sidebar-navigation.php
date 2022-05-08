@@ -26,7 +26,8 @@
 			'theme' => 'admin-appearance',
 			'media' => 'admin-media',
 			'pages' => 'admin-pages',
-			'posts' => 'admin-posts'
+			'posts' => 'admin-posts',
+			'events' => 'events'
 		);
 
 		// N.B. If you need to add a sub menu for a particular module you need to attach

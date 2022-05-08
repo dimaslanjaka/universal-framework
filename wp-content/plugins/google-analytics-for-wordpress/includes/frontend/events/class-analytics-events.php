@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class MonsterInsights_Analytics_Events {
-	
+
 	/**
 	 * Holds the name of the events type.
 	 *
@@ -43,7 +43,7 @@ class MonsterInsights_Analytics_Events {
 	 * @access public
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'output_javascript' ), 9 ); 
+		add_action( 'wp_enqueue_scripts', array( $this, 'output_javascript' ), 9 );
 		//add_action( 'login_head', array( $this, 'output_javascript' ), 9 );
 	}
 
@@ -52,7 +52,7 @@ class MonsterInsights_Analytics_Events {
 	 *
 	 * @since 6.0.0
 	 * @access public
-	 * 
+	 *
 	 * @return string
 	 */
 	public function output_javascript() {
@@ -101,7 +101,7 @@ class MonsterInsights_Analytics_Events {
 			$suffix = '';
 		}
 		wp_enqueue_script( 'monsterinsights-frontend-script', plugins_url( 'assets/js/frontend' . $suffix . '.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), false );
-		wp_localize_script(
+		monsterinsights_localize_script(
 			'monsterinsights-frontend-script',
 			'monsterinsights_frontend',
 			array(

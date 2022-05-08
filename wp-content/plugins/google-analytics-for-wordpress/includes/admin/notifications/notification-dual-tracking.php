@@ -24,11 +24,16 @@ class MonsterInsights_Notification_Dual_Tracking extends MonsterInsights_Notific
         if ( $ua && !$v4 ) {
             $is_em = defined( 'EXACTMETRICS_VERSION' );
             $learn_more_url = $is_em
-                ? 'https://www.exactmetrics.com/adding-google-analytics-4-to-wordpress-step-by-step-guide/'
-                : 'https://www.monsterinsights.com/what-is-google-analytics-4-should-you-use-it/';
+                ? 'https://www.exactmetrics.com/docs/how-to-set-up-dual-tracking/'
+                : 'https://www.monsterinsights.com/docs/how-to-set-up-dual-tracking/';
 
-            $notification['title'] = __('Prepare for Google Analytics 4', 'google-analytics-for-wordpress');
-            $notification['content'] = __( 'Prepare for the future of analytics by setting up Google Analytics 4. Enable "Dual Tracking" today.', 'google-analytics-for-wordpress' );
+            $plugin_name = $is_em ? 'ExactMetrics' : 'MonsterInsights';
+
+            $notification['title'] = __( 'Enable Dual Tracking and Start Using Google Analytics 4 Today', 'google-analytics-for-wordpress' );
+            $notification['content'] = sprintf(
+                __( 'On July 1, 2023, Google Analytics will not track any website data for Universal Analytics (GA3). Be prepared for the future by enabling Dual Tracking inside %s to future-proof your website. We\'ve made it easy to upgrade.', 'google-analytics-for-wordpress' ),
+                $plugin_name
+            );
             $notification['btns']    = array(
                 'setup_now' => array(
                     'url'           => $this->get_view_url( 'monsterinsights-dual-tracking-id', 'monsterinsights_settings' ),
@@ -36,7 +41,7 @@ class MonsterInsights_Notification_Dual_Tracking extends MonsterInsights_Notific
                 ),
                 'learn_more'  => array(
                     'url'           => $this->build_external_link( $learn_more_url ),
-                    'text'          => __( 'Learn More', 'google-analytics-for-wordpress' ),
+                    'text'          => __( 'How To Enable Dual Tracking', 'google-analytics-for-wordpress' ),
                     'is_external'   => true,
                 ),
             );

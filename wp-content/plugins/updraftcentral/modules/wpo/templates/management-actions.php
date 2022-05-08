@@ -2,7 +2,7 @@
 
 	<button type="button" class="updraftcentral_action_manage_sites btn btn-sm btn-primary">
 		<span class="dashicons dashicons-arrow-left-alt2"></span>
-		<?php _e('Go back to sites management', 'updraftcentral'); ?>
+		<?php _e('Go back to Site Management', 'updraftcentral'); ?>
 	</button>
 
 	<button type="button" class="updraftcentral_action_choose_another_site btn btn-sm btn-primary updraftcentral-hide-in-tab-initially">

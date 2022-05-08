@@ -31,7 +31,7 @@ if (!defined( 'AD_INSERTER_NAME'))
   define ('AD_INSERTER_NAME', 'Ad Inserter');
 
 if (!defined( 'AD_INSERTER_VERSION'))
-  define ('AD_INSERTER_VERSION', '2.7.12');
+  define ('AD_INSERTER_VERSION', '2.7.14');
 
 if (!defined ('AD_INSERTER_PLUGIN_BASENAME'))
   define ('AD_INSERTER_PLUGIN_BASENAME', plugin_basename (__FILE__));

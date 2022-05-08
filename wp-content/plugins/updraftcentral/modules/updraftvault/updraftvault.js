@@ -109,7 +109,7 @@ function UpdraftCentral_PrevNext_Paginator(location, options, page_change) {
 	 */
 	function trigger(){
 		self.element.trigger("page_change", key, marker);
-		if (jQuery.isFunction(callback)) {
+		if ('function' === typeof callback) {
 			callback(key, marker);
 		}
 	}
@@ -351,7 +351,7 @@ function UpdraftCentral_UpdraftVault_Management() {
 			}
 			done_loading(params).then(function() {
 				if (typeof response.files !== 'undefined') {
-					if (jQuery.isArray(response.files)) {
+					if (Array.isArray(response.files)) {
 						jQuery('.updraftcentral_updraftvault_rows').removeClass('no-matched');
 					}
 				} else {

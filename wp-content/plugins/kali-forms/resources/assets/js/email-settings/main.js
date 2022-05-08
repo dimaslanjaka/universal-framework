@@ -2,10 +2,10 @@ import './main.scss';
 const { __ } = wp.i18n;
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import App from './containers/App';
 
-const theme = createMuiTheme({
+const theme = createTheme({
 	palette: {
 		primary: { main: '#3B88F7' },
 		secondary: { main: '#8B8BF9' },

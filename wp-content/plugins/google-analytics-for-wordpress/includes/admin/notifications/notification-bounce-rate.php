@@ -27,14 +27,14 @@ final class MonsterInsights_Notification_Bounce_Rate extends MonsterInsights_Not
 		$report              = $this->get_report( 'overview' );
 		$bounce_rate = isset( $report['data']['infobox']['bounce']['value'] ) ? $report['data']['infobox']['bounce']['value'] : 0;
 
-		if ( $bounce_rate > 0 ) {
+		if ( $bounce_rate ) {
             $is_em = defined( 'EXACTMETRICS_VERSION' );
 
             $learn_more_url = $is_em
                 ? 'https://www.exactmetrics.com/epic-list-of-marketing-hacks-for-explosive-traffic-growth/'
                 : 'https://www.monsterinsights.com/how-to-reduce-bounce-rate/';
 
-			$notification['title'] = sprintf( __( 'Your Website Bounce Rate is Higher Than %s%%', 'google-analytics-for-wordpress' ), $bounce_rate );
+			$notification['title'] = sprintf( __( 'Your Website Bounce Rate is Higher Than %s', 'google-analytics-for-wordpress' ), $bounce_rate );
 			// Translators: Bounce rate notification content.
 			$notification['content'] = sprintf( __( 'Your site\'s bounce rate is %1$s. Double check your site is working properly and be sure it loads quickly.  %2$sHere%3$s are some points to remember and steps to follow to get your bounce rates back to manageable levels.', 'google-analytics-for-wordpress' ), $bounce_rate, '<a href="' . $this->build_external_link( 'https://www.monsterinsights.com/how-to-reduce-bounce-rate/' ) . '" target="_blank">', '</a>' );
 			$notification['btns']    = array(

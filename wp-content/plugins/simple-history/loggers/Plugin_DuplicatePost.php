@@ -16,15 +16,15 @@ if ( ! class_exists( 'Plugin_DuplicatePost' ) ) {
 
 		public function getInfo() {
 			$arr_info = array(
-				'name' => 'Plugin Duplicate Posts',
+				'name'        => _x( 'Plugin: Duplicate Posts Logger', 'Logger: Plugin Duplicate Post', 'simple-history' ),
 				'description' => _x(
 					'Logs posts and pages cloned using plugin Duplicate Post',
 					'Logger: Plugin Duplicate Post',
 					'simple-history'
 				),
-				'name_via' => _x( 'Using plugin Duplicate Posts', 'Logger: Plugin Duplicate Post', 'simple-history' ),
-				'capability' => 'manage_options',
-				'messages' => array(
+				'name_via'    => _x( 'Using plugin Duplicate Posts', 'Logger: Plugin Duplicate Post', 'simple-history' ),
+				'capability'  => 'manage_options',
+				'messages'    => array(
 					'post_duplicated' => _x(
 						'Cloned "{duplicated_post_title}" to a new post',
 						'Logger: Plugin Duplicate Post',
@@ -48,7 +48,7 @@ if ( ! class_exists( 'Plugin_DuplicatePost' ) ) {
 			// When a copy have been made of a post or page
 			// the action 'dp_duplicate_page' or 'dp_duplicate_post'
 			// is fired with args $new_post_id, $post, $status.
-			// We add actions with prio 20 so we probably run after
+			// We add actions with priority 20 so we probably run after
 			// the plugins own
 			add_action( 'dp_duplicate_post', array( $this, 'onDpDuplicatePost' ), 100, 3 );
 			add_action( 'dp_duplicate_page', array( $this, 'onDpDuplicatePost' ), 100, 3 );

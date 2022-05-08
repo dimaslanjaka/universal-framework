@@ -53,7 +53,7 @@ jQuery(function($) {
 							if (val.constructor === Array) {
 								output += "<tr><td>"+key+"</td><td>"+val[0]+"</td><td>"+val[1]+"</td></tr>\n";
 							} else if (typeof val === 'string') {
-								if ($.isNumeric(key)) {
+								if (UpdraftCentral_Library.is_numeric(key)) {
 									output += "<tr><td></td><td>"+val+"</td></tr>\n";
 								} else {
 									output += "<tr><td>"+key+"</td><td>"+val+"</td></tr>\n";

@@ -44,12 +44,11 @@ class Options {
 	 * Return an instance of Simply_Static\Options
 	 * @return Simply_Static
 	 */
-	public static function instance()
-	{
+	public static function instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 
-			$options = get_option( Plugin::SLUG );
+			$options = apply_filters( 'ss_get_options', get_option( Plugin::SLUG ) );
 			if ( false === $options ) {
 				$options = array();
 			}
@@ -137,7 +136,7 @@ class Options {
 	 * @return string The path to the temp static archive directory
 	 */
 	public function get_archive_dir() {
-		return Util::add_trailing_directory_separator( $this->get( 'temp_files_dir' ) . $this->get( 'archive_name' )  );
+		return Util::add_trailing_directory_separator( $this->get( 'temp_files_dir' ) . $this->get( 'archive_name' ) );
 	}
 
 	/**

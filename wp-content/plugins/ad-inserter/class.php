@@ -29,6 +29,8 @@ abstract class ai_BaseCodeBlock {
   var $wrapping_div_classes;
   var $code_empty;
 
+  var $check_statistics;
+
   var $check_block;
   var $check_block_style;
   var $check_block_classes;
@@ -107,6 +109,8 @@ abstract class ai_BaseCodeBlock {
     $this->head_code_written = false;
     $this->wrapping_div_classes = array ();
     $this->code_empty = false;
+
+    $this->check_statistics = false;
 
     $this->check_block = false;
     $this->check_block_style = '';
@@ -605,14 +609,27 @@ abstract class ai_BaseCodeBlock {
     $ai_total_hook_php_time += microtime (true) - $hook_start_time;
 
     $php_enabled = $ai_wp_data [AI_PHP_PROCESSING];
-    if ((defined ('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT) || (defined ('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS)) {
+    if (!ai_php_enabled ()) {
       $php_enabled = false;
     }
 
     if ($php_enabled && $obj->get_process_php () && !get_disable_php_processing () && (!is_multisite() || is_main_site () || multisite_php_processing ()) && !defined ('AI_NO_PHP_PROCESSING')) {
       $global_name = 'GENERATED_CODE';
 
-      if (isset ($obj->wp_options [$global_name]) && (!isset ($ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number]) || $ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number])) return $obj->wp_options [$global_name];
+      if (isset ($obj->wp_options [$global_name]) && (!isset ($ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number]) || $ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number])) {
+        $code = $obj->wp_options [$global_name];
+
+        $unfiltered_html = $ai_wp_data [AI_UNFILTERED_HTML];
+        if (defined ('DISALLOW_UNFILTERED_HTML') && DISALLOW_UNFILTERED_HTML) {
+          $unfiltered_html = false;
+        }
+
+        if (!$unfiltered_html) {
+          $code = wp_kses ($code, 'post');
+        }
+
+        return $code;
+      }
 
       $start_time = microtime (true);
 
@@ -642,6 +659,7 @@ abstract class ai_BaseCodeBlock {
 
       // Cache generated code
       if (!isset ($ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number]) || $ai_wp_data [AI_BLOCK_PHP_CODE_CACHING][$this->number]) {
+
         $obj->wp_options [$global_name] = $code;
       }
 
@@ -1655,7 +1673,12 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
       $style .= ' height: ' . $height . ';';
     }
 
-    if ($background != '') {
+    $sticky_background =
+      $this->is_sticky () &&
+      $this->get_horizontal_position () == AI_STICK_HORIZONTAL_CENTER &&
+      ($this->get_vertical_position () == AI_STICK_VERTICAL_CENTER || $this->get_vertical_position () == AI_STICK_TO_THE_TOP || $this->get_vertical_position () == AI_STICK_TO_THE_BOTTOM);
+
+    if ($background != '' && !$sticky_background) {
       $style .= ' background-color: ' . $background . ';';
     }
 
@@ -2636,6 +2659,9 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
       $check_data = '';
       foreach ($this->check_codes_data [$this->check_codes_index] as $check_type => $check_list) {
         if ($check_list != '') {
+          if ($check_type == 'block') continue;
+          if ($check_type == 'name') continue;
+          if ($check_type == 'check') continue;
           $check_data .= ' '. $check_type . '="' . $check_list . '"';
         }
       }
@@ -2721,10 +2747,6 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
     }
 
     return (
-//      '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->' . $code .
-//      ' if (!isset ($ai_enabled) || $ai_enabled) echo $ai_code; else {echo ai_extract_debug_bar ($ai_code);}' .
-//      '<!-- /mfunc '. W3TC_DYNAMIC_SECURITY.' -->'
-
       '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' ' . $code . ' if (!isset ($ai_enabled) || $ai_enabled) echo $ai_code; else {echo ai_extract_debug_bar ($ai_code);}' . ' --><!-- /mfunc '. W3TC_DYNAMIC_SECURITY.' -->'
     );
   }
@@ -2748,9 +2770,6 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
     if ($ai_wp_data [AI_W3TC_DEBUGGING]) {
       $this->w3tc_debug []= '  REGENERATE W3TC';
     }
-
-//    preg_match_all ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->(.*?)<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', $code, $php_codes);
-//    $html_codes = explode ('[?#?]', preg_replace ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->(.*?)<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', '[?#?]', $code));
 
     preg_match_all ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' (.*?) --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', $code, $php_codes);
     $html_codes = explode ('[?#?]', preg_replace ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' (.*?) --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', '[?#?]', $code));
@@ -2783,10 +2802,6 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
         $this->w3tc_debug []= '  BASE64 ENCODE W3TC';
       }
 
-//      $base64_code  = '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
-//      $base64_code .= $this->w3tc_code . ' if (!isset ($ai_enabled) || $ai_enabled) echo base64_encode ($ai_code);';
-//      $base64_code .= '<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
-
       $base64_code  = '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' ';
       $base64_code .= $this->w3tc_code . ' if (!isset ($ai_enabled) || $ai_enabled) echo base64_encode ($ai_code);';
       $base64_code .= ' --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
@@ -2799,13 +2814,9 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
         $this->w3tc_debug []= '  BASE64 ENCODE FROM HTML';
       }
 
-//      preg_match_all ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->(.*?)<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', $code, $php_codes);
-//      $html_codes = explode ('[?#?]', preg_replace ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->(.*?)<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', '[?#?]', $code));
-
       preg_match_all ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' (.*?) --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', $code, $php_codes);
       $html_codes = explode ('[?#?]', preg_replace ('#<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' (.*?) --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->#', '[?#?]', $code));
 
-//      $base64_code  = '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
       $base64_code  = '<!-- mfunc '.W3TC_DYNAMIC_SECURITY.' ';
       $base64_code .= 'ob_start ();';
 
@@ -2819,7 +2830,6 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
       }
 
       $base64_code .= 'echo base64_encode (ob_get_clean());';
-//      $base64_code .= '<!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
       $base64_code .= ' --><!-- /mfunc '.W3TC_DYNAMIC_SECURITY.' -->';
 
       return ($base64_code);
@@ -3214,6 +3224,22 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
 
         $additional_code .= "<div class='ai-parallax' style='$height_style'>$parallax_code</div>\n";
       }
+
+      $background_color = trim ($this->get_block_background_color ());
+      if ($this->is_sticky () && $this->get_horizontal_position () == AI_STICK_HORIZONTAL_CENTER && $background_color != '') {
+        $sticky_pop_up = $this->get_vertical_position () == AI_STICK_VERTICAL_CENTER;
+
+        if ($sticky_pop_up) {
+          $additional_code .= "<div style='position: fixed; top: -100vh; left: -100vw; width: 200vw; height: 200vh; z-index: -1; user-select: none; background: " . trim ($this->get_block_background_color ()) . ";'></div>\n";
+        }
+
+        $sticky_top_bottom = $this->get_vertical_position () == AI_STICK_TO_THE_TOP || $this->get_vertical_position () == AI_STICK_TO_THE_BOTTOM;
+
+        if ($sticky_top_bottom) {
+          $this->additional_code_before .= "<div style='width: 100vw; z-index: -1; user-select: none; background: " . trim ($this->get_block_background_color ()) . ";'>\n";
+          $this->additional_code_after = "</div>\n";
+        }
+      }
     }
 
     $delay_showing_pageviews = $this->get_delay_showing ();
@@ -3496,9 +3522,31 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
 
       // [ADINSERTER ROTATE]
 
-      // Clear in case of multiple block insertions (CHECK separator)
-      $this->code_version = 0;
-      $this->version_name = '';
+      // (Re)set option index and name
+      $check_options_for_statistics = $this->check_statistics;
+      $check_option_always = isset ($this->check_codes_data [0]) && empty ($this->check_codes_data [0]);
+
+      if ($check_options_for_statistics) {
+
+        $option_index = isset ($this->check_codes_data [$this->check_codes_index]['name']) ? $this->check_codes_data [$this->check_codes_index]['name'] : $this->check_codes_index;
+
+        if ($check_option_always) {
+          // first option with index 0 is always inserted
+          // first check option has index 1
+          $this->code_version = isset ($this->check_codes_data [$this->check_codes_index]['index']) && trim ($this->check_codes_data [$this->check_codes_index]['index']) != '' ? (int) $this->check_codes_data [$this->check_codes_index]['index'] : $this->check_codes_index;
+          $this->version_name = isset ($this->check_codes_data [$this->check_codes_index]['name']) ? $this->check_codes_data [$this->check_codes_index]['name'] : '';
+        } else {
+            // first check option has index 0
+            $this->code_version = isset ($this->check_codes_data [$this->check_codes_index]['index']) && trim ($this->check_codes_data [$this->check_codes_index]['index']) != '' ? (int) $this->check_codes_data [$this->check_codes_index]['index'] : $this->check_codes_index + 1;
+            $this->version_name = isset ($this->check_codes_data [$this->check_codes_index]['name']) ? $this->check_codes_data [$this->check_codes_index]['name'] : '';
+          }
+
+      } else {
+          // Clear for ROTATE in case of multiple block insertions (CHECK separator)
+          $this->code_version = 0;
+          $this->version_name = '';
+        }
+
 
       preg_match_all ('/\|rotate([0-9]+?)\|/', $processed_code, $matches);
 
@@ -4625,6 +4673,7 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
                 }
 
                 $processed_code = $this->generate_html_from_w3tc_code ();
+
                 break;
             }
           }
@@ -5321,10 +5370,39 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
     $code = '';
     $this->check_code_insertions = null;
 
+    $check_options = 0;
+    $w3tc_options = false;
+    $w3tc_codes = '';
+
     do {
-      $code .= $this->get_code_for_single_insertion ($include_viewport_classes, $hidden_widgets, $code_only);
+      $code_for_single_insertion = $this->get_code_for_single_insertion ($include_viewport_classes, $hidden_widgets, $code_only);
+
+      $check_options ++;
+      if ($this->w3tc_code != '') {
+        $w3tc_options = true;
+        $w3tc_code = $this->w3tc_code;
+      } else {
+          // Gnerate W3TC code if W3TC was not used for the option
+          $w3tc_code = '$ai_code = base64_decode (\''.base64_encode ($code).'\'); $ai_enabled = true;';
+        }
+
+      // $w3tc_codes will be used only if any of the options uses W3TC
+      $w3tc_codes .= $w3tc_code . ' if (!isset ($ai_check_code)) $ai_check_code = \'\'; $ai_check_code .= $ai_code;';
+
+      $code .= $code_for_single_insertion;
     } while (is_array ($this->check_codes) && isset ($this->check_codes [$this->check_codes_index + 1]));
 
+    if ($w3tc_options) {
+      switch ($check_options) {
+        case 1:
+          // Nothing to do - leave the object as it is including $this->w3tc_code
+          break;
+        default:
+          // Put merged options into $ai_code
+          $this->w3tc_code = $w3tc_codes . ' $ai_code = $ai_check_code; $ai_enabled = true;';
+          break;
+      }
+    } else $this->w3tc_code = '';
 
     if (is_array ($this->check_codes)) {
       if ($this->check_code_insertions === null) {
@@ -5343,6 +5421,7 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
 
       // Additional code (ad label, close button) for a CHECK block
       if ($this->check_block_additional_code != '') {
+        // Close button will not be inserted on empty block
         if ($w3tc) {
           if ($ai_wp_data [AI_W3TC_DEBUGGING]) {
             $this->w3tc_debug []= 'PROCESS ADDITIONAL CODE';
@@ -5375,12 +5454,6 @@ abstract class ai_CodeBlock extends ai_BaseCodeBlock {
 
         if ($w3tc) {
           $this->w3tc_code .= ' $ai_code = base64_decode (\''.base64_encode ($wrapper_before).'\') . $ai_code . base64_decode (\''.$this->base64_encode_w3tc ($wrapper_after, false).'\');';
-
-          // Process W3TC filter hook
-          $this->w3tc_code .= ' $ai_code_org = $ai_code; if (!isset ($ai_enabled) || $ai_enabled) {$ai_code = apply_filters ("ai_block_w3tc_code_single_insertion", $ai_code_org, ' . $this->number . ');}';
-          if ($ai_wp_data [AI_W3TC_DEBUGGING]) {
-            $this->w3tc_code .= ' if ($ai_code != $ai_code_org) {$ai_code = ai_w3tc_block_end_message ("PROCESS HOOK FILTER ai_block_w3tc_code_single_insertion", $ai_code);}';
-          }
 
           $code = $this->generate_html_from_w3tc_code ();
         } else $code = $wrapper_before . $code . $wrapper_after;
@@ -6866,19 +6939,19 @@ echo '</body>
               }
             }
           }
-          elseif ($position > 0 && $position < 1) {
+          elseif (is_numeric ($position) && $position > 0 && $position < 1) {
             $positions [$index] = intval ($position * (count ($paragraph_positions) - 1) + 0.5);
           }
-          elseif ($position > - 1 && $position < 0) {
+          elseif (is_numeric ($position) && $position > - 1 && $position < 0) {
             $positions [$index] = intval (count ($paragraph_positions) + $position * (count ($paragraph_positions) - 1) - 0.5);
           }
-          elseif ($position <= - 1) {
+          elseif (is_numeric ($position) && $position <= - 1) {
             $positions [$index] = count ($paragraph_positions) + $position;
           }
           elseif ($position == 0) {
             $positions [$index] = mt_rand (0, count ($paragraph_positions) - 1);
           }
-          else $positions [$index] = $position - 1;
+          else $positions [$index] = (int) $position - 1;
         }
         $positions = array_unique (array_merge ($positions, $new_positions));
         sort ($positions);
@@ -7792,19 +7865,19 @@ echo '</body>
               }
             }
           }
-          elseif ($position > 0 && $position < 1) {
+          elseif (is_numeric ($position) && $position > 0 && $position < 1) {
             $positions [$index] = intval ($position * (count ($paragraph_positions) - 1) + 0.5);
           }
-          elseif ($position > - 1 && $position < 0) {
+          elseif (is_numeric ($position) && $position > - 1 && $position < 0) {
             $positions [$index] = intval (count ($paragraph_positions) + $position * (count ($paragraph_positions) - 1) - 0.5);
           }
-          elseif ($position <= - 1) {
+          elseif (is_numeric ($position) && $position <= - 1) {
             $positions [$index] = count ($paragraph_positions) + $position;
           }
           elseif ($position == 0) {
             $positions [$index] = mt_rand (0, count ($paragraph_positions) - 1);
           }
-          else $positions [$index] = $position - 1;
+          else $positions [$index] = (int) $position - 1;
         }
         $positions = array_unique (array_merge ($positions, $new_positions));
         sort ($positions);
@@ -10175,7 +10248,7 @@ class ai_code_generator {
     return array ('type' => AI_CODE_UNKNOWN);
   }
 
-  public function import_rotation ($code){
+  public function import_rotation ($code, $extract_check_names = false){
     global $ai_expand_only_rotate_count_check, $ai_wp_data;
 
     $data = array (
@@ -10195,6 +10268,27 @@ class ai_code_generator {
     $ai_expand_only_rotate_count_check = false;
 
     if (strpos ($code, AD_CHECK_SEPARATOR) !== false) {
+      if (!$extract_check_names) {
+        return $data;
+      }
+
+      if (function_exists ('ai_check_separators') && isset ($ai_wp_data [AI_SHORTCODES]['check'][0]['check']) && $ai_wp_data [AI_SHORTCODES]['check'][0]['check'] == 'statistics') {
+        $check_parameters = $ai_wp_data [AI_SHORTCODES]['check'];
+
+        $options = explode (AD_CHECK_SEPARATOR, $code);
+        $data ['options'] = array ();
+        foreach ($options as $index => $option) {
+          $option_code = trim ($option, "\n");
+          $option_name = isset ($check_parameters [$index - 1]['name']) ? $check_parameters [$index - 1]['name'] : '';
+          $option_index = isset ($check_parameters [$index - 1]['index']) && $check_parameters [$index - 1]['index'] != '' ? (int) $check_parameters [$index - 1]['index'] : $index;
+
+          // Skip option before first CHECK shortcode (always inserted)
+          if ($option_index == 0) continue;
+
+          $data ['options'][$option_index - 1] = array ('name' => $option_name);
+        }
+      }
+
       return $data;
     }
 

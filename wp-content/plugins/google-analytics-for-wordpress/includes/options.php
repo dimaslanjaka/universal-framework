@@ -418,6 +418,17 @@ function monsterinsights_sanitize_tracking_id( $id ) {
 }
 
 /**
+ * Is this a valid GT code
+ *
+ * @param string $gt_code
+ *
+ * @return bool
+ */
+function monsterinsights_is_valid_gt( $gt_code = '' ) {
+	return (bool) preg_match( '/^GT-[a-zA-Z0-9]{5,}$/', $gt_code );
+}
+
+/**
  * Is valid ua code.
  *
  * @access public
@@ -430,7 +441,10 @@ function monsterinsights_sanitize_tracking_id( $id ) {
 function monsterinsights_is_valid_ua( $ua_code = '' ) {
 	$ua_code = monsterinsights_sanitize_tracking_id( $ua_code );
 
-	if ( preg_match( "/^(UA|YT|MO)-\d{4,}-\d+$/", $ua_code ) ) {
+	if (
+		preg_match( "/^(UA|YT|MO)-\d{4,}-\d+$/", $ua_code ) ||
+		monsterinsights_is_valid_gt( $ua_code )
+	) {
 		return $ua_code;
 	}
 
@@ -440,7 +454,10 @@ function monsterinsights_is_valid_ua( $ua_code = '' ) {
 function monsterinsights_is_valid_v4_id( $v4_code = '' ) {
 	$v4_code = monsterinsights_sanitize_tracking_id( $v4_code );
 
-	if ( preg_match( '/G-[A-Za-z\d]+/', $v4_code ) ) {
+	if (
+		preg_match( '/G-[A-Za-z\d]+/', $v4_code ) ||
+		monsterinsights_is_valid_gt( $v4_code )
+	) {
 		return strtoupper( $v4_code );
 	}
 

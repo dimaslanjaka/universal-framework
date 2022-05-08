@@ -22,6 +22,23 @@ function generate_settings_form (){
 
   wp_enqueue_media();
 
+  if (isset ($_GET ['ai-demo']) && get_option (AI_OPTION_NAME) === false) {
+    $ai_demo = (int) $_GET ['ai-demo'];
+
+    $download_url = "https://adinserter.pro/downloads/ai-demo-{$ai_demo}.txt";
+    $ai_demo_settings_file = download_url ($download_url);
+
+    if (is_string ($ai_demo_settings_file) && file_exists ($ai_demo_settings_file)) {
+      $ai_demo_settings = file_get_contents ($ai_demo_settings_file);
+
+      if (is_string ($ai_demo_settings) && substr ($ai_demo_settings, 0, 4) === ':AI:') {
+        update_option (AI_OPTION_NAME, $ai_demo_settings);
+        ai_load_settings ();
+      }
+    }
+    @unlink ($ai_demo_settings_file);
+  }
+
   $save_url = $_SERVER ['REQUEST_URI'];
   if (isset ($_GET ['tab'])) {
     $save_url = preg_replace ("/&tab=\d+/", "", $save_url);
@@ -2323,8 +2340,10 @@ function generate_settings_form (){
                 <td style="padding-left: 20px; width: 70%;">
                   <?php _e ('Background color', 'ad-inserter'); ?>
 
-                  <input id="block-bkg-color-<?php echo $block; ?>" style="font-family: monospace;" type="text" title= "<?php _e ('Block background: empty means background not defined, #hex number means HTML color', 'ad-inserter'); ?>" size="7" maxlength="7" name="<?php echo AI_OPTION_BLOCK_BACKGROUND_COLOR, WP_FORM_FIELD_POSTFIX, $block; ?>" value="<?php echo $obj->get_block_background_color (); ?>" default="<?php echo $default->get_block_background_color (); ?>" />
-                  <span id="block-color-<?php echo $block; ?>" style="display: inline-block; width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px; vertical-align: top; margin-left: 10px;"></span>
+                  <input id="block-bkg-color-<?php echo $block; ?>" style="font-family: monospace;" type="text" title= "<?php _e ('Block background: empty means background not defined, #hex number means HTML color', 'ad-inserter'); ?>" size="24" maxlength="26" name="<?php echo AI_OPTION_BLOCK_BACKGROUND_COLOR, WP_FORM_FIELD_POSTFIX, $block; ?>" value="<?php echo $obj->get_block_background_color (); ?>" default="<?php echo $default->get_block_background_color (); ?>" />
+                  <span class="ai-colorpicker-alpha" style="position: relative; display: inline-block; width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px; vertical-align: top; margin-left: 10px;">
+                    <span id="block-color-<?php echo $block; ?>" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;"></span>
+                  </span>
                 </td>
 
                 <td style="padding-left: 20px; width: 10%;">
@@ -3541,6 +3560,8 @@ function generate_settings_form (){
     replace_blocked_image ('ai-sa-2',       'sa-2.gif',             'block');
     replace_blocked_image ('ai-ap-1',       'ap-1.png',             'block');
     replace_blocked_image ('ai-ap-2',       'ap-2.png',             'block');
+    replace_blocked_image ('ai-um-1',       'um-1.png',             'block');
+    replace_blocked_image ('ai-um-2',       'um-2.png',             'block');
     replace_blocked_image ('ai-pro-1',      'icon-256x256.jpg',     'block');
     replace_blocked_image ('ai-pro-2',      'ai-charts-250.png',    'block');
     replace_blocked_image ('ai-pro-3',      'ai-countries-250.png', 'block');
@@ -5563,12 +5584,12 @@ function sidebar_addense_alternative () { ?>
 ?>
       <div class="ai-form header rounded">
         <div style="float: left;">
-          <h2 style="display: inline-block; margin: 5px 0;"><?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?></h2>
+          <h2 style="display: inline-block; margin: 5px 0;"><?php _e ('Maximize Revenue', 'ad-inserter'); ?></h2>
         </div>
         <div style="clear: both;"></div>
       </div>
       <div class="ai-form rounded" style="height: 90px; padding: 8px 4px 8px 12px;">
-        <a href="https://www.adpushup.com/publisher/get-started?utm_source=ad_inserter" class="clear-link" title="<?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?>" target="_blank"><img id="ai-ap-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ap-2.png" /></a>
+        <a href="https://underdogmedia.com/edge-publisher-adinserter/" class="clear-link" title="<?php _e ('Maximize Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-um-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>um-1.png" /></a>
       </div>
 <?php
       break;
@@ -5751,7 +5772,7 @@ function sidebar_pro () {
             <a href='https://setupad.com/maximise-your-ad-revenue-with-header-bidding/?utm_source=ad-inserter-plugin&utm_medium=banner&utm_campaign=250x250-Maximise-Your-Ad-Revenue' class="clear-link" title="<?php _e ('Maximize Your Ad Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-sa-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>sa-1.png" /></a>
 <?php   break; case 2: ?>
 <!--            <a href="https://adinserter.pro/documentation/ad-impression-and-click-tracking" class="clear-link" title="<?php _e ('A/B testing - Track ad impressions and clicks', 'ad-inserter'); ?>" target="_blank"><img id="ai-pro-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-charts-250.png" /></a>-->
-            <a href="https://www.adpushup.com/publisher/get-started?utm_source=ad_inserter" class="clear-link" title="<?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?>" target="_blank"><img id="ai-ap-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ap-1.png" /></a>
+            <a href="https://underdogmedia.com/edge-publisher-adinserter/" class="clear-link" title="<?php _e ('Maximize Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-um-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>um-2.png" /></a>
 <?php   break; case 3: ?>
             <a href="https://www.ezoic.com/?utm_source=ad-inserter&utm_medium=ads&utm_campaign=ad-inserter-ads&utm_term=adinserter&utm_content=ezoic&loc=2" class="clear-link" title="<?php _e ('Looking for AdSense alternative?', 'ad-inserter'); ?>" target="_blank"><img id="ai-ez-7" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ez-7.jpg" /></a>
 <?php   break;
@@ -5776,7 +5797,7 @@ function sidebar_pro () {
         case 3:
 ?>
 <!--            <a href='https://adinserter.pro/documentation/ad-blocking-detection' class="clear-link" title="<?php _e ('Ad blocking detection and content protection', 'ad-inserter'); ?>" target="_blank"><img id="ai-adb" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-adb.png" /></a>-->
-            <a href="https://www.adpushup.com/publisher/get-started?utm_source=ad_inserter" class="clear-link" title="<?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?>" target="_blank"><img id="ai-ap-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ap-1.png" /></a>
+            <a href="https://underdogmedia.com/edge-publisher-adinserter/" class="clear-link" title="<?php _e ('Maximize Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-um-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>um-2.png" /></a>
 <?php   break;
       } ?>
           </div>
@@ -5788,7 +5809,7 @@ function sidebar_pro () {
             <a href="https://www.ezoic.com/?utm_source=ad-inserter&utm_medium=ads&utm_campaign=ad-inserter-ads&utm_term=adinserter&utm_content=ezoic&loc=2" class="clear-link" title="<?php _e ('Looking for AdSense alternative?', 'ad-inserter'); ?>" target="_blank"><img id="ai-ez-7" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ez-7.jpg" /></a>
 <?php   break; case 1: ?>
 <!--            <a href="https://adinserter.pro/documentation/black-and-white-lists#geo-targeting" class="clear-link" title="Geotargeting - black/white-list countries" target="_blank"><img id="ai-pro-3" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-countries-250.png" /></a>-->
-            <a href="https://www.adpushup.com/publisher/get-started?utm_source=ad_inserter" class="clear-link" title="<?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?>" target="_blank"><img id="ai-ap-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ap-1.png" /></a>
+            <a href="https://underdogmedia.com/edge-publisher-adinserter/" class="clear-link" title="<?php _e ('Maximize Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-um-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>um-2.png" /></a>
 <?php   break; case 2: ?>
 <!--            <a href="https://adinserter.pro/documentation/black-and-white-lists#geo-targeting" class="clear-link" title="Geotargeting - black/white-list countries" target="_blank"><img id="ai-pro-3" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-countries-250.png" /></a>-->
             <a href='https://setupad.com/maximise-your-ad-revenue-with-header-bidding/?utm_source=ad-inserter-plugin&utm_medium=banner&utm_campaign=250x250-Maximise-Your-Ad-Revenue' class="clear-link" title="<?php _e ('Maximize Your Ad Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-sa-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>sa-1.png" /></a>
@@ -5804,7 +5825,7 @@ function sidebar_pro () {
         case 0:
 ?>
 <!--            <a href='https://adinserter.pro/documentation/code-preview' class="clear-link" title="<?php _e ('Code preview with visual CSS editor', 'ad-inserter'); ?>" target="_blank"><img id="ai-preview" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-preview-250.png" /></a>-->
-            <a href="https://www.adpushup.com/publisher/get-started?utm_source=ad_inserter" class="clear-link" title="<?php _e ('Supercharge your AdSense revenue by upto 40%', 'ad-inserter'); ?>" target="_blank"><img id="ai-ap-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ap-1.png" /></a>
+            <a href="https://underdogmedia.com/edge-publisher-adinserter/" class="clear-link" title="<?php _e ('Maximize Revenue', 'ad-inserter'); ?>" target="_blank"><img id="ai-um-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>um-2.png" /></a>
 <!--            <a href="https://adinserter.pro/documentation/ad-impression-and-click-tracking" class="clear-link" title="<?php _e ('A/B testing - Track ad impressions and clicks', 'ad-inserter'); ?>" target="_blank"><img id="ai-pro-2" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>ai-charts-250.png" /></a>-->
 <!--            <a href="https://adinserter.pro/" class="clear-link" title="Automate ad placement on posts and pages" target="_blank"><img id="ai-pro-1" src="<?php echo AD_INSERTER_PLUGIN_IMAGES_URL; ?>icon-256x256.jpg" /></a>-->
 <?php   break;

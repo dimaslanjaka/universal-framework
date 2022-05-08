@@ -49,7 +49,7 @@ class SimpleHistory {
 
 	/**
 	 * Used to store latest translations used by __()
-	 * Required to automagically determine orginal text and text domain
+	 * Required to automagically determine original text and text domain
 	 * for calls like this `SimpleLogger()->log( __("My translated message") );`
 	 */
 	public $gettextLatestTranslations = array();
@@ -127,7 +127,7 @@ class SimpleHistory {
 
 		/**
 		 * Filter that is used to log things, without the need to check that simple history is available
-		 * i.e. you can have simple history acivated and log things and then you can disable the plugin
+		 * i.e. you can have simple history activated and log things and then you can disable the plugin
 		 * and no errors will occur
 		 *
 		 * Usage:
@@ -178,7 +178,7 @@ class SimpleHistory {
 	 * @since 2.13
 	 * @param string $message The message to log.
 	 * @param array  $context Optional context to add to the logged data.
-	 * @param string $level The loglevel. Must be one of the existing ones. Defaults to "info".
+	 * @param string $level The log level. Must be one of the existing ones. Defaults to "info".
 	 */
 	public function on_filter_simple_history_log( $message = null, $context = null, $level = 'info' ) {
 		SimpleLogger()->log( $level, $message, $context );
@@ -329,9 +329,12 @@ class SimpleHistory {
 			return;
 		}
 
-		/*
-		 menu_page_url() is defined in the WordPress Plugin Administration API, which is not loaded here by default */
-		/* dito for is_plugin_active() */
+		/**
+		 * `menu_page_url()` is defined in the WordPress Plugin Administration API,
+		 * which is not loaded here by default
+		 *
+		 * ditto for `is_plugin_active()`
+		 */
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 		foreach ( (array) $wp_admin_bar->user->blogs as $blog ) {
@@ -420,7 +423,7 @@ class SimpleHistory {
 	}
 
 	/**
-	 * Get singleton intance
+	 * Get singleton instance
 	 *
 	 * @return SimpleHistory instance
 	 */
@@ -620,7 +623,7 @@ class SimpleHistory {
 		if ( empty( $args ) || ! $type ) {
 			wp_send_json_error(
 				array(
-					_x( 'Not enough args specified', 'API: not enought arguments passed', 'simple-history' ),
+					_x( 'Not enough args specified', 'API: not enough arguments passed', 'simple-history' ),
 				)
 			);
 		}
@@ -650,7 +653,7 @@ class SimpleHistory {
 
 				$data['api_args'] = $args;
 
-				// Output can be array or HMTL
+				// Output can be array or HTML
 				if ( isset( $args['format'] ) && 'html' === $args['format'] ) {
 					$data['log_rows_raw'] = array();
 
@@ -740,43 +743,110 @@ class SimpleHistory {
 	}
 
 	/**
-	 * Return capability required to view history = for who will the History page be added
+	 * Return capability required to view history = for who will the History page be added.
+	 * Default capability is "edit_pages".
 	 *
 	 * @since 2.1.5
 	 * @return string capability
 	 */
 	public function get_view_history_capability() {
 		$view_history_capability = 'edit_pages';
+
+		/**
+		 * Deprecated, use filter `simple_history/view_history_capability` instead.
+		 */
 		$view_history_capability = apply_filters( 'simple_history_view_history_capability', $view_history_capability );
+
+		/**
+		 * Filter the capability required to view main simple history page, with the activity feed.
+		 * Default capability is "edit_pages".
+		 *
+		 * @example Change the capability required to view the log to "manage options", so only allow admins are allowed to view the history log page.
+		 *
+		 * ```php
+		 *  add_filter(
+		 *      'simple_history/view_history_capability',
+		 *      function ( $capability ) {
+		 *          $capability = 'manage_options';
+		 *          return $capability;
+		 *      }
+		 *  );
+		 * ```
+		 *
+		 * @param string $view_history_capability
+		 */
 		$view_history_capability = apply_filters( 'simple_history/view_history_capability', $view_history_capability );
 
 		return $view_history_capability;
 	}
 
 	/**
-	 * Return capability required to view settings
+	 * Return capability required to view settings.
+	 * Default capability is "manage_options",
+	 * but can be modified using filter.
 	 *
 	 * @since 2.1.5
 	 * @return string capability
 	 */
 	public function get_view_settings_capability() {
 		$view_settings_capability = 'manage_options';
+
+		/**
+		 * Old filter name, use `simple_history/view_settings_capability` instead.
+		 */
 		$view_settings_capability = apply_filters( 'simple_history_view_settings_capability', $view_settings_capability );
+
+		/**
+		 * Filters the capability required to view the settings page.
+		 *
+		 * @example Change capability required to view the
+		 *
+		 * ```php
+		 *  add_filter(
+		 *      'simple_history/view_settings_capability',
+		 *      function ( $capability ) {
+		 *
+		 *          $capability = 'manage_options';
+		 *          return $capability;
+		 *      }
+		 *  );
+		 * ```
+		 *
+		 * @param string $view_settings_capability
+		 */
 		$view_settings_capability = apply_filters( 'simple_history/view_settings_capability', $view_settings_capability );
 
 		return $view_settings_capability;
 	}
 
 	/**
-	 * Check if the current user can clear the log
+	 * Check if the current user can clear the log.
 	 *
 	 * @since 2.19
 	 * @return bool
 	 */
 	public function user_can_clear_log() {
-		$user_can_clear_log = apply_filters( 'simple_history/user_can_clear_log', true );
-
-		return $user_can_clear_log;
+		/**
+		 * Allows controlling who can manually clear the log.
+		 * When this is true then the "Clear"-button in shown in the settings.
+		 * When this is false then no button is shown.
+		 *
+		 * @example
+		 * ```php
+		 *  // Remove the "Clear log"-button, so a user with admin access can not clear the log
+		 *  // and wipe their mischievous behavior from the log.
+		 *  add_filter(
+		 *      'simple_history/user_can_clear_log',
+		 *      function ( $user_can_clear_log ) {
+		 *          $user_can_clear_log = false;
+		 *          return $user_can_clear_log;
+		 *      }
+		 *  );
+		 * ```
+		 *
+		 * @param bool $allow Whether the current user is allowed to clear the log.
+		*/
+		return apply_filters( 'simple_history/user_can_clear_log', true );
 	}
 
 	/**
@@ -792,7 +862,7 @@ class SimpleHistory {
 			),
 		);
 
-		if ( defined( 'SIMPLE_HISTORY_DEV' ) && SIMPLE_HISTORY_DEV ) {
+		if ( defined( 'SIMPLE_HISTORY_DEV' ) && constant( 'SIMPLE_HISTORY_DEV' ) ) {
 			$arr_dev_tabs = array(
 				array(
 					'slug' => 'log',
@@ -937,12 +1007,15 @@ class SimpleHistory {
 		}
 
 		/**
-		 * Action that plugins can use to add their custom loggers.
+		 * Fires after the list of loggers to load are populated.
+		 *
+		 * Can for example be used by plugin to load their own custom loggers.
+		 *
 		 * See register_logger() for more info.
 		 *
 		 * @since 2.1
 		 *
-		 * @param SimpleHistory instance
+		 * @param SimpleHistory $this Simple History instance.
 		 */
 		do_action( 'simple_history/add_custom_logger', $this );
 
@@ -1120,12 +1193,14 @@ class SimpleHistory {
 		} // End foreach().
 
 		/**
-		 * Action that dropins can use to add their custom loggers.
+		 * Fires after the list of dropins to load are populated.
+		 * Can for example be used by dropins can to add their own custom loggers.
+		 *
 		 * See register_dropin() for more info.
 		 *
 		 * @since 2.3.2
 		 *
-		 * @param array $arrDropinsToInstantiate Array with class names
+		 * @param SimpleHistory $this Simple History instance.
 		 */
 		do_action( 'simple_history/add_custom_dropin', $this );
 
@@ -1806,7 +1881,7 @@ Because Simple History was only recently installed, this feed does not display m
 
 	/**
 	 * Add setting sections and settings for the settings page
-	 * Also maybe save some settings before outputing them
+	 * Also maybe save some settings before outputting them
 	 */
 	public function add_settings() {
 		// Clear the log if clear button was clicked in settings
@@ -1952,7 +2027,7 @@ Because Simple History was only recently installed, this feed does not display m
 	}
 
 	/**
-	 * Get setting if plugin should be visible on dasboard.
+	 * Get setting if plugin should be visible on dashboard.
 	 * Defaults to true
 	 *
 	 * @return bool
@@ -2093,13 +2168,33 @@ Because Simple History was only recently installed, this feed does not display m
 	public function get_clear_history_interval() {
 		$days = 60;
 
+		// Deprecated filter name, use `simple_history/db_purge_days_interval` instead.
+		$days = (int) apply_filters( 'simple_history_db_purge_days_interval', $days );
+
 		/**
 		 * Filter to modify number of days of history to keep.
 		 * Default is 60 days.
 		 *
-		 * @param $days Number of days of history to keep
+		 * @example Keep only the most recent 7 days in the log.
+		 *
+		 * ```php
+		 * add_filter( "simple_history/db_purge_days_interval", function( $days ) {
+		 *      $days = 7;
+		 *      return $days;
+		 *  } );
+		 * ```
+		 *
+		 * @example Expand the log to keep 90 days in the log.
+		 *
+		 * ```php
+		 * add_filter( "simple_history/db_purge_days_interval", function( $days ) {
+		 *      $days = 90;
+		 *      return $days;
+		 *  } );
+		 * ```
+		 *
+		 * @param int $days Number of days of history to keep
 		 */
-		$days = (int) apply_filters( 'simple_history_db_purge_days_interval', $days );
 		$days = (int) apply_filters( 'simple_history/db_purge_days_interval', $days );
 
 		return $days;
@@ -2327,7 +2422,7 @@ Because Simple History was only recently installed, this feed does not display m
 
 	/**
 	 * Works like json_encode, but adds JSON_PRETTY_PRINT if the current php version supports it
-	 * i.e. PHP is 5.4.0 or greated
+	 * i.e. PHP is 5.4.0 or greater
 	 *
 	 * @param mixed $value array|object|string|whatever that is json_encode'able.
 	 */
@@ -2424,7 +2519,7 @@ Because Simple History was only recently installed, this feed does not display m
 		}
 
 		// If type is single then include more details.
-		// This is typically shown in the modal window when clickin the event date and time.
+		// This is typically shown in the modal window when clicking the event date and time.
 		$more_details_html = '';
 		if ( $args['type'] == 'single' ) {
 			$more_details_html = apply_filters(
@@ -2456,13 +2551,34 @@ Because Simple History was only recently installed, this feed does not display m
 			 *
 			 * Array is in format
 			 *
-			 *   Array
+			 * ```
+			 *  Array
 			 *   (
 			 *       [id] => 1
 			 *       [logger] => 1
 			 *       [level] => 1
 			 *       ...
 			 *   )
+			 * ```
+			 *
+			 * @example Hide some columns from the detailed context view popup window
+			 *
+			 * ```php
+			 *  add_filter(
+			 *      'simple_history/log_html_output_details_table/row_keys_to_show',
+			 *      function ( $logRowKeysToShow, $oneLogRow ) {
+			 *
+			 *          $logRowKeysToShow['id'] = false;
+			 *          $logRowKeysToShow['logger'] = false;
+			 *          $logRowKeysToShow['level'] = false;
+			 *          $logRowKeysToShow['message'] = false;
+			 *
+			 *          return $logRowKeysToShow;
+			 *      },
+			 *      10,
+			 *      2
+			 *  );
+			 * ```
 			 *
 			 * @since 2.0.29
 			 *
@@ -2487,7 +2603,7 @@ Because Simple History was only recently installed, this feed does not display m
 			);
 
 			foreach ( $oneLogRow as $rowKey => $rowVal ) {
-				// Only columns from oneLogRow that exist in logRowKeysToShow will be outputed
+				// Only columns from oneLogRow that exist in logRowKeysToShow will be outputted
 				if ( ! array_key_exists( $rowKey, $logRowKeysToShow ) || ! $logRowKeysToShow[ $rowKey ] ) {
 					continue;
 				}
@@ -2510,10 +2626,11 @@ Because Simple History was only recently installed, this feed does not display m
 			$logRowContextKeysToShow = array_fill_keys( array_keys( (array) $oneLogRow->context ), true );
 
 			/**
-			 * Filter what keys to show from the row context
+			 * Filter what keys to show from the row context.
 			 *
-			 * Array is in format
+			 * Array is in format:
 			 *
+			 * ```
 			 *   Array
 			 *   (
 			 *       [plugin_slug] => 1
@@ -2524,6 +2641,27 @@ Because Simple History was only recently installed, this feed does not display m
 			 *       [plugin_version] => 1
 			 *       ...
 			 *   )
+			 * ```
+			 *
+			 *  @example Hide some more columns from the detailed context view popup window
+			 *
+			 * ```php
+			 *  add_filter(
+			 *      'simple_history/log_html_output_details_table/context_keys_to_show',
+			 *      function ( $logRowContextKeysToShow, $oneLogRow ) {
+			 *
+			 *          $logRowContextKeysToShow['plugin_slug'] = false;
+			 *          $logRowContextKeysToShow['plugin_name'] = false;
+			 *          $logRowContextKeysToShow['plugin_title'] = false;
+			 *          $logRowContextKeysToShow['plugin_description'] = false;
+			 *
+			 *          return $logRowContextKeysToShow;
+			 *      },
+			 *      10,
+			 *      2
+			 *  );
+			 * ```
+			 *
 			 *
 			 * @since 2.0.29
 			 *
@@ -2537,7 +2675,7 @@ Because Simple History was only recently installed, this feed does not display m
 			);
 
 			foreach ( $oneLogRow->context as $contextKey => $contextVal ) {
-				// Only columns from context that exist in logRowContextKeysToShow will be outputed
+				// Only columns from context that exist in logRowContextKeysToShow will be outputted
 				if (
 					! array_key_exists( $contextKey, $logRowContextKeysToShow ) ||
 					! $logRowContextKeysToShow[ $contextKey ]
@@ -2769,8 +2907,38 @@ Because Simple History was only recently installed, this feed does not display m
 		foreach ( $loggers as $one_logger ) {
 			$logger_capability = $one_logger['instance']->getCapability();
 
-			// $arr_loggers_user_can_view = apply_filters("simple_history/loggers_user_can_read", $user_id, $arr_loggers_user_can_view);
 			$user_can_read_logger = user_can( $user_id, $logger_capability );
+
+			/**
+			 * Filters who can read/view the messages from a single logger.
+			 *
+			 * @example Modify who can read a logger.
+			 *
+			 * ```php
+			 * // Modify who can read a logger.
+			 * // Modify the if part to give users access or no access to a logger.
+			 * add_filter(
+			 *   'simple_history/loggers_user_can_read/can_read_single_logger',
+			 *   function ( $user_can_read_logger, $logger_instance, $user_id ) {
+			 *     // in this example user with id 3 gets access to the post logger
+			 *     // while user with id 8 does not get any access to it
+			 *     if ( $logger_instance->slug == 'SimplePostLogger' && $user_id === 3 ) {
+			 *       $user_can_read_logger = true;
+			 *     } elseif ( $logger_instance->slug == 'SimplePostLogger' && $user_id === 9 ) {
+			 *       $user_can_read_logger = false;
+			 *     }
+			 *
+			 *      return $user_can_read_logger;
+			 *    },
+			 *  10,
+			 *  3
+			 * );
+			 * ```
+			 *
+			 * @param bool Wheter the user is allowed to view the logger.
+			 * @param SimpleLogger Logger instance.
+			 * @param int $user_id Id of user.
+			 */
 			$user_can_read_logger = apply_filters(
 				'simple_history/loggers_user_can_read/can_read_single_logger',
 				$user_can_read_logger,
@@ -2826,6 +2994,7 @@ Because Simple History was only recently installed, this feed does not display m
 	 * want to allow/show gravatars even if they are disabled in discussion settings
 	 *
 	 * @since 2.0
+	 * @since 3.3 Respects gravatar setting in discussion settings.
 	 *
 	 * @param string $email email address
 	 * @param int    $size Size of the avatar image
@@ -2833,95 +3002,34 @@ Because Simple History was only recently installed, this feed does not display m
 	 * @param string $alt Alternative text to use in image tag. Defaults to blank
 	 * @return string <img> tag for the user's avatar
 	 */
-	public function get_avatar( $email, $size = '96', $default = '', $alt = false ) {
-		// WP setting for avatars is to show, so just use the built in function
-		if ( get_option( 'show_avatars' ) ) {
-			$avatar = get_avatar( $email, $size, $default, $alt );
+	public function get_avatar( $email, $size = '96', $default = '', $alt = false, $args = array() ) {
+		$args = array(
+			'force_display' => false,
+		);
 
-			return $avatar;
-		} else {
-			// WP setting for avatar was to not show, but we do it anyway, using the same code as get_avatar() would have used
-			if ( false === $alt ) {
-				$safe_alt = '';
-			} else {
-				$safe_alt = esc_attr( $alt );
-			}
+		/**
+		 * Filter to control if avatars should be displayed, even if the show_avatars option
+		 * is set to false in WordPress discussion settings.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @example Force display of Gravatars
+		 *
+		 * ```php
+		 *  add_filter(
+		 *      'simple_history/show_avatars',
+		 *      function ( $force ) {
+		 *          $force = true;
+		 *          return $force;
+		 *      }
+		 *  );
+		 * ```
+		 *
+		 * @param bool Force display. Default false.
+		 */
+		$args['force_display'] = apply_filters( 'simple_history/show_avatars', $args['force_display'] );
 
-			if ( ! is_numeric( $size ) ) {
-				$size = '96';
-			}
-
-			if ( empty( $default ) ) {
-				$avatar_default = get_option( 'avatar_default' );
-				if ( empty( $avatar_default ) ) {
-					$default = 'mystery';
-				} else {
-					$default = $avatar_default;
-				}
-			}
-
-			if ( ! empty( $email ) ) {
-				$email_hash = md5( strtolower( trim( $email ) ) );
-			}
-
-			if ( is_ssl() ) {
-				$host = 'https://secure.gravatar.com';
-			} else {
-				if ( ! empty( $email ) ) {
-					$host = sprintf( 'http://%d.gravatar.com', hexdec( $email_hash[0] ) % 2 );
-				} else {
-					$host = 'http://0.gravatar.com';
-				}
-			}
-
-			if ( 'mystery' == $default ) {
-				$default = "$host/avatar/ad516503a11cd5ca435acc9bb6523536?s={$size}";
-			} elseif ( 'blank' == $default ) {
-				$default = $email ? 'blank' : includes_url( 'images/blank.gif' );
-			} elseif ( ! empty( $email ) && 'gravatar_default' == $default ) {
-				$default = '';
-			} elseif ( 'gravatar_default' == $default ) {
-				$default = "$host/avatar/?s={$size}";
-			} elseif ( empty( $email ) ) {
-				$default = "$host/avatar/?d=$default&amp;s={$size}";
-			} elseif ( strpos( $default, 'http://' ) === 0 ) {
-				$default = add_query_arg( 's', $size, $default );
-			}
-
-			if ( ! empty( $email ) ) {
-				$out = "$host/avatar/";
-				$out .= $email_hash;
-				$out .= '?s=' . $size;
-				$out .= '&amp;d=' . urlencode( $default );
-
-				$rating = get_option( 'avatar_rating' );
-				if ( ! empty( $rating ) ) {
-					$out .= "&amp;r={$rating}";
-				}
-
-				$out = str_replace( '&#038;', '&amp;', esc_url( $out ) );
-				$avatar = "<img alt='{$safe_alt}' src='{$out}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
-			} else {
-				$out = esc_url( $default );
-				$avatar = "<img alt='{$safe_alt}' src='{$out}' class='avatar avatar-{$size} photo avatar-default' height='{$size}' width='{$size}' />";
-			}
-
-			/**
-			 * Filter the avatar to retrieve.
-			 * Same filter WordPress uses
-			 *
-			 * @since 2.0.19
-			 *
-			 * @param string            $avatar      Image tag for the user's avatar.
-			 * @param int|object|string $id_or_email A user ID, email address, or comment object.
-			 * @param int               $size        Square avatar width and height in pixels to retrieve.
-			 * @param string            $alt         Alternative text to use in the avatar image tag.
-			 *                                       Default empty.
-			 */
-			$avatar = apply_filters( 'get_avatar', $avatar, $email, $size, $default, $alt ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-
-			return $avatar;
-		} // End if().
+		return get_avatar( $email, $size, $default, $alt, $args );
 	}
 
 	/**
@@ -3066,7 +3174,7 @@ Because Simple History was only recently installed, this feed does not display m
 						$msg_tmpl .= __( '%1$d events today from one user and one other source.', 'simple-history' );
 					}
 
-					// Multiple events from multple users but from only 1 single other source
+					// Multiple events from multiple users but from only 1 single other source
 					// 3 events today from 2 users and 1 other source.
 					if ( $total_row_count > 1 && $count_users_today > 1 && $count_other_sources == 1 ) {
 						$msg_tmpl .= __( '%1$d events today from one user and one other source.', 'simple-history' );
