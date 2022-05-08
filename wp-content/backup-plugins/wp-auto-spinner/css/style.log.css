@@ -1,0 +1,68 @@
+@media screen and (max-width: 405px) {
+
+	.pin_log_breads li{
+		width:100%!important;
+	}
+ 
+}
+
+@media screen and (max-width: 405px) {
+
+	.pin_log_breads li{
+		width:100%!important;
+	}
+	
+	.max-1{
+	
+		display:none;
+		
+	}
+ 
+}
+
+@media screen and (min-width: 406px) and (max-width: 617px) {
+
+	.pin_log_breads li{
+		width:47%!important;
+	}
+ 
+}
+
+@media screen and (min-width: 618px) and (max-width: 899px) {
+
+	.pin_log_breads li{
+		width:30%!important;
+	}
+ 
+}
+
+.pin_log_breads{
+	position:relative;
+}
+
+.pin_log_breads li{
+	background: none repeat scroll 0 0 #fff;
+    float: left;
+    text-align:center; 
+    margin-right: 1%;
+    padding: 1%;
+    width: 17%;
+    border-radius:5px;
+    min-width:156px;
+}
+
+.last_pin {
+  border: 1px solid #eaeaea;
+  height: 68px;
+  margin: 0 auto;
+  width: 90px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;	
+}
+ 
+.big_tag{
+	font-size: 35px;
+    font-weight: bold;
+	line-height: 2em;
+}

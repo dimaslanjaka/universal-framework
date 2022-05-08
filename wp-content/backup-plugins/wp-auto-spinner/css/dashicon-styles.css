@@ -1,0 +1,32 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "dashicons-wp-auto-spinner";
+  src:url("fonts/dashicons-wp-auto-spinner.eot");
+  src:url("fonts/dashicons-wp-auto-spinner.eot?#iefix") format("embedded-opentype"),
+    url("fonts/dashicons-wp-auto-spinner.woff") format("woff"),
+    url("fonts/dashicons-wp-auto-spinner.ttf") format("truetype"),
+    url("fonts/dashicons-wp-auto-spinner.svg#dashicons-wp-auto-spinner") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+ 
+[class^="dashicons-wp-spinner-"]:before,
+[class*=" dashicons-wp-spinner-"]:before {
+  font-family: "dashicons-wp-auto-spinner" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dashicons-wp-spinner-pencil-square-o:before {
+  content: "\63";
+  margin-top: 2px;
+}
