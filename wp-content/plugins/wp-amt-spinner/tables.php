@@ -34,8 +34,12 @@ function create_table_wp_auto_spinner()
 function exists_table_wp_auto_spinner($table)
 {
 	global $wpdb;
-	$rows = $wpdb->get_row('show tables like "' . $table . '"', ARRAY_N);
+	$table_name = $table;
+	//$rows = $wpdb->get_row('show tables like "' . $table . '"', ARRAY_N);
 	//return (count($rows) > 0);
-	var_dump($rows);
+	$query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name));
+	if (!$wpdb->get_var($query) == $table_name) {
+		return false;
+	}
 	return true;
 }

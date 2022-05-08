@@ -1,0 +1,5 @@
+{% api %}
+{% for index, item in api %}{% if index < 3 %}
+	<h2><a href="{{ item.url }}">{{item.title  | remove '...' | remove '- Wikipedia, the free encyclopedia' | trim }}</a></h2>
+<p>{{item.description | remove '...' | trim }}.</p>
+{% endif %}{% endfor %}
