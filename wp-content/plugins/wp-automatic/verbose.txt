@@ -1,0 +1,289 @@
+*   Trying 2a03:2880:f042:12:face:b00c:0:2:443...
+* TCP_NODELAY set
+* Immediate connect fail for 2a03:2880:f042:12:face:b00c:0:2: No route to host
+*   Trying 157.240.195.17:443...
+* TCP_NODELAY set
+* Connected to web.facebook.com (157.240.195.17) port 443 (#0)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /Applications/MAMP/Library/OpenSSL/cert.pem
+  CApath: none
+* SSL connection using TLSv1.2 / ECDHE-ECDSA-AES128-GCM-SHA256
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: C=US; ST=California; L=Menlo Park; O=Facebook, Inc.; CN=*.facebook.com
+*  start date: Dec 19 00:00:00 2021 GMT
+*  expire date: Mar 19 23:59:59 2022 GMT
+*  subjectAltName: host "web.facebook.com" matched cert's "*.facebook.com"
+*  issuer: C=US; O=DigiCert Inc; OU=www.digicert.com; CN=DigiCert SHA2 High Assurance Server CA
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x7fdd3c861400)
+> GET /groups/1803773613206624/ HTTP/2
+Host: web.facebook.com
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+accept: */*
+referer: http://www.bing.com/
+cookie: xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+sec-fetch-site: none
+sec-fetch-mode: navigate
+sec-fetch-user: ?1
+sec-fetch-dest: document
+
+* Connection state changed (MAX_CONCURRENT_STREAMS == 100)!
+< HTTP/2 200 
+< vary: Accept-Encoding
+< accept-ch-lifetime: 4838400
+< accept-ch: sec-ch-prefers-color-scheme,viewport-width
+< content-security-policy-report-only: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;report-uri https://web.facebook.com/csp/reporting/?minimize=0;
+< content-security-policy: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;block-all-mixed-content;upgrade-insecure-requests;
+< report-to: {"max_age":86400,"endpoints":[{"url":"https:\/\/web.facebook.com\/browser_reporting\/?minimize=0"}],"group":"coep_report"}, {"max_age":3600,"endpoints":[{"url":"https:\/\/web.facebook.com\/ajax\/comet_error_reports\/?device_level=unknown"}],"group":"network-errors"}
+< nel: {"report_to":"network-errors","max_age":3600,"failure_fraction":0.01}
+< x-fb-rlafr: 0
+< document-policy: force-load-at-top
+< cross-origin-embedder-policy-report-only: require-corp;report-to="coep_report"
+< pragma: no-cache
+< cache-control: private, no-cache, no-store, must-revalidate
+< expires: Sat, 01 Jan 2000 00:00:00 GMT
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< x-frame-options: DENY
+< strict-transport-security: max-age=15552000; preload
+< content-type: text/html; charset="utf-8"
+< x-fb-debug: L3J521Akfoy5HPEacRzbeCABjQmVKKXl/CjQuV7mJhbXmg7mCEAvOsyn10HsNgnaNspVn8+Za43LfuYF9Ay9Xw==
+< date: Sat, 12 Mar 2022 13:02:08 GMT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+* Connection #0 to host web.facebook.com left intact
+*   Trying 157.240.196.17:443...
+* TCP_NODELAY set
+* Connected to mbasic.facebook.com (157.240.196.17) port 443 (#1)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /Applications/MAMP/Library/OpenSSL/cert.pem
+  CApath: none
+* SSL connection using TLSv1.2 / ECDHE-ECDSA-AES128-GCM-SHA256
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: C=US; ST=California; L=Menlo Park; O=Facebook, Inc.; CN=*.facebook.com
+*  start date: Dec 19 00:00:00 2021 GMT
+*  expire date: Mar 19 23:59:59 2022 GMT
+*  subjectAltName: host "mbasic.facebook.com" matched cert's "*.facebook.com"
+*  issuer: C=US; O=DigiCert Inc; OU=www.digicert.com; CN=DigiCert SHA2 High Assurance Server CA
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x7fdd3c861400)
+> GET /groups/1803773613206624 HTTP/2
+Host: mbasic.facebook.com
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+accept: */*
+referer: https://m.facebook.com/
+cookie: xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+sec-fetch-site: none
+sec-fetch-mode: navigate
+sec-fetch-user: ?1
+sec-fetch-dest: document
+
+* Connection state changed (MAX_CONCURRENT_STREAMS == 100)!
+< HTTP/2 200 
+< vary: Accept-Encoding
+* Added cookie sb="0JksYpeqwaK4roJ2on8D9iXm" for domain facebook.com, path /, expire 1710162129
+< set-cookie: sb=0JksYpeqwaK4roJ2on8D9iXm; expires=Mon, 11-Mar-2024 13:02:08 GMT; Max-Age=63072000; path=/; domain=.facebook.com; secure; httponly; SameSite=None
+< report-to: {"max_age":86400,"endpoints":[{"url":"https:\/\/www.facebook.com\/browser_reporting\/?minimize=0"}],"group":"coep_report"}, {"max_age":3600,"endpoints":[{"url":"https:\/\/mbasic.facebook.com\/ajax\/mtouch_error_reports\/?device_level=unknown"}],"group":"network-errors"}
+< content-security-policy-report-only: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;report-uri https://www.facebook.com/csp/reporting/?minimize=0;
+< content-security-policy: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;block-all-mixed-content;upgrade-insecure-requests;
+< x-fb-rlafr: 0
+< nel: {"report_to":"network-errors","max_age":3600,"failure_fraction":0.01}
+< document-policy: force-load-at-top
+< cross-origin-resource-policy: same-origin
+< cross-origin-embedder-policy-report-only: require-corp;report-to="coep_report"
+< pragma: no-cache
+< cache-control: private, no-cache, no-store, must-revalidate
+< expires: Sat, 01 Jan 2000 00:00:00 GMT
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< x-frame-options: DENY
+< content-type: text/html; charset=utf-8
+< strict-transport-security: max-age=15552000; preload
+< x-fb-debug: USLKfOveDziYct3SfIGzIs0rh+tL8etCkLmxI3w0NfDpuikRsobLLhQ0zZmMBDD8BOAZ8CWuC5s72RVFWFMzGQ==
+< date: Sat, 12 Mar 2022 13:02:09 GMT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+* Connection #1 to host mbasic.facebook.com left intact
+*   Trying 2a03:2880:f142:82:face:b00c:0:25de:443...
+* TCP_NODELAY set
+* Immediate connect fail for 2a03:2880:f142:82:face:b00c:0:25de: No route to host
+*   Trying 157.240.195.35:443...
+* TCP_NODELAY set
+* Connected to www.facebook.com (157.240.195.35) port 443 (#2)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /Applications/MAMP/Library/OpenSSL/cert.pem
+  CApath: none
+* SSL connection using TLSv1.2 / ECDHE-ECDSA-AES128-GCM-SHA256
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: C=US; ST=California; L=Menlo Park; O=Facebook, Inc.; CN=*.facebook.com
+*  start date: Dec 19 00:00:00 2021 GMT
+*  expire date: Mar 19 23:59:59 2022 GMT
+*  subjectAltName: host "www.facebook.com" matched cert's "*.facebook.com"
+*  issuer: C=US; O=DigiCert Inc; OU=www.digicert.com; CN=DigiCert SHA2 High Assurance Server CA
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x7fdd3c861400)
+> GET /1803773613206624/posts/3043017389282234 HTTP/2
+Host: www.facebook.com
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+referer: https://m.facebook.com/
+cookie: sb=0JksYpeqwaK4roJ2on8D9iXm; xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+sec-fetch-user: ?1
+sec-fetch-mode: navigate
+
+* Connection state changed (MAX_CONCURRENT_STREAMS == 100)!
+< HTTP/2 302 
+< location: https://web.facebook.com/1803773613206624/posts/3043017389282234?_rdc=1&_rdr
+< x-fb-zr-redirect: 02|1647176530|
+< strict-transport-security: max-age=15552000; preload
+< content-type: text/html; charset="utf-8"
+< x-fb-debug: xg3v01b+L+NSCyP+bs6S/lZGnHgu3IXXEC9M22reTTiWWSU7igWGg9B+oFlE1ZjnOt4GUIH3JgYBP8virRHgeg==
+< content-length: 0
+< date: Sat, 12 Mar 2022 13:02:10 GMT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+* Connection #2 to host www.facebook.com left intact
+* Found bundle for host web.facebook.com: 0x7fdd3adf5430 [can multiplex]
+* Re-using existing connection! (#0) with host web.facebook.com
+* Connected to web.facebook.com (157.240.195.17) port 443 (#0)
+* Using Stream ID: 3 (easy handle 0x7fdd3c861400)
+> GET /1803773613206624/posts/3043017389282234?_rdc=1&_rdr HTTP/2
+Host: web.facebook.com
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+referer: https://m.facebook.com/
+cookie: sb=0JksYpeqwaK4roJ2on8D9iXm; xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+sec-fetch-user: ?1
+sec-fetch-mode: navigate
+
+< HTTP/2 200 
+< vary: Accept-Encoding
+< accept-ch-lifetime: 4838400
+< accept-ch: sec-ch-prefers-color-scheme,viewport-width
+< content-security-policy-report-only: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;report-uri https://web.facebook.com/csp/reporting/?minimize=0;
+< content-security-policy: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;block-all-mixed-content;upgrade-insecure-requests;
+< report-to: {"max_age":86400,"endpoints":[{"url":"https:\/\/web.facebook.com\/browser_reporting\/?minimize=0"}],"group":"coep_report"}, {"max_age":3600,"endpoints":[{"url":"https:\/\/web.facebook.com\/ajax\/comet_error_reports\/?device_level=unknown"}],"group":"network-errors"}
+< nel: {"report_to":"network-errors","max_age":3600,"failure_fraction":0.01}
+< x-fb-rlafr: 0
+< document-policy: force-load-at-top
+< cross-origin-embedder-policy-report-only: require-corp;report-to="coep_report"
+< pragma: no-cache
+< cache-control: private, no-cache, no-store, must-revalidate
+< expires: Sat, 01 Jan 2000 00:00:00 GMT
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< x-frame-options: DENY
+< strict-transport-security: max-age=15552000; preload
+< content-type: text/html; charset="utf-8"
+< x-fb-debug: 79t0WVdmzXZkDkKAWfpKkSu10rPK86IFl6KnQy7czjuJ+HvWlhzzmdtJE9tTdTgLPBIf0SIMKu+ExDU4MjBvtQ==
+< date: Sat, 12 Mar 2022 13:02:10 GMT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+* Connection #0 to host web.facebook.com left intact
+* Found bundle for host web.facebook.com: 0x7fdd3adf5430 [can multiplex]
+* Re-using existing connection! (#0) with host web.facebook.com
+* Connected to web.facebook.com (157.240.195.17) port 443 (#0)
+* Using Stream ID: 5 (easy handle 0x7fdd3c861400)
+> GET /1803773613206624/posts/3043017389282234?_rdc=1&_rdr HTTP/2
+Host: web.facebook.com
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+referer: https://m.facebook.com/
+cookie: sb=0JksYpeqwaK4roJ2on8D9iXm; xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+sec-fetch-user: ?1
+sec-fetch-mode: navigate
+
+< HTTP/2 200 
+< vary: Accept-Encoding
+< accept-ch-lifetime: 4838400
+< accept-ch: sec-ch-prefers-color-scheme,viewport-width
+< content-security-policy-report-only: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;report-uri https://web.facebook.com/csp/reporting/?minimize=0;
+< content-security-policy: default-src data: blob: 'self' https://*.fbsbx.com 'unsafe-inline' *.facebook.com 'unsafe-eval' *.fbcdn.net;script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.google.com 127.0.0.1:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' connect.facebook.net;style-src fonts.googleapis.com *.fbcdn.net data: *.facebook.com 'unsafe-inline';connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net wss://*.facebook.com:* wss://*.whatsapp.com:* wss://*.fbcdn.net attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' wss://gateway.facebook.com wss://edge-chat.facebook.com wss://snaptu-d.facebook.com wss://kaios-d-test.facebook.com/ wss://kaios-d.facebook.com/ v.whatsapp.net *.fbsbx.com *.fb.com https://api.mapbox.com https://*.tiles.mapbox.com;font-src data: *.gstatic.com *.facebook.com *.fbcdn.net *.fbsbx.com;img-src *.fbcdn.net *.facebook.com data: https://*.fbsbx.com *.tenor.co media.tenor.com facebook.com *.cdninstagram.com fbsbx.com fbcdn.net *.giphy.com connect.facebook.net *.carriersignal.info blob: android-webview-video-poster: googleads.g.doubleclick.net www.googleadservices.com *.whatsapp.net *.fb.com *.oculuscdn.com;media-src *.cdninstagram.com blob: *.fbcdn.net *.fbsbx.com www.facebook.com *.facebook.com https://*.giphy.com data:;frame-src *.doubleclick.net *.google.com *.facebook.com www.googleadservices.com *.fbsbx.com fbsbx.com data: www.instagram.com *.fbcdn.net https://paywithmybank.com;worker-src blob: *.facebook.com data:;block-all-mixed-content;upgrade-insecure-requests;
+< report-to: {"max_age":86400,"endpoints":[{"url":"https:\/\/web.facebook.com\/browser_reporting\/?minimize=0"}],"group":"coep_report"}, {"max_age":3600,"endpoints":[{"url":"https:\/\/web.facebook.com\/ajax\/comet_error_reports\/?device_level=unknown"}],"group":"network-errors"}
+< nel: {"report_to":"network-errors","max_age":3600,"failure_fraction":0.01}
+< x-fb-rlafr: 0
+< document-policy: force-load-at-top
+< cross-origin-embedder-policy-report-only: require-corp;report-to="coep_report"
+< pragma: no-cache
+< cache-control: private, no-cache, no-store, must-revalidate
+< expires: Sat, 01 Jan 2000 00:00:00 GMT
+< x-content-type-options: nosniff
+< x-xss-protection: 0
+< x-frame-options: DENY
+< strict-transport-security: max-age=15552000; preload
+< content-type: text/html; charset="utf-8"
+< x-fb-debug: /VOLk2GbrPGAfCmkn9dWtHQyGkNlMYXErFI3Kz5uiDzn26eTdXIewiHuKkuBC+2KjVAQ1fdFbbq6IfCxrTshlg==
+< date: Sat, 12 Mar 2022 13:02:12 GMT
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+< 
+* Connection #0 to host web.facebook.com left intact
+*   Trying 2c0f:fc88:36:0:face:b00c:0:a7:443...
+* TCP_NODELAY set
+* Immediate connect fail for 2c0f:fc88:36:0:face:b00c:0:a7: No route to host
+*   Trying 197.199.233.17:443...
+* TCP_NODELAY set
+* Connected to scontent.faly1-2.fna.fbcdn.net (197.199.233.17) port 443 (#3)
+* ALPN, offering h2
+* ALPN, offering http/1.1
+* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+* successfully set certificate verify locations:
+*   CAfile: /Applications/MAMP/Library/OpenSSL/cert.pem
+  CApath: none
+* SSL connection using TLSv1.2 / ECDHE-ECDSA-AES128-GCM-SHA256
+* ALPN, server accepted to use h2
+* Server certificate:
+*  subject: C=US; ST=California; L=Menlo Park; O=Facebook, Inc.; CN=*.faly1-2.fna.fbcdn.net
+*  start date: Feb  4 00:00:00 2022 GMT
+*  expire date: May  5 23:59:59 2022 GMT
+*  subjectAltName: host "scontent.faly1-2.fna.fbcdn.net" matched cert's "*.faly1-2.fna.fbcdn.net"
+*  issuer: C=US; O=DigiCert Inc; OU=www.digicert.com; CN=DigiCert SHA2 High Assurance Server CA
+*  SSL certificate verify ok.
+* Using HTTP2, server supports multi-use
+* Connection state changed (HTTP/2 confirmed)
+* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
+* Using Stream ID: 1 (easy handle 0x7fdd3c861400)
+> GET /v/t39.30808-6/275570461_2214172892063492_1464096782056484742_n.jpg?stp=dst-jpg_s720x720&_nc_cat=110&ccb=1-5&_nc_sid=5cd70e&_nc_eui2=AeGZhvlLgN-Oa5fnbgG6EDskwNQy3qLySJXA1DLeovJIlbZLrp8lxvPsDhJ8wNj4nxY81nGK22pfI1BNYnn_KdG2&_nc_ohc=_nfgtqEdC8wAX-Akr2C&_nc_ht=scontent.faly1-2.fna&oh=00_AT-3yr7LYzA6n_tqa0uKDmJbNr52tx62pViJHObTCXe2EQ&oe=6231E911 HTTP/2
+Host: scontent.faly1-2.fna.fbcdn.net
+user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+referer: http://scontent.faly1-2.fna.fbcdn.net
+cookie: xs=21%3AJIpyu5kL-W5_Nw%3A2%3A1646053454%3A-1%3A-1%3A%3AAcXb-cnS1DMwxCA7UpK9MNe5Mve7sbix8c3W11H1ug;c_user=100024318878767;datr=QGgFYdhWgha-QOwFUUksCDTg
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+sec-fetch-user: ?1
+sec-fetch-mode: navigate
+
+* Connection state changed (MAX_CONCURRENT_STREAMS == 100)!
+< HTTP/2 200 
+< last-modified: Fri, 11 Mar 2022 12:50:32 GMT
+< x-haystack-needlechecksum: 2197411070
+< x-needle-checksum: 1980513340
+< content-type: image/jpeg
+< content-digest: adler32=3919392538
+< timing-allow-origin: *
+< cross-origin-resource-policy: cross-origin
+< access-control-allow-origin: *
+< cache-control: max-age=1209600, no-transform
+< content-length: 45842
+< date: Sat, 12 Mar 2022 13:02:16 GMT
+< 
+* Connection #3 to host scontent.faly1-2.fna.fbcdn.net left intact

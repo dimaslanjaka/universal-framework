@@ -68,33 +68,14 @@ class SpinRewriterAPI
 
 	/**
 	 * Sets the list of protected keywords and key phrases.
-	 * @param $protected_terms (either array of words, comma separated list, newline separated list)
+	 *
+	 * @param  mixed $protected_terms (either array of words, comma separated list, newline separated list)
+	 * @return void
 	 */
 	function setProtectedTerms($protected_terms)
 	{
 		$this->data['protected_terms'] = "";
-		if (strpos($protected_terms, "\n") !== false || (strpos($protected_terms, ",") === false && !is_array($protected_terms))) {
-			// newline separated list, or a single word (the officialy supported format)
-			$protected_terms = trim($protected_terms);
-			if (strlen($protected_terms) > 0) {
-				$this->data['protected_terms'] = $protected_terms;
-				return true;
-			} else {
-				return false;
-			}
-		} else if (strpos($protected_terms, ",") !== false && !is_array($protected_terms)) {
-			// comma separated list
-			$protected_terms_explode = explode(",", $protected_terms);
-			foreach ($protected_terms_explode as $protected_term) {
-				$protected_term = trim($protected_term);
-				if ($protected_term) {
-					$this->data['protected_terms'] .= $protected_term . "\n";
-				}
-				$this->data['protected_terms'] = $this->data['protected_terms'];
-			}
-			$this->data['protected_terms'] = trim($this->data['protected_terms']);
-			return true;
-		} else if (is_array($protected_terms)) {
+		if (is_array($protected_terms)) {
 			// array of words
 			$protected_terms_explode = explode(",", $protected_terms);
 			foreach ($protected_terms_explode as $protected_term) {
@@ -106,10 +87,32 @@ class SpinRewriterAPI
 			}
 			$this->data['protected_terms'] = trim($this->data['protected_terms']);
 			return true;
-		} else {
-			// invalid format
-			return false;
 		}
+
+		if (strpos($protected_terms, "\n") !== false || strpos($protected_terms, ",") === false) {
+			// newline separated list, or a single word (the officialy supported format)
+			$protected_terms = trim($protected_terms);
+			if (strlen($protected_terms) > 0) {
+				$this->data['protected_terms'] = $protected_terms;
+				return true;
+			} else {
+				return false;
+			}
+		} else if (is_string($protected_terms) && strpos($protected_terms, ",") !== false) {
+			// comma separated list
+			$protected_terms_explode = explode(",", $protected_terms);
+			foreach ($protected_terms_explode as $protected_term) {
+				$protected_term = trim($protected_term);
+				if ($protected_term) {
+					$this->data['protected_terms'] .= $protected_term . "\n";
+				}
+				$this->data['protected_terms'] = $this->data['protected_terms'];
+			}
+			$this->data['protected_terms'] = trim($this->data['protected_terms']);
+			return true;
+		}
+		// invalid format
+		return false;
 	}
 
 	/**
