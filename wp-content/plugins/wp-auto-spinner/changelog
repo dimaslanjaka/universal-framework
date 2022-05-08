@@ -1,0 +1,151 @@
+@20 May 2021 v3.8.0
+NEW: QuillBot support
+NEW: option to exclude capitals in title & content
+
+@12 December 2020 v3.7.6
+Fix: Plugin updated to work with WordPress 5.6
+
+@18 September 2020 v3.7.5
+ESpinner module updated to back to work
+
+@14 August 2020 v3.7.4
+Fix: UI fixes
+Improved: rewriting algorithm changed for 40% faster results
+Imprvoed: WordAI timeout increased to 120 secons
+
+@3 Arpil 2020 v3.7.3
+Fix: Send to editor button now works for WordPress  5.4 
+
+@4 February 2020 v3.7.2
+Improved: better shortcode protection algorithm applied
+Fix: Now my thesaurus perioritirize sentenses over words
+Fix: Send to editor button back to work again on gutenberg 
+
+@2 January 2020 v3.7.1
+Fix: Changed quality for WordAI from 0-100 to selectbox
+Fix: Now works if Elementor + Classic editor are installed
+
+@1 September 2019 v3.7.0
+NEW:SpinBot.com support
+Fix: minor code fixes
+
+@18/2/2019 v3.6.0
+NEW:Espinner.net support
+NEW:WordAI perfect tense integration
+NEW: Safe mode option for spinRewriter that makes sure the content does not get deformed
+Fix: Latest update of Yoast SEO broke the send to editor button with classic editor, now sorted
+
+@28/1/2019 v3.5.0
+NEW: Block editor support
+NEW: safe mode option for spinRewriter that makes sure the content does not get deformed
+Improved: Spinnerchief algorithm changed not to get asterisk in the content
+Fix: Compatibility with the latest version of Yoast SEO
+Fixes: minor issues fixes 
+
+@12/2/2018
+Improvements: UI facelift
+Fix: WordAI astrics in rewritten post sorted.
+Fix: no title from un-spin option sorted.
+Fix: rewriting some shortcodes now sorted
+Fix: Send to editor and restore buttons now works with text editor
+
+@14/6/2017 v3.3.1
+Fix: don't spin content was disabling title spin now sorted
+Fix: SpinRewriter spin UI now back to work
+
+@22/4/2017 v3.3.0
+NEW: PHP7 compatible
+Fix: exclude single quotes was causing an issue with spinRewriter now sorted.
+improved: ajax requests rewritten to use built-in admin-ajax
+
+@10/8/2016 v3.2.2
+Bug fix: Editing old posts posted before installing the plugin was resulting in spinning the post if the auto spin option is active
+Fix: ContentProfessor Method now spins long articles
+Fix: now pre_get_posts get removed which at some cases stopped the queue from processing
+
+@1/5/2016 v3.2.1
+Improvement: spinRewriter html now get protected before spinning to keep the layout
+Improvement: spintax function completely rewritten 
+
+@3/4/2016 v3.2.0
+NEW:My Thesaurus backup and restore option
+NEW:un spin bulk option
+NEW:Now you can spin pending posts by sending them to the queue
+Fix:Add category link stopped working, now fixed
+Fix:My thesaurus and synonyms editing for turkish were not taking effect, now fixed
+Fix:My thesaurus addition was not working for all php versions now works
+Fix: now quotes and curley quotes now get replaced after the html tags it preivously was breacking the html layout
+Fix: Scheduled posts was not appearing at queue when auto spin is inactive now fixed
+
+
+@10/3/2015 v3.1.0
+NEW:Italian language added
+NEW:ChimpRewriter.com api integrated 
+NEW:WordAi.com api integrated
+NEW:TheBestSpinner.com api integrated
+NEW:ContentProfessor.com api integrated
+NEW:SpinnerChief.com api integrated
+NEW:new options to execlude capped letters, quotes and links
+NEW:new option to add draft post to the queue instantly without waiting to be published.
+NEW:new option to disable the queue
+
+Improvment:Queue page rewritten with better lock and more info
+Improvment:Log page rewritten with better lock and more info
+
+Fix: iframe disapear issue with bulk spin fixed
+
+@10/11/2014 v3.0.2
+Fix : some users got license inactive issue this updated should fix this one.
+New : nospin tag
+
+
+v 3.0.1 @28/9/2014
+Fix : synonyms disapear on click fixed 
+Fix : spin title in gui disabled 
+Fix : mb_strtoupper existince check
+Fix : execlude title words from spinning at spinrewriter added
+NEW : option to spin links texts
+NEW : disable content spinning option
+NEW : shuffle mode 
+NEW : Spin scheduled posts instantly
+NEW : curl exist check
+NEW : can send draft posts to the queue
+
+
+v 3.0.0 @13/3/2013
+Fixed: words starting with unicode 
+Added : spinning queue to manage server resources on cron job spin one post every 30 second
+Added : bulk spin
+Added : woo commerce support
+Added : custom post types support
+Added : option to enabe/disable on publish spinning action .
+Added : execlude post title words from spinning 
+Added : turkish support
+
+v 2.0.1 @25/12/2013
+Fix : links text now don't get spinned
+Fix : links now search non-gready
+Fix : preg_quote now prepare execluded words
+Fix : add slashes for settings 
+
+v2.0.0 @2/11/2013
+bug fix: capped letters now keep being capped
+New: custom treasures 
+New: 6 languages added
+New: Treasure editing
+New: UI for writing 
+New: Detailed Log
+New: Reserved words
+Improvement: spinning now on publish .
+
+Added: rating , update check 
+
+
+v1.0.1 @7-5-2013
+-bug fix : shortcode rewriting no more done .
+-mod: options flow layout changed i.e options.php
+-mod : link structure updated not to call plugin file ajax.php directly but using wp parsing mechanism
+
+
+-v1.0.0
+-initial version 
