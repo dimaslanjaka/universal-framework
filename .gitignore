@@ -99,3 +99,7 @@ typings/
 #.vscode/
 sftp.json
 *private*
+ftp-sync.json
+gittoken*
+gitoken*
+*token*
