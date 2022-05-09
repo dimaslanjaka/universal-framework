@@ -103,3 +103,10 @@ ftp-sync.json
 gittoken*
 gitoken*
 *token*
+
+# skip images
+!*.png
+!*.jpg
+!*.svg
+!*.ico
+!*.jpeg
