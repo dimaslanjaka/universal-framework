@@ -8,7 +8,7 @@
  * Author URI: https://www.webmanajemen.com/page/safelink.html?url=http://www.webmanajemen.com/user/ValvePress/portfolio?ref=ValvePress
  */
 
-/* Copyright 2012-2018 WP AUTO SPINNER - Wordpress Rewriter Plugin (email : sweetheatmn@gmail.com) contributors (dimaslanjaka@gmail.com) */
+/* Copyright 2012-2022 WP AUTO SPINNER - Wordpress Rewriter Plugin (email : sweetheatmn@gmail.com) contributors (dimaslanjaka@gmail.com) */
 define('WP_VALVE_PROXY', false);
 
 /*
@@ -53,7 +53,6 @@ function wp_auto_spinner_create_meta_box()
 	));
 
 	foreach ($wp_spinner_types as $type) {
-
 		add_meta_box('wp_auto_spinner-meta-boxes', 'WP AUTO SPINNER ', 'wp_auto_spinner_meta_boxes', $type, 'normal', 'high');
 	}
 }
@@ -135,7 +134,13 @@ function wp_auto_spinner_control_menu()
 
 	$logSlug = add_submenu_page('wp_auto_spinner', 'Wp Auto Spinner Log', 'Log', 'administrator', 'wp_auto_spinner_log', 'wp_auto_spinner_log');
 	add_action('admin_head-' . $logSlug, 'wp_auto_spinner_admin_head_log');
+
+	// customized menu
+	add_submenu_page('wp_auto_spinner', 'Wp Auto Spinner Test', 'Test', 'administrator', 'wp_auto_spinner_test', function () {
+		require_once(dirname(__FILE__) . '/test2.php');
+	});
 }
+
 function wp_auto_spinner_admin_head_log()
 {
 	echo '<link rel="stylesheet" type="text/css" href="' . plugins_url('css/style.log.css', __FILE__) . '">';
@@ -801,8 +806,8 @@ require_once 'pajax.php';
 /**
  * custom sort by length function to sort html founds
  *
- * @param unknown $a
- * @param unknown $b
+ * @param string $a
+ * @param string $b
  * @return number
  */
 function wp_auto_spinner_sort_by_length($a, $b)

@@ -186,7 +186,6 @@ function wp_auto_spinner_queue_fn()
 				// The Loop
 				$i = 1;
 				if ($the_query->have_posts()) {
-
 					while ($the_query->have_posts()) {
 						echo '<tr>';
 						$the_query->the_post();
