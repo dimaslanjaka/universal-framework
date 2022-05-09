@@ -50,7 +50,6 @@ temp/sess_*
 !tmp/*.json
 
 # Dependency directories
-.vscode/
 node_modules/
 jspm_packages/
 vendor/
@@ -95,3 +94,19 @@ typings/
 
 #archives
 /*.rar
+
+#private vscode settings
+#.vscode/
+sftp.json
+*private*
+ftp-sync.json
+gittoken*
+gitoken*
+*token*
+
+# skip images
+!*.png
+!*.jpg
+!*.svg
+!*.ico
+!*.jpeg
