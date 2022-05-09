@@ -4,5 +4,8 @@
     "../../wp-includes",
     "../../wp-admin",
     "../../wp-config.php"
-  ]
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -1,107 +1,78 @@
-jQuery(document).ready(function () {
+jQuery(function () {
+  //Reload page update log
+  jQuery('#update_log').on('click', function () {
+    location.reload();
+    return false;
+  });
 
-	//Reload page update log
-	jQuery('#update_log').click(function () {
+  //TRIGER CRON
+  jQuery('#wp_pinterest_automatic_trigger_cron').on('click', function () {
+    jQuery.ajax({
+      url: jQuery(this).attr('href'),
+      type: 'POST',
 
-		location.reload();
-		return false;
+      beforeSend: function () {
+        jQuery('.spinner').show();
+      },
 
-	});
+      success: function (data) {
+        jQuery('.spinner').hide();
+        alert(data);
 
-	//TRIGER CRON
-	jQuery('#wp_pinterest_automatic_trigger_cron').click(function () {
-		jQuery.ajax({
-			url: jQuery(this).attr('href'),
-			type: 'POST',
+        location.reload();
+      }
+    });
 
+    return false;
+  });
 
-			beforeSend: function () {
+  //CLEAR LOG
+  jQuery('#clear_log').on('click', function () {
+    if (!confirm('Clear all log records?')) {
+      return false;
+    }
 
-				jQuery('.spinner').show();
-			},
+    jQuery('.spinner').show();
+    jQuery.ajax({
+      url: ajaxurl,
+      type: 'POST',
 
-			success: function (data) {
+      data: {
+        action: 'wp_auto_spinner_log_clear'
+      },
 
-				jQuery('.spinner').hide();
-				alert(data);
+      success: function () {
+        jQuery('.spinner').hide();
+        location.reload();
+        return false;
+      }
+    });
 
-				location.reload();
+    return false;
+  });
 
-			}
+  //CLEAR Queue
+  jQuery('#clear_queue').on('click', function () {
+    if (!confirm('Clear all queue records?')) {
+      return false;
+    }
 
+    jQuery('.spinner').show();
+    jQuery.ajax({
+      url: ajaxurl,
+      type: 'POST',
 
-		});
+      data: {
+        action: 'wp_auto_spinner_queue_clear'
+      },
 
-		return false;
+      success: function () {
+        jQuery('.spinner').hide();
+        location.reload();
+        return false;
+      }
+    });
 
-	});
-
-
-	//CLEAR LOG
-	jQuery('#clear_log').click(function () {
-
-		if (!confirm('Clear all log records?')) {
-			return false;
-		}
-
-		jQuery('.spinner').show();
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-
-			data: {
-				action: 'wp_auto_spinner_log_clear',
-
-			},
-
-			success: function () {
-				jQuery('.spinner').hide();
-				location.reload();
-				return false;
-
-
-			}
-
-
-		});
-
-		return false;
-
-
-	});
-
-
-	//CLEAR Queue
-	jQuery('#clear_queue').click(function () {
-
-		if (!confirm('Clear all queue records?')) {
-			return false;
-		}
-
-		jQuery('.spinner').show();
-		jQuery.ajax({
-			url: ajaxurl,
-			type: 'POST',
-
-			data: {
-				action: 'wp_auto_spinner_queue_clear',
-
-			},
-
-			success: function () {
-				jQuery('.spinner').hide();
-				location.reload();
-				return false;
-
-
-			}
-
-
-		});
-
-		return false;
-
-
-	});
-
+    return false;
+  });
 });
