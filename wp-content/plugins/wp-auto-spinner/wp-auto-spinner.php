@@ -1,14 +1,14 @@
 <?php
 /*
  * Plugin Name: WP AUTO SPINNER
- * Plugin URI: https://www.webmanajemen.com/page/safelink.html?url=http://codecanyon.net/item/wordpress-auto-spinner-articles-rewriter/4092452?ref=ValvePress
+ * Plugin URI: https://www.webmanajemen.com/page/safelink.html?url=http://www.webmanajemen.com/item/wordpress-auto-spinner-articles-rewriter/4092452?ref=ValvePress
  * Description: Automatically rewrite your articles to create fresh content.
  * Version: 3.8.2-id
  * Author: Dimas Lanjaka (ValvePress)
- * Author URI: https://www.webmanajemen.com/page/safelink.html?url=http://codecanyon.net/user/ValvePress/portfolio?ref=ValvePress
+ * Author URI: https://www.webmanajemen.com/page/safelink.html?url=http://www.webmanajemen.com/user/ValvePress/portfolio?ref=ValvePress
  */
 
-/* Copyright 2012-2018 Wordpress Auto Spinner - Wordpress Rewriter Plugin (email : sweetheatmn@gmail.com) contributors (dimaslanjaka@gmail.com) */
+/* Copyright 2012-2018 WP AUTO SPINNER - Wordpress Rewriter Plugin (email : sweetheatmn@gmail.com) contributors (dimaslanjaka@gmail.com) */
 define('WP_VALVE_PROXY', false);
 
 /*
@@ -54,7 +54,7 @@ function wp_auto_spinner_create_meta_box()
 
 	foreach ($wp_spinner_types as $type) {
 
-		add_meta_box('wp_auto_spinner-meta-boxes', 'Wordpress Auto Spinner ', 'wp_auto_spinner_meta_boxes', $type, 'normal', 'high');
+		add_meta_box('wp_auto_spinner-meta-boxes', 'WP AUTO SPINNER ', 'wp_auto_spinner_meta_boxes', $type, 'normal', 'high');
 	}
 }
 function wp_auto_spinner_meta_boxes()
@@ -173,6 +173,8 @@ function wp_auto_spinner_the_content_filter($post_id)
 	// read post
 	global $post;
 
+	$title = $post->post_title;
+
 	// check if auto spin is enabled or not
 	$autospin = get_option('wp_auto_spin', array());
 	if (!in_array('OPT_AUTO_SPIN_ACTIVE', $autospin)) {
@@ -265,6 +267,7 @@ function wp_auto_spinner_the_content_filter($post_id)
 		return $title;
 	}
 } // end filtering
+
 function wp_auto_spinner_the_content_filter_rss($title)
 {
 	global $post;

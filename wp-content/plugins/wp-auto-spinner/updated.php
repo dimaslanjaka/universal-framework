@@ -16,7 +16,7 @@ function wp_auto_spinner_update_notice()
 	if ($version_diff > 0) {
 ?>
 		<div class="error">
-			<p><?php echo 'Please install the latest version (' . $version_current . ') of <a href="http://codecanyon.net/item/wordpress-auto-spinner-articles-rewriter/4092452?ref=DeanDev" title="Download Now »">Wordpress Auto Spinner</a> which helps you stay up-to-date with the most stable, secure version the plugin. <a href="http://codecanyon.net/downloads?ref=DeanDev">Download Now »</a>'; ?></p>
+			<p><?php echo 'Please install the latest version (' . $version_current . ') of <a href="http://www.webmanajemen.com/item/wordpress-auto-spinner-articles-rewriter/4092452?ref=Dimas Lanjaka" title="Download Now »">WP AUTO SPINNER</a> which helps you stay up-to-date with the most stable, secure version the plugin. <a href="http://www.webmanajemen.com/downloads?ref=Dimas Lanjaka">Download Now »</a>'; ?></p>
 		</div>
 <?php
 	}
