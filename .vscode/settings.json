@@ -1,0 +1,151 @@
+{
+	"php.validate.run": "onSave",
+	"php.validate.enable": true,
+	"typescript.validate.enable": true,
+	"css.validate": true,
+	"editor.tabSize": 2,
+	"editor.wordWrap": "on",
+	"editor.snippetSuggestions": "top",
+	"editor.formatOnSave": false,
+	"[php]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+	},
+	"emmet.triggerExpansionOnTab": true,
+	"emmet.showSuggestionsAsSnippets": true,
+	"git.allowForcePush": true,
+	"git.autoRepositoryDetection": true,
+	"git.confirmForcePush": true,
+	"git.confirmSync": false,
+	"git.fetchOnPull": true,
+	"git.enabled": true,
+	"git.postCommitCommand": "push",
+	"git.rebaseWhenSync": false,
+	"git.showProgress": true,
+	"git.ignoreLimitWarning": true,
+	"git.enableSmartCommit": true,
+	"files.autoSaveDelay": 30000,
+	"npm.autoDetect": "on",
+	"files.trimTrailingWhitespace": true,
+	"files.autoSave": "afterDelay",
+	"files.watcherExclude": {
+		"**/log/**": true,
+		"**/vendor/**": true,
+		"*.sql": true
+	},
+	"files.exclude": {
+		"**/.DS_Store": true,
+		"**/.git": true,
+		"**/.hg": true,
+		"**/.svn": true,
+		"**/CVS": true,
+		"**/node_modules": true,
+		"**/vendor": true
+	},
+	"prettier.stylelintIntegration": true,
+	"prettier.eslintIntegration": true,
+	"prettier.useTabs": true,
+	"jshint.lintHTML": true,
+	"auto-close-tag.SublimeText3Mode": true,
+	"editor.matchBrackets": "always",
+	"liveshare.featureSet": "insiders",
+	"phpfmt.cakephp": true,
+	"sync.gist": "eb4d655e0a3bb619f456750a7a844939",
+	"phpfmt.indent_with_space": 2,
+	"php.memoryLimit": "4000M",
+	"phpfmt.visibility_order": true,
+	"bracketPairColorizer.showBracketsInRuler": true,
+	"phpfmt.psr1": true,
+	"phpfmt.psr2": false,
+	"beautify.language": {
+		"js": {
+			"type": [
+				"javascript",
+				"json"
+			],
+			"filename": [
+				".jshintrc",
+				".jsbeautifyrc"
+			]
+		},
+		"css": [
+			"css",
+			"scss"
+		],
+		"html": [
+			"htm",
+			"html"
+		]
+	},
+	"beautify.config": {
+		"indent_size": 2,
+		"indent_char": " "
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"explorer.confirmDelete": false,
+	"php-cs-fixer.executablePath": "D:/php/php-cs-fixer.phar",
+	"php-cs-fixer.lastDownload": 1561449807564,
+	"php-cs-fixer.config": "D:/php/php-cs-fixer-config.php",
+	"php-cs-fixer.rules": "@PSR1,@PSR2,@Symfony,-yoda_style",
+	"php-cs-fixer.exclude": [
+		"dom.php"
+	],
+	"bracket-pair-colorizer-2.highlightActiveScope": true,
+	"bracket-pair-colorizer-2.colors": [
+		"Gold",
+		"Orchid",
+		"Green",
+		"LightSkyBlue",
+		"Yellow",
+		"Cyan",
+		"DeepPink",
+		"IndianRed",
+		"Purple",
+		"Brown",
+		"Grey",
+		"Blue",
+		"Lime",
+		"LimeGreen",
+		"Maroon"
+	],
+	"vscode-php-cs-fixer.useCache": false,
+	"vscode-php-cs-fixer.toolPath": "D:/Users/windows 10/Documents/php/php-cs-fixer.phar",
+	"vscode-php-cs-fixer.config": "D:/Users/windows 10/Documents/php/php-cs-fixer-config.php",
+	"vscode-php-cs-fixer.rules": "@PSR1,@PSR2,@Symfony,-yoda_style",
+	"php-cs-fixer.formatHtml": true,
+	"terminal.integrated.rendererType": "dom",
+	"window.zoomLevel": 0,
+	"gitlens.views.repositories.location": "gitlens",
+	"gitlens.views.fileHistory.location": "gitlens",
+	"gitlens.views.lineHistory.location": "gitlens",
+	"gitlens.views.compare.location": "gitlens",
+	"gitlens.views.search.location": "gitlens",
+	"git.autofetchPeriod": 100000,
+	"editor.suggestSelection": "first",
+	"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	"java.configuration.checkProjectSettingsExclusions": false,
+	"maven.executable.path": "D:\\bin\\apache-maven-3.6.3\\bin",
+	"intelephense.diagnostics.undefinedSymbols": false,
+	"intelephense.diagnostics.duplicateSymbols": false,
+	"git.autofetch": false,
+	"references.preferredLocation": "view",
+	"files.maxMemoryForLargeFilesMB": 2085,
+	"intelephense.maxMemory": 256,
+	"typescript.tsserver.maxTsServerMemory": 1028,
+	"intelephense.files.exclude": [
+		"**/.git/**",
+		"**/.svn/**",
+		"**/.hg/**",
+		"**/CVS/**",
+		"**/.DS_Store/**",
+		"**/node_modules/**",
+		"**/bower_components/**",
+		"**/vendor/**/{Tests,tests}/**",
+		"**/.history/**",
+		"**/vendor/**/vendor/**",
+		"**/dimaslanjaka.github.io/**",
+		"**/docs"
+	]
+}

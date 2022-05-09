@@ -1,0 +1,8 @@
+{
+  "intelephense.diagnostics.run": "onSave",
+  "intelephense.environment.includePaths": [
+    "../../wp-includes",
+    "../../wp-admin",
+    "../../wp-config.php"
+  ]
+}
