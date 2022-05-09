@@ -1,1 +1,0 @@
-<textarea style="width: 100%;" name="_notes_simple" id="_notes_simple" rows="20">{{ isset($notesSimple) && !empty($notesSimple) ? $notesSimple[0] : ''  }}</textarea>

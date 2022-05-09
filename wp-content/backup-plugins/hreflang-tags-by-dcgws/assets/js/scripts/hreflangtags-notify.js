@@ -1,1 +1,0 @@
-!function(i){"use strict";i(function(){i(".hreflangtags-notice").on("click",".notice-dismiss",function(t,s){var n=i(this).parent(".notice.is-dismissible").attr("data-dismiss-url");n&&i.get(n)})})}(jQuery);
