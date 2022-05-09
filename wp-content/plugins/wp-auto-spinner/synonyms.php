@@ -37,6 +37,10 @@
                 <option value="po" <?php opt_selected('po', $wp_auto_spinner_lang) ?>>Portuguese</option>
                 <option value="ro" <?php opt_selected('ro', $wp_auto_spinner_lang) ?>>Romanian</option>
                 <option value="tr" <?php opt_selected('tr', $wp_auto_spinner_lang) ?>>Turkish</option>
+                <option value="id" <?php opt_selected('id', $wp_auto_spinner_lang) ?>>Indonesian</option>
+                <option value="id2" <?php opt_selected('id2', $wp_auto_spinner_lang) ?>>Indonesian 2</option>
+                <option value="id3" <?php opt_selected('id3', $wp_auto_spinner_lang) ?>>Indonesian 3</option>
+                <option value="id4" <?php opt_selected('id4', $wp_auto_spinner_lang) ?>>Indonesian 4</option>
             </select>
         </div>
 
@@ -132,5 +136,5 @@
         jQuery('#word_synonyms').focus();
     </script>
 
-<?php } //end function 
+<?php } //end function
 ?>
