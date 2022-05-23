@@ -18,7 +18,7 @@
         "basscss": "^8.1.0",
         "bl": "^4.0.3",
         "chalk": "^4.1.1",
-        "codemirror": "^5.61.1",
+        "codemirror": "^5.65.3",
         "cross-spawn": "^7.0.3",
         "datatables.net": "^1.11.3",
         "datatables.net-autofill": "^2.3.6",
