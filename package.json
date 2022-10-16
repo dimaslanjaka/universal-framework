@@ -162,7 +162,7 @@
         "gulp-less": "^4.0.1",
         "gulp-postcss": "^8.0.0",
         "gulp-rename": "^2.0.0",
-        "gulp-sass": "^4.1.0",
+        "gulp-sass": "^5.1.0",
         "gulp-sourcemaps": "^2.6.5",
         "gulp-typedoc": "^3.0.0",
         "gulp-typescript": "^6.0.0-alpha.1",
