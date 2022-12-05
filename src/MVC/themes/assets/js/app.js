@@ -487,11 +487,6 @@ function initCodeMirror(opt) {
         lineNumbers: true,
         mode: opt.mode,
         selectionsMayTouch: true,
-        /*
-         smartIndent: true,
-         lineWrapping: true,
-         showCursorWhenSelecting: true,
-         matchHighlight: true,*/
     };
     defaultOverride = Object.assign(defaultOverride, opt.override);
     const editor = CodeMirror.fromTextArea(opt.element, defaultOverride);
@@ -3110,10 +3105,10 @@ options) {
         alertClasses.push("alert-dismissible");
     }
     const msgIcon = $("<i />", {
-        class: iconMap[severity], // you need to quote "class" since it's a reserved keyword
+        class: iconMap[severity],
     });
     const msg = $("<div />", {
-        class: alertClasses.join(" "), // you need to quote "class" since it's a reserved keyword
+        class: alertClasses.join(" "),
     });
     if (title) {
         const msgTitle = $("<h4 />", {
@@ -3209,7 +3204,7 @@ if (!isnode()) {
                 cookie_prefix: "GoogleAnalystics",
                 cookie_domain: location.host,
                 cookie_update: false,
-                cookie_expires: 28 * 24 * 60 * 60, // 28 days, in seconds
+                cookie_expires: 28 * 24 * 60 * 60,
             });
             const trackLinks = document.getElementsByTagName("a");
             for (let i = 0, len = trackLinks.length; i < len; i++) {
@@ -3418,7 +3413,7 @@ class dimas {
             },
             label: {
                 show: true,
-                type: "percent", // or 'seconds' => 23/60
+                type: "percent",
             },
             autoStart: true,
         });
@@ -7106,7 +7101,7 @@ var entityMap = {
     "168": "&#uml;",
     "169": "&copy;",
     // ...and lots and lots more, see http://www.w3.org/TR/REC-html40/sgml/entities.html
-    "8364": "&euro;", // Last one must not have a comma after it, IE doesn't like trailing commas
+    "8364": "&euro;",
 };
 // The function to do the work.
 // Accepts a string, returns a string with replacements made.
